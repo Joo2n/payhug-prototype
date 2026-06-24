@@ -1,0 +1,50 @@
+/* ============================================================
+   PayHug — Spacing, radius, shadow, layout tokens
+   4px base grid. Radii observed: 8 (chips/badges), 10–12 (inputs,
+   buttons), 16 (cards), 20 (large panels), 999 (pills).
+   Shadows are soft & low — rgba(0,0,0,0.05–0.15).
+   ============================================================ */
+:root {
+  /* ---- Spacing (4px grid) ----------------------------------- */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* ---- Radius ----------------------------------------------- */
+  --r-xs:   6px;
+  --r-sm:   8px;   /* badges, chips */
+  --r-md:   10px;  /* inputs */
+  --r-lg:   12px;  /* buttons, small cards */
+  --r-xl:   16px;  /* cards */
+  --r-2xl:  20px;  /* large panels, calendar */
+  --r-pill: 999px;
+
+  /* ---- Borders ---------------------------------------------- */
+  --bw-hair: 1px;   /* @kind other */
+  --bw:      1.5px;  /* @kind other */
+
+  /* ---- Shadows (soft, low) ---------------------------------- */
+  --sh-xs:  0 1px 2px rgba(0,0,0,0.05);
+  --sh-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --sh-md:  0 4px 16px rgba(0,0,0,0.06);
+  --sh-lg:  0 8px 28px rgba(0,0,0,0.10);
+  --sh-card: 0 1px 4px rgba(20,40,10,0.05), 0 8px 24px rgba(20,40,10,0.04);
+  --sh-focus: 0 0 0 3px rgba(0,136,255,0.18); /* blue focus ring */
+
+  /* ---- Layout ----------------------------------------------- */
+  --sidebar-w: 264px; /* @kind spacing */
+  --container:  1240px;  /* @kind spacing */
+  --tap-min:    44px; /* @kind spacing */
+
+  /* ---- Motion ----------------------------------------------- */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1); /* @kind other */
+  --dur-fast: 120ms; /* @kind other */
+  --dur:      180ms; /* @kind other */
+}

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Figma__get_metadata",
+      "mcp__figma__get_metadata",
+      "Bash(gh repo *)"
+    ]
+  }
+}
