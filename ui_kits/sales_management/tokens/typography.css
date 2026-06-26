@@ -1,0 +1,41 @@
+/* ============================================================
+   PayHug — Typography tokens
+   Noto Sans KR for UI text; Inter for numerals / money columns
+   (tabular figures so amounts align). Weights: 400 / 500 / 700 / 900.
+   ============================================================ */
+:root {
+  --font-sans: "Noto Sans KR", -apple-system, "Apple SD Gothic Neo",
+               BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Numerals & money — Inter with tabular figures */
+  --font-num:  "Inter", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --fw-regular: 400; /* @kind font */
+  --fw-medium:  500; /* @kind font */
+  --fw-bold:    700; /* @kind font */
+  --fw-black:   900; /* @kind font */
+
+  /* ---- Type scale (px) -------------------------------------- */
+  --fs-display: 32px;  /* hero / big numbers */
+  --fs-h1:      30px;
+  --fs-h2:      24px;
+  --fs-h3:      20px;
+  --fs-title:   18px;
+  --fs-body:    16px;  /* default body */
+  --fs-sm:      14px;  /* table cells, secondary */
+  --fs-caption: 13px;  /* meta, muted labels */
+  --fs-micro:   12px;  /* badge text, timestamps */
+
+  --lh-tight:   1.15;  /* @kind other */
+  --lh-snug:    1.35;  /* @kind other */
+  --lh-normal:  1.5;   /* @kind other */
+
+  --ls-tight:  -0.02em; /* @kind other */
+  --ls-normal:  0;      /* @kind other */
+}
+
+/* Money / numeric helper — apply to amount cells */
+.ph-num {
+  font-family: var(--font-num);
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}

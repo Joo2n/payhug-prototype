@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PayHug — 매출관리 (캐시노트 웹)</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: rgb(250,249,250); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  button { font-family: inherit; }
+  .ph-scroll { scrollbar-width: none; -ms-overflow-style: none; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .ph-scroll::-webkit-scrollbar { width: 0; height: 0; display: none; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="_ds_bundle.js"></script>
+<!-- 데이터 (cashnote-data.js → window.PHAPP) -->
+<script>
+// PayHug app — data (수정.fig 기준). today = 2026-06-24 (수). 최종 업데이트 06/24 11:30.
+// 6/25 이후 = 0원(데이터 없음). 매출/비용/수익 월별 달력 + 미매입 내역.
+// Exposes window.PHAPP.
+(function () {
+  const store = { name: "잇잇", status: "승인완료", biz: "616-28-53422" };
+  const UPDATE = "최종 반영 2026.06.24 11:30";
+
+  const premoney = {
+    dateLabel: "26년 6월 24일 (수)", today: true, reflectedAt: UPDATE,
+    total: 488086, yesterdaySales: 818800,
+    cards: [
+      { key: "kb",      name: "KB카드",    count: 6, amount: 102366 },
+      { key: "nh",      name: "농협NH카드", count: 3, amount: 41283 },
+      { key: "lotte",   name: "롯데카드",   count: 0, amount: 0 },
+      { key: "bc",      name: "비씨카드",   count: 3, amount: 50193 },
+      { key: "woori",   name: "우리카드",   count: 0, amount: 0 },
+      { key: "hana",    name: "하나카드",   count: 1, amount: 15246 },
+      { key: "shinhan", name: "신한카드",   count: 2, amount: 20691 },
+      { key: "samsung", name: "삼성카드",   count: 0, amount: 0 },
+      { key: "hyundai", name: "현대카드",   count: 1, amount: 24156 },
+    ],
+    cardsTotal: 253935,
+    platforms: [
+      { key: "baemin",  name: "배달의 민족", count: 11, amount: 255514 },
+      { key: "coupang", name: "쿠팡이츠",   count: 8,  amount: 56628 },
+      { key: "yogiyo",  name: "요기요",     count: 1,  amount: 26752 },
+    ],
+    platformsTotal: 338894,
+    payhug: { total: -104743, expectedDiff: -104743 },
+  };
+
+  const totalSales = {
+    dateLabel: "26년 6월 23일 (화)", reflectedAt: UPDATE,
+    total: 818800, excludedTotal: 83641,
+    cards: premoney.cards, cardsTotal: premoney.cardsTotal,
+    platforms: premoney.platforms, platformsTotal: premoney.platformsTotal,
+  };
+
+  const unpurchased = {
+    date: "2026.06.16", total: 83641,
+    note: "카드 승인 이후 아직 카드사에서 매입 처리되지 않은 내역입니다.",
+    rows: [
+      { date: "2026.06.14", issuer: "삼성카드", apprv: "98231264", amount: 13796, status: "done" },
+      { date: "2026.06.13", issuer: "삼성카드", apprv: "60702295", amount: 22232, status: "pending" },
+      { date: "2026.06.06", issuer: "하나카드", apprv: "00283649", amount: 21212, status: "pending" },
+      { date: "2026.06.06", issuer: "삼성카드", apprv: "14921793", amount: 26401, status: "pending" },
+    ],
+  };
+
+  const excludedDetail = {
+    date: "2026.06.16", total: 83641,
+    note: "이번 선정산에서 제외된 금액이에요.\n아직 카드 매입이 완료되지 않아 빠졌고, 매입이 확인되면 다음 선정산 금액에 자동으로 포함돼요.",
+    reasons: [
+      { key: "unpurchased", label: "미매입", desc: "카드 매입 대기", count: 4, amount: 83641 },
+    ],
+    rows: unpurchased.rows.map((r) => ({ date: r.date, issuer: r.issuer, reason: "카드 매입 대기", amount: r.amount })),
+  };
+
+  const PAY_METHOD = "신용";
+  const cardExtra = { kb: { count: 1, amount: 2739 }, samsung: { count: 1, amount: 13796 } };
+  function cardTxns(key) {
+    const c = premoney.cards.find((x) => x.key === key);
+    if (!c || c.count === 0) return { card: c, txns: [], summary: null };
+    const per = Math.round(c.amount / c.count);
+    const txns = [];
+    let salesSum = 0, feeSum = 0;
+    for (let i = 0; i < c.count; i++) {
+      const net = i === c.count - 1 ? c.amount - per * (c.count - 1) : per;
+      const sales = Math.round(net / 0.99);
+      const fee = -(sales - net);
+      salesSum += sales; feeSum += fee;
+      txns.push({ apprv: String(20000000 + ((i + 3) * 1300457) % 79999999), time: `1${i}:0${i}`,
+        sales, fee, net, payType: i % 2 === 0 ? "신용" : "체크" });
+    }
+    const add = cardExtra[key] || null;
+    const summary = { yesterdaySales: salesSum, fee: feeSum, premoney: c.amount, addPurchase: add };
+    return { card: c, txns, summary };
+  }
+
+  const platformDetail = {
+    baemin: {
+      name: "배달의 민족", yesterdaySales: 397300, deductTotal: -141786,
+      deducts: [["배달의 민족 차감액", -110698], ["광고비", -31088, "help"], ["페이허그 수수료", "면제"]],
+      excluded: { count: 1, amount: 2889 }, premoney: 255514,
+      orders: [
+        { shop: "잇잇", date: "2026.06.23", time: "13:47", amount: 13443, pay: "바로결제" },
+        { shop: "국밥보스 제육대장 시청점", date: "2026.06.23", time: "13:23", amount: 8156, pay: "바로결제" },
+        { shop: "국밥보스 제육대장 시청점", date: "2026.06.23", time: "11:31", amount: -898, pay: "만나서 결제" },
+        { shop: "Boss 짬뽕 직화제육 시청점", date: "2026.06.23", time: "11:12", amount: 7274, pay: "바로결제" },
+        { shop: "Boss 짬뽕 직화제육 시청점", date: "2026.06.23", time: "10:31", amount: 7714, pay: "바로결제" },
+        { shop: "Boss 짬뽕 직화제육 시청점", date: "2026.06.23", time: "10:24", amount: 7852, pay: "바로결제" },
+      ],
+    },
+    coupang: { name: "쿠팡이츠", yesterdaySales: 61200, deductTotal: -4572,
+      deducts: [["쿠팡이츠 차감액", -4572], ["페이허그 수수료", "면제"]], excluded: null, premoney: 56628, orders: [] },
+    yogiyo: { name: "요기요", yesterdaySales: 28900, deductTotal: -2148,
+      deducts: [["요기요 차감액", -2148], ["페이허그 수수료", "면제"]], excluded: null, premoney: 26752, orders: [] },
+  };
+
+  const orderDetail = {
+    name: "배달의 민족", date: "2026.06.23", time: "11:31", amount: -898, orderNo: "B2DR004ZYJ",
+    pay: "만나서 결제", yesterdaySales: "(14,900원)", deductTotal: -898,
+    deducts: [["배달의 민족 차감액", -898], ["페이허그 수수료", "면제"]], premoney: -898,
+    note: "[만나서 결제]는 배달의 민족 선정산 대상이 아니며 매출액에서 제외돼요\n[배민원 주문]의 매출액은 고객의 배달팁이 제외된 금액이에요",
+  };
+
+  const expectedDiff = {
+    dateLabel: "2026.06.24 반영", total: -104743,
+    note: "선정산은 예상 카드 수수료율을 기준으로 지급돼요.\n실제 정산 후 발생한 차액은 다음 선정산 금액에 자동으로 반영돼요.",
+    rows: [
+      { date: "2026.06.22", issuer: "비씨카드",   no: "승인번호 71864578", amount: 52 },
+      { date: "2026.06.22", issuer: "비씨카드",   no: "승인번호 75903426", amount: 85 },
+      { date: "2026.06.22", issuer: "하나카드",   no: "승인번호 21804005", amount: 10 },
+      { date: "2026.06.22", issuer: "하나카드",   no: "승인번호 27800203", amount: 28 },
+      { date: "2026.06.22", issuer: "배달의 민족", no: "주문번호 T2DQ00008CVO", amount: -5100 },
+      { date: "2026.06.22", issuer: "배달의 민족", no: "주문번호 T2DQ0000B20S", amount: -5617 },
+      { date: "2026.06.20", issuer: "배달의 민족", no: "주문번호 B2DQ004BI9", amount: 2138 },
+    ],
+  };
+
+  const deposits = {
+    bank: "하나은행", account: "62291002003804",
+    rows: [
+      { date: "6.24", time: "11:30", amount: 488086, kind: "premoney" },
+      { date: "6.23", time: "11:30", amount: 766796, kind: "premoney" },
+      { date: "",     time: "14:30", amount: 83641,  kind: "excluded" },
+      { date: "6.22", time: "11:30", amount: 460958, kind: "premoney" },
+      { date: "6.21", time: "11:30", amount: 533110, kind: "premoney" },
+      { date: "6.20", time: "11:30", amount: 587,    kind: "premoney" },
+      { date: "6.19", time: "11:30", amount: 771333, kind: "premoney" },
+    ],
+  };
+
+  const calDays = {};
+  for (let d = 1; d <= 24; d++) {
+    const k = (d * 2654435761) >>> 0;
+    const f = (n) => (((k >>> n) & 0x3ff) / 0x3ff);
+    let cardSales = 90000 + Math.round((f(2) * 130000) / 100) * 100;
+    let delivSales = d % 6 === 0 ? Math.round((40000 + f(7) * 55000) / 100) * 100
+                                 : 70000 + Math.round((f(11) * 160000) / 100) * 100;
+    if (d === 23) { cardSales = 480000; delivSales = 338800; }
+    const cardFee = Math.round(cardSales * 0.011 / 10) * 10;
+    const delivFee = delivSales ? Math.round(delivSales * 0.12 / 10) * 10 : 0;
+    const adFee = delivSales ? Math.round(delivSales * 0.05 / 10) * 10 : 0;
+    calDays[d] = { cardSales, delivSales, cardFee, delivFee, adFee };
+  }
+  const sum = (sel) => Object.values(calDays).reduce((a, x) => a + sel(x), 0);
+
+  function dayMetrics(x) {
+    if (!x) return null;
+    const cardCost = x.cardFee;
+    const delivCost = x.delivFee + x.adFee;
+    const cardProfit = x.cardSales - cardCost;
+    const delivProfit = x.delivSales - delivCost;
+    return {
+      cardSales: x.cardSales, delivSales: x.delivSales, sales: x.cardSales + x.delivSales,
+      cardFee: x.cardFee, delivFee: x.delivFee, adFee: x.adFee,
+      cardCost, delivCost, cost: cardCost + delivCost,
+      cardProfit, delivProfit, profit: cardProfit + delivProfit,
+    };
+  }
+
+  const monthly = {
+    cardSales: sum((x) => x.cardSales), delivSales: sum((x) => x.delivSales),
+    cardFee: sum((x) => x.cardFee), delivFee: sum((x) => x.delivFee), adFee: sum((x) => x.adFee),
+  };
+  monthly.sales = monthly.cardSales + monthly.delivSales;
+  monthly.cardCost = monthly.cardFee;
+  monthly.delivCost = monthly.delivFee + monthly.adFee;
+  monthly.cost = monthly.cardCost + monthly.delivCost;
+  monthly.cardProfit = monthly.cardSales - monthly.cardCost;
+  monthly.delivProfit = monthly.delivSales - monthly.delivCost;
+  monthly.profit = monthly.cardProfit + monthly.delivProfit;
+
+  const salesCalendar = { year: 2026, month: 6, today: 24, label: "2026년 6월", days: calDays, monthly };
+
+  window.PHAPP = { store, premoney, totalSales, unpurchased, excludedDetail, platformDetail, orderDetail,
+    cardTxns, PAY_METHOD, expectedDiff, deposits, salesCalendar, dayMetrics, UPDATE };
+})();</script>
+<!-- 앱 (CashnoteApp.jsx → window.CNApp) -->
+<script type="text/babel" data-presets="react">
+// PayHug app — responsive web layout (수정.fig 기준).
+// 메인(잇잇 · 미리받는돈 · 6월총매출[매출/비용/수익 탭 + 접이식 달력]) →
+// 총매출액(날짜별) → 카드/배달앱 상세 → 단건 / 미매입 내역 / 계좌 입금 내역.
+// Exposes window.PHPayhugApp.
+(function () {
+  const { SalesBreakdown, Badge } = window.PayHugDesignSystem_81d4f2;
+  const D = window.PHAPP;
+  const won = (n) => (typeof n === "number" ? n.toLocaleString("ko-KR") + "원" : n);
+  const wonN = (n) => (typeof n === "number" ? n.toLocaleString("ko-KR") : n);
+
+  // 달력/탭 채널 색
+  const C_TOTAL = "var(--ph-ink)";        // 총 매출액 / 총 비용 (검정)
+  const C_CARD = "var(--ph-blue-600)";    // 카드 (파랑)
+  const C_DELIV = "var(--ph-success-600)"; // 배달앱 (초록)
+
+  const Ic = (d, c = "currentColor") => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d={d} stroke={c} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+  const BACK = "M15 6l-6 6 6 6", PREV = "M14 6l-6 6 6 6", NEXT = "M10 6l6 6-6 6", CH_R = "M9 6l6 6-6 6", CH_D = "M6 9l6 6 6-6", CH_U = "M6 15l6-6 6 6";
+
+  // ---- shared bits -------------------------------------------------------
+  const Money = ({ children, c = "var(--text-primary)", s = 16, w = 700 }) => (
+    <span className="ph-num" style={{ fontFamily: "var(--font-num)", fontVariantNumeric: "tabular-nums lining-nums", fontSize: s, fontWeight: w, color: c, whiteSpace: "nowrap", flex: "none" }}>{children}</span>
+  );
+  const Card = ({ children, style, onClick }) => (
+    <div onClick={onClick} style={{ background: "#fff", borderRadius: 20, boxShadow: "0 1px 16px rgba(0,0,0,0.10)", boxSizing: "border-box", ...style }}>{children}</div>
+  );
+  const detailCard = { background: "#fff", borderRadius: 20, boxShadow: "0 1px 16px rgba(0,0,0,0.10)", overflow: "hidden" };
+  const pad = { padding: "0 20px 24px" };
+
+  function CardHeader({ title, onBack }) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "16px 18px 10px" }}>
+        {onBack && <span onClick={onBack} style={{ cursor: "pointer", display: "inline-flex", color: "var(--text-primary)", marginLeft: -6 }}>{Ic(BACK)}</span>}
+        <span style={{ fontSize: 19, fontWeight: 700 }}>{title}</span>
+      </div>
+    );
+  }
+  function DateNav({ label, sub }) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24, padding: "8px 0 6px" }}>
+        <span style={{ color: "var(--ph-gray-400)", display: "inline-flex" }}>{Ic(PREV)}</span>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 16, fontWeight: 700 }}>{label}</div>
+          {sub && <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 2 }}>{sub}</div>}
+        </div>
+        <span style={{ color: "var(--ph-gray-400)", display: "inline-flex" }}>{Ic(NEXT)}</span>
+      </div>
+    );
+  }
+  // ? 툴팁 — 클릭 시 설명 버블 (스마트폰 폭 안에 클램프)
+  function HelpTip({ text }) {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <span style={{ position: "relative", display: "inline-flex", marginLeft: 6, verticalAlign: "middle" }}>
+        <button onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }} aria-label="설명" style={{ width: 17, height: 17, borderRadius: "50%", border: "1px solid var(--ph-gray-300)", background: "#fff", color: "var(--ph-gray-400)", fontSize: 11, fontWeight: 700, cursor: "pointer", lineHeight: 1, padding: 0, display: "grid", placeItems: "center" }}>?</button>
+        {open && (
+          <React.Fragment>
+            <span onClick={(e) => { e.stopPropagation(); setOpen(false); }} style={{ position: "fixed", inset: 0, zIndex: 60 }} />
+            <span style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, zIndex: 61, width: 230, maxWidth: "70vw", background: "var(--ph-ink)", color: "#fff", fontSize: 12.5, lineHeight: 1.55, borderRadius: 10, padding: "10px 12px", boxShadow: "0 8px 24px rgba(0,0,0,.2)", fontWeight: 500 }}>{text}</span>
+          </React.Fragment>
+        )}
+      </span>
+    );
+  }
+  function KV({ k, sub, v, bold, color, indent, help }) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", padding: "11px 0", paddingLeft: indent ? 16 : 0,
+        borderLeft: indent ? "1.5px solid var(--border-default)" : "none", marginLeft: indent ? 4 : 0 }}>
+        <span style={{ fontSize: indent ? 14.5 : 16, fontWeight: bold ? 700 : 500, color: indent ? "var(--text-secondary)" : "var(--text-primary)" }}>{k}</span>
+        {help && <HelpTip text={help} />}
+        {sub != null && <span className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", marginLeft: 8, fontFamily: "var(--font-num)" }}>{sub}</span>}
+        <div style={{ flex: 1 }} />
+        <Money s={indent ? 14.5 : 16} w={bold ? 700 : 600} c={color || (indent ? "var(--text-secondary)" : "var(--text-primary)")}>{typeof v === "number" ? won(v) : v}</Money>
+      </div>
+    );
+  }
+  // 추가 매입(파랑) / 선정산 제외 금액(코랄) 강조 박스
+  function HiliteRow({ label, count, amount, tone }) {
+    const blue = tone === "blue";
+    const bg = blue ? "var(--ph-blue-tint)" : "#FDF1F0";
+    const fg = blue ? "var(--ph-blue-600)" : "#D75751";
+    return (
+      <div style={{ display: "flex", alignItems: "center", gap: 8, background: bg, borderRadius: 12, padding: "12px 14px", margin: "4px 0" }}>
+        <span style={{ fontSize: 15, fontWeight: 700, color: fg }}>{label}</span>
+        {count != null && <span className="ph-num" style={{ fontSize: 12.5, color: fg, opacity: 0.8, fontFamily: "var(--font-num)" }}>{count}건</span>}
+        <div style={{ flex: 1 }} />
+        <Money s={16} c={fg}>+{wonN(amount)}원</Money>
+      </div>
+    );
+  }
+  function GreenNote({ children }) {
+    return <div style={{ background: "var(--ph-green-tint)", color: "var(--ph-forest)", borderRadius: 14, padding: "16px 18px", fontSize: 14, lineHeight: 1.6, whiteSpace: "pre-line" }}>{children}</div>;
+  }
+  function GreenButton({ children, onClick }) {
+    return <button onClick={onClick} style={{ width: "100%", height: 56, border: "none", borderRadius: 16, background: "var(--ph-green)", color: "var(--ph-forest)", fontFamily: "var(--font-sans)", fontSize: 17, fontWeight: 700, cursor: "pointer" }}>{children}</button>;
+  }
+  function Tag({ done }) {
+    return (
+      <span style={{ fontSize: 12, fontWeight: 700, padding: "3px 8px", borderRadius: 6,
+        background: done ? "#E9F8FF" : "#FDF1F0", color: done ? "var(--ph-blue-600)" : "#D75751" }}>
+        {done ? "매입 완료" : "미매입"}
+      </span>
+    );
+  }
+  // 호버·프레스 피드백 래퍼 (마우스 호버 시 배경 워시, 클릭/터치 시 눌림 효과)
+  function Pressable({ children, onClick, style, radius = 12, hoverBg = "var(--ph-gray-50)", activeBg = "var(--ph-gray-100)" }) {
+    const [h, setH] = React.useState(false);
+    const [p, setP] = React.useState(false);
+    return (
+      <div onClick={onClick}
+        onMouseEnter={() => setH(true)} onMouseLeave={() => { setH(false); setP(false); }}
+        onPointerDown={() => setP(true)} onPointerUp={() => setP(false)} onPointerCancel={() => setP(false)}
+        style={{ cursor: "pointer", borderRadius: radius, background: p ? activeBg : h ? hoverBg : "transparent", transform: p ? "scale(0.992)" : "none", transition: "background .15s ease, transform .1s ease", ...style }}>
+        {children}
+      </div>
+    );
+  }
+  // 가맹점별 매출/미리받는돈 리스트 (DS SalesBreakdown 로컬판 — 섹션 아코디언, 꺾쇠는 숫자 오른쪽)
+  function Breakdown({ sections, footer, onRowClick, onFooterClick, flat }) {
+    const [openMap, setOpenMap] = React.useState({});
+    const helpDot = () => <span style={{ width: 16, height: 16, borderRadius: "50%", border: "1px solid var(--ph-gray-300)", color: "var(--ph-gray-400)", fontSize: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", flex: "none" }}>?</span>;
+    const Chev = ({ open }) => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform .18s", flex: "none", color: "var(--ph-gray-400)" }}>
+        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+    const gap18 = <span style={{ width: 18, flex: "none" }} />;
+    return (
+      <div style={{ display: "flex", flexDirection: "column", fontFamily: "var(--font-sans)" }}>
+        {sections.map((sec, si) => {
+          const open = flat ? true : !!openMap[si];
+          return (
+            <div key={si} style={{ borderTop: (!flat && si > 0) ? "1px solid var(--border-hairline)" : "none", paddingTop: si > 0 ? 8 : 0, marginTop: si > 0 ? 8 : 0 }}>
+              {flat ? (
+                <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 8px 6px" }}>
+                  <span style={{ fontSize: 18, fontWeight: 700, color: "var(--text-primary)" }}>{sec.label}</span>
+                  {sec.count != null && <span className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{sec.count}</span>}
+                  <div style={{ flex: 1 }} />
+                  <Money s={18}>{won(sec.amount)}</Money>
+                </div>
+              ) : (
+                <Pressable onClick={() => setOpenMap((mm) => ({ ...mm, [si]: !mm[si] }))} radius={12}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 8px" }}>
+                    <span style={{ fontSize: 18, fontWeight: 700, color: "var(--text-primary)" }}>{sec.label}</span>
+                    {sec.count != null && <span className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{sec.count}</span>}
+                    <div style={{ flex: 1 }} />
+                    <Money s={18}>{won(sec.amount)}</Money>
+                    <Chev open={open} />
+                  </div>
+                </Pressable>
+              )}
+              {open && sec.rows.map((r, ri) => {
+                const zero = r.zero || r.amount === 0;
+                const clickable = onRowClick && r.key && !zero;
+                const inner = (
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 8px" }}>
+                    <span style={{ fontSize: 16, fontWeight: 500, color: zero ? "var(--text-muted)" : "var(--text-primary)" }}>{r.issuer}</span>
+                    {r.count != null && <span className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{r.count}</span>}
+                    <div style={{ flex: 1 }} />
+                    <Money s={16} w={zero ? 500 : 700} c={zero ? "var(--text-muted)" : "var(--text-primary)"}>{won(r.amount)}</Money>
+                    {!flat && gap18}
+                  </div>
+                );
+                return clickable
+                  ? <Pressable key={ri} onClick={() => onRowClick(r.key, sec)} radius={12}>{inner}</Pressable>
+                  : <div key={ri}>{inner}</div>;
+              })}
+            </div>
+          );
+        })}
+        {footer && (
+          <div style={{ borderTop: flat ? "none" : "1px solid var(--border-default)", paddingTop: flat ? 4 : 12, marginTop: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px 8px" }}>
+              <span style={{ fontSize: 18, fontWeight: 700, color: "var(--text-primary)" }}>{footer.label}</span>
+              <div style={{ flex: 1 }} />
+              <Money s={18} c={typeof footer.amount === "number" && footer.amount < 0 ? "var(--text-money-neg)" : "var(--text-primary)"}>{won(footer.amount)}</Money>
+              {!flat && gap18}
+            </div>
+            {(footer.rows || []).map((r, ri) => {
+              const link = r.link && onFooterClick;
+              const inner = (
+                <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 8px" }}>
+                  <span style={{ fontSize: 15, color: "var(--text-secondary)" }}>{r.label}</span>
+                  {r.help && helpDot()}
+                  <div style={{ flex: 1 }} />
+                  <Money s={15} w={link ? 700 : 500} c={link ? "var(--ph-blue-600)" : "var(--text-secondary)"}><span style={{ textDecoration: link ? "underline" : "none" }}>{won(r.amount)}</span></Money>
+                  {!flat && gap18}
+                </div>
+              );
+              return link
+                ? <Pressable key={ri} onClick={() => onFooterClick(ri)} radius={12}>{inner}</Pressable>
+                : <div key={ri}>{inner}</div>;
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ---- 6월 총 매출 카드 (탭 + 접이식 달력) --------------------------------
+  const DOW = ["일", "월", "화", "수", "목", "금", "토"];
+  const fmt = (n) => (n == null ? null : n.toLocaleString("ko-KR"));
+  const dayLabel = (day) => {
+    const cal = D.salesCalendar;
+    const w = DOW[new Date(cal.year, cal.month - 1, day).getDay()];
+    return `26년 6월 ${day}일 (${w})`;
+  };
+  const TABS = [
+    { key: "sales", label: "매출", monthKey: "sales", title: "6월 총 매출", screen: "totalsales",
+      legend: [["총 매출액", C_TOTAL], ["카드", C_CARD], ["배달앱", C_DELIV]] },
+    { key: "cost", label: "비용", monthKey: "cost", title: "6월 총 비용", screen: "costdetail",
+      legend: [["총 비용", C_TOTAL], ["카드 비용", C_CARD], ["배달앱 비용", C_DELIV]] },
+    { key: "profit", label: "수익", monthKey: "profit", title: "6월 총 수익", screen: "profitdetail",
+      legend: [["총 수익", C_TOTAL], ["카드 수익", C_CARD], ["배달앱 수익", C_DELIV]] },
+  ];
+  function dayValues(tab, x) {
+    if (!x) return [];
+    const m = D.dayMetrics(x);
+    if (tab === "sales") return [[m.sales, C_TOTAL], [m.cardSales, C_CARD], [m.delivSales, C_DELIV]];
+    if (tab === "cost") return [[m.cost, C_TOTAL], [m.cardCost, C_CARD], [m.delivCost, C_DELIV]];
+    return [[m.profit, C_TOTAL], [m.cardProfit, C_CARD], [m.delivProfit, C_DELIV]]; // profit
+  }
+
+  // ---- 공유 날짜 컴포넌트 (캐러셀 + 연/월/일 피커) ----------------------
+  const CAL_IC = "M7 3v3M17 3v3M4 9h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z";
+  const carouselBtn = { width: 40, height: 40, borderRadius: 12, border: "none", background: "var(--ph-gray-100)", color: "var(--ph-slate)", cursor: "pointer", display: "grid", placeItems: "center", flex: "none" };
+  const plainNav = { width: 30, height: 40, border: "none", background: "none", color: "var(--ph-slate)", cursor: "pointer", display: "grid", placeItems: "center", flex: "none", padding: 0 };
+  function DatePill({ children, onClick, highlight }) {
+    return (
+      <button onClick={onClick} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, height: 40, borderRadius: 12, border: "none", background: highlight ? "var(--ph-blue-tint)" : "var(--ph-gray-100)", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 15, fontWeight: 700, color: highlight ? "var(--ph-blue-600)" : "var(--ph-ink)" }}>
+        <span style={{ display: "inline-flex" }}>{Ic(CAL_IC, highlight ? "var(--ph-blue-600)" : "var(--ph-slate)")}</span>{children}
+      </button>
+    );
+  }
+  function MonthCarousel({ year, month, onPrev, onNext, onPick, label, highlight }) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        <button style={plainNav} onClick={onPrev}>{Ic(PREV)}</button>
+        <DatePill onClick={onPick} highlight={highlight}>{label || `${year}년 ${month}월`}</DatePill>
+        <button style={plainNav} onClick={onNext}>{Ic(NEXT)}</button>
+      </div>
+    );
+  }
+  function DateCarousel({ year, month, day, onPrev, onNext, onPick, label, highlight }) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+        <button style={plainNav} onClick={onPrev}>{Ic(PREV)}</button>
+        <DatePill onClick={onPick} highlight={highlight}>{label || `${year}년 ${month}월 ${day}일 (${DOW[new Date(year, month - 1, day).getDay()]})`}</DatePill>
+        <button style={plainNav} onClick={onNext}>{Ic(NEXT)}</button>
+      </div>
+    );
+  }
+  const serial = (o) => (o ? o.y * 10000 + o.m * 100 + o.d : null);
+  // 텍스트형 날짜 헤더 (미리받는돈 스타일): ‹ 굵은 날짜 › + 하단 보조문구.
+  // 날짜 색: 오늘/이번 달=파랑(highlight), 미래=회색(future), 지난 날짜=검정(ink). 화살표는 onPrev/onNext 있을 때만.
+  function DateHeader({ label, sub, highlight, future, onPrev, onNext, onPick }) {
+    const dateColor = future ? "var(--ph-gray-400)" : highlight ? "var(--ph-blue-600)" : "var(--ph-ink)";
+    return (
+      <div style={{ padding: "10px 0 4px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18 }}>
+          {onPrev ? <button style={plainNav} onClick={onPrev} aria-label="이전">{Ic(PREV)}</button> : <span style={{ width: 30 }} />}
+          <button onClick={onPick} style={{ border: "none", background: "none", cursor: onPick ? "pointer" : "default", padding: "2px 4px", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--font-sans)" }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: dateColor }}>{label}</span>
+          </button>
+          {onNext ? <button style={plainNav} onClick={onNext} aria-label="다음">{Ic(NEXT)}</button> : <span style={{ width: 30 }} />}
+        </div>
+        {sub && <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3 }}>{sub}</div>}
+      </div>
+    );
+  }
+  // 정수 비례분배 — parts 합계가 정확히 total이 되도록 잔차를 큰 가중치에 더함.
+  function distribute(total, weights) {
+    const sumW = weights.reduce((a, b) => a + b, 0);
+    if (sumW <= 0) return weights.map(() => 0);
+    const raw = weights.map((w) => (total * w) / sumW);
+    const out = raw.map((x) => Math.floor(x));
+    let rem = total - out.reduce((a, b) => a + b, 0);
+    const order = raw.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0]);
+    for (let k = 0; k < order.length && rem > 0; k++, rem--) out[order[k][1]]++;
+    return out;
+  }
+
+  // 단일 날짜 + 드래그/탭 기간 + 년·월 선택 지원 피커.
+  // onConfirm({ scope:"day", y,m,d }) | ({ scope:"range", start,end }) | ({ scope:"month", y,m })
+  function DatePicker({ year, month, day, onClose, onConfirm, quick = ["today"], allowRange = false, startSel, endSel }) {
+    const cal = D.salesCalendar;
+    const [vy, setVy] = React.useState((startSel && startSel.y) || year);
+    const [vm, setVm] = React.useState((startSel && startSel.m) || month);
+    const [open, setOpen] = React.useState(null); // 'year' | 'month' | null (상단 드롭다운)
+    const [sel, setSel] = React.useState(startSel ? { start: startSel, end: endSel || null, anchor: startSel } : { start: day ? { y: year, m: month, d: day } : null, end: null, anchor: null });
+    const [dragging, setDragging] = React.useState(false);
+
+    const startDow = new Date(vy, vm - 1, 1).getDay();
+    const dim = new Date(vy, vm, 0).getDate();
+    const prevDim = new Date(vy, vm - 1, 0).getDate();
+    const rowsN = Math.ceil((startDow + dim) / 7);
+    const cells = [];
+    for (let i = 0; i < rowsN * 7; i++) {
+      const dn = i - startDow + 1;
+      if (dn < 1) cells.push({ d: prevDim + dn, out: true });
+      else if (dn > dim) cells.push({ d: dn - dim, out: true });
+      else cells.push({ d: dn, out: false });
+    }
+    const shift = (delta) => { let m = vm + delta, y = vy; if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } setVm(m); setVy(y); };
+
+    const lo = sel.start, hi = sel.end;
+    const hasRange = allowRange && lo && hi && serial(lo) !== serial(hi);
+    const sOf = (d) => vy * 10000 + vm * 100 + d;
+    const inRange = (d) => hasRange && sOf(d) >= serial(lo) && sOf(d) <= serial(hi);
+    const isEndpoint = (d) => (lo && sOf(d) === serial(lo)) || (hi && sOf(d) === serial(hi));
+
+    // 클릭·드래그 공통 선택 — 시작점은 즉시 표시, anchor 기준으로 끝점 확장(시작≤끝 정규화), 월/년 넘겨도 연결
+    const place = (cur, extend) => setSel((s) => {
+      if (extend && s.anchor) {
+        const a = s.anchor;
+        if (serial(cur) === serial(a)) return { start: a, end: null, anchor: a };
+        return serial(cur) < serial(a) ? { start: cur, end: a, anchor: a } : { start: a, end: cur, anchor: a };
+      }
+      return { start: cur, end: null, anchor: cur };
+    });
+    const onPDown = (c) => {
+      if (c.out) return;
+      const cur = { y: vy, m: vm, d: c.d };
+      if (!allowRange) { setSel({ start: cur, end: null, anchor: cur }); return; }
+      if (sel.start && !sel.end) place(cur, true);   // 시작만 있으면 이번이 끝 (두 번 탭)
+      else place(cur, false);                        // 새 시작점 / 기존 기간 리셋
+      setDragging(true);
+    };
+    const onPEnter = (c) => { if (c.out || !allowRange || !dragging) return; place({ y: vy, m: vm, d: c.d }, true); };
+    const endDrag = () => setDragging(false);
+
+    const quickToday = () => { setVy(cal.year); setVm(cal.month); setSel({ start: { y: cal.year, m: cal.month, d: cal.today }, end: null, anchor: { y: cal.year, m: cal.month, d: cal.today } }); };
+    // '이번 달' — 1일~말일을 범위로 체크만 하고 닫지 않는다(사용자가 '선택'을 직접 누름)
+    const quickMonth = () => { const last = new Date(cal.year, cal.month, 0).getDate(); setVy(cal.year); setVm(cal.month); setSel({ start: { y: cal.year, m: cal.month, d: 1 }, end: { y: cal.year, m: cal.month, d: last }, anchor: { y: cal.year, m: cal.month, d: 1 } }); };
+    const confirm = () => {
+      if (hasRange) onConfirm({ scope: "range", start: lo, end: hi });
+      else if (sel.start) onConfirm({ scope: "day", y: sel.start.y, m: sel.start.m, d: sel.start.d });
+      else onClose();
+    };
+    const fmtD = (o) => `${o.y}.${String(o.m).padStart(2, "0")}.${String(o.d).padStart(2, "0")}`;
+    const quickStyle = { border: "none", background: "none", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700, color: "var(--ph-blue-600)", padding: "4px 2px" };
+    const navBtn = { width: 34, height: 40, borderRadius: 8, border: "none", background: "none", color: "var(--ph-gray-400)", cursor: "pointer", display: "grid", placeItems: "center", flex: "none", padding: 0 };
+    const years = []; for (let y = cal.year; y >= 2000; y--) years.push(y);
+    const ddBtn = (label, key) => (
+      <button onClick={(e) => { e.stopPropagation(); setOpen(open === key ? null : key); }}
+        style={{ border: "1px solid " + (open === key ? "var(--ph-blue-600)" : "var(--border-default)"), background: "#fff", borderRadius: 10, padding: "8px 13px", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 6, fontFamily: "var(--font-num)", fontSize: 15, fontWeight: 700, color: "var(--ph-ink)", cursor: "pointer" }}>
+        {label}<span style={{ display: "inline-flex", transform: open === key ? "rotate(180deg)" : "none", transition: "transform .15s" }}>{Ic(CH_D, "var(--ph-slate)")}</span>
+      </button>
+    );
+    const topLabel = allowRange ? (hasRange ? null : "기간 선택 · 드래그하거나 두 날짜를 탭하세요") : "날짜 선택";
+
+    return (
+      <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(15,20,19,.42)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 80, padding: 16 }}>
+        <div onClick={(e) => { e.stopPropagation(); setOpen(null); }} onPointerUp={endDrag} onPointerLeave={endDrag} style={{ width: "100%", maxWidth: 340, background: "#fff", borderRadius: 20, padding: 18, boxShadow: "0 20px 60px rgba(15,20,19,.25)", userSelect: "none" }}>
+          <div style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 14, minHeight: 18 }}>
+            {hasRange ? <span style={{ fontWeight: 700, color: "var(--ph-blue-600)", fontFamily: "var(--font-num)" }}>{fmtD(lo)} – {fmtD(hi)}</span>
+              : (allowRange && sel.start) ? <span style={{ fontWeight: 700, color: "var(--ph-blue-600)", fontFamily: "var(--font-num)" }}>{fmtD(sel.start)} <span style={{ color: "var(--text-muted)", fontWeight: 600, fontFamily: "var(--font-sans)" }}>– 종료일 선택</span></span>
+              : topLabel}
+          </div>
+
+          {/* 상단: ◀ [년 ▾] [월 ▾] ▶ — 드롭다운은 위쪽 팝오버 */}
+          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, zIndex: 5 }}>
+            <button style={navBtn} onClick={(e) => { e.stopPropagation(); setOpen(null); shift(-1); }}>{Ic(PREV)}</button>
+            <div style={{ position: "relative", display: "flex", gap: 8 }}>
+              {ddBtn(vy + "년", "year")}
+              {ddBtn(vm + "월", "month")}
+              {open === "year" && (
+                <div onClick={(e) => e.stopPropagation()} className="ph-scroll" style={{ position: "absolute", bottom: "calc(100% + 8px)", left: 0, background: "#fff", borderRadius: 12, boxShadow: "0 12px 34px rgba(15,20,19,.2)", border: "1px solid var(--border-hairline)", padding: 6, zIndex: 30, maxHeight: 240, overflowY: "auto" }}>
+                  {years.map((y) => <button key={y} onClick={(e) => { e.stopPropagation(); setVy(y); setOpen(null); }} style={{ display: "block", width: 104, textAlign: "left", border: "none", background: y === vy ? "var(--ph-blue-tint)" : "none", color: y === vy ? "var(--ph-blue-600)" : "var(--text-primary)", borderRadius: 8, padding: "10px 13px", fontFamily: "var(--font-num)", fontSize: 14.5, fontWeight: 700, cursor: "pointer" }}>{y}년</button>)}
+                </div>
+              )}
+              {open === "month" && (
+                <div onClick={(e) => e.stopPropagation()} className="ph-scroll" style={{ position: "absolute", bottom: "calc(100% + 8px)", right: 0, background: "#fff", borderRadius: 12, boxShadow: "0 12px 34px rgba(15,20,19,.2)", border: "1px solid var(--border-hairline)", padding: 6, zIndex: 30, maxHeight: 240, overflowY: "auto", width: 120 }}>
+                  {Array.from({ length: 12 }, (_, i) => { const mm = 12 - i; return <button key={mm} onClick={(e) => { e.stopPropagation(); setVm(mm); setOpen(null); }} style={{ display: "block", width: 108, textAlign: "left", border: "none", background: mm === vm ? "var(--ph-blue-tint)" : "none", color: mm === vm ? "var(--ph-blue-600)" : "var(--text-primary)", borderRadius: 8, padding: "10px 13px", fontFamily: "var(--font-num)", fontSize: 14.5, fontWeight: 700, cursor: "pointer" }}>{mm}월</button>; })}
+                </div>
+              )}
+            </div>
+            <button style={navBtn} onClick={(e) => { e.stopPropagation(); setOpen(null); shift(1); }}>{Ic(NEXT)}</button>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", textAlign: "center" }}>
+            {DOW.map((w, i) => <div key={w} style={{ fontSize: 12.5, color: i === 0 ? "var(--ph-danger)" : "var(--text-secondary)", padding: "4px 0 8px" }}>{w}</div>)}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)" }}>
+            {cells.map((c, i) => {
+              const within = !c.out && inRange(c.d);
+              const endpoint = !c.out && isEndpoint(c.d);
+              const isToday = !c.out && vy === cal.year && vm === cal.month && c.d === cal.today;
+              return (
+                <div key={i} onPointerDown={() => onPDown(c)} onPointerEnter={() => onPEnter(c)}
+                  style={{ height: 42, display: "flex", alignItems: "center", justifyContent: "center", cursor: c.out ? "default" : "pointer", background: within ? "var(--ph-blue-tint)" : "transparent" }}>
+                  <span style={{ width: 34, height: 34, display: "grid", placeItems: "center", borderRadius: "50%", fontFamily: "var(--font-num)", fontSize: 14, fontWeight: endpoint ? 700 : 500,
+                    background: endpoint ? "var(--ph-blue-600)" : "transparent", color: endpoint ? "#fff" : c.out ? "var(--ph-gray-300)" : "var(--text-primary)",
+                    boxShadow: isToday && !endpoint && !within ? "inset 0 0 0 1.5px var(--ph-blue-600)" : "none" }}>{c.d}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--border-hairline)" }}>
+            {quick.includes("today") && <button onClick={quickToday} style={quickStyle}>오늘</button>}
+            {quick.includes("month") && <button onClick={quickMonth} style={quickStyle}>이번 달</button>}
+            <div style={{ flex: 1 }} />
+            <button onClick={onClose} style={{ border: "1px solid var(--border-strong)", background: "#fff", borderRadius: 10, padding: "9px 16px", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, color: "var(--text-secondary)", cursor: "pointer" }}>취소</button>
+            <button onClick={confirm} style={{ border: "none", background: "var(--ph-blue-600)", color: "#fff", borderRadius: 10, padding: "9px 18px", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>선택</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  function StoreRow({ trailing }) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", gap: 9, padding: "14px 0" }}>
+        <span style={{ fontSize: 16, fontWeight: 700, color: "var(--ph-ink)" }}>{D.store.name}</span>
+        <span className="ph-num" style={{ fontSize: 13.5, fontWeight: 500, color: "var(--text-secondary)", fontFamily: "var(--font-num)" }}>{D.store.biz}</span>
+        <div style={{ flex: 1 }} />
+        {trailing}
+      </div>
+    );
+  }
+
+  function MonthSalesCard({ push }) {
+    const cal = D.salesCalendar;
+    const [tab, setTab] = React.useState("sales");
+    const [open, setOpen] = React.useState(false);
+    const [ym, setYm] = React.useState({ y: cal.year, m: cal.month });
+    const [picker, setPicker] = React.useState(false);
+    const t = TABS.find((x) => x.key === tab);
+    const hasData = ym.y === cal.year && ym.m === cal.month;
+    const monthTotal = hasData ? cal.monthly[t.monthKey] : 0;
+    const startDow = new Date(ym.y, ym.m - 1, 1).getDay();
+    const daysInMonth = new Date(ym.y, ym.m, 0).getDate();
+    const prevDays = new Date(ym.y, ym.m - 1, 0).getDate();
+    const cells = [];
+    for (let i = 0; i < 42; i++) { const dn = i - startDow + 1; if (dn < 1) cells.push({ d: prevDays + dn, out: true }); else if (dn > daysInMonth) cells.push({ d: dn - daysInMonth, out: true }); else cells.push({ d: dn, out: false }); }
+    const todayRow = hasData ? Math.floor((startDow + cal.today - 1) / 7) : 0;
+    const fullRows = Math.ceil((startDow + daysInMonth) / 7);
+    const view = open ? cells.slice(0, fullRows * 7) : cells.slice(todayRow * 7, todayRow * 7 + 7);
+    const shiftMonth = (delta) => setYm((o) => { let m = o.m + delta, y = o.y; if (m < 1) { m = 12; y--; } if (m > 12) { m = 1; y++; } return { y, m }; });
+
+    return (
+      <Card style={{ padding: "24px 22px 8px" }}>
+        {/* 매출관리 — 꺾쇠 달린 메뉴 버튼 (누르면 매출관리 상세로 이동) */}
+        <div onClick={() => push({ name: "ledger", metric: tab, y: ym.y, m: ym.m })} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer" }}>
+          <span style={{ fontSize: 20, fontWeight: 700, color: "var(--ph-ink)" }}>매출관리</span>
+          <span style={{ color: "var(--ph-gray-400)", display: "inline-flex" }}>{Ic(CH_R)}</span>
+        </div>
+
+        {/* 매출/비용/수익 — 언더라인 탭 */}
+        <div style={{ display: "flex", marginTop: 16, borderBottom: "1px solid var(--ph-gray-200)" }}>
+          {TABS.map((x) => {
+            const on = x.key === tab;
+            return (
+              <button key={x.key} onClick={() => setTab(x.key)} style={{ flex: 1, border: "none", background: "none", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 15.5, fontWeight: 700, padding: "12px 0", color: on ? "var(--ph-blue-600)" : "var(--ph-gray-400)", borderBottom: on ? "2.5px solid var(--ph-blue-600)" : "2.5px solid transparent", marginBottom: -1 }}>{x.label}</button>
+            );
+          })}
+        </div>
+
+        {/* {m}월 총 {탭} 라벨(크게) + 금액 — 텍스트(비대화형) */}
+        <div style={{ marginTop: 18 }}>
+          <div style={{ fontSize: 21, fontWeight: 700, color: "var(--ph-ink)" }}>{ym.m}월 총 {t.label}</div>
+          <div style={{ marginTop: 6 }}><Money s={30}>{wonN(monthTotal)}원</Money></div>
+        </div>
+
+        {/* 색상 범례 — 좌측정렬 */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: 20, marginTop: 18, padding: "12px 16px", background: "var(--ph-gray-100)", borderRadius: 14 }}>
+          {t.legend.map(([lbl, c]) => (
+            <span key={lbl} style={{ display: "inline-flex", alignItems: "center", gap: 7 }}>
+              <span style={{ width: 13, height: 13, borderRadius: 4, background: c, flex: "none" }} />
+              <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text-secondary)" }}>{lbl}</span>
+            </span>
+          ))}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", marginTop: 16 }}>
+          {DOW.map((d, i) => <div key={d} style={{ textAlign: "left", paddingLeft: 6, fontSize: 13, fontWeight: 600, color: i === 0 ? "var(--ph-danger)" : i === 6 ? "var(--ph-blue-600)" : "var(--text-secondary)", paddingBottom: 8 }}>{d}</div>)}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", borderTop: "1px solid var(--ph-gray-200)" }}>
+          {view.map((cell, i) => {
+            const data = hasData && !cell.out && cell.d <= cal.today ? cal.days[cell.d] : null;
+            const isToday = hasData && !cell.out && cell.d === cal.today;
+            const vals = dayValues(tab, data);
+            return (
+              <div key={i} onClick={() => data && push({ name: "ledger", y: ym.y, m: ym.m, d: cell.d })}
+                style={{ borderTop: "1px solid var(--ph-gray-100)", minHeight: 62, padding: "8px 3px 10px 6px",
+                  display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 5, cursor: data ? "pointer" : "default" }}>
+                <span className="ph-num" style={{ fontFamily: "var(--font-num)", fontSize: 13, fontWeight: isToday ? 700 : 500,
+                  color: cell.out ? "var(--ph-gray-300)" : isToday ? "var(--ph-forest)" : (i % 7) === 0 ? "var(--ph-danger)" : (i % 7) === 6 ? "var(--ph-blue-600)" : "var(--text-secondary)",
+                  width: 24, height: 24, display: "flex", alignItems: "center", justifyContent: "center",
+                  borderRadius: "50%", background: isToday ? "var(--ph-green)" : "transparent" }}>{cell.d}</span>
+                {vals.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", lineHeight: 1.25, width: "100%" }}>
+                    {vals.map(([v, cc], k) => (v ? <span key={k} className="ph-num" style={{ fontSize: 10.5, fontWeight: 600, color: cc, fontFamily: "var(--font-num)" }}>{fmt(v)}</span> : null))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div onClick={() => setOpen((o) => !o)} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "14px 0 12px", cursor: "pointer", color: "var(--ph-gray-700)" }}>
+          <span style={{ fontSize: 14, fontWeight: 500 }}>{open ? "달력 접기" : "달력 펼치기"}</span>
+          {Ic(open ? CH_U : CH_D, "var(--ph-gray-500)")}
+        </div>
+
+        {picker && <DatePicker year={ym.y} month={ym.m} day={hasData ? cal.today : 1} quick={["today", "month"]} onClose={() => setPicker(false)} onConfirm={(r) => { const y = r.y || (r.start ? r.start.y : ym.y); const m = r.m || (r.start ? r.start.m : ym.m); setYm({ y, m }); setPicker(false); }} />}
+      </Card>
+    );
+  }
+
+  // ---- screens -----------------------------------------------------------
+  function Main({ push }) {
+    const p = D.premoney;
+    return (
+      <div data-screen-label="메인" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {/* store selector */}
+        <Card style={{ padding: "20px 22px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontSize: 18, fontWeight: 700 }}>{D.store.name}</span>
+            <Badge tone="success" size="sm">{D.store.status}</Badge>
+            <div style={{ flex: 1 }} />
+            <span style={{ color: "var(--ph-ink)" }}>{Ic(CH_D)}</span>
+          </div>
+          <div className="ph-num" style={{ fontSize: 13.5, color: "var(--text-secondary)", fontFamily: "var(--font-num)", marginTop: 8 }}>{D.store.biz}</div>
+        </Card>
+
+        {/* 미리 받는 돈 */}
+        <Card style={{ padding: "24px 24px 22px" }}>
+          <div style={{ fontSize: 13.5, color: "var(--text-secondary)" }}>{p.dateLabel} · 오늘</div>
+          <div onClick={() => push({ name: "premoney" })} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", marginTop: 10 }}>
+            <span style={{ fontSize: 21, fontWeight: 700 }}>미리 받는 돈</span>
+            <span style={{ color: "var(--ph-gray-400)" }}>{Ic(CH_R)}</span>
+          </div>
+          <div style={{ marginTop: 12 }}><Money s={30} c="var(--ph-blue-600)">{wonN(p.total)}원</Money></div>
+          <div style={{ marginTop: 14, fontSize: 17, fontWeight: 700, color: "rgba(126,130,153,0.75)" }}>어제 매출액 {won(p.yesterdaySales)}</div>
+          <button onClick={() => push({ name: "deposits" })} style={{ width: "100%", height: 54, marginTop: 22, border: "none", borderRadius: 16, background: "var(--ph-gray-100)", color: "var(--text-secondary)", fontFamily: "var(--font-sans)", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>계좌 입금 내역보기</button>
+        </Card>
+
+        {/* 6월 총 매출 */}
+        <MonthSalesCard push={push} />
+      </div>
+    );
+  }
+
+  function Premoney({ push, pop }) {
+    const p = D.premoney;
+    const cal = D.salesCalendar;
+    const [date, setDate] = React.useState({ y: cal.year, m: cal.month, d: cal.today });
+    const [picker, setPicker] = React.useState(false);
+    const isToday = date.y === cal.year && date.m === cal.month && date.d === cal.today;
+    const isFuture = serial(date) > serial({ y: cal.year, m: cal.month, d: cal.today });
+    const shift = (delta) => setDate((o) => { const dt = new Date(o.y, o.m - 1, o.d + delta); return { y: dt.getFullYear(), m: dt.getMonth() + 1, d: dt.getDate() }; });
+    const label = `${String(date.y).slice(2)}년 ${date.m}월 ${date.d}일 (${DOW[new Date(date.y, date.m - 1, date.d).getDay()]})`;
+    const sections = [
+      { label: "카드", amount: p.cardsTotal, rows: p.cards.map((c) => ({ key: c.key, issuer: c.name, count: c.count + "건", amount: c.amount, zero: c.amount === 0 })) },
+      { label: "배달앱", amount: p.platformsTotal, rows: p.platforms.map((c) => ({ key: c.key, issuer: c.name, count: c.count + "건", amount: c.amount, zero: c.amount === 0 })) },
+    ];
+    const footer = { label: "페이허그", amount: p.payhug.total, rows: [
+      { label: "예상 지급 차액", amount: p.payhug.expectedDiff, link: true, help: true },
+      { label: "전산 수수료", amount: "면제" },
+    ]};
+    const onRow = (key) => (p.cards.some((c) => c.key === key) ? push({ name: "card", key }) : push({ name: "platform", key }));
+    return (
+      <div data-screen-label="미리 받는 돈" style={detailCard}>
+        <CardHeader title="미리 받는 돈" onBack={pop} />
+        <DateHeader label={label} highlight={isToday} future={isFuture} onPrev={() => shift(-1)} onNext={() => shift(1)} onPick={() => setPicker(true)} />
+        {isToday ? (
+          <React.Fragment>
+            <div style={{ textAlign: "center", padding: "2px 0 0" }}><Money s={30} c="var(--ph-blue-600)">{wonN(p.total)}원</Money></div>
+            <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3, marginBottom: 6 }}>{p.reflectedAt}</div>
+            <div style={pad}>
+              <div style={{ background: "var(--ph-gray-100)", borderRadius: 12, padding: "12px 16px", fontSize: 14, color: "var(--text-secondary)", margin: "6px 0 14px" }}>어제 매출액 {won(p.yesterdaySales)}</div>
+              <Breakdown sections={sections} footer={footer} onRowClick={onRow} onFooterClick={() => push({ name: "diff" })} flat />
+            </div>
+          </React.Fragment>
+        ) : (
+          <div style={{ padding: "64px 20px", textAlign: "center", color: "var(--text-muted)", fontSize: 14.5 }}>해당 날짜의 미리 받는 돈 내역이 없어요.</div>
+        )}
+        {picker && <DatePicker year={date.y} month={date.m} day={date.d} quick={["today"]} onClose={() => setPicker(false)} onConfirm={(r) => { if (r.scope === "day") setDate({ y: r.y, m: r.m, d: r.d }); setPicker(false); }} />}
+      </div>
+    );
+  }
+
+  function TotalSales({ params, push, pop }) {
+    const ts = D.totalSales;
+    const cal = D.salesCalendar;
+    const day = params.day || cal.today;
+    const dd = cal.days[day];
+    const dayTotal = dd ? dd.cardSales + dd.delivSales : ts.total;
+    const dateLabel = dayLabel(day);
+    const sections = [
+      { label: "카드", amount: ts.cardsTotal, rows: ts.cards.map((c) => ({ key: c.key, issuer: c.name, count: c.count + "건", amount: c.amount, zero: c.amount === 0 })) },
+      { label: "배달앱", amount: ts.platformsTotal, rows: ts.platforms.map((c) => ({ key: c.key, issuer: c.name, count: c.count + "건", amount: c.amount, zero: c.amount === 0 })) },
+    ];
+    const onRow = (key) => (ts.cards.some((c) => c.key === key) ? push({ name: "card", key }) : push({ name: "platform", key }));
+    return (
+      <div data-screen-label="총 매출액" style={detailCard}>
+        <CardHeader title="총 매출액" onBack={pop} />
+        <DateHeader label={dateLabel} highlight={day === cal.today} future={day > cal.today} />
+        <div style={{ textAlign: "center", padding: "2px 0 0" }}><Money s={32} c="var(--ph-blue-600)">{wonN(dayTotal)}원</Money></div>
+        <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3, marginBottom: 16 }}>{ts.reflectedAt}</div>
+        <div style={pad}>
+          <div onClick={() => push({ name: "excluded" })} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "var(--ph-gray-100)", borderRadius: 16, padding: "16px 20px", cursor: "pointer", marginBottom: 8 }}>
+            <span style={{ fontSize: 15, fontWeight: 500, color: "var(--text-secondary)" }}>선정산 제외액 {won(ts.excludedTotal)}</span>
+            <span style={{ color: "var(--ph-gray-400)" }}>{Ic(CH_R)}</span>
+          </div>
+          <Breakdown sections={sections} onRowClick={onRow} flat />
+          <div style={{ marginTop: 20 }}><GreenButton onClick={() => push({ name: "unpurchased" })}>미매입 내역 보러가기</GreenButton></div>
+        </div>
+      </div>
+    );
+  }
+
+  function Unpurchased({ pop }) {
+    const u = D.unpurchased;
+    return (
+      <div data-screen-label="미매입 내역" style={detailCard}>
+        <CardHeader title="미매입 내역" onBack={pop} />
+        <div style={{ ...pad, paddingTop: 4 }}>
+          <div className="ph-num" style={{ fontSize: 13.5, color: "var(--text-secondary)", fontFamily: "var(--font-num)" }}>{u.date}</div>
+          <div style={{ margin: "6px 0 16px" }}><Money s={32}>{wonN(u.total)}원</Money></div>
+          <GreenNote>{u.note}</GreenNote>
+          <div style={{ marginTop: 8 }}>
+            {u.rows.map((r, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "flex-start", padding: "16px 0" }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{r.date}</div>
+                  <div style={{ fontSize: 17, fontWeight: 700, marginTop: 4 }}>{r.issuer}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div className="ph-num" style={{ fontSize: 12.5, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>승인번호 {r.apprv}</div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8, marginTop: 6 }}>
+                    <Tag done={r.status === "done"} />
+                    <Money s={17}>{won(r.amount)}</Money>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 22 }}><GreenButton>내역 더 불러오기</GreenButton></div>
+        </div>
+      </div>
+    );
+  }
+
+  function CardScreen({ params, pop, push }) {
+    const { card, txns, summary } = D.cardTxns(params.key);
+    return (
+      <div data-screen-label={card.name} style={detailCard}>
+        <CardHeader title={card.name} onBack={pop} />
+        <DateNav label={D.totalSales.dateLabel} sub={D.UPDATE} />
+        <div style={{ padding: "8px 20px 12px" }}>
+          <KV k="어제 매출액" v={summary.yesterdaySales} />
+          <KV k="차감액" v={summary.fee} bold />
+          <KV k="카드 수수료" v={summary.fee} indent />
+          {summary.addPurchase && <HiliteRow label="추가 매입" count={summary.addPurchase.count} amount={summary.addPurchase.amount} tone="blue" />}
+          <div style={{ borderTop: "1px solid var(--border-default)", marginTop: 8 }} />
+          <KV k="미리 받는 돈" v={summary.premoney} bold color="var(--ph-blue-600)" />
+        </div>
+        <div style={{ height: 8, background: "var(--ph-gray-100)" }} />
+        <div style={{ padding: "16px 20px 24px" }}>
+          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>어제 카드 내역</div>
+          {txns.map((t, i) => (
+            <div key={i} onClick={() => push({ name: "txn", key: params.key, idx: i })} style={{ display: "flex", alignItems: "center", padding: "14px 0", cursor: "pointer" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 600 }}>{card.name}</div>
+                <div className="ph-num" style={{ fontSize: 12.5, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{D.totalSales.dateLabel.replace(/26년 6월 (\d+)일.*/, "2026.06.$1")} · {t.time}</div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <Money s={16}>{won(t.net)}</Money>
+                <div style={{ fontSize: 12.5, color: "var(--text-muted)" }}>{t.payType}</div>
+              </div>
+            </div>
+          ))}
+          <div style={{ marginTop: 22 }}><GreenButton>내역 더 불러오기</GreenButton></div>
+        </div>
+      </div>
+    );
+  }
+
+  function TxnScreen({ params, pop }) {
+    const { card, txns } = D.cardTxns(params.key);
+    const t = txns[params.idx] || txns[0];
+    const dnum = D.totalSales.dateLabel.replace(/26년 6월 (\d+)일.*/, "$1");
+    return (
+      <div data-screen-label={`${card.name} 단건`} style={detailCard}>
+        <CardHeader title={`${card.name} 내역`} onBack={pop} />
+        <div style={{ ...pad, paddingTop: 4 }}>
+          <div className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>2026.06.{dnum} · {t.time}</div>
+          <div style={{ margin: "6px 0 18px" }}><Money s={30}>{won(t.net)}</Money></div>
+          <KV k="승인번호" v={<span className="ph-num" style={{ fontFamily: "var(--font-num)" }}>{t.apprv}</span>} />
+          <KV k="결제수단" v={t.payType} />
+          <KV k="어제 매출액" v={t.sales} />
+          <KV k="차감액" v={t.fee} bold />
+          <KV k="카드 수수료" v={t.fee} indent />
+          <div style={{ borderTop: "1px solid var(--border-default)", marginTop: 8 }} />
+          <KV k="미리 받는 돈" v={t.net} bold color="var(--ph-blue-600)" />
+        </div>
+      </div>
+    );
+  }
+
+  function PlatformScreen({ params, pop, push }) {
+    const pf = D.platformDetail[params.key];
+    return (
+      <div data-screen-label={pf.name} style={detailCard}>
+        <CardHeader title={pf.name} onBack={pop} />
+        <DateNav label={D.totalSales.dateLabel} sub={D.UPDATE} />
+        <div style={{ padding: "8px 20px 12px" }}>
+          <KV k="어제 매출액" v={pf.yesterdaySales} />
+          <KV k="차감액" v={pf.deductTotal} bold />
+          {pf.deducts.map((d, i) => <KV key={i} k={d[0]} v={d[1]} indent />)}
+          {pf.excluded && <HiliteRow label="선정산 제외 금액" count={pf.excluded.count} amount={pf.excluded.amount} tone="coral" />}
+          <div style={{ borderTop: "1px solid var(--border-default)", marginTop: 8 }} />
+          <KV k="미리 받는 돈" v={pf.premoney} bold color="var(--ph-blue-600)" />
+        </div>
+        <div style={{ height: 8, background: "var(--ph-gray-100)" }} />
+        <div style={{ padding: "16px 20px 24px" }}>
+          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>어제 주문 내역</div>
+          {pf.orders.length === 0 && <div style={{ padding: 32, textAlign: "center", color: "var(--text-muted)" }}>주문 내역이 없어요</div>}
+          {pf.orders.map((o, i) => (
+            <div key={i} onClick={() => push({ name: "order", key: params.key, idx: i })} style={{ display: "flex", alignItems: "center", padding: "14px 0", cursor: "pointer" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 500 }}>{o.shop}</div>
+                <div className="ph-num" style={{ fontSize: 12.5, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{o.date} · {o.time}</div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <Money s={16} c={o.amount < 0 ? "var(--text-money-neg)" : "var(--text-primary)"}>{(o.amount >= 0 ? "+" : "") + wonN(o.amount)}원</Money>
+                <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{o.pay}</div>
+              </div>
+            </div>
+          ))}
+          <div style={{ marginTop: 22 }}><GreenButton>내역 더 불러오기</GreenButton></div>
+        </div>
+      </div>
+    );
+  }
+
+  function OrderScreen({ pop }) {
+    const o = D.orderDetail;
+    return (
+      <div data-screen-label={`${o.name} 주문`} style={detailCard}>
+        <CardHeader title={`${o.name} 내역`} onBack={pop} />
+        <div style={{ ...pad, paddingTop: 4 }}>
+          <div className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{o.date} · {o.time}</div>
+          <div style={{ margin: "6px 0 18px" }}><Money s={30} c="var(--ph-blue-600)">{(o.amount >= 0 ? "+" : "") + wonN(o.amount)}원</Money></div>
+          <KV k="주문번호" v={<span className="ph-num" style={{ fontFamily: "var(--font-num)" }}>{o.orderNo}</span>} />
+          <KV k="결제수단" v={o.pay} />
+          <KV k="어제 매출액" v={o.yesterdaySales} />
+          <KV k="차감액" v={o.deductTotal} bold />
+          {o.deducts.map((d, i) => <KV key={i} k={d[0]} v={d[1]} indent />)}
+          <div style={{ borderTop: "1px solid var(--border-default)", marginTop: 8 }} />
+          <KV k="미리 받는 돈" v={o.premoney} bold color="var(--ph-blue-600)" />
+          <div style={{ marginTop: 18 }}><GreenNote>{o.note}</GreenNote></div>
+        </div>
+      </div>
+    );
+  }
+
+  function DiffScreen({ pop }) {
+    const e = D.expectedDiff;
+    return (
+      <div data-screen-label="예상 지급 차액" style={detailCard}>
+        <CardHeader title="예상 지급 차액" onBack={pop} />
+        <div style={{ ...pad, paddingTop: 4 }}>
+          <div className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{e.dateLabel}</div>
+          <div style={{ margin: "6px 0 14px" }}><Money s={30}>{wonN(e.total)}원</Money></div>
+          <GreenNote>{e.note}</GreenNote>
+          <div style={{ marginTop: 16 }}>
+            {e.rows.map((r, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", padding: "14px 0" }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{r.date}</div>
+                  <div style={{ fontSize: 15, fontWeight: 600 }}>{r.issuer}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div className="ph-num" style={{ fontSize: 12.5, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{r.no}</div>
+                  <span className="ph-num" style={{ fontSize: 16, fontWeight: 700, color: "var(--ph-ink)", textDecoration: "underline", textUnderlineOffset: 2, fontFamily: "var(--font-num)" }}>{(r.amount >= 0 ? "+" : "") + wonN(r.amount)}원</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 20 }}><GreenButton>내역 더 불러오기</GreenButton></div>
+        </div>
+      </div>
+    );
+  }
+
+  function DepositsScreen({ pop }) {
+    const d = D.deposits;
+    return (
+      <div data-screen-label="계좌 입금 내역" style={detailCard}>
+        <CardHeader title="계좌 입금 내역" onBack={pop} />
+        <div style={{ ...pad, paddingTop: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "4px 0 16px" }}>
+            <img src="assets/bank-hana.png" alt="하나은행" style={{ width: 40, height: 40, borderRadius: 10, objectFit: "contain", background: "var(--ph-gray-100)", padding: 4, boxSizing: "border-box" }} />
+            <div><div style={{ fontSize: 15, fontWeight: 700 }}>{d.bank}</div><div className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{d.account}</div></div>
+          </div>
+          {d.rows.map((r, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", padding: "14px 0" }}>
+              <div style={{ width: 44, flex: "none" }}><span className="ph-num" style={{ fontSize: 14, fontWeight: 700, color: "var(--text-secondary)", fontFamily: "var(--font-num)" }}>{r.date}</span></div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 15, fontWeight: 600 }}>페이허그</div>
+                <div className="ph-num" style={{ fontSize: 12.5, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{r.time}</div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <Money s={16}>{won(r.amount)}</Money>
+                <div style={{ marginTop: 3 }}>
+                  {r.kind === "premoney" ? <Badge tone="green" size="sm">미리 받는 돈</Badge> : <Badge tone="blue" size="sm">선정산 제외액</Badge>}
+                </div>
+              </div>
+            </div>
+          ))}
+          <div style={{ marginTop: 22 }}><GreenButton>내역 더 불러오기</GreenButton></div>
+        </div>
+      </div>
+    );
+  }
+
+  function CostDetail({ params, pop, push }) {
+    const cal = D.salesCalendar;
+    const day = params.day || cal.today;
+    const m = D.dayMetrics(cal.days[day]) || D.dayMetrics(cal.days[cal.today]);
+    const isToday = day === cal.today;
+    const rows = [
+      { label: "카드 수수료", v: m.cardFee, screen: "cardfee", help: "카드사가 결제 건마다 떼는 수수료예요. 카드사·카드 종류에 따라 요율이 달라요." },
+      { label: "배달앱 수수료", v: m.delivFee, screen: "delivfee", help: "배달앱이 주문 중개·결제에 부과하는 수수료예요. 중개이용료·결제수수료 등이 포함돼요." },
+      { label: "광고비", v: m.adFee, screen: "adfee", help: "배달앱 노출·광고에 쓴 비용이에요. 울트라콜·오픈리스트 등 광고 상품 비용이 들어가요." },
+    ];
+    return (
+      <div data-screen-label="총 비용" style={detailCard}>
+        <CardHeader title="총 비용" onBack={pop} />
+        <DateHeader label={dayLabel(day)} highlight={isToday} future={day > cal.today} />
+        <div style={{ textAlign: "center", padding: "2px 0 0" }}><Money s={32} c="var(--ph-ink)">{wonN(m.cost)}원</Money></div>
+        <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3, marginBottom: 16 }}>{D.UPDATE}</div>
+        <div style={pad}>
+          <GreenNote>{"비용은 카드·배달앱 수수료와 광고비로 구성돼요.\n각 항목을 누르면 어디에 얼마가 나갔는지 자세히 볼 수 있어요."}</GreenNote>
+          <div style={{ marginTop: 8 }}>
+            {rows.map((r) => (
+              <Pressable key={r.label} onClick={() => push({ name: r.screen, day })} radius={12} style={{ margin: "0 -8px" }}>
+                <div style={{ display: "flex", alignItems: "center", padding: "18px 8px" }}>
+                  <span style={{ display: "flex", alignItems: "center", fontSize: 16, fontWeight: 500 }}>{r.label}</span>
+                  <div style={{ flex: 1 }} />
+                  <Money s={17} w={600}>{wonN(r.v)}원</Money>
+                </div>
+              </Pressable>
+            ))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 16 }}>
+            <span style={{ fontSize: 16, fontWeight: 700 }}>총 비용</span>
+            <Money s={17} w={700}>{wonN(m.cost)}원</Money>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---- 수수료/광고비 상세 — 카드·배달앱별 분배 + 건별 상세 진입 ----------------
+  function feeCfg(kind, m) {
+    return {
+      card: { title: "카드 수수료 상세", unit: "카드 수수료", total: m.cardFee, color: "var(--ph-blue-600)", issuers: D.premoney.cards,
+        note: "카드 수수료는 카드사·카드 종류(신용/체크)에 따라 요율이 달라요.\n영세·중소 가맹점은 우대 수수료가 적용될 수 있어요." },
+      deliv: { title: "배달앱 수수료 상세", unit: "배달앱 수수료", total: m.delivFee, color: "var(--ph-success-600)", issuers: D.premoney.platforms,
+        note: "배달앱 수수료는 중개이용료·결제수수료 등으로 구성돼요.\n앱·요금제에 따라 매출의 6~12% 수준이에요." },
+      ad: { title: "광고비 상세", unit: "광고비", total: m.adFee, color: "var(--ph-success-600)", issuers: D.premoney.platforms,
+        note: "광고비는 배달앱 노출·광고 상품에 쓴 비용이에요.\n울트라콜·오픈리스트 등 상품에 따라 달라져요." },
+    }[kind];
+  }
+  function FeeDetail({ params, pop, push, kind }) {
+    const cal = D.salesCalendar;
+    const day = params.day || cal.today;
+    const m = D.dayMetrics(cal.days[day]) || D.dayMetrics(cal.days[cal.today]);
+    const cfg = feeCfg(kind, m);
+    const rows = cfg.issuers.filter((c) => c.amount > 0);
+    const fees = distribute(cfg.total, rows.map((c) => c.amount));
+    return (
+      <div data-screen-label={cfg.title} style={detailCard}>
+        <CardHeader title={cfg.title} onBack={pop} />
+        <DateHeader label={dayLabel(day)} highlight={day === cal.today} future={day > cal.today} />
+        <div style={{ textAlign: "center", padding: "2px 0 0" }}><Money s={32} c={cfg.color}>{wonN(cfg.total)}원</Money></div>
+        <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3, marginBottom: 16 }}>{D.UPDATE}</div>
+        <div style={pad}>
+          <GreenNote>{cfg.note}</GreenNote>
+          <div style={{ marginTop: 8 }}>
+            {rows.map((c, i) => (
+              <Pressable key={c.key} onClick={() => push({ name: "feeissuer", kind, key: c.key, day })} radius={12} style={{ margin: "0 -8px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "16px 8px" }}>
+                  <span style={{ fontSize: 16, fontWeight: 700 }}>{c.name}</span>
+                  <span className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{c.count}건</span>
+                  <div style={{ flex: 1 }} />
+                  <Money s={17}>{wonN(fees[i])}원</Money>
+                </div>
+              </Pressable>
+            ))}
+            {rows.length === 0 && <div style={{ padding: "28px 0", textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}>해당 항목 내역이 없어요.</div>}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 16, marginTop: 8, borderTop: "1px solid var(--border-default)" }}>
+            <span style={{ fontSize: 16, fontWeight: 700 }}>{cfg.title.replace(" 상세", "")} 합계</span>
+            <Money s={17} w={700}>{wonN(cfg.total)}원</Money>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  // 가맹점 단위 수수료 — 건별 상세 (어제 카드/주문 내역과 동일한 리스트 구조)
+  function FeeIssuerDetail({ params, pop }) {
+    const { kind, key } = params;
+    const cal = D.salesCalendar;
+    const day = params.day || cal.today;
+    const m = D.dayMetrics(cal.days[day]) || D.dayMetrics(cal.days[cal.today]);
+    const cfg = feeCfg(kind, m);
+    const rows = cfg.issuers.filter((c) => c.amount > 0);
+    const fees = distribute(cfg.total, rows.map((c) => c.amount));
+    const idx = rows.findIndex((c) => c.key === key);
+    const issuer = rows[idx] || rows[0];
+    const issuerFee = fees[idx] || 0;
+    const dstr = `2026.06.${String(day).padStart(2, "0")}`;
+    const feeWord = kind === "ad" ? "광고비" : "수수료";
+    let items = [];
+    if (kind === "card") {
+      const { txns } = D.cardTxns(key);
+      const parts = distribute(issuerFee, txns.map((t) => t.sales));
+      items = txns.map((t, i) => ({ title: issuer.name, sub: `${dstr} · ${t.time}`, pay: t.payType, amount: parts[i] }));
+    } else {
+      const pf = D.platformDetail[key];
+      if (pf && pf.orders.length) {
+        const parts = distribute(issuerFee, pf.orders.map((o) => Math.abs(o.amount) || 1));
+        items = pf.orders.map((o, i) => ({ title: o.shop, sub: `${o.date} · ${o.time}`, pay: o.pay, amount: parts[i] }));
+      } else {
+        const n = issuer.count || 0;
+        const parts = distribute(issuerFee, Array(n).fill(1));
+        items = parts.map((a, i) => ({ title: issuer.name, sub: `${dstr} 주문 ${i + 1}`, amount: a }));
+      }
+    }
+    return (
+      <div data-screen-label={`${issuer.name} ${feeWord}`} style={detailCard}>
+        <CardHeader title={`${issuer.name} ${feeWord}`} onBack={pop} />
+        <DateHeader label={dayLabel(day)} highlight={day === cal.today} future={day > cal.today} />
+        <div style={{ textAlign: "center", padding: "2px 0 0" }}><Money s={32} c={cfg.color}>{wonN(issuerFee)}원</Money></div>
+        <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3, marginBottom: 16 }}>{D.UPDATE}</div>
+        <div style={pad}>
+          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 2 }}>건별 {feeWord} 내역</div>
+          {items.map((it, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", padding: "14px 0" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 600 }}>{it.title}</div>
+                <div className="ph-num" style={{ fontSize: 12.5, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{it.sub}{it.pay ? ` · ${it.pay}` : ""}</div>
+              </div>
+              <Money s={16} c={cfg.color}>{wonN(it.amount)}원</Money>
+            </div>
+          ))}
+          {items.length === 0 && <div style={{ padding: "28px 0", textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}>건별 내역이 없어요.</div>}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 16, marginTop: 4, borderTop: "1px solid var(--border-default)" }}>
+            <span style={{ fontSize: 16, fontWeight: 700 }}>{issuer.name} {feeWord} 합계</span>
+            <Money s={17} w={700}>{wonN(issuerFee)}원</Money>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function ProfitDetail({ params, pop }) {
+    const cal = D.salesCalendar;
+    const day = params.day || cal.today;
+    const m = D.dayMetrics(cal.days[day]) || D.dayMetrics(cal.days[cal.today]);
+    return (
+      <div data-screen-label="총 수익" style={detailCard}>
+        <CardHeader title="총 수익" onBack={pop} />
+        <DateHeader label={dayLabel(day)} highlight={day === cal.today} future={day > cal.today} />
+        <div style={{ textAlign: "center", padding: "2px 0 0" }}><Money s={32} c="var(--ph-success-600)">{wonN(m.profit)}원</Money></div>
+        <div style={{ textAlign: "center", fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3, marginBottom: 16 }}>{D.UPDATE}</div>
+        <div style={pad}>
+          <KV k="카드 수익" v={m.cardProfit} bold color="var(--ph-blue-600)" />
+          <KV k="카드 매출" v={m.cardSales} indent />
+          <KV k="카드 수수료" v={-m.cardFee} indent />
+          <KV k="배달앱 수익" v={m.delivProfit} bold color="var(--ph-success-600)" />
+          <KV k="배달앱 매출" v={m.delivSales} indent />
+          <KV k="배달앱 수수료" v={-m.delivFee} indent />
+          <KV k="광고비" v={-m.adFee} indent />
+          <div style={{ borderTop: "1px solid var(--border-default)", marginTop: 8 }} />
+          <KV k="총 수익" v={m.profit} bold />
+        </div>
+      </div>
+    );
+  }
+
+  function Excluded({ push, pop }) {
+    const e = D.excludedDetail;
+    return (
+      <div data-screen-label="선정산 제외액" style={detailCard}>
+        <CardHeader title="선정산 제외액" onBack={pop} />
+        <div style={{ ...pad, paddingTop: 4 }}>
+          <div className="ph-num" style={{ fontSize: 13.5, color: "var(--text-secondary)", fontFamily: "var(--font-num)" }}>{e.date}</div>
+          <div style={{ margin: "6px 0 16px" }}><Money s={32}>{wonN(e.total)}원</Money></div>
+          <GreenNote>{e.note}</GreenNote>
+          {/* 제외 사유별 요약 */}
+          <div style={{ marginTop: 16 }}>
+            {e.reasons.map((r, i) => (
+              <div key={i} onClick={() => push({ name: r.key })} style={{ display: "flex", alignItems: "center", gap: 12, background: "var(--ph-gray-100)", borderRadius: 16, padding: "16px 18px", cursor: "pointer", marginBottom: 8 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                    <span style={{ fontSize: 16, fontWeight: 700 }}>{r.label}</span>
+                    <span className="ph-num" style={{ fontSize: 12.5, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{r.count}건</span>
+                  </div>
+                  <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 2 }}>{r.desc}</div>
+                </div>
+                <Money s={17}>{won(r.amount)}</Money>
+                <span style={{ color: "var(--ph-gray-400)", display: "inline-flex" }}>{Ic(CH_R)}</span>
+              </div>
+            ))}
+          </div>
+          {/* 제외 내역 */}
+          <div style={{ marginTop: 8 }}>
+            {e.rows.map((r, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "flex-start", padding: "14px 0" }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="ph-num" style={{ fontSize: 13, color: "var(--text-muted)", fontFamily: "var(--font-num)" }}>{r.date}</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, marginTop: 4 }}>{r.issuer}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <span style={{ fontSize: 12, color: "var(--text-secondary)", background: "var(--ph-gray-100)", borderRadius: 6, padding: "3px 8px" }}>{r.reason}</span>
+                  <div style={{ marginTop: 8 }}><Money s={16}>{won(r.amount)}</Money></div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 22 }}><GreenButton onClick={() => push({ name: "unpurchased" })}>미매입 내역 보러가기</GreenButton></div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---- 매출관리 상세 (장부) — 매출관리 / 미리 받는 돈 토글, 기간(일·월·범위) 집계 ----
+  function Ledger({ params, push, pop }) {
+    const cal = D.salesCalendar;
+    const [view, setView] = React.useState("ledger"); // 'ledger' | 'premoney'
+    const [menu, setMenu] = React.useState(false);
+    const [picker, setPicker] = React.useState(false);
+    const [accCard, setAccCard] = React.useState(false);  // 카드 매출 — 기본 접힘
+    const [accDeliv, setAccDeliv] = React.useState(true);  // 배달앱 매출 — 기본 펼침
+    const [period, setPeriod] = React.useState(
+      params.d ? { mode: "day", y: params.y || cal.year, m: params.m || cal.month, d: params.d }
+               : { mode: "month", y: params.y || cal.year, m: params.m || cal.month });
+
+    const acc = { sales: 0, cardSales: 0, delivSales: 0, cost: 0, cardFee: 0, delivFee: 0, adFee: 0 };
+    const addDay = (x) => { const mm = D.dayMetrics(x); if (!mm) return; acc.sales += mm.sales; acc.cardSales += mm.cardSales; acc.delivSales += mm.delivSales; acc.cost += mm.cost; acc.cardFee += mm.cardFee; acc.delivFee += mm.delivFee; acc.adFee += mm.adFee; };
+    if (period.mode === "day") { if (period.y === cal.year && period.m === cal.month) addDay(cal.days[period.d]); }
+    else if (period.mode === "month") { if (period.y === cal.year && period.m === cal.month) Object.values(cal.days).forEach(addDay); }
+    else { const s = period.start, e = period.end; for (let dt = new Date(s.y, s.m - 1, s.d); dt <= new Date(e.y, e.m - 1, e.d); dt.setDate(dt.getDate() + 1)) { if (dt.getFullYear() === cal.year && dt.getMonth() + 1 === cal.month) addDay(cal.days[dt.getDate()]); } }
+    const has = acc.sales > 0 || acc.cost > 0;
+    const goDay = period.mode === "day" ? period.d : cal.today;
+
+    const shift = (delta) => setPeriod((o) => {
+      if (o.mode === "day") { const dt = new Date(o.y, o.m - 1, o.d + delta); return { mode: "day", y: dt.getFullYear(), m: dt.getMonth() + 1, d: dt.getDate() }; }
+      if (o.mode === "month") { let mm = o.m + delta, y = o.y; if (mm < 1) { mm = 12; y--; } if (mm > 12) { mm = 1; y++; } return { mode: "month", y, m: mm }; }
+      return o;
+    });
+    const fmtD = (o) => `${o.y}.${String(o.m).padStart(2, "0")}.${String(o.d).padStart(2, "0")}`;
+    const pillLabel = period.mode === "day" ? `${period.y}년 ${period.m}월 ${period.d}일 (${DOW[new Date(period.y, period.m - 1, period.d).getDay()]})`
+      : period.mode === "month" ? `${period.y}년 ${period.m}월` : `${fmtD(period.start)} – ${fmtD(period.end)}`;
+    const isThisMonth = period.mode === "month" && period.y === cal.year && period.m === cal.month;
+    const todaySerial = serial({ y: cal.year, m: cal.month, d: cal.today });
+    const isFuture = period.mode === "month" ? (period.y * 100 + period.m > cal.year * 100 + cal.month)
+      : period.mode === "day" ? (serial({ y: period.y, m: period.m, d: period.d }) > todaySerial)
+      : (serial(period.start) > todaySerial);
+    const atLatest = period.mode === "month" ? (period.y * 100 + period.m >= cal.year * 100 + cal.month)
+      : period.mode === "day" ? (serial({ y: period.y, m: period.m, d: period.d }) >= todaySerial)
+      : (serial(period.end) >= todaySerial);
+    const onConfirm = (r) => { if (r.scope === "day") setPeriod({ mode: "day", y: r.y, m: r.m, d: r.d }); else if (r.scope === "month") setPeriod({ mode: "month", y: r.y, m: r.m }); else setPeriod({ mode: "range", start: r.start, end: r.end }); setPicker(false); };
+
+    // 선정산(미리 받는 돈) 파생값: 받은 돈 = 선정산 대상 − 수수료 − 선정산 제외
+    const fee = acc.cardFee + acc.delivFee;
+    const excluded = Math.round(acc.sales * 0.1 / 10) * 10;
+    const eligible = acc.sales;
+    const received = eligible - fee - excluded;
+    const profit = acc.sales - acc.cost;
+
+    const isLedger = view === "ledger";
+    const rows = isLedger
+      ? [ { key: "sales", label: "매출", glyph: "＋", c: C_CARD, v: acc.sales, screen: "totalsales" },
+          { key: "cost", label: "비용", glyph: "−", c: C_DELIV, v: acc.cost, screen: "costdetail" },
+          { key: "profit", label: "수익", glyph: "=", c: "var(--ph-blue-600)", v: profit, screen: "profitdetail" } ]
+      : [ { key: "eligible", label: "선정산 대상 금액", glyph: "＋", c: C_CARD, v: eligible, screen: "totalsales" },
+          { key: "excluded", label: "선정산 제외 금액", glyph: "−", c: "var(--ph-success-600)", v: excluded, screen: "excluded" },
+          { key: "fee", label: "수수료", glyph: "−", c: "var(--ph-slate)", v: fee, screen: "cardfee" } ];
+    const headLabel = isLedger ? "이번 달 수익" : "이번 달 받은 돈";
+    const headVal = isLedger ? profit : received;
+    const headColor = isLedger ? (profit >= 0 ? "var(--ph-ink)" : "var(--text-money-neg)") : "var(--ph-ink)";
+    const goDetail = (screen) => push({ name: screen, day: goDay });
+    const menuItems = [ { key: "ledger", label: "매출 관리", c: C_CARD }, { key: "premoney", label: "미리 받는 돈", c: "var(--ph-success-600)" } ];
+
+    // 그룹 헤더(매출/비용) + 하위 브레이크다운 행 — 이전 일별 화면과 동일한 구조
+    const ledgerDot = (c, g) => <span style={{ width: 34, height: 34, borderRadius: 999, background: c, color: "#fff", display: "grid", placeItems: "center", fontSize: 18, fontWeight: 800, flex: "none" }}>{g}</span>;
+    const SmallChev = ({ open }) => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform .18s", flex: "none" }}>
+        <path d="M6 9l6 6 6-6" stroke="var(--ph-gray-400)" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+    // 카드/배달앱 매출 — 기간 합계를 가맹점별 비율로 분배
+    const cardItems = D.premoney.cards.filter((c) => c.amount > 0);
+    const cardSplit = distribute(acc.cardSales, cardItems.map((c) => c.amount));
+    const cardSub = cardItems.map((c, i) => ({ name: c.name, amount: cardSplit[i] }));
+    const delivItemsRaw = ["baemin", "yogiyo", "coupang"].map((k) => D.premoney.platforms.find((p) => p.key === k)).filter(Boolean);
+    const delivSplit = distribute(acc.delivSales, delivItemsRaw.map((p) => p.amount));
+    const delivSub = delivItemsRaw.map((p, i) => ({ name: p.name, amount: delivSplit[i] }));
+    // 아코디언 행 — 헤더(hover/press) + 펼침 시 가맹점별 내역
+    const accItem = (label, value, open, onToggle, items) => (
+      <div key={label}>
+        <Pressable onClick={onToggle} radius={12} style={{ margin: "0 -8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "14px 8px" }}>
+            <span style={{ fontSize: 15, fontWeight: 600, color: "var(--text-primary)" }}>{label}</span>
+            <div style={{ flex: 1 }} />
+            <Money s={16} w={700} c="var(--text-primary)">{wonN(value)}원</Money>
+            <SmallChev open={open} />
+          </div>
+        </Pressable>
+        {open && (
+          <div style={{ display: "flex", flexDirection: "column", padding: "2px 0 10px 20px" }}>
+            {items.map((it) => (
+              <div key={it.name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 0" }}>
+                <span style={{ fontSize: 14, color: "var(--text-secondary)" }}>{it.name}</span>
+                <div style={{ flex: 1 }} />
+                <Money s={14.5} w={500} c="var(--text-secondary)">{wonN(it.amount)}원</Money>
+                <span style={{ width: 18, flex: "none" }} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+    const costRow = (label, v, help) => (
+      <div key={label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0" }}>
+        <span style={{ display: "flex", alignItems: "center", fontSize: 15, fontWeight: 600, color: "var(--text-primary)" }}>{label}</span>
+        <Money s={16} w={700} c="var(--text-primary)">{wonN(v)}원</Money>
+      </div>
+    );
+    const grpHeader = (c, g, label, value, screen) => (
+      <Pressable onClick={() => has && push({ name: screen, day: goDay })} radius={14} style={{ margin: "0 -8px" }}>
+        <div style={{ display: "flex", alignItems: "center", padding: "20px 8px 12px" }}>
+          {ledgerDot(c, g)}
+          <div style={{ marginLeft: 13 }}>
+            <div style={{ fontSize: 13.5, color: "var(--text-secondary)", fontWeight: 600 }}>{label}</div>
+            <div style={{ marginTop: 3 }}><Money s={20}>{wonN(value)}원</Money></div>
+          </div>
+          <div style={{ flex: 1 }} />
+          {has && <span style={{ color: "var(--ph-gray-400)" }}>{Ic(CH_R)}</span>}
+        </div>
+      </Pressable>
+    );
+
+    return (
+      <div data-screen-label="매출관리 상세" style={detailCard}>
+        {/* 헤더: 뒤로 + 드롭다운(매출관리 / 미리 받는 돈) */}
+        <div style={{ display: "flex", alignItems: "center", padding: "16px 16px 8px" }}>
+          <span onClick={pop} style={{ cursor: "pointer", display: "inline-flex", color: "var(--text-primary)" }}>{Ic(BACK)}</span>
+          <div style={{ flex: 1, display: "flex", justifyContent: "center", position: "relative" }}>
+            <button onClick={() => setMenu((v) => !v)} style={{ display: "flex", alignItems: "center", gap: 4, border: "none", background: "none", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 700, color: "var(--ph-ink)" }}>
+              {isLedger ? "매출 관리" : "미리 받는 돈"} <span style={{ display: "inline-flex", transform: menu ? "rotate(180deg)" : "none", transition: "transform .15s" }}>{Ic(CH_D, "var(--ph-slate)")}</span>
+            </button>
+            {menu && (
+              <React.Fragment>
+                <div onClick={() => setMenu(false)} style={{ position: "fixed", inset: 0, zIndex: 41 }} />
+                <div style={{ position: "absolute", top: "calc(100% + 8px)", width: 220, background: "#fff", borderRadius: 14, boxShadow: "0 12px 40px rgba(15,20,19,.18)", border: "1px solid var(--border-hairline)", padding: 8, zIndex: 42 }}>
+                  {menuItems.map((mi) => (
+                    <button key={mi.key} onClick={() => { setMenu(false); setView(mi.key); }} style={{ width: "100%", display: "flex", alignItems: "center", gap: 11, padding: "12px 10px", border: "none", borderRadius: 10, background: view === mi.key ? "var(--ph-gray-100)" : "transparent", cursor: "pointer", textAlign: "left" }}>
+                      <span style={{ width: 10, height: 10, borderRadius: 3, background: mi.c, flex: "none" }} />
+                      <span style={{ fontSize: 15.5, fontWeight: 700, color: view === mi.key ? "var(--ph-ink)" : "var(--text-secondary)" }}>{mi.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </React.Fragment>
+            )}
+          </div>
+          <span style={{ width: 22 }} />
+        </div>
+
+        <div style={pad}>
+          <DateHeader label={pillLabel} highlight={false} future={isFuture} onPrev={() => shift(-1)} onNext={atLatest ? undefined : () => shift(1)} onPick={() => setPicker(true)} />
+          <div style={{ padding: "10px 0 0" }}>
+            <div style={{ fontSize: 13.5, color: "var(--text-secondary)" }}>{headLabel}</div>
+            <div style={{ marginTop: 6 }}><Money s={32} c={headColor}>{wonN(headVal)}원</Money></div>
+          </div>
+          {!isLedger && <div style={{ margin: "18px 0 24px" }}><GreenNote>{"선정산은 예상 카드 수수료율을 기준으로 지급돼요.\n선정산 제외 금액(미매입 등)과 수수료를 뺀 금액이 실제 받은 돈이에요."}</GreenNote></div>}
+          {isLedger ? (
+            <React.Fragment>
+              {grpHeader(C_CARD, "＋", "매출", acc.sales, "totalsales")}
+              {has && <React.Fragment>
+                {accItem("카드 매출", acc.cardSales, accCard, () => setAccCard((o) => !o), cardSub)}
+                {accItem("배달앱 매출", acc.delivSales, accDeliv, () => setAccDeliv((o) => !o), delivSub)}
+              </React.Fragment>}
+              {has && <div style={{ height: 1, background: "var(--border-hairline)", margin: "10px 0 0" }} />}
+              {grpHeader(C_DELIV, "−", "비용", acc.cost, "costdetail")}
+              {has && <React.Fragment>
+                {costRow("카드 수수료", acc.cardFee, "카드사가 결제 건마다 떼는 수수료예요.")}
+                {costRow("배달앱 수수료", acc.delivFee, "배달앱 주문 중개·결제 수수료예요.")}
+                {acc.adFee > 0 ? costRow("광고비", acc.adFee, "배달앱 노출·광고에 쓴 비용이에요.") : null}
+              </React.Fragment>}
+            </React.Fragment>
+          ) : rows.map((r) => (
+            <div key={r.key} style={{ display: "flex", alignItems: "center", padding: "16px 0" }}>
+              <span style={{ width: 34, height: 34, borderRadius: 999, background: r.c, color: "#fff", display: "grid", placeItems: "center", fontSize: 18, fontWeight: 800, flex: "none" }}>{r.glyph}</span>
+              <div style={{ marginLeft: 13 }}>
+                <div style={{ fontSize: 13.5, color: "var(--text-secondary)", fontWeight: 600 }}>{r.label}</div>
+                <div style={{ marginTop: 2 }}><Money s={19}>{wonN(r.v)}원</Money></div>
+              </div>
+              <div style={{ flex: 1 }} />
+              <button onClick={() => goDetail(r.screen)} style={{ border: "none", background: "var(--ph-gray-100)", borderRadius: 12, padding: "10px 16px", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, color: "var(--text-secondary)", cursor: "pointer" }}>더보기</button>
+            </div>
+          ))}
+          {!has && <div style={{ padding: "28px 0", textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}>해당 기간에 매입 확인된 내역이 없어요.</div>}
+        </div>
+        {picker && <DatePicker year={period.mode === "range" ? period.start.y : period.y} month={period.mode === "range" ? period.start.m : period.m} day={period.mode === "day" ? period.d : undefined} startSel={period.mode === "range" ? period.start : undefined} endSel={period.mode === "range" ? period.end : undefined} quick={["today", "month"]} allowRange onClose={() => setPicker(false)} onConfirm={onConfirm} />}
+      </div>
+    );
+  }
+
+  // ---- 일별 매출 관리 — 특정 날짜의 매출/비용 ----------------------------
+  function DayLedger({ params, push, pop }) {
+    const cal = D.salesCalendar;
+    const [period, setPeriod] = React.useState(
+      params.d ? { mode: "day", y: params.y || cal.year, m: params.m || cal.month, d: params.d }
+               : { mode: "month", y: params.y || cal.year, m: params.m || cal.month });
+    const [picker, setPicker] = React.useState(false);
+    const acc = { sales: 0, cardSales: 0, delivSales: 0, cost: 0, cardFee: 0, delivFee: 0, adFee: 0 };
+    const addDay = (x) => { const mm = D.dayMetrics(x); if (!mm) return; acc.sales += mm.sales; acc.cardSales += mm.cardSales; acc.delivSales += mm.delivSales; acc.cost += mm.cost; acc.cardFee += mm.cardFee; acc.delivFee += mm.delivFee; acc.adFee += mm.adFee; };
+    if (period.mode === "day") { if (period.y === cal.year && period.m === cal.month) addDay(cal.days[period.d]); }
+    else if (period.mode === "month") { if (period.y === cal.year && period.m === cal.month) Object.values(cal.days).forEach(addDay); }
+    else { const s = period.start, e = period.end; for (let dt = new Date(s.y, s.m - 1, s.d); dt <= new Date(e.y, e.m - 1, e.d); dt.setDate(dt.getDate() + 1)) { if (dt.getFullYear() === cal.year && dt.getMonth() + 1 === cal.month) addDay(cal.days[dt.getDate()]); } }
+    const has = acc.sales > 0 || acc.cost > 0;
+    const goDay = period.mode === "day" ? period.d : cal.today;
+    const shift = (delta) => setPeriod((o) => {
+      if (o.mode === "day") { const dt = new Date(o.y, o.m - 1, o.d + delta); return { mode: "day", y: dt.getFullYear(), m: dt.getMonth() + 1, d: dt.getDate() }; }
+      if (o.mode === "month") { let mm = o.m + delta, y = o.y; if (mm < 1) { mm = 12; y--; } if (mm > 12) { mm = 1; y++; } return { mode: "month", y, m: mm }; }
+      return o;
+    });
+    const fmtD = (o) => `${o.y}.${String(o.m).padStart(2, "0")}.${String(o.d).padStart(2, "0")}`;
+    const pillLabel = period.mode === "day" ? `${period.y}년 ${period.m}월 ${period.d}일 (${DOW[new Date(period.y, period.m - 1, period.d).getDay()]})`
+      : period.mode === "month" ? `${period.y}년 ${period.m}월` : `${fmtD(period.start)} – ${fmtD(period.end)}`;
+    const isThisMonth = period.mode === "month" && period.y === cal.year && period.m === cal.month;
+    const onConfirm = (r) => { if (r.scope === "day") setPeriod({ mode: "day", y: r.y, m: r.m, d: r.d }); else if (r.scope === "month") setPeriod({ mode: "month", y: r.y, m: r.m }); else setPeriod({ mode: "range", start: r.start, end: r.end }); setPicker(false); };
+
+    const dot = (c, g) => <span style={{ width: 34, height: 34, borderRadius: 999, background: c, color: "#fff", display: "grid", placeItems: "center", fontSize: 18, fontWeight: 800, flex: "none" }}>{g}</span>;
+    const row = (label, v, help) => (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 0", borderTop: "1px solid var(--border-hairline)" }}>
+        <span style={{ display: "flex", alignItems: "center", fontSize: 16, fontWeight: 500, color: "var(--text-primary)" }}>{label}{help && <HelpTip text={help} />}</span>
+        <Money s={17} w={600}>{wonN(v)}원</Money>
+      </div>
+    );
+    const header = (c, g, label, value, screen) => (
+      <div onClick={() => has && push({ name: screen, day: goDay })} style={{ display: "flex", alignItems: "center", padding: "28px 0 18px", cursor: has ? "pointer" : "default" }}>
+        {dot(c, g)}
+        <div style={{ marginLeft: 14 }}>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", fontWeight: 600 }}>{label}</div>
+          <div style={{ marginTop: 4 }}><Money s={26}>{wonN(value)}원</Money></div>
+        </div>
+        <div style={{ flex: 1 }} />
+        {has && <span style={{ color: "var(--ph-gray-400)" }}>{Ic(CH_R)}</span>}
+      </div>
+    );
+    return (
+      <div data-screen-label="일별 매출 관리" style={detailCard}>
+        <CardHeader title="매출 관리" onBack={pop} />
+        <div style={pad}>
+          <DateHeader label={pillLabel} sub={D.UPDATE} highlight={isThisMonth} onPrev={() => shift(-1)} onNext={() => shift(1)} onPick={() => setPicker(true)} />
+          <StoreRow trailing={<Badge tone="success" size="sm">PayHug 이용 중</Badge>} />
+          {header(C_CARD, "＋", "매출", acc.sales, "totalsales")}
+          {has && <React.Fragment>{row("카드 매출", acc.cardSales)}{row("배달앱 매출", acc.delivSales)}</React.Fragment>}
+          {header(C_DELIV, "−", "비용", acc.cost, "costdetail")}
+          {has && <React.Fragment>{row("카드 수수료", acc.cardFee, "카드사가 결제 건마다 떼는 수수료예요.")}{row("배달앱 수수료", acc.delivFee, "배달앱 주문 중개·결제 수수료예요.")}{row("광고비", acc.adFee, "배달앱 노출·광고에 쓴 비용이에요.")}</React.Fragment>}
+          {!has && <div style={{ padding: "28px 0", textAlign: "center", color: "var(--text-muted)", fontSize: 14 }}>해당 기간에 매입 확인된 매출이 없어요.</div>}
+        </div>
+        {picker && <DatePicker year={period.y} month={period.m} day={period.mode === "day" ? period.d : undefined} quick={["today", "month"]} allowRange onClose={() => setPicker(false)} onConfirm={onConfirm} />}
+      </div>
+    );
+  }
+
+  // 자체 하단 버튼(미매입 보러가기 / 내역 더 불러오기 등)이 있는 화면은 '확인'을 숨겨 중복을 막는다.
+  [TotalSales, Unpurchased, CardScreen, PlatformScreen, DiffScreen, DepositsScreen, Excluded].forEach((f) => { f.hasCta = true; });
+  const SCREENS = { main: Main, premoney: Premoney, totalsales: TotalSales, costdetail: CostDetail,
+    profitdetail: ProfitDetail, unpurchased: Unpurchased, excluded: Excluded, ledger: Ledger, dayledger: DayLedger,
+    cardfee: (p) => <FeeDetail {...p} kind="card" />, delivfee: (p) => <FeeDetail {...p} kind="deliv" />, adfee: (p) => <FeeDetail {...p} kind="ad" />,
+    feeissuer: (p) => <FeeIssuerDetail {...p} />,
+    card: CardScreen, txn: TxnScreen, platform: PlatformScreen, order: OrderScreen, diff: DiffScreen, deposits: DepositsScreen };
+
+  function Logo() {
+    return (
+      <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 22, letterSpacing: "-0.01em", lineHeight: 1 }}>
+        <span style={{ color: "var(--ph-ink)" }}>Pay</span><span style={{ color: "var(--ph-green-700)" }}>hug</span>
+      </span>
+    );
+  }
+
+  function PayhugApp() {
+    const [stack, setStack] = React.useState([{ name: "main" }]);
+    const cur = stack[stack.length - 1];
+    const push = (s) => setStack((st) => [...st, s]);
+    const pop = () => setStack((st) => (st.length > 1 ? st.slice(0, -1) : st));
+    const Screen = SCREENS[cur.name] || Main;
+    const isMain = cur.name === "main";
+    const showConfirm = !isMain && !(Screen && Screen.hasCta);
+    return (
+      <div style={{ minHeight: "100vh", background: "rgb(250,249,250)", display: "flex", flexDirection: "column", fontFamily: "var(--font-sans)" }}>
+        <header style={{ background: "#fff", borderBottom: "1px solid var(--border-hairline)", padding: "0 28px", height: 64, display: "flex", alignItems: "center", flex: "none", position: "sticky", top: 0, zIndex: 30 }}>
+          <Logo />
+        </header>
+        <main style={{ flex: 1, display: "flex", justifyContent: "center", padding: "24px 16px 32px" }}>
+          <div style={{ width: "100%", maxWidth: 440, display: "flex", flexDirection: "column", minHeight: "calc(100vh - 120px)" }}>
+            <Screen params={cur} push={push} pop={pop} />
+            {showConfirm && <React.Fragment>
+              <div style={{ flex: 1, minHeight: 16 }} />
+              <button onClick={pop} style={{ width: "100%", height: 54, marginTop: 16, border: "none", borderRadius: 16, background: "var(--ph-blue-600)", color: "#fff", fontFamily: "var(--font-sans)", fontSize: 16, fontWeight: 700, cursor: "pointer" }}>확인</button>
+            </React.Fragment>}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  window.CNApp = PayhugApp;
+})();
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(window.CNApp));
+</script>
+</body>
+</html>

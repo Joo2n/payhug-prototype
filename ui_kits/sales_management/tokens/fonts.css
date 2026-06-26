@@ -1,0 +1,6 @@
+/* PayHug webfonts.
+   Primary Korean/Latin UI face: Noto Sans KR.
+   Numerals & Latin display: Inter (tabular figures for money columns).
+   Apple SD Gothic Neo (used in the source files) is a macOS system face with
+   no webfont — covered by the -apple-system fallback in the stack. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700;900&display=swap');

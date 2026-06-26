@@ -49,6 +49,25 @@
 
 ---
 
+### 3. 매출관리 — 캐시노트 웹 (Claude Design, 최신)
+**URL:** https://joo2n.github.io/payhug-prototype/ui_kits/sales_management/
+
+`매출관리.dc.html` 마지막 버전. 캐시노트 매출관리를 반응형 웹 레이아웃으로 재구성 (PayHug 헤더 + 440px 카드 컬럼)
+
+| 화면 | 설명 |
+|------|------|
+| 메인 | 잇잇 가맹점 + 미리 받는 돈 + 매출관리(매출/비용/수익 탭) 접이식 달력 |
+| 총 매출액 | 날짜별 카드·배달앱 매출 브레이크다운 |
+| 카드/배달앱 상세 | 카드사·배달앱별 건별 내역 |
+| 단건 거래 / 주문 상세 | 카드 승인건 · 배달앱 주문 상세 |
+| 미매입 내역 | 카드 매입 대기 건 목록 |
+| 선정산 제외액 / 예상 지급 차액 | 제외 사유·차액 상세 |
+| 계좌 입금 내역 | 하나은행 입금 타임라인 |
+
+> 새 디자인 시스템 번들(`PayHugDesignSystem_81d4f2`) 사용 — `SalesBreakdown`, `Badge` 등
+
+---
+
 ## 기술 스택
 
 - **React 18** (CDN), **Babel Standalone** (JSX 인라인 변환)
@@ -64,7 +83,12 @@
 payhug-prototype/
 ├── ui_kits/
 │   ├── payhug_app/index.html     # 페이허그 앱 (전체 인라인)
-│   └── cashnote/index.html       # 캐시노트 통합 (전체 인라인)
+│   ├── cashnote/index.html       # 캐시노트 통합 (전체 인라인)
+│   └── sales_management/         # 매출관리 — 캐시노트 웹 (최신)
+│       ├── index.html            # 앱 인라인 (text/babel)
+│       ├── _ds_bundle.js         # DS 번들 (_81d4f2 네임스페이스)
+│       ├── styles.css, tokens/   # 디자인 토큰
+│       └── assets/bank-hana.png
 ├── assets/
 │   ├── bank-hana.png             # 하나은행 로고
 │   ├── avatar-default.png        # 기본 아바타

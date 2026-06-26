@@ -1,0 +1,99 @@
+/* ============================================================
+   PayHug — Color tokens
+   Source of truth: PH_화면설계서.fig (Figma Variables + screens).
+   Two surfaces share one palette:
+     • Marketing / brand  → forest + bright green
+     • Merchant & Admin UI → blue actions, green status, coral alerts
+   ============================================================ */
+:root {
+  /* ---- Brand: greens ---------------------------------------- */
+  --ph-forest:        #163300; /* hero bg, sidebar ink, logo dark, on-green text */
+  --ph-forest-700:    #21420A; /* hover on forest */
+  --ph-green:         #9FE870; /* PRIMARY accent — buttons, active nav, logo badge */
+  --ph-green-600:     #7FE141; /* deeper bright green (pressed / emphasis) */
+  --ph-green-700:     #5FBE2E; /* green text on light */
+  --ph-green-tint:    #F2FAEC; /* pale green wash (active rows, soft fills) */
+  --ph-green-tint-2:  #F7FAF6; /* near-white green section bg */
+
+  /* ---- Brand: navy ------------------------------------------ */
+  --ph-navy:          #1A3084; /* PH_Color — deep brand navy (headings on light) */
+  --ph-navy-600:      #26408C;
+
+  /* ---- Action: blue (merchant dashboard, links, 카드) -------- */
+  --ph-blue:          #0088FF;
+  --ph-blue-600:      #0070FF; /* hover / primary action */
+  --ph-blue-700:      #0040DD; /* pressed */
+  --ph-blue-tint:     #EAF3FF; /* blue soft fill, selected chip */
+
+  /* ---- Status -------------------------------------------------*/
+  --ph-success:       #00B389; /* 내 수익 / positive net */
+  --ph-success-600:   #248A3D;
+  --ph-success-tint:  #E7F8F2;
+  --ph-mint:          #24C764; /* 실제·매입완료·이체완료 badges */
+  --ph-mint-tint:     #E8F8EE;
+  --ph-danger:        #FF383C; /* fees, 미정산 alert, negative */
+  --ph-danger-600:    #E9152D;
+  --ph-danger-tint:   #FFECEC;
+  --ph-warning:       #FF9500; /* 선정산 이용료, 배달 */
+  --ph-warning-700:   #B26A00; /* warning text on light */
+  --ph-warning-tint:  #FFF3E2;
+  --ph-amber:         #FFCC00; /* 예정일 경과 chip */
+  --ph-amber-tint:    #FFF7D6;
+
+  /* ---- App channel colors (mobile sales calendar) ----------- */
+  --ch-card:          #F59E0C; /* 카드 매출 (amber) */
+  --ch-card-tint:     #FEF1DA;
+  --ch-delivery:      #12B981; /* 배달앱 매출 (green) */
+  --ch-delivery-tint: #E2F6EF;
+
+  /* ---- Settlement-payout accent (선정산 지급) ---------------- */
+  --ph-purple:        #4D00B6;
+  --ph-purple-600:    #6515D6;
+  --ph-purple-tint:   #F1EAFB;
+
+  /* ---- Neutrals (cool-gray family) -------------------------- */
+  --ph-black:         #000000;
+  --ph-ink:           #191919; /* primary text */
+  --ph-ink-2:         #434548; /* strong secondary */
+  --ph-gray-700:      #5B5F6E;
+  --ph-slate:         #7E8299; /* DOMINANT muted label (cool blue-gray) */
+  --ph-gray-500:      #8E8E93;
+  --ph-gray-400:      #B5B5C3; /* disabled text, placeholder */
+  --ph-gray-300:      #D1D1D6; /* borders (strong) */
+  --ph-gray-200:      #E5E5EA; /* borders, dividers */
+  --ph-gray-150:      #ECEEF1; /* hairline / table rule */
+  --ph-gray-100:      #F2F2F7; /* track, soft chip */
+  --ph-gray-50:       #F7F8FA; /* page bg (light) */
+  --ph-white:         #FFFFFF;
+
+  /* ---- Admin sidebar (very dark navy-black) ----------------- */
+  --ph-side-bg:       #0F1413; /* near-black forest navy */
+  --ph-side-bg-2:     #16201C; /* hover row */
+  --ph-side-text:     #A7B0AD; /* idle nav label */
+  --ph-side-muted:    #6B746F; /* section caption */
+
+  /* ============================================================
+     SEMANTIC ALIASES — prefer these in components
+     ============================================================ */
+  --bg-page:          var(--ph-gray-50);
+  --bg-surface:       var(--ph-white);
+  --bg-surface-alt:   var(--ph-gray-50);
+  --bg-soft:          var(--ph-gray-100);
+
+  --text-primary:     var(--ph-ink);
+  --text-secondary:   var(--ph-slate);
+  --text-muted:       var(--ph-gray-400);
+  --text-on-green:    var(--ph-forest);
+  --text-on-dark:     var(--ph-white);
+  --text-link:        var(--ph-blue-600);
+  --text-money-pos:   var(--ph-success);
+  --text-money-neg:   var(--ph-danger);
+
+  --border-default:   var(--ph-gray-200);
+  --border-strong:    var(--ph-gray-300);
+  --border-hairline:  var(--ph-gray-150);
+  --border-focus:     var(--ph-blue);
+
+  --accent-primary:   var(--ph-green);      /* brand primary fill */
+  --accent-action:    var(--ph-blue-600);   /* UI primary action */
+}
