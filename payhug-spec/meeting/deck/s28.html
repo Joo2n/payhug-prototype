@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S28 — 일자별 상세 (카드/배달앱/페이허그)</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .wrap { display: grid; grid-template-columns: 400px 1fr; gap: 46px; height: 100%; align-items: stretch; }
+  .col-txt { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; }
+  .lead { font-size: 30px; font-weight: 800; color: var(--ph-forest); line-height: 1.45; letter-spacing: -0.025em; }
+  .lead .u { background: linear-gradient(transparent 58%, var(--ph-green) 58%); }
+  .say { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; border-radius: 16px; padding: 20px 26px; }
+  .say-l { font-size: 14px; font-weight: 800; color: var(--ph-green-700); letter-spacing: 0.06em; margin-bottom: 8px; }
+  .say p { font-size: 19px; line-height: 1.6; color: var(--ph-forest-700); font-weight: 600; }
+  .shot img { width: 350px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .sec { border-radius: 16px; padding: 20px 22px; border: 1.5px solid var(--line); background: #fff; }
+  .sec b { display: block; font-size: 21px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.02em; margin-bottom: 8px; }
+  .sec p { font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+  .sec.ph { background: var(--surface-2); border-style: dashed; border-color: var(--line-2); }
+  .tbd-box p { font-size: 18px; line-height: 1.6; color: var(--ink-3); }
+  /* --- 밀도 조정 --- */
+
+  .card { padding: 22px 26px; }
+  .card p, .card li { font-size: 17.5px; }
+  .say { padding: 18px 24px; }
+  .say p { font-size: 18.5px; }
+  .lead { font-size: 27px; }
+  .sec b { display: inline; }
+  .sec > b { display: block; }
+  .sec p { font-size: 16.5px; }
+  .shot img { width: 320px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 4 · 가맹점이 보는 화면</div>
+    <div class="s-no">28</div>
+  </div>
+
+  <h1 class="s-title">하루치를 열면 <span class="em">카드 · 배달앱 · 페이허그</span>로 나뉩니다</h1>
+  <p class="s-sub">「미리 받는 돈」 금액을 누르면 그날 어디서 얼마가 들어왔는지 분해해서 보여줍니다.</p>
+
+  <div class="s-body">
+    <div class="wrap">
+
+      <div class="shots">
+        <div class="shot">
+          <img src="img/1414-14496.png" alt="미리 받는 돈 일자별 상세 화면">
+          <div class="cap">미리 받는 돈 · 일자별 상세<small>카드사별 · 배달앱별로 분해</small></div>
+        </div>
+      </div>
+
+      <div class="col-txt">
+        <div class="lead">세 묶음으로 나뉘고, <span class="u">건수가 있는 줄은 눌러서 더 들어갑니다.</span></div>
+
+        <div class="g3">
+          <div class="sec">
+            <b>카드</b>
+            <p>카드사별로 금액과 건수가 각각. KB · 농협NH · 롯데 · 비씨 · 우리 · 하나 · 신한 · 삼성 · 현대.</p>
+          </div>
+          <div class="sec">
+            <b>배달앱</b>
+            <p>배달의민족 · 쿠팡이츠 · 요기요. 각 줄을 누르면 채널 상세(29p)로 이동합니다.</p>
+          </div>
+          <div class="sec ph">
+            <b>페이허그</b>
+            <p><b>예상 지급 차액</b> · <b>전산 수수료</b> 두 줄이 있습니다. 정의·값은 아래 「확인 중」 참고.</p>
+          </div>
+        </div>
+
+        <div class="card card-tint">
+          <div class="card-h">화면 위쪽</div>
+          <p>날짜를 좌우로 넘길 수 있고, 그 아래 <b>「내역 반영 시간」</b>이 함께 표시됩니다. 그날의 <b>미리 받는 돈</b> 총액이 크게 뜨고, 바로 밑에 <b>어제 매출액</b>이 붙습니다.</p>
+        </div>
+
+        <div class="tbd-box">
+          <div class="tbd-h"><span>「예상 지급 차액」 · 「전산 수수료」</span> <span class="badge badge-check badge-sm">확인 중</span></div>
+          <p>두 항목은 화면에 그대로 나오지만, <b>정의와 값이 사내 확인 중</b>입니다.<br>
+          <b>"이런 줄이 있습니다"까지만 안내</b>하시고, 계산 근거나 금액이 왜 그런지는 설명하지 마세요. 질문은 문의로 접수해 주세요.</p>
+        </div>
+
+        <div class="say">
+          <div class="say-l">현장 멘트</div>
+          <p>"이날 받으신 돈이 카드에서 얼마, 배달에서 얼마인지 다 나옵니다. 각 줄을 누르시면 카드사별·배달앱별로 더 자세히 보실 수 있어요."</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 미리 받는 돈 일자별 상세 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

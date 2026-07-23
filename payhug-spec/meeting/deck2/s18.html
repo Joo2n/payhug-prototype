@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S18 — 입금계좌 등록</title>
+<link rel="stylesheet" href="deck2.css">
+<style>
+  .stage { flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 16px; margin-top: 16px; }
+  .flowline { height: auto; align-items: flex-start; }
+  .fitem { width: 480px; }
+  .fgap { margin-top: 295px; }
+  .note-under {
+    margin-top: 14px; padding: 15px 18px; border-radius: 12px;
+    background: var(--surface); font-size: 16px; line-height: 1.5; color: var(--ink-2);
+    width: 100%;
+  }
+  .note-under b { color: var(--ph-forest); }
+  .inl { position:static; transform:none; display:flex; width:24px; height:24px; font-size:13px; }
+  .note-under .fx + .fx { margin-top: 7px; }
+
+  .cmp { width: 420px; height: 540px; display:flex; flex-direction:column; gap:14px; }
+  .cmp-card { flex:1; border-radius:18px; padding:20px 20px; display:flex; flex-direction:column; justify-content:center; }
+  .cmp-card.lock { background: var(--ph-blue-tint); border:1.5px solid #BEDCFF; }
+  .cmp-card.recv { background: var(--ph-green-tint); border:1.5px solid #DDEFCB; }
+  .cmp-tag { display:block; align-self:flex-start; padding:5px 12px; border-radius:999px;
+             font-size:14px; font-weight:800; margin-bottom:10px; }
+  .cmp-card.lock .cmp-tag { background:#0088FF; color:#fff; }
+  .cmp-card.recv .cmp-tag { background: var(--ph-green-700); color:#fff; }
+  .cmp-t { font-size:21px; font-weight:900; letter-spacing:-0.02em; line-height:1.3; }
+  .cmp-card.lock .cmp-t { color:#084A99; }
+  .cmp-card.recv .cmp-t { color: var(--ph-forest); }
+  .cmp-d { margin-top:9px; font-size:16px; line-height:1.5; color: var(--ink-2); }
+  .cmp-vs { text-align:center; font-size:15px; font-weight:800; color:var(--ink-4); letter-spacing:0.04em; }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">18 / STEP 7</div>
+  </div>
+
+  <h1 class="s-title">선정산금을 <span class="em">받을 계좌</span> 등록</h1>
+  <p class="s-sub">락계좌가 아니라, 사장님이 실제로 돈을 받을 자유 입출금 계좌를 올리는 단계입니다</p>
+
+  <div class="stage">
+    <div class="flowline">
+
+      <div class="fitem">
+        <div class="fstep ph"><i>1</i> 통장 사진 첨부</div>
+        <div class="phone clip" style="width:420px;height:540px">
+          <img src="img/1414-5039.png" alt="입금 받을 계좌 통장 사진 첨부 화면" style="width:420px;height:auto;margin-top:-126px">
+          <!-- 자유 입출금 계좌 안내 박스 -->
+          <div class="hi green" style="top:22.2%;left:10%;bottom:59.3%;right:10%"></div>
+          <div class="mk green" style="top:27.2%;left:10%">1</div>
+          <!-- 락계좌 올리지 말라는 경고 문구 -->
+          <div class="mk red" style="top:34.7%;left:88%">2</div>
+        </div>
+        <div class="note-under">
+          <div class="fx"><span class="mk green inl">1</span><span class="fx-t"><b>자유 입출금 계좌</b>여야 합니다. 선정산금이 여기로 들어옵니다</span></div>
+          <div class="fx"><span class="mk red inl">2</span><span class="fx-t">화면에 <b>"출금 전용 락계좌가 아닌지 확인해 주세요"</b>라고 적혀 있습니다</span></div>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep"><i>2</i> 정보 확인 · 1원 인증</div>
+        <div class="phone clip" style="width:420px;height:540px">
+          <img src="img/1414-6133.png" alt="입금 받을 계좌 정보 확인 및 1원 인증 화면" style="width:420px;height:auto;margin-top:-157px">
+          <!-- 사장님이 입금 받을 계좌 -->
+          <div class="mk blue" style="top:10.1%;left:89%">3</div>
+          <!-- 계좌번호 -->
+          <div class="hi blue" style="top:59.3%;left:10%;bottom:31.4%;right:10%"></div>
+          <!-- 1원 계좌 인증하기 -->
+          <div class="hi" style="top:89.9%;left:10%;bottom:1.9%;right:10%"></div>
+          <div class="mk" style="top:93.9%;left:12%">4</div>
+        </div>
+        <div class="note-under">
+          <div class="fx"><span class="mk blue inl">3</span><span class="fx-t">화면 문구가 <b>"사장님이 입금 받을 계좌"</b>입니다 — 락계좌 화면과 헷갈리지 마세요</span></div>
+          <div class="fx"><span class="mk inl">4</span><span class="fx-t"><b>1원을 보내 예금주를 확인</b>합니다. 사장님 본인 명의 계좌만 통과됩니다</span></div>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep tbd"><i>!</i> 계좌 2개, 역할이 다릅니다</div>
+        <div class="cmp">
+          <div class="cmp-card lock">
+            <span class="cmp-tag">STEP 6 에서 등록</span>
+            <div class="cmp-t">선정산 전용계좌 (락계좌)</div>
+            <div class="cmp-d">카드사·배달앱 정산금이 <b>들어오는</b> 곳.<br>출금 전용이라 이 계좌로는 선정산금을 받지 않습니다</div>
+          </div>
+          <div class="cmp-vs">서로 다른 계좌입니다</div>
+          <div class="cmp-card recv">
+            <span class="cmp-tag">STEP 7 = 이 화면</span>
+            <div class="cmp-t">입금계좌</div>
+            <div class="cmp-d">선정산금을 사장님이 <b>받는</b> 곳.<br>자유롭게 입금·출금되는 일반 계좌여야 합니다</div>
+          </div>
+        </div>
+        <div class="note-under">
+          두 계좌를 그냥 "정산계좌"라고 부르면 사장님이 반드시 헷갈립니다. <b>이름 그대로 불러 주세요</b>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="punch">
+      가장 잦은 실수 — <u>락계좌 통장 사진을 여기에 올리는 것</u>. 올리면 선정산금을 받을 수 없습니다
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP7 입금 받을 계좌 등록 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

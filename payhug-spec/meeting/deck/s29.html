@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S29 — 채널 상세 (배민/쿠팡이츠)</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .wrap { display: grid; grid-template-columns: 700px 1fr; gap: 46px; height: 100%; align-items: stretch; }
+  .col-txt { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; }
+  .lead { font-size: 29px; font-weight: 800; color: var(--ph-forest); line-height: 1.45; letter-spacing: -0.025em; }
+  .lead .u { background: linear-gradient(transparent 58%, var(--ph-green) 58%); }
+  .say { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; border-radius: 16px; padding: 20px 26px; }
+  .say-l { font-size: 14px; font-weight: 800; color: var(--ph-green-700); letter-spacing: 0.06em; margin-bottom: 8px; }
+  .say p { font-size: 19px; line-height: 1.6; color: var(--ph-forest-700); font-weight: 600; }
+  .shots { gap: 28px; align-items: flex-start; }
+  .shot img { width: 320px; max-height: 560px; }
+  table.t td, table.t th { font-size: 17px; padding: 12px 16px; }
+  table.t td.hit { background: var(--ph-danger-tint) !important; font-weight: 700; color: var(--ph-danger); }
+  /* --- 밀도 조정 --- */
+
+  .card { padding: 16px 21px; }
+  .card p, .card li { font-size: 16.5px; line-height: 1.5; }
+  .card-h { font-size: 19.5px; margin-bottom: 9px; }
+  .tbd-box { padding: 17px 22px; }
+  .tbd-h { margin-bottom: 10px; }
+  .say { padding: 14px 20px; }
+  .say-l { margin-bottom: 6px; }
+  .say p { font-size: 17px; }
+  .lead { font-size: 25px; }
+  ul.b li { margin-bottom: 6px; }
+  .col-txt { gap: 12px; }
+  .shot img { max-height: 520px; }
+  table.t td, table.t th { font-size: 16.5px; padding: 10px 15px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 4 · 가맹점이 보는 화면</div>
+    <div class="s-no">29</div>
+  </div>
+
+  <h1 class="s-title">채널 상세 — <span class="em">배민에만 광고비 줄</span>이 있습니다</h1>
+  <p class="s-sub">배달앱을 하나 열면, 어제 매출액에서 무엇이 빠져 「미리 받는 돈」이 되는지 그대로 보입니다.</p>
+
+  <div class="s-body">
+    <div class="wrap">
+
+      <div class="shots">
+        <div class="shot">
+          <img src="img/1414-14726.png" alt="배달의민족 채널 상세 화면">
+          <div class="cap">배달의민족<small>광고비 줄이 있습니다 · 화면 위쪽만 표시</small></div>
+        </div>
+        <div class="shot">
+          <img src="img/1414-15437.png" alt="쿠팡이츠 채널 상세 화면">
+          <div class="cap">쿠팡이츠<small>광고비 줄 없음 · 화면 위쪽만 표시</small></div>
+        </div>
+      </div>
+
+      <div class="col-txt">
+        <div class="lead">어제 매출액 − 차감액 = 미리 받는 돈.<br><span class="u">차감 항목이 플랫폼마다 다릅니다.</span></div>
+
+        <table class="t">
+          <tr><th>차감액 안에 들어가는 줄</th><th>배달의민족</th><th>쿠팡이츠</th></tr>
+          <tr><td class="k">플랫폼 차감액</td><td>배달의민족 차감액</td><td>쿠팡이츠 차감액</td></tr>
+          <tr><td class="k">광고비</td><td class="hit">있음</td><td>없음</td></tr>
+          <tr><td class="k">페이허그 수수료</td><td>있음</td><td>있음</td></tr>
+        </table>
+
+        <div class="card card-warn">
+          <div class="card-h">만나서결제는 선정산 대상이 아닙니다</div>
+          <p>앱이 배달 주문 상세에 고정으로 띄우는 안내 문구입니다 —<br>
+          <b>"[만나서 결제]는 {플랫폼명} 선정산 대상이 아니며 매출액에서 제외돼요."</b><br>
+          라이더가 현장에서 직접 받은 돈이라, 미리 드릴 대상이 아닙니다.</p>
+        </div>
+
+        <div class="card card-tint">
+          <div class="card-h">아래쪽 「미리 받은 돈 내역」</div>
+          <p>같은 화면 아래에 <b>주문 단위</b>로 매장명 · 주문 일시 · 금액이 이어집니다. 「내역 더 불러오기」로 계속 볼 수 있습니다.</p>
+        </div>
+
+        <div class="say">
+          <div class="say-l">현장 멘트</div>
+          <p>"배민은 광고비가 여기서 같이 빠지기 때문에 쿠팡이츠보다 차감이 커 보일 수 있어요. 만나서 결제로 받으신 건은 이미 현장에서 받으신 돈이라 여기엔 안 들어갑니다."</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 배달앱별 상세 화면 · 만나서결제 문구는 배달 주문 상세 고정 안내</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

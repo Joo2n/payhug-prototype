@@ -1,0 +1,31 @@
+const ORDER = [["1599:2","A-01","AD_HOME",1],["1584:2","A-02","AD_SALES",1],["1598:2","A-02","AD_SALES_DT",1],["1600:2","A-02","AD_SALES_DT_PAYOUT",0],["1602:2","A-02","AD_SALES_DT_NORMAL",0],["1601:2","A-02","AD_SALES_DT_CANCEL",0],["1672:2","A-02","AD_SALES_DT_CARD",0],["1603:2","A-02","AD_SALES_DT_BM",0],["1674:2","A-02","AD_SALES_DT_OLD",0],["1604:2","A-02","AD_SALES_DT_ADJUST",0],["1605:2","A-02","AD_SALES_DT_ADD_CARD",0],["1673:2","A-02","AD_SALES_DT_ADD_PURCHASE",0],["1675:2","A-02","AD_SALES_DT_ADD_DELIVERY",0],["1676:2","A-02","AD_SALES_DT_EXCEL",0],["1664:2","A-03","AD_MERCHANT",1],["1677:2","A-03","AD_MERCHANT_PENDING",0],["1678:2","A-03","AD_MERCHANT_APPROVED",0],["1606:2","A-03","AD_MERCHANT_REJECT",0],["1680:2","A-03","AD_MERCHANT_NONE",0],["1607:2","A-03","AD_MERCHANT_LEGACY",0],["1617:2","A-03","AD_MERCHANT_ASSIGN",0],["1666:2","A-03","AD_MERCHANT_DT",1],["1681:2","A-03","AD_MERCHANT_DT_HARDRESET",0],["1608:2","A-03","AD_MERCHANT_DT_LOCKVERIFY",0],["1609:2","A-03","AD_MERCHANT_DT_LOCKDETAIL",0],["1611:2","A-03","AD_MERCHANT_DT_RESIGN",0],["1679:2","A-03","AD_MERCHANT_DT_OLDCONTRACT",0],["1610:2","A-03","AD_MERCHANT_DT_FEERESET",0],["1612:2","A-03","AD_MERCHANT_DT_WEEKDAY",0],["1613:2","A-03","AD_MERCHANT_DT_TRANSFER",0],["1683:2","A-03","AD_MERCHANT_DT_ADJSTAT",0],["1614:2","A-03","AD_MERCHANT_DT_ADJUST",0],["1682:2","A-03","AD_MERCHANT_DT_ADJUST_DONE",0],["1684:2","A-03","AD_MERCHANT_DT_ADJUST_PENDING",0],["1663:2","A-03","AD_MERCHANT_DT_SCRAPE",0],["1687:2","A-03","AD_MERCHANT_DT_RESET",0],["1615:2","A-03","AD_MERCHANT_DT_REJECT",0],["1616:2","A-03","AD_MERCHANT_DT_IDCARD",0],["1686:2","A-03","AD_MERCHANT_DT_LOCKACCT",0],["1685:2","A-03","AD_MERCHANT_DT_BANKACCT",0],["1619:2","A-03","AD_MERCHANT_DT_DEBT",0],["1620:2","A-03","AD_MERCHANT_DT_PLATFORM",0],["1597:2","A-04","AD_PRODUCT",1],["1621:2","A-04","AD_PRODUCT_GENERAL",0],["1688:2","A-04","AD_PRODUCT_DAOU",0],["1622:2","A-04","AD_PRODUCT_ADD",0],["1689:2","A-04","AD_PRODUCT_EDIT",0],["1623:2","A-04","AD_PRODUCT_DEACT",0],["1624:2","A-04","AD_PRODUCT_DELETE",0],["1591:2","A-04","AD_SIM",1],["1625:2","A-04","AD_SIM_MULTI",0],["1665:2","A-05","AD_SETTLE",1],["1671:2","A-05","AD_SETTLE_MISSED",0],["1690:2","A-05","AD_SETTLE_DIFFLIST",0],["1592:2","A-05","AD_SETTLE_DETAIL",0],["1628:2","A-05","AD_SETTLE_DETAIL_BATCH",0],["1593:2","A-05","AD_SETTLE_DIFF",0],["1627:2","A-05","AD_SETTLE_DIFF_CARD",0],["1629:2","A-05","AD_SETTLE_DIFF_DELIVERY",0],["1693:2","A-05","AD_SETTLE_DIFF_CLAWBACK",0],["1630:2","A-05","AD_SETTLE_DIFF_ESTIMATED",0],["1692:2","A-05","AD_SETTLE_DIFF_CARRY",0],["1691:2","A-05","AD_SETTLE_DIFF_CARDFILTER",0],["1596:2","A-05","AD_SETTLE_TRANSFER",0],["1696:2","A-05","AD_SETTLE_TRANSFER_COLLECT",0],["1667:2","A-05","AD_SETTLE_BILL",0],["1695:2","A-05","AD_SETTLE_EXPAND",0],["1668:2","A-05","AD_SETTLE_PREVIEW",0],["1694:2","A-05","AD_SETTLE_DIRECT",0],["1634:2","A-05","AD_SETTLE_RECORD",0],["1669:2","A-05","AD_SETTLE_VOC",0],["1702:2","A-06","AD_PARTNER",1],["1635:2","A-06","AD_PARTNER_PAYHUG",0],["1698:2","A-06","AD_PARTNER_PARTNER",0],["1699:2","A-06","AD_PARTNER_AFFILIATE",0],["1637:2","A-06","AD_PARTNER_SALES",0],["1638:2","A-06","AD_PARTNER_SALESORG",0],["1639:2","A-06","AD_PARTNER_ADMIN",0],["1640:2","A-06","AD_PARTNER_ADD",0],["1697:2","A-06","AD_PARTNER_EDIT",0],["1700:2","A-06","AD_PARTNER_PROFILE",0],["1642:2","A-06","AD_PARTNER_DEACT",0],["1643:2","A-06","AD_PARTNER_DELETE",0],["1644:2","A-06","AD_PARTNER_INVESTOR",0],["1649:2","A-07","AD_TERMS",1],["1645:2","A-07","AD_TERMS_REVISE",0],["1701:2","A-07","AD_TERMS_REVISE_FIXED",0],["1646:2","A-07","AD_TERMS_PREVIEW",0],["1648:2","A-07","AD_TERMS_VER_EDIT",0],["1647:2","A-07","AD_TERMS_VER_DEL",0],["1703:2","A-07","AD_TERMS_SIGNUP",0],["1704:2","A-07","AD_TERMS_CONTRACT",0],["1705:2","A-07","AD_TERMS_MARKETING",0],["1650:2","A-07","AD_TERMS_CTX",0],["1708:2","A-07","AD_TERMS_CTX_ADD",0],["1707:2","A-07","AD_TERMS_CTX_EDIT",0],["1651:2","A-07","AD_TERMS_TYPE_ADD",0],["1653:2","A-07","AD_TERMS_TYPE_EDIT",0],["1652:2","A-08","AD_BALANCE",1],["1654:2","A-08","AD_BALANCE_DEPOSIT",0],["1655:2","A-09","AD_INQUIRY",1],["1706:2","A-09","AD_INQUIRY_PENDING",0],["1709:2","A-09","AD_INQUIRY_PROGRESS",0],["1656:2","A-09","AD_INQUIRY_ANSWERED",0],["1657:2","A-09","AD_INQUIRY_CLOSED",0],["1710:2","A-09","AD_INQUIRY_GENERAL",0],["1711:2","A-09","AD_INQUIRY_PAYMENT",0],["1658:2","A-09","AD_INQUIRY_SETTLEMENT",0],["1714:2","A-09","AD_INQUIRY_TECH",0],["1659:2","A-09","AD_INQUIRY_ACCOUNT",0],["1713:2","A-09","AD_INQUIRY_DT",0],["1670:2","A-10","AD_SCRAPING",1],["1660:2","A-10","AD_LOG",1],["1712:2","A-10","AD_AI",1],["1662:2","A-10","AD_AI_CUSTOM",0],["1661:2","A-10","AD_AI_ANSWER",0],["1715:2","A-11","AD_LOGIN",1]];
+const LABELS = [["A-01","A-01 홈"],["A-02","A-02 매출조회"],["A-03","A-03 가맹점관리"],["A-04","A-04 정산"],["A-05","A-05 정산현황"],["A-06","A-06 회원관리"],["A-07","A-07 약관관리"],["A-08","A-08 모계좌 잔액조회"],["A-09","A-09 1:1 문의"],["A-10","A-10 시스템(로그·스크래핑·AI)"],["A-11","A-11 인증"]];
+const X0=-1281, Y0=6200, COLW=2060, COLS=6, ROWGAP=320, SECGAP=900, LABELDROP=340;
+const page = figma.root.children.find(p=>p.id==="303:173");
+await figma.setCurrentPageAsync(page);
+await figma.loadFontAsync({family:"Inter",style:"Bold"});
+for(const t of page.children.filter(n=>n.type==="TEXT" && Math.round(n.fontSize)===140)) t.remove();
+const nodes=[]; for(const [id] of ORDER){ try{nodes.push(await figma.getNodeByIdAsync(id));}catch(e){nodes.push(null);} }
+let y=Y0, col=0, rowMaxH=0, curMenu=null, placed=0, missing=0;
+const labelY={};
+for(let i=0;i<ORDER.length;i++){
+  const [id,menu,pid,famStart]=ORDER[i];
+  const n=nodes[i]; if(!n){missing++; continue;}
+  if(menu!==curMenu){
+    if(curMenu!==null) y += rowMaxH + SECGAP;
+    labelY[menu]=y; y += LABELDROP;
+    col=0; rowMaxH=0; curMenu=menu;
+  } else if(famStart || col>=COLS){
+    y += rowMaxH + ROWGAP; col=0; rowMaxH=0;
+  }
+  n.x = X0 + col*COLW; n.y = y;
+  rowMaxH = Math.max(rowMaxH, n.height||1300); col++; placed++;
+}
+let labels=0;
+for(const [c,name] of LABELS){
+  if(labelY[c]===undefined) continue;
+  const t=figma.createText(); t.fontName={family:"Inter",style:"Bold"}; t.fontSize=140;
+  t.characters=name; t.x=X0; t.y=labelY[c]; t.fills=[{type:"SOLID",color:{r:0.29,g:0.28,b:0.84}}];
+  labels++;
+}
+"placed "+placed+", missing "+missing+", labels "+labels+" of "+ORDER.length;

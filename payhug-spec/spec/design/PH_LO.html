@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">사장님 로그인</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">PH_LO</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">페이허그 &gt; 로그인</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">아이디=사업자번호 또는 휴대폰번호, 토큰 유효 150분</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/845_2.png" alt="사장님 로그인">
+        <div class="dim" style="left:2.5%;top:1.1%;height:2.8%"></div>
+        <div class="mk" style="left:1.2%;top:2.1%">1</div>
+        <div class="dim" style="left:16%;top:15.6%;height:4.4%"></div>
+        <div class="mk" style="left:14.7%;top:17.8%">2</div>
+        <div class="dim" style="left:16%;top:22.3%;height:4.5%"></div>
+        <div class="mk" style="left:14.7%;top:24.5%">3</div>
+        <div class="dim" style="left:16%;top:31.9%;height:12.5%"></div>
+        <div class="mk" style="left:14.7%;top:38%">4</div>
+        <div class="dim" style="left:46%;top:96.6%;height:1.9%"></div>
+        <div class="mk" style="left:44.3%;top:97.3%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;가맹점(사장님) 웹 로그인 관문 · 모바일 웹 · 아이디 한 칸으로 사업자번호/휴대폰 겸용</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;입력·형식검증 전부 화면(클라이언트) 처리 · [로그인] 눌러야 서버 호출(그 전엔 서버에 묻지 않음)</span>
+        <span class="b"><span class="g">세션</span> &nbsp;로그인 성공 시 토큰 저장 · <b>토큰 유효 150분</b> · 이미 로그인 상태로 진입(뒤로가기 포함)하면 대시보드로 되돌림(기본 이동 [MC_DASH], redirect 쿼리 있으면 그쪽)</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b"><b>상단 로고</b> — 좌측 페이허그 로고, 클릭 시 홈(/)으로 이동</span><span class="i">화면 최상단 고정 헤더 바, 하단 얇은 구분선</span><span class="b"><b>화면 제목</b> : "사장님 로그인"</span><span class="i">로그인 카드 안 최상단, 큰 볼드 제목</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">아이디</td><td class="kn-note">
+<span class="b"><b>아이디 입력</b> — 사업자등록번호·휴대전화번호를 한 칸으로 겸용</span><span class="i">입력창 안내문 : "사업자등록번호 또는 휴대전화번호"</span><span class="i"><b>숫자만</b> 입력됨(숫자 외 문자·하이픈 자동 제거)</span><span class="grp">판별·검증</span><span class="i"><b>01</b>로 시작 → 휴대전화번호로 판별(10~11자리)</span><span class="i">그 외 → 사업자등록번호로 판별(10자리 국세청 체크섬 검증)</span><span class="grp">상황별 문구 (입력값 있을 때만 노출)</span><span class="i">휴대폰 형식 오류 → "올바른 휴대전화번호 형식이 아닙니다."</span><span class="i">사업자 형식 오류 → "올바른 사업자등록번호 형식이 아닙니다."</span><span class="i">비어 있으면 오류 문구 없음(안내문 "…입력해주세요."는 이 화면에선 안 뜸)</span><span class="i">테두리색 : 정상=<b>초록</b> · 오류=<b>빨강</b> · 비어있음=투명(입력·포커스 시 연녹 강조)</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">비밀번호</td><td class="kn-note">
+<span class="b"><b>비밀번호 입력</b> — 가입·비밀번호찾기와 동일한 공통 정책</span><span class="i">입력창 안내문 : "영문, 숫자, 특수문자 포함 8~16자"</span><span class="i">규칙 : <b>8~16자</b>, 영문+숫자+특수문자 필수, 공백·한글 불가, 허용 특수문자 <b>! @ # $ % ^ & * ( )</b> 만</span><span class="i">입력 즉시 정리 : 공백·한글·이모지 등은 저장 안 됨, 16자 초과분 잘림</span><span class="grp">숨은 UI</span><span class="i"><b>눈 아이콘</b> — 비밀번호 표시/숨김 토글</span><span class="i">CapsLock 켜지면 입력창 위 말풍선 "Caps Lock이 켜져 있습니다"</span><span class="i"><b>Enter</b> 키 — 폼이 유효하면 바로 로그인 실행</span><span class="grp">하단 인라인 메시지 (형식오류 우선 · 1개만)</span><span class="i">허용 안 된 특수문자 → "사용 가능한 특수문자: ! @ # $ % ^ & * ( )"</span><span class="i">조건 미충족 → "영문, 숫자, 특수문자를 포함한 8~16자로 입력해주세요."</span><span class="i">공백·한글·이모지는 입력 즉시 제거되어, 이 화면에선 <b>공백 오류 문구는 사실상 안 뜸</b></span><span class="i">형식오류 없으면 이 자리에 <b>서버 인증 실패</b> 안내가 대신 노출(4번)</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">버튼</td><td class="kn-note">
+<span class="b"><b>[로그인]</b> 버튼 — 폼 유효 시에만 활성(연녹), 마우스 올리면 진해짐</span><span class="i">폼 유효 = 아이디·비밀번호 모두 입력 + 형식오류 없음</span><span class="i">유효하지 않으면 <b>비활성</b>(흐린 연녹, 클릭 불가)</span><span class="i">요청 중 라벨 "로그인 중..."으로 바뀌고 중복 클릭 막음 → [PH_LO_LOADING]</span><span class="grp">인증 실패 처리</span><span class="i">아이디/비번 불일치 → 비밀번호 칸 하단에 "아이디 또는 비밀번호가 달라요. 대소문자 또는 공백을 확인해주세요"</span><span class="grp">보조 이동</span><span class="i"><b>[회원가입]</b> → 회원가입 1단계 약관동의[PH_JO_TERMS]로 이동</span><span class="i"><b>비밀번호 찾기</b> → 비밀번호 찾기 1단계 본인인증[PH_PW_FI]로 이동</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">회사정보</td><td class="kn-note">
+<span class="b"><b>©주식회사 페이허그 ⌄</b> — 화살표 클릭 시 회사정보 펼침 → [PH_LO_COMPANY]</span><span class="i">기본은 접힘, 화살표만 노출(펼치면 화살표 180° 회전)</span><span class="i">화면 하단 중앙 고정</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

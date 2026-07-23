@@ -1,0 +1,103 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">정산 시뮬레이션 &gt; 거래 다건 입력</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_SIM_MULTI</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 정산 &gt; 정산 시뮬레이션</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">거래 다건 입력·실행 결과 표시</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/949_2.png" alt="정산 시뮬레이션 &gt; 거래 다건 입력">
+        <div class="dim" style="left:2.4%;top:22.1%;height:6.9%"></div>
+        <div class="mk" style="left:1.4%;top:25.6%">1</div>
+        <div class="mk" style="left:54%;top:25.6%">2</div>
+        <div class="dim" style="left:2.4%;top:30.5%;height:1.6%"></div>
+        <div class="mk" style="left:1.4%;top:31.2%">3</div>
+        <div class="dim" style="left:2.4%;top:39.8%;height:10%"></div>
+        <div class="mk" style="left:1.4%;top:44.8%">4</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;거래를 <b>여러 건 입력한 상태</b> — base(<b>[AD_SIM]</b>)는 1건 초기, 여기는 <b>2건</b></span>
+        <span class="b" style="margin-top:5px"><span class="g">차이점</span> &nbsp;[+ 거래 추가]로 행을 늘린 모습, <b>2건 이상</b>이라 각 행에 <b>[삭제]</b> 노출</span>
+        <span class="i red">캡처는 실행 전 상태(결과 미표시) — No.4 결과 카드 구조는 [시뮬레이션 실행] 시 서버 계산으로 노출됨</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">거래<br>다건</td><td class="kn-note">
+<span class="b"><b>[+ 거래 추가]</b>로 행을 늘림 → 캡처는 <b>2건</b> (카드 · 20,000원 ×2)</span><span class="i">추가 행 기본값 default : <b>카드 · 20,000원</b></span><span class="i">유형·금액은 <b>행마다 독립</b> (카드·배달 혼합 입력 가능)</span><span class="i">순번은 위에서부터 다시 매겨짐</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">행<br>삭제</td><td class="kn-note">
+<span class="b"><b>2건 이상</b>이 되면 각 행 오른쪽에 <b>[삭제]</b> 노출 (빨강 텍스트)</span><span class="i">삭제하면 남은 행 순번 다시 매겨짐</span><span class="i"><b>1건만</b> 남으면 [삭제] 사라짐 (최소 1건 유지)</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">합계</td><td class="kn-note">
+<span class="b">하단 <b>"총 2건, 합계 40,000원"</b></span><span class="i">입력 행 <b>건수·금액 합</b>을 즉시 반영 · 천단위 [,] 콤마 표기</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">실행<br>결과</td><td class="kn-note">
+<span class="b">실행하면 아래에 결과 노출 (실행 전엔 비어 있음)</span><span class="grp">정산 요약 카드 4개</span><span class="i">총 거래금액 · 거래 건수 · 총 수수료(가맹점 부담) · 가맹점 지급액(남보라 강조)</span><span class="grp">건별 원장 카드 (건마다 1장)</span><span class="i">머리 : <b>#N · 카드/배달 금액 · 수수료: … · 정책명 (규칙유형)</b></span><span class="i">계산 제외 건은 머리에 빨강 <b>"스킵: 사유"</b> 로 대체 표시(수수료·정책명 숨김)</span><span class="i">카드 안 원장 표 : <b>MARGIN(채권매입 수수료)</b> 표 · <b>SYSTEM_FEE(시스템 이용료)</b> 표</span><span class="i">원장 표 항목 : 참여자 · 역할 · 매출 · 매출VAT · 원가 · 원가VAT · 수익 · VAT · 순수익 · 배분액</span><span class="i">기록용(제외) 행은 <b>회색 기울임</b> + 주황 <b>"기록용"</b> 태그</span><span class="grp">집계 카드 (건별 원장 아래 별도)</span><span class="i"><b>SYSTEM_FEE 건별 합산 N건</b> 카드 · <b>TRANSFER_FEE 배치당 1회</b> 카드</span><span class="grp">이해관계자 배분 요약 표</span><span class="i">항목 : 참여자 · 역할 · 유형 · 채권매입 · 시스템 이용료 · 이체 수수료 · 총 배분액</span><span class="i">유형 태그 : <b>직접배분</b>(파랑) / <b>기록용</b>(주황·기울임, 배분액도 주황)</span><span class="i">참여자 뱃지 : <b>법인</b>(보라) · <b>사업자(VAT)</b>(초록)</span><span class="i red">수수료율·배분 산식은 서버 계산 결과일 뿐 — 산정 근거 미확정(TBD)</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

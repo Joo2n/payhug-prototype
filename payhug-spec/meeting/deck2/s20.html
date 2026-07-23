@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S20 — 비대면 계약 체결</title>
+<link rel="stylesheet" href="deck2.css">
+<style>
+  .stage { align-items: stretch; gap: 64px; }
+  .left  { display: flex; align-items: center; }
+  .right { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .right .calls { max-width: 940px; }
+
+  .chiprow { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+  .chiprow .fstep { margin-bottom: 0; }
+  .chiprow .arw { color: var(--line-2); font-size: 26px; font-weight: 700; }
+  .chipnote { margin-left: 4px; font-size: 15px; color: var(--ink-4); }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">20 / STEP 9</div>
+  </div>
+
+  <h1 class="s-title">비대면 <span class="em">계약 체결</span></h1>
+  <p class="s-sub">약관에 동의하고 전자서명을 하면 계약서가 만들어집니다</p>
+
+  <div class="stage">
+
+    <div class="left">
+      <div>
+        <div class="phone clip" style="width:500px;height:620px">
+          <img src="img/1414-7891.png" alt="비대면 계약 약관 동의 화면" style="width:500px;height:auto;margin-top:-60px">
+          <!-- 필수 3종 -->
+          <div class="hi" style="top:36.0%;left:8%;bottom:43.9%;right:8%"></div>
+          <div class="mk" style="top:38.7%;left:88%">1</div>
+          <!-- 매출채권 양도 동의 -->
+          <div class="mk red" style="top:52.9%;left:88%">2</div>
+          <!-- 선택 2종 -->
+          <div class="hi blue" style="top:57.3%;left:8%;bottom:30.0%;right:8%"></div>
+          <div class="mk blue" style="top:63.7%;left:88%">3</div>
+          <!-- 다음 단계 -->
+          <div class="hi green" style="top:75.5%;left:10%;bottom:14.5%;right:10%"></div>
+          <div class="mk green" style="top:80.5%;left:88%">4</div>
+        </div>
+        <div class="phone-cap">STEP 9 · 약관 동의 화면<small>필수 3종 + 선택 2종</small></div>
+      </div>
+    </div>
+
+    <div class="right">
+
+      <div class="chiprow">
+        <div class="fstep"><i>1</i> 약관 동의</div>
+        <div class="arw">›</div>
+        <div class="fstep"><i>2</i> 전자서명</div>
+        <div class="arw">›</div>
+        <div class="fstep"><i>3</i> 계약서 생성</div>
+        <div class="chipnote">전자서명·체결 완료 화면은 오늘 자료에 없습니다</div>
+      </div>
+
+      <div class="calls">
+
+        <div class="call">
+          <div class="call-n">1</div>
+          <div class="call-b">
+            <div class="call-t">(필수) 3종은 빠짐없이 동의해야 합니다</div>
+            <div class="call-d">선정산 서비스 이용약관 · 개인정보 수집·이용 · 매출채권 양도 — 하나라도 빠지면 다음으로 못 갑니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n red">2</div>
+          <div class="call-b">
+            <div class="call-t"><u>매출채권 양도 동의</u>가 선정산의 근거</div>
+            <div class="call-d">앞으로 들어올 카드·배달앱 매출을 페이허그에 넘긴다는 동의입니다. 이게 있어야 돈을 미리 드릴 수 있습니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n blue">3</div>
+          <div class="call-b">
+            <div class="call-t">(선택) 2종은 안 하셔도 됩니다</div>
+            <div class="call-d">개인정보 제3자 제공 · 마케팅 정보 수신 — 동의하지 않아도 계약은 그대로 진행됩니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n green">4</div>
+          <div class="call-b">
+            <div class="call-t">다음 단계를 누르면 전자서명으로</div>
+            <div class="call-d">서명이 끝나면 계약서가 만들어지고, 사장님은 계약 정보 화면에서 언제든 다시 볼 수 있습니다</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="punch warn">
+        <div class="fx fx-mid fx-wrap"><span class="fx-t">수수료율은 <u>계약 시점에 정해집니다</u></span>
+          <span class="badge badge-check">확인 중</span></div>
+        <div style="margin-top:6px">현장에서 숫자를 먼저 말씀드리지 마세요. 안내 방식이 확정되면 별도로 공지합니다</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP9 비대면 계약 약관 동의 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

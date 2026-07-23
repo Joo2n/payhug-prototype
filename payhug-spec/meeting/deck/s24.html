@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S24 — 플랫폼별 선정산 개시</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .op { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+
+  /* 2단계 분리 플로우 */
+  .two { display: grid; grid-template-columns: 1fr auto 1.9fr; gap: 18px; align-items: stretch; }
+  .stage { border-radius: 18px; padding: 20px 24px 22px; }
+  .stage.s1 { background: var(--ph-mint-tint); border: 1.5px solid #BFE9CF; }
+  .stage.s2 { background: var(--ph-blue-tint); border: 1.5px solid #CFE4FF; }
+  .stage-h { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 14px; }
+  .stage.s1 .stage-h { color: #0F7A3D; }
+  .stage.s2 .stage-h { color: var(--ph-blue-600); }
+  .stage .flow { gap: 14px; }
+  .stage .node { min-width: 0; flex: 1; padding: 18px 20px; font-size: 18px; }
+  .stage .node small { font-size: 14px; margin-top: 5px; }
+  .neq {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 0 6px;
+  }
+  .neq .sym { font-size: 44px; font-weight: 900; color: var(--ph-danger); line-height: 1; }
+  .neq .tx { font-size: 15px; font-weight: 800; color: var(--ph-danger); text-align: center; line-height: 1.35; }
+
+  /* 타임라인 */
+  .tl { background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px; padding: 22px 28px 24px; flex: 1; display: flex; flex-direction: column; }
+  .tl-h { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+  .tl-h .t { font-size: 22px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.02em; }
+  .tl-h .s { font-size: 16px; color: var(--ink-3); font-weight: 500; }
+
+  .lanes { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+  .ln { display: grid; grid-template-columns: 148px 1fr; align-items: center; gap: 18px; }
+  .ln .nm { font-size: 19px; font-weight: 800; color: var(--ph-forest); }
+  .bar { position: relative; height: 40px; display: flex; align-items: center; }
+  .seg { height: 30px; border-radius: 8px; display: flex; align-items: center; padding: 0 14px; font-size: 15px; font-weight: 700; white-space: nowrap; }
+  .seg.wait {
+    background: repeating-linear-gradient(-45deg, #EDEFF2, #EDEFF2 7px, #E2E6EA 7px, #E2E6EA 14px);
+    color: var(--ink-3); border: 1.5px dashed var(--line-2);
+  }
+  .seg.live { background: var(--ph-green); color: var(--ph-forest); border: 1.5px solid var(--ph-green-700); margin-left: -1px; }
+  .seg.none { background: #fff; color: var(--ink-4); border: 1.5px dashed var(--line-2); }
+  .axis { display: grid; grid-template-columns: 148px 1fr; gap: 18px; margin-top: 10px; }
+  .axis .ar { height: 3px; background: var(--line-2); border-radius: 2px; position: relative; }
+  .axis .ar::after { content: '시간 →'; position: absolute; right: 0; top: 10px; font-size: 15px; color: var(--ink-4); font-weight: 600; }
+  .axis .ar::before { content: '승인'; position: absolute; left: 0; top: 10px; font-size: 15px; color: var(--ink-4); font-weight: 600; }
+
+  .tail { display: grid; grid-template-columns: 1.55fr 1fr; gap: 20px; }
+  .tail .card { padding: 20px 24px; }
+  .tail .card-h { font-size: 20px; margin-bottom: 8px; }
+  .tail .card p { font-size: 17px; }
+  .badge { white-space: nowrap; }
+  .tbd-box { padding: 18px 24px; display: flex; align-items: center; gap: 16px; }
+  .tbd-box .tx { font-size: 17px; color: var(--ink-3); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 3 · 신청 이후 ~ 선정산 개시</div>
+    <div class="s-no">24</div>
+  </div>
+
+  <h1 class="s-title">선정산은 <span class="em">플랫폼별로 순차 개시</span>됩니다</h1>
+  <p class="s-sub">승인이 났다고 바로 돈이 들어오는 게 아닙니다. 매출처마다 준비된 순서대로 하나씩 시작됩니다.</p>
+
+  <div class="s-body">
+    <div class="op">
+
+      <div class="two">
+        <div class="stage s1">
+          <div class="stage-h">1단계 — 계약이 끝난 상태</div>
+          <div class="flow">
+            <div class="node ok" style="border-color:var(--ph-mint);background:#fff;color:#0F7A3D">
+              <b>승인 (계약 완료)</b><small>심사를 통과한 시점<br>아직 지급은 시작되지 않았습니다</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="neq">
+          <div class="sym">≠</div>
+          <div class="tx">승인은<br>개시가 아닙니다</div>
+        </div>
+
+        <div class="stage s2">
+          <div class="stage-h">2단계 — 페이허그가 개시 준비를 마쳐야 지급이 시작됩니다</div>
+          <div class="flow">
+            <div class="node ph"><b>정산 상품 배정</b><small>이 가맹점에 어떤 조건으로 정산할지 지정</small></div>
+            <div class="arrow">→</div>
+            <div class="node ph"><b>선정산 실행 설정 ON</b><small>배정이 끝나야 켤 수 있습니다</small></div>
+            <div class="arrow">→</div>
+            <div class="node mer"><b>첫 지급</b><small>제신고가 끝난 매출처부터</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl">
+        <div class="tl-h">
+          <div class="t">매출처별로 시작 시점이 다릅니다</div>
+          <div class="s">제신고(정산계좌 변경)가 끝난 곳부터 먼저 선정산이 돌아갑니다 — 아래는 순서 개념도이며 기간을 나타내지 않습니다</div>
+        </div>
+        <div class="lanes">
+          <div class="ln">
+            <div class="nm">카드</div>
+            <div class="bar">
+              <div class="seg wait" style="width:24%">제신고 진행 중</div>
+              <div class="seg live" style="flex:1">선정산 진행</div>
+            </div>
+          </div>
+          <div class="ln">
+            <div class="nm">배달의민족</div>
+            <div class="bar">
+              <div class="seg wait" style="width:40%">제신고 진행 중</div>
+              <div class="seg live" style="flex:1">선정산 진행</div>
+            </div>
+          </div>
+          <div class="ln">
+            <div class="nm">쿠팡이츠</div>
+            <div class="bar">
+              <div class="seg wait" style="width:62%">제신고 진행 중 (메일 접수)</div>
+              <div class="seg live" style="flex:1">선정산 진행</div>
+            </div>
+          </div>
+          <div class="ln">
+            <div class="nm">요기요</div>
+            <div class="bar">
+              <div class="seg none" style="flex:1">아직 변경 전 — 정산금이 기존 계좌로 들어가므로 선정산 대상이 아닙니다</div>
+            </div>
+          </div>
+        </div>
+        <div class="axis"><div></div><div class="ar"></div></div>
+      </div>
+
+      <div class="tail">
+        <div class="card card-warn">
+          <div class="card-h">현장 안내 포인트</div>
+          <p>"승인됐는데 왜 카드만 들어오냐"는 문의가 반드시 나옵니다. <b>아직 정산계좌를 바꾸지 않은 매출처의 정산금은 예전 계좌로 그대로 들어갑니다.</b> 그 매출은 선정산 대상이 아닙니다 — 누락이나 오류가 아닙니다.</p>
+        </div>
+        <div class="tbd-box">
+          <span class="badge badge-check">확인 중</span>
+          <div class="tx"><b>첫 지급일과 지급 주기</b>는 아직 확정 표기가 없습니다. 며칠 뒤·몇 회차인지 숫자로 안내하지 마세요.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 승인(APPROVED)과 선정산 실행은 별개 설정 · 정산 상품 배정이 실행 설정의 선행 조건 · 지급 캘린더는 문서 간 값이 달라 미확정</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

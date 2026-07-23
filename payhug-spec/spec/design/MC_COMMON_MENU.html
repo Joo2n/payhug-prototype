@@ -1,0 +1,107 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">모바일 메뉴 드로어</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_COMMON_MENU</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 공통 &gt; 모바일 메뉴 드로어</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">헤더 햄버거 토글(md 미만 전용). 로그인 시 대시보드·알림·내 정보·1:1문의·로그아웃 링크. 백드롭 클릭 닫기</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/815_2.png" alt="모바일 메뉴 드로어">
+        <div class="dim" style="left:0%;top:0.5%;height:3.6%"></div>
+        <div class="mk" style="left:2%;top:2.3%">1</div>
+        <div class="dim" style="left:4%;top:4.6%;height:37%"></div>
+        <div class="mk" style="left:2.7%;top:6.8%">2</div>
+        <div class="mk" style="left:8%;top:12%">3</div>
+        <div class="mk" style="left:8%;top:23%">4</div>
+        <div class="mk" style="left:50%;top:40%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;<b>모바일(태블릿 미만 폭)</b> 전용 헤더 햄버거 드로어 — 넓은 화면에선 햄버거 숨김, 대신 <b>로그인 시</b> 알림 벨[MC_COMMON_NOTI_DD]·프로필[MC_COMMON_PROFILE] / <b>비로그인 시</b> 로그인·시작하기 노출</span>
+        <span class="b" style="margin-top:5px"><span class="g">데이터</span> &nbsp;로그인 여부는 <b>저장된 인증 토큰 유무</b>로 판정 · 프로필 이름은 저장된 로그인 정보의 이름 그대로(<b>없으면 빈칸</b>)</span>
+        <span class="b" style="margin-top:5px"><span class="g">로드</span> &nbsp;진입 직후 로그인 판정 전엔 <b>빈 헤더 바만</b> 표시(깜빡임 방지) · 이후 로그인 여부로 드로어 내용 분기(로그인=프로필+메뉴 / 비로그인=로그인·시작하기)</span>
+        <span class="b red" style="margin-top:5px">캡처는 <b>로그인 상태 대시보드의 좌측 크롭</b> — 우측 햄버거·알림·프로필이 잘려 안 보이고, 드로어 패널·백드롭·로그아웃 모달은 미캡처. 좌측 마커 2~5는 열렸을 때 예상 위치</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더바<br>햄버거</td><td class="kn-note">
+<span class="b">화면 최상단 헤더 바 — 좌측 <b>로고</b>, 우측 <b>햄버거 버튼</b></span><span class="i">햄버거는 <b>태블릿 미만 폭에서만</b> 노출 (넓은 화면에선 숨고, 로그인 시 알림 벨·프로필 / 비로그인 시 로그인·시작하기가 대신 나옴)</span><span class="b">로고 누르면 이동</span><span class="i">로그인 시 → 대시보드<b>[MC_DASH]</b> / 비로그인 시 → 랜딩 홈<b>[MC_LANDING]</b></span><span class="b">햄버거 누르면 드로어 <b>열림/닫힘 토글</b></span><span class="i">아이콘 전환 : 닫힘 = 3줄 햄버거 / 열림 = <b>X(닫기)</b></span><span class="b">(예외) 메인 랜딩(/) + 비로그인일 땐 헤더가 <b>초록 배경</b>으로 바뀜</span><span class="i">햄버거·드로어 없이 <b>[선정산 신청하기]</b>·<b>[로그인]</b> 버튼이 바로 노출 (드로어 안 뜸)</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">드로어<br>백드롭</td><td class="kn-note">
+<span class="b">드로어는 <b>헤더 바로 아래</b>에서 아래로 펼쳐짐 (화면 좌우 꽉 채움, 흰 배경·그림자)</span><span class="b">뒤 배경은 <b>반투명 검정 백드롭</b>으로 덮임 (헤더 아래 영역)</span><span class="i"><b>백드롭을 누르면</b> 드로어 닫힘</span><span class="i">드로어 안 링크를 누르면 <b>자동으로 닫힘</b></span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">프로필<br>메뉴</td><td class="kn-note">
+<span class="b">(로그인 상태) 최상단 <b>프로필</b> — 아바타 + 사용자 이름 (아래 구분선)</span><span class="i">이름 값 없으면 빈칸 / 드로어 아바타엔 <b>데스크톱과 달리 초록 인증배지 없음</b></span><span class="grp">메뉴 링크 (세로 나열)</span><span class="i"><b>대시보드</b> → [MC_DASH]</span><span class="i"><b>알림</b> → 알림 목록[MC_NOTI]</span><span class="i"><b>내 정보</b> → [MC_MYINFO]</span><span class="i"><b>1:1 문의</b> → [MC_MYINFO_INQUIRY]</span><span class="i"><b>로그아웃</b> (빨강 글씨) → 로그아웃 확인 모달[MC_COMMON_LOGOUT]</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">비로그인<br>분기</td><td class="kn-note">
+<span class="b">(비로그인 상태) 프로필·메뉴 대신 아래 2개만 노출</span><span class="i"><b>로그인</b> 링크 → 로그인 화면[PH_LO]</span><span class="i"><b>[시작하기]</b> 파란 버튼 → 회원가입[PH_JO_TERMS]</span><span class="i">유입 경로(signup_source) 값이 있으면 회원가입 이동 시 <b>함께 전달</b></span><span class="i">단, <b>메인 랜딩(/)</b>에선 이 드로어 대신 초록 헤더의 [선정산 신청하기]·[로그인]로 대체됨</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">로그아웃<br>모달</td><td class="kn-note">
+<span class="b">로그아웃 누르면 화면 <b>중앙 모달</b> (별도 화면[MC_COMMON_LOGOUT])</span><span class="i">제목 <b>"로그아웃"</b>, 우측 닫기 X</span><span class="i">본문 <b>"로그아웃 할까요?"</b></span><span class="b"><b>[취소]</b>(회색) 누르면 닫힘 · 배경 눌러도 닫힘</span><span class="b"><b>[확인]</b>(파랑) 누르면 <b>쿠키·로컬·세션 인증정보 지우고</b> 로그인 화면[PH_LO]으로 이동</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

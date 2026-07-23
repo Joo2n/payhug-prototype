@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M16 — 대시보드 · 계약 반려</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+    <div class="ham"><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 사업자 선택기 (BusinessSelector) -->
+    <div style="background:#fff;border-radius:20px;padding:18px 24px;box-shadow:0 1px 20px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:24px;font-weight:700;color:#000">잇잇</span>
+          <span class="cst no">심사반려</span>
+        </div>
+        <span style="font-size:16px;color:#7e8299">616-28-53422</span>
+      </div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
+        <path d="M6 9L12 15L18 9" stroke="#b5b5c3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- 반려 (ProcessStatusCard — isRejected 분기) -->
+    <div class="dcard">
+      <div class="t no">계약이 반려되었어요</div>
+      <div class="s" style="font-size:16px">계약 프로세스를 처음부터 다시 진행해 주세요</div>
+
+      <div class="reason">
+        <div class="lb">반려 사유</div>
+        <div class="tx">제출 서류의 사업자 정보가 확인되지 않았습니다</div>
+      </div>
+
+      <div style="margin-top:20px">
+        <span style="display:inline-block;background:#9fe870;color:#163300;font-size:16px;font-weight:700;padding:14px 32px;border-radius:12px">다시 계약하기</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note-src">코드 기반 재현 · dashboard/page.tsx ProcessStatusCard isRejected 분기(isFormCompleted=false) / 반려 사유는 서버 rejectReason 값 — 여기 문구는 예시. 상호·사업자번호도 예시 더미값.</div>
+
+</div>
+</body>
+</html>

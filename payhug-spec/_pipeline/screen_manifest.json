@@ -1,0 +1,3237 @@
+[
+  {
+    "node": "914:2",
+    "menu": "A-01 홈",
+    "page_id": "AD_HOME",
+    "page_name": "관리자 대시보드",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 홈 > 관리자 대시보드",
+    "note": "읽기 전용 대시보드(최근 7일 선정산 현황). 권한별 카드 분기는 코드상 존재하나 미캡처",
+    "kind": "base",
+    "base_id": "AD_HOME",
+    "src_files": [
+      "app/page.tsx",
+      "hooks/useDashboardData.ts"
+    ],
+    "capture": "captures/914_2.png"
+  },
+  {
+    "node": "943:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES",
+    "page_name": "매출 조회",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 목록",
+    "note": "가맹점 목록. 행 클릭 시 [AD_SALES_DT] 이동",
+    "kind": "base",
+    "base_id": "AD_SALES",
+    "src_files": [
+      "app/sales/page.tsx"
+    ],
+    "capture": "captures/943_2.png"
+  },
+  {
+    "node": "947:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT",
+    "page_name": "매출 조회 > 가맹점 상세",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "상세 기본(매출내역). 초기 조회기간=이달 1일~오늘",
+    "kind": "base",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/947_2.png"
+  },
+  {
+    "node": "952:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_PAYOUT",
+    "page_name": "매출 조회 > 가맹점 상세 (지급예정일 기준)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "날짜기준 토글=지급예정일(PAYOUT). 지급예정일 산정기준 미확정(C2)",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/952_2.png"
+  },
+  {
+    "node": "957:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_NORMAL",
+    "page_name": "매출 조회 > 가맹점 상세 (거래상태 정상 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "txStatus=정상 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/957_2.png"
+  },
+  {
+    "node": "966:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_CANCEL",
+    "page_name": "매출 조회 > 가맹점 상세 (거래상태 취소 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "txStatus=취소(승인취소·매입취소) 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/966_2.png"
+  },
+  {
+    "node": "971:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_CARD",
+    "page_name": "매출 조회 > 가맹점 상세 (카드 · 카드사 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "매출유형 카드 선택 시 카드사 2뎁스 하위필터 노출",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/971_2.png"
+  },
+  {
+    "node": "979:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_BM",
+    "page_name": "매출 조회 > 가맹점 상세 (배달의민족 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "매출유형 배달의민족(BM) 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/979_2.png"
+  },
+  {
+    "node": "986:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_OLD",
+    "page_name": "매출 조회 > 가맹점 상세 (오래된순 정렬)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "정렬=오래된순 variant",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/986_2.png"
+  },
+  {
+    "node": "997:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_ADJUST",
+    "page_name": "매출 조회 > 가맹점 상세 (차액정산 내역 펼침)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세",
+    "note": "행 내 차액정산 내역 인라인 펼침 variant",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts"
+    ],
+    "capture": "captures/997_2.png"
+  },
+  {
+    "node": "1002:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_ADD_CARD",
+    "page_name": "매출 조회 > 가맹점 상세 > 단건 등록(카드 승인)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세 > 단건 등록",
+    "note": "단건 등록 모달 - 카드 승인 유형",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "components/sales/ManualSalesModal.tsx",
+      "services/manualSalesService.ts"
+    ],
+    "capture": "captures/1002_2.png"
+  },
+  {
+    "node": "1005:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_ADD_PURCHASE",
+    "page_name": "매출 조회 > 가맹점 상세 > 단건 등록(카드 매입)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세 > 단건 등록",
+    "note": "단건 등록 모달 - 카드 매입 유형",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "components/sales/ManualSalesModal.tsx",
+      "services/manualSalesService.ts"
+    ],
+    "capture": "captures/1005_2.png"
+  },
+  {
+    "node": "1007:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_ADD_DELIVERY",
+    "page_name": "매출 조회 > 가맹점 상세 > 단건 등록(배달 플랫폼)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세 > 단건 등록",
+    "note": "단건 등록 모달 - 배달 플랫폼 유형",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "components/sales/ManualSalesModal.tsx",
+      "services/manualSalesService.ts"
+    ],
+    "capture": "captures/1007_2.png"
+  },
+  {
+    "node": "1035:2",
+    "menu": "A-02 매출조회",
+    "page_id": "AD_SALES_DT_EXCEL",
+    "page_name": "매출 조회 > 가맹점 상세 > 엑셀 업로드",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 매출조회 > 가맹점 상세 > 엑셀 업로드",
+    "note": "엑셀 일괄 등록 모달",
+    "kind": "variant",
+    "base_id": "AD_SALES_DT",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "components/sales/ExcelUploadModal.tsx"
+    ],
+    "capture": "captures/1035_2.png"
+  },
+  {
+    "node": "958:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT",
+    "page_name": "가맹점 관리",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 목록",
+    "note": "목록 전체. 행 클릭 시 [AD_MERCHANT_DT] 이동",
+    "kind": "base",
+    "base_id": "AD_MERCHANT",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "capture": "captures/958_2.png"
+  },
+  {
+    "node": "961:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_PENDING",
+    "page_name": "가맹점 관리 (심사대기 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 목록",
+    "note": "계약상태 심사대기(PENDING) 클라이언트 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "capture": "captures/961_2.png"
+  },
+  {
+    "node": "963:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_APPROVED",
+    "page_name": "가맹점 관리 (승인 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 목록",
+    "note": "계약상태 승인(APPROVED) 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "capture": "captures/963_2.png"
+  },
+  {
+    "node": "967:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_REJECT",
+    "page_name": "가맹점 관리 (반려 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 목록",
+    "note": "계약상태 반려(REJECTED) 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "capture": "captures/967_2.png"
+  },
+  {
+    "node": "970:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_NONE",
+    "page_name": "가맹점 관리 (미등록 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 목록",
+    "note": "사업자 미등록 유저 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "capture": "captures/970_2.png"
+  },
+  {
+    "node": "975:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_LEGACY",
+    "page_name": "가맹점 관리 > 부채 가맹점 등록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 목록 > 부채 가맹점 등록",
+    "note": "ADMIN/PAYHUG 전용. 본인인증 없이 모계정 생성",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "capture": "captures/975_2.png"
+  },
+  {
+    "node": "999:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_HARDRESET",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 유저 하드리셋",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 유저 하드리셋",
+    "note": "유저 하드리셋 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/999_2.png"
+  },
+  {
+    "node": "1004:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_LOCKVERIFY",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 플랫폼 락계좌 검증 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 플랫폼 락계좌 검증",
+    "note": "플랫폼 락계좌 검증 확인 다이얼로그",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx",
+      "components/PlatformLockAccountDetailDialog.tsx"
+    ],
+    "capture": "captures/1004_2.png"
+  },
+  {
+    "node": "1010:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_LOCKDETAIL",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 플랫폼 락계좌 연결 상세",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 플랫폼 락계좌 연결 상세",
+    "note": "플랫폼 락계좌 연결 상세 다이얼로그",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx",
+      "components/PlatformLockAccountDetailDialog.tsx"
+    ],
+    "capture": "captures/1010_2.png"
+  },
+  {
+    "node": "1019:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_RESIGN",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 계약 재서명 요청",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 계약 재서명 요청",
+    "note": "계약 재서명 요청 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1019_2.png"
+  },
+  {
+    "node": "1020:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_OLDCONTRACT",
+    "page_name": "가맹점 관리 > 가맹점 상세 (이전 계약서 펼침)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세",
+    "note": "이전 계약서 인라인 펼침 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1020_2.png"
+  },
+  {
+    "node": "1022:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_FEERESET",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 카드 수수료 기본값 초기화",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 카드 수수료 기본값 초기화",
+    "note": "카드 수수료 기본값 초기화 확인 다이얼로그. 수수료율 미확정(C1)",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1022_2.png"
+  },
+  {
+    "node": "1023:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_WEEKDAY",
+    "page_name": "가맹점 관리 > 가맹점 상세 (요일별 상세 테이블 펼침)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세",
+    "note": "카드 수수료 요일별 상세 테이블 인라인 펼침 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1023_2.png"
+  },
+  {
+    "node": "1024:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_TRANSFER",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 수동 이체",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 수동 이체",
+    "note": "수동 이체 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx",
+      "components/ManualTransferModal.tsx"
+    ],
+    "capture": "captures/1024_2.png"
+  },
+  {
+    "node": "1025:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_ADJSTAT",
+    "page_name": "가맹점 관리 > 가맹점 상세 (차액 정산 상세 통계 펼침)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세",
+    "note": "차액 정산 상세 통계 인라인 펼침 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1025_2.png"
+  },
+  {
+    "node": "1026:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_ADJUST",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 차액 정산 이력",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 차액 정산 이력",
+    "note": "별도 라우트 /merchants/[id]/fee-adjustments 기본",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/fee-adjustments/page.tsx"
+    ],
+    "capture": "captures/1026_2.png"
+  },
+  {
+    "node": "1027:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_ADJUST_DONE",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 차액 정산 이력 (완료 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 차액 정산 이력",
+    "note": "차액 정산 이력 완료 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/fee-adjustments/page.tsx"
+    ],
+    "capture": "captures/1027_2.png"
+  },
+  {
+    "node": "1028:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_ADJUST_PENDING",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 차액 정산 이력 (대기 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 차액 정산 이력",
+    "note": "차액 정산 이력 대기 필터 variant",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/fee-adjustments/page.tsx"
+    ],
+    "capture": "captures/1028_2.png"
+  },
+  {
+    "node": "1031:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_SCRAPE",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 매출 데이터 수집",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 매출 데이터 수집",
+    "note": "매출 데이터(스크래핑) 수집 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1031_2.png"
+  },
+  {
+    "node": "1032:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_RESET",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 비밀번호 초기화",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 비밀번호 초기화",
+    "note": "비밀번호 초기화 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1032_2.png"
+  },
+  {
+    "node": "1033:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT",
+    "page_name": "가맹점 관리 > 가맹점 상세",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세",
+    "note": "상세 기본. canEdit=isAdmin(ADMIN/PAYHUG)",
+    "kind": "base",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1033_2.png"
+  },
+  {
+    "node": "1034:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_REJECT",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 가맹점 반려",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 가맹점 반려",
+    "note": "계약 반려 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1034_2.png"
+  },
+  {
+    "node": "1057:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_ASSIGN",
+    "page_name": "가맹점 관리 > 담당자 변경",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 목록 > 담당자 변경",
+    "note": "담당 셀 버튼 트리거. ACTIVE 파트너만 후보",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "capture": "captures/1057_2.png"
+  },
+  {
+    "node": "1093:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_IDCARD",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 신분증 등록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 신분증 등록",
+    "note": "서류 미등록 케이스의 신분증 등록 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1093_2.png"
+  },
+  {
+    "node": "1094:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_LOCKACCT",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 선정산 전용계좌 등록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 선정산 전용계좌 등록",
+    "note": "서류 미등록 케이스의 선정산 전용계좌(락계좌) 등록 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1094_2.png"
+  },
+  {
+    "node": "1095:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_BANKACCT",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 입출금 계좌 등록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 입출금 계좌 등록",
+    "note": "서류 미등록 케이스의 입출금 계좌 등록 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1095_2.png"
+  },
+  {
+    "node": "1097:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_DEBT",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 이관 부채 등록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 이관 부채 등록",
+    "note": "이관 부채 등록 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1097_2.png"
+  },
+  {
+    "node": "1098:2",
+    "menu": "A-03 가맹점관리",
+    "page_id": "AD_MERCHANT_DT_PLATFORM",
+    "page_name": "가맹점 관리 > 가맹점 상세 > 플랫폼 계정 추가",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 가맹점관리 > 가맹점 상세 > 플랫폼 계정 추가",
+    "note": "플랫폼 계정 추가 모달",
+    "kind": "variant",
+    "base_id": "AD_MERCHANT_DT",
+    "src_files": [
+      "app/merchants/[id]/page.tsx"
+    ],
+    "capture": "captures/1098_2.png"
+  },
+  {
+    "node": "915:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_PRODUCT",
+    "page_name": "정산 상품관리",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 상품관리",
+    "note": "-",
+    "kind": "base",
+    "base_id": "AD_PRODUCT",
+    "src_files": [
+      "app/settlement/policies/page.tsx"
+    ],
+    "capture": "captures/915_2.png"
+  },
+  {
+    "node": "919:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_PRODUCT_GENERAL",
+    "page_name": "정산 상품관리 > 일반 상품 펼침",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 상품관리",
+    "note": "일반(GENERAL) 상품 카드 펼침 상태",
+    "kind": "variant",
+    "base_id": "AD_PRODUCT",
+    "src_files": [
+      "app/settlement/policies/page.tsx"
+    ],
+    "capture": "captures/919_2.png"
+  },
+  {
+    "node": "924:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_PRODUCT_DAOU",
+    "page_name": "정산 상품관리 > 다우 상품 펼침",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 상품관리",
+    "note": "다우(DAOU) 상품 카드 펼침 상태",
+    "kind": "variant",
+    "base_id": "AD_PRODUCT",
+    "src_files": [
+      "app/settlement/policies/page.tsx"
+    ],
+    "capture": "captures/924_2.png"
+  },
+  {
+    "node": "929:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_PRODUCT_ADD",
+    "page_name": "정산 상품관리 > 상품 생성",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 상품관리 > 상품 생성",
+    "note": "빈 폼(기본 유형 일반/GENERAL)",
+    "kind": "variant",
+    "base_id": "AD_PRODUCT",
+    "src_files": [
+      "app/settlement/policies/page.tsx",
+      "app/settlement/policies/PolicyFormModal.tsx"
+    ],
+    "capture": "captures/929_2.png"
+  },
+  {
+    "node": "934:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_PRODUCT_EDIT",
+    "page_name": "정산 상품관리 > 상품 수정",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 상품관리 > 상품 수정",
+    "note": "일반 상품 A 값 프리필·유형 변경 불가",
+    "kind": "variant",
+    "base_id": "AD_PRODUCT",
+    "src_files": [
+      "app/settlement/policies/page.tsx",
+      "app/settlement/policies/PolicyFormModal.tsx"
+    ],
+    "capture": "captures/934_2.png"
+  },
+  {
+    "node": "938:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_PRODUCT_DEACT",
+    "page_name": "정산 상품관리 > 비활성화 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 상품관리 > 비활성화",
+    "note": "이력 유지·신규 배정만 차단(서버 규칙 확인 필요)",
+    "kind": "variant",
+    "base_id": "AD_PRODUCT",
+    "src_files": [
+      "app/settlement/policies/page.tsx"
+    ],
+    "capture": "captures/938_2.png"
+  },
+  {
+    "node": "942:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_PRODUCT_DELETE",
+    "page_name": "정산 상품관리 > 삭제 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 상품관리 > 삭제",
+    "note": "배정 가맹점 있으면 삭제 불가(서버 검증)",
+    "kind": "variant",
+    "base_id": "AD_PRODUCT",
+    "src_files": [
+      "app/settlement/policies/page.tsx"
+    ],
+    "capture": "captures/942_2.png"
+  },
+  {
+    "node": "946:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_SIM",
+    "page_name": "정산 시뮬레이션",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 시뮬레이션",
+    "note": "DB 미저장·계산 전량 서버 수행",
+    "kind": "base",
+    "base_id": "AD_SIM",
+    "src_files": [
+      "app/settlement/simulation/page.tsx"
+    ],
+    "capture": "captures/946_2.png"
+  },
+  {
+    "node": "949:2",
+    "menu": "A-04 정산",
+    "page_id": "AD_SIM_MULTI",
+    "page_name": "정산 시뮬레이션 > 거래 다건 입력",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산 > 정산 시뮬레이션",
+    "note": "거래 다건 입력·실행 결과 표시",
+    "kind": "variant",
+    "base_id": "AD_SIM",
+    "src_files": [
+      "app/settlement/simulation/page.tsx"
+    ],
+    "capture": "captures/949_2.png"
+  },
+  {
+    "node": "917:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_MISSED",
+    "page_name": "선정산 결과 > 미정산 누락 추적 펼침",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 선정산 결과",
+    "note": "isAdmin(ADMIN·PAYHUG) 한정 노출",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/PreSettlementTab.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/917_2.png"
+  },
+  {
+    "node": "953:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFFLIST",
+    "page_name": "선정산 차액 정산 내역",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산 > 내역",
+    "note": "IA는 A-04 분류이나 실제 구현은 overview 차액 정산 탭(989:2와 중첩, conflict)",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/953_2.png"
+  },
+  {
+    "node": "976:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DETAIL",
+    "page_name": "정산 상세",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 정산 상세",
+    "note": "isAdmin 한정 탭",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/BatchDetailTab.tsx",
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/976_2.png"
+  },
+  {
+    "node": "981:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DETAIL_BATCH",
+    "page_name": "정산 상세 > 배치 선택 상세",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 정산 상세",
+    "note": "배치 클릭 시 배분·원장 상세",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/BatchDetailTab.tsx",
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/981_2.png"
+  },
+  {
+    "node": "989:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFF",
+    "page_name": "차액 정산",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산",
+    "note": "전체(ALL) 서브탭·KPI/추이 표시",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/989_2.png"
+  },
+  {
+    "node": "993:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFF_CARD",
+    "page_name": "차액 정산 > 카드 수수료 차액",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산",
+    "note": "카테고리 FEE_DIFF 서브탭",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/993_2.png"
+  },
+  {
+    "node": "995:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE",
+    "page_name": "선정산 결과",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 선정산 결과",
+    "note": "-",
+    "kind": "base",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "app/settlement/overview/PreSettlementTab.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/995_2.png"
+  },
+  {
+    "node": "996:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFF_DELIVERY",
+    "page_name": "차액 정산 > 배달 수수료 차액",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산",
+    "note": "카테고리 DELIVERY_DIFF 서브탭",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/996_2.png"
+  },
+  {
+    "node": "998:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFF_CLAWBACK",
+    "page_name": "차액 정산 > 취소 환수",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산",
+    "note": "카테고리 CANCEL_CLAWBACK 서브탭(6개념 매핑 미확정, C4)",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/998_2.png"
+  },
+  {
+    "node": "1001:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFF_ESTIMATED",
+    "page_name": "차액 정산 > 예상매출 대사",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산",
+    "note": "카테고리 ESTIMATED_DIFF 서브탭(C4)",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/1001_2.png"
+  },
+  {
+    "node": "1003:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFF_CARRY",
+    "page_name": "차액 정산 > 미회수 이월",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산",
+    "note": "카테고리 CARRY_FORWARD 서브탭(이월 상한/기간 미확정)",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/1003_2.png"
+  },
+  {
+    "node": "1006:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIFF_CARDFILTER",
+    "page_name": "차액 정산 > 매출유형 카드 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 차액 정산",
+    "note": "매출유형 카드 선택 시 카드사 2뎁스 칩 노출·서버 재집계",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/1006_2.png"
+  },
+  {
+    "node": "1009:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_TRANSFER",
+    "page_name": "이체 내역",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 이체 내역",
+    "note": "'회수'=락계좌→모계좌 매출대금 스윕(과지급 회수 아님, C5)",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/TransferRecordsTab.tsx",
+      "app/settlement/overview/page.tsx"
+    ],
+    "capture": "captures/1009_2.png"
+  },
+  {
+    "node": "1012:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_TRANSFER_COLLECT",
+    "page_name": "이체 내역 > 회수 2단계 펼침",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 이체 내역",
+    "note": "쿠콘 출금·입금 페어 매칭 2단계 표시",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/TransferRecordsTab.tsx"
+    ],
+    "capture": "captures/1012_2.png"
+  },
+  {
+    "node": "1013:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_BILL",
+    "page_name": "계산서 발행",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 계산서 발행",
+    "note": "isAdmin 한정 탭·과세/면세 근거 확인 필요",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/TaxInvoiceTab.tsx",
+      "app/settlement/overview/page.tsx"
+    ],
+    "capture": "captures/1013_2.png"
+  },
+  {
+    "node": "1036:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_EXPAND",
+    "page_name": "선정산 결과 > 가맹점 건별 상세 펼침",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 선정산 결과",
+    "note": "가맹점 행 클릭 시 건별 매출 상세 펼침",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/PreSettlementTab.tsx",
+      "app/settlement/overview/page.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/1036_2.png"
+  },
+  {
+    "node": "1038:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_PREVIEW",
+    "page_name": "선정산 결과 > 바로이체 미리보기",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 선정산 결과 > 미리보기",
+    "note": "이체 1회 묶음·원장 거래일별 시뮬레이션",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/PreSettlementTab.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/1038_2.png"
+  },
+  {
+    "node": "1059:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_DIRECT",
+    "page_name": "선정산 결과 > 바로이체 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 선정산 결과 > 바로이체",
+    "note": "순지급액 전액 이체(정책 가설·확인 필요, 문서 04 §6)",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/PreSettlementTab.tsx",
+      "hooks/useSettlementOverview.ts"
+    ],
+    "capture": "captures/1059_2.png"
+  },
+  {
+    "node": "1060:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_RECORD",
+    "page_name": "선정산 결과 > 이미지급(기록만) 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > 선정산 결과 > 이미지급(기록만)",
+    "note": "실이체 없이 원장 지급완료 기록(정책 가설)",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/PreSettlementTab.tsx"
+    ],
+    "capture": "captures/1060_2.png"
+  },
+  {
+    "node": "1062:2",
+    "menu": "A-05 정산현황",
+    "page_id": "AD_SETTLE_VOC",
+    "page_name": "VOC 대응",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 정산현황 > VOC 대응",
+    "note": "isAdmin 한정 탭·자체 기간 필터",
+    "kind": "variant",
+    "base_id": "AD_SETTLE",
+    "src_files": [
+      "app/settlement/overview/VocExportTab.tsx",
+      "app/settlement/overview/page.tsx"
+    ],
+    "capture": "captures/1062_2.png"
+  },
+  {
+    "node": "916:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_PAYHUG",
+    "page_name": "회원 관리 > 페이허그 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "유형 필터 시 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/916_2.png"
+  },
+  {
+    "node": "922:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_PARTNER",
+    "page_name": "회원 관리 > 파트너 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "유형 필터 시 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/922_2.png"
+  },
+  {
+    "node": "927:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_AFFILIATE",
+    "page_name": "회원 관리 > 제휴사 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "유형 필터 시 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/927_2.png"
+  },
+  {
+    "node": "932:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_SALES",
+    "page_name": "회원 관리 > 영업 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "유형 필터 시 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/932_2.png"
+  },
+  {
+    "node": "937:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_SALESORG",
+    "page_name": "회원 관리 > 영업조직 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "유형 필터 시 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/937_2.png"
+  },
+  {
+    "node": "941:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_ADMIN",
+    "page_name": "회원 관리 > 관리자 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "유형 필터 시 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/941_2.png"
+  },
+  {
+    "node": "945:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_ADD",
+    "page_name": "회원 관리 > 회원 등록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리 > 회원 등록",
+    "note": "빈 폼·생성가능 유형(creatableTypes)만 선택",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx",
+      "services/partnerService.ts"
+    ],
+    "capture": "captures/945_2.png"
+  },
+  {
+    "node": "950:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_EDIT",
+    "page_name": "회원 관리 > 회원 수정",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리 > 회원 수정",
+    "note": "비밀번호 미입력 시 기존 유지",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx",
+      "services/partnerService.ts"
+    ],
+    "capture": "captures/950_2.png"
+  },
+  {
+    "node": "955:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_PROFILE",
+    "page_name": "회원 관리 > 프로필 관리",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리 > 프로필",
+    "note": "isAdmin 한정·사업자등록증 OCR 업로드/직인 관리",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/955_2.png"
+  },
+  {
+    "node": "959:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_DEACT",
+    "page_name": "회원 관리 > 회원 비활성화 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리 > 비활성화",
+    "note": "ACTIVE→INACTIVE·로그인 차단",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx",
+      "services/partnerService.ts"
+    ],
+    "capture": "captures/959_2.png"
+  },
+  {
+    "node": "962:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_DELETE",
+    "page_name": "회원 관리 > 회원 삭제 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리 > 삭제",
+    "note": "isAdmin·정산 상품 미배정 시 삭제(서버 강제 여부 확인 필요)",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx",
+      "services/partnerService.ts"
+    ],
+    "capture": "captures/962_2.png"
+  },
+  {
+    "node": "1029:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER",
+    "page_name": "회원 관리",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "투자자·파트너 등 회원 CRUD(가맹점 아님)",
+    "kind": "base",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/1029_2.png"
+  },
+  {
+    "node": "1030:2",
+    "menu": "A-06 회원관리",
+    "page_id": "AD_PARTNER_INVESTOR",
+    "page_name": "회원 관리 > 투자자 필터",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 회원 관리",
+    "note": "유형 필터 시 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_PARTNER",
+    "src_files": [
+      "app/partners/page.tsx"
+    ],
+    "capture": "captures/1030_2.png"
+  },
+  {
+    "node": "920:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_REVISE",
+    "page_name": "약관 관리 > 약관 개정 (종류 선택)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 약관 개정",
+    "note": "헤더 개정 진입=종류 선택 모드(revTypeFixed=false). 종류 0개면 토스트로 차단",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/920_2.png"
+  },
+  {
+    "node": "925:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_REVISE_FIXED",
+    "page_name": "약관 관리 > 약관 개정 (종류 고정)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 종류 카드 개정",
+    "note": "종류 카드 개정=종류 고정 모드(revTypeFixed=true). 최신 버전 제목·본문 복사, 버전번호 자동(floor+1)",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/925_2.png"
+  },
+  {
+    "node": "931:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_PREVIEW",
+    "page_name": "약관 관리 > 버전 미리보기",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 미리보기",
+    "note": "읽기전용 미리보기 모달. 본문 줄바꿈·공백 보존, '수정하기'→버전 수정 모달",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/931_2.png"
+  },
+  {
+    "node": "935:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_VER_EDIT",
+    "page_name": "약관 관리 > 약관 버전 수정",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 버전 수정",
+    "note": "버전 수정 모달(기존값 채움). 게시·시행 중 버전 사후수정 허용 여부 미확정(C)",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/935_2.png"
+  },
+  {
+    "node": "940:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_VER_DEL",
+    "page_name": "약관 관리 > 약관 버전 삭제 확인",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 버전 삭제",
+    "note": "삭제 확인 다이얼로그. 미게시 버전만 삭제 버튼 노출, 동의이력 있으면 거부 안내",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/940_2.png"
+  },
+  {
+    "node": "965:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS",
+    "page_name": "약관 관리",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록",
+    "note": "컨텍스트→종류→버전 3계층 트리. 진입 시 3건(context/type/revision) 동시 조회",
+    "kind": "base",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/965_2.png"
+  },
+  {
+    "node": "969:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_SIGNUP",
+    "page_name": "약관 관리 > 목록 (회원가입 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 (회원가입 필터)",
+    "note": "컨텍스트 필터(signup). 컨텍스트는 DB 동적 로드",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/969_2.png"
+  },
+  {
+    "node": "973:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_CONTRACT",
+    "page_name": "약관 관리 > 목록 (전자계약 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 (전자계약 필터)",
+    "note": "컨텍스트 필터(contract)",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/973_2.png"
+  },
+  {
+    "node": "977:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_MARKETING",
+    "page_name": "약관 관리 > 목록 (마케팅 수신 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 (마케팅 수신 필터)",
+    "note": "컨텍스트 필터(마케팅). 색상 미정의로 회색 기본값",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/977_2.png"
+  },
+  {
+    "node": "982:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_CTX",
+    "page_name": "약관 관리 > 컨텍스트 관리 펼침",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 컨텍스트 관리 펼침",
+    "note": "컨텍스트 목록 테이블 펼침(코드·이름·정렬·연결 종류 수)",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/982_2.png"
+  },
+  {
+    "node": "987:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_CTX_ADD",
+    "page_name": "약관 관리 > 컨텍스트 추가",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 컨텍스트 추가",
+    "note": "컨텍스트 추가 모달(빈 폼). 코드 소문자 자동변환",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/987_2.png"
+  },
+  {
+    "node": "988:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_CTX_EDIT",
+    "page_name": "약관 관리 > 컨텍스트 수정",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 컨텍스트 수정",
+    "note": "컨텍스트 수정 모달. 코드 필드 비활성(불변)",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/988_2.png"
+  },
+  {
+    "node": "991:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_TYPE_ADD",
+    "page_name": "약관 관리 > 약관 종류 추가",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 종류 추가",
+    "note": "종류 추가 모달. 컨텍스트 첫 항목·필수 미리채움, 코드 대문자 자동변환",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/991_2.png"
+  },
+  {
+    "node": "994:2",
+    "menu": "A-07 약관관리",
+    "page_id": "AD_TERMS_TYPE_EDIT",
+    "page_name": "약관 관리 > 약관 종류 수정",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 약관 관리 > 목록 > 종류 수정",
+    "note": "종류 수정 모달. 코드·컨텍스트 미노출(불변), 종류명·필수·정렬만",
+    "kind": "variant",
+    "base_id": "AD_TERMS",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "capture": "captures/994_2.png"
+  },
+  {
+    "node": "944:2",
+    "menu": "A-08 모계좌 잔액조회",
+    "page_id": "AD_BALANCE",
+    "page_name": "모 계좌 잔액 조회",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 모 계좌 잔액 조회 > 기본",
+    "note": "ADMIN·PAYHUG만 접근. 잔액 히어로+잔액 대사 카드+입·출금 원장. 대사 residual은 프론트 휴리스틱(가설)",
+    "kind": "base",
+    "base_id": "AD_BALANCE",
+    "src_files": [
+      "app/account-balance/page.tsx",
+      "services/cooconService.ts"
+    ],
+    "capture": "captures/944_2.png"
+  },
+  {
+    "node": "1058:2",
+    "menu": "A-08 모계좌 잔액조회",
+    "page_id": "AD_BALANCE_DEPOSIT",
+    "page_name": "모 계좌 잔액 조회 > 외부 입금 등록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 모 계좌 잔액 조회 > 외부 입금 등록",
+    "note": "외부 입금 등록 모달(빈 폼). 잔차>0시 추정 잔차 제안금액 전달",
+    "kind": "variant",
+    "base_id": "AD_BALANCE",
+    "src_files": [
+      "app/account-balance/page.tsx",
+      "services/cooconService.ts"
+    ],
+    "capture": "captures/1058_2.png"
+  },
+  {
+    "node": "951:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY",
+    "page_name": "1:1 문의 > 목록",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록",
+    "note": "고객 대응 인박스. 정산현황 VOC 대응 탭(1062:2)과 별개 화면",
+    "kind": "base",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/951_2.png"
+  },
+  {
+    "node": "956:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_PENDING",
+    "page_name": "1:1 문의 > 목록 (대기 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (대기 필터)",
+    "note": "상태 필터 PENDING. 서버 재조회",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/956_2.png"
+  },
+  {
+    "node": "960:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_PROGRESS",
+    "page_name": "1:1 문의 > 목록 (처리중 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (처리중 필터)",
+    "note": "상태 필터 IN_PROGRESS",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/960_2.png"
+  },
+  {
+    "node": "964:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_ANSWERED",
+    "page_name": "1:1 문의 > 목록 (답변완료 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (답변완료 필터)",
+    "note": "상태 필터 ANSWERED",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/964_2.png"
+  },
+  {
+    "node": "968:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_CLOSED",
+    "page_name": "1:1 문의 > 목록 (종료 필터)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (종료 필터)",
+    "note": "상태 필터 CLOSED. 종료 문의는 답변 입력 잠금",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/968_2.png"
+  },
+  {
+    "node": "972:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_GENERAL",
+    "page_name": "1:1 문의 > 목록 (일반 카테고리)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (일반 카테고리)",
+    "note": "카테고리 필터 GENERAL. 칩 토글",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/972_2.png"
+  },
+  {
+    "node": "978:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_PAYMENT",
+    "page_name": "1:1 문의 > 목록 (결제 카테고리)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (결제 카테고리)",
+    "note": "카테고리 필터 PAYMENT",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/978_2.png"
+  },
+  {
+    "node": "983:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_SETTLEMENT",
+    "page_name": "1:1 문의 > 목록 (정산 카테고리)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (정산 카테고리)",
+    "note": "카테고리 필터 SETTLEMENT",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/983_2.png"
+  },
+  {
+    "node": "985:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_TECH",
+    "page_name": "1:1 문의 > 목록 (기술 카테고리)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (기술 카테고리)",
+    "note": "카테고리 필터 TECHNICAL",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/985_2.png"
+  },
+  {
+    "node": "990:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_ACCOUNT",
+    "page_name": "1:1 문의 > 목록 (계정 카테고리)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 (계정 카테고리)",
+    "note": "카테고리 필터 ACCOUNT",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/990_2.png"
+  },
+  {
+    "node": "992:2",
+    "menu": "A-09 1:1 문의",
+    "page_id": "AD_INQUIRY_DT",
+    "page_name": "1:1 문의 > 상세 (메시지 스레드 드로어)",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 1:1 문의 > 목록 > 상세 드로어",
+    "note": "우측 슬라이드 드로어. 메시지 스레드+답변 등록. 답변 후 상태 자동전이 없음",
+    "kind": "variant",
+    "base_id": "AD_INQUIRY",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "capture": "captures/992_2.png"
+  },
+  {
+    "node": "918:2",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "page_id": "AD_SCRAPING",
+    "page_name": "스크래핑 장애 이력",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 시스템 > 스크래핑 장애 이력",
+    "note": "4개 매출원 수집 장애 이력. 기본 최근 30일. 조회 전용(조치 버튼 없음). 라우트 /scraping-incidents",
+    "kind": "base",
+    "base_id": "AD_SCRAPING",
+    "src_files": [
+      "app/scraping-incidents/page.tsx"
+    ],
+    "capture": "captures/918_2.png"
+  },
+  {
+    "node": "921:2",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "page_id": "AD_LOG",
+    "page_name": "활동 로그",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 시스템 > 활동 로그",
+    "note": "시스템 이벤트 로그(20건 페이지). '회수' 배지에 매출대금 회수·부채 회수 혼재(개념 분리 필요). 라우트 /activity-logs",
+    "kind": "base",
+    "base_id": "AD_LOG",
+    "src_files": [
+      "app/activity-logs/page.tsx"
+    ],
+    "capture": "captures/921_2.png"
+  },
+  {
+    "node": "928:2",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "page_id": "AD_AI",
+    "page_name": "AI 모니터링 어시스턴트",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 시스템 > AI 모니터링 어시스턴트",
+    "note": "시작(빈) 화면. 추천 질문 칩 4개. SSE 스트림 응답. 라우트 /log-analysis",
+    "kind": "base",
+    "base_id": "AD_AI",
+    "src_files": [
+      "app/log-analysis/page.tsx",
+      "services/logAnalysisService.ts"
+    ],
+    "capture": "captures/928_2.png"
+  },
+  {
+    "node": "933:2",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "page_id": "AD_AI_CUSTOM",
+    "page_name": "AI 모니터링 어시스턴트 > 시간범위 직접 지정",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 시스템 > AI 모니터링 어시스턴트 > 시간범위 직접 지정",
+    "note": "직접 지정 토글+datetime 입력. 시작>종료 유효성 검증 없음",
+    "kind": "variant",
+    "base_id": "AD_AI",
+    "src_files": [
+      "app/log-analysis/page.tsx",
+      "services/logAnalysisService.ts"
+    ],
+    "capture": "captures/933_2.png"
+  },
+  {
+    "node": "936:2",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "page_id": "AD_AI_ANSWER",
+    "page_name": "AI 모니터링 어시스턴트 > 질문 후 분석 응답",
+    "system": "pc",
+    "flow": "로그인 > 어드민 > 시스템 > AI 모니터링 어시스턴트 > 질문 후 분석 응답",
+    "note": "응답 메타 헤더+LogQL/원본 로그 토글+마크다운 분석",
+    "kind": "variant",
+    "base_id": "AD_AI",
+    "src_files": [
+      "app/log-analysis/page.tsx",
+      "services/logAnalysisService.ts"
+    ],
+    "capture": "captures/936_2.png"
+  },
+  {
+    "node": "939:2",
+    "menu": "A-11 인증",
+    "page_id": "AD_LOGIN",
+    "page_name": "관리자 로그인",
+    "system": "pc",
+    "flow": "페이허그 > 관리자 로그인",
+    "note": "로그인 전 화면. 아이디(휴대폰/사업자번호)+비밀번호. 허용 userType 7종만 진입, 쿠키 150분. 서버·클라 이중 게이트",
+    "kind": "base",
+    "base_id": "AD_LOGIN",
+    "src_files": [
+      "app/login/page.tsx",
+      "services/authService.ts"
+    ],
+    "capture": "captures/939_2.png"
+  },
+  {
+    "node": "833:2",
+    "menu": "M-01 랜딩/홈",
+    "page_id": "MC_LANDING",
+    "page_name": "랜딩 홈",
+    "system": "mobile web",
+    "flow": "페이허그 > 홈",
+    "note": "비로그인 마케팅+매출 실시간 조회 체험+리퍼럴/파트너 코드 수집. 정책문서 근거 부재로 대부분 가설",
+    "kind": "base",
+    "base_id": "MC_LANDING",
+    "src_files": [
+      "app/page.tsx",
+      "components/Header.tsx",
+      "components/InquirySection.tsx",
+      "components/Footer.tsx"
+    ],
+    "capture": "captures/833_2.png"
+  },
+  {
+    "node": "841:2",
+    "menu": "M-01 랜딩/홈",
+    "page_id": "MC_LANDING_FAQ",
+    "page_name": "랜딩 홈 > FAQ 펼침",
+    "system": "mobile web",
+    "flow": "페이허그 > 홈 > FAQ 펼침",
+    "note": "지급 캘린더 문구 C2 상충, 수수료 문구 C1, 최소 5만원 문구 확인 필요",
+    "kind": "variant",
+    "base_id": "MC_LANDING",
+    "src_files": [
+      "app/page.tsx",
+      "components/FAQItem.tsx"
+    ],
+    "capture": "captures/841_2.png"
+  },
+  {
+    "node": "846:2",
+    "menu": "M-01 랜딩/홈",
+    "page_id": "MC_LANDING_LOGIN",
+    "page_name": "랜딩 홈 > 로그인 필요 안내",
+    "system": "mobile web",
+    "flow": "페이허그 > 홈 > 선정산 신청(비로그인)",
+    "note": "신청 CTA 비로그인 분기 → /login?redirect=/dashboard?openModal=true",
+    "kind": "variant",
+    "base_id": "MC_LANDING",
+    "src_files": [
+      "app/page.tsx"
+    ],
+    "capture": "captures/846_2.png"
+  },
+  {
+    "node": "818:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_PW_RE",
+    "page_name": "비밀번호 찾기 > 2단계 비밀번호 재설정",
+    "system": "mobile web",
+    "flow": "페이허그 > 비밀번호 찾기 > 2단계 비밀번호 재설정",
+    "note": "식별필드 불일치(화면 {ci,password} vs authService {phoneNumber,newPassword}) — 백엔드 식별필드 미확정",
+    "kind": "base",
+    "base_id": "PH_PW_RE",
+    "src_files": [
+      "app/find-password/page.tsx",
+      "components/PasswordInput.tsx"
+    ],
+    "capture": "captures/818_2.png"
+  },
+  {
+    "node": "823:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_PW_FI_NONE",
+    "page_name": "비밀번호 찾기 > 1단계 본인 인증 > 미가입 번호",
+    "system": "mobile web",
+    "flow": "페이허그 > 비밀번호 찾기 > 1단계 본인 인증 > 미가입 번호 모달",
+    "note": "미가입 재설정 차단, [회원가입하기]→/signup",
+    "kind": "variant",
+    "base_id": "PH_PW_FI",
+    "src_files": [
+      "app/find-password/page.tsx"
+    ],
+    "capture": "captures/823_2.png"
+  },
+  {
+    "node": "829:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_PW_RE_DONE",
+    "page_name": "비밀번호 찾기 > 2단계 비밀번호 재설정 > 변경 완료",
+    "system": "mobile web",
+    "flow": "페이허그 > 비밀번호 찾기 > 2단계 비밀번호 재설정 > 변경 완료 모달",
+    "note": "[로그인하러 가기]→/login",
+    "kind": "variant",
+    "base_id": "PH_PW_RE",
+    "src_files": [
+      "app/find-password/page.tsx"
+    ],
+    "capture": "captures/829_2.png"
+  },
+  {
+    "node": "845:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_LO",
+    "page_name": "사장님 로그인",
+    "system": "mobile web",
+    "flow": "페이허그 > 로그인",
+    "note": "아이디=사업자번호 또는 휴대폰번호, 토큰 유효 150분",
+    "kind": "base",
+    "base_id": "PH_LO",
+    "src_files": [
+      "app/login/page.tsx",
+      "components/PasswordInput.tsx"
+    ],
+    "capture": "captures/845_2.png"
+  },
+  {
+    "node": "851:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_LO_COMPANY",
+    "page_name": "사장님 로그인 > 회사정보 펼침",
+    "system": "mobile web",
+    "flow": "페이허그 > 로그인 > 회사정보 펼침",
+    "note": "-",
+    "kind": "variant",
+    "base_id": "PH_LO",
+    "src_files": [
+      "app/login/page.tsx"
+    ],
+    "capture": "captures/851_2.png"
+  },
+  {
+    "node": "856:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_LO_EXPIRED",
+    "page_name": "사장님 로그인 > 세션 만료 안내",
+    "system": "mobile web",
+    "flow": "페이허그 > 로그인 > 세션 만료 토스트",
+    "note": "?reason=expired 진입, API 401 → clearAuth 흐름",
+    "kind": "variant",
+    "base_id": "PH_LO",
+    "src_files": [
+      "app/login/page.tsx",
+      "lib/apiClient.ts",
+      "lib/authStorage.ts"
+    ],
+    "capture": "captures/856_2.png"
+  },
+  {
+    "node": "862:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_LO_LOADING",
+    "page_name": "사장님 로그인 > 로그인 중 로딩",
+    "system": "mobile web",
+    "flow": "페이허그 > 로그인 > 로그인 중 로딩 오버레이",
+    "note": "-",
+    "kind": "variant",
+    "base_id": "PH_LO",
+    "src_files": [
+      "app/login/page.tsx"
+    ],
+    "capture": "captures/862_2.png"
+  },
+  {
+    "node": "868:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_TERMS",
+    "page_name": "회원가입 > 1단계 약관 동의",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 1단계 약관 동의",
+    "note": "필수 약관 목록은 GET /terms?type=signup 서버 설정 의존. 필수동의 계층=archive_02 §1.1(확정)",
+    "kind": "base",
+    "base_id": "PH_JO_TERMS",
+    "src_files": [
+      "app/signup/page.tsx"
+    ],
+    "capture": "captures/868_2.png"
+  },
+  {
+    "node": "873:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_TERMS_ALL",
+    "page_name": "회원가입 > 1단계 약관 동의 > 전체 동의",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 1단계 약관 동의 > 모두 동의",
+    "note": "-",
+    "kind": "variant",
+    "base_id": "PH_JO_TERMS",
+    "src_files": [
+      "app/signup/page.tsx"
+    ],
+    "capture": "captures/873_2.png"
+  },
+  {
+    "node": "878:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_TERMS_MODAL",
+    "page_name": "회원가입 > 1단계 약관 동의 > 약관 상세",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 1단계 약관 동의 > 약관 상세 모달",
+    "note": "공용 TermsModal",
+    "kind": "variant",
+    "base_id": "PH_JO_TERMS",
+    "src_files": [
+      "app/signup/page.tsx",
+      "components/TermsModal.tsx"
+    ],
+    "capture": "captures/878_2.png"
+  },
+  {
+    "node": "884:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_AUTH",
+    "page_name": "회원가입 > 2단계 본인 인증",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 2단계 본인 인증",
+    "note": "KCB 본인인증 게이트(정책문서 근거 없음, 가설). check-phone 중복 확인 선행",
+    "kind": "base",
+    "base_id": "PH_JO_AUTH",
+    "src_files": [
+      "app/signup/page.tsx"
+    ],
+    "capture": "captures/884_2.png"
+  },
+  {
+    "node": "890:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_PW",
+    "page_name": "회원가입 > 3단계 비밀번호 설정",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 3단계 비밀번호 설정",
+    "note": "비밀번호 정책 8~16자·영문+숫자+특수문자, 문서 근거 없음(가설)",
+    "kind": "base",
+    "base_id": "PH_JO_PW",
+    "src_files": [
+      "app/signup/page.tsx",
+      "components/PasswordInput.tsx"
+    ],
+    "capture": "captures/890_2.png"
+  },
+  {
+    "node": "894:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_PW_CHECK",
+    "page_name": "회원가입 > 3단계 비밀번호 설정 > 조건 체크리스트",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 3단계 비밀번호 설정 > 조건 체크리스트",
+    "note": "-",
+    "kind": "variant",
+    "base_id": "PH_JO_PW",
+    "src_files": [
+      "app/signup/page.tsx"
+    ],
+    "capture": "captures/894_2.png"
+  },
+  {
+    "node": "898:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_PW_TIP_CAPS",
+    "page_name": "회원가입 > 3단계 비밀번호 설정 > Caps Lock 경고",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 3단계 비밀번호 설정 > Caps Lock 경고 툴팁",
+    "note": "공용 PasswordInput 컴포넌트 툴팁",
+    "kind": "variant",
+    "base_id": "PH_JO_PW",
+    "src_files": [
+      "app/signup/page.tsx",
+      "components/PasswordInput.tsx"
+    ],
+    "capture": "captures/898_2.png"
+  },
+  {
+    "node": "901:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_AUTH_EXIST",
+    "page_name": "회원가입 > 2단계 본인 인증 > 이미 가입된 번호",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 2단계 본인 인증 > 이미 가입된 번호 모달",
+    "note": "중복 가입 차단, [로그인하기]→/login",
+    "kind": "variant",
+    "base_id": "PH_JO_AUTH",
+    "src_files": [
+      "app/signup/page.tsx"
+    ],
+    "capture": "captures/901_2.png"
+  },
+  {
+    "node": "904:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_JO_DONE",
+    "page_name": "회원가입 > 완료 환영",
+    "system": "mobile web",
+    "flow": "페이허그 > 회원가입 > 완료",
+    "note": "가입 성공 즉시 자동 로그인, ?name 인사. 라우트 /signup/complete",
+    "kind": "base",
+    "base_id": "PH_JO_DONE",
+    "src_files": [
+      "app/signup/complete/page.tsx"
+    ],
+    "capture": "captures/904_2.png"
+  },
+  {
+    "node": "907:2",
+    "menu": "M-02 인증",
+    "page_id": "PH_PW_FI",
+    "page_name": "비밀번호 찾기 > 1단계 본인 인증",
+    "system": "mobile web",
+    "flow": "페이허그 > 비밀번호 찾기 > 1단계 본인 인증",
+    "note": "check-phone 미가입이면 차단, KCB 인증(회원가입과 동일)",
+    "kind": "base",
+    "base_id": "PH_PW_FI",
+    "src_files": [
+      "app/find-password/page.tsx"
+    ],
+    "capture": "captures/907_2.png"
+  },
+  {
+    "node": "817:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_LOCK_VERIFY",
+    "page_name": "계약 신청 > 3단계 선정산 락계좌 > 1원 인증번호 입력",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 3단계 선정산 락계좌 > 1원 인증번호 입력",
+    "note": "info→verify 상태전이, 적요 페이허XXX 3자리 입력",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_LOCK_INFO",
+    "src_files": [
+      "app/contract/confirm-pre-payment/page.tsx"
+    ],
+    "capture": "captures/817_2.png"
+  },
+  {
+    "node": "824:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_LOCK_FASTINQ",
+    "page_name": "계약 신청 > 3단계 선정산 락계좌 > 빠른조회 미가입 안내",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 3단계 선정산 락계좌 > 빠른조회 미가입 안내",
+    "note": "verify→fast_inquiry, 빠른조회 미가입 시 진행 차단(게이트)",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_LOCK_INFO",
+    "src_files": [
+      "app/contract/confirm-pre-payment/page.tsx"
+    ],
+    "capture": "captures/824_2.png"
+  },
+  {
+    "node": "830:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_DEPOSIT_UPLOAD",
+    "page_name": "계약 신청 > 4단계 입금계좌 > 통장 업로드",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 4단계 입금계좌 > 통장 업로드",
+    "note": "GET /bank/status 진입 게이트, 자유 입출금 계좌. 용도 SETTLEMENT",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_DEPOSIT_UPLOAD",
+    "src_files": [
+      "app/contract/upload-settlement/page.tsx",
+      "services/contractService.ts"
+    ],
+    "capture": "captures/830_2.png"
+  },
+  {
+    "node": "834:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_DEPOSIT_GATE",
+    "page_name": "계약 신청 > 4단계 입금계좌 > 전용계좌 먼저 등록 게이트 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 4단계 입금계좌 > 전용계좌 먼저 등록 게이트 모달",
+    "note": "락계좌 미완료 시 락계좌 개설로 replace. 약관 제8조④",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_DEPOSIT_UPLOAD",
+    "src_files": [
+      "app/contract/upload-settlement/page.tsx"
+    ],
+    "capture": "captures/834_2.png"
+  },
+  {
+    "node": "840:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_DEPOSIT_INFO",
+    "page_name": "계약 신청 > 4단계 입금계좌 > 정보 확인(info)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 4단계 입금계좌 > 정보 확인",
+    "note": "락계좌와 달리 비밀번호·하나은행 제약·빠른조회 없음",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_DEPOSIT_INFO",
+    "src_files": [
+      "app/contract/confirm-settlement/page.tsx"
+    ],
+    "capture": "captures/840_2.png"
+  },
+  {
+    "node": "843:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT",
+    "page_name": "계약 신청 > 서류 준비 안내",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 서류 준비 안내",
+    "note": "6단계 완료 상태 병렬 조회, ApprovedContractGuard로 승인 재진입 차단",
+    "kind": "base",
+    "base_id": "MC_CONTRACT",
+    "src_files": [
+      "app/contract/page.tsx",
+      "app/contract/layout.tsx"
+    ],
+    "capture": "captures/843_2.png"
+  },
+  {
+    "node": "844:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_DEPOSIT_VERIFY",
+    "page_name": "계약 신청 > 4단계 입금계좌 > 1원 인증번호 입력",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 4단계 입금계좌 > 1원 인증번호 입력",
+    "note": "info→verify, confirm-and-register(빠른조회 분기 없음)",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_DEPOSIT_INFO",
+    "src_files": [
+      "app/contract/confirm-settlement/page.tsx"
+    ],
+    "capture": "captures/844_2.png"
+  },
+  {
+    "node": "848:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_EDIT",
+    "page_name": "계약 신청 > 서류 준비 안내 > 수정 모드",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 서류 준비 안내 > 수정 모드",
+    "note": "canEdit=edit=true 또는 PENDING일 때 각 단계 클릭 이동",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT",
+    "src_files": [
+      "app/contract/page.tsx"
+    ],
+    "capture": "captures/848_2.png"
+  },
+  {
+    "node": "850:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_PLATFORM",
+    "page_name": "계약 신청 > 5단계 플랫폼 계정 > 매출 연동 등록",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 5단계 플랫폼 계정 > 매출 연동 등록",
+    "note": "플랫폼 4종(CARD/BAEMIN/COUPANG/YOGIYO), 최소 1개 연동 게이트(정책 근거 없음, 가설)",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_PLATFORM",
+    "src_files": [
+      "app/contract/register-accounts/page.tsx",
+      "components/PlatformAccountsEditor.tsx"
+    ],
+    "capture": "captures/850_2.png"
+  },
+  {
+    "node": "854:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_PENDING",
+    "page_name": "계약 신청 > 서류 준비 안내 > 승인 대기 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 서류 준비 안내 > 승인 대기 모달",
+    "note": "모든 서류·계약서 완료 후 재진입 시 노출",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT",
+    "src_files": [
+      "app/contract/page.tsx"
+    ],
+    "capture": "captures/854_2.png"
+  },
+  {
+    "node": "855:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 약관 동의",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 약관 동의",
+    "note": "ACTIVE 연동 진입 게이트(가설). flowStep terms. 필수동의=archive_02 §1.1",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx",
+      "components/TermsModal.tsx"
+    ],
+    "capture": "captures/855_2.png"
+  },
+  {
+    "node": "859:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_BIZ_UPLOAD",
+    "page_name": "계약 신청 > 1단계 사업자등록증 > 업로드(개인)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 1단계 사업자등록증 > 업로드",
+    "note": "최대 3장, POST /ocr/analyze-business",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_BIZ_UPLOAD",
+    "src_files": [
+      "app/contract/upload-business/page.tsx"
+    ],
+    "capture": "captures/859_2.png"
+  },
+  {
+    "node": "861:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN_ALLAGREE",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 약관 필수 전체 동의",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 약관 필수 전체 동의",
+    "note": "필수(is_required) 전체 동의 시 다음 단계 활성",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx"
+    ],
+    "capture": "captures/861_2.png"
+  },
+  {
+    "node": "864:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_BIZ_UPLOAD_CORP",
+    "page_name": "계약 신청 > 1단계 사업자등록증 > 업로드(법인 선택)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 1단계 사업자등록증 > 업로드 > 법인 선택",
+    "note": "OCR 사업자번호로 유형 자동 보정 가능",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_BIZ_UPLOAD",
+    "src_files": [
+      "app/contract/upload-business/page.tsx"
+    ],
+    "capture": "captures/864_2.png"
+  },
+  {
+    "node": "866:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN_TERMSMODAL",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 약관 상세 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 약관 상세 모달",
+    "note": "공용 TermsModal",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx",
+      "components/TermsModal.tsx"
+    ],
+    "capture": "captures/866_2.png"
+  },
+  {
+    "node": "870:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN_PREVIEW",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 계약서 미리보기(Step2)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 계약서 미리보기",
+    "note": "POST /signature/generate-contract 계약서 이미지 생성, flowStep preview",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx"
+    ],
+    "capture": "captures/870_2.png"
+  },
+  {
+    "node": "871:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_BIZ_INFO",
+    "page_name": "계약 신청 > 1단계 사업자등록증 > 정보 확인(개인·OCR힌트)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 1단계 사업자등록증 > 정보 확인",
+    "note": "POST /business/verify(VERIFIED) → /business/register",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_BIZ_INFO",
+    "src_files": [
+      "app/contract/confirm-business/page.tsx"
+    ],
+    "capture": "captures/871_2.png"
+  },
+  {
+    "node": "876:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN_PREVIEW_ZOOM",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 계약서 미리보기 확대(Step2)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 계약서 미리보기 확대",
+    "note": "확대 200% 토글",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx"
+    ],
+    "capture": "captures/876_2.png"
+  },
+  {
+    "node": "877:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_BIZ_INFO_CORP",
+    "page_name": "계약 신청 > 1단계 사업자등록증 > 정보 확인(법인)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 1단계 사업자등록증 > 정보 확인 > 법인",
+    "note": "법인 추가 필드(법인등록번호·본점소재지 등)",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_BIZ_INFO",
+    "src_files": [
+      "app/contract/confirm-business/page.tsx"
+    ],
+    "capture": "captures/877_2.png"
+  },
+  {
+    "node": "881:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN_INPUT",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 서명·수수료율 입력(Step3)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 서명·수수료율 입력",
+    "note": "채권매입 수수료율 자유 입력 = C1 지뢰, 검증·기본값·상하한 없음. feeRate가 계약서 PDF에 그대로 삽입",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx",
+      "components/ContractSignInput.tsx"
+    ],
+    "capture": "captures/881_2.png"
+  },
+  {
+    "node": "882:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_ID_UPLOAD",
+    "page_name": "계약 신청 > 2단계 신분증 > 업로드",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 2단계 신분증 > 업로드",
+    "note": "POST /ocr/analyze-identity, 마스킹 실패 시 fail-closed. 원본 미보관",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_ID_UPLOAD",
+    "src_files": [
+      "app/contract/upload-identity/page.tsx"
+    ],
+    "capture": "captures/882_2.png"
+  },
+  {
+    "node": "885:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN_CONFIRM",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 최종 계약서 확인(Step4)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 최종 계약서 확인",
+    "note": "서명·수수료율 반영 최종본, POST /contracts 저장 시 PENDING(심사 대기)",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx"
+    ],
+    "capture": "captures/885_2.png"
+  },
+  {
+    "node": "887:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_ID_INFO",
+    "page_name": "계약 신청 > 2단계 신분증 > 정보 확인(주민등록증)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 2단계 신분증 > 정보 확인",
+    "note": "POST /identity/register",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_ID_INFO",
+    "src_files": [
+      "app/contract/confirm-identity/page.tsx"
+    ],
+    "capture": "captures/887_2.png"
+  },
+  {
+    "node": "889:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_SIGN_DONE",
+    "page_name": "계약 신청 > 6단계 비대면 계약 > 계약 동의 완료 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 6단계 비대면 계약 > 계약 동의 완료 모달",
+    "note": "완료 후 대시보드로 이동(수정 모드면 /contract?edit)",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_SIGN",
+    "src_files": [
+      "app/contract/terms/page.tsx"
+    ],
+    "capture": "captures/889_2.png"
+  },
+  {
+    "node": "891:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_ID_INFO_DRIVER",
+    "page_name": "계약 신청 > 2단계 신분증 > 정보 확인(운전면허증)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 2단계 신분증 > 정보 확인 > 운전면허증",
+    "note": "신분증 종류 읽기전용",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_ID_INFO",
+    "src_files": [
+      "app/contract/confirm-identity/page.tsx"
+    ],
+    "capture": "captures/891_2.png"
+  },
+  {
+    "node": "895:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_LOCK_APPLY",
+    "page_name": "계약 신청 > 3단계 선정산 락계좌 > 계좌 개설 안내(QR·PC)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 3단계 선정산 락계좌 > 계좌 개설 안내",
+    "note": "출금전용 우선 개설, 20일 룰 안내(가설). 하나은행 My브랜치",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_LOCK_APPLY",
+    "src_files": [
+      "app/contract/apply-pre-payment/page.tsx"
+    ],
+    "capture": "captures/895_2.png"
+  },
+  {
+    "node": "899:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_LOCK_UPLOAD",
+    "page_name": "계약 신청 > 3단계 선정산 락계좌 > 통장 업로드",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 3단계 선정산 락계좌 > 통장 업로드",
+    "note": "POST /ocr/analyze-account (용도 PRE_PAYMENT)",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_LOCK_UPLOAD",
+    "src_files": [
+      "app/contract/upload-pre-payment/page.tsx"
+    ],
+    "capture": "captures/899_2.png"
+  },
+  {
+    "node": "903:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_LOCK_INFO",
+    "page_name": "계약 신청 > 3단계 선정산 락계좌 > 정보 확인(info·비밀번호)",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 3단계 선정산 락계좌 > 정보 확인",
+    "note": "락계좌=하나은행(081) 강제, 출금비번 4자리. 이용계약 제7조① 지정계좌=하나은행",
+    "kind": "base",
+    "base_id": "MC_CONTRACT_LOCK_INFO",
+    "src_files": [
+      "app/contract/confirm-pre-payment/page.tsx",
+      "services/contractService.ts"
+    ],
+    "capture": "captures/903_2.png"
+  },
+  {
+    "node": "906:2",
+    "menu": "M-03 계약",
+    "page_id": "MC_CONTRACT_LOCK_FASTGUIDE",
+    "page_name": "계약 신청 > 3단계 선정산 락계좌 > 빠른조회 가입방법 펼침",
+    "system": "mobile web",
+    "flow": "로그인 > 계약 > 3단계 선정산 락계좌 > 빠른조회 가입방법 펼침",
+    "note": "하나은행 빠른조회 가입 5단계 아코디언",
+    "kind": "variant",
+    "base_id": "MC_CONTRACT_LOCK_INFO",
+    "src_files": [
+      "app/contract/confirm-pre-payment/page.tsx"
+    ],
+    "capture": "captures/906_2.png"
+  },
+  {
+    "node": "853:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH",
+    "page_name": "대시보드 > 미리 받는 돈 (승인 사업자)",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 미리 받는 돈",
+    "note": "승인 사업자 기본 화면; PreSettlementCard의 '미리 받는 돈'(transferAmount) 지급 캘린더 C2 미확정",
+    "kind": "base",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx",
+      "app/dashboard/layout.tsx",
+      "hooks/useDashboard.ts",
+      "components/dashboard/PreSettlementCard.tsx"
+    ],
+    "capture": "captures/853_2.png"
+  },
+  {
+    "node": "860:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_DONE",
+    "page_name": "대시보드 > 계약 완료 카드 (최초 1회)",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 계약 완료 카드",
+    "note": "승인 사업자 최초 1회 노출; localStorage 열람 플래그로 재노출 차단",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx"
+    ],
+    "capture": "captures/860_2.png"
+  },
+  {
+    "node": "867:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_BIZSEL",
+    "page_name": "대시보드 > 사업자 선택 드롭다운",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 사업자 선택 드롭다운",
+    "note": "다중 사업자 선택; 하단 '사업자 추가' → 계약 업로드",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx"
+    ],
+    "capture": "captures/867_2.png"
+  },
+  {
+    "node": "872:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_PENDING",
+    "page_name": "대시보드 > 사업자 선택 > 승인 대기 안내 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 사업자 선택 > 승인 대기 안내 모달",
+    "note": "심사대기(PENDING)+서식완료 시 노출; '서류 수정하기' → 계약 편집",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx"
+    ],
+    "capture": "captures/872_2.png"
+  },
+  {
+    "node": "880:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_UNAPPROVED",
+    "page_name": "대시보드 > 매출 조회 (미승인 사업자)",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 매출 조회 (미승인 사업자)",
+    "note": "미승인 사업자 사전 매출조회; 저장 없이 예상 금액만; '미리 받을 수 있는 금액' 정의 C1·C4",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx",
+      "components/InquirySection.tsx"
+    ],
+    "capture": "captures/880_2.png"
+  },
+  {
+    "node": "886:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_INQUIRY",
+    "page_name": "대시보드 > 매출 조회 > 계정 입력 폼",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 매출 조회 > 계정 입력 폼",
+    "note": "InquirySection 계정(아이디·비번) 입력 폼 펼침; 조회 시 계정 미저장",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx",
+      "components/InquirySection.tsx"
+    ],
+    "capture": "captures/886_2.png"
+  },
+  {
+    "node": "892:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_APPLIED",
+    "page_name": "대시보드 > 이미 계약 신청 완료 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 이미 계약 신청 완료 모달",
+    "note": "계약 확인 분기에서 계약 존재 시 노출",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx"
+    ],
+    "capture": "captures/892_2.png"
+  },
+  {
+    "node": "897:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_PROGRESS",
+    "page_name": "대시보드 > 계약 현황 > 진행 스텝 카드",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 계약 현황 > 진행 스텝 카드",
+    "note": "PENDING 3단계 진행바; '입금까지 최대 4일' 리드타임 문구 C2",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx"
+    ],
+    "capture": "captures/897_2.png"
+  },
+  {
+    "node": "902:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_REJECT",
+    "page_name": "대시보드 > 계약 현황 > 반려·중지 카드",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 계약 현황 > 반려·중지 카드",
+    "note": "반려(서식미완, 다시 계약하기)·중지(서식완료, 고객센터 안내) 공용 카드",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx"
+    ],
+    "capture": "captures/902_2.png"
+  },
+  {
+    "node": "905:2",
+    "menu": "M-04 대시보드",
+    "page_id": "MC_DASH_RESIGN",
+    "page_name": "대시보드 > 계약 재서명 필요 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 대시보드 > 계약 재서명 필요 모달",
+    "note": "resignRequired=true 강제 모달; 닫기·확인 모두 재서명 페이지로 이동(무시 불가)",
+    "kind": "variant",
+    "base_id": "MC_DASH",
+    "src_files": [
+      "app/dashboard/page.tsx"
+    ],
+    "capture": "captures/905_2.png"
+  },
+  {
+    "node": "828:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_AC",
+    "page_name": "계좌 입금 내역",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 계좌 입금 내역",
+    "note": "하나은행 전용계좌 실제 입금 리스트",
+    "kind": "base",
+    "base_id": "ST_AC",
+    "src_files": [
+      "app/settlement/account/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/828_2.png"
+  },
+  {
+    "node": "835:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_AC_EX",
+    "page_name": "계좌 입금 내역 > 선정산 제외액 내역",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 계좌 입금 내역 > 선정산 제외액 내역",
+    "note": "선정산 제외액 상세 내역(별도 라우트 /account/excluded)",
+    "kind": "base",
+    "base_id": "ST_AC_EX",
+    "src_files": [
+      "app/settlement/account/excluded/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/835_2.png"
+  },
+  {
+    "node": "863:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_MA",
+    "page_name": "미리 받는 돈",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 미리 받는 돈",
+    "note": "입금일별 실제 이체액을 카드·배달앱·페이허그 3분류로 표시; transferAmount 표시 지급 캘린더 C2",
+    "kind": "base",
+    "base_id": "ST_MA",
+    "src_files": [
+      "app/settlement/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/863_2.png"
+  },
+  {
+    "node": "874:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_MA_CARD",
+    "page_name": "미리 받는 돈 > 카드사별 상세",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 미리 받는 돈 > 카드사별 상세",
+    "note": "카드사 9개 고정 노출; 승인 내역 10건 페이징; 페이허그 수수료율 C1",
+    "kind": "variant",
+    "base_id": "ST_MA",
+    "src_files": [
+      "app/settlement/card/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/874_2.png"
+  },
+  {
+    "node": "879:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_MA_CARD_DT",
+    "page_name": "미리 받는 돈 > 카드사별 상세 > 카드 거래 상세",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 미리 받는 돈 > 카드사별 상세 > 카드 거래 상세",
+    "note": "거래 단위 상세; id는 UnifiedPurchaseLedger 기준",
+    "kind": "variant",
+    "base_id": "ST_MA",
+    "src_files": [
+      "app/settlement/card/transaction/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/879_2.png"
+  },
+  {
+    "node": "883:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_MA_DELIV",
+    "page_name": "미리 받는 돈 > 배달앱별 상세",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 미리 받는 돈 > 배달앱별 상세",
+    "note": "배민·쿠팡이츠·요기요 3개 고정; 만나서결제 차감만 있어도 진입 가능",
+    "kind": "variant",
+    "base_id": "ST_MA",
+    "src_files": [
+      "app/settlement/delivery/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/883_2.png"
+  },
+  {
+    "node": "893:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_MA_DELIV_DT",
+    "page_name": "미리 받는 돈 > 배달앱별 상세 > 배달 주문 상세",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 미리 받는 돈 > 배달앱별 상세 > 배달 주문 상세",
+    "note": "주문 단위 상세; 만나서결제 차감 포함",
+    "kind": "variant",
+    "base_id": "ST_MA",
+    "src_files": [
+      "app/settlement/delivery/order/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/893_2.png"
+  },
+  {
+    "node": "896:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_DIFF",
+    "page_name": "예상 지급 차액",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 예상 지급 차액",
+    "note": "예상 수수료율 선지급 후 실제 정산 차액 내역; 정의·요율 C1·C4",
+    "kind": "base",
+    "base_id": "ST_DIFF",
+    "src_files": [
+      "app/settlement/adjustments/page.tsx",
+      "services/salesService.ts"
+    ],
+    "capture": "captures/896_2.png"
+  },
+  {
+    "node": "1066:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_MA_TIP_DIFF",
+    "page_name": "미리 받는 돈 > 예상 지급 차액 툴팁",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 미리 받는 돈 > 예상 지급 차액 툴팁",
+    "note": "'예상 카드 수수료율 기준 지급, 차액 차기 반영' 안내; 예상 지급 차액 정의 C4 미확정",
+    "kind": "variant",
+    "base_id": "ST_MA",
+    "src_files": [
+      "app/settlement/page.tsx"
+    ],
+    "capture": "captures/1066_2.png"
+  },
+  {
+    "node": "1067:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_MA_DELIV_TIP",
+    "page_name": "미리 받는 돈 > 배달앱별 상세 > 광고비 툴팁",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 미리 받는 돈 > 배달앱별 상세 > 광고비 툴팁",
+    "note": "배달앱 광고비 차감 안내 툴팁",
+    "kind": "variant",
+    "base_id": "ST_MA",
+    "src_files": [
+      "app/settlement/delivery/page.tsx"
+    ],
+    "capture": "captures/1067_2.png"
+  },
+  {
+    "node": "1068:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_DIFF_TIP_NORMAL",
+    "page_name": "예상 지급 차액 > 일반 차액 툴팁",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 예상 지급 차액 > 일반 차액 툴팁",
+    "note": "환급(+)·차감(-) 순액 산정 안내 툴팁",
+    "kind": "variant",
+    "base_id": "ST_DIFF",
+    "src_files": [
+      "app/settlement/adjustments/page.tsx"
+    ],
+    "capture": "captures/1068_2.png"
+  },
+  {
+    "node": "1069:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_DIFF_TIP_MEET_DONE",
+    "page_name": "예상 지급 차액 > 만나서결제 회수 툴팁 (회수 완료)",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 예상 지급 차액 > 만나서결제 회수 툴팁 (회수 완료)",
+    "note": "만나서결제 회수 완료 상태 툴팁",
+    "kind": "variant",
+    "base_id": "ST_DIFF",
+    "src_files": [
+      "app/settlement/adjustments/page.tsx"
+    ],
+    "capture": "captures/1069_2.png"
+  },
+  {
+    "node": "1070:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_DIFF_TIP_MEET_PLAN",
+    "page_name": "예상 지급 차액 > 만나서결제 회수 툴팁 (회수 예정)",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 예상 지급 차액 > 만나서결제 회수 툴팁 (회수 예정)",
+    "note": "만나서결제 회수 예정 상태 툴팁",
+    "kind": "variant",
+    "base_id": "ST_DIFF",
+    "src_files": [
+      "app/settlement/adjustments/page.tsx"
+    ],
+    "capture": "captures/1070_2.png"
+  },
+  {
+    "node": "1071:2",
+    "menu": "M-05 정산",
+    "page_id": "ST_AC_EX_TIP",
+    "page_name": "계좌 입금 내역 > 선정산 제외액 내역 > 행 툴팁",
+    "system": "mobile web",
+    "flow": "로그인 > 정산 > 계좌 입금 내역 > 선정산 제외액 내역 > 행 툴팁",
+    "note": "선정산 제외액 행별 사유 안내 툴팁",
+    "kind": "variant",
+    "base_id": "ST_AC_EX",
+    "src_files": [
+      "app/settlement/account/excluded/page.tsx"
+    ],
+    "capture": "captures/1071_2.png"
+  },
+  {
+    "node": "812:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO",
+    "page_name": "내 정보 관리",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 내 정보 관리",
+    "note": "이름·휴대전화번호 읽기전용 표시(수정 불가). 계약정보/연동계정/1:1문의/비밀번호 변경 이동 허브. 이중 인증가드",
+    "kind": "base",
+    "base_id": "MC_MYINFO",
+    "src_files": [
+      "app/my-info/page.tsx",
+      "app/my-info/layout.tsx"
+    ],
+    "capture": "captures/812_2.png"
+  },
+  {
+    "node": "816:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_CONTRACT",
+    "page_name": "계약 정보 조회",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 계약 정보 조회",
+    "note": "계좌·사업자·신분증·증빙·전자계약서·약관동의 조회 전용. 수정은 1:1문의 경유. 등록계좌 UI라벨↔계약용어(락계좌/입금계좌) 매핑 미확정",
+    "kind": "base",
+    "base_id": "MC_MYINFO_CONTRACT",
+    "src_files": [
+      "app/my-info/contract/page.tsx"
+    ],
+    "capture": "captures/816_2.png"
+  },
+  {
+    "node": "822:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_CONTRACT_PREVIEW",
+    "page_name": "계약 정보 조회 > 증빙서류 미리보기",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 계약 정보 조회 > 증빙서류 미리보기",
+    "note": "보기 클릭 시 다운로드 URL 발급 후 PDF=iframe·이미지=img 렌더. 배경/X 닫기",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_CONTRACT",
+    "src_files": [
+      "app/my-info/contract/page.tsx"
+    ],
+    "capture": "captures/822_2.png"
+  },
+  {
+    "node": "825:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_INQUIRY_LIST",
+    "page_name": "1:1 문의 > 목록",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 1:1 문의",
+    "note": "842:2(1:1 문의 기본)와 동일 화면 재캡처(IA M-06 중복). 문의 목록 뷰",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_INQUIRY",
+    "src_files": [
+      "app/my-info/inquiries/page.tsx",
+      "components/dashboard/InquiryCard.tsx"
+    ],
+    "capture": "captures/825_2.png"
+  },
+  {
+    "node": "826:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_CONTRACT_TERMS",
+    "page_name": "계약 정보 조회 > 약관 내용",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 계약 정보 조회 > 약관 내용",
+    "note": "약관 동의 내역 행 클릭 시 오픈. 줄바꿈 유지, 내용 없으면 '내용 없음'",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_CONTRACT",
+    "src_files": [
+      "app/my-info/contract/page.tsx"
+    ],
+    "capture": "captures/826_2.png"
+  },
+  {
+    "node": "831:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_ACCOUNTS",
+    "page_name": "연동 계정 관리",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 연동 계정 관리",
+    "note": "플랫폼 4종(여신협회·배민·쿠팡이츠·요기요) 연결상태 배지. AUTH_FAILED/SCRAPING_ERROR 문구가 05§5 순화매핑과 충돌(확인 필요)",
+    "kind": "base",
+    "base_id": "MC_MYINFO_ACCOUNTS",
+    "src_files": [
+      "app/my-info/accounts/page.tsx",
+      "components/PlatformAccountsManager.tsx"
+    ],
+    "capture": "captures/831_2.png"
+  },
+  {
+    "node": "832:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_INQUIRY_NEW_ALT",
+    "page_name": "1:1 문의 > 문의 작성",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 1:1 문의 > 문의 작성",
+    "note": "847:2(문의 작성 모달)와 동일 화면 재캡처(IA M-06 중복)",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_INQUIRY",
+    "src_files": [
+      "components/dashboard/InquiryModal.tsx"
+    ],
+    "capture": "captures/832_2.png"
+  },
+  {
+    "node": "836:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_ACCOUNTS_EDIT",
+    "page_name": "연동 계정 관리 > 계정 변경 폼",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 연동 계정 관리 > 계정 변경",
+    "note": "아이디·새 비밀번호 입력 후 저장→실제 매출조회로 자격증명 검증. 저장 비번은 마스킹 표시",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_ACCOUNTS",
+    "src_files": [
+      "app/my-info/accounts/page.tsx",
+      "components/PlatformAccountsManager.tsx",
+      "components/PlatformAccountsEditor.tsx"
+    ],
+    "capture": "captures/836_2.png"
+  },
+  {
+    "node": "838:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_INQUIRY_DT_ALT",
+    "page_name": "1:1 문의 > 상세 대화",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 1:1 문의 > 문의 상세",
+    "note": "852:2(문의 상세 드로어)와 동일 화면 재캡처(IA M-06 중복). 상세 대화 드로어",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_INQUIRY",
+    "src_files": [
+      "components/dashboard/InquiryPanel.tsx"
+    ],
+    "capture": "captures/838_2.png"
+  },
+  {
+    "node": "842:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_INQUIRY",
+    "page_name": "1:1 문의",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 1:1 문의",
+    "note": "사업자 단위 문의 목록. 미답변 카운트·NEW 뱃지. 승인 여부 무관 사업자 있으면 이용 가능",
+    "kind": "base",
+    "base_id": "MC_MYINFO_INQUIRY",
+    "src_files": [
+      "app/my-info/inquiries/page.tsx",
+      "components/dashboard/InquiryCard.tsx"
+    ],
+    "capture": "captures/842_2.png"
+  },
+  {
+    "node": "847:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_INQUIRY_NEW",
+    "page_name": "1:1 문의 > 문의 작성",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 1:1 문의 > 문의 작성",
+    "note": "카테고리 5종(일반·결제·정산·기술·계정)·제목·내용. 제목·내용 필수",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_INQUIRY",
+    "src_files": [
+      "components/dashboard/InquiryModal.tsx"
+    ],
+    "capture": "captures/847_2.png"
+  },
+  {
+    "node": "852:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_INQUIRY_DT",
+    "page_name": "1:1 문의 > 문의 상세",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 1:1 문의 > 문의 상세",
+    "note": "우측 상세 드로어 메시지 스레드(나/페이허그 고객센터). CLOSED면 답장 불가. Ctrl/Cmd+Enter 전송",
+    "kind": "variant",
+    "base_id": "MC_MYINFO_INQUIRY",
+    "src_files": [
+      "components/dashboard/InquiryPanel.tsx"
+    ],
+    "capture": "captures/852_2.png"
+  },
+  {
+    "node": "858:2",
+    "menu": "M-06 내정보",
+    "page_id": "MC_MYINFO_PW",
+    "page_name": "비밀번호 변경",
+    "system": "mobile web",
+    "flow": "로그인 > 내 정보 > 비밀번호 변경",
+    "note": "현재/새/확인 입력·정책 체크(8~16자·영문·숫자·특수). 변경 성공 시 1.5초 후 강제 로그아웃·재로그인",
+    "kind": "base",
+    "base_id": "MC_MYINFO_PW",
+    "src_files": [
+      "app/my-info/change-password/page.tsx"
+    ],
+    "capture": "captures/858_2.png"
+  },
+  {
+    "node": "820:2",
+    "menu": "M-08 알림",
+    "page_id": "MC_NOTI",
+    "page_name": "알림 목록 (빈 상태)",
+    "system": "mobile web",
+    "flow": "로그인 > 알림 > 목록",
+    "note": "알림 조회 API·읽음 처리 미연동. '안 읽은 알림 0개' 하드코딩·'모두 읽음' 핸들러 부재·항상 '받은 알림이 없습니다' 빈 상태",
+    "kind": "base",
+    "base_id": "MC_NOTI",
+    "src_files": [
+      "app/notifications/page.tsx"
+    ],
+    "capture": "captures/820_2.png"
+  },
+  {
+    "node": "815:2",
+    "menu": "M-09 공통",
+    "page_id": "MC_COMMON_MENU",
+    "page_name": "모바일 메뉴 드로어",
+    "system": "mobile web",
+    "flow": "로그인 > 공통 > 모바일 메뉴 드로어",
+    "note": "헤더 햄버거 토글(md 미만 전용). 로그인 시 대시보드·알림·내 정보·1:1문의·로그아웃 링크. 백드롭 클릭 닫기",
+    "kind": "base",
+    "base_id": "MC_COMMON_MENU",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "capture": "captures/815_2.png"
+  },
+  {
+    "node": "908:2",
+    "menu": "M-09 공통",
+    "page_id": "MC_COMMON_PROFILE",
+    "page_name": "프로필 드롭다운",
+    "system": "mobile web",
+    "flow": "로그인 > 공통 > 프로필 드롭다운",
+    "note": "데스크톱 프로필 버튼 토글. 내 정보·1:1문의·로그아웃 3종. 녹색 인증배지 의미·표시조건 미정의(확인 필요)",
+    "kind": "base",
+    "base_id": "MC_COMMON_PROFILE",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "capture": "captures/908_2.png"
+  },
+  {
+    "node": "909:2",
+    "menu": "M-09 공통",
+    "page_id": "MC_COMMON_LOGOUT",
+    "page_name": "로그아웃 확인 모달",
+    "system": "mobile web",
+    "flow": "로그인 > 공통 > 로그아웃 확인",
+    "note": "프로필 드롭다운/모바일 드로어 로그아웃에서 오픈. 확인 시 쿠키·로컬·세션 인증정보 삭제 후 /login 이동",
+    "kind": "base",
+    "base_id": "MC_COMMON_LOGOUT",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "capture": "captures/909_2.png"
+  },
+  {
+    "node": "910:2",
+    "menu": "M-09 공통",
+    "page_id": "MC_COMMON_NOTI_DD",
+    "page_name": "알림 드롭다운",
+    "system": "mobile web",
+    "flow": "로그인 > 공통 > 알림 드롭다운",
+    "note": "데스크톱 알림 벨 토글(로그인·md 이상). 항상 '받은 알림이 없습니다' 하드코딩 빈 상태. '더보기'→/notifications",
+    "kind": "base",
+    "base_id": "MC_COMMON_NOTI_DD",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "capture": "captures/910_2.png"
+  }
+]

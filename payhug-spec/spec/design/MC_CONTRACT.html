@@ -1,0 +1,110 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계약 신청 &gt; 서류 준비 안내</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_CONTRACT</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 계약 &gt; 서류 준비 안내</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">6단계 완료 상태 병렬 조회, ApprovedContractGuard로 승인 재진입 차단</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/843_2.png" alt="계약 신청 &gt; 서류 준비 안내">
+        <div class="dim" style="left:24%;top:8.3%;height:1.3%"></div>
+        <div class="mk" style="left:24%;top:8.9%">1</div>
+        <div class="dim" style="left:5.5%;top:14.4%;height:4.5%"></div>
+        <div class="mk" style="left:5.5%;top:16.6%">2</div>
+        <div class="dim" style="left:5.5%;top:20.7%;height:21.9%"></div>
+        <div class="mk" style="left:5.5%;top:32%">3</div>
+        <div class="dim" style="left:5.5%;top:43.6%;height:6.4%"></div>
+        <div class="mk" style="left:5.5%;top:47%">4</div>
+        <div class="dim" style="left:5.5%;top:52.8%;height:4.4%"></div>
+        <div class="mk" style="left:5.5%;top:55.1%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;선정산 온보딩 관문 — 계약에 필요한 <b>6단계 서류·계약</b> 진행 상황을 한 화면에서 확인·재개</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;캡처는 <b>6단계 전부 완료</b>(모든 항목 체크)된 예시 상태</span>
+        <span class="b"><span class="g">진입·가드</span> &nbsp;로그인 필수 · 이미 <b>승인된 사업자</b>가 그냥 들어오면 대시보드로 되돌림 (수정·재서명·사업자추가 흐름은 예외 · 조회 실패 시엔 차단 안 함)</span>
+        <span class="b"><span class="g">로드</span> &nbsp;진입 시 락계좌·입금계좌·사업자·신분증 등록 여부 + 플랫폼 연동·계약서 작성·계약상태를 <b>한 번에(병렬)</b> 조회해 체크마크·진행바 채움</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진행바</td><td class="kn-note">
+<span class="b">상단 <b>6칸 막대</b> 진행 표시</span><span class="i">1칸 : 항상 켜짐(진녹색)</span><span class="i">2~5칸 : <b>사업자·신분증·락계좌·입금계좌</b> 완료 시 각각 진녹색으로 켜짐</span><span class="i">6칸 : 항상 연회색(꺼짐) — 이 화면에서 안 채워짐</span><span class="i">미완료 칸 = 연회색</span><span class="i red">6칸이지만 <b>5단계(플랫폼)·6단계(계약) 완료는 진행바에 반영 안 됨</b> — 상태와 연동되는 건 2~5칸(4개)뿐(개발 확인 필요)</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">헤드<br>라인</td><td class="kn-note">
+<span class="b">제목 <b>"계약 전 사진을 준비해 주세요"</b></span><span class="b">안내문 "미리 준비하면, 빠르게 신청할 수 있어요"</span><span class="i">수정 모드로 들어오면 문구가 바뀜 → <b>[MC_CONTRACT_EDIT]</b></span><span class="i">수정 모드 = <b>수정 링크로 진입</b>, 또는 계약이 <b>심사대기</b> 상태여서 자동 전환</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">서류<br>단계</td><td class="kn-note">
+<span class="grp">6개 서류·계약 단계 (라벨 원문)</span><span class="i"><b>1</b> 사업자등록증 사진</span><span class="i"><b>2</b> 신분증 사진 (주민등록증/운전면허증)</span><span class="i"><b>3</b> 선정산 전용 계좌(락계좌) 통장사진</span><span class="i"><b>4</b> 입금 받을 계좌 통장사진</span><span class="i"><b>5</b> 플랫폼 계정 등록</span><span class="i"><b>6</b> 비대면 계약 동의</span><span class="grp">완료 표시</span><span class="i">완료 단계 = <b>연두 네모 체크</b></span><span class="i">미완료 단계 = <b>초록 테두리 원 안 초록 번호</b> (회색 아님)</span><span class="b">이 화면(비수정)에서는 항목이 <b>안내용</b> — 눌러도 이동하지 않음</span><span class="i">항목 클릭 이동은 수정 모드에서만 <b>[MC_CONTRACT_EDIT]</b></span><span class="i">5번 완료 판정 = 매출 <b>연동 성공 계정 1개 이상</b> · 실패/대기만 있으면 미완료</span><span class="i red">5번 '최소 1개 플랫폼 연동' 요건은 코드 관찰값 · 정책 근거 없음(개발·정책 확인 필요)</span><span class="i red">3·4번 계좌 라벨 원문 고수 — '선정산 전용 계좌(락계좌)'·'입금 받을 계좌', '정산계좌' 등으로 순화 금지</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">통장<br>안내</td><td class="kn-note">
+<span class="b"><b>비수정 모드에서만</b> 노출되는 하나은행 통장사진 안내</span><span class="i">"하나은행 앱으로 통장 사진을 쉽게 확인 할 수 있어요"</span><span class="i">"하나은행 앱 &gt; 계좌설정 &gt; 통장사본확인 &gt; 이미지 저장"</span><span class="i">수정 모드에서는 이 안내가 사라짐 → <b>[MC_CONTRACT_EDIT]</b></span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">하단<br>버튼</td><td class="kn-note">
+<span class="b">라벨 <b>"준비 완료"</b></span><span class="b">누르면 아직 끝내지 않은 <b>첫 단계</b>로 이동</span><span class="i">순서 : 사업자 → 신분증 → 락계좌(계좌 신청) → 입금계좌</span><span class="i">4단계까지 끝났으면 : 계약서까지 완료 → <b>승인 대기 모달</b> [MC_CONTRACT_PENDING] / 플랫폼만 완료 → 계약(약관) / 아니면 → 플랫폼 연동</span><span class="i">락계좌는 이동 경로가 갈림 — 단계 클릭(수정)은 <b>통장 업로드</b>, '준비 완료'는 <b>계좌 신청</b> 화면</span><span class="i red">승인(심사 통과) 전환 조건·기준은 어드민 영역 — 이 화면 밖</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

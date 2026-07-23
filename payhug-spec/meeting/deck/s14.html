@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S14 — STEP5 신분증</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .wrap { display: grid; grid-template-columns: 720px 1fr; gap: 46px; height: 100%; align-items: stretch; }
+  .col-txt { display: flex; flex-direction: column; justify-content: space-between; gap: 18px; min-width: 0; }
+  .lead { font-size: 29px; font-weight: 800; color: var(--ph-forest); line-height: 1.45; letter-spacing: -0.025em; }
+  .lead .u { background: linear-gradient(transparent 58%, var(--ph-green) 58%); }
+  .say { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; border-radius: 16px; padding: 20px 26px; }
+  .say-l { font-size: 14px; font-weight: 800; color: var(--ph-green-700); letter-spacing: 0.06em; margin-bottom: 8px; }
+  .say p { font-size: 19px; line-height: 1.6; color: var(--ph-forest-700); font-weight: 600; }
+  .shots { gap: 28px; align-items: center; }
+  .shot img { width: 320px; max-height: 560px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">14</div>
+  </div>
+
+  <h1 class="s-title">STEP 5 — <span class="em">신분증</span>은 가려진 사진만 저장됩니다</h1>
+  <p class="s-sub">주민등록증 또는 운전면허증. 사진을 올리면 주민등록번호 뒷자리를 가린 이미지만 남습니다.</p>
+
+  <div class="s-body">
+    <div class="wrap">
+
+      <div class="shots">
+        <div class="shot">
+          <img src="img/1414-7723.png" alt="신분증 첨부 화면">
+          <div class="cap">신분증 사진 첨부</div>
+        </div>
+        <div class="shot">
+          <img src="img/1414-7957.png" alt="신분증 정보 확인 화면">
+          <div class="cap">추출된 신분증 정보 확인<small>화면 위쪽만 표시</small></div>
+        </div>
+      </div>
+
+      <div class="col-txt">
+        <div class="lead">주민등록번호 <span class="u">뒷자리는 가려진 상태로만</span> 저장됩니다. 원본 사진은 남기지 않습니다.</div>
+
+        <div class="card">
+          <div class="card-h">받는 서류와 확인 칸</div>
+          <p style="margin-bottom:10px">화면 안내 원문: "사장님의 주민등록증 또는 운전면허증 사진을 첨부해 주세요"</p>
+          <ul class="b">
+            <li><b>신분증 종류</b> · <b>성명</b> · <b>주민등록번호</b> · <b>발급일자</b> 네 칸이 OCR로 채워집니다.</li>
+            <li>잘못 읽힌 값은 직접 고치고, 「정보가 일치해요」로 등록합니다.</li>
+          </ul>
+        </div>
+
+        <div class="card card-blue">
+          <div class="card-h">마스킹 처리</div>
+          <p>화면 예시처럼 <b class="mono">850312-1******</b> 형태로, <b>뒷자리를 가린 이미지</b>만 저장합니다. 마스킹 처리에 실패하면 안전을 위해 <b>다음 단계로 넘어가지 못하게 막습니다.</b></p>
+        </div>
+
+        <div class="say">
+          <div class="say-l">현장 멘트</div>
+          <p>"신분증은 뒷자리를 가린 상태로만 저장돼요. 원본 사진은 안 남으니 편하게 찍어 올리셔도 됩니다."</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 계약 STEP5 신분증 첨부 · 정보 확인 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

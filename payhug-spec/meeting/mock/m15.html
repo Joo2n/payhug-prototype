@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M15 — 대시보드 · 승인 완료</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+    <div class="ham"><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 사업자 선택기 (BusinessSelector) -->
+    <div style="background:#fff;border-radius:20px;padding:18px 24px;box-shadow:0 1px 20px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:24px;font-weight:700;color:#000">잇잇</span>
+          <span class="cst ok">승인완료</span>
+        </div>
+        <span style="font-size:16px;color:#7e8299">616-28-53422</span>
+      </div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
+        <path d="M6 9L12 15L18 9" stroke="#b5b5c3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- 계약 완료 (ProcessStatusCard — APPROVED 분기) -->
+    <div class="dcard">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:50%;background:#e8f5e9;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M20 6L9 17l-5-5" stroke="#28a544" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="t">계약이 완료되었어요</div>
+      </div>
+      <div class="s" style="font-size:16px;margin-top:8px">등록된 계좌, 증빙 서류, 계약서를 확인할 수 있어요</div>
+      <div style="margin-top:20px;font-size:15px;font-weight:700;color:#5b8def">계약 정보 상세 보기 →</div>
+    </div>
+
+  </div>
+
+  <div class="note-src">코드 기반 재현 · dashboard/page.tsx ProcessStatusCard contractStatus === "APPROVED" 분기 / 링크 버튼은 /my-info/contract 이동. 상호·사업자번호는 예시 더미값.</div>
+
+</div>
+</body>
+</html>

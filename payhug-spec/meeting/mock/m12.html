@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M12 — 계약 Step 4/4 · 최종 확인</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+.ovl { background: #faf9fa; display: flex; flex-direction: column; }
+.tbar {
+  background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tbar .back { display: flex; align-items: center; gap: 4px; font-size: 15px; color: #7e8299; }
+.tbar h2 { font-size: 17px; font-weight: 700; color: #111; }
+.tbar .zoom {
+  background: #eff2f5; color: #424548; padding: 6px 12px;
+  border-radius: 999px; font-size: 13px; font-weight: 700;
+}
+.docs { padding: 8px 8px 24px; }
+.lead-fin { font-size: 14px; font-weight: 700; color: #163300; margin-bottom: 12px; }
+.page { position: relative; }
+.page + .page { border-top: 1px solid #e5e7eb; }
+.ph-doc {
+  height: 600px; background: #fff; border: 1px dashed #d1d5db;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.ph-doc span { font-size: 12px; color: #b8bcc4; line-height: 1.6; }
+.pnum {
+  position: absolute; bottom: 8px; right: 12px;
+  background: rgba(0,0,0,.4); color: #fff; font-size: 11px;
+  padding: 2px 8px; border-radius: 999px;
+}
+.cta-bar { background: #fff; border-top: 1px solid #e5e7eb; padding: 16px; }
+.cta-bar .btn { margin-top: 0; }
+</style>
+</head>
+<body>
+<div id="scr" class="ovl">
+
+  <div class="tbar">
+    <div class="back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      이전
+    </div>
+    <h2>최종 확인</h2>
+    <div class="zoom">확대</div>
+  </div>
+
+  <div class="docs">
+    <div class="lead-fin">서명과 수수료율이 반영된 최종 계약서입니다</div>
+    <div class="page">
+      <div class="ph-doc"><span>최종 계약서 이미지 (finalImages[0])<br>— 서버 생성 이미지, 코드에 원본 없음 —</span></div>
+      <div class="pnum">1 / 2</div>
+    </div>
+    <div class="page">
+      <div class="ph-doc"><span>최종 계약서 이미지 (finalImages[1])<br>— 서버 생성 이미지, 코드에 원본 없음 —</span></div>
+      <div class="pnum">2 / 2</div>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div class="btn big pri" style="border-radius:14px;font-size:17px">계약 완료</div>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · app/contract/terms/page.tsx L577-643 / flowStep = "confirm", isZoomed = false, isSubmitting = false(버튼 활성).<br>※ 계약서 지면은 서버가 생성해 내려주는 finalImages 배열이라 코드에 원본이 없다 → 회색 자리표시 박스로 대체.</div>
+
+</div>
+</body>
+</html>

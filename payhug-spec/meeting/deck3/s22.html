@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S22 — 심사는 어떻게 진행되나</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { display: block; }
+  .wrap { display: flex; flex-direction: column; gap: 15px; height: 100%; }
+
+  .row { display: flex; align-items: stretch; }
+  .nd {
+    flex: 1; min-width: 0; background: #fff; border: 1.5px solid var(--line);
+    border-radius: 14px; padding: 15px 18px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .nd b { display: block; font-size: 19px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; line-height: 1.25; }
+  .nd small { display: block; margin-top: 5px; font-size: 14px; line-height: 1.45; color: var(--ink-3); }
+  .nd.ph { background: var(--ph-blue-tint); border-color: #CFE4FF; }
+  .nd.mer { background: var(--surface); }
+  .nd.ok { background: var(--ph-mint-tint); border-color: #BFE9CF; }
+  .nd.ok b { color: #0F7A3D; }
+  .nd.no { background: var(--ph-danger-tint); border-color: #FFD3D3; }
+  .nd.no b { color: #B3121A; }
+  .arw { flex-shrink: 0; width: 38px; display: flex; align-items: center; justify-content: center; font-size: 25px; font-weight: 700; color: var(--line-2); }
+  .branch { display: flex; flex-direction: column; gap: 9px; flex: 1; min-width: 0; }
+  .branch .nd { flex: 1; }
+  .auto {
+    align-self: flex-start; background: var(--ph-purple); color: #fff;
+    font-size: 13px; font-weight: 800; padding: 3px 10px; border-radius: 999px; margin-bottom: 7px;
+  }
+
+  .pts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .pc { background: var(--surface); border: 1.5px solid var(--line); border-radius: 15px; padding: 16px 18px 15px; display: flex; flex-direction: column; }
+  .pc-n {
+    width: 28px; height: 28px; border-radius: 999px; background: var(--ph-forest); color: #fff;
+    font-family: var(--font-num); font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
+  }
+  .pc-t { font-size: 18px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; line-height: 1.28; margin-bottom: 8px; }
+  .pc-d { font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .pc-d b { color: var(--ph-forest); font-weight: 800; }
+  .pc-say { margin-top: auto; padding-top: 11px; border-top: 1px dashed var(--line-2); font-size: 15px; line-height: 1.4; color: var(--ph-forest); font-weight: 700; }
+  .pc-say span { display: block; font-size: 12px; font-weight: 800; color: var(--ink-4); letter-spacing: 0.03em; margin-bottom: 4px; }
+
+  .mid { display: grid; grid-template-columns: 1.45fr 1fr; gap: 14px; flex: 1; min-height: 0; }
+  .card-h { margin-bottom: 10px; }
+  .crit { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 20px; }
+  .crit .ci { display: flex; gap: 9px; align-items: flex-start; }
+  .crit .ci i {
+    flex-shrink: 0; font-style: normal; width: 20px; height: 20px; border-radius: 6px;
+    background: var(--ph-forest); color: #fff; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .crit .ci i.x { background: var(--ph-danger); }
+  .crit .ci .tx { font-size: 15.5px; line-height: 1.45; color: var(--ink-2); }
+  .crit .ci .tx b { color: var(--ph-forest); font-weight: 800; }
+
+  .punch { padding: 15px 20px; font-size: 19px; }
+  .nextbox { display: flex; flex-direction: column; gap: 12px; }
+  .nextbox .why { font-size: 15.5px; line-height: 1.5; color: #96313A; }
+  .nextbox .why b { color: #B3121A; font-weight: 800; }
+
+  .tbds { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .tbd-box { padding: 14px 20px; }
+  .tbd-box .fx-t { font-size: 16px; line-height: 1.45; color: var(--ink-3); }
+  .tbd-box .fx-t b { color: var(--ink); font-weight: 800; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 3 · 신청 이후 ~ 선정산 개시</div>
+    <div class="s-no">22</div>
+  </div>
+
+  <h1 class="s-title">심사는 <span class="em">이렇게</span> 진행됩니다 — 시작 버튼은 없습니다</h1>
+  <p class="s-sub">서류가 다 채워지면 자동으로 심사 대기로 넘어갑니다. 승인·반려를 판단하는 곳은 페이허그뿐입니다.</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <div class="row">
+        <div class="nd mer">
+          <b>서류 6종 완비 + 비대면 계약 체결</b>
+          <small>사업자등록증 · 신분증 · 락계좌 · 빠른조회 · 입금계좌 · 플랫폼 계정 연동</small>
+        </div>
+        <div class="arw">→</div>
+        <div class="nd">
+          <span class="auto">자동</span>
+          <b>심사 대기로 진입</b>
+          <small>버튼을 누르는 사람이 없습니다. 체크리스트가 다 차는 것 자체가 진입 조건입니다.</small>
+        </div>
+        <div class="arw">→</div>
+        <div class="nd ph">
+          <b>페이허그 검토</b>
+          <small>총판·영업에는 이 단계에 개입할 권한이 없습니다</small>
+        </div>
+        <div class="arw">→</div>
+        <div class="branch">
+          <div class="nd ok"><b>승인</b><small>계약 완료 — 다음은 제신고 단계</small></div>
+          <div class="nd no"><b>반려</b><small>사유가 앱에 표시됩니다</small></div>
+        </div>
+      </div>
+
+      <div class="pts">
+        <div class="pc">
+          <div class="pc-n">1</div>
+          <div class="pc-t">"심사 시작" 버튼을<br>누르는 사람은 없습니다</div>
+          <div class="pc-d">사장님도, 영업사원도, 총판도 심사를 시작시키지 않습니다. <b>서류 체크리스트가 전부 채워진 상태</b>가 곧 심사 대기입니다.</div>
+          <div class="pc-say"><span>현장에서는 이렇게</span>"체크리스트가 다 차면 바로 심사로 넘어갑니다."</div>
+        </div>
+        <div class="pc">
+          <div class="pc-n">2</div>
+          <div class="pc-t">승인·반려는<br>페이허그만 합니다</div>
+          <div class="pc-d"><span class="hl">총판과 영업에는 심사 권한이 없습니다.</span> "언제 승인되냐"는 질문에 총판·영업이 순서를 앞당겨 줄 수 없다는 점을 미리 말씀드리세요.</div>
+          <div class="pc-say"><span>현장에서는 이렇게</span>"심사는 페이허그에서 직접 진행합니다."</div>
+        </div>
+        <div class="pc">
+          <div class="pc-n">3</div>
+          <div class="pc-t">반려는 끝이 아니라<br>보완 요청입니다</div>
+          <div class="pc-d">반려되면 <b>사유가 앱에 그대로 표시</b>됩니다. 사장님이 해당 서류만 고쳐 다시 올리면 처음부터 다시 하지 않고 이어서 진행됩니다.</div>
+          <div class="pc-say"><span>현장에서는 이렇게</span>"반려돼도 그 서류만 고쳐 올리시면 됩니다."</div>
+        </div>
+        <div class="pc">
+          <div class="pc-n">4</div>
+          <div class="pc-t">심사 대기 중에도<br>서류를 고칠 수 있습니다</div>
+          <div class="pc-d">기다리는 동안에도 <b>사장님이 서류를 수정해 다시 올릴 수 있습니다.</b> 잘못 올린 걸 알아챘다면 반려를 기다릴 이유가 없습니다.</div>
+          <div class="pc-say"><span>현장에서는 이렇게</span>"지금 바로 고쳐 올리시면 됩니다."</div>
+        </div>
+      </div>
+
+      <div class="mid">
+        <div class="card card-tint">
+          <div class="card-h">어떤 가맹점이 심사에서 걸리나 — 방문 전에 걸러 주세요</div>
+          <div class="crit">
+            <div class="ci"><i>✓</i><div class="tx"><b>요식업 중심</b>으로 운영합니다. 그 밖의 업종 확대는 별도 검토 대상입니다.</div></div>
+            <div class="ci"><i class="x">✕</i><div class="tx"><b>환금성이 높은 업종</b>(귀금속·상품권 등)은 <b>사전 금지</b>입니다. 접수 자체가 되지 않습니다.</div></div>
+            <div class="ci"><i class="x">✕</i><div class="tx"><b>객단가가 지나치게 높은 업종</b>은 심사에서 걸릴 수 있습니다. 애매하면 접수 전에 페이허그에 문의해 주세요.</div></div>
+            <div class="ci"><i>✓</i><div class="tx">계약 단위는 <b>사업자번호</b>입니다. 가맹점번호가 여러 개여도 사업자번호 하나로 묶입니다.</div></div>
+          </div>
+          <div class="fx-mid" style="margin-top:12px;padding-top:11px;border-top:1px dashed var(--line-2)">
+            <span class="badge badge-check">확인 중</span>
+            <span class="fx-t" style="font-size:15.5px;line-height:1.45;color:var(--ink-3)"><b style="color:var(--ink)">법인사업자 취급 방침</b> — 정책 문서는 개인사업자 우선이라고 하고, 앱 화면에는 법인 신청 경로가 있습니다. 법인 건은 접수 전에 페이허그에 확인해 주세요.</span>
+          </div>
+        </div>
+
+        <div class="nextbox">
+          <div class="punch">승인이 나도 그날 돈이 나오지는 않습니다</div>
+          <div class="card card-warn" style="flex:1;padding:16px 20px">
+            <div class="why">승인은 <b>계약이 끝났다</b>는 뜻일 뿐입니다. 실제로 선정산금이 나가려면 ①각 매출처의 정산 입금계좌를 락계좌로 바꾸고(<b>제신고</b>), ②페이허그가 <b>선정산 실행을 켜야</b> 합니다.<br><br>사장님께 "승인되면 바로 입금됩니다"라고 말하면 반드시 클레임이 됩니다. 승인 시점에 미리 <b>"이제 계좌 변경 단계로 넘어간다"</b>까지 말씀드려야 뒤에 설명이 편해집니다.<br><br><b>다음 두 장(23·24)</b>이 그 이야기입니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tbds">
+        <div class="tbd-box">
+          <div class="fx">
+            <span class="badge badge-tbd">협의 예정</span>
+            <span class="fx-t"><b>심사 소요일</b> — 며칠 만에 결과가 나오는지 정해진 값이 없습니다. 현장에서 "○일이면 됩니다"라고 절대 안내하지 마세요.</span>
+          </div>
+        </div>
+        <div class="tbd-box">
+          <div class="fx">
+            <span class="badge badge-tbd">협의 예정</span>
+            <span class="fx-t"><b>반려 후 재심사 처리 순서</b> — 다시 올린 건이 대기열의 어디로 들어가는지 규정된 문서가 없습니다.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 가맹점 앱 계약 체크리스트(서류 6종) · 승인/반려는 페이허그 어드민 전용 액션, 총판 권한에 없음 · 업종 기준(요식업 중심, 환금성 업종 사전 금지) · 계약 단위=사업자번호 · 심사 소요일 규정 문서 없음</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

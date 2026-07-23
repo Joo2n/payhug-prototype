@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S36 — 장애·문의 대응</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: stretch; }
+  .wrap { display: flex; flex-direction: column; gap: 16px; width: 100%; height: 100%; }
+
+  .two { display: grid; grid-template-columns: 1fr 1.72fr; gap: 20px; flex: 1; min-height: 0; }
+
+  .box { border-radius: 16px; padding: 19px 24px; display: flex; flex-direction: column; }
+  .box.in { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; }
+  .box.ad { background: var(--surface); border: 1.5px solid var(--line); }
+  .box-h { font-size: 21px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.02em; }
+  .box-s { font-size: 15px; color: var(--ink-3); font-weight: 500; margin-top: 4px; margin-bottom: 14px; line-height: 1.4; }
+
+  .inflow { display: flex; flex-direction: column; gap: 5px; }
+  .inode { background: #fff; border: 1.5px solid #DDEFCB; border-radius: 12px; padding: 13px 17px; }
+  .inode b { font-size: 17px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; }
+  .inode small { display: block; font-size: 14px; color: var(--ink-3); margin-top: 4px; line-height: 1.4; }
+  .down { text-align: center; color: #A9CE8C; font-size: 20px; font-weight: 700; line-height: 1; }
+
+  .qa { margin-top: 13px; padding-top: 13px; border-top: 1px dashed #C9E0B4; font-size: 15px; line-height: 1.55; color: #3F5A2C; }
+  .qa .qh { display: block; font-size: 16px; color: var(--ph-forest); font-weight: 800; margin-bottom: 4px; letter-spacing: -0.02em; }
+  .qa b { color: var(--ph-forest); font-weight: 800; }
+  .qa.last { margin-top: auto; }
+
+  .tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; flex: 1; min-height: 0; }
+  .tool { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; }
+  .tool-t { font-size: 18px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 7px; }
+  .tool-d { font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+  .chip { font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink-3); }
+  .chip.ok { background: var(--ph-mint-tint); color: #0F7A3D; }
+  .chip.bad { background: var(--ph-danger-tint); color: var(--ph-danger); }
+  .chip.long { background: var(--ph-warning-tint); color: #B26A00; }
+  .tool-case { margin-top: auto; padding-top: 11px; border-top: 1px dashed var(--line-2); font-size: 14px; line-height: 1.5; color: var(--ink-3); }
+  .tool-case b { display: block; color: var(--ph-forest); font-weight: 800; margin-bottom: 2px; }
+
+  .verify { background: var(--ph-blue-tint); border: 1.5px solid #CFE4FF; border-radius: 14px; padding: 14px 22px; display: flex; align-items: center; gap: 20px; margin-top: 15px; }
+  .verify .vh { font-size: 18px; font-weight: 900; color: #084A99; letter-spacing: -0.02em; flex-shrink: 0; width: 150px; line-height: 1.3; }
+  .verify p { flex: 1; min-width: 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .verify p b { color: var(--ph-forest); font-weight: 800; }
+
+  .tbd-h { font-size: 18px; font-weight: 800; color: var(--ph-forest); margin-bottom: 11px; letter-spacing: -0.02em; }
+  .tbd-rows { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 26px; }
+  .tbd-row { border-left: 1px dashed var(--line-2); padding-left: 20px; }
+  .tbd-rows .tbd-row:first-child { border-left: 0; padding-left: 0; }
+  .tbd-row .tt { font-size: 16px; font-weight: 800; color: var(--ink-2); }
+  .tbd-row .td { font-size: 14px; color: var(--ink-3); line-height: 1.45; margin-top: 4px; }
+  .s-foot .src { flex: 1; min-width: 0; padding-right: 30px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">36</div>
+  </div>
+
+  <h1 class="s-title">장애·문의가 생기면 <span class="em">이 경로로</span> 처리됩니다</h1>
+  <p class="s-sub">다우데이타 사전 질의 4번. 접수는 앱 1:1 문의 한 곳으로 모입니다. 페이허그 안에서 실제로 무엇을 보고 처리하는지 알려드립니다</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <div class="two">
+
+        <div class="box in">
+          <div class="box-h">접수 경로는 앱 1:1 문의 하나입니다</div>
+          <div class="box-s">사장님이 문제를 알리는 공식 창구</div>
+          <div class="inflow">
+            <div class="inode"><b>사장님 — 가맹점 앱 1:1 문의</b><small>사업자별로 문의를 작성하고 답변을 확인합니다</small></div>
+            <div class="down">↓</div>
+            <div class="inode"><b>페이허그 1:1 문의함</b><small>운영이 문의를 열어 대화 형태로 답변하고 상태를 관리합니다</small></div>
+          </div>
+          <div class="qa">
+            <span class="qh">왜 문의로만 받나요?</span>
+            사장님이 <b>계좌·사업자 정보·신분증을 앱에서 직접 고칠 수 없기</b> 때문입니다. 이 항목들은 화면이 조회 전용이라, 수정 요청은 1:1 문의 말고는 들어올 통로가 없습니다.
+          </div>
+          <div class="qa">
+            <span class="qh">문의를 넣을 때 이 세 가지를 함께 적게 하세요</span>
+            <b>① 상호·사업자번호</b> · <b>② 언제 발생했는지</b> · <b>③ 어느 매출처인지(카드·배민·요기요·쿠팡이츠)</b>.
+            없으면 운영이 되묻느라 처리가 하루씩 밀립니다. 문의는 <b>사업자 단위</b>로 관리되니 사업자가 여러 개면 어느 곳인지 꼭 지정하게 하세요.
+          </div>
+          <div class="qa last">
+            <span class="qh">영업사원이 대신 처리할 수 없습니다</span>
+            전화·카톡으로 받은 요청은 기록이 남지 않아 처리에서 누락됩니다. 반드시 <b>사장님이 직접 앱에서</b> 남기시도록 안내해 주세요. 접수 시각과 내용이 기록으로 남아야 나중에 다툴 일이 없습니다.
+          </div>
+        </div>
+
+        <div class="box ad">
+          <div class="box-h">페이허그 어드민에서는 이것을 봅니다</div>
+          <div class="box-s">문의가 들어오면 운영이 확인하는 화면 — <b>실제로 구현되어 있는 것만</b> 적었습니다</div>
+          <div class="tools">
+
+            <div class="tool">
+              <div class="tool-t">스크래핑 장애 이력</div>
+              <div class="tool-d">매출 데이터를 못 긁어온 이력을 매출처별로 조회합니다. 매출처마다 지금 정상인지 장애인지 상태가 표시되고, 장애가 길어지면 장기 장애로 구분됩니다.</div>
+              <div class="chips">
+                <span class="chip">카드</span><span class="chip">배민</span><span class="chip">요기요</span><span class="chip">쿠팡이츠</span>
+                <span class="chip ok">정상</span><span class="chip bad">장애</span><span class="chip long">장기 장애</span>
+              </div>
+              <div class="tool-d" style="margin-top:9px">장애 유형은 <b>응답 오류·시간 초과·데이터 없음·주말 데이터 없음</b>으로 구분됩니다. 다만 이 화면은 <b>보는 용도</b>이고 재수집 버튼은 없습니다.</div>
+              <div class="tool-case"><b>이런 문의에 씁니다</b>"어제 배민 매출이 하나도 안 보여요"</div>
+            </div>
+
+            <div class="tool">
+              <div class="tool-t">1:1 문의함</div>
+              <div class="tool-d">사장님이 보낸 문의를 목록으로 받아 대화로 답변합니다. 상태(대기·처리중·답변완료·종료)와 분류(일반·결제·정산·기술·계정)로 나눠 관리하고, 가맹점별로도 모아 볼 수 있습니다.</div>
+              <div class="chips"><span class="chip">문의 목록</span><span class="chip">답변 등록</span><span class="chip">상태 관리</span><span class="chip">가맹점별 조회</span></div>
+              <div class="tool-d" style="margin-top:9px">제목·가맹점명·작성자로 검색이 되고, 사장님이 마지막으로 글을 남긴 미처리 건에는 <b>NEW 표시</b>가 붙습니다.</div>
+              <div class="tool-case"><b>이런 문의에 씁니다</b>"입금계좌를 바꾸고 싶어요"</div>
+            </div>
+
+            <div class="tool">
+              <div class="tool-t">미정산 누락 추적</div>
+              <div class="tool-d">지급됐어야 하는데 빠진 건을 가맹점·거래일별로 찾아냅니다. 확인 후 개별 지급 처리로 이어집니다. 페이허그 내부 전용 화면입니다.</div>
+              <div class="chips"><span class="chip">누락 건 조회</span><span class="chip">가맹점 · 거래일별</span><span class="chip">내부 전용</span></div>
+              <div class="tool-d" style="margin-top:9px">영업사원이 볼 수 있는 화면이 아닙니다. <b>"확인해서 알려드리겠다"까지가 현장의 역할</b>이고, 실제 조회는 페이허그가 합니다.</div>
+              <div class="tool-case"><b>이런 문의에 씁니다</b>"이 날짜 매출만 지급이 안 됐어요"</div>
+            </div>
+
+          </div>
+
+          <div class="verify">
+            <div class="vh">락계좌 검증</div>
+            <p>페이허그는 <b>정기적으로 각 가맹점의 선정산 전용계좌(락계좌)가 그대로인지 확인</b>합니다. 사장님이 임의로 정산계좌를 되돌리는 등 <b>불일치가 발견되면 선정산이 중단</b>됩니다. 계좌를 바꿔야 할 사정이 생기면 <b>임의로 바꾸지 말고 1:1 문의로 먼저 요청</b>하도록 안내해 주세요.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tbd-box">
+        <div class="tbd-h">아래는 <span class="hl">규정한 문서가 존재하지 않습니다</span> — 지금 만들어 말하면 창작이 됩니다</div>
+        <div class="tbd-rows">
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">담당 부서 · 에스컬레이션 경로</div></div>
+            <div class="td">어느 단계에서 누구에게 올라가는지 정한 문서가 없습니다. "담당자에게 바로 연결됩니다" 같은 말을 하지 마세요.</div>
+          </div>
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">장애 대응 SLA</div></div>
+            <div class="td">몇 시간 안에 응답·복구한다는 기준이 없습니다. <b>시간 약속을 하지 마세요.</b></div>
+          </div>
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">재시도 규칙</div></div>
+            <div class="td">스크래핑 실패 시 몇 번·언제 다시 시도하는지 규정이 없습니다. 장애 이력 화면에도 재시도 버튼 자체가 없습니다.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 어드민 스크래핑 장애 이력·1:1 문의함·미정산 누락 추적 화면 실재(기능명세 기준) · 가맹점 앱 계약 정보 화면 조회 전용 + 1:1 문의 유도 · 운영 Q&A 정기 락계좌 검증 및 불일치 시 선정산 중단 · 대응 SLA·에스컬레이션·재시도 규칙을 규정한 문서는 확인되지 않음</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

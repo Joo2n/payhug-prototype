@@ -1,0 +1,118 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계약 정보 조회</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_MYINFO_CONTRACT</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 내 정보 &gt; 계약 정보 조회</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">계좌·사업자·신분증·증빙·전자계약서·약관동의 조회 전용. 수정은 1:1문의 경유. 등록계좌 UI라벨↔계약용어(락계좌/입금계좌) 매핑 미확정</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/816_2.png" alt="계약 정보 조회">
+        <div class="dim" style="left:5.5%;top:8.5%;height:11%"></div>
+        <div class="mk" style="left:5.5%;top:13.5%">1</div>
+        <div class="dim" style="left:5.5%;top:21.5%;height:7.5%"></div>
+        <div class="mk" style="left:5.5%;top:25%">2</div>
+        <div class="dim" style="left:5.5%;top:30.5%;height:26%"></div>
+        <div class="mk" style="left:5.5%;top:43%">3</div>
+        <div class="dim" style="left:5.5%;top:58.5%;height:34%"></div>
+        <div class="mk" style="left:5.5%;top:75%">4</div>
+        <div class="mk" style="left:5.5%;top:96.5%">5</div>
+        <div class="mk" style="left:5.5%;top:98%">6</div>
+        <div class="mk" style="left:5.5%;top:99.4%">7</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;계좌·사업자·신분증·증빙서류·전자계약서·약관동의를 한 화면에 위→아래로 모아 보는 <b>조회 전용</b> 화면 (수정 불가)</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;실데이터(서버 조회) · 캡처 예시 가맹점 <b>"김성호떡볶이 본점"</b></span>
+        <span class="b"><span class="g">로드</span> &nbsp;진입 시 자동 조회 · 사업자 드롭다운 전환 시 재조회</span>
+        <span class="b"><span class="g">렌더 순서</span> &nbsp;헤더/사업자선택 → 계약상태 → 등록계좌 → 사업자정보 → 신분증 → 증빙서류 → 전자계약서 → 약관동의 → 수정안내 (각 섹션은 값 없으면 통째로 숨김)</span>
+        <span class="b"><span class="red">캡처 주의 : 세로로 매우 길어 캡처엔 사업자정보까지만 보이고 신분증 아래(증빙·전자계약서·약관동의·수정안내)는 화면 밖 — 마커 5~7은 하단 근사 위치</span></span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더·<br>사업자<br>선택</td><td class="kn-note">
+<span class="b">왼쪽 <b>뒤로가기</b> 버튼 → 직전 화면으로 복귀</span><span class="b">가운데 제목 <b>"계약 정보"</b></span><span class="b">사업자가 <b>2개 이상</b>일 때만 <b>사업자 선택</b> 드롭다운 노출</span><span class="i">옵션 표기 : "상호명 (000-00-00000)" — 사업자번호 하이픈 표기</span><span class="i">기본 선택(default) : 계약 <b>승인</b>된 사업자 · 없으면 목록 첫번째</span><span class="i">사업자 1개면 드롭다운 숨김</span><span class="grp">상황별 문구</span><span class="i">불러오는 중 → 페이지 로딩 표시</span><span class="i">조회 실패 → 빨강 박스에 오류 문구 + 밑줄 <b>[다시 시도]</b> (오류 메시지 없으면 "데이터를 불러올 수 없습니다.")</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">계약<br>상태</td><td class="kn-note">
+<span class="b">제목 <b>"계약 상태"</b> + 오른쪽 상태 뱃지</span><span class="i"><b>승인완료</b> = 초록 · <b>심사중</b> = 노랑 · <b>심사반려</b> = 빨강</span><span class="i">알 수 없는 값이면 <b>심사중</b>으로 표시</span><span class="b"><b>반려 사유</b>가 있을 때만 빨강 박스로 "반려 사유" + 내용 노출</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">등록<br>계좌</td><td class="kn-note">
+<span class="b">제목 <b>"등록 계좌"</b> · 계좌 없으면 섹션 통째로 숨김</span><span class="b">계좌마다 용도 뱃지 + 계좌 정보</span><span class="i">용도 라벨 원문 : <b>선정산 전용계좌</b> · <b>입출금 전용계좌</b> (라벨 순화 금지)</span><span class="i">정의 안 된 용도값은 원문 그대로 표기</span><span class="i red">이 UI 라벨 ↔ 계약용어(락계좌/입금계좌) 매핑 미확정 — 개발·정책 확인 필요</span><span class="i">인증된 계좌엔 <b>"인증완료"</b> 초록 글자</span><span class="i">표기 : "은행명 계좌번호" + "예금주: 이름"</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">사업자<br>정보</td><td class="kn-note">
+<span class="b">제목 <b>"사업자 정보"</b></span><span class="i">상호명 · 대표자명 · 사업자번호(하이픈 표기) · 업종 · 업태 · 사업장 주소</span><span class="i"><b>본점 주소 · 법인등록번호</b>는 값 있을 때만 노출</span><span class="i">값이 비면 그 줄은 아예 표시 안 함</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">신분증<br>정보</td><td class="kn-note">
+<span class="b">제목 <b>"신분증 정보"</b> · 정보 없으면 섹션 숨김</span><span class="i">신분증 유형 : 주민등록증 · 운전면허증 · 여권</span><span class="i">이름 · 주민등록번호(<b>앞 7자리만 노출, 뒤 6자리 별표</b> 마스킹 — 뒤 6자리는 애초 저장 안 함) · 발급일(있을 때만)</span>
+          </td></tr>
+          <tr><td class="kn-no">6</td><td class="kn-nm">증빙·<br>전자<br>계약서</td><td class="kn-note">
+<span class="grp">증빙 서류</span><span class="i">서류 없으면 섹션 숨김</span><span class="i">서류명(사업자등록증 · 신분증 · 통장사본 · 통장사본(선정산 전용계좌) 등) + 파일명</span><span class="i">서류명·파일명 모두 길면 …로 줄여서 표시</span><span class="i"><b>[보기]</b> → 파일 미리보기 팝업<b>[MC_MYINFO_CONTRACT_PREVIEW]</b></span><span class="grp">전자 계약서</span><span class="i">문서 없으면 섹션 숨김</span><span class="i">계약서명(서비스 이용약관 동의서 · 선정산 서비스 이용계약서) + 체결일(있을 때만)</span><span class="i">첨부 있을 때만 <b>[보기]</b> → 같은 미리보기 팝업<b>[MC_MYINFO_CONTRACT_PREVIEW]</b> (증빙·계약서 공통 모달)</span>
+          </td></tr>
+          <tr><td class="kn-no">7</td><td class="kn-nm">약관<br>동의·<br>수정<br>안내</td><td class="kn-note">
+<span class="grp">약관 동의 내역</span><span class="i">동의 이력 없으면 섹션 숨김</span><span class="i">약관명(길면 …줄임) + "동의일:" 날짜 (ko 로캘 "2026. 7. 21." 형식, 0 안 채움)</span><span class="i">행마다 오른쪽에 흐린 화살표(누를 수 있다는 표시)</span><span class="i"><b>행 전체 클릭</b> → 약관 내용 팝업<b>[MC_MYINFO_CONTRACT_TERMS]</b> · 마우스 올리면 배경 진해짐</span><span class="grp">수정 안내</span><span class="b">하단 파란 박스 : "수정이 필요하시면 <b>[1:1 문의]</b>를 이용해 주세요."</span><span class="i">이 화면은 <b>조회 전용</b> · 수정은 [1:1 문의]로만 → 문의 목록<b>[MC_MYINFO_INQUIRY]</b></span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

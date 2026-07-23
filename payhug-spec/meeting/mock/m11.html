@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M11 — 계약 Step 3/4 · 전자서명 + 수수료율</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+.ovl { background: #faf9fa; display: flex; flex-direction: column; }
+.tbar {
+  background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tbar .back { display: flex; align-items: center; gap: 4px; font-size: 15px; color: #7e8299; }
+.tbar h2 { font-size: 17px; font-weight: 700; color: #111; }
+.tbar .spacer { width: 48px; }
+.body { padding: 24px 16px 32px; }
+.sec { margin-bottom: 32px; }
+.sec > label { display: block; font-size: 16px; font-weight: 700; color: #111; margin-bottom: 12px; }
+.sec > .desc { font-size: 13px; color: #7e8299; margin-bottom: 12px; }
+/* hasDrawn = false → dashed #d1d5db (ContractSignInput L165-169) */
+.sign { background: #fff; border-radius: 14px; border: 2px dashed #d1d5db; height: 150px; }
+.sign-hint { text-align: center; font-size: 12px; color: #aaa; margin-top: 8px; }
+.feerow { display: flex; align-items: center; gap: 12px; }
+.feerow .fi {
+  flex: 1; height: 52px; padding: 0 16px; display: flex; align-items: center;
+  font-size: 18px; font-weight: 700; background: #fff;
+  border-radius: 14px; border: 2px solid #e5e7eb; color: #b5b5b5;
+}
+.feerow .pct { font-size: 18px; font-weight: 700; color: #424548; }
+.cta-bar { background: #fff; border-top: 1px solid #e5e7eb; padding: 16px; }
+.cta-bar .btn { margin-top: 0; }
+</style>
+</head>
+<body>
+<div id="scr" class="ovl">
+
+  <div class="tbar">
+    <div class="back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      이전
+    </div>
+    <h2>서명 및 입력</h2>
+    <div class="spacer"></div>
+  </div>
+
+  <div class="body">
+
+    <!-- hasSignature = true -->
+    <div class="sec">
+      <label>서명을 그려주세요</label>
+      <div class="desc">계약서의 모든 서명란에 동일하게 적용됩니다</div>
+      <div class="sign"></div>
+      <div class="sign-hint">위 영역에 손가락 또는 마우스로 서명하세요</div>
+    </div>
+
+    <!-- hasFeeRate = true / feeRate 초기값 "" -->
+    <div class="sec" style="margin-bottom:0">
+      <label>채권매입 수수료율</label>
+      <div class="desc">계약서의 수수료율 항목에 적용됩니다</div>
+      <div class="feerow">
+        <div class="fi">예: 1.0</div>
+        <span class="pct">%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- isValid = (hasDrawn) && (feeRate !== "") → 둘 다 미충족이라 비활성 (L113-114) -->
+  <div class="cta-bar">
+    <div class="btn big gray-off" style="border-radius:14px;font-size:17px">계약서에 반영하기</div>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · components/ContractSignInput.tsx L113-114·L127-233 (호출부: app/contract/terms/page.tsx L566-574) / flowStep = "input", hasDrawn = false · feeRate = "" 초기 상태.<br>※ 수수료율은 <b>사용자가 직접 입력하는 필드</b>이며 코드에 기본값이 없다(useState("")). 화면에 보이는 「예: 1.0」은 코드 원문 placeholder일 뿐 실제 요율값이 아니다 — 요율 수치는 미확정이므로 임의 표기하지 않았다.<br>※ 서명 캔버스는 사용자가 그리는 &lt;canvas&gt;라 렌더 가능한 이미지가 없다 → 미서명(빈 캔버스) 상태로 표현.</div>
+
+</div>
+</body>
+</html>

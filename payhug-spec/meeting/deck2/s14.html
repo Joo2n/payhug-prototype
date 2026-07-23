@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S14 — 신분증 첨부와 확인</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: flex-start; gap: 0; padding-top: 6px; }
+  .flowline { align-items: flex-start; height: auto; }
+  .fitem { width: 470px; }
+  .fgap  { margin-top: 290px !important; width: 90px !important; }
+  .note-under {
+    margin-top: 16px; padding: 16px 20px; border-radius: 12px;
+    background: var(--surface); font-size: 17px; line-height: 1.55; color: var(--ink-2);
+  }
+  .note-under b { color: var(--ph-forest); }
+  .note-under .ln + .ln { margin-top: 9px; }
+  .mk-inline { position:static; transform:none; display:flex; width:26px; height:26px; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">14 / STEP 5</div>
+  </div>
+
+  <h1 class="s-title">신분증 첨부 — <span class="em">주민번호 뒷자리는 가려집니다</span></h1>
+  <p class="s-sub">사장님이 가장 많이 망설이는 단계입니다. 이 한마디로 풀립니다</p>
+
+  <div class="stage">
+    <div class="flowline">
+
+      <div class="fitem">
+        <div class="fstep"><i>1</i> 신분증 사진 올리기</div>
+        <div class="phone clip" style="height:570px;width:383px">
+          <img src="img/1414-7723.png" alt="신분증 첨부 화면" style="height:622px;width:auto">
+          <div class="hi green" style="top:32.2%;left:12%;bottom:61.5%;right:12%"></div>
+          <div class="mk green" style="top:35.2%;left:12%">1</div>
+          <div class="hi blue" style="top:43%;left:17%;bottom:28.8%;right:17%"></div>
+          <div class="mk blue" style="top:53.7%;left:17%">2</div>
+        </div>
+        <div class="note-under">
+          <div class="ln fx"><span class="mk green mk-inline">1</span>
+            <span class="fx-t"><b>주민등록증 또는 운전면허증</b> 둘 중 하나면 됩니다. 화면에도 이 둘만 적혀 있습니다</span></div>
+          <div class="ln fx"><span class="mk blue mk-inline">2</span>
+            <span class="fx-t">영역을 눌러 사진 한 장을 고르고 「사진 첨부하기」를 누르면 끝입니다</span></div>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep ph"><i>2</i> 읽어온 정보 확인</div>
+        <div class="phone clip" style="height:570px;width:277px">
+          <img src="img/1414-7957.png" alt="신분증 정보 확인 화면" style="height:635px;width:auto">
+          <div class="hi red" style="top:52.3%;left:12%;bottom:39%;right:12%"></div>
+          <div class="mk red" style="top:56%;left:12%">3</div>
+          <div class="hi blue" style="top:74.9%;left:12%;bottom:18.7%;right:12%"></div>
+          <div class="mk blue" style="top:77.9%;left:12%">4</div>
+        </div>
+        <div class="note-under">
+          <div class="ln fx"><span class="mk red mk-inline">3</span>
+            <span class="fx-t"><b>주민번호 뒷자리는 가려진 상태로만 저장됩니다.</b> 화면에도 <span class="mono">850312-1******</span>처럼만 보입니다</span></div>
+          <div class="ln fx"><span class="mk blue mk-inline">4</span>
+            <span class="fx-t">신분증 종류 · 성명 · 발급일자도 자동으로 채워집니다. 틀리면 그 자리에서 고치시면 됩니다</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP5 신분증 첨부 / 정보 확인 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

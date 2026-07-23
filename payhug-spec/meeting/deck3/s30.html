@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S30 — 용어 대조표</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { display: block; }
+  .wrap { display: flex; flex-direction: column; gap: 15px; height: 100%; }
+
+  table.t { table-layout: fixed; }
+  table.t th { font-size: 16px; padding: 11px 16px; }
+  table.t th small { display: block; font-size: 13px; font-weight: 600; opacity: 0.85; margin-top: 2px; }
+  table.t th { padding: 9px 14px; }
+  table.t th.c1 { width: 200px; }
+  table.t th.c3 { width: 230px; background: #3A4A2E; }
+  table.t th.c4 { width: 480px; background: #4A4A4A; }
+  table.t td { padding: 7px 14px; font-size: 15px; line-height: 1.4; vertical-align: top; }
+  td.u { font-size: 17px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; }
+  td.u em { font-style: normal; font-size: 13px; font-weight: 600; color: var(--ink-4); }
+  td.i { font-weight: 700; color: var(--ink-2); }
+  td.n { color: var(--ink-2); }
+  td.n b { color: var(--ph-forest); font-weight: 800; }
+  td.w { color: var(--ink-3); font-size: 14.5px; }
+  td.w b { color: var(--ph-danger); font-weight: 800; }
+  .dash { color: var(--ink-4); font-weight: 700; }
+  tr.danger td { background: var(--ph-danger-tint) !important; }
+  tr.danger td.u { color: #B3121A; }
+
+  .bot { display: grid; grid-template-columns: 1.12fr 1fr; gap: 16px; flex: 1; min-height: 0; }
+  .bx { border-radius: 15px; padding: 14px 20px; display: flex; flex-direction: column; }
+  .bx.a { background: var(--ph-danger-tint); border: 2px solid var(--ph-danger); }
+  .bx.b { background: var(--surface); border: 1.5px solid var(--line); }
+  .bx-h { font-size: 20px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.25; }
+  .bx.a .bx-h { color: var(--ph-danger); }
+  .bx.b .bx-h { color: var(--ph-forest); }
+  .bx-s { font-size: 14.5px; color: var(--ink-3); margin-top: 3px; margin-bottom: 9px; line-height: 1.4; }
+
+  .four { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .fi { background: #fff; border-radius: 10px; padding: 8px 13px; }
+  .fi .t { font-size: 15px; font-weight: 800; color: var(--ph-forest); line-height: 1.3; }
+  .fi .d { font-size: 13.5px; color: var(--ink-3); line-height: 1.38; margin-top: 2px; }
+  .fi .d b { color: var(--ink-2); font-weight: 800; }
+  .bx.a .last { margin-top: auto; padding-top: 10px; font-size: 15.5px; font-weight: 800; color: #B3121A; line-height: 1.4; }
+
+  .ban { display: flex; flex-direction: column; gap: 6px; }
+  .bi { display: flex; align-items: center; gap: 10px; background: #fff; border: 1.5px solid var(--line); border-radius: 10px; padding: 7px 13px; }
+  .bi .no {
+    flex-shrink: 0; font-size: 15px; font-weight: 800; color: var(--ph-danger);
+    text-decoration: line-through; width: 92px; line-height: 1.25;
+  }
+  .bi .ar { flex-shrink: 0; color: var(--line-2); font-size: 15px; font-weight: 700; }
+  .bi .ok { font-size: 14.5px; color: var(--ink-2); line-height: 1.35; }
+  .bi .ok b { color: #0F7A3D; font-weight: 800; }
+  .bx.b .last { margin-top: auto; padding-top: 10px; font-size: 14.5px; color: var(--ink-3); line-height: 1.42; }
+  .bx.b .last b { color: var(--ph-forest); font-weight: 800; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">30</div>
+  </div>
+
+  <h1 class="s-title">사장님 화면의 말 <span class="em">↔</span> 회사 안에서 쓰는 말</h1>
+  <p class="s-sub">내부 용어로 설명하면 사장님이 보는 화면과 단어가 달라 그 자리에서 혼란이 생깁니다. 화면에 적힌 말로 설명하세요.</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <table class="t">
+        <thead>
+          <tr>
+            <th class="c1">사장님이 보는 말<small>앱 화면에 뜨는 그대로</small></th>
+            <th>무슨 뜻인가 — 이렇게 설명하세요</th>
+            <th class="c3">내부·문서에서 부르는 말</th>
+            <th class="c4">현장 주의</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="u">미리 받는 돈</td>
+            <td class="n">선정산으로 <b>먼저 받은 금액</b>. 어제 매출에서 수수료를 뺀 뒤 오늘 입금되는 돈입니다.</td>
+            <td class="i">선정산 지급액</td>
+            <td class="w">화면에 <b>미리 받는 돈</b>과 <b>미리 받은 돈</b>이 섞여 나옵니다. 같은 것을 가리킵니다.</td>
+          </tr>
+          <tr>
+            <td class="u">어제 매출액</td>
+            <td class="n">전일 발생한 <b>매출 총액</b>. 아직 아무것도 빼지 않은 금액입니다.</td>
+            <td class="i"><span class="dash">— (동일)</span></td>
+            <td class="w">이 금액이 그대로 들어온다고 오해하는 사장님이 많습니다. 반드시 차감액과 함께 설명하세요.</td>
+          </tr>
+          <tr>
+            <td class="u">차감액</td>
+            <td class="n">카드사·배달앱이 떼간 수수료, 광고비, 페이허그 수수료를 <b>합쳐서 뺀 금액</b>입니다.</td>
+            <td class="i"><span class="dash">— (동일)</span></td>
+            <td class="w">"누가 뗀 돈이냐"는 질문에는 화면에서 항목별로 펼쳐 보여드리세요. 한 덩어리로 답하면 불신이 생깁니다.</td>
+          </tr>
+          <tr>
+            <td class="u">선정산 제외액</td>
+            <td class="n">선정산 대상이 아니어서 <b>미리 드리지 못하고</b>, 정산금이 들어온 뒤 <b>따로 입금되는 돈</b>입니다.</td>
+            <td class="i">선정산 제외금액</td>
+            <td class="w">내부 용어가 화면에 그대로 나온 사례입니다. 사장님께는 <b style="color:var(--ph-forest)">"이번 선정산에 반영되지 않은 금액"</b>으로 풀어 주세요.</td>
+          </tr>
+          <tr class="danger">
+            <td class="u">예상 지급 차액</td>
+            <td class="n" style="color:#96313A"><b style="color:#B3121A">정의가 확정되지 않았습니다 — 설명하지 마세요.</b> 무엇을 합산한 값인지 사내 확정 전입니다.</td>
+            <td class="i" style="color:#96313A">
+              <div class="fx-mid"><span class="badge badge-check">확인 중</span></div>
+            </td>
+            <td class="w" style="color:#96313A">질문을 받으면 <b>"페이허그에 확인해서 알려드리겠습니다"</b>로 넘기세요. 임의로 설명하면 정정이 불가능해집니다.</td>
+          </tr>
+          <tr>
+            <td class="u">전산 수수료</td>
+            <td class="n">계좌로 <b>이체할 때 붙는 수수료</b>입니다.</td>
+            <td class="i">이체수수료</td>
+            <td class="w">화면 용어와 정책 용어가 다릅니다. "전산"은 시스템 관점의 말이라 사장님께 뜻이 전달되지 않습니다.</td>
+          </tr>
+          <tr>
+            <td class="u">페이허그 수수료</td>
+            <td class="n">페이허그가 <b>매출채권을 사면서 받는 수수료</b>입니다.</td>
+            <td class="i">채권매입수수료</td>
+            <td class="w">요율은 <b>확인 중</b>입니다. 퍼센트를 입으로 말하지 마세요.</td>
+          </tr>
+          <tr>
+            <td class="u">미매입 <em>/ 매입 완료</em></td>
+            <td class="n">카드 <b>승인은 났지만 카드사 매입이 아직 안 잡힌 건</b> / 잡힌 건.</td>
+            <td class="i">매입 대기 / 매입 완료</td>
+            <td class="w"><b style="color:var(--ph-forest)">"카드사에서 확인 중인 건"</b>으로 풀어 설명하면 오해가 적습니다.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="bot">
+
+        <div class="bx a">
+          <div class="bx-h">"회수"라는 말을 단독으로 쓰지 마세요</div>
+          <div class="bx-s">같은 두 글자가 회사 안에서 <b>네 가지 전혀 다른 뜻</b>으로 쓰입니다. 듣는 사람이 다른 뜻으로 알아듣습니다.</div>
+          <div class="four">
+            <div class="fi"><div class="t">① 락계좌 → 모계좌</div><div class="d">락계좌에 모인 정산금을 페이허그 계좌로 옮기는 자금 이동. 어드민에는 <b>매출 회수</b>로 표시됩니다. 사장님과는 무관한 내부 처리입니다.</div></div>
+            <div class="fi"><div class="t">② 과지급분 되돌려받기</div><div class="d">실제 정산액보다 더 드린 금액을 다시 확보하는 처리. 다음 지급액에서 조정하는 방식이 있습니다.</div></div>
+            <div class="fi"><div class="t">③ 선정산 대금 상환 완료</div><div class="d">먼저 드린 돈이 전부 메워진 상태. 이 상태가 되어야 계약을 해지할 수 있습니다.</div></div>
+            <div class="fi"><div class="t">④ 만나서결제 차감</div><div class="d">라이더가 현장에서 이미 받은 금액이라 선정산 대상에서 빼는 처리.</div></div>
+          </div>
+          <div class="last">말할 때는 반드시 <span style="color:var(--ph-forest)">"어느 회수인지"</span>를 붙이세요. 특히 ①을 ②로 잘못 들으시면 <span style="color:var(--ph-forest)">"페이허그가 내 돈을 빼갔다"</span>는 오해가 됩니다.</div>
+        </div>
+
+        <div class="bx b">
+          <div class="bx-h">사장님 앞에서 쓰면 안 되는 내부 용어</div>
+          <div class="bx-s">뜻이 전달되지 않거나, 사장님이 잘못을 저질렀다는 뜻으로 들립니다.</div>
+          <div class="ban">
+            <div class="bi"><span class="no">미지급금</span><span class="ar">→</span><span class="ok"><b>아직 나가지 않은 금액</b> — 확인 중이라고 안내</span></div>
+            <div class="bi"><span class="no">과지급</span><span class="ar">→</span><span class="ok"><b>이전에 추가로 지급된 금액</b></span></div>
+            <div class="bi"><span class="no">미회수금</span><span class="ar">→</span><span class="ok"><b>이전 지급 조정금액</b></span></div>
+            <div class="bi"><span class="no">바로이체</span><span class="ar">→</span><span class="ok"><b>추가 지급 예정금액</b></span></div>
+            <div class="bi"><span class="no">오프라인<br>차감</span><span class="ar">→</span><span class="ok">정책 문서에 <b style="color:var(--ph-danger)">정의 자체가 없습니다.</b> 질문받아도 답할 수 없으니 꺼내지 마세요.</span></div>
+          </div>
+          <div class="last">이 단어들은 <b>운영 내부 문서·어드민에서만</b> 씁니다.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 가맹점 앱 화면 실제 라벨 · 정책서 용어 정의(미지급금·선정산 제외금액·바로이체·과지급·미회수금·환급은 각각 다른 개념) · 가맹점 노출 용어 매핑표 · "예상 지급 차액"은 정의 미확정 · "오프라인차감"은 정산에 반영 중이나 정책 문서에 정의 없음</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

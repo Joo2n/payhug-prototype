@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S28 — 하루치를 뜯어보면</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: center; gap: 60px; }
+  .left  { display: flex; align-items: center; }
+  .right { flex: 1; max-width: 900px; display: flex; flex-direction: column; justify-content: center; }
+  .calls { gap: 24px; max-width: none; }
+  .grp {
+    display: flex; align-items: center; padding: 3px 12px; border-radius: 8px;
+    font-size: 18px; font-weight: 800; background: var(--surface-2); color: var(--ink-2);
+  }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 4 · 가맹점이 보는 화면</div>
+    <div class="s-no">28</div>
+  </div>
+
+  <h1 class="s-title">하루치를 뜯어보면 — <span class="em">세 덩어리</span>로 나뉩니다</h1>
+  <p class="s-sub">입금 내역에서 한 줄을 누르면 그날 금액이 어디서 나왔는지 전부 펼쳐집니다</p>
+
+  <div class="stage">
+
+    <div class="left">
+      <div class="phone" style="width:428px">
+        <img src="img/1414-14496.png" alt="일자별 상세 — 카드/배달앱/페이허그">
+
+        <!-- 4) 내역 반영 시간 -->
+        <div class="hi green" style="top:12.6%;left:36%;bottom:83.3%;right:36%"></div>
+        <div class="mk green" style="top:14.5%;left:29%">4</div>
+
+        <!-- 1) 카드 그룹 -->
+        <div class="hi" style="top:29.5%;left:5%;bottom:31.5%;right:4%"></div>
+        <div class="mk" style="top:32.2%;left:45%">1</div>
+
+        <!-- 2) 배달앱 그룹 -->
+        <div class="hi blue" style="top:68%;left:5%;bottom:15.5%;right:4%"></div>
+        <div class="mk blue" style="top:70.8%;left:45%">2</div>
+
+        <!-- 3) 페이허그 그룹 -->
+        <div class="hi red" style="top:84%;left:5%;bottom:1%;right:4%"></div>
+        <div class="mk red" style="top:86.8%;left:45%">3</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="calls">
+
+        <div class="call">
+          <div class="call-n">1</div>
+          <div class="call-b">
+            <div class="call-t fx fx-mid"><span class="grp">카드</span> <span class="fx-t">— 카드사별로 한 줄씩</span></div>
+            <div class="call-d">KB·농협NH·롯데·비씨·우리·하나·신한·삼성·현대. 건수와 금액이 같이 보이고, 없는 카드사는 0원으로 남습니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n blue">2</div>
+          <div class="call-b">
+            <div class="call-t fx fx-mid"><span class="grp">배달앱</span> <span class="fx-t">— 플랫폼별로 한 줄씩</span></div>
+            <div class="call-d">배달의민족 · 쿠팡이츠 · 요기요. 이 줄을 누르면 다음 장의 채널 상세로 들어갑니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n red">3</div>
+          <div class="call-b">
+            <div class="call-t fx fx-mid"><span class="grp">페이허그</span> <span class="fx-t">— 「예상 지급 차액」과 「전산 수수료」</span></div>
+            <div class="call-d">카드도 배달앱도 아닌 항목이 여기 모입니다. 「예상 지급 차액」은 뒤에서 한 장을 따로 잡고 보겠습니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n green">4</div>
+          <div class="call-b">
+            <div class="call-t">날짜 아래 「내역 반영 시간」</div>
+            <div class="call-d">이 화면이 언제 기준으로 채워졌는지 표시됩니다. 사장님이 "아까랑 숫자가 다르다"고 하면 여기를 같이 봐 주세요</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="punch info">
+        합계는 위, 근거는 아래 — <u>"왜 이 금액이냐"는 질문은 이 화면 한 장으로 대부분 설명됩니다.</u>
+        영업 현장에서 계산기를 두드리지 마시고 이 화면을 열어 주세요
+      </div>
+
+      <div class="tbd-box fx" style="margin-top:14px">
+        <span class="badge badge-check">확인 중</span>
+        <span class="fx-t">「내역 반영 시간」의 기준 시각과 「예상 지급 차액」의 정의 — 확정 전이라 안내하지 않습니다</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 화면 · 일자별 상세(미리 받는 돈)</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

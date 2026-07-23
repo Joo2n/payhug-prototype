@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S04 — 돈이 흐르는 길</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { display: block; }
+  .wrap { display: flex; flex-direction: column; gap: 15px; height: 100%; }
+
+  .band {
+    display: flex; align-items: center; gap: 20px;
+    background: var(--ph-purple-tint); border: 1.5px solid #DCD5FF;
+    border-radius: 15px; padding: 15px 24px;
+  }
+  .band .tg {
+    flex-shrink: 0; font-size: 16px; font-weight: 800; color: var(--ph-purple);
+    background: #fff; border-radius: 999px; padding: 7px 16px;
+  }
+  .band .tx { font-size: 18px; line-height: 1.45; color: var(--ink-2); font-weight: 500; }
+  .band .tx b { color: var(--ph-forest); font-weight: 800; }
+
+  .lane { border-radius: 18px; padding: 16px 22px 18px; }
+  .lane.a { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; }
+  .lane.b { background: var(--surface); border: 1.5px solid var(--line); }
+  .lane-h { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .lane-n {
+    width: 30px; height: 30px; border-radius: 999px; flex-shrink: 0; color: #fff;
+    font-family: var(--font-num); font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lane.a .lane-n { background: var(--ph-green-700); }
+  .lane.b .lane-n { background: var(--ink-3); }
+  .lane-t { font-size: 22px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.02em; }
+  .lane-s { font-size: 16px; color: var(--ink-3); font-weight: 500; line-height: 1.35; }
+
+  .row { display: flex; align-items: stretch; }
+  .nd {
+    flex: 1; min-width: 0; background: #fff; border: 1.5px solid var(--line);
+    border-radius: 13px; padding: 14px 18px;
+  }
+  .nd b { display: block; font-size: 19px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; line-height: 1.25; }
+  .nd small { display: block; margin-top: 5px; font-size: 14px; line-height: 1.45; color: var(--ink-3); }
+  .nd.ext  { background: var(--ph-warning-tint); border-color: #FFE0B5; }
+  .nd.lock { background: var(--ph-danger-tint);  border-color: #FFD3D3; }
+  .nd.ph   { background: var(--ph-blue-tint);    border-color: #CFE4FF; }
+  .arw {
+    flex-shrink: 0; width: 40px; display: flex; align-items: center; justify-content: center;
+    font-size: 25px; font-weight: 700; color: var(--line-2);
+  }
+
+  .risks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; flex: 1; min-height: 0; }
+  .rk {
+    background: #fff; border: 1.5px solid #FFD3D3; border-radius: 15px;
+    padding: 15px 18px 16px; display: flex; flex-direction: column;
+  }
+  .rk-h { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+  .rk-h i {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 7px; background: var(--ph-danger);
+    color: #fff; font-family: var(--font-num); font-size: 13px; font-weight: 700; font-style: normal;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rk-h .t { font-size: 17px; font-weight: 800; color: #B3121A; letter-spacing: -0.02em; line-height: 1.25; }
+  .rk p { font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .rk .say {
+    margin-top: 11px; padding-top: 10px; border-top: 1px dashed var(--line-2);
+    font-size: 15px; line-height: 1.4; color: var(--ph-forest); font-weight: 700;
+  }
+  .rk .say span { display: block; font-size: 12px; font-weight: 800; color: var(--ink-4); letter-spacing: 0.03em; margin-bottom: 3px; }
+  .rk .out {
+    margin-top: auto; padding-top: 11px; font-size: 15px; font-weight: 800;
+    color: var(--ph-forest); line-height: 1.35;
+  }
+  .rk .out span { display: block; font-size: 12px; font-weight: 800; color: var(--ink-4); letter-spacing: 0.03em; margin-bottom: 3px; }
+  .risk-lb { font-size: 17px; font-weight: 800; color: #B3121A; margin-bottom: -2px; }
+  .punch { padding: 14px 22px; font-size: 19px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 1 · 서비스 구조</div>
+    <div class="s-no">04</div>
+  </div>
+
+  <h1 class="s-title">돈은 <span class="em">이 길</span>로 흐릅니다 — 순서가 거꾸로입니다</h1>
+  <p class="s-sub">페이허그가 먼저 드리고, 나중에 들어온 정산금으로 메웁니다. 그래서 정산금이 반드시 락계좌로 들어와야 합니다.</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <div class="band">
+        <div class="tg">매출 파악</div>
+        <div class="tx">정산금이 들어오기 전에 지급액을 계산할 수 있는 이유 — <b>여신금융협회(카드)와 배달앱에서 매출 데이터를 미리 조회(스크래핑)</b>하기 때문입니다. 사장님 플랫폼 계정을 위임받아 읽어 옵니다.</div>
+      </div>
+
+      <div class="lane a">
+        <div class="lane-h">
+          <div class="lane-n">1</div>
+          <div class="lane-t">먼저 나갑니다</div>
+          <div class="lane-s">매출대금이 아직 안 들어온 상태에서 페이허그 돈으로 지급</div>
+        </div>
+        <div class="row">
+          <div class="nd ph"><b>페이허그 모계좌</b><small>페이허그 명의 운영 계좌</small></div>
+          <div class="arw">→</div>
+          <div class="nd"><b>사장님 입금계좌</b><small>하나은행 · 사장님 명의 · 자유 입출금</small></div>
+          <div class="arw">→</div>
+          <div class="nd" style="border-style:dashed"><b>사장님이 바로 사용</b><small>3개 계좌 중 사장님이 실제로 쓰는 계좌는 여기 하나뿐입니다</small></div>
+        </div>
+      </div>
+
+      <div class="lane b">
+        <div class="lane-h">
+          <div class="lane-n">2</div>
+          <div class="lane-t">나중에 들어옵니다</div>
+          <div class="lane-s">원래 정산일이 되면 매출처가 정산금을 보내오고, 페이허그가 먼저 드린 돈을 메웁니다</div>
+        </div>
+        <div class="row">
+          <div class="nd ext"><b>카드사 · 배달앱</b><small>카드사 · 배달의민족 · 쿠팡이츠 · 요기요</small></div>
+          <div class="arw">→</div>
+          <div class="nd lock"><b>선정산 전용계좌(락계좌)</b><small>가맹점마다 하나씩 · 하나은행 · 사장님 명의 · <span class="hl">출금전용</span></small></div>
+          <div class="arw">→</div>
+          <div class="nd ph"><b>페이허그 모계좌</b><small>먼저 드린 금액을 이 정산금으로 회수합니다</small></div>
+        </div>
+      </div>
+
+      <div class="risk-lb">각 구간에서 이런 일이 생깁니다 — 현장 문의의 대부분이 여기서 나옵니다</div>
+
+      <div class="risks">
+        <div class="rk">
+          <div class="rk-h"><i>1</i><div class="t">매출을 못 읽으면</div></div>
+          <p>사장님이 배달앱·플랫폼 <b>계정 비밀번호를 바꾸면</b> 매출 조회가 그 자리에서 끊깁니다. 사장님은 바뀐 줄 모르는 경우가 많습니다.</p>
+          <div class="say"><span>현장에서는 이렇게</span>"플랫폼 비밀번호를 바꾸시면 미리 드리는 게 멈춥니다. 바꾸셨으면 꼭 알려주세요."</div>
+          <div class="out"><span>결과</span>선정산 중단</div>
+        </div>
+        <div class="rk">
+          <div class="rk-h"><i>2</i><div class="t">락계좌가 아닌 곳으로 들어오면</div></div>
+          <p>정산 입금계좌를 아직 락계좌로 바꾸지 않은 매출처의 정산금은 <b>예전 사장님 계좌로 그대로</b> 들어갑니다. 페이허그가 가져올 방법이 없습니다.</p>
+          <div class="say"><span>현장에서는 이렇게</span>"계좌 변경이 끝난 매출처부터 순서대로 시작됩니다."</div>
+          <div class="out"><span>결과</span>그 매출처는 선정산 대상 아님</div>
+        </div>
+        <div class="rk">
+          <div class="rk-h"><i>3</i><div class="t">락계좌가 도중에 바뀌면</div></div>
+          <p>등록된 락계좌가 그대로인지 <b>하루 2회 자동으로 확인</b>합니다. 사장님이 정산계좌를 임의로 되돌려 놓으면 바로 잡힙니다.</p>
+          <div class="say"><span>현장에서는 이렇게</span>"정산계좌는 임의로 바꾸시면 안 됩니다. 바꾸실 일이 있으면 먼저 문의해 주세요."</div>
+          <div class="out"><span>결과</span>불일치 시 선정산 중단</div>
+        </div>
+        <div class="rk">
+          <div class="rk-h"><i>4</i><div class="t">먼저 준 뒤 매출이 취소되면</div></div>
+          <p>돈은 이미 나갔습니다. <b>지급 전</b>에 확인되면 당일 지급액에서 빼고, <b>지급 후</b>에 확인되면 되돌려받는 검토가 들어갑니다.</p>
+          <div class="say"><span>현장에서는 이렇게</span>"취소가 많은 날은 미리 드리는 금액이 줄거나 그날은 안 나갈 수 있습니다."</div>
+          <div class="out"><span>결과</span>전일 (승인−취소)가 음수면 당일 선정산 중단</div>
+        </div>
+      </div>
+
+      <div class="punch">네 가지 모두 <b>"정산금이 락계좌로 정확히 들어온다"</b>는 전제가 깨지는 경우입니다. 그래서 락계좌가 출금전용이어야 하고, 계좌·계정을 사장님이 임의로 손대면 서비스가 멈춥니다.</div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 하나은행 락계좌 기반 정산금채권 양수도 구조 · 계정 위임 스크래핑(비밀번호 변경 시 중단) · 락계좌 일 2회 검증, 불일치 시 선정산 중단 · 전일 (승인−취소) 음수 시 당일 선정산 중단</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

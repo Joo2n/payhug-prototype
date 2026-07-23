@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M14 — 대시보드 · 심사 대기(진행 중)</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+    <div class="ham"><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 사업자 선택기 (BusinessSelector) -->
+    <div style="background:#fff;border-radius:20px;padding:18px 24px;box-shadow:0 1px 20px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:24px;font-weight:700;color:#000">잇잇</span>
+          <span class="cst ing">계약진행</span>
+        </div>
+        <span style="font-size:16px;color:#7e8299">616-28-53422</span>
+      </div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
+        <path d="M6 9L12 15L18 9" stroke="#b5b5c3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- 계약 현황 (ProcessStatusCard — 기본 분기) -->
+    <div class="dcard">
+      <div class="t">계약 현황을 확인해보세요</div>
+      <div class="s">계약 후 입금까지 최대 4일이 필요해요</div>
+
+      <div class="steps3">
+        <div class="bar"><i style="width:50%"></i></div>
+        <div class="s3">
+          <div>
+            <div class="dot done"></div>
+            <div class="lb done">계약서작성</div>
+          </div>
+          <div>
+            <div class="dot now"></div>
+            <div class="lb now">심사중</div>
+          </div>
+          <div>
+            <div class="dot"></div>
+            <div class="lb" style="opacity:.5">입금시작</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note-src">코드 기반 재현 · dashboard/page.tsx ProcessStatusCard 기본 분기 + BusinessSelector / 심사중 → 진행바 50% (getProgressWidth). 상호·사업자번호는 예시 더미값.</div>
+
+</div>
+</body>
+</html>

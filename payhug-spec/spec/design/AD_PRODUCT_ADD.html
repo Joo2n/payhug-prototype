@@ -1,0 +1,113 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">정산 상품관리 &gt; 상품 생성</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_PRODUCT_ADD</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 정산 &gt; 정산 상품관리 &gt; 상품 생성</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">빈 폼(기본 유형 일반/GENERAL)</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/929_2.png" alt="정산 상품관리 &gt; 상품 생성">
+        <div class="dim" style="left:35.5%;top:8.5%;height:17.5%"></div>
+        <div class="mk" style="left:35.5%;top:17%">1</div>
+        <div class="dim" style="left:35.5%;top:27%;height:16%"></div>
+        <div class="mk" style="left:35.5%;top:35%">2</div>
+        <div class="dim" style="left:35.5%;top:44%;height:8.5%"></div>
+        <div class="mk" style="left:35.5%;top:48%">3</div>
+        <div class="dim" style="left:35.5%;top:53%;height:8%"></div>
+        <div class="mk" style="left:35.5%;top:57%">4</div>
+        <div class="dim" style="left:35.5%;top:62.5%;height:28%"></div>
+        <div class="mk" style="left:35.5%;top:76%">5</div>
+        <div class="mk" style="left:35.5%;top:93%">6</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;정산 상품 <b>생성 모달</b> (빈 폼)</span>
+        <span class="b" style="margin-top:5px"><span class="g">기본값</span> &nbsp;유형 default : <b>일반</b> · 모든 수수료 옵션 OFF · 요율 빈칸</span>
+        <span class="i">바깥 어두운 영역·우상단 <b>X</b>를 누르면 닫힘</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">기본<br>정보</td><td class="kn-note">
+<span class="b">모달 제목 <b>"정산 상품 생성"</b></span><span class="b"><b>상품명</b> <span class="red">*필수</span></span><span class="i">입력창 안내문 : "예: 일반 파트너 상품 A"</span><span class="i">비우고 저장 시 <b>"상품명을 입력해주세요."</b> 오류 (그 외 필드는 필수 아님)</span><span class="b"><b>설명</b> (선택)</span><span class="i">입력창 안내문 : "상품에 대한 간단한 설명"</span><span class="b"><b>유형</b> : 일반 / 다우 택1 (default 일반)</span><span class="i">선택 시 <b>일반</b> = 초록 채움 · <b>다우</b> = 보라 채움</span><span class="i">유형을 바꾸면 아래 참여자·요율 항목이 그 유형에 맞게 바뀜</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">참여자</td><td class="kn-note">
+<span class="b">역할별 드롭다운 선택 (default <b>"— 미지정 —"</b>)</span><span class="i">일반 : 투자자·페이허그·상위파트너·하위파트너·영업조직</span><span class="i">다우 : 투자자·페이허그·상위영업·하위영업</span><span class="i">각 옵션에 이름 + (법인/개인, 사업자) 태그 표기</span><span class="i">투자자를 안 고르면 요율 표의 <b>투자자 행</b>이, 영업조직을 안 고르면 <b>영업조직 행</b>이 숨겨짐 (빈 폼엔 두 행 안 보임)</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">수수료<br>납부<br>옵션</td><td class="kn-note">
+<span class="b">토글 그룹 — 이체료/시스템료 <b>납부자</b> 지정</span><span class="i">안내 : <span class="red">"*모두 OFF 일경우 가맹점이 납부합니다."</span></span><span class="i">일반 : 하위/상위파트너 이체료 납부 · 하위/상위파트너 시스템료 납부</span><span class="i">다우 : 상위/하위영업 이체료 납부</span><span class="i">같은 수수료의 상·하위는 하나만 납부자로 지정됨 (상호 배타)</span><span class="i">생성 시 기본 <b>전부 OFF</b></span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">수수료<br>수취<br>옵션</td><td class="kn-note">
+<span class="b">토글 그룹 — 파트너 수수료 <b>수취</b> 여부</span><span class="i">안내 : <span class="red">"*모두 OFF 일경우 페이허그만 수취합니다."</span></span><span class="i">일반 : 하위/상위파트너 이체료 수취 · 하위/상위파트너 시스템료 수취</span><span class="i">다우 : 상위영업·하위영업 이체료 수취</span><span class="i">생성 시 기본 <b>전부 OFF</b></span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">요율<br>설정</td><td class="kn-note">
+<span class="b">표 : 유형 · 역할 · 값 · VAT</span><span class="i">값 입력창 안내문 : "0" · 0 이상만 입력</span><span class="i">이체수수료 = <b>원</b> 단위(정수) · 나머지 = <b>%</b> 단위</span><span class="i">VAT : 별도(default) / 포함 · <b>페이허그 행은 VAT 없음</b>(— 표시)</span><span class="i">하단 안내 : "* 이체수수료는 원(₩) 단위, 나머지는 % 단위로 입력 (예: 1% → 1 입력)"</span><span class="i red">입력 요율이 곧 정산 수수료율 — 표준값 미확정(C1), 창작 금지</span>
+          </td></tr>
+          <tr><td class="kn-no">6</td><td class="kn-nm">저장<br>취소</td><td class="kn-note">
+<span class="b">하단 <b>[취소]</b> · <b>[상품 생성]</b></span><span class="i">저장 중에는 버튼이 <b>"생성 중..."</b>으로 바뀌고 비활성화</span><span class="i">성공 시 토스트 "상품이 생성되었습니다." + 목록 새로고침</span><span class="i">실패 시 모달 안 빨간 오류 박스에 서버 메시지 표시</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

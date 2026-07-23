@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S35 — 선정산 이용 중 입금계좌 변경</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: stretch; }
+  .wrap { display: flex; flex-direction: column; gap: 16px; width: 100%; height: 100%; }
+
+  .two { display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; flex: 1; min-height: 0; }
+  .lft, .rgt { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+
+  .rule { background: var(--ph-danger-tint); border: 1.5px solid #FFD3D3; border-radius: 16px; padding: 19px 24px; }
+  .rule-h { font-size: 24px; font-weight: 900; color: #B3121A; letter-spacing: -0.03em; line-height: 1.3; }
+  .rule ul { list-style: none; margin-top: 13px; }
+  .rule li { position: relative; padding-left: 20px; margin-bottom: 9px; font-size: 16px; line-height: 1.5; color: #7A2A30; }
+  .rule li:last-child { margin-bottom: 0; }
+  .rule li::before { content:''; position:absolute; left:3px; top:9px; width:6px; height:6px; border-radius:999px; background:var(--ph-danger); }
+  .rule li b { color: #B3121A; font-weight: 800; }
+
+  .pen { background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 18px 24px; }
+  .pen-h { font-size: 19px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; margin-bottom: 10px; }
+  .pen p { font-size: 16px; line-height: 1.55; color: var(--ink-2); }
+  .pen p b { color: var(--ph-forest); font-weight: 800; }
+  .pen p + p { margin-top: 7px; }
+
+  .scr-box { background: var(--surface); border-radius: 16px; padding: 18px 24px; }
+  .scr-h { font-size: 19px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; margin-bottom: 10px; }
+  .appline {
+    background: #fff; border: 1.5px dashed var(--line-2); border-radius: 11px;
+    padding: 12px 16px; font-size: 17px; font-weight: 700; color: var(--ph-forest); line-height: 1.4;
+  }
+  .scr-box p { font-size: 16px; line-height: 1.55; color: var(--ink-2); margin-top: 10px; }
+  .scr-box p b { color: var(--ph-forest); font-weight: 800; }
+
+  .flowline { display: flex; align-items: stretch; gap: 10px; margin-top: 13px; }
+  .fn { flex: 1; min-width: 0; background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .fn b { display: block; font-size: 15px; font-weight: 800; color: var(--ph-forest); line-height: 1.35; }
+  .fn small { display: block; font-size: 13px; color: var(--ink-3); margin-top: 4px; line-height: 1.4; }
+  .fa { display: flex; align-items: center; color: var(--line-2); font-size: 22px; font-weight: 700; }
+
+  .say { background: var(--ph-green-tint); border-left: 5px solid var(--ph-green-700); border-radius: 13px; padding: 15px 22px; }
+  .say .lb { font-size: 13px; font-weight: 800; color: #2F6B18; letter-spacing: 0.04em; }
+  .say .tx { font-size: 19px; font-weight: 800; color: var(--ph-forest); line-height: 1.45; margin-top: 6px; letter-spacing: -0.02em; }
+
+  .tbd-h { font-size: 18px; font-weight: 800; color: var(--ph-forest); margin-bottom: 11px; letter-spacing: -0.02em; }
+  .tbd-rows { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 26px; }
+  .tbd-row { border-left: 1px dashed var(--line-2); padding-left: 20px; }
+  .tbd-rows .tbd-row:first-child { border-left: 0; padding-left: 0; }
+  .tbd-row .tt { font-size: 16px; font-weight: 800; color: var(--ink-2); }
+  .tbd-row .td { font-size: 14px; color: var(--ink-3); line-height: 1.45; margin-top: 4px; }
+  .cases { flex: 1; min-height: 0; padding: 16px 22px; }
+  .cases .pen-h { margin-bottom: 4px; }
+  .cs { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line-2); }
+  .cs-q { font-size: 15px; font-weight: 800; color: var(--ph-forest); line-height: 1.35; }
+  .cs-a { font-size: 14px; line-height: 1.45; color: var(--ink-2); margin-top: 3px; }
+  .cs-a b { color: var(--ph-forest); font-weight: 800; }
+  .s-foot .src { flex: 1; min-width: 0; padding-right: 30px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">35</div>
+  </div>
+
+  <h1 class="s-title">선정산 이용 중 <span class="em">입금계좌를 바꾸고 싶다면</span></h1>
+  <p class="s-sub">다우데이타 사전 질의 3번. 결론부터 말씀드리면 — <b>사장님이 임의로 바꾸실 수 없습니다</b></p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <div class="two">
+
+        <div class="lft">
+          <div class="rule">
+            <div class="rule-h">원칙 — 임의 변경 금지입니다</div>
+            <ul>
+              <li>입금계좌·지정계좌는 <b>페이허그의 사전 서면동의 없이 변경할 수 없습니다.</b> 계약서에 명시된 의무입니다.</li>
+              <li><b>이미 지급된 선정산 대금이 전액 회수(＝상환 완료)되기 전에는 변경 자체가 금지</b>됩니다. 사장님 사정과 무관하게 계약상 막혀 있습니다.</li>
+              <li>정산주체(카드사·플랫폼)에 <b>계좌 변경을 신청하는 행위 자체</b>도 금지 대상입니다. 페이허그 쪽만 안 바꾸면 되는 게 아닙니다.</li>
+              <li>변경이 필요하면 <b>먼저 요청 → 페이허그 내부 검토 → 승인</b> 순서를 거칩니다. 승인제입니다.</li>
+            </ul>
+          </div>
+
+          <div class="pen">
+            <div class="pen-h">무단으로 바꾸면 어떻게 되나</div>
+            <p>사전 동의 없이 계좌를 바꾸면 <b>서비스 이용 중지 사유</b>이자 <b>계약 해지 사유</b>에 동시에 해당합니다. 둘 다 계약서에 열거된 사유입니다.</p>
+            <p>여기에 더해 <b>손해배상 조항</b>이 걸립니다. "몰랐다"로 넘어가지 않습니다.</p>
+            <p class="hl" style="font-weight:700">사장님이 "계좌 하나 바꾸는 게 뭐가 문제냐"고 하실 때, 이 세 가지(중지·해지·배상)를 반드시 짚어 주세요.</p>
+          </div>
+
+          <div class="pen cases">
+            <div class="pen-h">현장에서 자주 나오는 세 가지 상황</div>
+            <div class="cs">
+              <div class="cs-q">"다른 은행 계좌로 받고 싶어요"</div>
+              <div class="cs-a">락계좌와 입금계좌는 <b>하나은행으로 지정</b>되어 있습니다. 타행 계좌로의 변경은 지금 구조에서 받을 수 없습니다.</div>
+            </div>
+            <div class="cs">
+              <div class="cs-q">"이미 다른 데서 계좌를 바꿔 놨는데요"</div>
+              <div class="cs-a">그 상태면 <b>이미 중지 사유에 해당</b>합니다. 다그치지 마시고 즉시 1:1 문의로 알리도록 안내해 주세요.</div>
+            </div>
+            <div class="cs">
+              <div class="cs-q">"그냥 해지하고 새로 하면 안 되나요?"</div>
+              <div class="cs-a">해지도 <b>선정산 대금 정리가 끝나야</b> 처리됩니다. 계좌를 바꾸려고 해지를 택하는 건 더 오래 걸립니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rgt">
+          <div class="scr-box">
+            <div class="scr-h">앱에서는 이렇게 보입니다 — 조회만 됩니다</div>
+            <p style="margin-top:0">계약 정보 화면에서 등록 계좌·사업자 정보·신분증·증빙 서류를 <b>볼 수는 있지만 고칠 수는 없습니다.</b> 수정 버튼도 입력창도 없습니다.</p>
+            <div class="appline" style="margin-top:11px">화면 안내 문구 — "수정이 필요하시면 1:1 문의를 이용해 주세요"</div>
+            <p>즉 <b>앱에 변경 기능이 빠진 게 아니라, 일부러 막아 둔 것</b>입니다. 사장님이 "메뉴를 못 찾겠다"고 하시면 없는 게 맞다고 답해 주세요.</p>
+          </div>
+
+          <div class="scr-box">
+            <div class="scr-h">실제 변경은 이 흐름으로 처리됩니다</div>
+            <div class="flowline">
+              <div class="fn"><b>1:1 문의 접수</b><small>사장님이 앱에서 직접 작성</small></div>
+              <div class="fa">→</div>
+              <div class="fn"><b>운영 접수·확인</b><small>어드민 문의함에서 확인</small></div>
+              <div class="fa">→</div>
+              <div class="fn"><b>내부 검토 · 동의</b><small>변경 가능 여부 판단</small></div>
+              <div class="fa">→</div>
+              <div class="fn"><b>운영이 처리</b><small>앱에서는 바꿀 수 없음</small></div>
+            </div>
+            <p><b>영업사원이 대신 접수해 줄 수 없습니다.</b> 전화·카톡으로 받은 요청은 기록이 남지 않아 처리에서 누락됩니다. 사장님이 직접 앱에서 남기시게 안내해 주세요.</p>
+          </div>
+
+          <div class="say">
+            <div class="lb">현장에서는 이렇게</div>
+            <div class="tx">"임의로 바꾸시면 서비스가 멈춥니다. 앱 1:1 문의로 먼저 요청부터 넣어 주세요."</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tbd-box">
+        <div class="tbd-h">아래는 문서에 <span class="hl">수치가 전혀 없습니다</span> — 추정해서 말하지 마세요</div>
+        <div class="tbd-rows">
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">필요 서류</div></div>
+            <div class="td">통장 사본 외에 무엇을 더 받는지, 명의 확인 서류가 필요한지 규정한 문서가 없습니다.</div>
+          </div>
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">처리 소요 시간</div></div>
+            <div class="td">접수부터 반영까지 며칠인지 정한 값이 없습니다. <b>"○일이면 됩니다"라고 말하면 안 됩니다.</b></div>
+          </div>
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">접수 채널 확정</div></div>
+            <div class="td">1:1 문의 외에 메일·전화 접수를 허용할지, 서면동의를 어떤 형식으로 받을지 미확정입니다.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 이용계약서 제7조①(지정계좌=하나은행·임의 변경 불가·내부 검토 승인제) · 양수도계약 제11조⑦(전액 회수 전 계좌 변경 및 변경 신청 금지) · 이용계약서 제8조·약관 제13·14조(무단 변경 = 중지·해지 사유) · 가맹점 앱 계약 정보 화면(조회 전용)</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

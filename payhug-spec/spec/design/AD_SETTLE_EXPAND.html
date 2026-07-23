@@ -1,0 +1,98 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">선정산 결과 &gt; 가맹점 건별 상세 펼침</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_SETTLE_EXPAND</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 정산현황 &gt; 선정산 결과</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">가맹점 행 클릭 시 건별 매출 상세 펼침</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/1036_2.png" alt="선정산 결과 &gt; 가맹점 건별 상세 펼침">
+        <div class="dim" style="left:11.8%;top:59.4%;height:4.6%"></div>
+        <div class="mk" style="left:11.8%;top:61.6%">1</div>
+        <div class="dim" style="left:11.8%;top:64.3%;height:3.2%"></div>
+        <div class="mk" style="left:11.8%;top:65.8%">2</div>
+        <div class="mk" style="left:11.8%;top:68.0%">3</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;선정산 결과 표에서 <b>가맹점 행 클릭 → 그 아래로 펼쳐지는 건별 상세</b> (variant)</span>
+        <span class="i">같은 행 다시 클릭하면 접힘 · 다른 행 클릭하면 그 행으로 펼침 이동</span>
+        <span class="i red">목업엔 건별 데이터가 없어 캡처는 <b>"건별 데이터 없음"</b>만 표시됨</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">펼침<br>트리거</td><td class="kn-note">
+<span class="b">가맹점 행 클릭 시 선택 행 배경 강조 + 바로 아래 상세 패널 펼침</span><span class="grp">상황별 문구</span><span class="i">로딩 → "로딩 중..." / 건 없음 → <b>"건별 데이터 없음"</b></span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">건별<br>매출표</td><td class="kn-note">
+<span class="b">"건별 매출 상세 (N건)"</span><span class="grp">표 항목</span><span class="i">매출원 · 승인번호/주문번호 · 카드사/앱 · 매출액 · 수수료 · 수수료유형 · 순지급액 · 매입상태 · 차액</span><span class="i">매출원 카드=남색·배달(배민/요기요/쿠팡이츠)=주황 뱃지 · 수수료유형 실제=초록·예상=노랑</span><span class="i">매입상태 뱃지 매입완료=초록 · 매입취소/승인취소=빨강 · 그 외=회색</span><span class="i">현장결제(payMet 값 <b>만나서결제</b> 등, 없으면 "현장결제") 건은 행 빨강·수수료유형 <b>차감</b>·순지급액 음수 표시</span><span class="i red">만나서결제 = 라이더 현장 수령 → 매출 차감·수수료만 차감(음수)</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">추가<br>섹션</td><td class="kn-note">
+<span class="grp">우리가게클릭비 차감 (있을 때)</span><span class="i">광고비 차감 N건 합계(−금액) · 회수완료(초록)/부분회수(노랑)/미회수(빨강) 뱃지 · 정산상태 뱃지 · 누적 미회수</span><span class="i red">여기 '회수'=광고비 회수 — 과지급 회수·매출대금 스윕과 별개 개념</span><span class="grp">대기 중인 차액 정산 (있을 때)</span><span class="i">주문번호·카드사·유형 뱃지 · 이전/확정 수수료 · +환급/−차감 금액</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M20 — 대시보드 · 승인 후 (미리 받는 돈)</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+    <div class="ham"><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- 사업자 선택기 (BusinessSelector) -->
+    <div style="background:#fff;border-radius:20px;padding:18px 24px;box-shadow:0 1px 20px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:24px;font-weight:700;color:#000">잇잇</span>
+          <span class="cst ok">승인완료</span>
+        </div>
+        <span style="font-size:16px;color:#7e8299">616-28-53422</span>
+      </div>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
+        <path d="M6 9L12 15L18 9" stroke="#b5b5c3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- 미리 받는 돈 (PreSettlementCard) -->
+    <div style="background:#fff;border-radius:20px;box-shadow:0 1px 20px rgba(0,0,0,0.15);padding:24px">
+      <div style="display:flex;flex-direction:column;gap:24px">
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <span style="font-size:16px;color:#7e8299">26년 7월 23일 (목) ∙ 오늘</span>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:24px;font-weight:700;color:#000">미리 받는 돈</span>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
+                <path d="M9 5l7 7-7 7" stroke="#7e8299" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div style="font-size:32px;font-weight:700;color:#0070ff;line-height:1">621,792원</div>
+        </div>
+
+        <div style="font-size:20px;font-weight:700;color:rgba(126,130,153,0.7)">어제 매출액 918,300원</div>
+
+        <div style="background:#f5f8fa;border-radius:16px;padding:18px 0;text-align:center;font-size:18px;font-weight:500;color:#7e8299">계좌 입금 내역보기</div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note-src">코드 기반 재현 · PreSettlementCard.tsx + dashboard/page.tsx contractStatus === "APPROVED" 분기 / 금액(621,792원 · 918,300원)·날짜·상호·사업자번호는 모두 예시 데이터이며 실제 값은 서버 조회 결과다. 조회 중에는 "조회 중...", 어제 매출 미집계 시 "어제 매출액 집계중"으로 표시된다.</div>
+
+</div>
+</body>
+</html>

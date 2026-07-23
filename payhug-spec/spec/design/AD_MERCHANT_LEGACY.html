@@ -1,0 +1,100 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">가맹점 관리 &gt; 부채 가맹점 등록</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_MERCHANT_LEGACY</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 가맹점관리 &gt; 목록 &gt; 부채 가맹점 등록</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">ADMIN/PAYHUG 전용. 본인인증 없이 모계정 생성</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/975_2.png" alt="가맹점 관리 &gt; 부채 가맹점 등록">
+        <div class="mk" style="left:40.2%;top:35.2%">1</div>
+        <div class="dim" style="left:40.2%;top:38.9%;height:15.4%"></div>
+        <div class="mk" style="left:40.2%;top:46.6%">2</div>
+        <div class="mk" style="left:40.2%;top:58%">3</div>
+        <div class="mk" style="left:40.2%;top:64.3%">4</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;구 시스템 이관 <b>부채 가맹점의 모계정</b>을 만드는 등록 모달</span>
+        <span class="b"><span class="g">권한</span> &nbsp;<b>관리자(ADMIN·PAYHUG) 전용</b> — 헤더 [부채 가맹점 등록] 버튼으로만 열림</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진입</td><td class="kn-note">
+<span class="b">헤더 우측 <b>[부채 가맹점 등록]</b> 버튼(주황)으로 열림</span><span class="i">제목 <b>"부채 가맹점 등록"</b>(주황 헤더) · 우측 닫기(X) · 바깥 영역 클릭 시 닫힘</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">입력<br>필드</td><td class="kn-note">
+<span class="b">3개 필드 모두 <b>필수(*)</b></span><span class="i"><b>대표자명</b> — 안내문 "홍길동" · 비우면 "대표자명을 입력해주세요."</span><span class="i"><b>휴대폰번호</b> — 안내문 "010-0000-0000" · 비우면 "휴대폰번호를 입력해주세요." · 저장 시 하이픈(-) 제거</span><span class="i"><b>임시 비밀번호</b> — 안내문 "가맹점 로그인용 임시 비밀번호" · 비어있거나 <b>4자리 미만</b>이면 "비밀번호를 4자리 이상 입력해주세요."</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">안내문</td><td class="kn-note">
+<span class="b">하단 주황 안내 박스</span><span class="i">"구 시스템에서 이관하는 부채 가맹점의 모계정을 등록합니다. 휴대폰 본인인증 없이 계정이 생성되며, 이후 가맹점 상세에서 사업자등록, 계약서 업로드, 계좌 등록 등을 진행해주세요."</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">버튼</td><td class="kn-note">
+<span class="b"><b>[취소]</b> / <b>[계정 등록]</b></span><span class="i">등록 중엔 [계정 등록] 비활성 + "등록 중..."</span><span class="i">성공 시 새로 만든 가맹점 <b>상세[AD_MERCHANT_DT]</b>로 이동 (탭 모드=대표자명 탭) + 목록 새로고침</span><span class="i">검증 실패·서버 실패 문구는 모두 <b>모달 상단 빨강 박스</b>에 표시</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

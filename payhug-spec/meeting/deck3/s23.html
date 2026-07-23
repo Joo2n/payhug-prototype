@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S23 — 제신고</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { display: block; }
+  .wrap { display: flex; flex-direction: column; gap: 14px; height: 100%; }
+
+  .what {
+    display: flex; align-items: center; gap: 18px;
+    background: var(--surface); border: 1.5px solid var(--line);
+    border-radius: 15px; padding: 15px 24px;
+  }
+  .what .lbl { flex-shrink: 0; font-size: 16px; font-weight: 800; color: #fff; background: var(--ph-forest); padding: 7px 15px; border-radius: 999px; }
+  .what .tx { font-size: 18px; line-height: 1.45; color: var(--ink-2); font-weight: 500; }
+  .what .tx b { color: var(--ph-forest); font-weight: 800; }
+
+  .ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .way { border-radius: 16px; border: 1.5px solid var(--line); background: #fff; padding: 17px 20px 16px; display: flex; flex-direction: column; }
+  .way-h { display: flex; align-items: center; gap: 10px; }
+  .way-h .nm { font-size: 22px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.02em; }
+  .way-h .ch { flex-shrink: 0; font-size: 14px; font-weight: 800; padding: 5px 11px; border-radius: 999px; background: var(--ph-warning-tint); color: #8A5200; }
+  .way-d { font-size: 16px; line-height: 1.5; color: var(--ink-2); margin-top: 10px; }
+  .way-d b { color: var(--ph-forest); font-weight: 800; }
+  .mail { margin-top: 10px; background: var(--surface-2); border-radius: 10px; padding: 9px 13px; font-family: var(--font-num); font-size: 16px; font-weight: 700; color: var(--ink); }
+  .way-f { margin-top: auto; padding-top: 11px; font-size: 15px; line-height: 1.45; color: var(--ink-3); border-top: 1px dashed var(--line-2); }
+  .way-f b { color: var(--ph-forest); font-weight: 800; }
+
+  .mid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; flex: 1; min-height: 0; }
+
+  .manual { background: var(--ph-danger-tint); border: 2px solid var(--ph-danger); border-radius: 16px; padding: 17px 22px; display: flex; flex-direction: column; }
+  .manual .mh { font-size: 21px; font-weight: 900; color: var(--ph-danger); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 10px; }
+  .manual p { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+  .manual p + p { margin-top: 8px; }
+  .manual p b { color: var(--ph-forest); font-weight: 800; }
+  .todo { margin-top: auto; padding-top: 12px; }
+  .todo-h { font-size: 16px; font-weight: 800; color: var(--ph-forest); margin-bottom: 8px; }
+  .ti { display: flex; gap: 10px; align-items: flex-start; background: #fff; border-radius: 10px; padding: 8px 13px; margin-bottom: 6px; }
+  .ti:last-child { margin-bottom: 0; }
+  .ti i {
+    flex-shrink: 0; font-style: normal; width: 20px; height: 20px; border-radius: 999px;
+    background: var(--ph-forest); color: #fff; font-family: var(--font-num); font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .ti span { font-size: 15px; line-height: 1.42; color: var(--ink-2); }
+  .ti span b { color: var(--ph-forest); font-weight: 800; }
+
+  .guide { background: var(--ph-blue-tint); border: 1.5px solid #CFE4FF; border-radius: 16px; padding: 17px 22px; display: flex; flex-direction: column; }
+  .guide .gh { font-size: 21px; font-weight: 900; color: #084A99; letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px; }
+  .guide .gq { font-size: 15px; color: var(--ink-3); margin-bottom: 11px; }
+  .gl { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+  .gl i {
+    flex-shrink: 0; font-style: normal; width: 22px; height: 22px; border-radius: 999px;
+    font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .gl.bad i { background: var(--ph-danger); color: #fff; }
+  .gl.good i { background: #0F7A3D; color: #fff; }
+  .gl .tx { font-size: 15.5px; line-height: 1.45; color: var(--ink-2); }
+  .gl.bad .tx .q { color: var(--ph-danger); font-weight: 800; }
+  .gl.good .tx .q { color: #0F7A3D; font-weight: 800; }
+  .gl .tx em { display: block; font-style: normal; font-size: 14px; color: var(--ink-3); margin-top: 2px; }
+  .guide .last { margin-top: auto; padding-top: 10px; border-top: 1px dashed #B9D6F7; font-size: 15px; line-height: 1.45; color: #084A99; font-weight: 700; }
+
+  .tbd-box { padding: 15px 22px; }
+  .tbd-h { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
+  .tbd-h .tt { font-size: 17px; font-weight: 800; color: var(--ink-2); }
+  .tbd-two { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 30px; }
+  .tbd-row { background: #fff; border-radius: 10px; padding: 10px 15px; }
+  .tbd-row .fx-t { font-size: 16px; color: var(--ink-2); line-height: 1.35; }
+  .tbd-row .fx-t b { color: var(--ink); font-weight: 800; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 3 · 신청 이후 ~ 선정산 개시</div>
+    <div class="s-no">23</div>
+  </div>
+
+  <h1 class="s-title">제신고 — 정산 입금계좌를 <span class="em">락계좌로 바꾸는 일</span></h1>
+  <p class="s-sub">승인이 나도 이 작업이 끝나야 선정산이 시작됩니다. 그리고 이 구간에는 진행 상태를 볼 수 있는 화면이 없습니다.</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <div class="what">
+        <div class="lbl">제신고란</div>
+        <div class="tx">카드사·배달앱이 <b>정산금을 보내주는 계좌</b>를, 기존 사장님 계좌에서 <b>그 가맹점의 선정산 전용계좌(락계좌)</b>로 바꾸는 작업입니다. <b>매출처마다 따로</b> 신청해야 하고, <b>변경이 끝난 매출처부터</b> 선정산이 시작됩니다.</div>
+      </div>
+
+      <div class="ways">
+        <div class="way">
+          <div class="way-h"><span class="nm">카드사</span><span class="ch">VAN 경유</span></div>
+          <div class="way-d"><b>VAN사·밴대리점을 통해 재신고</b>합니다. 가맹점이 쓰는 VAN사에 정산계좌 변경을 접수하는 방식입니다.</div>
+          <div class="way-f">카드는 <b>전체 카드사 변경이 끝난 뒤</b> 선정산이 실행됩니다. 한 곳이라도 남아 있으면 카드 선정산은 시작되지 않습니다.</div>
+        </div>
+
+        <div class="way">
+          <div class="way-h"><span class="nm">배민 · 요기요</span><span class="ch">사장님 사이트</span></div>
+          <div class="way-d">각 플랫폼의 <b>사장님 사이트에 로그인해 정산계좌를 직접 변경</b>합니다. 플랫폼 계정 정보가 있어야 합니다.</div>
+          <div class="way-f">배달의민족은 변경을 신청해도 <b>배민 운영자 승인</b>이 나야 계좌가 실제로 바뀝니다. 신청 즉시 완료가 아닙니다.</div>
+        </div>
+
+        <div class="way">
+          <div class="way-h"><span class="nm">쿠팡이츠</span><span class="ch">메일 접수</span></div>
+          <div class="way-d">화면에서 바꿀 수 없습니다. <b>메일로 접수하는 경로 하나뿐</b>입니다.</div>
+          <div class="mail">eatspartners@coupang.com</div>
+          <div class="way-f">쿠팡이츠는 <b>계좌변경을 자동으로 처리할 수단이 없습니다.</b> 접수 후 플랫폼이 처리해 줄 때까지 기다려야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="mid">
+        <div class="manual">
+          <div class="mh">이 구간은 시스템 기능이 아닙니다 — 운영이 손으로 처리합니다</div>
+          <p><b>제신고는 페이허그 시스템의 기능이 아니라, 운영 담당자가 수작업으로 처리하는 업무입니다.</b> 그래서 사장님 앱에도, 총판 어드민에도 <b>제신고 진행 상태를 조회하는 화면이 없습니다.</b> 상태값도, 알림도 없습니다.</p>
+          <p>현장에서 <b>"지금 어디까지 됐냐"</b>는 질문을 받아도 화면을 열어 보여드릴 수 없다는 뜻입니다. 이 사실을 알고 시작하셔야 합니다. 숨기고 "확인해 볼게요"라고 답한 뒤 확인이 안 되면 신뢰가 무너집니다.</p>
+          <p>진행 상황은 <b>페이허그 담당자에게 문의</b>해서 확인하는 방식뿐입니다.</p>
+          <div class="todo">
+            <div class="todo-h">그래서 영업 현장에서는 이렇게 해주세요</div>
+            <div class="ti"><i>1</i><span>계약이 끝나는 그 자리에서 <b>"매출처별로 순차 개시된다"</b>를 먼저 말씀드리세요. 나중에 설명하면 변명으로 들립니다.</span></div>
+            <div class="ti"><i>2</i><span>진행 문의는 <b>페이허그 담당자 창구로 모아</b> 주세요. 영업사원이 개별로 추측해 답하면 안내가 서로 어긋납니다.</span></div>
+            <div class="ti"><i>3</i><span>이 기간에 사장님이 <b>플랫폼 계정 비밀번호를 바꾸지 않도록</b> 안내하세요. 바꾸면 계좌 변경도 매출 조회도 함께 막힙니다.</span></div>
+          </div>
+        </div>
+
+        <div class="guide">
+          <div class="gh">"언제 돈 나오냐"고 물으시면</div>
+          <div class="gq">확정되지 않은 것을 확정처럼 말하지 않는 것이 핵심입니다.</div>
+          <div class="gl bad"><i>✕</i><div class="tx"><span class="q">"3일이면 다 됩니다"</span> <em>매출처별 소요일은 문서마다 값이 달라 확정되지 않았습니다.</em></div></div>
+          <div class="gl bad"><i>✕</i><div class="tx"><span class="q">"제가 앱에서 확인해 드릴게요"</span> <em>확인할 수 있는 화면이 없습니다.</em></div></div>
+          <div class="gl bad"><i>✕</i><div class="tx"><span class="q">"승인됐으니 내일부터 들어옵니다"</span> <em>제신고가 끝나야 시작됩니다.</em></div></div>
+          <div class="gl good"><i>○</i><div class="tx"><span class="q">"매출처마다 계좌 변경이 끝나는 시점이 달라서, 끝난 곳부터 순서대로 시작됩니다."</span></div></div>
+          <div class="gl good"><i>○</i><div class="tx"><span class="q">"정확한 일정은 페이허그에 확인해서 다시 연락드리겠습니다."</span></div></div>
+          <div class="last">기간을 묻는 질문에는 <b>날짜를 주지 말고, 순서를 설명</b>하세요.</div>
+        </div>
+      </div>
+
+      <div class="tbd-box">
+        <div class="tbd-h">
+          <span class="tt">아래 두 가지는 문서마다 다르게 적혀 있어 아직 확정되지 않았습니다 — 현장 안내 금지</span>
+        </div>
+        <div class="tbd-two">
+          <div class="tbd-row">
+            <div class="fx-mid">
+              <span class="badge badge-tbd">협의 예정</span>
+              <span class="fx-t"><b>수행 주체</b> — 페이허그가 대행하는가, 사장님이 직접 하는가</span>
+            </div>
+          </div>
+          <div class="tbd-row">
+            <div class="fx-mid">
+              <span class="badge badge-tbd">협의 예정</span>
+              <span class="fx-t"><b>매출처별 소요 영업일</b> — 카드 · 배민 · 쿠팡이츠 · 요기요 각각</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 전용계좌 등록 경로(카드=VAN·밴대리점 / 배민·요기요=플랫폼 사장님 사이트 / 쿠팡이츠=메일 접수) · 배민은 운영자 승인 후 반영, 쿠팡이츠는 계좌변경 자동 처리 미지원 · 제신고 화면·상태값은 앱·어드민 어디에도 없음</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

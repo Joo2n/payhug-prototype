@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M13 — 계약 체결 완료 모달</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+/* 모달은 fixed 뷰포트 기준이라, 뒤 화면(m12)을 한 화면 높이로 잘라 깔고 그 위에 dim을 덮는다 */
+.screen {
+  position: relative; height: 812px; overflow: hidden;
+  background: #faf9fa; display: flex; flex-direction: column;
+}
+.tbar {
+  background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tbar .back { display: flex; align-items: center; gap: 4px; font-size: 15px; color: #7e8299; }
+.tbar h2 { font-size: 17px; font-weight: 700; color: #111; }
+.tbar .zoom {
+  background: #eff2f5; color: #424548; padding: 6px 12px;
+  border-radius: 999px; font-size: 13px; font-weight: 700;
+}
+.docs { padding: 8px 8px 24px; flex: 1; overflow: hidden; }
+.lead-fin { font-size: 14px; font-weight: 700; color: #163300; margin-bottom: 12px; }
+.page { position: relative; height: 100%; }
+.ph-doc {
+  height: 100%; background: #fff; border: 1px dashed #d1d5db;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.ph-doc span { font-size: 12px; color: #b8bcc4; line-height: 1.6; }
+.pnum {
+  position: absolute; bottom: 8px; right: 12px;
+  background: rgba(0,0,0,.4); color: #fff; font-size: 11px;
+  padding: 2px 8px; border-radius: 999px;
+}
+.cta-bar { background: #fff; border-top: 1px solid #e5e7eb; padding: 16px; }
+.cta-bar .btn { margin-top: 0; }
+</style>
+</head>
+<body>
+<div id="scr">
+
+  <div class="screen">
+
+    <!-- 뒤 화면: m12 (flowStep = "confirm") -->
+    <div class="tbar">
+      <div class="back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        이전
+      </div>
+      <h2>최종 확인</h2>
+      <div class="zoom">확대</div>
+    </div>
+
+    <div class="docs">
+      <div class="lead-fin">서명과 수수료율이 반영된 최종 계약서입니다</div>
+      <div class="page">
+        <div class="ph-doc"><span>최종 계약서 이미지 (finalImages[0])<br>— 서버 생성 이미지, 코드에 원본 없음 —</span></div>
+        <div class="pnum">1 / 2</div>
+      </div>
+    </div>
+
+    <div class="cta-bar">
+      <div class="btn big pri" style="border-radius:14px;font-size:17px">계약 완료</div>
+    </div>
+
+    <!-- CommonModal type="success" -->
+    <div class="dim">
+      <div class="modal">
+        <div class="ic ok">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>계약 동의 완료</h3>
+        <p>모든 계약 동의 절차가 완료되었습니다.<br>대시보드로 이동합니다.</p>
+        <div class="btn pri">확인</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note-src">코드 기반 재현 · app/contract/terms/page.tsx L651-682 + components/CommonModal.tsx L38-79 / isModalOpen = true, type = "success". 확인 시 /dashboard 이동(edit 모드면 /contract?businessId=…).<br>※ 뒤에 깔린 최종 확인 화면(m12)의 계약서 지면은 서버 생성 이미지라 자리표시 박스로 대체.</div>
+
+</div>
+</body>
+</html>

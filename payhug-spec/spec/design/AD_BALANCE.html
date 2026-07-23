@@ -1,0 +1,112 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">모 계좌 잔액 조회</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_BALANCE</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 모 계좌 잔액 조회 &gt; 기본</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">ADMIN·PAYHUG만 접근. 잔액 히어로+잔액 대사 카드+입·출금 원장. 대사 residual은 프론트 휴리스틱(가설)</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/944_2.png" alt="모 계좌 잔액 조회">
+        <div class="dim" style="left:12%;top:1.9%;height:4.7%"></div>
+        <div class="mk" style="left:11.5%;top:4.2%">1</div>
+        <div class="dim" style="left:12%;top:7.5%;height:14.2%"></div>
+        <div class="mk" style="left:11.5%;top:14.6%">2</div>
+        <div class="dim" style="left:12%;top:22.6%;height:11.7%"></div>
+        <div class="mk" style="left:11.5%;top:28.4%">3</div>
+        <div class="dim" style="left:12%;top:37%;height:11.9%"></div>
+        <div class="mk" style="left:11.5%;top:43%">4</div>
+        <div class="dim" style="left:12%;top:51.2%;height:41%"></div>
+        <div class="mk" style="left:11.5%;top:71.5%">5</div>
+        <div class="sub" style="left:21.3%;top:49.8%">5-1</div>
+        <div class="sub" style="left:76.5%;top:49.8%">5-2</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;<b>ADMIN·PAYHUG(관리자)</b>만 접근하는 <b>모 계좌 실시간 잔액 + 입·출금 원장</b> 조회 화면</span>
+        <span class="b" style="margin-top:5px"><span class="g">데이터</span> &nbsp;현재는 <b>예시(목업)</b> 기준(캡처 총 14건) &middot; <span class="red">실데이터는 쿠콘(외부 계좌조회) 응답값</span></span>
+        <span class="b" style="margin-top:5px"><span class="g">로드</span> &nbsp;진입 시 <b>잔액+원장 자동 1회 로드</b></span><span class="i">탭 복귀 시 <b>잔액만</b> 재조회 (원장은 [조회] 버튼으로만 갱신)</span>
+        <span class="b" style="margin-top:5px"><span class="red">잔액 대사&middot;잔차는 프론트 추정(휴리스틱) — 대사 산정 근거 개발 확인 필요</span></span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"모 계좌 잔액 조회"</b> 와 안내문</span><span class="i">"가맹점 지급 전 모 계좌의 가용 잔액과 입·출금 내역을 확인합니다."</span><span class="b">우측 <b>[새로고침]</b> 버튼 → <b>잔액만</b> 다시 불러옴 (원장은 그대로)</span><span class="i">조회 중엔 라벨 "조회 중..." · 버튼 비활성</span><span class="b">접근권한 : <b>ADMIN·PAYHUG(관리자)</b>만</span><span class="i">그 외 계정은 본문 없이 "이 페이지는 관리자만 접근할 수 있습니다."</span><span class="b">잔액 조회 실패 시 상단 <b>빨강 배너</b></span><span class="i">"잔액 조회에 실패했습니다." / "잔액 조회 중 오류가 발생했습니다."</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">잔액<br>히어로</td><td class="kn-note">
+<span class="grp">현재 잔액</span><span class="i">"현재 잔액 (실시간)" + 큰 숫자 + "원" (천단위 <b>[,]</b> 콤마)</span><span class="i">불러오는 중 → "조회 중..."</span><span class="grp">우측 요약 2칸</span><span class="i"><b>출금 가능</b> / <b>출금 불가</b> 금액 (콤마)</span><span class="grp">하단 정보줄</span><span class="i">응답 상태 : 쿠콘 응답코드 <b>0000이면 "성공"</b>, 아니면 "메시지 (코드)"</span><span class="i">거래일련번호 · 조회 시각(브라우저 로컬 시각 표기)</span><span class="b">값이 비면 <b>"-"</b> 표시</span><span class="i red">잔액·출금가능/불가는 쿠콘 응답을 그대로 표시 — 산정 근거는 개발 확인 필요</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">잔액<br>대사</td><td class="kn-note">
+<span class="b"><b>최근 이체 앵커가 있을 때만</b> 나타나는 대사 카드</span><span class="grp">수식(가로)</span><span class="i">현재 잔액 <b>=</b> 최근 이체 직후 잔액(#거래번호·일시) <b>+</b> 이후 입금 <b>−</b> 이후 출금 <b>+</b> 잔차</span><span class="grp">잔차에 따른 3가지 상태</span><span class="i">잔차 0 → "잔액 대사 <b>일치</b>" (초록), 라벨 "잔차"</span><span class="i">초과(+) → "잔액 대사 <b>차이 발생</b>" (청록), 라벨 "미기록 외부 입금(추정)" + 우측 <b>"외부 입금 등록 →"</b> 링크</span><span class="i">부족(−) → "잔액 대사 <b>확인 필요</b>" (빨강), 라벨 "차이(확인 필요)"</span><span class="grp">상황 안내문</span><span class="i">초과 : "잔액이 기록보다 N원 많습니다. 시스템 외 입금(충전 등)이 있었다면 "외부 입금 등록"으로 기록하면 0원으로 맞춰집니다."</span><span class="i">부족 : "현재 잔액이 기록보다 적습니다. 출금 로그 누락 또는 잔액 조회 시점 차이일 수 있어 확인이 필요합니다."</span><span class="i red">잔차·대사는 프론트 추정(앵커=최근 성공 이체 직후 잔액) — 산정 로직 개발 확인 필요</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">입출금<br>필터</td><td class="kn-note">
+<span class="b">소제목 <b>"입·출금 내역"</b> + 안내문</span><span class="i">"지급(출금) · 매출 회수(입금) · 외부 입금을 시간순으로 보여줍니다."</span><span class="grp">기간 필터</span><span class="i"><b>default</b> : 오늘로부터 7일 전 ~ 오늘</span><span class="i">시작일 ≤ 종료일 · 종료일 ≤ 오늘 (미래 날짜 선택 불가)</span><span class="b"><b>[조회]</b> 버튼 → 서버에 그 기간을 다시 물어봄 (기간 바꾼 뒤 <b>눌러야 반영</b>)</span><span class="i">조회 중 "조회 중..."</span><span class="b"><b>[외부 입금 등록]</b> 버튼 → 등록 모달 열림 <b>[AD_BALANCE_DEPOSIT]</b></span><span class="grp">기간 요약 4칸 (원장 있을 때만)</span><span class="i">지급 출금 · 매출 회수 입금 · 외부 입금 · 총 <b>N건</b>(+기간)</span><span class="i"><b>매출 회수</b> = 락계좌→모계좌 매출대금 스윕 (과지급 회수와 다른 개념)</span><span class="b">조회 실패 시 표 위 빨강 배너</span><span class="i">"입·출금 내역 조회에 실패했습니다." / "…중 오류가 발생했습니다."</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">입출금<br>원장</td><td class="kn-note">
+<span class="grp">표 항목</span><span class="i">일시 · 구분 · 상대/메모 · 입금 · 출금 · 이체 직후 잔액 · 상태 · 거래번호 · (삭제)</span><span class="i">상대 없으면 <b>"-"</b> · 메모는 상대명 아래 작게</span><span class="i">일시 왼쪽 세로선 : <b>입금 = 초록</b> · <b>출금 = 회색</b></span><span class="i">입금 열 = <b>+금액</b>(초록) · 출금 열 = <b>−금액</b></span><span class="i">이체 직후 잔액 = <b>값 있는 건만</b> 표시(캡처상 지급 출금 성공 건) · 없으면 "—"</span><span class="i">정렬 토글 없음 — 서버가 준 순서(시간순) 그대로</span><span class="grp"><span class="sb">5-1</span> 구분 뱃지</span><span class="i">선정산 지급 · 수동 지급 = 회색 / <b>매출 회수 = 보라</b> / <b>외부 입금 = 청록</b></span><span class="grp"><span class="sb">5-2</span> 상태 뱃지</span><span class="i">성공 · 확인완료 = 초록 / <b>실패 = 빨강</b> / 요청중 · 타임아웃 = 주황</span><span class="b">거래번호 : <b>#번호</b> 표기, 실패 건은 거래번호 대신 <b>사유 메모를 빨강</b>으로</span><span class="b"><b>외부 입금 행에만</b> → 마우스 올리면 삭제(휴지통) 아이콘 노출</span><span class="i">누르면 확인창 "이 외부 입금 기록을 삭제할까요?" → 실패 시 알림(alert)</span><span class="grp">상황별 문구</span><span class="i">불러오는 중 → "불러오는 중..."</span><span class="i">내역 없음 → "해당 기간에 입·출금 내역이 없습니다."</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

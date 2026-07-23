@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S16 — 락계좌 등록</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: flex-start; gap: 0; padding-top: 4px; }
+  .flowline { align-items: flex-start; height: auto; }
+  .fitem { width: 470px; }
+  .fgap  { margin-top: 270px !important; width: 90px !important; }
+  .note-under {
+    margin-top: 13px; padding: 13px 18px; border-radius: 12px;
+    background: var(--surface); font-size: 16px; line-height: 1.5; color: var(--ink-2);
+  }
+  .note-under b { color: var(--ph-forest); }
+  .note-under .ln + .ln { margin-top: 9px; }
+  .mk-inline { position:static; transform:none; display:flex; width:26px; height:26px; font-size:14px; }
+  .punch { margin-top: 13px; padding: 15px 22px; font-size: 19px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">16 / STEP 6-1</div>
+  </div>
+
+  <h1 class="s-title">락계좌 등록 — <span class="em">출금전용 통장</span>과 <span class="em">출금 비밀번호 4자리</span></h1>
+  <p class="s-sub">계좌를 만든 다음, 그 통장을 앱에 등록하는 단계입니다</p>
+
+  <div class="stage">
+    <div class="flowline">
+
+      <div class="fitem">
+        <div class="fstep"><i>1</i> 통장 사진 첨부</div>
+        <div class="phone clip" style="height:525px;width:322px">
+          <img src="img/1414-8088.png" alt="출금 전용 계좌 통장 첨부 화면" style="height:573px;width:auto">
+          <div class="hi red" style="top:36.5%;left:12%;bottom:52.6%;right:12%"></div>
+          <div class="mk red" style="top:40%;left:12%">1</div>
+          <div class="hi green" style="top:50.8%;left:17%;bottom:19.8%;right:17%"></div>
+          <div class="mk green" style="top:58%;left:17%">2</div>
+        </div>
+        <div class="note-under">
+          <div class="ln fx"><span class="mk red mk-inline">1</span>
+            <span class="fx-t"><b>하나은행 출금전용 계좌</b> 통장이어야 합니다. 일반 입출금 통장은 안 됩니다</span></div>
+          <div class="ln fx"><span class="mk green mk-inline">2</span>
+            <span class="fx-t">사진을 올리면 계좌번호를 읽어 다음 화면에 자동으로 채워 줍니다</span></div>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep ph"><i>2</i> 계좌 정보 확인</div>
+        <div class="phone clip" style="height:525px;width:251px">
+          <img src="img/1414-4654.png" alt="락계좌 정보 확인 화면 및 비밀번호 미입력 안내 모달" style="height:626px;width:auto">
+          <div class="hi blue" style="top:62.5%;left:12%;bottom:24%;right:12%"></div>
+          <div class="mk blue" style="top:67%;left:12%">3</div>
+          <div class="hi red" style="top:23.8%;left:10%;bottom:47.6%;right:10%"></div>
+          <div class="mk red" style="top:31%;left:10%">4</div>
+        </div>
+        <div class="note-under">
+          <div class="ln fx"><span class="mk blue mk-inline">3</span>
+            <span class="fx-t"><b>계좌 출금 비밀번호 4자리</b>가 필요합니다. 빠른조회로 입금 내역을 확인하기 위한 것입니다</span></div>
+          <div class="ln fx"><span class="mk red mk-inline">4</span>
+            <span class="fx-t">비워 두면 이 안내 모달이 뜨고 <b>진행되지 않습니다</b></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="punch warn">
+    "왜 통장 비밀번호를 알려줘야 하나"고 가장 많이 되묻는 지점입니다 — <u>입금 내역을 조회하기 위한 것</u>이라고 먼저 설명해 주세요
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP6-1 락계좌 통장 첨부 / 계좌 정보 확인 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S29 — 배달앱 채널별 상세</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; margin-top: 16px; }
+  .row3 { display: flex; align-items: flex-start; justify-content: center; gap: 46px; }
+  .fitem { display: flex; flex-direction: column; align-items: center; }
+  .note-under {
+    margin-top: 14px; padding: 15px 18px; border-radius: 12px;
+    background: var(--surface); font-size: 16.5px; line-height: 1.5; color: var(--ink-2);
+  }
+  .note-under b { color: var(--ph-forest); }
+  .note-under .q {
+    display: block; margin-top: 8px; padding: 10px 12px; border-radius: 9px;
+    background: var(--ph-green-tint); color: #2F6B18; font-size: 15.5px; line-height: 1.45; font-weight: 500;
+  }
+  .inline-mk {
+    position: static; transform: none; display: flex;
+    width: 26px; height: 26px; font-size: 14px;
+  }
+  .punch { margin-top: 18px; max-width: 1372px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 4 · 가맹점이 보는 화면</div>
+    <div class="s-no">29</div>
+  </div>
+
+  <h1 class="s-title">배달앱은 <span class="em">플랫폼마다 화면이 다릅니다</span></h1>
+  <p class="s-sub">앞 장의 배달앱 줄을 누르면 채널별로 들어갑니다. 같은 화면처럼 보이지만 빠지는 항목이 다릅니다</p>
+
+  <div class="stage">
+
+    <div class="row3">
+
+      <div class="fitem">
+        <div class="fstep ext"><i>1</i> 배달의 민족</div>
+        <div class="phone clip" style="width:420px;height:500px">
+          <img src="img/1414-14726.png" style="width:420px;height:auto" alt="배달의 민족 채널 상세">
+          <div class="hi red" style="top:42.3%;left:8%;bottom:52.2%;right:5%"></div>
+          <div class="mk red" style="top:45%;left:5%">1</div>
+        </div>
+        <div class="note-under fx" style="width:420px">
+          <span class="mk red inline-mk">1</span>
+          <span class="fx-t">「차감액」 안에 <b>「광고비」 줄이 따로</b> 있습니다. 광고를 돌린 날은 이 줄이 커지고, 그만큼 미리 받는 돈이 줄어듭니다</span>
+        </div>
+      </div>
+
+      <div class="fitem">
+        <div class="fstep ext"><i>2</i> 쿠팡이츠</div>
+        <div class="phone clip" style="width:420px;height:500px">
+          <img src="img/1414-15437.png" style="width:420px;height:auto" alt="쿠팡이츠 채널 상세">
+          <div class="hi blue" style="top:32.2%;left:8%;bottom:52.4%;right:5%"></div>
+          <div class="mk blue" style="top:39.9%;left:5%">2</div>
+        </div>
+        <div class="note-under fx" style="width:420px">
+          <span class="mk blue inline-mk">2</span>
+          <span class="fx-t">같은 자리에 <b>광고비 줄이 없습니다.</b> 「쿠팡이츠 차감액」 한 줄로 끝납니다 — 플랫폼마다 항목이 다릅니다</span>
+        </div>
+      </div>
+
+      <div class="fitem">
+        <div class="fstep ph"><i>3</i> 주문 한 건 열어보기</div>
+        <div class="phone" style="width:440px">
+          <img src="img/1414-14998.png" alt="배달의 민족 주문 단건 내역">
+          <div class="hi" style="top:31%;left:6%;bottom:57%;right:6%"></div>
+          <div class="mk" style="top:36.5%;left:40%">3</div>
+          <div class="hi green" style="top:79.5%;left:6%;bottom:8%;right:6%"></div>
+          <div class="mk green" style="top:84.5%;left:6%">4</div>
+        </div>
+        <div class="note-under" style="width:440px">
+          <div class="fx">
+            <span class="mk inline-mk">3</span>
+            <span class="fx-t">주문 <b>한 건 단위</b>로 주문번호·결제수단까지 보입니다</span>
+          </div>
+          <span class="q"><b>4</b> 화면 원문 그대로 — "[만나서 결제]는 배달의 민족 선정산 대상이 아니며 매출액에서 제외돼요. [배민원 주문]의 매출액은 고객의 배달팁이 제외된 금액이에요."</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="punch warn">
+      "옆 가게는 이 줄이 없다는데요" — 플랫폼이 다르면 화면도 다릅니다. 반드시 <u>사장님이 쓰는 앱의 화면</u>을 열어놓고 설명해 주세요
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 화면 · 채널 상세</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M19 — 로그인</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb" style="border-bottom:1px solid #f0f0f0">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+  </div>
+
+  <div class="wrap" style="padding:60px 30px 36px;display:flex;justify-content:center">
+    <div class="card" style="width:100%;max-width:400px;padding:32px">
+
+      <div style="margin-bottom:58px">
+        <div style="font-size:28px;font-weight:700;color:#000;line-height:normal">사장님 로그인</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">
+
+        <div class="inp ph" style="background:var(--field-2)">사업자등록번호 또는 휴대전화번호</div>
+
+        <div class="fld" style="margin-top:0">
+          <div class="inp ph" style="background:var(--field-2);justify-content:space-between">
+            <span>영문, 숫자, 특수문자 포함 8~16자</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a0a4b8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px">
+        <div class="btn pri-off" style="margin-top:0;height:53px;padding:0">로그인</div>
+        <div class="btn ghost" style="margin-top:0;height:53px;padding:0">회원가입</div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#7e8299">비밀번호 찾기</div>
+
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:13px;font-weight:500;color:#7e8299;padding-bottom:36px">
+    <span>©주식회사 페이허그</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · login/page.tsx (카드 max-400·padding 32) / 입력 미완 상태이므로 로그인 버튼은 isFormValid=false → bg rgba(159,232,112,0.3) 비활성. 회사 정보는 ©행 클릭 시 펼쳐지는 접힘 상태.</div>
+
+</div>
+</body>
+</html>

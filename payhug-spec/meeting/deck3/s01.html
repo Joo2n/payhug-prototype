@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S01 — 표지</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .cover { padding: 0; display: block; }
+  .cv-wrap {
+    position: absolute; left: 130px; top: 0; width: 1100px; height: 1080px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .cv-eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 21px; font-weight: 700; color: var(--ph-green-700); letter-spacing: -0.01em;
+  }
+  .cv-eyebrow::before { content:''; width: 46px; height: 5px; border-radius: 999px; background: var(--ph-green-600); }
+  .cv-title {
+    margin-top: 30px;
+    font-size: 92px; font-weight: 900; line-height: 1.14; letter-spacing: -0.04em; color: var(--ph-forest);
+  }
+  .cv-title .em { color: var(--ph-green-700); }
+  .cv-rule { margin-top: 38px; width: 96px; height: 6px; border-radius: 999px; background: var(--ph-forest); }
+  .cv-sub { margin-top: 34px; font-size: 26px; font-weight: 500; line-height: 1.6; color: var(--ink-3); letter-spacing: -0.02em; }
+
+  .cv-meta {
+    position: absolute; left: 130px; bottom: 96px; width: 1660px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-top: 26px; border-top: 1.5px solid var(--line);
+  }
+  .cv-meta-l { display: flex; flex-direction: column; gap: 7px; }
+  .cv-date { font-family: var(--font-num); font-size: 24px; font-weight: 700; color: var(--ph-forest); letter-spacing: 0.02em; }
+  .cv-who { font-size: 19px; color: var(--ink-3); }
+  .cv-logo { font-size: 46px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.03em; }
+  .cv-logo span { color: var(--ph-green-700); }
+
+  .cv-deco {
+    position: absolute; right: 168px; top: 274px;
+    width: 452px; height: 452px; border-radius: 999px;
+    background: var(--ph-green-tint);
+  }
+  .cv-deco2 {
+    position: absolute; right: 356px; top: 424px;
+    width: 288px; height: 288px; border-radius: 999px;
+    background: var(--ph-green);
+  }
+  .cv-deco3 {
+    position: absolute; right: 196px; top: 560px;
+    width: 152px; height: 152px; border-radius: 999px;
+    background: var(--ph-forest);
+  }
+</style>
+</head>
+<body>
+<div class="slide cover" id="slide">
+
+  <div class="cv-deco"></div>
+  <div class="cv-deco2"></div>
+  <div class="cv-deco3"></div>
+
+  <div class="cv-wrap">
+    <div class="cv-eyebrow">다우데이타 영업사원 · 총판 대상</div>
+    <h1 class="cv-title">페이허그 선정산 서비스<br><span class="em">운영 교육</span></h1>
+    <div class="cv-rule"></div>
+    <p class="cv-sub">가입부터 선정산이 시작되기까지,<br>사장님이 실제로 보는 화면 그대로 따라갑니다</p>
+  </div>
+
+  <div class="cv-meta">
+    <div class="cv-meta-l">
+      <div class="cv-date">2026. 07</div>
+      <div class="cv-who">1부 영업사원·총판 직원 대상 &nbsp;|&nbsp; 2부 양사 운영 정책 협의 (영업사원 제외)</div>
+    </div>
+    <div class="cv-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

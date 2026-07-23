@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계약 신청 &gt; 1단계 사업자등록증 &gt; 정보 확인(개인·OCR힌트)</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_CONTRACT_BIZ_INFO</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 계약 &gt; 1단계 사업자등록증 &gt; 정보 확인</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">서버에 요청) →</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/871_2.png" alt="계약 신청 &gt; 1단계 사업자등록증 &gt; 정보 확인(개인·OCR힌트)">
+        <div class="dim" style="left:5%;top:8.2%;height:1.6%"></div>
+        <div class="mk" style="left:5%;top:8.9%">1</div>
+        <div class="dim" style="left:5%;top:14%;height:5.5%"></div>
+        <div class="mk" style="left:5%;top:16.7%">2</div>
+        <div class="dim" style="left:5%;top:22.5%;height:53.5%"></div>
+        <div class="mk" style="left:5%;top:49.2%">3</div>
+        <div class="dim" style="left:5%;top:77%;height:4%"></div>
+        <div class="mk" style="left:5%;top:78.9%">4</div>
+        <div class="dim" style="left:5%;top:85.5%;height:8.8%"></div>
+        <div class="mk" style="left:5%;top:89.9%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;사업자등록증 <b>OCR 인식값을 확인·수정</b>하는 계약 1단계 정보 확인 화면 (개인사업자)</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;앞 단계 <b>OCR 인식값</b>이 <b>URL 쿼리 파라미터</b>로 넘어와 각 칸에 미리 채워짐 (캡처는 예시값)</span>
+        <span class="b"><span class="g">진행 단계</span> &nbsp;상단 진행바 <b>5칸 중 2칸</b> 채움</span><span class="i red">사이드 화면상 계약은 6단계(신분증·락계좌·입금계좌·플랫폼·비대면계약)인데 진행바는 5칸이고 1단계인데 2칸이 채워짐 — 채워지는 칸·전체 단계 산정 기준 개발 확인 필요</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진행바</td><td class="kn-note">
+<span class="b">화면 최상단 <b>5칸 진행바</b></span><span class="i">왼쪽 <b>2칸 초록</b> · 나머지 3칸 회색</span><span class="i red">계약 6단계 대비 진행바 5칸 · 1단계인데 2칸 채움 — 채워지는 칸 산정 기준 개발 확인 필요</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"사장님의 정보가 맞나요?"</b></span><span class="b">안내문 <b>"사장님의 사업자등록 정보가 맞는지 확인해 주세요"</b></span><span class="i">안내문 중 '사업자등록'만 진초록으로 강조</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">정보<br>입력폼</td><td class="kn-note">
+<span class="grp">표시 항목 (위→아래)</span><span class="i">사업자등록번호 · 상호 · 성명 · 개업일자 · 사업장소재지 · 업태 · 종목</span><span class="b">각 칸에 <b>OCR 인식값 미리 채움</b> (앞 화면에서 URL 파라미터로 전달) · 모두 직접 수정 가능</span><span class="i">개업일자 라벨에 형식 예시 <b>"(예: 20150325)"</b> 병기</span><span class="b">입력칸 <b>유효성·필수·글자수 제한 없음</b> (모두 일반 텍스트 입력)</span><span class="i">정보 일치 여부는 저장 시 <b>서버 진위확인(국세청)</b>이 판정</span><span class="b">처리 중에는 <b>모든 칸 잠김</b> (흐릿하게 비활성)</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">OCR<br>안내</td><td class="kn-note">
+<span class="b">진입하면 <b>입력폼 맨 아래(종목 아래)</b>에 초록 말풍선 노출 (꼬리는 위 방향)</span><span class="i">"OCR로 자동 입력되었어요"</span><span class="i">"잘못 인식된 값이 있으면 직접 수정해주세요"</span><span class="b"><b>10초 뒤 자동으로 사라짐</b> · X 누르면 즉시 닫힘</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">하단<br>버튼</td><td class="kn-note">
+<span class="grp">버튼 상태</span><span class="i">기본 → <b>[정보가 일치해요]</b></span><span class="i">확인 중 → 스피너 + "사업자 정보 확인 중..."</span><span class="i">등록 중 → 스피너 + "등록 중..."</span><span class="i">처리 중 두 버튼 모두 <b>비활성</b></span><span class="grp">누르면 (검증 → 등록 2단계)</span><span class="i">로그인 정보 없음 → 알림(alert) <b>"로그인 정보가 없습니다. 다시 로그인 해주세요."</b> 후 로그인 화면 이동</span><span class="i">검증 응답 실패 → 오류 모달 <b>"사업자 검증 실패"</b> + 서버 메시지 (없으면 "사업자 정보를 확인할 수 없습니다. 다시 시도해 주세요.")</span><span class="i">국세청 상태 ≠ 정상 → 오류 모달 <b>"사업자 검증 실패"</b> + 국세청 메시지 (없으면 "유효하지 않은 사업자 정보입니다. 사업자등록증을 다시 확인해 주세요.")</span><span class="i">첨부 사진 유실 → "파일 없음" / <b>"사업자등록증 사진이 유실되었습니다. 다시 첨부해 주세요."</b></span><span class="i">중복 → "이미 등록된 사업자 등록번호입니다. 확인 후 다시 시도해 주세요."</span><span class="i">성공(일반) → "등록 완료" / "사업자 정보가 확인되어 등록되었습니다." → 확인 시 서류 준비 안내<b>[MC_CONTRACT]</b>로 이동 (수정 재진입이면 edit 유지 복귀)</span><span class="i">성공(사업장 추가 흐름) → 완료 모달 없이 바로 락계좌 개설 안내<b>[MC_CONTRACT_LOCK_APPLY]</b>로 이동</span><span class="b"><b>[다시 첨부하기]</b> → 뒤로가기 (직전 화면 = 사업자등록증 업로드<b>[MC_CONTRACT_BIZ_UPLOAD]</b>)</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

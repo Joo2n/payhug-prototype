@@ -1,0 +1,114 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계약 신청 &gt; 2단계 신분증 &gt; 정보 확인(주민등록증)</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_CONTRACT_ID_INFO</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 계약 &gt; 2단계 신분증 &gt; 정보 확인</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">서버에 요청</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/887_2.png" alt="계약 신청 &gt; 2단계 신분증 &gt; 정보 확인(주민등록증)">
+        <div class="dim" style="left:5%;top:1.8%;height:8%"></div>
+        <div class="mk" style="left:5%;top:5.5%">1</div>
+        <div class="dim" style="left:5%;top:14%;height:5.7%"></div>
+        <div class="mk" style="left:5%;top:16.8%">2</div>
+        <div class="dim" style="left:5%;top:21.5%;height:7%"></div>
+        <div class="mk" style="left:5%;top:25%">3</div>
+        <div class="dim" style="left:5%;top:30%;height:23.5%"></div>
+        <div class="mk" style="left:5%;top:41.5%">4</div>
+        <div class="dim" style="left:5%;top:55%;height:4.3%"></div>
+        <div class="mk" style="left:5%;top:57%">5</div>
+        <div class="dim" style="left:5%;top:62%;height:10%"></div>
+        <div class="mk" style="left:5%;top:67%">6</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;계약 신청 2단계 · 촬영한 신분증 <b>OCR 추출값을 확인·수정</b>하고 등록하는 확인 화면(주민등록증 케이스)</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;앞 단계 신분증 촬영 OCR 결과가 URL 파라미터(name·regNum·date·type)로 넘어와 각 칸에 미리 채워짐 · <span class="red">예시 더미(김성호 / 850312-1****** / 20180712)</span></span>
+        <span class="b"><span class="g">진입 동작</span> &nbsp;화면 진입 시 <b>OCR 자동입력 안내 툴팁</b>이 자동 노출 → 10초 뒤 스스로 사라짐 · URL 파라미터 읽는 동안 <b>"Loading..."</b> 잠깐 표시</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진행바<br>·헤더</td><td class="kn-note">
+<span class="b"><b>상단 진행바</b> · 초록 3칸 + 회색 2칸 (총 5칸 중 3칸 채움)</span><span class="i">전체 폭 최상단에 페이허그 로고 헤더 고정</span><span class="i">진행바는 현재 위치 표시용 · 누르는 이동 없음</span><span class="i">진입 직후 URL 파라미터 읽는 동안 화면 중앙에 <b>"Loading..."</b> 잠깐 표시</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">안내<br>문구</td><td class="kn-note">
+<span class="b"><b>제목</b> : "사장님의 정보가 맞나요?"</span><span class="b"><b>부제</b> : "추출된 신분증 정보가 맞는지 확인해 주세요"</span><span class="i">부제 안 '신분증 정보'만 초록으로 강조 표시</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">신분증<br>종류</td><td class="kn-note">
+<span class="b"><b>신분증 종류</b> · 회색 박스로 <b>읽기전용</b>(입력·수정 불가)</span><span class="i">값은 앞 단계에서 넘어온 종류로 결정 — <b>주민등록증</b> / <b>운전면허증</b> 두 가지만 (type 값이 ID_CARD면 주민등록증, 아니면 운전면허증)</span><span class="i">type 값 없이 들어오면 기본 <b>주민등록증</b>으로 표시</span><span class="i">이 화면은 <b>주민등록증</b> 표시 (운전면허증 케이스는 <b>[MC_CONTRACT_ID_INFO_DRIVER]</b>)</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">정보<br>입력칸</td><td class="kn-note">
+<span class="grp">입력 필드 (수정 가능)</span><span class="b"><b>성명</b> · <b>주민등록번호</b> · <b>발급일자</b> 3칸 — OCR 추출값이 미리 채워짐, 직접 고쳐 쓸 수 있음</span><span class="i">자리수·형식·필수 검증 없음(자유 입력) · 빈 값이어도 전송 막지 않음 · 발급일자는 구분기호 없는 8자리 그대로(예: 20180712)</span><span class="i"><span class="red">표시값이 뒷자리 마스킹본(850312-1******) — 이 상태로 두면 마스킹 문자가 그대로 서버 전송됨 · 원본 수집 시점·전송값 개발 확인 필요</span></span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">OCR<br>안내툴팁</td><td class="kn-note">
+<span class="b"><b>OCR 자동입력 안내 툴팁</b> · 입력칸 아래 초록 말풍선(위 화살표)</span><span class="i">문구 : "OCR로 자동 입력되었어요" / "잘못 인식된 값이 있으면 직접 수정해주세요"</span><span class="i">진입 시 자동 노출 → <b>10초 뒤 자동으로 사라짐</b> · 우측 X로 즉시 닫기 가능</span>
+          </td></tr>
+          <tr><td class="kn-no">6</td><td class="kn-nm">하단버튼<br>·완료</td><td class="kn-note">
+<span class="grp">하단 버튼</span><span class="b"><b>[정보가 일치해요]</b> (초록) : 화면의 신분증 정보 + 앞 단계 첨부사진을 함께 서버에 등록</span><span class="i">누르는 동안 <b>"처리 중..."</b>으로 바뀌고 버튼 비활성(중복 전송 방지)</span><span class="i">성공 시 <b>등록 완료</b> 모달 — "신분증 정보 등록에 성공했습니다."</span><span class="i">모달은 [확인]·배경 어느 쪽을 눌러도 계약 화면<b>[MC_CONTRACT]</b>로 이동(수정모드면 해당 계약으로 복귀)</span><span class="b"><b>[다시 첨부하기]</b> (흰색) : 직전 화면(신분증 촬영)으로 되돌아감</span><span class="grp">차단·오류 문구(알림창)</span><span class="i">로그인 정보 없음 → "로그인 정보가 없습니다. 다시 로그인 해주세요."(로그인으로 이동)</span><span class="i">첨부사진 유실 → "신분증 사진이 유실되었습니다. 다시 첨부해 주세요."(이전 화면 복귀)</span><span class="i">등록 실패 → 서버 메시지 우선, 없으면 "신분증 등록에 실패했습니다." · 통신 예외 → "신분증 등록 중 오류가 발생했습니다."</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">회원가입 &gt; 1단계 약관 동의</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">PH_JO_TERMS</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">페이허그 &gt; 회원가입 &gt; 1단계 약관 동의</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">필수 약관 목록은 서버에 요청 서버 설정 의존. 필수동의 계층=계약 약관 정책(확정)</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/868_2.png" alt="회원가입 &gt; 1단계 약관 동의">
+        <div class="mk" style="left:45%;top:7.2%">1</div>
+        <div class="dim" style="left:5.5%;top:11%;height:4.2%"></div>
+        <div class="mk" style="left:5.5%;top:12.9%">2</div>
+        <div class="dim" style="left:5.5%;top:17.1%;height:2.6%"></div>
+        <div class="mk" style="left:5.5%;top:18.2%">3</div>
+        <div class="dim" style="left:5.5%;top:20.7%;height:17.3%"></div>
+        <div class="mk" style="left:5.5%;top:29.3%">4</div>
+        <div class="sub" style="left:91%;top:21.9%">4-1</div>
+        <div class="dim" style="left:5.5%;top:40.4%;height:3.2%"></div>
+        <div class="mk" style="left:5.5%;top:41.9%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;회원가입 <b>1단계 · 약관 동의</b> (약관동의 → 본인인증 → 비밀번호, 같은 화면 안에서 단계 전환)</span>
+        <span class="b" style="margin-top:5px"><span class="g">데이터</span> &nbsp;약관 목록은 <b>서버 설정에 의존</b>(서버에 요청) · 캡처는 <span class="red">예시(목업) 5개 항목</span></span>
+        <span class="i">진입 시 초대 코드(파트너·투자자·영업·제휴) URL 값을 세션에 저장한 뒤 약관을 자동으로 불러옴</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진행<br>표시</td><td class="kn-note">
+<span class="b">상단 진행 점 — 회원가입 전체 단계 안내</span><span class="i">1단계 약관동의 · 2단계 본인인증 · 3단계 비밀번호</span><span class="i">점은 <b>4개</b>지만 단계는 3개 (마지막 점은 항상 회색)</span><span class="i">지난·현재 단계까지 진초록으로 채워지고, 현재 단계 점은 길게 늘어남 (지금은 1번 점)</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"사장님의 동의가 필요해요"</b></span><span class="i">안내문 : "서비스 이용을 위해 동의해 주세요"</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">모두<br>동의</td><td class="kn-note">
+<span class="b">맨 위 <b>[모두 동의]</b> 체크</span><span class="i">누르면 필수·선택 <b>모든 약관</b>이 한 번에 체크/해제</span><span class="i">개별 항목을 전부 체크하면 [모두 동의]도 <b>자동으로 켜짐</b></span><span class="i">체크됨 = 연두 박스+체크표시 · 미체크 = 회색 박스</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">약관<br>목록</td><td class="kn-note">
+<span class="grp">표시 형식</span><span class="i">코드가 각 줄을 <b>"(필수/선택)" + 약관명 + " 동의"</b> 로 조립</span><span class="i red">목업 약관명이 이미 '동의'·'(선택)'까지 포함 → "…동의 동의", "(선택) … (선택) 동의"로 접두·접미 중복 노출 · 문구 정리 개발 확인 필요</span><span class="grp">필수 / 선택 구분</span><span class="i"><b>필수 3개</b> : 선정산 서비스 이용약관 · 개인정보 수집·이용 · 매출채권 양도</span><span class="i"><b>선택 2개</b> : 개인정보 제3자 제공 · 마케팅 정보 수신</span><span class="i red">실제 노출 약관·필수 여부·순서는 서버 설정에 따름 (목업 기준)</span><span class="grp">상세 열기</span><span class="i"><span class="sb">4-1</span> 항목 오른쪽 <b>화살표(&gt;)</b> → 약관 상세 모달<b>[PH_JO_TERMS_MODAL]</b> 열림</span><span class="i">화살표는 체크와 <b>따로 동작</b> (열어도 체크 상태 안 바뀜)</span><span class="i red">캡처는 카드 오른쪽이 잘려 화살표가 화면 밖 — 실제 배치 확인 필요</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">다음</td><td class="kn-note">
+<span class="b"><b>[다음]</b> — <b>필수 약관을 모두 동의</b>해야만 활성</span><span class="i">선택 약관은 미동의여도 진행 가능</span><span class="i">비활성일 때 연한 초록 · 클릭 불가</span><span class="b">누르면 <b>2단계 본인인증</b>으로 진행 (같은 화면 안에서 단계 전환)</span><span class="grp">상황</span><span class="i">약관을 못 불러오면(목록 0개) 항목이 안 뜨고 [다음] 계속 비활성</span><span class="i red">로딩 표시·조회 실패 안내 문구 없음 (실패 시 조용히 빈 목록)</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계약 신청 &gt; 1단계 사업자등록증 &gt; 업로드(개인)</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_CONTRACT_BIZ_UPLOAD</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 계약 &gt; 1단계 사업자등록증 &gt; 업로드</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">최대 3장, 서버에 요청</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/859_2.png" alt="계약 신청 &gt; 1단계 사업자등록증 &gt; 업로드(개인)">
+        <div class="dim" style="left:31%;top:8.6%;height:0.6%"></div>
+        <div class="mk" style="left:31%;top:9%">1</div>
+        <div class="dim" style="left:5.5%;top:14.8%;height:5.6%"></div>
+        <div class="mk" style="left:5.5%;top:17.6%">2</div>
+        <div class="dim" style="left:5.5%;top:21.3%;height:5.5%"></div>
+        <div class="mk" style="left:5.5%;top:24%">3</div>
+        <div class="dim" style="left:5.5%;top:29%;height:21%"></div>
+        <div class="mk" style="left:5.5%;top:39.5%">4</div>
+        <div class="dim" style="left:5.5%;top:52.9%;height:4.2%"></div>
+        <div class="mk" style="left:5.5%;top:55%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;계약 신청 <b>1단계</b> · 사업자등록증 사진을 올려 <b>서버가 판독(OCR)</b>하는 화면</span>
+        <span class="b"><span class="g">진입 맥락</span> &nbsp;신규 계약 말고도 <b>사업자 추가·정보 수정</b> 흐름으로 들어오기도 함 · 그 맥락(추가/수정 여부)은 다음 화면까지 그대로 이어짐</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;사장님이 직접 촬영·선택한 실제 파일 · 판독은 서버에서 수행</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진행<br>표시</td><td class="kn-note">
+<span class="b">계약 신청 <b>5단계</b> 진행 막대 (막대 5칸)</span><span class="i">현재 <b>1단계</b>만 초록 · 나머지 4칸 회색</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"사업자등록증 사진을 첨부해 주세요"</b></span><span class="i">'사업자등록증'만 진초록으로 강조</span><span class="b">안내문 : "사장님의 사업자등록증 사진을 첨부해 주세요" (회색)</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">사업자<br>유형</td><td class="kn-note">
+<span class="b">위 라벨 <b>"사업자 유형"</b> · <b>개인사업자 / 법인사업자</b> 중 택1 (라디오)</span><span class="i">기본값(default : <b>개인사업자</b>)</span><span class="i">고른 쪽 <b>진초록 테두리 + 연초록 배경 + 진초록 글자</b>, 안 고른 쪽 회색</span><span class="i">사진 분석 중에는 유형 변경 잠김(못 바꿈)</span><span class="i">여기서 고른 유형과 <b>판독된 유형이 다르면</b> 첨부 후 자동 보정됨 (5번 참고)</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">업로드<br>영역</td><td class="kn-note">
+<span class="grp">사진 선택</span><span class="i">빈 박스 안 <b>"사업자등록증"</b> + 가운데 알약 <b>"클릭하여 사진 선택"</b></span><span class="i"><b>이미지 파일만</b> 선택 가능 · 여러 장 <b>한 번에</b> 선택</span><span class="i"><b>최대 3장</b> · 3장 넘게 고르면 앞에서 3장만 쓰고 초과분은 조용히 버림</span><span class="i">다시 고르면 이전 선택은 <b>새 선택으로 대체</b>됨</span><span class="grp">선택 후 미리보기</span><span class="i">첫 장이 박스에 꽉 차게 보임 (위쪽 기준)</span><span class="i">2장 이상이면 우하단에 <b>"+N장"</b> 뱃지 (N=첫 장 뺀 나머지 수)</span><span class="i">선택되면 화면이 <b>첨부 버튼 위치로 자동 스크롤</b></span><span class="b">안내문 : "사업자등록증이 여러 장인 경우 한 번에 선택해 주세요 (최대 3장)"</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">첨부<br>버튼·결과</td><td class="kn-note">
+<span class="b">하단 버튼 <b>"사진 첨부하기"</b></span><span class="i">사진 <b>1장 이상</b> 선택 전에는 <b>비활성</b> (연초록·못 누름)</span><span class="i">누르면 고른 이미지를 서버로 보내 <b>사업자등록증 판독(OCR)</b></span><span class="grp">처리 중</span><span class="i">버튼이 <b>"분석 중..."</b> + 로딩 표시로 바뀜</span><span class="i">전체 화면 덮개 문구 : "사업자등록증을 분석하고 있어요"</span><span class="grp">성공</span><span class="i">판독값(상호·대표자·주소·업종·개업일 등) 담아 <b>정보 확인 화면[MC_CONTRACT_BIZ_INFO]</b>으로 이동</span><span class="i">사업자번호로 개인/법인 자동 판별 · 고른 유형과 다르면 <b>'사업자 유형 확인' 모달</b> 먼저 뜨고 이동</span><span class="grp">실패 (안내 모달 · '확인' 버튼)</span><span class="i">판독 실패 → "이미지 분석에 실패했습니다." (서버 메시지 있으면 그 문구 우선)</span><span class="i">서버 오류 → "이미지 분석에 실패했습니다. 잠시 후 다시 시도해 주세요." (서버가 '잠시 후 다시 시도' 문구 주면 그 문구)</span><span class="i">연결 끊김 → "서버 연결에 실패했습니다. 잠시 후 다시 시도해 주세요."</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S31 — 선정산 금액과 실제 정산액이 다른 이유</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: stretch; }
+  .wrap { display: flex; flex-direction: column; gap: 16px; width: 100%; height: 100%; }
+
+  table.t { font-size: 16px; table-layout: fixed; }
+  table.t th { font-size: 15px; padding: 11px 16px; }
+  table.t td { padding: 10px 16px; font-size: 16px; line-height: 1.45; }
+  table.t td.k { font-size: 16px; }
+  .c1 { width: 258px; }
+  .c2 { width: 116px; }
+  .c3 { width: 610px; }
+
+  .dirwrap { display: flex; align-items: center; justify-content: center; }
+  .dirtag {
+    display: flex; align-items: center; justify-content: center;
+    min-width: 78px; padding: 5px 12px; border-radius: 999px; white-space: nowrap;
+    font-family: var(--font-num); font-size: 15px; font-weight: 800;
+  }
+  .d-both { background: var(--ph-purple-tint); color: var(--ph-purple); }
+  .d-plus { background: var(--ph-mint-tint); color: #0F7A3D; }
+  .d-minus{ background: var(--ph-danger-tint); color: var(--ph-danger); }
+  .d-late { background: var(--ph-warning-tint); color: #B26A00; font-family: var(--font-sans); font-size: 14px; }
+
+  .sym { color: var(--ink-2); }
+  .sym b { color: var(--ph-forest); font-weight: 700; }
+
+  .strip { display: grid; grid-template-columns: 1fr 1.02fr; gap: 20px; flex: 1; min-height: 0; }
+
+  .lg { background: var(--surface); border-radius: 16px; padding: 16px 20px; }
+  .lg-h { font-size: 16px; font-weight: 800; color: var(--ph-forest); margin-bottom: 11px; }
+  .lgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 20px; }
+  .lrow { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink-2); }
+  .lrow .t { flex: 1; min-width: 0; }
+  .lrow b { color: var(--ph-forest); font-weight: 800; }
+
+  .msg {
+    background: var(--ph-green-tint); border: 2px solid var(--ph-green-700);
+    border-radius: 18px; padding: 20px 26px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .msg .big { font-size: 30px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.03em; line-height: 1.28; }
+  .msg .big em { font-style: normal; background: linear-gradient(transparent 58%, #fff 58%); padding: 0 2px; }
+  .msg p { font-size: 16px; line-height: 1.55; color: var(--ink-2); margin-top: 11px; }
+  .msg p b { color: var(--ph-forest); font-weight: 800; }
+  .s-foot .src { flex: 1; min-width: 0; padding-right: 30px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">31</div>
+  </div>
+
+  <h1 class="s-title">선정산 금액과 실제 정산액이 <span class="em">다른 이유</span></h1>
+  <p class="s-sub">사장님이 가장 많이 묻는 질문입니다. 원인은 8가지로 정해져 있습니다. 증상만 들어도 원인을 짚을 수 있게 정리했습니다</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <table class="t">
+        <thead>
+          <tr>
+            <th class="c1">원인</th>
+            <th class="c2" style="text-align:center">방향</th>
+            <th class="c3">왜 생기나</th>
+            <th>사장님은 이런 증상으로 말합니다</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="k">예상 카드 수수료율로<br>먼저 지급</td>
+            <td><div class="dirwrap"><span class="dirtag d-both">＋／−</span></div></td>
+            <td>실제 카드 수수료가 확정되기 전에 예상 요율로 계산해 먼저 드립니다. 실제 정산이 끝나면 예상과 실제의 차액이 남습니다.</td>
+            <td class="sym"><b>"입금액이 알려준 금액과 조금씩 안 맞아요"</b> — 매번 작은 금액이 위아래로 흔들립니다.</td>
+          </tr>
+          <tr>
+            <td class="k">신용카드·체크카드<br>구분 불가</td>
+            <td><div class="dirwrap"><span class="dirtag d-plus">＋</span></div></td>
+            <td>승인 시점에는 신용인지 체크인지 알 수 없습니다. 체크카드 비중이 높으면 실제 수수료가 예상보다 낮아집니다.</td>
+            <td class="sym"><b>"며칠 뒤에 돈이 더 들어왔는데 이게 뭐예요?"</b> — 덜 드린 몫을 돌려드린 것입니다.</td>
+          </tr>
+          <tr>
+            <td class="k">미매입 — 승인은 됐는데<br>매입이 안 들어옴</td>
+            <td><div class="dirwrap"><span class="dirtag d-late">후행 지급</span></div></td>
+            <td>카드사가 매입을 확인해 주기 전까지는 지급 대상에 넣을 수 없습니다. 매입이 확인되면 그때 반영됩니다.</td>
+            <td class="sym"><b>"어제 카드 매출은 있는데 그 건이 선정산에 안 잡혀요"</b> — 사라진 게 아닙니다.</td>
+          </tr>
+          <tr>
+            <td class="k">주말·일부 카드사<br>매입 미업로드</td>
+            <td><div class="dirwrap"><span class="dirtag d-late">후행 지급</span></div></td>
+            <td>매입 데이터가 올라오지 않는 날이 있습니다. 데이터가 도착하는 날 밀린 분이 함께 반영됩니다.</td>
+            <td class="sym"><b>"주말 지나니까 한 번에 몰아서 들어왔어요"</b> — 데이터 도착일에 맞춰 반영된 것입니다.</td>
+          </tr>
+          <tr>
+            <td class="k">배달앱 정산액<br>확정 지연</td>
+            <td><div class="dirwrap"><span class="dirtag d-both">＋／−</span></div></td>
+            <td>플랫폼이 정산액을 확정해 주기 전이라, 과거 평균을 바탕으로 한 예상치로 먼저 계산합니다.</td>
+            <td class="sym"><b>"배민 앱에 찍힌 정산금이랑 금액이 달라요"</b> — 확정 전 예상치와 확정값의 차이입니다.</td>
+          </tr>
+          <tr>
+            <td class="k">취소 · 환불 ·<br>플랫폼 정정</td>
+            <td><div class="dirwrap"><span class="dirtag d-minus">−</span></div></td>
+            <td>이미 드린 매출이 취소되거나 플랫폼이 금액을 정정하면 그만큼 줄어듭니다.</td>
+            <td class="sym"><b>"이번엔 왜 이것밖에 안 들어왔죠?"</b> — 직전 취소·환불 건이 있었는지 먼저 물어보세요.</td>
+          </tr>
+          <tr>
+            <td class="k">광고비 ·<br>프로모션 환급</td>
+            <td><div class="dirwrap"><span class="dirtag d-both">＋／−</span></div></td>
+            <td>배민 우리가게클릭처럼 광고비(−)와 특별프로모션 환급(＋)이 같은 항목에 섞여 들어옵니다.</td>
+            <td class="sym"><b>"광고비를 뗀 것 같은데 어떤 날은 오히려 더 들어왔어요"</b> — 환급이 더 컸던 경우입니다.</td>
+          </tr>
+          <tr>
+            <td class="k">만나서결제<br>(현장결제)</td>
+            <td><div class="dirwrap"><span class="dirtag d-minus">−</span></div></td>
+            <td>라이더가 현장에서 이미 받은 돈입니다. 플랫폼을 거쳐 들어오는 돈이 아니라 지급 대상에서 빠집니다.</td>
+            <td class="sym"><b>"배달은 나갔는데 그 주문이 정산에 없어요"</b> — 현장에서 이미 받으신 건인지 확인하세요.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="strip">
+        <div class="lg">
+          <div class="lg-h">방향 표기 읽는 법 — 이 네 가지만 구분하면 됩니다</div>
+          <div class="lgrid">
+            <div class="lrow"><span class="dirtag d-plus">＋</span><span class="t">나중에 <b>더</b> 들어옵니다</span></div>
+            <div class="lrow"><span class="dirtag d-minus">−</span><span class="t">다음 지급액에서 <b>줄어듭니다</b></span></div>
+            <div class="lrow"><span class="dirtag d-both">＋／−</span><span class="t">실제 값에 따라 <b>양쪽 다</b> 가능합니다</span></div>
+            <div class="lrow"><span class="dirtag d-late">후행 지급</span><span class="t">사라진 게 아니라 <b>나중에 들어옵니다</b></span></div>
+          </div>
+          <div class="note" style="margin-top:13px">방향을 모르겠으면 단정하지 말고 "확인해서 알려드리겠다"로 받으세요. 금액과 날짜만 받아 두면 페이허그에서 건별로 확인해 드립니다.</div>
+        </div>
+
+        <div class="msg">
+          <div class="big">차이가 나는 건 <em>오류가 아니라 구조</em>입니다</div>
+          <p>정산금이 <b>확정되기 전에</b> 먼저 드리기 때문에 생기는 차이입니다. 먼저 드리지 않으면 차이도 생기지 않습니다.</p>
+          <p>따라서 "금액이 안 맞는다"는 문의는 <b>사고가 아니라 정상 동작</b>입니다. 사과부터 하지 마시고, <b>증상을 듣고 위 8가지 중 어디에 해당하는지</b> 먼저 짚어 주세요.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 가맹점 앱 안내 문구(예상 카드 수수료율 기준 지급) · 예외 케이스 문서(우리가게클릭 환급 혼재 · 가게배달 음수 · 만나서결제 선정산 제외) · 카드 매입 확정 지연 운영 기준</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

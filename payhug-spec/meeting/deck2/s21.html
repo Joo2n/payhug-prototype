@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S21 — 심사 대기 · 서류 수정</title>
+<link rel="stylesheet" href="deck2.css">
+<style>
+  .stage { align-items: stretch; gap: 48px; }
+  .left  { display: flex; align-items: flex-start; gap: 24px; }
+  .right { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .right .calls { max-width: 880px; }
+  .tbd-box { margin-top: 22px; }
+  .tbd-box b { color: var(--ink-2); }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 3 · 신청 이후 ~ 선정산 개시</div>
+    <div class="s-no">21 / 심사 대기</div>
+  </div>
+
+  <h1 class="s-title">서류가 다 차면 <span class="em">심사 대기</span></h1>
+  <p class="s-sub">사장님이 준비를 끝내면 자동으로 심사가 시작됩니다. 심사 중에도 서류는 고칠 수 있습니다</p>
+
+  <div class="stage">
+
+    <div class="left">
+      <div>
+        <div class="phone clip" style="width:420px;height:690px">
+          <img src="img/1414-6961.png" alt="승인 대기 중 안내 팝업" style="width:420px;height:auto;margin-top:-52px">
+          <!-- 승인 대기 중 팝업 -->
+          <div class="hi" style="top:26.3%;left:8%;bottom:42.0%;right:8%"></div>
+          <div class="mk" style="top:31.4%;left:16%">1</div>
+          <!-- 서류 수정하기 -->
+          <div class="hi green" style="top:47.9%;left:50%;bottom:45.8%;right:14%"></div>
+          <div class="mk green" style="top:51.0%;left:87%">2</div>
+        </div>
+        <div class="phone-cap">심사가 시작된 뒤 다시 들어오면<small>승인 대기 중이라는 팝업이 먼저 뜹니다</small></div>
+      </div>
+
+      <div>
+        <div class="phone clip" style="width:420px;height:690px">
+          <img src="img/1414-6471.png" alt="등록된 서류 수정 화면" style="width:420px;height:auto;margin-top:-4px">
+          <!-- 서류 6종 -->
+          <div class="hi" style="top:35.7%;left:8%;bottom:27.5%;right:8%"></div>
+          <div class="mk" style="top:38.1%;left:88%">3</div>
+          <!-- 계좌 2종 -->
+          <div class="hi blue" style="top:48.1%;left:10%;bottom:39.7%;right:10%"></div>
+          <div class="mk blue" style="top:54.0%;left:88%">4</div>
+        </div>
+        <div class="phone-cap">서류 수정하기를 누르면<small>등록된 6종을 골라 다시 올릴 수 있습니다</small></div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="calls">
+
+        <div class="call">
+          <div class="call-n">1</div>
+          <div class="call-b">
+            <div class="call-t">서류 6종이 다 차면 <u>자동으로</u> 심사 대기</div>
+            <div class="call-d">사장님이 따로 "심사 신청" 버튼을 누르는 게 아닙니다. 마지막 서류가 채워지면 그대로 심사로 넘어갑니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n green">2</div>
+          <div class="call-b">
+            <div class="call-t">심사 중에도 서류를 고칠 수 있습니다</div>
+            <div class="call-d">팝업에서 <b>서류 수정하기</b>를 누르면 됩니다. 그냥 기다리시겠다면 <b>대시보드로 이동</b>을 누르면 됩니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n">3</div>
+          <div class="call-b">
+            <div class="call-t">고칠 수 있는 항목은 6가지</div>
+            <div class="call-d">사업자등록증 · 신분증 · 선정산 전용계좌(락계좌) 통장사진 · 입금계좌 통장사진 · 플랫폼 계정 · 비대면 계약 동의</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n blue">4</div>
+          <div class="call-b">
+            <div class="call-t">통장사진 항목이 <u>둘로 나뉘어</u> 있습니다</div>
+            <div class="call-d">잘못 올렸다면 어느 쪽인지 확인하고 그 항목만 다시 올리게 안내해 주세요</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tbd-box fx fx-wrap fx-mid">
+        <span class="fx-t"><b>심사에 걸리는 기간</b> — 화면에도 표시되지 않고 사내 기준도 아직 정해지지 않았습니다</span>
+        <span class="badge badge-tbd">협의 예정</span>
+        <span class="fx-t">사장님께 며칠이라고 먼저 약속하지 마세요</span>
+      </div>
+
+      <div class="punch ok">
+        "심사 중이라 아무것도 못 한다"가 아닙니다 — 잘못 올린 서류는 <u>이 화면에서 바로</u> 고치도록 안내해 주세요
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 승인 대기 팝업 / 등록 서류 수정 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,853 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>PayHug 화면설계서 인덱스 (208)</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f6f7f9;color:#1a1f2b}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid #e4e7ec;padding:16px 24px;z-index:5}
+header h1{margin:0;font-size:20px}header .sub{color:#667085;font-size:13px;margin-top:3px}
+.wrap{padding:20px 24px 80px;max-width:1400px;margin:0 auto}
+section{margin-bottom:26px}
+h2{font-size:16px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid #4b47d6;color:#26299c}
+h2 .cnt{background:#eef0ff;color:#3538cd;border-radius:10px;padding:1px 9px;font-size:12px;font-weight:700;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.card{display:block;background:#fff;border:1px solid #e4e7ec;border-radius:10px;padding:12px 14px;text-decoration:none;color:inherit;transition:.12s}
+.card:hover{border-color:#4b47d6;box-shadow:0 2px 8px rgba(75,71,214,.12);transform:translateY(-1px)}
+.pid{font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;color:#3538cd;display:flex;align-items:center;gap:6px}
+.nm{font-size:14px;font-weight:600;margin:5px 0 4px;line-height:1.4}
+.meta{font-size:11px;color:#98a2b3}
+.b{font-size:9.5px;font-weight:800;border-radius:6px;padding:1px 6px}
+.b.base{background:#e7f6ec;color:#0a6b40}.b.var{background:#f2f4f7;color:#667085}
+</style></head><body>
+<header><h1>PayHug 화면설계서 인덱스 — 208화면</h1>
+<div class="sub">메뉴별 정리 · 카드 클릭 시 화면설계서(메타바+목업+마커+key note) 새 탭 · Writer 이서준 · 2026.07.21</div></header>
+<div class="wrap"><section><h2>A-01 홈 <span class="cnt">1</span></h2><div class="grid"><a class="card" href="AD_HOME.html" target="_blank">
+      <div class="pid">AD_HOME <span class="b base">base</span></div>
+      <div class="nm">관리자 대시보드</div>
+      <div class="meta">914:2 · 914_2.png</div>
+    </a></div></section><section><h2>A-02 매출조회 <span class="cnt">13</span></h2><div class="grid"><a class="card" href="AD_SALES.html" target="_blank">
+      <div class="pid">AD_SALES <span class="b base">base</span></div>
+      <div class="nm">매출 조회</div>
+      <div class="meta">943:2 · 943_2.png</div>
+    </a><a class="card" href="AD_SALES_DT.html" target="_blank">
+      <div class="pid">AD_SALES_DT <span class="b base">base</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세</div>
+      <div class="meta">947:2 · 947_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_PAYOUT.html" target="_blank">
+      <div class="pid">AD_SALES_DT_PAYOUT <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 (지급예정일 기준)</div>
+      <div class="meta">952:2 · 952_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_NORMAL.html" target="_blank">
+      <div class="pid">AD_SALES_DT_NORMAL <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 (거래상태 정상 필터)</div>
+      <div class="meta">957:2 · 957_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_CANCEL.html" target="_blank">
+      <div class="pid">AD_SALES_DT_CANCEL <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 (거래상태 취소 필터)</div>
+      <div class="meta">966:2 · 966_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_CARD.html" target="_blank">
+      <div class="pid">AD_SALES_DT_CARD <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 (카드 · 카드사 필터)</div>
+      <div class="meta">971:2 · 971_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_BM.html" target="_blank">
+      <div class="pid">AD_SALES_DT_BM <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 (배달의민족 필터)</div>
+      <div class="meta">979:2 · 979_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_OLD.html" target="_blank">
+      <div class="pid">AD_SALES_DT_OLD <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 (오래된순 정렬)</div>
+      <div class="meta">986:2 · 986_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_ADJUST.html" target="_blank">
+      <div class="pid">AD_SALES_DT_ADJUST <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 (차액정산 내역 펼침)</div>
+      <div class="meta">997:2 · 997_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_ADD_CARD.html" target="_blank">
+      <div class="pid">AD_SALES_DT_ADD_CARD <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 &gt; 단건 등록(카드 승인)</div>
+      <div class="meta">1002:2 · 1002_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_ADD_PURCHASE.html" target="_blank">
+      <div class="pid">AD_SALES_DT_ADD_PURCHASE <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 &gt; 단건 등록(카드 매입)</div>
+      <div class="meta">1005:2 · 1005_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_ADD_DELIVERY.html" target="_blank">
+      <div class="pid">AD_SALES_DT_ADD_DELIVERY <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 &gt; 단건 등록(배달 플랫폼)</div>
+      <div class="meta">1007:2 · 1007_2.png</div>
+    </a><a class="card" href="AD_SALES_DT_EXCEL.html" target="_blank">
+      <div class="pid">AD_SALES_DT_EXCEL <span class="b var">variant</span></div>
+      <div class="nm">매출 조회 &gt; 가맹점 상세 &gt; 엑셀 업로드</div>
+      <div class="meta">1035:2 · 1035_2.png</div>
+    </a></div></section><section><h2>A-03 가맹점관리 <span class="cnt">28</span></h2><div class="grid"><a class="card" href="AD_MERCHANT.html" target="_blank">
+      <div class="pid">AD_MERCHANT <span class="b base">base</span></div>
+      <div class="nm">가맹점 관리</div>
+      <div class="meta">958:2 · 958_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT <span class="b base">base</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세</div>
+      <div class="meta">1033:2 · 1033_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_PENDING.html" target="_blank">
+      <div class="pid">AD_MERCHANT_PENDING <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 (심사대기 필터)</div>
+      <div class="meta">961:2 · 961_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_APPROVED.html" target="_blank">
+      <div class="pid">AD_MERCHANT_APPROVED <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 (승인 필터)</div>
+      <div class="meta">963:2 · 963_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_REJECT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_REJECT <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 (반려 필터)</div>
+      <div class="meta">967:2 · 967_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_NONE.html" target="_blank">
+      <div class="pid">AD_MERCHANT_NONE <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 (미등록 필터)</div>
+      <div class="meta">970:2 · 970_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_LEGACY.html" target="_blank">
+      <div class="pid">AD_MERCHANT_LEGACY <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 부채 가맹점 등록</div>
+      <div class="meta">975:2 · 975_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_HARDRESET.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_HARDRESET <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 유저 하드리셋</div>
+      <div class="meta">999:2 · 999_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_LOCKVERIFY.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_LOCKVERIFY <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 플랫폼 락계좌 검증 확인</div>
+      <div class="meta">1004:2 · 1004_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_LOCKDETAIL.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_LOCKDETAIL <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 플랫폼 락계좌 연결 상세</div>
+      <div class="meta">1010:2 · 1010_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_RESIGN.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_RESIGN <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 계약 재서명 요청</div>
+      <div class="meta">1019:2 · 1019_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_OLDCONTRACT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_OLDCONTRACT <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 (이전 계약서 펼침)</div>
+      <div class="meta">1020:2 · 1020_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_FEERESET.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_FEERESET <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 카드 수수료 기본값 초기화</div>
+      <div class="meta">1022:2 · 1022_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_WEEKDAY.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_WEEKDAY <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 (요일별 상세 테이블 펼침)</div>
+      <div class="meta">1023:2 · 1023_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_TRANSFER.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_TRANSFER <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 수동 이체</div>
+      <div class="meta">1024:2 · 1024_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_ADJSTAT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_ADJSTAT <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 (차액 정산 상세 통계 펼침)</div>
+      <div class="meta">1025:2 · 1025_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_ADJUST.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_ADJUST <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 차액 정산 이력</div>
+      <div class="meta">1026:2 · 1026_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_ADJUST_DONE.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_ADJUST_DONE <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 차액 정산 이력 (완료 필터)</div>
+      <div class="meta">1027:2 · 1027_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_ADJUST_PENDING.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_ADJUST_PENDING <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 차액 정산 이력 (대기 필터)</div>
+      <div class="meta">1028:2 · 1028_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_SCRAPE.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_SCRAPE <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 매출 데이터 수집</div>
+      <div class="meta">1031:2 · 1031_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_RESET.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_RESET <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 비밀번호 초기화</div>
+      <div class="meta">1032:2 · 1032_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_REJECT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_REJECT <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 가맹점 반려</div>
+      <div class="meta">1034:2 · 1034_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_ASSIGN.html" target="_blank">
+      <div class="pid">AD_MERCHANT_ASSIGN <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 담당자 변경</div>
+      <div class="meta">1057:2 · 1057_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_IDCARD.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_IDCARD <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 신분증 등록</div>
+      <div class="meta">1093:2 · 1093_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_LOCKACCT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_LOCKACCT <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 선정산 전용계좌 등록</div>
+      <div class="meta">1094:2 · 1094_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_BANKACCT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_BANKACCT <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 입출금 계좌 등록</div>
+      <div class="meta">1095:2 · 1095_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_DEBT.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_DEBT <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 이관 부채 등록</div>
+      <div class="meta">1097:2 · 1097_2.png</div>
+    </a><a class="card" href="AD_MERCHANT_DT_PLATFORM.html" target="_blank">
+      <div class="pid">AD_MERCHANT_DT_PLATFORM <span class="b var">variant</span></div>
+      <div class="nm">가맹점 관리 &gt; 가맹점 상세 &gt; 플랫폼 계정 추가</div>
+      <div class="meta">1098:2 · 1098_2.png</div>
+    </a></div></section><section><h2>A-04 정산 <span class="cnt">9</span></h2><div class="grid"><a class="card" href="AD_PRODUCT.html" target="_blank">
+      <div class="pid">AD_PRODUCT <span class="b base">base</span></div>
+      <div class="nm">정산 상품관리</div>
+      <div class="meta">915:2 · 915_2.png</div>
+    </a><a class="card" href="AD_SIM.html" target="_blank">
+      <div class="pid">AD_SIM <span class="b base">base</span></div>
+      <div class="nm">정산 시뮬레이션</div>
+      <div class="meta">946:2 · 946_2.png</div>
+    </a><a class="card" href="AD_PRODUCT_GENERAL.html" target="_blank">
+      <div class="pid">AD_PRODUCT_GENERAL <span class="b var">variant</span></div>
+      <div class="nm">정산 상품관리 &gt; 일반 상품 펼침</div>
+      <div class="meta">919:2 · 919_2.png</div>
+    </a><a class="card" href="AD_PRODUCT_DAOU.html" target="_blank">
+      <div class="pid">AD_PRODUCT_DAOU <span class="b var">variant</span></div>
+      <div class="nm">정산 상품관리 &gt; 다우 상품 펼침</div>
+      <div class="meta">924:2 · 924_2.png</div>
+    </a><a class="card" href="AD_PRODUCT_ADD.html" target="_blank">
+      <div class="pid">AD_PRODUCT_ADD <span class="b var">variant</span></div>
+      <div class="nm">정산 상품관리 &gt; 상품 생성</div>
+      <div class="meta">929:2 · 929_2.png</div>
+    </a><a class="card" href="AD_PRODUCT_EDIT.html" target="_blank">
+      <div class="pid">AD_PRODUCT_EDIT <span class="b var">variant</span></div>
+      <div class="nm">정산 상품관리 &gt; 상품 수정</div>
+      <div class="meta">934:2 · 934_2.png</div>
+    </a><a class="card" href="AD_PRODUCT_DEACT.html" target="_blank">
+      <div class="pid">AD_PRODUCT_DEACT <span class="b var">variant</span></div>
+      <div class="nm">정산 상품관리 &gt; 비활성화 확인</div>
+      <div class="meta">938:2 · 938_2.png</div>
+    </a><a class="card" href="AD_PRODUCT_DELETE.html" target="_blank">
+      <div class="pid">AD_PRODUCT_DELETE <span class="b var">variant</span></div>
+      <div class="nm">정산 상품관리 &gt; 삭제 확인</div>
+      <div class="meta">942:2 · 942_2.png</div>
+    </a><a class="card" href="AD_SIM_MULTI.html" target="_blank">
+      <div class="pid">AD_SIM_MULTI <span class="b var">variant</span></div>
+      <div class="nm">정산 시뮬레이션 &gt; 거래 다건 입력</div>
+      <div class="meta">949:2 · 949_2.png</div>
+    </a></div></section><section><h2>A-05 정산현황 <span class="cnt">20</span></h2><div class="grid"><a class="card" href="AD_SETTLE.html" target="_blank">
+      <div class="pid">AD_SETTLE <span class="b base">base</span></div>
+      <div class="nm">선정산 결과</div>
+      <div class="meta">995:2 · 995_2.png</div>
+    </a><a class="card" href="AD_SETTLE_MISSED.html" target="_blank">
+      <div class="pid">AD_SETTLE_MISSED <span class="b var">variant</span></div>
+      <div class="nm">선정산 결과 &gt; 미정산 누락 추적 펼침</div>
+      <div class="meta">917:2 · 917_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFFLIST.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFFLIST <span class="b var">variant</span></div>
+      <div class="nm">선정산 차액 정산 내역</div>
+      <div class="meta">953:2 · 953_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DETAIL.html" target="_blank">
+      <div class="pid">AD_SETTLE_DETAIL <span class="b var">variant</span></div>
+      <div class="nm">정산 상세</div>
+      <div class="meta">976:2 · 976_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DETAIL_BATCH.html" target="_blank">
+      <div class="pid">AD_SETTLE_DETAIL_BATCH <span class="b var">variant</span></div>
+      <div class="nm">정산 상세 &gt; 배치 선택 상세</div>
+      <div class="meta">981:2 · 981_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFF.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFF <span class="b var">variant</span></div>
+      <div class="nm">차액 정산</div>
+      <div class="meta">989:2 · 989_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFF_CARD.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFF_CARD <span class="b var">variant</span></div>
+      <div class="nm">차액 정산 &gt; 카드 수수료 차액</div>
+      <div class="meta">993:2 · 993_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFF_DELIVERY.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFF_DELIVERY <span class="b var">variant</span></div>
+      <div class="nm">차액 정산 &gt; 배달 수수료 차액</div>
+      <div class="meta">996:2 · 996_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFF_CLAWBACK.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFF_CLAWBACK <span class="b var">variant</span></div>
+      <div class="nm">차액 정산 &gt; 취소 환수</div>
+      <div class="meta">998:2 · 998_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFF_ESTIMATED.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFF_ESTIMATED <span class="b var">variant</span></div>
+      <div class="nm">차액 정산 &gt; 예상매출 대사</div>
+      <div class="meta">1001:2 · 1001_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFF_CARRY.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFF_CARRY <span class="b var">variant</span></div>
+      <div class="nm">차액 정산 &gt; 미회수 이월</div>
+      <div class="meta">1003:2 · 1003_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIFF_CARDFILTER.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIFF_CARDFILTER <span class="b var">variant</span></div>
+      <div class="nm">차액 정산 &gt; 매출유형 카드 필터</div>
+      <div class="meta">1006:2 · 1006_2.png</div>
+    </a><a class="card" href="AD_SETTLE_TRANSFER.html" target="_blank">
+      <div class="pid">AD_SETTLE_TRANSFER <span class="b var">variant</span></div>
+      <div class="nm">이체 내역</div>
+      <div class="meta">1009:2 · 1009_2.png</div>
+    </a><a class="card" href="AD_SETTLE_TRANSFER_COLLECT.html" target="_blank">
+      <div class="pid">AD_SETTLE_TRANSFER_COLLECT <span class="b var">variant</span></div>
+      <div class="nm">이체 내역 &gt; 회수 2단계 펼침</div>
+      <div class="meta">1012:2 · 1012_2.png</div>
+    </a><a class="card" href="AD_SETTLE_BILL.html" target="_blank">
+      <div class="pid">AD_SETTLE_BILL <span class="b var">variant</span></div>
+      <div class="nm">계산서 발행</div>
+      <div class="meta">1013:2 · 1013_2.png</div>
+    </a><a class="card" href="AD_SETTLE_EXPAND.html" target="_blank">
+      <div class="pid">AD_SETTLE_EXPAND <span class="b var">variant</span></div>
+      <div class="nm">선정산 결과 &gt; 가맹점 건별 상세 펼침</div>
+      <div class="meta">1036:2 · 1036_2.png</div>
+    </a><a class="card" href="AD_SETTLE_PREVIEW.html" target="_blank">
+      <div class="pid">AD_SETTLE_PREVIEW <span class="b var">variant</span></div>
+      <div class="nm">선정산 결과 &gt; 바로이체 미리보기</div>
+      <div class="meta">1038:2 · 1038_2.png</div>
+    </a><a class="card" href="AD_SETTLE_DIRECT.html" target="_blank">
+      <div class="pid">AD_SETTLE_DIRECT <span class="b var">variant</span></div>
+      <div class="nm">선정산 결과 &gt; 바로이체 확인</div>
+      <div class="meta">1059:2 · 1059_2.png</div>
+    </a><a class="card" href="AD_SETTLE_RECORD.html" target="_blank">
+      <div class="pid">AD_SETTLE_RECORD <span class="b var">variant</span></div>
+      <div class="nm">선정산 결과 &gt; 이미지급(기록만) 확인</div>
+      <div class="meta">1060:2 · 1060_2.png</div>
+    </a><a class="card" href="AD_SETTLE_VOC.html" target="_blank">
+      <div class="pid">AD_SETTLE_VOC <span class="b var">variant</span></div>
+      <div class="nm">VOC 대응</div>
+      <div class="meta">1062:2 · 1062_2.png</div>
+    </a></div></section><section><h2>A-06 회원관리 <span class="cnt">13</span></h2><div class="grid"><a class="card" href="AD_PARTNER.html" target="_blank">
+      <div class="pid">AD_PARTNER <span class="b base">base</span></div>
+      <div class="nm">회원 관리</div>
+      <div class="meta">1029:2 · 1029_2.png</div>
+    </a><a class="card" href="AD_PARTNER_PAYHUG.html" target="_blank">
+      <div class="pid">AD_PARTNER_PAYHUG <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 페이허그 필터</div>
+      <div class="meta">916:2 · 916_2.png</div>
+    </a><a class="card" href="AD_PARTNER_PARTNER.html" target="_blank">
+      <div class="pid">AD_PARTNER_PARTNER <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 파트너 필터</div>
+      <div class="meta">922:2 · 922_2.png</div>
+    </a><a class="card" href="AD_PARTNER_AFFILIATE.html" target="_blank">
+      <div class="pid">AD_PARTNER_AFFILIATE <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 제휴사 필터</div>
+      <div class="meta">927:2 · 927_2.png</div>
+    </a><a class="card" href="AD_PARTNER_SALES.html" target="_blank">
+      <div class="pid">AD_PARTNER_SALES <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 영업 필터</div>
+      <div class="meta">932:2 · 932_2.png</div>
+    </a><a class="card" href="AD_PARTNER_SALESORG.html" target="_blank">
+      <div class="pid">AD_PARTNER_SALESORG <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 영업조직 필터</div>
+      <div class="meta">937:2 · 937_2.png</div>
+    </a><a class="card" href="AD_PARTNER_ADMIN.html" target="_blank">
+      <div class="pid">AD_PARTNER_ADMIN <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 관리자 필터</div>
+      <div class="meta">941:2 · 941_2.png</div>
+    </a><a class="card" href="AD_PARTNER_ADD.html" target="_blank">
+      <div class="pid">AD_PARTNER_ADD <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 회원 등록</div>
+      <div class="meta">945:2 · 945_2.png</div>
+    </a><a class="card" href="AD_PARTNER_EDIT.html" target="_blank">
+      <div class="pid">AD_PARTNER_EDIT <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 회원 수정</div>
+      <div class="meta">950:2 · 950_2.png</div>
+    </a><a class="card" href="AD_PARTNER_PROFILE.html" target="_blank">
+      <div class="pid">AD_PARTNER_PROFILE <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 프로필 관리</div>
+      <div class="meta">955:2 · 955_2.png</div>
+    </a><a class="card" href="AD_PARTNER_DEACT.html" target="_blank">
+      <div class="pid">AD_PARTNER_DEACT <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 회원 비활성화 확인</div>
+      <div class="meta">959:2 · 959_2.png</div>
+    </a><a class="card" href="AD_PARTNER_DELETE.html" target="_blank">
+      <div class="pid">AD_PARTNER_DELETE <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 회원 삭제 확인</div>
+      <div class="meta">962:2 · 962_2.png</div>
+    </a><a class="card" href="AD_PARTNER_INVESTOR.html" target="_blank">
+      <div class="pid">AD_PARTNER_INVESTOR <span class="b var">variant</span></div>
+      <div class="nm">회원 관리 &gt; 투자자 필터</div>
+      <div class="meta">1030:2 · 1030_2.png</div>
+    </a></div></section><section><h2>A-07 약관관리 <span class="cnt">14</span></h2><div class="grid"><a class="card" href="AD_TERMS.html" target="_blank">
+      <div class="pid">AD_TERMS <span class="b base">base</span></div>
+      <div class="nm">약관 관리</div>
+      <div class="meta">965:2 · 965_2.png</div>
+    </a><a class="card" href="AD_TERMS_REVISE.html" target="_blank">
+      <div class="pid">AD_TERMS_REVISE <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 약관 개정 (종류 선택)</div>
+      <div class="meta">920:2 · 920_2.png</div>
+    </a><a class="card" href="AD_TERMS_REVISE_FIXED.html" target="_blank">
+      <div class="pid">AD_TERMS_REVISE_FIXED <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 약관 개정 (종류 고정)</div>
+      <div class="meta">925:2 · 925_2.png</div>
+    </a><a class="card" href="AD_TERMS_PREVIEW.html" target="_blank">
+      <div class="pid">AD_TERMS_PREVIEW <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 버전 미리보기</div>
+      <div class="meta">931:2 · 931_2.png</div>
+    </a><a class="card" href="AD_TERMS_VER_EDIT.html" target="_blank">
+      <div class="pid">AD_TERMS_VER_EDIT <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 약관 버전 수정</div>
+      <div class="meta">935:2 · 935_2.png</div>
+    </a><a class="card" href="AD_TERMS_VER_DEL.html" target="_blank">
+      <div class="pid">AD_TERMS_VER_DEL <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 약관 버전 삭제 확인</div>
+      <div class="meta">940:2 · 940_2.png</div>
+    </a><a class="card" href="AD_TERMS_SIGNUP.html" target="_blank">
+      <div class="pid">AD_TERMS_SIGNUP <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 목록 (회원가입 필터)</div>
+      <div class="meta">969:2 · 969_2.png</div>
+    </a><a class="card" href="AD_TERMS_CONTRACT.html" target="_blank">
+      <div class="pid">AD_TERMS_CONTRACT <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 목록 (전자계약 필터)</div>
+      <div class="meta">973:2 · 973_2.png</div>
+    </a><a class="card" href="AD_TERMS_MARKETING.html" target="_blank">
+      <div class="pid">AD_TERMS_MARKETING <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 목록 (마케팅 수신 필터)</div>
+      <div class="meta">977:2 · 977_2.png</div>
+    </a><a class="card" href="AD_TERMS_CTX.html" target="_blank">
+      <div class="pid">AD_TERMS_CTX <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 컨텍스트 관리 펼침</div>
+      <div class="meta">982:2 · 982_2.png</div>
+    </a><a class="card" href="AD_TERMS_CTX_ADD.html" target="_blank">
+      <div class="pid">AD_TERMS_CTX_ADD <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 컨텍스트 추가</div>
+      <div class="meta">987:2 · 987_2.png</div>
+    </a><a class="card" href="AD_TERMS_CTX_EDIT.html" target="_blank">
+      <div class="pid">AD_TERMS_CTX_EDIT <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 컨텍스트 수정</div>
+      <div class="meta">988:2 · 988_2.png</div>
+    </a><a class="card" href="AD_TERMS_TYPE_ADD.html" target="_blank">
+      <div class="pid">AD_TERMS_TYPE_ADD <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 약관 종류 추가</div>
+      <div class="meta">991:2 · 991_2.png</div>
+    </a><a class="card" href="AD_TERMS_TYPE_EDIT.html" target="_blank">
+      <div class="pid">AD_TERMS_TYPE_EDIT <span class="b var">variant</span></div>
+      <div class="nm">약관 관리 &gt; 약관 종류 수정</div>
+      <div class="meta">994:2 · 994_2.png</div>
+    </a></div></section><section><h2>A-08 모계좌 잔액조회 <span class="cnt">2</span></h2><div class="grid"><a class="card" href="AD_BALANCE.html" target="_blank">
+      <div class="pid">AD_BALANCE <span class="b base">base</span></div>
+      <div class="nm">모 계좌 잔액 조회</div>
+      <div class="meta">944:2 · 944_2.png</div>
+    </a><a class="card" href="AD_BALANCE_DEPOSIT.html" target="_blank">
+      <div class="pid">AD_BALANCE_DEPOSIT <span class="b var">variant</span></div>
+      <div class="nm">모 계좌 잔액 조회 &gt; 외부 입금 등록</div>
+      <div class="meta">1058:2 · 1058_2.png</div>
+    </a></div></section><section><h2>A-09 1:1 문의 <span class="cnt">11</span></h2><div class="grid"><a class="card" href="AD_INQUIRY.html" target="_blank">
+      <div class="pid">AD_INQUIRY <span class="b base">base</span></div>
+      <div class="nm">1:1 문의 &gt; 목록</div>
+      <div class="meta">951:2 · 951_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_PENDING.html" target="_blank">
+      <div class="pid">AD_INQUIRY_PENDING <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (대기 필터)</div>
+      <div class="meta">956:2 · 956_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_PROGRESS.html" target="_blank">
+      <div class="pid">AD_INQUIRY_PROGRESS <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (처리중 필터)</div>
+      <div class="meta">960:2 · 960_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_ANSWERED.html" target="_blank">
+      <div class="pid">AD_INQUIRY_ANSWERED <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (답변완료 필터)</div>
+      <div class="meta">964:2 · 964_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_CLOSED.html" target="_blank">
+      <div class="pid">AD_INQUIRY_CLOSED <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (종료 필터)</div>
+      <div class="meta">968:2 · 968_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_GENERAL.html" target="_blank">
+      <div class="pid">AD_INQUIRY_GENERAL <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (일반 카테고리)</div>
+      <div class="meta">972:2 · 972_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_PAYMENT.html" target="_blank">
+      <div class="pid">AD_INQUIRY_PAYMENT <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (결제 카테고리)</div>
+      <div class="meta">978:2 · 978_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_SETTLEMENT.html" target="_blank">
+      <div class="pid">AD_INQUIRY_SETTLEMENT <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (정산 카테고리)</div>
+      <div class="meta">983:2 · 983_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_TECH.html" target="_blank">
+      <div class="pid">AD_INQUIRY_TECH <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (기술 카테고리)</div>
+      <div class="meta">985:2 · 985_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_ACCOUNT.html" target="_blank">
+      <div class="pid">AD_INQUIRY_ACCOUNT <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록 (계정 카테고리)</div>
+      <div class="meta">990:2 · 990_2.png</div>
+    </a><a class="card" href="AD_INQUIRY_DT.html" target="_blank">
+      <div class="pid">AD_INQUIRY_DT <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 상세 (메시지 스레드 드로어)</div>
+      <div class="meta">992:2 · 992_2.png</div>
+    </a></div></section><section><h2>A-10 시스템(로그·스크래핑·AI) <span class="cnt">5</span></h2><div class="grid"><a class="card" href="AD_SCRAPING.html" target="_blank">
+      <div class="pid">AD_SCRAPING <span class="b base">base</span></div>
+      <div class="nm">스크래핑 장애 이력</div>
+      <div class="meta">918:2 · 918_2.png</div>
+    </a><a class="card" href="AD_LOG.html" target="_blank">
+      <div class="pid">AD_LOG <span class="b base">base</span></div>
+      <div class="nm">활동 로그</div>
+      <div class="meta">921:2 · 921_2.png</div>
+    </a><a class="card" href="AD_AI.html" target="_blank">
+      <div class="pid">AD_AI <span class="b base">base</span></div>
+      <div class="nm">AI 모니터링 어시스턴트</div>
+      <div class="meta">928:2 · 928_2.png</div>
+    </a><a class="card" href="AD_AI_CUSTOM.html" target="_blank">
+      <div class="pid">AD_AI_CUSTOM <span class="b var">variant</span></div>
+      <div class="nm">AI 모니터링 어시스턴트 &gt; 시간범위 직접 지정</div>
+      <div class="meta">933:2 · 933_2.png</div>
+    </a><a class="card" href="AD_AI_ANSWER.html" target="_blank">
+      <div class="pid">AD_AI_ANSWER <span class="b var">variant</span></div>
+      <div class="nm">AI 모니터링 어시스턴트 &gt; 질문 후 분석 응답</div>
+      <div class="meta">936:2 · 936_2.png</div>
+    </a></div></section><section><h2>A-11 인증 <span class="cnt">1</span></h2><div class="grid"><a class="card" href="AD_LOGIN.html" target="_blank">
+      <div class="pid">AD_LOGIN <span class="b base">base</span></div>
+      <div class="nm">관리자 로그인</div>
+      <div class="meta">939:2 · 939_2.png</div>
+    </a></div></section><section><h2>M-01 랜딩/홈 <span class="cnt">3</span></h2><div class="grid"><a class="card" href="MC_LANDING.html" target="_blank">
+      <div class="pid">MC_LANDING <span class="b base">base</span></div>
+      <div class="nm">랜딩 홈</div>
+      <div class="meta">833:2 · 833_2.png</div>
+    </a><a class="card" href="MC_LANDING_FAQ.html" target="_blank">
+      <div class="pid">MC_LANDING_FAQ <span class="b var">variant</span></div>
+      <div class="nm">랜딩 홈 &gt; FAQ 펼침</div>
+      <div class="meta">841:2 · 841_2.png</div>
+    </a><a class="card" href="MC_LANDING_LOGIN.html" target="_blank">
+      <div class="pid">MC_LANDING_LOGIN <span class="b var">variant</span></div>
+      <div class="nm">랜딩 홈 &gt; 로그인 필요 안내</div>
+      <div class="meta">846:2 · 846_2.png</div>
+    </a></div></section><section><h2>M-02 인증 <span class="cnt">17</span></h2><div class="grid"><a class="card" href="PH_PW_RE.html" target="_blank">
+      <div class="pid">PH_PW_RE <span class="b base">base</span></div>
+      <div class="nm">비밀번호 찾기 &gt; 2단계 비밀번호 재설정</div>
+      <div class="meta">818:2 · 818_2.png</div>
+    </a><a class="card" href="PH_LO.html" target="_blank">
+      <div class="pid">PH_LO <span class="b base">base</span></div>
+      <div class="nm">사장님 로그인</div>
+      <div class="meta">845:2 · 845_2.png</div>
+    </a><a class="card" href="PH_JO_TERMS.html" target="_blank">
+      <div class="pid">PH_JO_TERMS <span class="b base">base</span></div>
+      <div class="nm">회원가입 &gt; 1단계 약관 동의</div>
+      <div class="meta">868:2 · 868_2.png</div>
+    </a><a class="card" href="PH_JO_AUTH.html" target="_blank">
+      <div class="pid">PH_JO_AUTH <span class="b base">base</span></div>
+      <div class="nm">회원가입 &gt; 2단계 본인 인증</div>
+      <div class="meta">884:2 · 884_2.png</div>
+    </a><a class="card" href="PH_JO_PW.html" target="_blank">
+      <div class="pid">PH_JO_PW <span class="b base">base</span></div>
+      <div class="nm">회원가입 &gt; 3단계 비밀번호 설정</div>
+      <div class="meta">890:2 · 890_2.png</div>
+    </a><a class="card" href="PH_JO_DONE.html" target="_blank">
+      <div class="pid">PH_JO_DONE <span class="b base">base</span></div>
+      <div class="nm">회원가입 &gt; 완료 환영</div>
+      <div class="meta">904:2 · 904_2.png</div>
+    </a><a class="card" href="PH_PW_FI.html" target="_blank">
+      <div class="pid">PH_PW_FI <span class="b base">base</span></div>
+      <div class="nm">비밀번호 찾기 &gt; 1단계 본인 인증</div>
+      <div class="meta">907:2 · 907_2.png</div>
+    </a><a class="card" href="PH_PW_FI_NONE.html" target="_blank">
+      <div class="pid">PH_PW_FI_NONE <span class="b var">variant</span></div>
+      <div class="nm">비밀번호 찾기 &gt; 1단계 본인 인증 &gt; 미가입 번호</div>
+      <div class="meta">823:2 · 823_2.png</div>
+    </a><a class="card" href="PH_PW_RE_DONE.html" target="_blank">
+      <div class="pid">PH_PW_RE_DONE <span class="b var">variant</span></div>
+      <div class="nm">비밀번호 찾기 &gt; 2단계 비밀번호 재설정 &gt; 변경 완료</div>
+      <div class="meta">829:2 · 829_2.png</div>
+    </a><a class="card" href="PH_LO_COMPANY.html" target="_blank">
+      <div class="pid">PH_LO_COMPANY <span class="b var">variant</span></div>
+      <div class="nm">사장님 로그인 &gt; 회사정보 펼침</div>
+      <div class="meta">851:2 · 851_2.png</div>
+    </a><a class="card" href="PH_LO_EXPIRED.html" target="_blank">
+      <div class="pid">PH_LO_EXPIRED <span class="b var">variant</span></div>
+      <div class="nm">사장님 로그인 &gt; 세션 만료 안내</div>
+      <div class="meta">856:2 · 856_2.png</div>
+    </a><a class="card" href="PH_LO_LOADING.html" target="_blank">
+      <div class="pid">PH_LO_LOADING <span class="b var">variant</span></div>
+      <div class="nm">사장님 로그인 &gt; 로그인 중 로딩</div>
+      <div class="meta">862:2 · 862_2.png</div>
+    </a><a class="card" href="PH_JO_TERMS_ALL.html" target="_blank">
+      <div class="pid">PH_JO_TERMS_ALL <span class="b var">variant</span></div>
+      <div class="nm">회원가입 &gt; 1단계 약관 동의 &gt; 전체 동의</div>
+      <div class="meta">873:2 · 873_2.png</div>
+    </a><a class="card" href="PH_JO_TERMS_MODAL.html" target="_blank">
+      <div class="pid">PH_JO_TERMS_MODAL <span class="b var">variant</span></div>
+      <div class="nm">회원가입 &gt; 1단계 약관 동의 &gt; 약관 상세</div>
+      <div class="meta">878:2 · 878_2.png</div>
+    </a><a class="card" href="PH_JO_PW_CHECK.html" target="_blank">
+      <div class="pid">PH_JO_PW_CHECK <span class="b var">variant</span></div>
+      <div class="nm">회원가입 &gt; 3단계 비밀번호 설정 &gt; 조건 체크리스트</div>
+      <div class="meta">894:2 · 894_2.png</div>
+    </a><a class="card" href="PH_JO_PW_TIP_CAPS.html" target="_blank">
+      <div class="pid">PH_JO_PW_TIP_CAPS <span class="b var">variant</span></div>
+      <div class="nm">회원가입 &gt; 3단계 비밀번호 설정 &gt; Caps Lock 경고</div>
+      <div class="meta">898:2 · 898_2.png</div>
+    </a><a class="card" href="PH_JO_AUTH_EXIST.html" target="_blank">
+      <div class="pid">PH_JO_AUTH_EXIST <span class="b var">variant</span></div>
+      <div class="nm">회원가입 &gt; 2단계 본인 인증 &gt; 이미 가입된 번호</div>
+      <div class="meta">901:2 · 901_2.png</div>
+    </a></div></section><section><h2>M-03 계약 <span class="cnt">29</span></h2><div class="grid"><a class="card" href="MC_CONTRACT_DEPOSIT_UPLOAD.html" target="_blank">
+      <div class="pid">MC_CONTRACT_DEPOSIT_UPLOAD <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 4단계 입금계좌 &gt; 통장 업로드</div>
+      <div class="meta">830:2 · 830_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_DEPOSIT_INFO.html" target="_blank">
+      <div class="pid">MC_CONTRACT_DEPOSIT_INFO <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 4단계 입금계좌 &gt; 정보 확인(info)</div>
+      <div class="meta">840:2 · 840_2.png</div>
+    </a><a class="card" href="MC_CONTRACT.html" target="_blank">
+      <div class="pid">MC_CONTRACT <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 서류 준비 안내</div>
+      <div class="meta">843:2 · 843_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_PLATFORM.html" target="_blank">
+      <div class="pid">MC_CONTRACT_PLATFORM <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 5단계 플랫폼 계정 &gt; 매출 연동 등록</div>
+      <div class="meta">850:2 · 850_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 약관 동의</div>
+      <div class="meta">855:2 · 855_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_BIZ_UPLOAD.html" target="_blank">
+      <div class="pid">MC_CONTRACT_BIZ_UPLOAD <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 1단계 사업자등록증 &gt; 업로드(개인)</div>
+      <div class="meta">859:2 · 859_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_BIZ_INFO.html" target="_blank">
+      <div class="pid">MC_CONTRACT_BIZ_INFO <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 1단계 사업자등록증 &gt; 정보 확인(개인·OCR힌트)</div>
+      <div class="meta">871:2 · 871_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_ID_UPLOAD.html" target="_blank">
+      <div class="pid">MC_CONTRACT_ID_UPLOAD <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 2단계 신분증 &gt; 업로드</div>
+      <div class="meta">882:2 · 882_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_ID_INFO.html" target="_blank">
+      <div class="pid">MC_CONTRACT_ID_INFO <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 2단계 신분증 &gt; 정보 확인(주민등록증)</div>
+      <div class="meta">887:2 · 887_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_LOCK_APPLY.html" target="_blank">
+      <div class="pid">MC_CONTRACT_LOCK_APPLY <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 3단계 선정산 락계좌 &gt; 계좌 개설 안내(QR·PC)</div>
+      <div class="meta">895:2 · 895_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_LOCK_UPLOAD.html" target="_blank">
+      <div class="pid">MC_CONTRACT_LOCK_UPLOAD <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 3단계 선정산 락계좌 &gt; 통장 업로드</div>
+      <div class="meta">899:2 · 899_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_LOCK_INFO.html" target="_blank">
+      <div class="pid">MC_CONTRACT_LOCK_INFO <span class="b base">base</span></div>
+      <div class="nm">계약 신청 &gt; 3단계 선정산 락계좌 &gt; 정보 확인(info·비밀번호)</div>
+      <div class="meta">903:2 · 903_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_LOCK_VERIFY.html" target="_blank">
+      <div class="pid">MC_CONTRACT_LOCK_VERIFY <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 3단계 선정산 락계좌 &gt; 1원 인증번호 입력</div>
+      <div class="meta">817:2 · 817_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_LOCK_FASTINQ.html" target="_blank">
+      <div class="pid">MC_CONTRACT_LOCK_FASTINQ <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 3단계 선정산 락계좌 &gt; 빠른조회 미가입 안내</div>
+      <div class="meta">824:2 · 824_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_DEPOSIT_GATE.html" target="_blank">
+      <div class="pid">MC_CONTRACT_DEPOSIT_GATE <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 4단계 입금계좌 &gt; 전용계좌 먼저 등록 게이트 모달</div>
+      <div class="meta">834:2 · 834_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_DEPOSIT_VERIFY.html" target="_blank">
+      <div class="pid">MC_CONTRACT_DEPOSIT_VERIFY <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 4단계 입금계좌 &gt; 1원 인증번호 입력</div>
+      <div class="meta">844:2 · 844_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_EDIT.html" target="_blank">
+      <div class="pid">MC_CONTRACT_EDIT <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 서류 준비 안내 &gt; 수정 모드</div>
+      <div class="meta">848:2 · 848_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_PENDING.html" target="_blank">
+      <div class="pid">MC_CONTRACT_PENDING <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 서류 준비 안내 &gt; 승인 대기 모달</div>
+      <div class="meta">854:2 · 854_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN_ALLAGREE.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN_ALLAGREE <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 약관 필수 전체 동의</div>
+      <div class="meta">861:2 · 861_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_BIZ_UPLOAD_CORP.html" target="_blank">
+      <div class="pid">MC_CONTRACT_BIZ_UPLOAD_CORP <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 1단계 사업자등록증 &gt; 업로드(법인 선택)</div>
+      <div class="meta">864:2 · 864_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN_TERMSMODAL.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN_TERMSMODAL <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 약관 상세 모달</div>
+      <div class="meta">866:2 · 866_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN_PREVIEW.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN_PREVIEW <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 계약서 미리보기(Step2)</div>
+      <div class="meta">870:2 · 870_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN_PREVIEW_ZOOM.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN_PREVIEW_ZOOM <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 계약서 미리보기 확대(Step2)</div>
+      <div class="meta">876:2 · 876_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_BIZ_INFO_CORP.html" target="_blank">
+      <div class="pid">MC_CONTRACT_BIZ_INFO_CORP <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 1단계 사업자등록증 &gt; 정보 확인(법인)</div>
+      <div class="meta">877:2 · 877_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN_INPUT.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN_INPUT <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 서명·수수료율 입력(Step3)</div>
+      <div class="meta">881:2 · 881_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN_CONFIRM.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN_CONFIRM <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 최종 계약서 확인(Step4)</div>
+      <div class="meta">885:2 · 885_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_SIGN_DONE.html" target="_blank">
+      <div class="pid">MC_CONTRACT_SIGN_DONE <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 6단계 비대면 계약 &gt; 계약 동의 완료 모달</div>
+      <div class="meta">889:2 · 889_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_ID_INFO_DRIVER.html" target="_blank">
+      <div class="pid">MC_CONTRACT_ID_INFO_DRIVER <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 2단계 신분증 &gt; 정보 확인(운전면허증)</div>
+      <div class="meta">891:2 · 891_2.png</div>
+    </a><a class="card" href="MC_CONTRACT_LOCK_FASTGUIDE.html" target="_blank">
+      <div class="pid">MC_CONTRACT_LOCK_FASTGUIDE <span class="b var">variant</span></div>
+      <div class="nm">계약 신청 &gt; 3단계 선정산 락계좌 &gt; 빠른조회 가입방법 펼침</div>
+      <div class="meta">906:2 · 906_2.png</div>
+    </a></div></section><section><h2>M-04 대시보드 <span class="cnt">10</span></h2><div class="grid"><a class="card" href="MC_DASH.html" target="_blank">
+      <div class="pid">MC_DASH <span class="b base">base</span></div>
+      <div class="nm">대시보드 &gt; 미리 받는 돈 (승인 사업자)</div>
+      <div class="meta">853:2 · 853_2.png</div>
+    </a><a class="card" href="MC_DASH_DONE.html" target="_blank">
+      <div class="pid">MC_DASH_DONE <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 계약 완료 카드 (최초 1회)</div>
+      <div class="meta">860:2 · 860_2.png</div>
+    </a><a class="card" href="MC_DASH_BIZSEL.html" target="_blank">
+      <div class="pid">MC_DASH_BIZSEL <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 사업자 선택 드롭다운</div>
+      <div class="meta">867:2 · 867_2.png</div>
+    </a><a class="card" href="MC_DASH_PENDING.html" target="_blank">
+      <div class="pid">MC_DASH_PENDING <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 사업자 선택 &gt; 승인 대기 안내 모달</div>
+      <div class="meta">872:2 · 872_2.png</div>
+    </a><a class="card" href="MC_DASH_UNAPPROVED.html" target="_blank">
+      <div class="pid">MC_DASH_UNAPPROVED <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 매출 조회 (미승인 사업자)</div>
+      <div class="meta">880:2 · 880_2.png</div>
+    </a><a class="card" href="MC_DASH_INQUIRY.html" target="_blank">
+      <div class="pid">MC_DASH_INQUIRY <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 매출 조회 &gt; 계정 입력 폼</div>
+      <div class="meta">886:2 · 886_2.png</div>
+    </a><a class="card" href="MC_DASH_APPLIED.html" target="_blank">
+      <div class="pid">MC_DASH_APPLIED <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 이미 계약 신청 완료 모달</div>
+      <div class="meta">892:2 · 892_2.png</div>
+    </a><a class="card" href="MC_DASH_PROGRESS.html" target="_blank">
+      <div class="pid">MC_DASH_PROGRESS <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 계약 현황 &gt; 진행 스텝 카드</div>
+      <div class="meta">897:2 · 897_2.png</div>
+    </a><a class="card" href="MC_DASH_REJECT.html" target="_blank">
+      <div class="pid">MC_DASH_REJECT <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 계약 현황 &gt; 반려·중지 카드</div>
+      <div class="meta">902:2 · 902_2.png</div>
+    </a><a class="card" href="MC_DASH_RESIGN.html" target="_blank">
+      <div class="pid">MC_DASH_RESIGN <span class="b var">variant</span></div>
+      <div class="nm">대시보드 &gt; 계약 재서명 필요 모달</div>
+      <div class="meta">905:2 · 905_2.png</div>
+    </a></div></section><section><h2>M-05 정산 <span class="cnt">14</span></h2><div class="grid"><a class="card" href="ST_AC.html" target="_blank">
+      <div class="pid">ST_AC <span class="b base">base</span></div>
+      <div class="nm">계좌 입금 내역</div>
+      <div class="meta">828:2 · 828_2.png</div>
+    </a><a class="card" href="ST_AC_EX.html" target="_blank">
+      <div class="pid">ST_AC_EX <span class="b base">base</span></div>
+      <div class="nm">계좌 입금 내역 &gt; 선정산 제외액 내역</div>
+      <div class="meta">835:2 · 835_2.png</div>
+    </a><a class="card" href="ST_MA.html" target="_blank">
+      <div class="pid">ST_MA <span class="b base">base</span></div>
+      <div class="nm">미리 받는 돈</div>
+      <div class="meta">863:2 · 863_2.png</div>
+    </a><a class="card" href="ST_DIFF.html" target="_blank">
+      <div class="pid">ST_DIFF <span class="b base">base</span></div>
+      <div class="nm">예상 지급 차액</div>
+      <div class="meta">896:2 · 896_2.png</div>
+    </a><a class="card" href="ST_MA_CARD.html" target="_blank">
+      <div class="pid">ST_MA_CARD <span class="b var">variant</span></div>
+      <div class="nm">미리 받는 돈 &gt; 카드사별 상세</div>
+      <div class="meta">874:2 · 874_2.png</div>
+    </a><a class="card" href="ST_MA_CARD_DT.html" target="_blank">
+      <div class="pid">ST_MA_CARD_DT <span class="b var">variant</span></div>
+      <div class="nm">미리 받는 돈 &gt; 카드사별 상세 &gt; 카드 거래 상세</div>
+      <div class="meta">879:2 · 879_2.png</div>
+    </a><a class="card" href="ST_MA_DELIV.html" target="_blank">
+      <div class="pid">ST_MA_DELIV <span class="b var">variant</span></div>
+      <div class="nm">미리 받는 돈 &gt; 배달앱별 상세</div>
+      <div class="meta">883:2 · 883_2.png</div>
+    </a><a class="card" href="ST_MA_DELIV_DT.html" target="_blank">
+      <div class="pid">ST_MA_DELIV_DT <span class="b var">variant</span></div>
+      <div class="nm">미리 받는 돈 &gt; 배달앱별 상세 &gt; 배달 주문 상세</div>
+      <div class="meta">893:2 · 893_2.png</div>
+    </a><a class="card" href="ST_MA_TIP_DIFF.html" target="_blank">
+      <div class="pid">ST_MA_TIP_DIFF <span class="b var">variant</span></div>
+      <div class="nm">미리 받는 돈 &gt; 예상 지급 차액 툴팁</div>
+      <div class="meta">1066:2 · 1066_2.png</div>
+    </a><a class="card" href="ST_MA_DELIV_TIP.html" target="_blank">
+      <div class="pid">ST_MA_DELIV_TIP <span class="b var">variant</span></div>
+      <div class="nm">미리 받는 돈 &gt; 배달앱별 상세 &gt; 광고비 툴팁</div>
+      <div class="meta">1067:2 · 1067_2.png</div>
+    </a><a class="card" href="ST_DIFF_TIP_NORMAL.html" target="_blank">
+      <div class="pid">ST_DIFF_TIP_NORMAL <span class="b var">variant</span></div>
+      <div class="nm">예상 지급 차액 &gt; 일반 차액 툴팁</div>
+      <div class="meta">1068:2 · 1068_2.png</div>
+    </a><a class="card" href="ST_DIFF_TIP_MEET_DONE.html" target="_blank">
+      <div class="pid">ST_DIFF_TIP_MEET_DONE <span class="b var">variant</span></div>
+      <div class="nm">예상 지급 차액 &gt; 만나서결제 회수 툴팁 (회수 완료)</div>
+      <div class="meta">1069:2 · 1069_2.png</div>
+    </a><a class="card" href="ST_DIFF_TIP_MEET_PLAN.html" target="_blank">
+      <div class="pid">ST_DIFF_TIP_MEET_PLAN <span class="b var">variant</span></div>
+      <div class="nm">예상 지급 차액 &gt; 만나서결제 회수 툴팁 (회수 예정)</div>
+      <div class="meta">1070:2 · 1070_2.png</div>
+    </a><a class="card" href="ST_AC_EX_TIP.html" target="_blank">
+      <div class="pid">ST_AC_EX_TIP <span class="b var">variant</span></div>
+      <div class="nm">계좌 입금 내역 &gt; 선정산 제외액 내역 &gt; 행 툴팁</div>
+      <div class="meta">1071:2 · 1071_2.png</div>
+    </a></div></section><section><h2>M-06 내정보 <span class="cnt">13</span></h2><div class="grid"><a class="card" href="MC_MYINFO.html" target="_blank">
+      <div class="pid">MC_MYINFO <span class="b base">base</span></div>
+      <div class="nm">내 정보 관리</div>
+      <div class="meta">812:2 · 812_2.png</div>
+    </a><a class="card" href="MC_MYINFO_CONTRACT.html" target="_blank">
+      <div class="pid">MC_MYINFO_CONTRACT <span class="b base">base</span></div>
+      <div class="nm">계약 정보 조회</div>
+      <div class="meta">816:2 · 816_2.png</div>
+    </a><a class="card" href="MC_MYINFO_ACCOUNTS.html" target="_blank">
+      <div class="pid">MC_MYINFO_ACCOUNTS <span class="b base">base</span></div>
+      <div class="nm">연동 계정 관리</div>
+      <div class="meta">831:2 · 831_2.png</div>
+    </a><a class="card" href="MC_MYINFO_INQUIRY.html" target="_blank">
+      <div class="pid">MC_MYINFO_INQUIRY <span class="b base">base</span></div>
+      <div class="nm">1:1 문의</div>
+      <div class="meta">842:2 · 842_2.png</div>
+    </a><a class="card" href="MC_MYINFO_PW.html" target="_blank">
+      <div class="pid">MC_MYINFO_PW <span class="b base">base</span></div>
+      <div class="nm">비밀번호 변경</div>
+      <div class="meta">858:2 · 858_2.png</div>
+    </a><a class="card" href="MC_MYINFO_CONTRACT_PREVIEW.html" target="_blank">
+      <div class="pid">MC_MYINFO_CONTRACT_PREVIEW <span class="b var">variant</span></div>
+      <div class="nm">계약 정보 조회 &gt; 증빙서류 미리보기</div>
+      <div class="meta">822:2 · 822_2.png</div>
+    </a><a class="card" href="MC_MYINFO_INQUIRY_LIST.html" target="_blank">
+      <div class="pid">MC_MYINFO_INQUIRY_LIST <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 목록</div>
+      <div class="meta">825:2 · 825_2.png</div>
+    </a><a class="card" href="MC_MYINFO_CONTRACT_TERMS.html" target="_blank">
+      <div class="pid">MC_MYINFO_CONTRACT_TERMS <span class="b var">variant</span></div>
+      <div class="nm">계약 정보 조회 &gt; 약관 내용</div>
+      <div class="meta">826:2 · 826_2.png</div>
+    </a><a class="card" href="MC_MYINFO_INQUIRY_NEW_ALT.html" target="_blank">
+      <div class="pid">MC_MYINFO_INQUIRY_NEW_ALT <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 문의 작성</div>
+      <div class="meta">832:2 · 832_2.png</div>
+    </a><a class="card" href="MC_MYINFO_ACCOUNTS_EDIT.html" target="_blank">
+      <div class="pid">MC_MYINFO_ACCOUNTS_EDIT <span class="b var">variant</span></div>
+      <div class="nm">연동 계정 관리 &gt; 계정 변경 폼</div>
+      <div class="meta">836:2 · 836_2.png</div>
+    </a><a class="card" href="MC_MYINFO_INQUIRY_DT_ALT.html" target="_blank">
+      <div class="pid">MC_MYINFO_INQUIRY_DT_ALT <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 상세 대화</div>
+      <div class="meta">838:2 · 838_2.png</div>
+    </a><a class="card" href="MC_MYINFO_INQUIRY_NEW.html" target="_blank">
+      <div class="pid">MC_MYINFO_INQUIRY_NEW <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 문의 작성</div>
+      <div class="meta">847:2 · 847_2.png</div>
+    </a><a class="card" href="MC_MYINFO_INQUIRY_DT.html" target="_blank">
+      <div class="pid">MC_MYINFO_INQUIRY_DT <span class="b var">variant</span></div>
+      <div class="nm">1:1 문의 &gt; 문의 상세</div>
+      <div class="meta">852:2 · 852_2.png</div>
+    </a></div></section><section><h2>M-08 알림 <span class="cnt">1</span></h2><div class="grid"><a class="card" href="MC_NOTI.html" target="_blank">
+      <div class="pid">MC_NOTI <span class="b base">base</span></div>
+      <div class="nm">알림 목록 (빈 상태)</div>
+      <div class="meta">820:2 · 820_2.png</div>
+    </a></div></section><section><h2>M-09 공통 <span class="cnt">4</span></h2><div class="grid"><a class="card" href="MC_COMMON_MENU.html" target="_blank">
+      <div class="pid">MC_COMMON_MENU <span class="b base">base</span></div>
+      <div class="nm">모바일 메뉴 드로어</div>
+      <div class="meta">815:2 · 815_2.png</div>
+    </a><a class="card" href="MC_COMMON_PROFILE.html" target="_blank">
+      <div class="pid">MC_COMMON_PROFILE <span class="b base">base</span></div>
+      <div class="nm">프로필 드롭다운</div>
+      <div class="meta">908:2 · 908_2.png</div>
+    </a><a class="card" href="MC_COMMON_LOGOUT.html" target="_blank">
+      <div class="pid">MC_COMMON_LOGOUT <span class="b base">base</span></div>
+      <div class="nm">로그아웃 확인 모달</div>
+      <div class="meta">909:2 · 909_2.png</div>
+    </a><a class="card" href="MC_COMMON_NOTI_DD.html" target="_blank">
+      <div class="pid">MC_COMMON_NOTI_DD <span class="b base">base</span></div>
+      <div class="nm">알림 드롭다운</div>
+      <div class="meta">910:2 · 910_2.png</div>
+    </a></div></section></div></body></html>

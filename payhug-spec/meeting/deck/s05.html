@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S05 — 계좌 3종 구분</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .acct { display: flex; flex-direction: column; gap: 22px; height: 100%; }
+  .acct-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; flex: 1; }
+
+  .ac { border-radius: 20px; padding: 26px 28px 24px; display: flex; flex-direction: column; }
+  .ac.lock { background: var(--ph-danger-tint); border: 1.5px solid #FFD3D3; }
+  .ac.pay  { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; }
+  .ac.mom  { background: var(--ph-blue-tint);  border: 1.5px solid #CFE4FF; }
+
+  .ac-tag {
+    display: inline-flex; align-self: flex-start; align-items: center;
+    font-size: 15px; font-weight: 800; letter-spacing: -0.01em;
+    padding: 6px 14px; border-radius: 999px; background: #fff; margin-bottom: 12px;
+  }
+  .ac.lock .ac-tag { color: var(--ph-danger); }
+  .ac.pay  .ac-tag { color: var(--ph-green-700); }
+  .ac.mom  .ac-tag { color: var(--ph-blue-600); }
+
+  .ac-n { font-size: 29px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.03em; line-height: 1.22; }
+  .ac-alias { font-size: 18px; font-weight: 600; color: var(--ink-3); margin-top: 6px; }
+
+  .ac-rows { margin-top: 20px; padding-top: 18px; border-top: 1.5px solid rgba(0,0,0,0.07); flex: 1; }
+  .ar { display: flex; gap: 14px; margin-bottom: 15px; }
+  .ar:last-child { margin-bottom: 0; }
+  .ar .k { min-width: 96px; flex-shrink: 0; font-size: 16px; font-weight: 800; color: var(--ink-3); padding-top: 2px; }
+  .ar .v { font-size: 19px; line-height: 1.45; color: var(--ink); font-weight: 500; }
+  .ar .v b { font-weight: 800; }
+
+  .use-no  { color: var(--ph-danger); font-weight: 800; }
+  .use-yes { color: #0F7A3D; font-weight: 800; }
+
+  .bottom { display: grid; grid-template-columns: 1.15fr 1fr; gap: 22px; }
+  .order { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+  .ob {
+    background: #fff; border: 1.5px solid var(--line); border-radius: 14px;
+    padding: 13px 20px; font-size: 19px; font-weight: 800; color: var(--ph-forest);
+    display: flex; align-items: center; gap: 9px;
+  }
+  .ob .on {
+    font-family: var(--font-num); color: #fff; background: var(--ph-forest);
+    border-radius: 999px; width: 26px; height: 26px; font-size: 15px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .warnbox { background: var(--ph-danger-tint); border: 2px solid var(--ph-danger); border-radius: 20px; padding: 24px 28px; }
+  .warnbox .wh { font-size: 23px; font-weight: 900; color: var(--ph-danger); margin-bottom: 10px; letter-spacing: -0.02em; }
+  .warnbox p { font-size: 18px; line-height: 1.55; color: var(--ink-2); }
+  .warnbox .no { text-decoration: line-through; color: var(--ink-4); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 1 · 서비스 구조</div>
+    <div class="s-no">05</div>
+  </div>
+
+  <h1 class="s-title">계좌 3종, <span class="em">헷갈리면 사고 납니다</span></h1>
+  <p class="s-sub">이름은 비슷한데 역할이 전혀 다릅니다. 영업 현장에서 가장 자주 나는 사고가 여기서 시작됩니다.</p>
+
+  <div class="s-body">
+    <div class="acct">
+
+      <div class="acct-row">
+
+        <div class="ac lock">
+          <div class="ac-tag">하나은행 · 출금전용</div>
+          <div class="ac-n">선정산 전용계좌</div>
+          <div class="ac-alias">현장에서 부르는 말 — 락계좌</div>
+          <div class="ac-rows">
+            <div class="ar"><div class="k">무엇</div><div class="v">카드사·배달앱 <b>정산금이 들어오는 곳</b></div></div>
+            <div class="ar"><div class="k">누구 명의</div><div class="v">사장님</div></div>
+            <div class="ar"><div class="k">사장님이<br>쓸 수 있나</div><div class="v"><span class="use-no">✕ 못 씁니다</span><br>출금전용이라 직접 빼 쓸 수 없습니다</div></div>
+          </div>
+        </div>
+
+        <div class="ac pay">
+          <div class="ac-tag">하나은행 · 자유 입출금</div>
+          <div class="ac-n">입금계좌</div>
+          <div class="ac-alias">사장님이 실제로 돈을 받는 계좌</div>
+          <div class="ac-rows">
+            <div class="ar"><div class="k">무엇</div><div class="v">페이허그가 <b>선정산금을 넣어주는 곳</b></div></div>
+            <div class="ar"><div class="k">누구 명의</div><div class="v">사장님</div></div>
+            <div class="ar"><div class="k">사장님이<br>쓸 수 있나</div><div class="v"><span class="use-yes">○ 씁니다</span><br>자유 입출금 계좌라 바로 사용 가능</div></div>
+          </div>
+        </div>
+
+        <div class="ac mom">
+          <div class="ac-tag">페이허그 내부</div>
+          <div class="ac-n">모계좌</div>
+          <div class="ac-alias">사장님과는 직접 관계없는 계좌</div>
+          <div class="ac-rows">
+            <div class="ar"><div class="k">무엇</div><div class="v">페이허그가 운영하는 계좌<br>여기서 선정산금이 나갑니다</div></div>
+            <div class="ar"><div class="k">누구 명의</div><div class="v">페이허그</div></div>
+            <div class="ar"><div class="k">사장님이<br>쓸 수 있나</div><div class="v" style="color:var(--ink-4);font-weight:700">— 해당 없음</div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bottom">
+        <div class="card card-tint">
+          <div class="card-h">계좌 개설 순서 — 반드시 이 순서로</div>
+          <p>선정산 전용계좌(락계좌)와 입금계좌는 <b>둘 다 하나은행</b>이어야 합니다.</p>
+          <div class="order">
+            <div class="ob"><span class="on">1</span><span>선정산 전용계좌(락계좌) — 출금전용</span></div>
+            <div class="arrow">→</div>
+            <div class="ob"><span class="on">2</span><span>입금계좌 — 자유 입출금</span></div>
+          </div>
+          <p style="margin-top:12px"><span class="hl">순서를 바꾸면 안 됩니다.</span> 입출금 계좌를 먼저 만들면 <span class="hl">20일이 지나야</span> 출금전용 계좌를 열 수 있어, 계약이 그 자리에서 멈춥니다.</p>
+        </div>
+
+        <div class="warnbox">
+          <div class="wh">"정산계좌"라고 말하지 마세요</div>
+          <p><span class="no">정산계좌 알려주세요</span> → 사장님도 영업사원도 어떤 계좌인지 서로 다르게 알아듣습니다.<br>
+          반드시 <b>"선정산 전용계좌(락계좌)"</b> 또는 <b>"입금계좌"</b>로 이름을 붙여 말해 주세요.</p>
+          <p style="margin-top:14px;padding-top:14px;border-top:1px dashed #FFC1C1">
+            사장님이 "정산금이 안 들어왔다"고 하실 때 <b>어느 계좌를 보고 계신지부터 확인</b>하세요.<br>
+            락계좌를 보고 계신 경우가 대부분입니다 — 그 계좌에는 사장님이 쓸 돈이 들어오지 않습니다.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 가맹점 앱 계약 체크리스트(락계좌 등록 · 입금계좌 등록 1원 인증) · 하나은행 My브랜치 개설 절차</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

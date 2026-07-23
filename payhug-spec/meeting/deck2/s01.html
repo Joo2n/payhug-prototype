@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S01 — 표지</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .slide { padding: 0; }
+  .stage { margin: 0; flex-direction: column; align-items: center; justify-content: center; gap: 0; }
+  .cover-mark {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 17px; font-weight: 700; color: var(--ph-green-700); letter-spacing: 0.04em;
+  }
+  .cover-mark::before, .cover-mark::after { content:''; width:46px; height:3px; border-radius:999px; background:var(--ph-green-600); }
+  .cover-t {
+    margin-top: 34px; text-align: center;
+    font-size: 82px; font-weight: 900; line-height: 1.18; letter-spacing: -0.045em; color: var(--ph-forest);
+  }
+  .cover-t .em { color: var(--ph-green-700); }
+  .cover-rule { width: 96px; height: 5px; border-radius: 999px; background: var(--ph-green); margin: 42px 0 0; }
+  .cover-s { margin-top: 40px; font-size: 27px; font-weight: 500; color: var(--ink-3); letter-spacing: -0.02em; }
+  .cover-meta { margin-top: 14px; font-family: var(--font-num); font-size: 21px; font-weight: 600; color: var(--ink-4); letter-spacing: 0.02em; }
+  .cover-logo {
+    position: absolute; left: 0; right: 0; bottom: 62px;
+    text-align: center; font-size: 34px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.03em;
+  }
+  .cover-logo span { color: var(--ph-green-700); }
+  .blob {
+    position: absolute; border-radius: 999px; pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="blob" style="width:520px;height:520px;left:-190px;top:-170px;background:var(--ph-green-tint)"></div>
+  <div class="blob" style="width:360px;height:360px;right:-120px;bottom:-130px;background:var(--ph-green-tint)"></div>
+
+  <div class="stage">
+    <div class="cover-mark">PAYHUG × DAOU DATA</div>
+
+    <h1 class="cover-t">페이허그 <span class="em">선정산</span> 서비스<br>운영 교육</h1>
+
+    <div class="cover-rule"></div>
+
+    <div class="cover-s">다우데이타 영업사원 · 총판 대상</div>
+    <div class="cover-meta">2026. 07</div>
+  </div>
+
+  <div class="cover-logo">pay<span>hug</span></div>
+
+</div>
+</body>
+</html>

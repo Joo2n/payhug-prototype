@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M08 — 빠른조회 미가입 안내 (fast_inquiry)</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+    <div class="ham"><i></i><i></i><i></i></div>
+  </div>
+
+  <!-- 진행 표시: confirm-pre-payment는 2칸 모두 초록 (L226-229) -->
+  <div class="prog"><i class="on"></i><i class="on"></i></div>
+
+  <div class="wrap">
+    <div class="card">
+
+      <div class="h1">빠른조회 서비스 가입이 필요해요</div>
+      <div class="sub">계좌 등록은 완료되었지만, 입금내역을 자동으로 확인하려면 <span class="em">하나은행 빠른조회</span> 서비스 가입이 필요합니다.</div>
+
+      <!-- 서버 메시지 자리 (fastInquiryMessage) — 기본값 L184 -->
+      <div class="warnbox">아직 빠른조회 가입이 확인되지 않았습니다. 가입 완료 후 다시 시도해주세요.</div>
+
+      <!-- FastInquiryGuide defaultOpen -->
+      <div class="acc">
+        <div class="acc-h">
+          <span>하나은행 빠른조회 서비스 가입 방법</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#009792" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(180deg)"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="acc-b">
+          <div class="lead">락계좌 입금내역을 자동으로 확인하려면 하나은행 빠른조회 서비스 가입이 필요합니다.</div>
+          <ol>
+            <li><i>1</i><span>하나은행 인터넷뱅킹에 로그인합니다 (개인/기업).</span></li>
+            <li><i>2</i><span>개인뱅킹: 마이하나 &gt; 계좌정보관리 &gt; 빠른조회관리에서 신청합니다.</span></li>
+            <li><i>3</i><span>기업뱅킹: 뱅킹관리 &gt; 계좌관리 &gt; 빠른조회계좌관리에서 계좌를 선택해 등록합니다.</span></li>
+            <li><i>4</i><span>조회 권한을 인터넷뱅킹과 폰뱅킹 모두 '허용'으로 설정합니다.</span></li>
+            <li><i>5</i><span>계좌비밀번호(안내된 경우 OTP 비밀번호)를 입력해 완료합니다.</span></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="fld" style="margin-top:24px">
+        <label>계좌 출금 비밀번호 (숫자 4자리)</label>
+        <div class="inp pw ph" style="white-space:nowrap;overflow:hidden">비밀번호 오류 시 다시 입력해 주세요</div>
+        <div class="help">하나은행 앱/영업점에서 빠른조회(잔액·거래내역 조회) 서비스 가입 후 아래 버튼을 눌러주세요.</div>
+      </div>
+
+      <div class="btn pri" style="margin-top:24px">빠른조회 가입 다시 확인하기</div>
+
+    </div>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · app/contract/confirm-pre-payment/page.tsx L146-151·L162-191·L377-421 + FastInquiryGuide L426-463 / verifyStep = "fast_inquiry" (info·verify 카드 미표시). 경고 박스 문구는 서버 응답 fastInquiryMessage 자리이며 여기 표기한 값은 코드상 기본값(L184).<br>※ 비밀번호 입력란은 tracking-[6px]가 걸려 있어 placeholder가 실제로도 잘린다. 원문 전체는 「비밀번호 오류 시 다시 입력해 주세요」(L405).</div>
+
+</div>
+</body>
+</html>

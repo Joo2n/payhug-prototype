@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M18 — 회원가입 Step 3 · 비밀번호 설정</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb" style="border-bottom:1px solid #f0f0f0">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+  </div>
+
+  <!-- 진행 표시 (dot 4개) -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding-top:32px">
+    <i style="width:12px;height:12px;border-radius:999px;background:#163300;display:block"></i>
+    <i style="width:12px;height:12px;border-radius:999px;background:#163300;display:block"></i>
+    <i style="width:20px;height:12px;border-radius:999px;background:#163300;display:block"></i>
+    <i style="width:12px;height:12px;border-radius:999px;background:#d1d5db;display:block"></i>
+  </div>
+
+  <div class="wrap" style="padding:16px 30px 40px">
+    <div class="card" style="padding:24px">
+
+      <div style="margin-bottom:32px">
+        <div class="h1" style="margin-bottom:4px">비밀번호를 입력해 주세요</div>
+        <div class="sub" style="margin-top:0">사장님의 소중한 정보를 보호하기 위해 필요해요</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">
+
+        <div class="fld" style="margin-top:0">
+          <label>새 비밀번호</label>
+          <div class="inp ph" style="background:var(--field-2);justify-content:space-between">
+            <span>비밀번호 입력</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a0a4b8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="fld" style="margin-top:0">
+          <label>비밀번호 확인</label>
+          <div class="inp ph" style="background:var(--field-2);justify-content:space-between">
+            <span>비밀번호 다시 입력</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a0a4b8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="btn pri-off" style="margin-top:0;height:53px;padding:0">다음</div>
+
+    </div>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · signup/page.tsx step === 3 (비밀번호 설정) + PasswordInput / 버튼은 canSubmitPassword 미충족 시 bg rgba(159,232,112,0.3)·text rgba(22,51,0,0.3) 비활성. 진행 표시 4번째 점은 코드상 항상 비활성(정적).</div>
+
+</div>
+</body>
+</html>

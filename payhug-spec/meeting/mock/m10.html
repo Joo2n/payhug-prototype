@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M10 — 계약 Step 2/4 · 계약서 미리보기</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+/* m10/m11/m12 전용 — 전체화면 오버레이(fixed inset-0 bg-[#faf9fa])는 mock.css에 없어 인라인 정의 */
+.ovl { background: #faf9fa; display: flex; flex-direction: column; }
+.tbar {
+  background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tbar .back { display: flex; align-items: center; gap: 4px; font-size: 15px; color: #7e8299; }
+.tbar h2 { font-size: 17px; font-weight: 700; color: #111; }
+.tbar .zoom {
+  background: #eff2f5; color: #424548; padding: 6px 12px;
+  border-radius: 999px; font-size: 13px; font-weight: 700;
+}
+.zbanner {
+  background: rgba(22,51,0,.9); padding: 8px 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.zbanner span { color: #9fe870; font-size: 13px; }
+.docs { padding: 8px 8px 24px; }
+.page { position: relative; }
+.page + .page { border-top: 1px solid #e5e7eb; }
+/* 계약서 이미지는 서버가 생성해 내려주는 base64라 코드에 원본이 없다 → 자리표시 박스 */
+.ph-doc {
+  height: 600px; background: #fff; border: 1px dashed #d1d5db;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.ph-doc span { font-size: 12px; color: #b8bcc4; line-height: 1.6; }
+.pnum {
+  position: absolute; bottom: 8px; right: 12px;
+  background: rgba(0,0,0,.4); color: #fff; font-size: 11px;
+  padding: 2px 8px; border-radius: 999px;
+}
+.cta-bar { background: #fff; border-top: 1px solid #e5e7eb; padding: 16px; }
+.cta-bar .btn { margin-top: 0; }
+</style>
+</head>
+<body>
+<div id="scr" class="ovl">
+
+  <div class="tbar">
+    <div class="back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      이전
+    </div>
+    <h2>계약서 확인</h2>
+    <div class="zoom">확대</div>
+  </div>
+
+  <!-- isZoomed = false 일 때만 노출 (L524-530) -->
+  <div class="zbanner"><span>글씨가 작으면 우측 상단 '확대' 버튼을 눌러주세요</span></div>
+
+  <div class="docs">
+    <div class="page">
+      <div class="ph-doc"><span>계약서 미리보기 이미지 (previewImages[0])<br>— 서버 생성 이미지, 코드에 원본 없음 —</span></div>
+      <div class="pnum">1 / 2</div>
+    </div>
+    <div class="page">
+      <div class="ph-doc"><span>계약서 미리보기 이미지 (previewImages[1])<br>— 서버 생성 이미지, 코드에 원본 없음 —</span></div>
+      <div class="pnum">2 / 2</div>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div class="btn big pri" style="border-radius:14px;font-size:17px">내용을 확인했습니다</div>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · app/contract/terms/page.tsx L499-563 / flowStep = "preview", isZoomed = false. 카드 레이아웃이 아닌 전체화면 오버레이(fixed inset-0 bg #faf9fa).<br>※ 계약서 지면은 서버가 생성해 내려주는 previewImages 배열이라 코드에 원본이 없다 → 회색 자리표시 박스로 대체. 페이지 뱃지 `{i+1} / {previewImages.length}`는 코드 원문 형식.</div>
+
+</div>
+</body>
+</html>

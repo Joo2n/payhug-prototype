@@ -1,0 +1,110 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계약 신청 &gt; 4단계 입금계좌 &gt; 정보 확인(info)</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_CONTRACT_DEPOSIT_INFO</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 계약 &gt; 4단계 입금계좌 &gt; 정보 확인</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">락계좌와 달리 비밀번호·하나은행 제약·빠른조회 없음</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/840_2.png" alt="계약 신청 &gt; 4단계 입금계좌 &gt; 정보 확인(info)">
+        <div class="dim" style="left:33%;top:6.9%;height:1.6%"></div>
+        <div class="mk" style="left:33%;top:7.6%">1</div>
+        <div class="dim" style="left:6%;top:15.5%;height:5%"></div>
+        <div class="mk" style="left:6%;top:18%">2</div>
+        <div class="dim" style="left:6%;top:23.5%;height:25%"></div>
+        <div class="mk" style="left:6%;top:35.5%">3</div>
+        <div class="dim" style="left:6%;top:51.2%;height:4%"></div>
+        <div class="mk" style="left:6%;top:53.2%">4</div>
+        <div class="dim" style="left:6%;top:59%;height:9.7%"></div>
+        <div class="mk" style="left:6%;top:64%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;계약 신청 <b>4단계(입금계좌)</b> — 입금(정산받을) 계좌 정보를 확인하고 <b>1원 인증</b>을 시작하는 관문. 같은 라우트가 <b>info → verify</b> 2단계로 전환 [MC_CONTRACT_DEPOSIT_VERIFY]</span>
+        <span class="b" style="margin-top:5px"><span class="g">데이터</span> &nbsp;<span class="red">세 칸 값은 앞 단계 통장 OCR 결과가 넘어온 것 — 캡처는 테스트값(김성호 / 하나은행 / 38099876543210)</span></span>
+        <span class="i">넘어온 값이 세 칸에 미리 채워짐 (없으면 빈칸), 이 단계에서는 세 칸 모두 <b>직접 수정 가능</b></span>
+        <span class="i">참고 : 선정산 전용계좌(락계좌) 등록과 달리 <b>비밀번호·하나은행 전용 제약·빠른조회 없음</b></span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진행<br>표시</td><td class="kn-note">
+<span class="b"><b>5칸 진행 막대</b> 전부 초록으로 채워짐</span><span class="i red">코드상 5칸 모두 고정 채움 — 단계별 진행률 계산 없음(개발 확인 필요)</span><span class="i">단계 이동·뒤로가기 조작 요소 없음 (표시 전용)</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"사장님의 정보가 맞나요?"</b></span><span class="b">안내문 <b>"사장님이 입금 받을 계좌 정보가 맞는지 확인해 주세요"</b></span><span class="i">'입금 받을 계좌'만 진한 초록으로 강조</span><span class="i">화면 라벨은 <b>입금(받을) 계좌</b> — '정산계좌' 아님</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">계좌<br>정보</td><td class="kn-note">
+<span class="grp">입력 항목</span><span class="i">계좌주명 · 은행명 · 계좌번호 (3칸)</span><span class="i">앞 단계 <b>OCR 인식값이 미리 채워짐</b> (없으면 빈칸)</span><span class="i">이 단계에서는 세 칸 모두 <b>직접 수정 가능</b></span><span class="grp">유효성</span><span class="i">글자수·형식 제한 없음, 입력창 안내문(placeholder) 없음</span><span class="i">은행명은 1원 인증 요청 시 <b>지원 은행 목록과 대조</b> — 없으면 "지원하지 않는 은행입니다. 은행명을 확인해주세요."</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">OCR<br>말풍선</td><td class="kn-note">
+<span class="b">초록 말풍선 <b>"OCR로 자동 입력되었어요"</b></span><span class="i">보조문구 "잘못 인식된 값이 있으면 직접 수정해주세요"</span><span class="i">진입 시 자동 노출 → <b>10초 뒤 저절로 사라짐</b>, X로 즉시 닫기</span><span class="i">정보 확인(info) 단계에서만 노출</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">하단<br>버튼</td><td class="kn-note">
+<span class="b">[<b>1원 계좌 인증하기</b>] — 입력한 계좌로 1원 입금 요청</span><span class="i">누르는 즉시 로그인 세션 확인 (없으면 로그인 화면으로)</span><span class="i">요청 중 버튼 문구 "1원 입금 요청 중..." + 비활성</span><span class="i">성공하면 <b>인증번호 입력 단계</b>로 전환 [MC_CONTRACT_DEPOSIT_VERIFY]</span><span class="i red">실패 시 "1원 인증 요청에 실패했습니다. 잠시 후 다시 시도해 주세요."</span><span class="b">[<b>다시 첨부하기</b>] — <b>이전 화면(통장 첨부)</b>으로 되돌아감 (브라우저 뒤로가기)</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

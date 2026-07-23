@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M07 — 1원 인증 실패 안내 모달</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div style="position:relative">
+
+    <div class="gnb">
+      <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+      <div class="ham"><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="prog"><i class="on"></i><i class="on"></i></div>
+
+    <div class="wrap">
+      <div class="card">
+
+        <div class="h1">1원 인증번호를 입력해주세요</div>
+        <div class="sub">통장에 입금된 1원의 <span class="em">적요(메모)에서 숫자 3자리</span>를 입력해 주세요</div>
+
+        <div class="fld">
+          <label>계좌주명</label>
+          <div class="inp dis">김보미</div>
+        </div>
+
+        <div class="fld">
+          <label>은행명</label>
+          <div class="inp dis">하나은행</div>
+        </div>
+
+        <div class="fld">
+          <label>계좌번호</label>
+          <div class="inp dis">62291002006704</div>
+        </div>
+
+        <div class="fld">
+          <label>계좌 출금 비밀번호 (숫자 4자리)</label>
+          <div class="inp dis pw">••••</div>
+          <div class="help">하나은행 빠른조회로 입금내역을 확인하기 위해 통장 출금 비밀번호가 필요합니다.</div>
+          <div class="acc">
+            <div class="acc-h">
+              <span>하나은행 빠른조회 서비스 가입 방법</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#009792" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label class="b">인증번호 (숫자 3자리)</label>
+          <div class="inp code">427</div>
+          <div class="help">통장에 <span class="em">&quot;페이허XXX&quot;</span> 형태로 입금된 메모에서 숫자만 입력해주세요</div>
+        </div>
+
+        <div class="btn pri" style="margin-top:34px">인증번호 확인</div>
+        <div class="btn ghost">다시 인증 요청하기</div>
+
+      </div>
+    </div>
+
+    <div class="dim">
+      <div class="modal">
+        <div class="ic no">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="#dc3545" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>안내</h3>
+        <p>인증번호 확인에 실패했습니다. 다시 시도해 주세요.</p>
+        <div class="btn pri">확인</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note-src">코드 기반 재현 · confirm-pre-payment / CommonModal type=error (verify 단계 실패 문구, L139)</div>
+
+</div>
+</body>
+</html>

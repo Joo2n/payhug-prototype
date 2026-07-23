@@ -1,0 +1,114 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">1:1 문의 &gt; 목록</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_INQUIRY</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 1:1 문의 &gt; 목록</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">고객 대응 인박스. 정산현황 VOC 대응 탭(1062:2)과 별개 화면</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/951_2.png" alt="1:1 문의 &gt; 목록">
+        <div class="dim" style="left:11.8%;top:0.7%;height:5.3%"></div>
+        <div class="mk" style="left:11.8%;top:2.8%">1</div>
+        <div class="dim" style="left:11.8%;top:6.8%;height:3.0%"></div>
+        <div class="mk" style="left:11.8%;top:8.7%">2</div>
+        <div class="sub" style="left:14%;top:6.3%">2-1</div>
+        <div class="sub" style="left:36%;top:6.3%">2-2</div>
+        <div class="dim" style="left:11.8%;top:11.6%;height:4.2%"></div>
+        <div class="mk" style="left:11.8%;top:13.8%">3</div>
+        <div class="dim" style="left:11.8%;top:18.3%;height:48.5%"></div>
+        <div class="mk" style="left:11.8%;top:29%">4</div>
+        <div class="sub" style="left:15.5%;top:18.6%">4-1</div>
+        <div class="sub" style="left:72%;top:18.6%">4-2</div>
+        <div class="sub" style="left:52%;top:22%">4-3</div>
+        <div class="mk" style="left:34%;top:38%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;가맹점이 올린 <b>1:1 문의</b>를 확인·답변하는 인박스형 목록 · 정산현황의 <b>VOC 대응</b> 탭과는 별개 화면</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;현재는 <b class="red">예시(목업) 12건</b> 기준</span>
+        <span class="b"><span class="g">로드</span> &nbsp;진입·탭 복귀·창 포커스 복귀 시 목록 자동 재조회 · 상태/카테고리를 바꾸면 <b>서버 재조회</b></span>
+        <span class="i">헤더 "총 N건"과 탭 숫자는 <b>현재 불러온 목록</b> 기준 (검색어로는 안 줄어듦)</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"1:1 문의 관리"</b> 와 안내문</span><span class="i">"가맹점에서 접수된 문의를 확인하고 답변합니다."</span><span class="b">오른쪽에 <b>총 N건</b> 표시</span><span class="i">현재 <b>불러온 목록</b> 건수 (상태·카테고리 필터는 반영, <b>검색어로는 안 줄어듦</b>)</span><span class="i red">목업은 항상 12건으로 표시</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">필터</td><td class="kn-note">
+<span class="grp"><span class="sb">2-1</span> 상태 탭</span><span class="i"><b>전체 · 대기 · 처리중 · 답변완료 · 종료</b> — 한 번에 하나만 선택 (default : 전체)</span><span class="i">선택된 탭은 <b>초록 배경·흰 글씨</b>, 나머지는 흰 배경+회색 테두리</span><span class="i">탭 이름 옆 숫자 = <b>현재 불러온 목록</b>을 상태별로 다시 센 값 (전역 합계 아님 → 상태 필터를 걸면 다른 탭이 0이 될 수 있음)</span><span class="i">누르면 <b>서버에 그 상태만 다시 요청</b> (검색처럼 화면에서 거르는 게 아님)</span><span class="grp"><span class="sb">2-2</span> 카테고리 칩</span><span class="i"><b>일반 · 결제 · 정산 · 기술 · 계정</b> — 한 번에 하나만, <b>같은 칩 다시 누르면 해제</b>되어 전체로 복원 (default : 없음)</span><span class="i">선택된 칩은 <b>카테고리 색</b>으로 채워짐(색 배열은 4-2 참고) · 비활성은 옅은 회색</span><span class="i">상태 탭과 <b>조합</b>되어 서버 재조회</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">검색</td><td class="kn-note">
+<span class="b"><b>문의 제목 · 가맹점명 · 작성자</b>로 검색</span><span class="i">일부만 입력해도 찾아줌 · 입력 글자수 제한 없음</span><span class="b">입력하는 <b>즉시</b> 목록이 걸러짐 (서버에 다시 묻지 않음 · 상태/카테고리 필터와 별개)</span><span class="b">지우면 <b>전체 목록으로 복원</b></span><span class="b">입력창 안내문 : "문의 제목, 가맹점명, 작성자로 검색"</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">문의<br>목록</td><td class="kn-note">
+<span class="grp">표 항목</span><span class="i"># · 상태 · 가맹점 · 제목 · 카테고리 · 메시지(수) · 최근 활동</span><span class="i"># 번호는 검색·필터 후 <b>위에서부터 다시 매겨짐</b></span><span class="i">가맹점명 없으면 <b>"-"</b> 표시</span><span class="i">제목이 길면 <b>…로 줄여서</b> 표시 · 행에 마우스 올리면 제목이 <b>초록으로</b> 강조</span><span class="i">메시지 = 스레드 글 개수 · 최근 활동 = 마지막 글 시각(없으면 접수 시각)을 <b>"방금 전 / N분 전 / N시간 전 / N일 전"</b>, <b>7일 넘으면 "2026. 07. 12." 날짜</b>로 표기</span><span class="i">화면에 <b>정렬 토글 없음</b> — 서버가 준 순서 그대로 (최근 활동 최신순으로 보임)</span><span class="i">행에 마우스 올리면 <b>배경색이 진해짐</b> (누를 수 있다는 표시)</span><span class="grp"><span class="sb">4-1</span> 상태 뱃지</span><span class="i"><b>대기</b>=노랑 · <b>처리중</b>=초록 · <b>답변완료</b>=에메랄드 · <b>종료</b>=회색</span><span class="grp"><span class="sb">4-2</span> 카테고리 뱃지</span><span class="i"><b>일반</b>=회색 · <b>결제</b>=연두 · <b>정산</b>=에메랄드 · <b>기술</b>=보라 · <b>계정</b>=주황</span><span class="grp"><span class="sb">4-3</span> NEW 뱃지</span><span class="i">마지막 글을 <b>가맹점이</b> 남겼고 <b>종료가 아닌</b> 문의만 제목 옆에 <b>빨강 NEW</b> (미답변 표시)</span><span class="grp">상황별 문구</span><span class="i">불러오는 중 → 로딩 표시</span><span class="i">검색 결과 없음 → "검색 결과가 없습니다."</span><span class="i">접수된 문의 없음 → "접수된 문의가 없습니다."</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">행 클릭</td><td class="kn-note">
+<span class="b">행을 누르면 <b>우측 슬라이드 상세 패널</b>[AD_INQUIRY_DT]이 열림 (메시지 스레드·답변)</span><span class="i">그 문의의 상세를 서버에서 다시 불러오는 동안 로딩 표시</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

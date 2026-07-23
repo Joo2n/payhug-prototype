@@ -1,0 +1,114 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">매출 조회 &gt; 가맹점 상세</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_SALES_DT</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 매출조회 &gt; 가맹점 상세</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">상세 기본(매출내역). 초기 조회기간=이달 1일~오늘</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/947_2.png" alt="매출 조회 &gt; 가맹점 상세">
+        <div class="dim" style="left:12.3%;top:1.8%;height:3%"></div>
+        <div class="mk" style="left:12.3%;top:3.4%">1</div>
+        <div class="dim" style="left:12.3%;top:6.3%;height:9%"></div>
+        <div class="mk" style="left:12.3%;top:10.8%">2</div>
+        <div class="dim" style="left:12.3%;top:16.4%;height:2.6%"></div>
+        <div class="mk" style="left:12.3%;top:17.7%">3</div>
+        <div class="dim" style="left:12.3%;top:20%;height:41.8%"></div>
+        <div class="mk" style="left:12.3%;top:40%">4</div>
+        <div class="dim" style="left:12.3%;top:63.9%;height:35%"></div>
+        <div class="mk" style="left:12.3%;top:82%">5</div>
+        <div class="sub" style="left:19.9%;top:67%">5-1</div>
+        <div class="sub" style="left:43.1%;top:67%">5-2</div>
+        <div class="sub" style="left:55.3%;top:67%">5-3</div>
+        <div class="sub" style="left:70.4%;top:67%">5-4</div>
+        <div class="sub" style="left:74.9%;top:67%">5-5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;특정 가맹점의 <b>매출·매입 원장 상세</b> — 매출조회 목록<b>[AD_SALES]</b>에서 가맹점 행을 눌러 진입</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;<span class="red">예시(목업) 14건 기준</span> · 상단 요약과 표 건수는 조회 조건 전체를 서버가 집계(페이지 무관)</span>
+        <span class="b"><span class="g">로드</span> &nbsp;진입 시 <b>이달 1일~오늘</b>로 자동 조회 · 조회/초기화/정렬/필터 변경은 모두 서버에 재요청(로컬 필터 아님)</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">상단<br>헤더</td><td class="kn-note">
+<span class="b">왼쪽 <b>뒤로가기 화살표</b> → 목록<b>[AD_SALES]</b>으로 복귀</span><span class="i">탭으로 열린 모드면 현재 탭을 닫고 매출조회 탭으로 전환</span><span class="b">제목 = <b>상호명</b> + <b>사업자번호</b></span><span class="i">가맹점 정보를 못 불러왔으면 URL의 사업자번호가 그대로 제목에 노출(뒤 사업자번호는 안 뜸)</span><span class="i">사업자번호는 형식(하이픈)에 맞춰 표기</span><span class="b">그 아래 <b>가맹점 정보 카드</b> (정보를 불러왔을 때만 표시 · 캡처 목업엔 미노출)</span><span class="i">사업자번호 · 대표자 · 주소 · 정산 상태 4칸</span><span class="i">정산 상태 뱃지 <b>활성</b>=초록 · <b>비활성</b>=회색</span><span class="i red">활성/비활성 판정 기준은 개발 확인 필요</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">조회<br>필터</td><td class="kn-note">
+<span class="grp">기간 프리셋</span><span class="i">오늘 · 어제 · 이번 주 · 지난 주 · 이번 달 · 지난 달 · 최근 3개월</span><span class="i">현재 기간과 정확히 맞는 프리셋만 초록 활성 (default : <b>이번 달</b>)</span><span class="b">기간 : 시작일 ~ 종료일 &nbsp;(default : <b>이달 1일 ~ 오늘</b>)</span><span class="i">날짜 선택기 자체가 시작일 ≤ 종료일로 제한(시작일 max=종료일 · 종료일 min=시작일)</span><span class="i">그래도 역전되면 <b>[조회] 버튼 비활성 + 빨강 안내</b>, 눌러도 <b>"시작일은 종료일보다 이후일 수 없습니다."</b> alert로 막힘</span><span class="grp">필터 항목</span><span class="i">날짜 기준 : <b>거래일 / 지급예정일</b> (default 거래일) <span class="sb">→AD_SALES_DT_PAYOUT</span></span><span class="i red">지급예정일 산정 기준(D+?)은 개발 확인 필요</span><span class="i">거래상태 : <b>전체 / 정상 / 취소</b> (default 전체 · 취소=승인취소·매입취소)</span><span class="i">매출 유형(복수 선택 가능) : <b>전체 / 카드 / 배달의민족 / 요기요 / 쿠팡이츠</b> (default 전체 · 카드 선택 시 카드사 2뎁스 필터 노출)</span><span class="i">가맹점명 입력창 안내문 : "가맹점명(매장명) 검색" · Enter로도 조회</span><span class="b">[조회] 서버 재조회(조회 중 "조회 중...") · [초기화] default로 되돌리고 재조회</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">액션<br>버튼</td><td class="kn-note">
+<span class="b">[단건 등록] → 수동 매출 등록 모달<b>[AD_SALES_DT_ADD_CARD]</b></span><span class="b">[엑셀 업로드] → 엑셀 매출 업로드 모달<b>[AD_SALES_DT_EXCEL]</b></span><span class="b">[엑셀 다운로드] (현재 페이지에 표시할 행이 <b>1건 이상</b>일 때만 우측에 노출)</span><span class="i">데이터 0건이면 버튼 자체가 숨겨지고, 다운로드 실행도 "다운로드할 데이터가 없습니다." alert로 막힘</span><span class="i">현재 조회 조건 전체를 서버에서 다시 받아(전 페이지) <b>30개 열</b> 엑셀로 생성</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">요약<br>카드</td><td class="kn-note">
+<span class="b">상단 요약 카드 — 조회 조건 <b>전체 기준</b> 서버 집계</span><span class="grp">항상 표시 (6장)</span><span class="i">카드 · 배달앱 · 합계(매출/건수) · 순지급액(<b>전체 매출 − 수수료</b>)</span><span class="i">선정산 수수료 : 채권매입+시스템+이체(+차액수수료)로 분해 · 면제면 "면제" 뱃지·취소선</span><span class="i red">수수료율·분해 근거 미확정 — 화면은 서버값만 표시</span><span class="i">선정산 지급액 : 대상 순지급액 − 선정산수수료 ± 차액</span><span class="grp">값이 있을 때만 표시 (3장)</span><span class="i">차액 반영 : 예상↔실제 차액(± 부호) · <b>"내역 N건 ▼"</b> 누르면 펼침<b>[AD_SALES_DT_ADJUST]</b> (내역 있을 때만 클릭)</span><span class="i">현장결제 차감 : 만나서결제 회수분(회수 완료 / 미회수-다음 배치) · 음수</span><span class="i">실제 이체액 : 실제 지급된 금액(0 초과일 때만)</span><span class="b">실제 이체액 구성 블록(실제 이체액 있을 때)</span><span class="i">선정산 순지급액 − 당일 카드수수료 차액 − 선정산수수료 ± 차액정산 − 광고비 차감(배민 우리가게클릭) − 현장결제 회수 = <b>실제 이체액</b></span><span class="i">미회수분 있으면 하단에 "현장결제 미회수 N원은 다음 정산 배치에서 회수 예정입니다."</span><span class="b">예상 매출 기반 정산 포함 기간(앰버 박스 · 표 위)</span><span class="i">날짜(유형) + <b>대사 대기 / 대사 완료 / 차액 정산 완료</b> + 차액</span><span class="i red">'예상 매출' 정의·대사 기준 미확정</span><span class="i">금액은 모두 천단위 콤마</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">매출<br>내역 표</td><td class="kn-note">
+<span class="b">제목 <b>"매출 내역 N건"</b> = 조회 전체 건수(한 페이지 20건)</span><span class="b">우측 정렬 버튼 : <b>거래일 또는 지급예정일</b> 기준 · <b>최신순↓ ↔ 오래된순↑</b> 토글 <span class="sb">→AD_SALES_DT_OLD</span></span><span class="i">누르면 첫 페이지부터 서버 재조회 · 페이지 2쪽 이상일 때만 "n / m 페이지" 표시</span><span class="grp">표 항목 (24개 열)</span><span class="i">거래일·거래시간·유형·주문번호·카드사/플랫폼·가맹번호·가맹점명·거래상태·매출금액·적용수수료·순지급액·선정산대상·선정산수수료·선정산지급액·매입상태·정산상태·이체상태·정산적용수수료·실제수수료·차액·차액정산·매입일/거래일·지급일·데이터수정</span><span class="i">헤더 보조문구 : 매입일/거래일="(카드:매입일/배달:거래일)" · 지급일="(카드사/플랫폼)" · 데이터수정="(스크래핑 변동)"</span><span class="grp">뱃지·색</span><span class="i"><span class="sb">5-1</span> 유형 : 카드=보라 · 배달앱=주황 · +만나서결제(빨강)·수동/엑셀(보라) 태그</span><span class="i"><span class="sb">5-2</span> 거래상태 : 승인·성공=초록 · 취소=빨강</span><span class="i"><span class="sb">5-3</span> 선정산대상 : 대상=보라 · 미대상=회색 · 만나서결제=<b>차감</b>(빨강)</span><span class="i"><span class="sb">5-4</span> 정산상태 : 상태 뱃지 + 정산방식 서브(선정산=초록·바로이체=파랑·이미지급=회색)</span><span class="i"><span class="sb">5-5</span> 이체상태 : 대기=회색·이체중=주황·완료=파랑·실패=빨강</span><span class="grp">숨은 UI</span><span class="i">적용수수료·선정산수수료·정산적용수수료 셀에 <b>마우스 올리면 수수료 분해 툴팁</b></span><span class="i red">툴팁의 수수료율 분해(투자자·페이허그·총판·영업사원 %)는 서버값 그대로 — 산정 근거 미확정</span><span class="i">만나서결제 행은 순지급액이 <b>"현장수령"</b>(라이더 현장수령 → 매출 차감·수수료만 차감) · 취소 행은 순지급액 <b>"-"</b>(회색)</span><span class="i">데이터수정 : 스크래핑으로 원천 변동 시 <b>"변동"</b> 앰버 뱃지</span><span class="grp">상황별 문구</span><span class="i">조회 후 0건 → <b>"조회 결과가 없습니다."</b> · 20건 초과 시 하단 페이지네이션</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S09 — 회원가입 플로우</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: flex-start; gap: 0; padding-top: 6px; }
+  .fitem { width: 430px; }
+  .note-under {
+    margin-top: 16px; padding: 16px 20px; border-radius: 12px;
+    background: var(--surface); font-size: 17px; line-height: 1.5; color: var(--ink-2);
+  }
+  .note-under b { color: var(--ph-forest); }
+  .mk-inline { position:static; transform:none; display:flex; width:26px; height:26px; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">09 / STEP 1–2</div>
+  </div>
+
+  <h1 class="s-title">회원가입 — <span class="em">약관 동의</span>와 <span class="em">본인인증</span></h1>
+  <p class="s-sub">여기까지는 5분이면 끝납니다. 가입만 해도 매출 조회는 바로 됩니다</p>
+
+  <div class="stage">
+    <div class="flowline">
+
+      <div class="fitem">
+        <div class="fstep"><i>1</i> 약관 동의</div>
+        <div class="phone h-640">
+          <img src="img/1414-2.png" alt="약관 동의 화면">
+          <div class="hi red" style="top:47%;left:8%;bottom:36%;right:8%"></div>
+          <div class="mk red" style="top:54%;left:8%">1</div>
+        </div>
+        <div class="note-under fx">
+          <span class="mk red mk-inline">1</span>
+          <span class="fx-t"><b>매출채권 양도 동의</b>가 선정산의 법적 근거입니다. 필수 3종 중 하나이며, 동의하지 않으면 선정산을 받을 수 없습니다</span>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep"><i>2</i> 휴대폰 본인인증</div>
+        <div class="phone h-640">
+          <img src="img/1414-83.png" alt="본인인증 화면">
+          <div class="hi blue" style="top:42%;left:8%;bottom:44%;right:8%"></div>
+          <div class="mk blue" style="top:47%;left:8%">2</div>
+        </div>
+        <div class="note-under fx">
+          <span class="mk blue mk-inline">2</span>
+          <span class="fx-t">사장님 <b>본인 명의 휴대전화</b>로만 인증됩니다. 직원 명의나 법인 명의 번호로는 진행되지 않습니다</span>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep ph"><i>3</i> 가입 완료</div>
+        <div class="phone h-640" style="display:flex;align-items:center;justify-content:center;width:301px;background:var(--ph-green-tint);border-radius:22px;border:1.5px solid #DDEFCB">
+          <div style="text-align:center;padding:0 30px">
+            <div style="font-size:56px;margin-bottom:18px">✓</div>
+            <div style="font-size:24px;font-weight:800;color:var(--ph-forest);line-height:1.35;letter-spacing:-0.02em">
+              가입 완료<br>매출 조회 가능
+            </div>
+            <div style="margin-top:16px;font-size:17px;color:var(--ink-3);line-height:1.5">
+              단, 선정산금 지급은<br>계약·심사를 마쳐야 시작됩니다
+            </div>
+          </div>
+        </div>
+        <div class="note-under">
+          <b>가입 ≠ 선정산 개시.</b> 여기서 끝난 줄 아는 사장님이 많습니다. 반드시 계약 단계로 이어서 안내해 주세요
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 회원가입 STEP1–2 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

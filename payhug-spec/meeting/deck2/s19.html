@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S19 — 플랫폼 계정 연동</title>
+<link rel="stylesheet" href="deck2.css">
+<style>
+  .stage { align-items: stretch; gap: 48px; }
+  .left  { display: flex; align-items: flex-start; gap: 24px; }
+  .right { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .right .calls { max-width: 900px; }
+  .reason { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .reason div { font-size: 16px; color: var(--ink-2); line-height: 1.45; }
+  .reason b { color: #B3121A; }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">19 / STEP 8</div>
+  </div>
+
+  <h1 class="s-title">플랫폼 계정 <span class="em">연동</span></h1>
+  <p class="s-sub">여신금융협회 · 배달의민족 · 쿠팡이츠 · 요기요 — 매출을 실제로 조회해 봐야 '연결됨'이 됩니다</p>
+
+  <div class="stage">
+
+    <div class="left">
+      <div>
+        <div class="phone clip" style="width:400px;height:700px">
+          <img src="img/1414-6559.png" alt="플랫폼 계정 등록 화면 위쪽" style="width:400px;height:auto;margin-top:-62px">
+          <!-- 여신금융협회 연결됨 -->
+          <div class="hi green" style="top:21.0%;left:6%;bottom:74.6%;right:6%"></div>
+          <div class="mk green" style="top:23.2%;left:64%">1</div>
+          <!-- 배달의민족 연결됨 -->
+          <div class="hi green" style="top:46.6%;left:6%;bottom:49.0%;right:6%"></div>
+          <!-- 쿠팡이츠 인증실패 -->
+          <div class="hi red" style="top:72.3%;left:6%;bottom:23.3%;right:6%"></div>
+          <div class="mk red" style="top:74.5%;left:64%">2</div>
+          <!-- 쿠팡이츠 실패 사유 -->
+          <div class="hi red" style="top:90.5%;left:8%;bottom:6.9%;right:8%"></div>
+        </div>
+        <div class="phone-cap">여신금융협회 · 배달의민족<small>ID / 비밀번호를 넣고 조회에 성공한 상태</small></div>
+      </div>
+
+      <div>
+        <div class="phone clip" style="width:400px;height:700px">
+          <img src="img/1414-6559.png" alt="플랫폼 계정 등록 화면 아래쪽" style="width:400px;height:auto;margin-top:-372px">
+          <!-- 쿠팡이츠 실패 사유 -->
+          <div class="hi red" style="top:46.3%;left:8%;bottom:51.1%;right:8%"></div>
+          <!-- 요기요 실패 사유 -->
+          <div class="hi red" style="top:75.1%;left:8%;bottom:22.3%;right:8%"></div>
+          <div class="mk red" style="top:76.3%;left:82%">3</div>
+          <!-- 다음 단계 -->
+          <div class="hi blue" style="top:87.8%;left:10%;bottom:5.7%;right:10%"></div>
+          <div class="mk blue" style="top:91.0%;left:14%">4</div>
+        </div>
+        <div class="phone-cap">쿠팡이츠 · 요기요<small>인증에 실패한 상태 — 사유가 그대로 표시됨</small></div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="calls">
+
+        <div class="call">
+          <div class="call-n green">1</div>
+          <div class="call-b">
+            <div class="call-t"><u>연결됨</u> = 매출을 실제로 가져왔다는 뜻</div>
+            <div class="call-d">아이디·비밀번호를 넣기만 하면 되는 게 아닙니다. 그 자리에서 매출을 한 번 조회해 보고 성공해야 초록색 <b>연결됨</b>이 뜹니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n red">2</div>
+          <div class="call-b">
+            <div class="call-t">실패하면 빨간 <u>인증실패</u> 배지</div>
+            <div class="call-d">밑에 <b>다시 시도</b> 버튼이 생깁니다. 사장님과 같이 있을 때 그 자리에서 해결하고 가세요</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n red">3</div>
+          <div class="call-b">
+            <div class="call-t">실패 사유가 화면에 그대로 나옵니다</div>
+            <div class="reason">
+              <div><b>"아이디 또는 비밀번호가 올바르지 않아요"</b> → 사장님이 계정 정보를 다시 확인</div>
+              <div><b>"매출 조회 중 일시 오류가 발생했어요"</b> → 잠시 뒤 다시 시도</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n blue">4</div>
+          <div class="call-b">
+            <div class="call-t">여기를 마쳐야 계약서 단계로 갑니다</div>
+            <div class="call-d">연결이 안 된 곳은 매출을 가져올 수 없습니다.</div>
+            <div class="call-d fx fx-mid fx-wrap" style="margin-top:6px"><span class="fx-t">인증실패인 채로 진행했을 때의 처리는</span>
+              <span class="badge badge-check">확인 중</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="punch">
+        아이디·비밀번호는 <u>사장님이 직접</u> 입력하시게 하세요. 영업사원이 대신 받아 적거나 따로 보관하면 안 됩니다
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP8 플랫폼 계정 등록 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

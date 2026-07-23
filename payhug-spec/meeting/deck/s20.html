@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S20 — STEP9 비대면 계약</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .wrap { display: grid; grid-template-columns: 420px 1fr; gap: 46px; height: 100%; align-items: stretch; }
+  .col-txt { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; }
+  .lead { font-size: 29px; font-weight: 800; color: var(--ph-forest); line-height: 1.45; letter-spacing: -0.025em; }
+  .lead .u { background: linear-gradient(transparent 58%, var(--ph-green) 58%); }
+  .say { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; border-radius: 16px; padding: 20px 26px; }
+  .say-l { font-size: 14px; font-weight: 800; color: var(--ph-green-700); letter-spacing: 0.06em; margin-bottom: 8px; }
+  .say p { font-size: 19px; line-height: 1.6; color: var(--ph-forest-700); font-weight: 600; }
+  .shot img { width: 380px; }
+  .flow4 { display: flex; align-items: stretch; gap: 10px; }
+  .f4 { flex: 1; border: 2px solid var(--ph-forest); border-radius: 14px; padding: 14px 12px; text-align: center; background: #fff; }
+  .f4 b { display: block; font-size: 17px; font-weight: 800; color: var(--ph-forest); line-height: 1.35; }
+  .f4 small { display: block; font-size: 14px; color: var(--ink-3); margin-top: 5px; }
+  .f4-ar { display: flex; align-items: center; color: var(--line-2); font-size: 22px; font-weight: 700; }
+  .tbd-box p { font-size: 18px; line-height: 1.6; color: var(--ink-3); }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">20</div>
+  </div>
+
+  <h1 class="s-title">STEP 9 — <span class="em">비대면 계약</span>, 약관 → 서명 → 계약서 생성</h1>
+  <p class="s-sub">약관에 동의하면 계약서가 만들어지고, 서명까지 마치면 심사 대기 상태로 넘어갑니다.</p>
+
+  <div class="s-body">
+    <div class="wrap">
+
+      <div class="shots">
+        <div class="shot">
+          <img src="img/1414-7891.png" alt="비대면 계약 약관 동의 화면">
+          <div class="cap">계약 STEP 9 · 약관 동의<small>필수 3종을 모두 켜야 버튼이 열립니다</small></div>
+        </div>
+      </div>
+
+      <div class="col-txt">
+        <div class="lead">계약 화면은 <span class="u">네 칸</span>으로 진행됩니다.</div>
+
+        <div class="flow4">
+          <div class="f4"><b>① 약관 동의</b><small>필수 3종 · 선택 2종</small></div>
+          <div class="f4-ar">→</div>
+          <div class="f4"><b>② 계약서 미리보기</b><small>확대해서 읽기</small></div>
+          <div class="f4-ar">→</div>
+          <div class="f4"><b>③ 서명 입력</b><small>화면에 직접 서명</small></div>
+          <div class="f4-ar">→</div>
+          <div class="f4"><b>④ 최종 확인</b><small>「계약 완료」</small></div>
+        </div>
+
+        <div class="card">
+          <div class="card-h">약관은 가입 때와 같은 5종을 다시 동의합니다</div>
+          <p>(필수) 선정산 서비스 이용약관 · (필수) 개인정보 수집·이용 동의 · (필수) 매출채권 양도 동의 / (선택) 개인정보 제3자 제공 · (선택) 마케팅 정보 수신.<br>
+          화살표를 누르면 약관 본문을 열어 읽을 수 있고, <b>필수 3종을 모두 켜야</b> 「다음 단계 진행하기」가 활성화됩니다.</p>
+        </div>
+
+        <div class="tbd-box">
+          <div class="tbd-h"><span>수수료율</span> <span class="badge badge-check badge-sm">확인 중</span></div>
+          <p><b>서명 단계에서 수수료율을 계약서에 입력</b>하도록 되어 있습니다. 어떤 값을 누가 어떻게 안내할지는 사내 확인 중입니다.<br>
+          <b>현장에서 요율을 먼저 말씀드리지 마시고</b>, 문의가 들어오면 접수만 해주세요.</p>
+        </div>
+
+        <div class="note">전자서명 화면과 계약 체결 완료 화면은 본 자료에 캡처가 포함되어 있지 않습니다. 「계약 완료」 이후에는 심사 대기 상태가 됩니다.</div>
+
+        <div class="say">
+          <div class="say-l">현장 멘트</div>
+          <p>"약관 동의하시면 계약서가 만들어지고, 화면에 손으로 서명하시면 끝입니다. 서명까지 하시면 저희 심사로 넘어갑니다."</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 계약 STEP9 비대면 계약 약관 동의 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

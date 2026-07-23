@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S13 — 사업자 정보 확인</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: center; gap: 50px; }
+  .col   { display: flex; flex-direction: column; justify-content: center; }
+  .right { flex: 1; }
+  .calls { gap: 24px; max-width: 900px; }
+  .cropwrap { position: relative; }
+  .cap2 {
+    margin-top: 14px; width: 375px; text-align: center;
+    font-size: 16px; font-weight: 700; color: var(--ink-3); letter-spacing: -0.015em;
+  }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">13 / STEP 4-1</div>
+  </div>
+
+  <h1 class="s-title">사업자 정보 확인 — <span class="em">자동으로 채워지고</span>, 사장님이 검수</h1>
+  <p class="s-sub">사진만 올리면 글자를 읽어 칸을 채워 줍니다. 사장님은 맞는지만 봐 주시면 됩니다</p>
+
+  <div class="stage">
+
+    <div class="col">
+      <div class="phone clip" style="height:800px;width:300px">
+        <img src="img/1414-7408.png" alt="사업자 정보 확인 화면 (개인사업자)" style="height:878px;width:auto">
+        <!-- 자동 입력된 첫 필드 -->
+        <div class="hi green" style="top:25.3%;left:12%;bottom:70.5%;right:12%"></div>
+        <div class="mk green" style="top:27.4%;left:12%">1</div>
+        <!-- OCR 배너 -->
+        <div class="hi blue" style="top:81.8%;left:12%;bottom:13.3%;right:12%"></div>
+        <div class="mk blue" style="top:84.2%;left:12%">2</div>
+        <!-- 확인 버튼 -->
+        <div class="hi red" style="top:90%;left:12%;bottom:5.8%;right:12%"></div>
+        <div class="mk red" style="top:92.1%;left:12%">3</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="cropwrap">
+        <div class="phone clip" style="height:340px;width:375px">
+          <img src="img/1414-7554.png" alt="법인사업자 추가 입력 필드" style="height:1478px;width:auto;margin-top:-851px">
+          <div class="hi" style="top:2%;left:8%;bottom:2%;right:8%"></div>
+        </div>
+        <div class="mk" style="top:50%;left:0">4</div>
+      </div>
+      <div class="cap2">법인사업자 화면에만 나오는 구간</div>
+    </div>
+
+    <div class="col right">
+      <div class="calls">
+
+        <div class="call">
+          <div class="call-n green">1</div>
+          <div class="call-b">
+            <div class="call-t">사진 한 장으로 칸이 다 찹니다</div>
+            <div class="call-d">사업자등록번호 · 상호 · 성명 · 개업일자 · 소재지 · 업태 · 종목이 자동으로 들어갑니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n blue">2</div>
+          <div class="call-b">
+            <div class="call-t">잘못 읽힌 글자는 직접 고칩니다</div>
+            <div class="call-d">화면에도 "잘못 인식된 값이 있으면 직접 수정해주세요"라고 떠 있습니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n red">3</div>
+          <div class="call-b">
+            <div class="call-t">국세청 진위확인을 통과해야 진행</div>
+            <div class="call-d">「정보가 일치해요」를 누르면 국세청 사업자 진위확인을 거칩니다. 값이 틀리면 여기서 막힙니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n">4</div>
+          <div class="call-b">
+            <div class="call-t">법인은 칸이 <u>4개</u> 더 있습니다</div>
+            <div class="call-d">법인등록번호 · 본점소재지 · 대표유형(단독/공동/각자) · 사업자등록일</div>
+            <div class="call-d fx fx-mid fx-wrap" style="margin-top:6px"><span class="fx-t">법인 가맹점 취급 방침</span>
+              <span class="badge badge-check">확인 중</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP4-1 사업자 정보 확인 화면(개인 / 법인)</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

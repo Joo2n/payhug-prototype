@@ -1,0 +1,102 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">정산 상세</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_SETTLE_DETAIL</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 정산현황 &gt; 정산 상세</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">관리자 한정 탭</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/976_2.png" alt="정산 상세">
+        <div class="dim" style="left:12%;top:8%;height:15%"></div>
+        <div class="mk" style="left:11.4%;top:15.5%">1</div>
+        <div class="dim" style="left:12%;top:25.5%;height:5%"></div>
+        <div class="mk" style="left:11.4%;top:28%">2</div>
+        <div class="dim" style="left:12%;top:31%;height:33.5%"></div>
+        <div class="mk" style="left:11.4%;top:47%">3</div>
+        <div class="mk" style="left:31.5%;top:30.6%">4</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;<b>정산 상세 탭</b> — 좌측 배치(정산 단위) 목록에서 하나를 골라 우측에 배분·원장을 보는 2단 화면</span>
+        <span class="b" style="margin-top:5px"><span class="g">노출</span> &nbsp;내부 어드민(ADMIN·PAYHUG)만 · 진입/기간 조회 시 재조회</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">탭·<br>필터</td><td class="kn-note">
+<span class="b"><b>정산 상세</b> 탭 활성 · 상단 기간 필터 공통</span><span class="i">정렬 <b>[정산일 최신순 ↓]</b> · <b>[엑셀 다운로드]</b>(정산목록·이해관계자배분·가맹점별 이해관계자 합계 3시트)</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">정산<br>목록</td><td class="kn-note">
+<span class="b">좌측 <b>"정산 목록 N건"</b></span><span class="i">정산일(마감일) 기준 날짜 그룹 · 마감 전은 매출일 기준 <b>"YYYY-MM-DD 매출 (미정산)"</b></span><span class="i">그룹 요약 : N개 가맹점 · N건 · 금액</span><span class="i">미조회 → "기간을 선택하고 조회 버튼을 눌러주세요."</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">목록<br>행</td><td class="kn-note">
+<span class="b">가맹점명 + 에이전시 뱃지 + 정산방식 뱃지</span><span class="i">정산방식 : <b>바로이체</b>(파랑) · <b>이미지급</b>(회색) · 없으면 일반 선정산</span><span class="i">상태 : 정산완료=초록 · 그 외(진행중)=노랑 · 매출일·건수·금액</span><span class="b">행 클릭 → 우측 상세 채움 <b>[AD_SETTLE_DETAIL_BATCH]</b> (선택 행 왼쪽 파란 바)</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">우측<br>빈상태</td><td class="kn-note">
+<span class="grp">상황별 문구</span><span class="i">미선택 → <b>"왼쪽에서 배치를 선택하세요"</b></span><span class="i">로딩 → "로딩 중..." / 0건 → "해당 기간에 정산 내역이 없습니다."</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

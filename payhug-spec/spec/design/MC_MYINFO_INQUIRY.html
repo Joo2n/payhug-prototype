@@ -1,0 +1,111 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">1:1 문의</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_MYINFO_INQUIRY</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 내 정보 &gt; 1:1 문의</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">사업자 단위 문의 목록. 미답변 카운트·NEW 뱃지. 승인 여부 무관 사업자 있으면 이용 가능</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/842_2.png" alt="1:1 문의">
+        <div class="dim" style="left:5%;top:8.7%;height:4%"></div>
+        <div class="mk" style="left:5%;top:10.7%">1</div>
+        <div class="dim" style="left:5%;top:15.2%;height:4%"></div>
+        <div class="mk" style="left:5%;top:17.1%">2</div>
+        <div class="dim" style="left:5%;top:21.4%;height:4.2%"></div>
+        <div class="mk" style="left:5%;top:23.4%">3</div>
+        <div class="dim" style="left:5%;top:26.4%;height:55.5%"></div>
+        <div class="mk" style="left:5%;top:50%">4</div>
+        <div class="sub" style="left:16%;top:27%">4-1</div>
+        <div class="sub" style="left:27%;top:27%">4-2</div>
+        <div class="sub" style="left:41%;top:36.3%">4-3</div>
+        <div class="mk" style="left:15%;top:60%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;<b>사업자 단위 1:1 문의 목록</b> — 계약 승인 여부와 무관, 사업자만 있으면 이용 · 이 화면엔 검색·필터 없음</span>
+        <span class="b" style="margin-top:5px"><span class="g">데이터</span> &nbsp;<span class="red">예시(목업) — 캡처 기준 총 12건 · 미답변 4건(대기 2 + 처리중 2)</span></span>
+        <span class="i">사업자 선택 시 그 사업자의 문의를 자동으로 불러옴 · 사업자 바꾸면 다시 불러옴</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">왼쪽 <b>뒤로가기</b> 버튼 · 가운데 제목 <b>"1:1 문의"</b></span><span class="i">뒤로가기 = 직전 화면으로 돌아감</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">사업자<br>선택</td><td class="kn-note">
+<span class="b"><b>사업자 선택 드롭다운</b> — 사업자가 <b>2개 이상</b>일 때만 노출</span><span class="i">항목 표기 : "사업자명 (사업자번호)" · 사업자번호는 형식에 맞춰 표기</span><span class="i">기본 선택 : 계약 <b>승인</b>된 사업자 중 첫 번째, 없으면 목록 첫 사업자</span><span class="i">사업자를 바꾸면 그 사업자의 문의 목록을 다시 불러옴</span><span class="i">바꿔 다시 불러오는 동안 <b>별도 로딩 표시 없음</b> — 이전 목록 유지하다 교체</span><span class="b red">선택 가능한 사업자가 없으면 → "문의 가능한 사업자가 없습니다."</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">카드<br>헤더</td><td class="kn-note">
+<span class="b">카드 제목 <b>"1:1 문의"</b> + 오른쪽 <b>[문의하기]</b> 버튼(＋)</span><span class="i">[문의하기] → 문의 작성 모달[MC_MYINFO_INQUIRY_NEW] 열림</span><span class="grp">카운트 뱃지 (제목 옆)</span><span class="i"><b>전체 문의 수</b> 회색 뱃지 — 문의가 1건이라도 있을 때만 표시 (이 화면엔 검색·필터가 없어 항상 전체 수)</span><span class="i"><b>"N건 미답변"</b> 빨강 뱃지 — <b>대기 + 처리중</b> 상태 합계, 1건 이상일 때만 표시</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">문의<br>목록</td><td class="kn-note">
+<span class="grp">한 행 구성</span><span class="i"><span class="sb">4-1</span>상태뱃지 · <span class="sb">4-2</span>카테고리뱃지 · <span class="sb">4-3</span>NEW · 제목 · "메시지 N건" · 시간 · 화살표(＞)</span><span class="i">제목이 길면 <b>…로 줄여서</b> 표시</span><span class="i">시간 = 마지막 메시지 시각(없으면 최초 등록 시각) : 방금 전 / N분 전 / N시간 전 / N일 전, 7일 지나면 날짜 "2026. 07. 13."</span><span class="i">행에 마우스 올리면 테두리·배경 강조 (누를 수 있다는 표시)</span><span class="grp"><span class="sb">4-1</span> 상태 뱃지</span><span class="i"><b>대기</b>=노랑 · <b>처리중</b>=파랑 · <b>답변완료</b>=초록 · <b>종료</b>=회색</span><span class="grp"><span class="sb">4-2</span> 카테고리 뱃지</span><span class="i"><b>일반</b>=회색 · <b>결제</b>=파랑 · <b>정산</b>=초록 · <b>기술</b>=보라 · <b>계정</b>=주황</span><span class="grp"><span class="sb">4-3</span> NEW 뱃지</span><span class="i">마지막에 <b>고객센터가 답변</b>했고 상태가 <b>답변완료</b>인 문의에만 <b>연파랑 바탕 NEW</b>(글자 초록) 표시</span><span class="grp">상황별 문구</span><span class="i">사업자·문의 처음 불러오는 중 → 로딩 스피너(문구 없음)</span><span class="i">문의 0건 → "접수된 문의가 없습니다." + "궁금한 사항이 있으시면 문의하기를 눌러주세요."</span><span class="i red">정렬 기준(최신순 등)은 서버 응답 순서 그대로 — 개발 확인 필요</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">행 클릭</td><td class="kn-note">
+<span class="b">행을 누르면 <b>문의 상세 드로어</b>[MC_MYINFO_INQUIRY_DT]가 오른쪽에서 열림</span><span class="i">열릴 때 그 문의의 메시지 스레드를 불러옴</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

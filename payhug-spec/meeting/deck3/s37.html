@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S37 — 선정산이 멈추는 경우</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: stretch; }
+  .wrap { display: flex; flex-direction: column; gap: 16px; width: 100%; height: 100%; }
+
+  .cause { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .cc { border-radius: 16px; border: 1.5px solid var(--line); background: #fff; display: flex; flex-direction: column; overflow: hidden; }
+  .cc-h { display: flex; align-items: center; gap: 10px; padding: 12px 18px; background: var(--ph-danger-tint); border-bottom: 1.5px solid #FFD3D3; }
+  .cc-h i { width: 26px; height: 26px; border-radius: 999px; background: var(--ph-danger); color: #fff; font-family: var(--font-num); font-size: 14px; font-weight: 800; font-style: normal; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cc-h .nm { flex: 1; min-width: 0; font-size: 18px; font-weight: 900; color: #B3121A; letter-spacing: -0.02em; line-height: 1.3; }
+  .cc-b { flex: 1; padding: 15px 18px; }
+  .cc-b p { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+  .cc-b p + p { margin-top: 8px; }
+  .cc-b p b { color: var(--ph-forest); font-weight: 800; }
+  .tag { font-size: 12px; font-weight: 800; color: var(--ink-4); letter-spacing: 0.04em; margin-bottom: 5px; }
+
+  .mid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; min-height: 0; }
+
+  .know { background: var(--surface); border-radius: 16px; padding: 19px 24px; }
+  .know-h { font-size: 20px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; margin-bottom: 12px; }
+  .know ul.b li { font-size: 16px; }
+  .know ul.b li b { color: var(--ph-forest); font-weight: 800; }
+
+  .warnbox { background: var(--ph-warning-tint); border: 1.5px solid #FFE2BC; border-radius: 16px; padding: 19px 24px; display: flex; flex-direction: column; }
+  .warnbox-h { font-size: 20px; font-weight: 900; color: #8A5200; letter-spacing: -0.02em; margin-bottom: 11px; }
+  .warnbox p { font-size: 16px; line-height: 1.55; color: #7A5410; }
+  .warnbox p + p { margin-top: 9px; }
+  .warnbox p b { color: #8A5200; font-weight: 800; }
+  .sayline { margin-top: auto; padding-top: 14px; }
+  .sayline .lb { font-size: 13px; font-weight: 800; color: #B26A00; letter-spacing: 0.04em; }
+  .sayline .tx { font-size: 19px; font-weight: 800; color: #8A5200; line-height: 1.45; margin-top: 5px; letter-spacing: -0.02em; }
+
+  .tbd-h { font-size: 18px; font-weight: 800; color: var(--ph-forest); margin-bottom: 11px; letter-spacing: -0.02em; }
+  .tbd-rows { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 26px; }
+  .tbd-row { border-left: 1px dashed var(--line-2); padding-left: 20px; }
+  .tbd-rows .tbd-row:first-child { border-left: 0; padding-left: 0; }
+  .tbd-row .tt { font-size: 16px; font-weight: 800; color: var(--ink-2); }
+  .tbd-row .td { font-size: 14px; color: var(--ink-3); line-height: 1.45; margin-top: 4px; }
+  .s-foot .src { flex: 1; min-width: 0; padding-right: 30px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">37</div>
+  </div>
+
+  <h1 class="s-title">선정산이 <span class="em">멈추는 경우</span></h1>
+  <p class="s-sub">"어제까지 잘 들어오던 돈이 안 들어와요" — 이 문의가 오면 아래 네 가지 중 하나입니다. 다만 <b>원인을 현장에서 단정하지 마세요</b></p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <div class="cause">
+
+        <div class="cc">
+          <div class="cc-h"><i>1</i><div class="nm">락계좌가 임의로<br>바뀌었을 때</div></div>
+          <div class="cc-b">
+            <div class="tag">어떻게 발견되나</div>
+            <p>페이허그가 <b>정기적으로 각 매출처에 등록된 정산계좌가 락계좌 그대로인지 검증</b>합니다. 여기서 불일치가 잡히면 선정산이 멈춥니다.</p>
+            <p>사장님이 예전 계좌로 되돌렸거나, 다른 곳에서 계좌를 바꿔 놓은 경우가 대부분입니다.</p>
+          </div>
+        </div>
+
+        <div class="cc">
+          <div class="cc-h"><i>2</i><div class="nm">스크래핑이 실패해<br>매출을 못 볼 때</div></div>
+          <div class="cc-b">
+            <div class="tag">어떻게 발생하나</div>
+            <p>매출은 <b>사장님이 맡기신 플랫폼 계정으로 데이터를 읽어와야</b> 파악됩니다. 이게 안 되면 얼마를 드려야 하는지 계산할 근거가 사라집니다.</p>
+            <p>가장 흔한 원인은 <b>사장님이 플랫폼 비밀번호를 바꾸신 경우</b>입니다. 이때는 앱에서 계정 정보를 다시 저장·검증하면 됩니다.</p>
+          </div>
+        </div>
+
+        <div class="cc">
+          <div class="cc-h"><i>3</i><div class="nm">계약상 이용 중지<br>사유에 해당할 때</div></div>
+          <div class="cc-b">
+            <div class="tag">계약서에 열거된 사유</div>
+            <p>플랫폼 <b>ID·비밀번호 임의 변경</b>, <b>사전 동의 없는 계좌 변경</b>, 정산금의 비정상적 급증·급감, 반품·환불 규모가 정상 범위를 넘는 경우, 비정상 의심 거래에 소명하지 않는 경우 등입니다.</p>
+            <p>계약상 <b>사전 통보 없이 중지할 수 있게</b> 되어 있습니다. "예고도 없이 멈췄다"는 항의가 여기서 나옵니다.</p>
+          </div>
+        </div>
+
+        <div class="cc">
+          <div class="cc-h"><i>4</i><div class="nm">해제는 자동이<br>아닙니다</div></div>
+          <div class="cc-b">
+            <div class="tag">재개 절차</div>
+            <p>계약상 <b>사장님이 중지 사유를 해소한 뒤, 서비스 재개를 요청</b>하는 구조입니다. 시간이 지난다고 저절로 풀리지 않습니다.</p>
+            <p>사유를 해소했더라도 <b>요청이 들어와야 재개 검토가 시작</b>된다는 점을 반드시 안내해 주세요.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mid">
+
+        <div class="know">
+          <div class="know-h">영업사원이 알아둘 것 — 현장에서 자주 어긋나는 지점</div>
+          <ul class="b">
+            <li><b>중지와 해지는 다릅니다.</b> 중지는 계약이 살아 있는 채로 잠시 멈추는 것이고, 해지는 계약이 끝나는 것입니다. 사장님께 "해지됐다"고 말하지 마세요.</li>
+            <li><b>멈춰도 이미 지급된 선정산 대금은 그대로 남습니다.</b> 중지됐다고 사장님 채무가 없어지는 게 아닙니다.</li>
+            <li><b>계좌를 바꾸고 싶으시면 바꾸기 전에 문의</b>부터 넣게 하세요. 바꾸고 나서 문의하면 이미 중지된 뒤입니다. 순서가 전부입니다.</li>
+            <li><b>중지에는 사전 통보 의무가 없습니다.</b> 계약상 "통보 없이" 중지할 수 있게 되어 있어, 알림이 먼저 안 갔다고 해서 잘못된 처리가 아닙니다. 다만 사장님은 이 점을 모르시니 <b>사과가 아니라 설명</b>으로 접근하세요.</li>
+            <li><b>플랫폼 비밀번호를 바꾸신 경우는 사장님이 직접 푸실 수 있습니다.</b> 앱의 <b>「여신협회·배달앱 계정」</b> 화면에서 바뀐 계정 정보를 다시 저장하고 검증하시면 됩니다. 이 경우만큼은 현장에서 바로 안내가 가능합니다.</li>
+          </ul>
+        </div>
+
+        <div class="warnbox">
+          <div class="warnbox-h">"멈췄다"는 연락을 받으면 — 절대 원인을 단정하지 마세요</div>
+          <p>위 네 가지 중 <b>어디에 해당하는지는 어드민 기록을 봐야 알 수 있습니다.</b> 현장에서 짐작한 원인을 말했다가 실제 원인이 다르면, 사장님은 두 번 설명을 듣고 신뢰를 잃습니다.</p>
+          <p>특히 <b>"계좌 바꾸셨죠?"처럼 사장님 잘못으로 몰아가는 추궁</b>은 사실 확인 전에 절대 하지 마세요. 시스템 장애가 원인인 경우도 있습니다.</p>
+          <p>받아둘 것은 <b>상호·사업자번호·언제부터 안 들어오는지</b> 세 가지면 충분합니다. 여기에 <b>어느 매출처인지(카드·배민·요기요·쿠팡이츠)</b>까지 알면 확인이 훨씬 빨라집니다.</p>
+          <p>그리고 <b>"곧 풀린다"고 약속하지 마세요.</b> 해제 조건과 소요 시간은 아직 정해진 값이 없습니다. 약속했다가 안 풀리면 그 클레임은 전부 영업사원에게 돌아옵니다.</p>
+          <div class="sayline">
+            <div class="lb">이렇게 답하세요</div>
+            <div class="tx">"확인해서 정확한 사유를 알려드리겠습니다. 언제부터 안 들어왔는지만 알려주세요."</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tbd-box">
+        <div class="tbd-h">아래는 <span class="hl">문서마다 내용이 서로 충돌</span>합니다 — 어느 쪽도 채택하지 마세요</div>
+        <div class="tbd-rows">
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">중지 범위</div></div>
+            <div class="td">선정산 <b>전체가 멈추는지</b>, 문제가 생긴 <b>해당 매출처만 빠지는지</b>가 문서마다 다릅니다.</div>
+          </div>
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">스크래핑 실패 시 대응</div></div>
+            <div class="td">한쪽 문서는 <b>무조건 중단</b>, 다른 쪽은 <b>예상치로 계산해 지급</b>이라고 정반대로 적혀 있습니다. 오류 유형별 결정 기준이 없습니다.</div>
+          </div>
+          <div class="tbd-row">
+            <div class="fx-mid"><span class="badge badge-tbd">협의 예정</span><div class="fx-t tt">해제 조건 · 재개 기준</div></div>
+            <div class="td">사유별로 무엇을 해소해야 풀리는지, 재개까지 얼마나 걸리는지 정의된 값이 없습니다.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 이용계약서 제7조(서비스 이용 중지 사유 11개 · 통보 없이 중지 가능 · 사유 해소 후 가맹점이 재개 요청) · 운영 Q&A(정기 락계좌 검증, 불일치 시 선정산 중단 / 플랫폼 계정 비밀번호 임의 변경 시 스크래핑 중단) · 중단 범위와 스크래핑 실패 대응은 문서 간 상충 상태</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

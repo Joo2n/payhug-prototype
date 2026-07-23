@@ -1,0 +1,96 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">매출 조회 &gt; 가맹점 상세 &gt; 엑셀 업로드</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_SALES_DT_EXCEL</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 매출조회 &gt; 가맹점 상세 &gt; 엑셀 업로드</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">엑셀 일괄 등록 모달</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/1035_2.png" alt="매출 조회 &gt; 가맹점 상세 &gt; 엑셀 업로드">
+        <div class="dim" style="left:35.3%;top:38%;height:19%"></div>
+        <div class="mk" style="left:35.3%;top:47.5%">1</div>
+        <div class="mk" style="left:62.5%;top:50%">2</div>
+        <div class="mk" style="left:60.8%;top:60.6%">3</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;<b>엑셀 매출 업로드</b> 모달 — 3단계(파일 업로드 → 미리보기 → 결과)</span>
+        <span class="b"><span class="g">현재</span> &nbsp;1단계 <b>파일 업로드</b> 화면 (드래그 영역)</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">업로드<br>영역</td><td class="kn-note">
+<span class="b">제목 <b>"엑셀 매출 업로드"</b> + X</span><span class="b">점선 드래그 영역 : "카드(여신금융협회) 또는 배달 엑셀 파일을 드래그하거나 <b>[파일 선택]</b>"</span><span class="i">안내문 : ".xls / .xlsx 형식 · 카드 승인내역/매입내역, 배달 단건등록 양식 자동 인식"</span><span class="i"><b>.xls·.xlsx</b>만 허용 · 아니면 ".xls 또는 .xlsx 파일만 업로드할 수 있습니다."</span><span class="i">파일 넣으면 "파싱 중..." 후 미리보기 단계로 이동</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">이후<br>단계</td><td class="kn-note">
+<span class="grp">2단계 미리보기 (파싱 후)</span><span class="i">타입 · 신규 · 중복 · 에러 건수 카드 + 행별 표(행/상태/주문·승인번호/거래일자/금액/카드사·플랫폼)</span><span class="i">상태 뱃지 : 신규=초록 · 중복=앰버 · 에러=빨강</span><span class="i">중복 있으면 "중복 건은 기존 데이터를 업데이트합니다." · [다시 선택] / [N건 저장](신규+중복 0건이면 저장 비활성)</span><span class="grp">3단계 결과</span><span class="i">"업로드 완료" + 성공/중복/실패 건수 · [확인] 누르면 목록 재조회</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">하단<br>버튼</td><td class="kn-note">
+<span class="b">1단계는 [닫기]만 노출</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,1972 @@
+[
+  {
+    "base_id": "AD_HOME",
+    "menu": "A-01 홈",
+    "src_files": [
+      "app/page.tsx",
+      "hooks/useDashboardData.ts"
+    ],
+    "nodes": [
+      {
+        "node": "914:2",
+        "page_id": "AD_HOME",
+        "page_name": "관리자 대시보드",
+        "kind": "base",
+        "capture": "captures/914_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_SALES",
+    "menu": "A-02 매출조회",
+    "src_files": [
+      "app/sales/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "943:2",
+        "page_id": "AD_SALES",
+        "page_name": "매출 조회",
+        "kind": "base",
+        "capture": "captures/943_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_SALES_DT",
+    "menu": "A-02 매출조회",
+    "src_files": [
+      "app/sales/[bizNo]/page.tsx",
+      "hooks/usePurchaseLedger.ts",
+      "components/sales/ManualSalesModal.tsx",
+      "services/manualSalesService.ts",
+      "components/sales/ExcelUploadModal.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "947:2",
+        "page_id": "AD_SALES_DT",
+        "page_name": "매출 조회 > 가맹점 상세",
+        "kind": "base",
+        "capture": "captures/947_2.png"
+      },
+      {
+        "node": "952:2",
+        "page_id": "AD_SALES_DT_PAYOUT",
+        "page_name": "매출 조회 > 가맹점 상세 (지급예정일 기준)",
+        "kind": "variant",
+        "capture": "captures/952_2.png"
+      },
+      {
+        "node": "957:2",
+        "page_id": "AD_SALES_DT_NORMAL",
+        "page_name": "매출 조회 > 가맹점 상세 (거래상태 정상 필터)",
+        "kind": "variant",
+        "capture": "captures/957_2.png"
+      },
+      {
+        "node": "966:2",
+        "page_id": "AD_SALES_DT_CANCEL",
+        "page_name": "매출 조회 > 가맹점 상세 (거래상태 취소 필터)",
+        "kind": "variant",
+        "capture": "captures/966_2.png"
+      },
+      {
+        "node": "971:2",
+        "page_id": "AD_SALES_DT_CARD",
+        "page_name": "매출 조회 > 가맹점 상세 (카드 · 카드사 필터)",
+        "kind": "variant",
+        "capture": "captures/971_2.png"
+      },
+      {
+        "node": "979:2",
+        "page_id": "AD_SALES_DT_BM",
+        "page_name": "매출 조회 > 가맹점 상세 (배달의민족 필터)",
+        "kind": "variant",
+        "capture": "captures/979_2.png"
+      },
+      {
+        "node": "986:2",
+        "page_id": "AD_SALES_DT_OLD",
+        "page_name": "매출 조회 > 가맹점 상세 (오래된순 정렬)",
+        "kind": "variant",
+        "capture": "captures/986_2.png"
+      },
+      {
+        "node": "997:2",
+        "page_id": "AD_SALES_DT_ADJUST",
+        "page_name": "매출 조회 > 가맹점 상세 (차액정산 내역 펼침)",
+        "kind": "variant",
+        "capture": "captures/997_2.png"
+      },
+      {
+        "node": "1002:2",
+        "page_id": "AD_SALES_DT_ADD_CARD",
+        "page_name": "매출 조회 > 가맹점 상세 > 단건 등록(카드 승인)",
+        "kind": "variant",
+        "capture": "captures/1002_2.png"
+      },
+      {
+        "node": "1005:2",
+        "page_id": "AD_SALES_DT_ADD_PURCHASE",
+        "page_name": "매출 조회 > 가맹점 상세 > 단건 등록(카드 매입)",
+        "kind": "variant",
+        "capture": "captures/1005_2.png"
+      },
+      {
+        "node": "1007:2",
+        "page_id": "AD_SALES_DT_ADD_DELIVERY",
+        "page_name": "매출 조회 > 가맹점 상세 > 단건 등록(배달 플랫폼)",
+        "kind": "variant",
+        "capture": "captures/1007_2.png"
+      },
+      {
+        "node": "1035:2",
+        "page_id": "AD_SALES_DT_EXCEL",
+        "page_name": "매출 조회 > 가맹점 상세 > 엑셀 업로드",
+        "kind": "variant",
+        "capture": "captures/1035_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_MERCHANT",
+    "menu": "A-03 가맹점관리",
+    "src_files": [
+      "app/manage/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "958:2",
+        "page_id": "AD_MERCHANT",
+        "page_name": "가맹점 관리",
+        "kind": "base",
+        "capture": "captures/958_2.png"
+      },
+      {
+        "node": "961:2",
+        "page_id": "AD_MERCHANT_PENDING",
+        "page_name": "가맹점 관리 (심사대기 필터)",
+        "kind": "variant",
+        "capture": "captures/961_2.png"
+      },
+      {
+        "node": "963:2",
+        "page_id": "AD_MERCHANT_APPROVED",
+        "page_name": "가맹점 관리 (승인 필터)",
+        "kind": "variant",
+        "capture": "captures/963_2.png"
+      },
+      {
+        "node": "967:2",
+        "page_id": "AD_MERCHANT_REJECT",
+        "page_name": "가맹점 관리 (반려 필터)",
+        "kind": "variant",
+        "capture": "captures/967_2.png"
+      },
+      {
+        "node": "970:2",
+        "page_id": "AD_MERCHANT_NONE",
+        "page_name": "가맹점 관리 (미등록 필터)",
+        "kind": "variant",
+        "capture": "captures/970_2.png"
+      },
+      {
+        "node": "975:2",
+        "page_id": "AD_MERCHANT_LEGACY",
+        "page_name": "가맹점 관리 > 부채 가맹점 등록",
+        "kind": "variant",
+        "capture": "captures/975_2.png"
+      },
+      {
+        "node": "1057:2",
+        "page_id": "AD_MERCHANT_ASSIGN",
+        "page_name": "가맹점 관리 > 담당자 변경",
+        "kind": "variant",
+        "capture": "captures/1057_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_MERCHANT_DT",
+    "menu": "A-03 가맹점관리",
+    "src_files": [
+      "app/merchants/[id]/page.tsx",
+      "components/PlatformLockAccountDetailDialog.tsx",
+      "components/ManualTransferModal.tsx",
+      "app/merchants/[id]/fee-adjustments/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "999:2",
+        "page_id": "AD_MERCHANT_DT_HARDRESET",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 유저 하드리셋",
+        "kind": "variant",
+        "capture": "captures/999_2.png"
+      },
+      {
+        "node": "1004:2",
+        "page_id": "AD_MERCHANT_DT_LOCKVERIFY",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 플랫폼 락계좌 검증 확인",
+        "kind": "variant",
+        "capture": "captures/1004_2.png"
+      },
+      {
+        "node": "1010:2",
+        "page_id": "AD_MERCHANT_DT_LOCKDETAIL",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 플랫폼 락계좌 연결 상세",
+        "kind": "variant",
+        "capture": "captures/1010_2.png"
+      },
+      {
+        "node": "1019:2",
+        "page_id": "AD_MERCHANT_DT_RESIGN",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 계약 재서명 요청",
+        "kind": "variant",
+        "capture": "captures/1019_2.png"
+      },
+      {
+        "node": "1020:2",
+        "page_id": "AD_MERCHANT_DT_OLDCONTRACT",
+        "page_name": "가맹점 관리 > 가맹점 상세 (이전 계약서 펼침)",
+        "kind": "variant",
+        "capture": "captures/1020_2.png"
+      },
+      {
+        "node": "1022:2",
+        "page_id": "AD_MERCHANT_DT_FEERESET",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 카드 수수료 기본값 초기화",
+        "kind": "variant",
+        "capture": "captures/1022_2.png"
+      },
+      {
+        "node": "1023:2",
+        "page_id": "AD_MERCHANT_DT_WEEKDAY",
+        "page_name": "가맹점 관리 > 가맹점 상세 (요일별 상세 테이블 펼침)",
+        "kind": "variant",
+        "capture": "captures/1023_2.png"
+      },
+      {
+        "node": "1024:2",
+        "page_id": "AD_MERCHANT_DT_TRANSFER",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 수동 이체",
+        "kind": "variant",
+        "capture": "captures/1024_2.png"
+      },
+      {
+        "node": "1025:2",
+        "page_id": "AD_MERCHANT_DT_ADJSTAT",
+        "page_name": "가맹점 관리 > 가맹점 상세 (차액 정산 상세 통계 펼침)",
+        "kind": "variant",
+        "capture": "captures/1025_2.png"
+      },
+      {
+        "node": "1026:2",
+        "page_id": "AD_MERCHANT_DT_ADJUST",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 차액 정산 이력",
+        "kind": "variant",
+        "capture": "captures/1026_2.png"
+      },
+      {
+        "node": "1027:2",
+        "page_id": "AD_MERCHANT_DT_ADJUST_DONE",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 차액 정산 이력 (완료 필터)",
+        "kind": "variant",
+        "capture": "captures/1027_2.png"
+      },
+      {
+        "node": "1028:2",
+        "page_id": "AD_MERCHANT_DT_ADJUST_PENDING",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 차액 정산 이력 (대기 필터)",
+        "kind": "variant",
+        "capture": "captures/1028_2.png"
+      },
+      {
+        "node": "1031:2",
+        "page_id": "AD_MERCHANT_DT_SCRAPE",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 매출 데이터 수집",
+        "kind": "variant",
+        "capture": "captures/1031_2.png"
+      },
+      {
+        "node": "1032:2",
+        "page_id": "AD_MERCHANT_DT_RESET",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 비밀번호 초기화",
+        "kind": "variant",
+        "capture": "captures/1032_2.png"
+      },
+      {
+        "node": "1033:2",
+        "page_id": "AD_MERCHANT_DT",
+        "page_name": "가맹점 관리 > 가맹점 상세",
+        "kind": "base",
+        "capture": "captures/1033_2.png"
+      },
+      {
+        "node": "1034:2",
+        "page_id": "AD_MERCHANT_DT_REJECT",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 가맹점 반려",
+        "kind": "variant",
+        "capture": "captures/1034_2.png"
+      },
+      {
+        "node": "1093:2",
+        "page_id": "AD_MERCHANT_DT_IDCARD",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 신분증 등록",
+        "kind": "variant",
+        "capture": "captures/1093_2.png"
+      },
+      {
+        "node": "1094:2",
+        "page_id": "AD_MERCHANT_DT_LOCKACCT",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 선정산 전용계좌 등록",
+        "kind": "variant",
+        "capture": "captures/1094_2.png"
+      },
+      {
+        "node": "1095:2",
+        "page_id": "AD_MERCHANT_DT_BANKACCT",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 입출금 계좌 등록",
+        "kind": "variant",
+        "capture": "captures/1095_2.png"
+      },
+      {
+        "node": "1097:2",
+        "page_id": "AD_MERCHANT_DT_DEBT",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 이관 부채 등록",
+        "kind": "variant",
+        "capture": "captures/1097_2.png"
+      },
+      {
+        "node": "1098:2",
+        "page_id": "AD_MERCHANT_DT_PLATFORM",
+        "page_name": "가맹점 관리 > 가맹점 상세 > 플랫폼 계정 추가",
+        "kind": "variant",
+        "capture": "captures/1098_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_PRODUCT",
+    "menu": "A-04 정산",
+    "src_files": [
+      "app/settlement/policies/page.tsx",
+      "app/settlement/policies/PolicyFormModal.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "915:2",
+        "page_id": "AD_PRODUCT",
+        "page_name": "정산 상품관리",
+        "kind": "base",
+        "capture": "captures/915_2.png"
+      },
+      {
+        "node": "919:2",
+        "page_id": "AD_PRODUCT_GENERAL",
+        "page_name": "정산 상품관리 > 일반 상품 펼침",
+        "kind": "variant",
+        "capture": "captures/919_2.png"
+      },
+      {
+        "node": "924:2",
+        "page_id": "AD_PRODUCT_DAOU",
+        "page_name": "정산 상품관리 > 다우 상품 펼침",
+        "kind": "variant",
+        "capture": "captures/924_2.png"
+      },
+      {
+        "node": "929:2",
+        "page_id": "AD_PRODUCT_ADD",
+        "page_name": "정산 상품관리 > 상품 생성",
+        "kind": "variant",
+        "capture": "captures/929_2.png"
+      },
+      {
+        "node": "934:2",
+        "page_id": "AD_PRODUCT_EDIT",
+        "page_name": "정산 상품관리 > 상품 수정",
+        "kind": "variant",
+        "capture": "captures/934_2.png"
+      },
+      {
+        "node": "938:2",
+        "page_id": "AD_PRODUCT_DEACT",
+        "page_name": "정산 상품관리 > 비활성화 확인",
+        "kind": "variant",
+        "capture": "captures/938_2.png"
+      },
+      {
+        "node": "942:2",
+        "page_id": "AD_PRODUCT_DELETE",
+        "page_name": "정산 상품관리 > 삭제 확인",
+        "kind": "variant",
+        "capture": "captures/942_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_SIM",
+    "menu": "A-04 정산",
+    "src_files": [
+      "app/settlement/simulation/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "946:2",
+        "page_id": "AD_SIM",
+        "page_name": "정산 시뮬레이션",
+        "kind": "base",
+        "capture": "captures/946_2.png"
+      },
+      {
+        "node": "949:2",
+        "page_id": "AD_SIM_MULTI",
+        "page_name": "정산 시뮬레이션 > 거래 다건 입력",
+        "kind": "variant",
+        "capture": "captures/949_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_SETTLE",
+    "menu": "A-05 정산현황",
+    "src_files": [
+      "app/settlement/overview/PreSettlementTab.tsx",
+      "hooks/useSettlementOverview.ts",
+      "app/settlement/overview/page.tsx",
+      "app/settlement/overview/BatchDetailTab.tsx",
+      "app/settlement/overview/TransferRecordsTab.tsx",
+      "app/settlement/overview/TaxInvoiceTab.tsx",
+      "app/settlement/overview/VocExportTab.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "917:2",
+        "page_id": "AD_SETTLE_MISSED",
+        "page_name": "선정산 결과 > 미정산 누락 추적 펼침",
+        "kind": "variant",
+        "capture": "captures/917_2.png"
+      },
+      {
+        "node": "953:2",
+        "page_id": "AD_SETTLE_DIFFLIST",
+        "page_name": "선정산 차액 정산 내역",
+        "kind": "variant",
+        "capture": "captures/953_2.png"
+      },
+      {
+        "node": "976:2",
+        "page_id": "AD_SETTLE_DETAIL",
+        "page_name": "정산 상세",
+        "kind": "variant",
+        "capture": "captures/976_2.png"
+      },
+      {
+        "node": "981:2",
+        "page_id": "AD_SETTLE_DETAIL_BATCH",
+        "page_name": "정산 상세 > 배치 선택 상세",
+        "kind": "variant",
+        "capture": "captures/981_2.png"
+      },
+      {
+        "node": "989:2",
+        "page_id": "AD_SETTLE_DIFF",
+        "page_name": "차액 정산",
+        "kind": "variant",
+        "capture": "captures/989_2.png"
+      },
+      {
+        "node": "993:2",
+        "page_id": "AD_SETTLE_DIFF_CARD",
+        "page_name": "차액 정산 > 카드 수수료 차액",
+        "kind": "variant",
+        "capture": "captures/993_2.png"
+      },
+      {
+        "node": "995:2",
+        "page_id": "AD_SETTLE",
+        "page_name": "선정산 결과",
+        "kind": "base",
+        "capture": "captures/995_2.png"
+      },
+      {
+        "node": "996:2",
+        "page_id": "AD_SETTLE_DIFF_DELIVERY",
+        "page_name": "차액 정산 > 배달 수수료 차액",
+        "kind": "variant",
+        "capture": "captures/996_2.png"
+      },
+      {
+        "node": "998:2",
+        "page_id": "AD_SETTLE_DIFF_CLAWBACK",
+        "page_name": "차액 정산 > 취소 환수",
+        "kind": "variant",
+        "capture": "captures/998_2.png"
+      },
+      {
+        "node": "1001:2",
+        "page_id": "AD_SETTLE_DIFF_ESTIMATED",
+        "page_name": "차액 정산 > 예상매출 대사",
+        "kind": "variant",
+        "capture": "captures/1001_2.png"
+      },
+      {
+        "node": "1003:2",
+        "page_id": "AD_SETTLE_DIFF_CARRY",
+        "page_name": "차액 정산 > 미회수 이월",
+        "kind": "variant",
+        "capture": "captures/1003_2.png"
+      },
+      {
+        "node": "1006:2",
+        "page_id": "AD_SETTLE_DIFF_CARDFILTER",
+        "page_name": "차액 정산 > 매출유형 카드 필터",
+        "kind": "variant",
+        "capture": "captures/1006_2.png"
+      },
+      {
+        "node": "1009:2",
+        "page_id": "AD_SETTLE_TRANSFER",
+        "page_name": "이체 내역",
+        "kind": "variant",
+        "capture": "captures/1009_2.png"
+      },
+      {
+        "node": "1012:2",
+        "page_id": "AD_SETTLE_TRANSFER_COLLECT",
+        "page_name": "이체 내역 > 회수 2단계 펼침",
+        "kind": "variant",
+        "capture": "captures/1012_2.png"
+      },
+      {
+        "node": "1013:2",
+        "page_id": "AD_SETTLE_BILL",
+        "page_name": "계산서 발행",
+        "kind": "variant",
+        "capture": "captures/1013_2.png"
+      },
+      {
+        "node": "1036:2",
+        "page_id": "AD_SETTLE_EXPAND",
+        "page_name": "선정산 결과 > 가맹점 건별 상세 펼침",
+        "kind": "variant",
+        "capture": "captures/1036_2.png"
+      },
+      {
+        "node": "1038:2",
+        "page_id": "AD_SETTLE_PREVIEW",
+        "page_name": "선정산 결과 > 바로이체 미리보기",
+        "kind": "variant",
+        "capture": "captures/1038_2.png"
+      },
+      {
+        "node": "1059:2",
+        "page_id": "AD_SETTLE_DIRECT",
+        "page_name": "선정산 결과 > 바로이체 확인",
+        "kind": "variant",
+        "capture": "captures/1059_2.png"
+      },
+      {
+        "node": "1060:2",
+        "page_id": "AD_SETTLE_RECORD",
+        "page_name": "선정산 결과 > 이미지급(기록만) 확인",
+        "kind": "variant",
+        "capture": "captures/1060_2.png"
+      },
+      {
+        "node": "1062:2",
+        "page_id": "AD_SETTLE_VOC",
+        "page_name": "VOC 대응",
+        "kind": "variant",
+        "capture": "captures/1062_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_PARTNER",
+    "menu": "A-06 회원관리",
+    "src_files": [
+      "app/partners/page.tsx",
+      "services/partnerService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "916:2",
+        "page_id": "AD_PARTNER_PAYHUG",
+        "page_name": "회원 관리 > 페이허그 필터",
+        "kind": "variant",
+        "capture": "captures/916_2.png"
+      },
+      {
+        "node": "922:2",
+        "page_id": "AD_PARTNER_PARTNER",
+        "page_name": "회원 관리 > 파트너 필터",
+        "kind": "variant",
+        "capture": "captures/922_2.png"
+      },
+      {
+        "node": "927:2",
+        "page_id": "AD_PARTNER_AFFILIATE",
+        "page_name": "회원 관리 > 제휴사 필터",
+        "kind": "variant",
+        "capture": "captures/927_2.png"
+      },
+      {
+        "node": "932:2",
+        "page_id": "AD_PARTNER_SALES",
+        "page_name": "회원 관리 > 영업 필터",
+        "kind": "variant",
+        "capture": "captures/932_2.png"
+      },
+      {
+        "node": "937:2",
+        "page_id": "AD_PARTNER_SALESORG",
+        "page_name": "회원 관리 > 영업조직 필터",
+        "kind": "variant",
+        "capture": "captures/937_2.png"
+      },
+      {
+        "node": "941:2",
+        "page_id": "AD_PARTNER_ADMIN",
+        "page_name": "회원 관리 > 관리자 필터",
+        "kind": "variant",
+        "capture": "captures/941_2.png"
+      },
+      {
+        "node": "945:2",
+        "page_id": "AD_PARTNER_ADD",
+        "page_name": "회원 관리 > 회원 등록",
+        "kind": "variant",
+        "capture": "captures/945_2.png"
+      },
+      {
+        "node": "950:2",
+        "page_id": "AD_PARTNER_EDIT",
+        "page_name": "회원 관리 > 회원 수정",
+        "kind": "variant",
+        "capture": "captures/950_2.png"
+      },
+      {
+        "node": "955:2",
+        "page_id": "AD_PARTNER_PROFILE",
+        "page_name": "회원 관리 > 프로필 관리",
+        "kind": "variant",
+        "capture": "captures/955_2.png"
+      },
+      {
+        "node": "959:2",
+        "page_id": "AD_PARTNER_DEACT",
+        "page_name": "회원 관리 > 회원 비활성화 확인",
+        "kind": "variant",
+        "capture": "captures/959_2.png"
+      },
+      {
+        "node": "962:2",
+        "page_id": "AD_PARTNER_DELETE",
+        "page_name": "회원 관리 > 회원 삭제 확인",
+        "kind": "variant",
+        "capture": "captures/962_2.png"
+      },
+      {
+        "node": "1029:2",
+        "page_id": "AD_PARTNER",
+        "page_name": "회원 관리",
+        "kind": "base",
+        "capture": "captures/1029_2.png"
+      },
+      {
+        "node": "1030:2",
+        "page_id": "AD_PARTNER_INVESTOR",
+        "page_name": "회원 관리 > 투자자 필터",
+        "kind": "variant",
+        "capture": "captures/1030_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_TERMS",
+    "menu": "A-07 약관관리",
+    "src_files": [
+      "app/terms/page.tsx",
+      "services/termsService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "920:2",
+        "page_id": "AD_TERMS_REVISE",
+        "page_name": "약관 관리 > 약관 개정 (종류 선택)",
+        "kind": "variant",
+        "capture": "captures/920_2.png"
+      },
+      {
+        "node": "925:2",
+        "page_id": "AD_TERMS_REVISE_FIXED",
+        "page_name": "약관 관리 > 약관 개정 (종류 고정)",
+        "kind": "variant",
+        "capture": "captures/925_2.png"
+      },
+      {
+        "node": "931:2",
+        "page_id": "AD_TERMS_PREVIEW",
+        "page_name": "약관 관리 > 버전 미리보기",
+        "kind": "variant",
+        "capture": "captures/931_2.png"
+      },
+      {
+        "node": "935:2",
+        "page_id": "AD_TERMS_VER_EDIT",
+        "page_name": "약관 관리 > 약관 버전 수정",
+        "kind": "variant",
+        "capture": "captures/935_2.png"
+      },
+      {
+        "node": "940:2",
+        "page_id": "AD_TERMS_VER_DEL",
+        "page_name": "약관 관리 > 약관 버전 삭제 확인",
+        "kind": "variant",
+        "capture": "captures/940_2.png"
+      },
+      {
+        "node": "965:2",
+        "page_id": "AD_TERMS",
+        "page_name": "약관 관리",
+        "kind": "base",
+        "capture": "captures/965_2.png"
+      },
+      {
+        "node": "969:2",
+        "page_id": "AD_TERMS_SIGNUP",
+        "page_name": "약관 관리 > 목록 (회원가입 필터)",
+        "kind": "variant",
+        "capture": "captures/969_2.png"
+      },
+      {
+        "node": "973:2",
+        "page_id": "AD_TERMS_CONTRACT",
+        "page_name": "약관 관리 > 목록 (전자계약 필터)",
+        "kind": "variant",
+        "capture": "captures/973_2.png"
+      },
+      {
+        "node": "977:2",
+        "page_id": "AD_TERMS_MARKETING",
+        "page_name": "약관 관리 > 목록 (마케팅 수신 필터)",
+        "kind": "variant",
+        "capture": "captures/977_2.png"
+      },
+      {
+        "node": "982:2",
+        "page_id": "AD_TERMS_CTX",
+        "page_name": "약관 관리 > 컨텍스트 관리 펼침",
+        "kind": "variant",
+        "capture": "captures/982_2.png"
+      },
+      {
+        "node": "987:2",
+        "page_id": "AD_TERMS_CTX_ADD",
+        "page_name": "약관 관리 > 컨텍스트 추가",
+        "kind": "variant",
+        "capture": "captures/987_2.png"
+      },
+      {
+        "node": "988:2",
+        "page_id": "AD_TERMS_CTX_EDIT",
+        "page_name": "약관 관리 > 컨텍스트 수정",
+        "kind": "variant",
+        "capture": "captures/988_2.png"
+      },
+      {
+        "node": "991:2",
+        "page_id": "AD_TERMS_TYPE_ADD",
+        "page_name": "약관 관리 > 약관 종류 추가",
+        "kind": "variant",
+        "capture": "captures/991_2.png"
+      },
+      {
+        "node": "994:2",
+        "page_id": "AD_TERMS_TYPE_EDIT",
+        "page_name": "약관 관리 > 약관 종류 수정",
+        "kind": "variant",
+        "capture": "captures/994_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_BALANCE",
+    "menu": "A-08 모계좌 잔액조회",
+    "src_files": [
+      "app/account-balance/page.tsx",
+      "services/cooconService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "944:2",
+        "page_id": "AD_BALANCE",
+        "page_name": "모 계좌 잔액 조회",
+        "kind": "base",
+        "capture": "captures/944_2.png"
+      },
+      {
+        "node": "1058:2",
+        "page_id": "AD_BALANCE_DEPOSIT",
+        "page_name": "모 계좌 잔액 조회 > 외부 입금 등록",
+        "kind": "variant",
+        "capture": "captures/1058_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_INQUIRY",
+    "menu": "A-09 1:1 문의",
+    "src_files": [
+      "app/inquiries/page.tsx",
+      "services/merchantService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "951:2",
+        "page_id": "AD_INQUIRY",
+        "page_name": "1:1 문의 > 목록",
+        "kind": "base",
+        "capture": "captures/951_2.png"
+      },
+      {
+        "node": "956:2",
+        "page_id": "AD_INQUIRY_PENDING",
+        "page_name": "1:1 문의 > 목록 (대기 필터)",
+        "kind": "variant",
+        "capture": "captures/956_2.png"
+      },
+      {
+        "node": "960:2",
+        "page_id": "AD_INQUIRY_PROGRESS",
+        "page_name": "1:1 문의 > 목록 (처리중 필터)",
+        "kind": "variant",
+        "capture": "captures/960_2.png"
+      },
+      {
+        "node": "964:2",
+        "page_id": "AD_INQUIRY_ANSWERED",
+        "page_name": "1:1 문의 > 목록 (답변완료 필터)",
+        "kind": "variant",
+        "capture": "captures/964_2.png"
+      },
+      {
+        "node": "968:2",
+        "page_id": "AD_INQUIRY_CLOSED",
+        "page_name": "1:1 문의 > 목록 (종료 필터)",
+        "kind": "variant",
+        "capture": "captures/968_2.png"
+      },
+      {
+        "node": "972:2",
+        "page_id": "AD_INQUIRY_GENERAL",
+        "page_name": "1:1 문의 > 목록 (일반 카테고리)",
+        "kind": "variant",
+        "capture": "captures/972_2.png"
+      },
+      {
+        "node": "978:2",
+        "page_id": "AD_INQUIRY_PAYMENT",
+        "page_name": "1:1 문의 > 목록 (결제 카테고리)",
+        "kind": "variant",
+        "capture": "captures/978_2.png"
+      },
+      {
+        "node": "983:2",
+        "page_id": "AD_INQUIRY_SETTLEMENT",
+        "page_name": "1:1 문의 > 목록 (정산 카테고리)",
+        "kind": "variant",
+        "capture": "captures/983_2.png"
+      },
+      {
+        "node": "985:2",
+        "page_id": "AD_INQUIRY_TECH",
+        "page_name": "1:1 문의 > 목록 (기술 카테고리)",
+        "kind": "variant",
+        "capture": "captures/985_2.png"
+      },
+      {
+        "node": "990:2",
+        "page_id": "AD_INQUIRY_ACCOUNT",
+        "page_name": "1:1 문의 > 목록 (계정 카테고리)",
+        "kind": "variant",
+        "capture": "captures/990_2.png"
+      },
+      {
+        "node": "992:2",
+        "page_id": "AD_INQUIRY_DT",
+        "page_name": "1:1 문의 > 상세 (메시지 스레드 드로어)",
+        "kind": "variant",
+        "capture": "captures/992_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_SCRAPING",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "src_files": [
+      "app/scraping-incidents/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "918:2",
+        "page_id": "AD_SCRAPING",
+        "page_name": "스크래핑 장애 이력",
+        "kind": "base",
+        "capture": "captures/918_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_LOG",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "src_files": [
+      "app/activity-logs/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "921:2",
+        "page_id": "AD_LOG",
+        "page_name": "활동 로그",
+        "kind": "base",
+        "capture": "captures/921_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_AI",
+    "menu": "A-10 시스템(로그·스크래핑·AI)",
+    "src_files": [
+      "app/log-analysis/page.tsx",
+      "services/logAnalysisService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "928:2",
+        "page_id": "AD_AI",
+        "page_name": "AI 모니터링 어시스턴트",
+        "kind": "base",
+        "capture": "captures/928_2.png"
+      },
+      {
+        "node": "933:2",
+        "page_id": "AD_AI_CUSTOM",
+        "page_name": "AI 모니터링 어시스턴트 > 시간범위 직접 지정",
+        "kind": "variant",
+        "capture": "captures/933_2.png"
+      },
+      {
+        "node": "936:2",
+        "page_id": "AD_AI_ANSWER",
+        "page_name": "AI 모니터링 어시스턴트 > 질문 후 분석 응답",
+        "kind": "variant",
+        "capture": "captures/936_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "AD_LOGIN",
+    "menu": "A-11 인증",
+    "src_files": [
+      "app/login/page.tsx",
+      "services/authService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "939:2",
+        "page_id": "AD_LOGIN",
+        "page_name": "관리자 로그인",
+        "kind": "base",
+        "capture": "captures/939_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_LANDING",
+    "menu": "M-01 랜딩/홈",
+    "src_files": [
+      "app/page.tsx",
+      "components/Header.tsx",
+      "components/InquirySection.tsx",
+      "components/Footer.tsx",
+      "components/FAQItem.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "833:2",
+        "page_id": "MC_LANDING",
+        "page_name": "랜딩 홈",
+        "kind": "base",
+        "capture": "captures/833_2.png"
+      },
+      {
+        "node": "841:2",
+        "page_id": "MC_LANDING_FAQ",
+        "page_name": "랜딩 홈 > FAQ 펼침",
+        "kind": "variant",
+        "capture": "captures/841_2.png"
+      },
+      {
+        "node": "846:2",
+        "page_id": "MC_LANDING_LOGIN",
+        "page_name": "랜딩 홈 > 로그인 필요 안내",
+        "kind": "variant",
+        "capture": "captures/846_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "PH_PW_RE",
+    "menu": "M-02 인증",
+    "src_files": [
+      "app/find-password/page.tsx",
+      "components/PasswordInput.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "818:2",
+        "page_id": "PH_PW_RE",
+        "page_name": "비밀번호 찾기 > 2단계 비밀번호 재설정",
+        "kind": "base",
+        "capture": "captures/818_2.png"
+      },
+      {
+        "node": "829:2",
+        "page_id": "PH_PW_RE_DONE",
+        "page_name": "비밀번호 찾기 > 2단계 비밀번호 재설정 > 변경 완료",
+        "kind": "variant",
+        "capture": "captures/829_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "PH_PW_FI",
+    "menu": "M-02 인증",
+    "src_files": [
+      "app/find-password/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "823:2",
+        "page_id": "PH_PW_FI_NONE",
+        "page_name": "비밀번호 찾기 > 1단계 본인 인증 > 미가입 번호",
+        "kind": "variant",
+        "capture": "captures/823_2.png"
+      },
+      {
+        "node": "907:2",
+        "page_id": "PH_PW_FI",
+        "page_name": "비밀번호 찾기 > 1단계 본인 인증",
+        "kind": "base",
+        "capture": "captures/907_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "PH_LO",
+    "menu": "M-02 인증",
+    "src_files": [
+      "app/login/page.tsx",
+      "components/PasswordInput.tsx",
+      "lib/apiClient.ts",
+      "lib/authStorage.ts"
+    ],
+    "nodes": [
+      {
+        "node": "845:2",
+        "page_id": "PH_LO",
+        "page_name": "사장님 로그인",
+        "kind": "base",
+        "capture": "captures/845_2.png"
+      },
+      {
+        "node": "851:2",
+        "page_id": "PH_LO_COMPANY",
+        "page_name": "사장님 로그인 > 회사정보 펼침",
+        "kind": "variant",
+        "capture": "captures/851_2.png"
+      },
+      {
+        "node": "856:2",
+        "page_id": "PH_LO_EXPIRED",
+        "page_name": "사장님 로그인 > 세션 만료 안내",
+        "kind": "variant",
+        "capture": "captures/856_2.png"
+      },
+      {
+        "node": "862:2",
+        "page_id": "PH_LO_LOADING",
+        "page_name": "사장님 로그인 > 로그인 중 로딩",
+        "kind": "variant",
+        "capture": "captures/862_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "PH_JO_TERMS",
+    "menu": "M-02 인증",
+    "src_files": [
+      "app/signup/page.tsx",
+      "components/TermsModal.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "868:2",
+        "page_id": "PH_JO_TERMS",
+        "page_name": "회원가입 > 1단계 약관 동의",
+        "kind": "base",
+        "capture": "captures/868_2.png"
+      },
+      {
+        "node": "873:2",
+        "page_id": "PH_JO_TERMS_ALL",
+        "page_name": "회원가입 > 1단계 약관 동의 > 전체 동의",
+        "kind": "variant",
+        "capture": "captures/873_2.png"
+      },
+      {
+        "node": "878:2",
+        "page_id": "PH_JO_TERMS_MODAL",
+        "page_name": "회원가입 > 1단계 약관 동의 > 약관 상세",
+        "kind": "variant",
+        "capture": "captures/878_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "PH_JO_AUTH",
+    "menu": "M-02 인증",
+    "src_files": [
+      "app/signup/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "884:2",
+        "page_id": "PH_JO_AUTH",
+        "page_name": "회원가입 > 2단계 본인 인증",
+        "kind": "base",
+        "capture": "captures/884_2.png"
+      },
+      {
+        "node": "901:2",
+        "page_id": "PH_JO_AUTH_EXIST",
+        "page_name": "회원가입 > 2단계 본인 인증 > 이미 가입된 번호",
+        "kind": "variant",
+        "capture": "captures/901_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "PH_JO_PW",
+    "menu": "M-02 인증",
+    "src_files": [
+      "app/signup/page.tsx",
+      "components/PasswordInput.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "890:2",
+        "page_id": "PH_JO_PW",
+        "page_name": "회원가입 > 3단계 비밀번호 설정",
+        "kind": "base",
+        "capture": "captures/890_2.png"
+      },
+      {
+        "node": "894:2",
+        "page_id": "PH_JO_PW_CHECK",
+        "page_name": "회원가입 > 3단계 비밀번호 설정 > 조건 체크리스트",
+        "kind": "variant",
+        "capture": "captures/894_2.png"
+      },
+      {
+        "node": "898:2",
+        "page_id": "PH_JO_PW_TIP_CAPS",
+        "page_name": "회원가입 > 3단계 비밀번호 설정 > Caps Lock 경고",
+        "kind": "variant",
+        "capture": "captures/898_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "PH_JO_DONE",
+    "menu": "M-02 인증",
+    "src_files": [
+      "app/signup/complete/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "904:2",
+        "page_id": "PH_JO_DONE",
+        "page_name": "회원가입 > 완료 환영",
+        "kind": "base",
+        "capture": "captures/904_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_LOCK_INFO",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/confirm-pre-payment/page.tsx",
+      "services/contractService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "817:2",
+        "page_id": "MC_CONTRACT_LOCK_VERIFY",
+        "page_name": "계약 신청 > 3단계 선정산 락계좌 > 1원 인증번호 입력",
+        "kind": "variant",
+        "capture": "captures/817_2.png"
+      },
+      {
+        "node": "824:2",
+        "page_id": "MC_CONTRACT_LOCK_FASTINQ",
+        "page_name": "계약 신청 > 3단계 선정산 락계좌 > 빠른조회 미가입 안내",
+        "kind": "variant",
+        "capture": "captures/824_2.png"
+      },
+      {
+        "node": "903:2",
+        "page_id": "MC_CONTRACT_LOCK_INFO",
+        "page_name": "계약 신청 > 3단계 선정산 락계좌 > 정보 확인(info·비밀번호)",
+        "kind": "base",
+        "capture": "captures/903_2.png"
+      },
+      {
+        "node": "906:2",
+        "page_id": "MC_CONTRACT_LOCK_FASTGUIDE",
+        "page_name": "계약 신청 > 3단계 선정산 락계좌 > 빠른조회 가입방법 펼침",
+        "kind": "variant",
+        "capture": "captures/906_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_DEPOSIT_UPLOAD",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/upload-settlement/page.tsx",
+      "services/contractService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "830:2",
+        "page_id": "MC_CONTRACT_DEPOSIT_UPLOAD",
+        "page_name": "계약 신청 > 4단계 입금계좌 > 통장 업로드",
+        "kind": "base",
+        "capture": "captures/830_2.png"
+      },
+      {
+        "node": "834:2",
+        "page_id": "MC_CONTRACT_DEPOSIT_GATE",
+        "page_name": "계약 신청 > 4단계 입금계좌 > 전용계좌 먼저 등록 게이트 모달",
+        "kind": "variant",
+        "capture": "captures/834_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_DEPOSIT_INFO",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/confirm-settlement/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "840:2",
+        "page_id": "MC_CONTRACT_DEPOSIT_INFO",
+        "page_name": "계약 신청 > 4단계 입금계좌 > 정보 확인(info)",
+        "kind": "base",
+        "capture": "captures/840_2.png"
+      },
+      {
+        "node": "844:2",
+        "page_id": "MC_CONTRACT_DEPOSIT_VERIFY",
+        "page_name": "계약 신청 > 4단계 입금계좌 > 1원 인증번호 입력",
+        "kind": "variant",
+        "capture": "captures/844_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/page.tsx",
+      "app/contract/layout.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "843:2",
+        "page_id": "MC_CONTRACT",
+        "page_name": "계약 신청 > 서류 준비 안내",
+        "kind": "base",
+        "capture": "captures/843_2.png"
+      },
+      {
+        "node": "848:2",
+        "page_id": "MC_CONTRACT_EDIT",
+        "page_name": "계약 신청 > 서류 준비 안내 > 수정 모드",
+        "kind": "variant",
+        "capture": "captures/848_2.png"
+      },
+      {
+        "node": "854:2",
+        "page_id": "MC_CONTRACT_PENDING",
+        "page_name": "계약 신청 > 서류 준비 안내 > 승인 대기 모달",
+        "kind": "variant",
+        "capture": "captures/854_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_PLATFORM",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/register-accounts/page.tsx",
+      "components/PlatformAccountsEditor.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "850:2",
+        "page_id": "MC_CONTRACT_PLATFORM",
+        "page_name": "계약 신청 > 5단계 플랫폼 계정 > 매출 연동 등록",
+        "kind": "base",
+        "capture": "captures/850_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_SIGN",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/terms/page.tsx",
+      "components/TermsModal.tsx",
+      "components/ContractSignInput.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "855:2",
+        "page_id": "MC_CONTRACT_SIGN",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 약관 동의",
+        "kind": "base",
+        "capture": "captures/855_2.png"
+      },
+      {
+        "node": "861:2",
+        "page_id": "MC_CONTRACT_SIGN_ALLAGREE",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 약관 필수 전체 동의",
+        "kind": "variant",
+        "capture": "captures/861_2.png"
+      },
+      {
+        "node": "866:2",
+        "page_id": "MC_CONTRACT_SIGN_TERMSMODAL",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 약관 상세 모달",
+        "kind": "variant",
+        "capture": "captures/866_2.png"
+      },
+      {
+        "node": "870:2",
+        "page_id": "MC_CONTRACT_SIGN_PREVIEW",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 계약서 미리보기(Step2)",
+        "kind": "variant",
+        "capture": "captures/870_2.png"
+      },
+      {
+        "node": "876:2",
+        "page_id": "MC_CONTRACT_SIGN_PREVIEW_ZOOM",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 계약서 미리보기 확대(Step2)",
+        "kind": "variant",
+        "capture": "captures/876_2.png"
+      },
+      {
+        "node": "881:2",
+        "page_id": "MC_CONTRACT_SIGN_INPUT",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 서명·수수료율 입력(Step3)",
+        "kind": "variant",
+        "capture": "captures/881_2.png"
+      },
+      {
+        "node": "885:2",
+        "page_id": "MC_CONTRACT_SIGN_CONFIRM",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 최종 계약서 확인(Step4)",
+        "kind": "variant",
+        "capture": "captures/885_2.png"
+      },
+      {
+        "node": "889:2",
+        "page_id": "MC_CONTRACT_SIGN_DONE",
+        "page_name": "계약 신청 > 6단계 비대면 계약 > 계약 동의 완료 모달",
+        "kind": "variant",
+        "capture": "captures/889_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_BIZ_UPLOAD",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/upload-business/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "859:2",
+        "page_id": "MC_CONTRACT_BIZ_UPLOAD",
+        "page_name": "계약 신청 > 1단계 사업자등록증 > 업로드(개인)",
+        "kind": "base",
+        "capture": "captures/859_2.png"
+      },
+      {
+        "node": "864:2",
+        "page_id": "MC_CONTRACT_BIZ_UPLOAD_CORP",
+        "page_name": "계약 신청 > 1단계 사업자등록증 > 업로드(법인 선택)",
+        "kind": "variant",
+        "capture": "captures/864_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_BIZ_INFO",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/confirm-business/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "871:2",
+        "page_id": "MC_CONTRACT_BIZ_INFO",
+        "page_name": "계약 신청 > 1단계 사업자등록증 > 정보 확인(개인·OCR힌트)",
+        "kind": "base",
+        "capture": "captures/871_2.png"
+      },
+      {
+        "node": "877:2",
+        "page_id": "MC_CONTRACT_BIZ_INFO_CORP",
+        "page_name": "계약 신청 > 1단계 사업자등록증 > 정보 확인(법인)",
+        "kind": "variant",
+        "capture": "captures/877_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_ID_UPLOAD",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/upload-identity/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "882:2",
+        "page_id": "MC_CONTRACT_ID_UPLOAD",
+        "page_name": "계약 신청 > 2단계 신분증 > 업로드",
+        "kind": "base",
+        "capture": "captures/882_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_ID_INFO",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/confirm-identity/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "887:2",
+        "page_id": "MC_CONTRACT_ID_INFO",
+        "page_name": "계약 신청 > 2단계 신분증 > 정보 확인(주민등록증)",
+        "kind": "base",
+        "capture": "captures/887_2.png"
+      },
+      {
+        "node": "891:2",
+        "page_id": "MC_CONTRACT_ID_INFO_DRIVER",
+        "page_name": "계약 신청 > 2단계 신분증 > 정보 확인(운전면허증)",
+        "kind": "variant",
+        "capture": "captures/891_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_LOCK_APPLY",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/apply-pre-payment/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "895:2",
+        "page_id": "MC_CONTRACT_LOCK_APPLY",
+        "page_name": "계약 신청 > 3단계 선정산 락계좌 > 계좌 개설 안내(QR·PC)",
+        "kind": "base",
+        "capture": "captures/895_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_CONTRACT_LOCK_UPLOAD",
+    "menu": "M-03 계약",
+    "src_files": [
+      "app/contract/upload-pre-payment/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "899:2",
+        "page_id": "MC_CONTRACT_LOCK_UPLOAD",
+        "page_name": "계약 신청 > 3단계 선정산 락계좌 > 통장 업로드",
+        "kind": "base",
+        "capture": "captures/899_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_DASH",
+    "menu": "M-04 대시보드",
+    "src_files": [
+      "app/dashboard/page.tsx",
+      "app/dashboard/layout.tsx",
+      "hooks/useDashboard.ts",
+      "components/dashboard/PreSettlementCard.tsx",
+      "components/InquirySection.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "853:2",
+        "page_id": "MC_DASH",
+        "page_name": "대시보드 > 미리 받는 돈 (승인 사업자)",
+        "kind": "base",
+        "capture": "captures/853_2.png"
+      },
+      {
+        "node": "860:2",
+        "page_id": "MC_DASH_DONE",
+        "page_name": "대시보드 > 계약 완료 카드 (최초 1회)",
+        "kind": "variant",
+        "capture": "captures/860_2.png"
+      },
+      {
+        "node": "867:2",
+        "page_id": "MC_DASH_BIZSEL",
+        "page_name": "대시보드 > 사업자 선택 드롭다운",
+        "kind": "variant",
+        "capture": "captures/867_2.png"
+      },
+      {
+        "node": "872:2",
+        "page_id": "MC_DASH_PENDING",
+        "page_name": "대시보드 > 사업자 선택 > 승인 대기 안내 모달",
+        "kind": "variant",
+        "capture": "captures/872_2.png"
+      },
+      {
+        "node": "880:2",
+        "page_id": "MC_DASH_UNAPPROVED",
+        "page_name": "대시보드 > 매출 조회 (미승인 사업자)",
+        "kind": "variant",
+        "capture": "captures/880_2.png"
+      },
+      {
+        "node": "886:2",
+        "page_id": "MC_DASH_INQUIRY",
+        "page_name": "대시보드 > 매출 조회 > 계정 입력 폼",
+        "kind": "variant",
+        "capture": "captures/886_2.png"
+      },
+      {
+        "node": "892:2",
+        "page_id": "MC_DASH_APPLIED",
+        "page_name": "대시보드 > 이미 계약 신청 완료 모달",
+        "kind": "variant",
+        "capture": "captures/892_2.png"
+      },
+      {
+        "node": "897:2",
+        "page_id": "MC_DASH_PROGRESS",
+        "page_name": "대시보드 > 계약 현황 > 진행 스텝 카드",
+        "kind": "variant",
+        "capture": "captures/897_2.png"
+      },
+      {
+        "node": "902:2",
+        "page_id": "MC_DASH_REJECT",
+        "page_name": "대시보드 > 계약 현황 > 반려·중지 카드",
+        "kind": "variant",
+        "capture": "captures/902_2.png"
+      },
+      {
+        "node": "905:2",
+        "page_id": "MC_DASH_RESIGN",
+        "page_name": "대시보드 > 계약 재서명 필요 모달",
+        "kind": "variant",
+        "capture": "captures/905_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "ST_AC",
+    "menu": "M-05 정산",
+    "src_files": [
+      "app/settlement/account/page.tsx",
+      "services/salesService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "828:2",
+        "page_id": "ST_AC",
+        "page_name": "계좌 입금 내역",
+        "kind": "base",
+        "capture": "captures/828_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "ST_AC_EX",
+    "menu": "M-05 정산",
+    "src_files": [
+      "app/settlement/account/excluded/page.tsx",
+      "services/salesService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "835:2",
+        "page_id": "ST_AC_EX",
+        "page_name": "계좌 입금 내역 > 선정산 제외액 내역",
+        "kind": "base",
+        "capture": "captures/835_2.png"
+      },
+      {
+        "node": "1071:2",
+        "page_id": "ST_AC_EX_TIP",
+        "page_name": "계좌 입금 내역 > 선정산 제외액 내역 > 행 툴팁",
+        "kind": "variant",
+        "capture": "captures/1071_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "ST_MA",
+    "menu": "M-05 정산",
+    "src_files": [
+      "app/settlement/page.tsx",
+      "services/salesService.ts",
+      "app/settlement/card/page.tsx",
+      "app/settlement/card/transaction/page.tsx",
+      "app/settlement/delivery/page.tsx",
+      "app/settlement/delivery/order/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "863:2",
+        "page_id": "ST_MA",
+        "page_name": "미리 받는 돈",
+        "kind": "base",
+        "capture": "captures/863_2.png"
+      },
+      {
+        "node": "874:2",
+        "page_id": "ST_MA_CARD",
+        "page_name": "미리 받는 돈 > 카드사별 상세",
+        "kind": "variant",
+        "capture": "captures/874_2.png"
+      },
+      {
+        "node": "879:2",
+        "page_id": "ST_MA_CARD_DT",
+        "page_name": "미리 받는 돈 > 카드사별 상세 > 카드 거래 상세",
+        "kind": "variant",
+        "capture": "captures/879_2.png"
+      },
+      {
+        "node": "883:2",
+        "page_id": "ST_MA_DELIV",
+        "page_name": "미리 받는 돈 > 배달앱별 상세",
+        "kind": "variant",
+        "capture": "captures/883_2.png"
+      },
+      {
+        "node": "893:2",
+        "page_id": "ST_MA_DELIV_DT",
+        "page_name": "미리 받는 돈 > 배달앱별 상세 > 배달 주문 상세",
+        "kind": "variant",
+        "capture": "captures/893_2.png"
+      },
+      {
+        "node": "1066:2",
+        "page_id": "ST_MA_TIP_DIFF",
+        "page_name": "미리 받는 돈 > 예상 지급 차액 툴팁",
+        "kind": "variant",
+        "capture": "captures/1066_2.png"
+      },
+      {
+        "node": "1067:2",
+        "page_id": "ST_MA_DELIV_TIP",
+        "page_name": "미리 받는 돈 > 배달앱별 상세 > 광고비 툴팁",
+        "kind": "variant",
+        "capture": "captures/1067_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "ST_DIFF",
+    "menu": "M-05 정산",
+    "src_files": [
+      "app/settlement/adjustments/page.tsx",
+      "services/salesService.ts"
+    ],
+    "nodes": [
+      {
+        "node": "896:2",
+        "page_id": "ST_DIFF",
+        "page_name": "예상 지급 차액",
+        "kind": "base",
+        "capture": "captures/896_2.png"
+      },
+      {
+        "node": "1068:2",
+        "page_id": "ST_DIFF_TIP_NORMAL",
+        "page_name": "예상 지급 차액 > 일반 차액 툴팁",
+        "kind": "variant",
+        "capture": "captures/1068_2.png"
+      },
+      {
+        "node": "1069:2",
+        "page_id": "ST_DIFF_TIP_MEET_DONE",
+        "page_name": "예상 지급 차액 > 만나서결제 회수 툴팁 (회수 완료)",
+        "kind": "variant",
+        "capture": "captures/1069_2.png"
+      },
+      {
+        "node": "1070:2",
+        "page_id": "ST_DIFF_TIP_MEET_PLAN",
+        "page_name": "예상 지급 차액 > 만나서결제 회수 툴팁 (회수 예정)",
+        "kind": "variant",
+        "capture": "captures/1070_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_MYINFO",
+    "menu": "M-06 내정보",
+    "src_files": [
+      "app/my-info/page.tsx",
+      "app/my-info/layout.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "812:2",
+        "page_id": "MC_MYINFO",
+        "page_name": "내 정보 관리",
+        "kind": "base",
+        "capture": "captures/812_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_MYINFO_CONTRACT",
+    "menu": "M-06 내정보",
+    "src_files": [
+      "app/my-info/contract/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "816:2",
+        "page_id": "MC_MYINFO_CONTRACT",
+        "page_name": "계약 정보 조회",
+        "kind": "base",
+        "capture": "captures/816_2.png"
+      },
+      {
+        "node": "822:2",
+        "page_id": "MC_MYINFO_CONTRACT_PREVIEW",
+        "page_name": "계약 정보 조회 > 증빙서류 미리보기",
+        "kind": "variant",
+        "capture": "captures/822_2.png"
+      },
+      {
+        "node": "826:2",
+        "page_id": "MC_MYINFO_CONTRACT_TERMS",
+        "page_name": "계약 정보 조회 > 약관 내용",
+        "kind": "variant",
+        "capture": "captures/826_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_MYINFO_INQUIRY",
+    "menu": "M-06 내정보",
+    "src_files": [
+      "app/my-info/inquiries/page.tsx",
+      "components/dashboard/InquiryCard.tsx",
+      "components/dashboard/InquiryModal.tsx",
+      "components/dashboard/InquiryPanel.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "825:2",
+        "page_id": "MC_MYINFO_INQUIRY_LIST",
+        "page_name": "1:1 문의 > 목록",
+        "kind": "variant",
+        "capture": "captures/825_2.png"
+      },
+      {
+        "node": "832:2",
+        "page_id": "MC_MYINFO_INQUIRY_NEW_ALT",
+        "page_name": "1:1 문의 > 문의 작성",
+        "kind": "variant",
+        "capture": "captures/832_2.png"
+      },
+      {
+        "node": "838:2",
+        "page_id": "MC_MYINFO_INQUIRY_DT_ALT",
+        "page_name": "1:1 문의 > 상세 대화",
+        "kind": "variant",
+        "capture": "captures/838_2.png"
+      },
+      {
+        "node": "842:2",
+        "page_id": "MC_MYINFO_INQUIRY",
+        "page_name": "1:1 문의",
+        "kind": "base",
+        "capture": "captures/842_2.png"
+      },
+      {
+        "node": "847:2",
+        "page_id": "MC_MYINFO_INQUIRY_NEW",
+        "page_name": "1:1 문의 > 문의 작성",
+        "kind": "variant",
+        "capture": "captures/847_2.png"
+      },
+      {
+        "node": "852:2",
+        "page_id": "MC_MYINFO_INQUIRY_DT",
+        "page_name": "1:1 문의 > 문의 상세",
+        "kind": "variant",
+        "capture": "captures/852_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_MYINFO_ACCOUNTS",
+    "menu": "M-06 내정보",
+    "src_files": [
+      "app/my-info/accounts/page.tsx",
+      "components/PlatformAccountsManager.tsx",
+      "components/PlatformAccountsEditor.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "831:2",
+        "page_id": "MC_MYINFO_ACCOUNTS",
+        "page_name": "연동 계정 관리",
+        "kind": "base",
+        "capture": "captures/831_2.png"
+      },
+      {
+        "node": "836:2",
+        "page_id": "MC_MYINFO_ACCOUNTS_EDIT",
+        "page_name": "연동 계정 관리 > 계정 변경 폼",
+        "kind": "variant",
+        "capture": "captures/836_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_MYINFO_PW",
+    "menu": "M-06 내정보",
+    "src_files": [
+      "app/my-info/change-password/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "858:2",
+        "page_id": "MC_MYINFO_PW",
+        "page_name": "비밀번호 변경",
+        "kind": "base",
+        "capture": "captures/858_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_NOTI",
+    "menu": "M-08 알림",
+    "src_files": [
+      "app/notifications/page.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "820:2",
+        "page_id": "MC_NOTI",
+        "page_name": "알림 목록 (빈 상태)",
+        "kind": "base",
+        "capture": "captures/820_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_COMMON_MENU",
+    "menu": "M-09 공통",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "815:2",
+        "page_id": "MC_COMMON_MENU",
+        "page_name": "모바일 메뉴 드로어",
+        "kind": "base",
+        "capture": "captures/815_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_COMMON_PROFILE",
+    "menu": "M-09 공통",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "908:2",
+        "page_id": "MC_COMMON_PROFILE",
+        "page_name": "프로필 드롭다운",
+        "kind": "base",
+        "capture": "captures/908_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_COMMON_LOGOUT",
+    "menu": "M-09 공통",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "909:2",
+        "page_id": "MC_COMMON_LOGOUT",
+        "page_name": "로그아웃 확인 모달",
+        "kind": "base",
+        "capture": "captures/909_2.png"
+      }
+    ]
+  },
+  {
+    "base_id": "MC_COMMON_NOTI_DD",
+    "menu": "M-09 공통",
+    "src_files": [
+      "components/Header.tsx"
+    ],
+    "nodes": [
+      {
+        "node": "910:2",
+        "page_id": "MC_COMMON_NOTI_DD",
+        "page_name": "알림 드롭다운",
+        "kind": "base",
+        "capture": "captures/910_2.png"
+      }
+    ]
+  }
+]

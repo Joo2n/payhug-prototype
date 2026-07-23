@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S32 — 차이는 어떻게 처리되나</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .adj { display: flex; flex-direction: column; gap: 22px; height: 100%; }
+
+  .quote {
+    background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; border-radius: 18px;
+    padding: 22px 30px; display: flex; align-items: center; gap: 22px;
+  }
+  .quote .qt { font-size: 15px; font-weight: 800; color: var(--ph-green-700); background: #fff; padding: 7px 15px; border-radius: 999px; flex-shrink: 0; }
+  .quote .qx { font-size: 23px; font-weight: 700; color: var(--ph-forest); letter-spacing: -0.02em; line-height: 1.45; }
+
+  .aflow { display: flex; align-items: stretch; gap: 16px; }
+  .aflow .node { min-width: 0; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 24px 26px; }
+  .aflow .node b { font-size: 21px; }
+  .aflow .node small { font-size: 16px; margin-top: 8px; line-height: 1.5; }
+  .aflow .arrow { display: flex; align-items: center; }
+  .loop {
+    position: relative; margin-top: 6px;
+    border: 2px dashed var(--ph-green-700); border-top: 0; border-radius: 0 0 18px 18px;
+    height: 44px;
+  }
+  .loop .lt {
+    position: absolute; left: 50%; transform: translate(-50%, 50%); bottom: 0;
+    background: #fff; padding: 0 18px; font-size: 17px; font-weight: 800; color: var(--ph-green-700);
+  }
+
+  .cards { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 20px; flex: 1; }
+  .cards .card { display: flex; flex-direction: column; }
+  .cards .card-h { font-size: 21px; margin-bottom: 10px; }
+  .cards .card p { font-size: 17px; line-height: 1.6; }
+  .cards .card p + p { margin-top: 8px; }
+
+  .unit { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .uchip {
+    background: #fff; border: 1.5px solid var(--line-2); border-radius: 10px;
+    padding: 9px 15px; font-size: 16px; font-weight: 800; color: var(--ph-forest);
+  }
+  .tbdmini { margin-top: auto; padding-top: 14px; display: flex; align-items: center; gap: 12px; }
+  .tbdmini .tx { font-size: 15px; color: var(--ink-3); line-height: 1.45; }
+  .badge { white-space: nowrap; }
+  .say {
+    margin-top: auto; padding-top: 16px; border-top: 1px dashed var(--line-2);
+    font-size: 16px; line-height: 1.5; color: var(--ph-forest); font-weight: 700;
+  }
+  .say .lb { display: block; font-size: 13px; font-weight: 800; color: var(--ink-4); letter-spacing: 0.02em; margin-bottom: 5px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">32</div>
+  </div>
+
+  <h1 class="s-title">차이는 <span class="em">다음 선정산에서</span> 맞춥니다</h1>
+  <p class="s-sub">따로 청구하지도, 돈을 돌려받지도 않습니다. 다음 지급액에 얹거나 빼는 방식으로 자동 정리됩니다.</p>
+
+  <div class="s-body">
+    <div class="adj">
+
+      <div class="quote">
+        <div class="qt">가맹점 앱 안내 문구</div>
+        <div class="qx">"선정산은 예상 카드 수수료율을 기준으로 지급돼요. 실제 정산 후 발생한 차액은 다음 선정산 금액에 자동으로 반영돼요."</div>
+      </div>
+
+      <div>
+        <div class="aflow">
+          <div class="node ph"><b>선정산 지급</b><small>예상 카드 수수료율 기준으로 먼저 지급</small></div>
+          <div class="arrow">→</div>
+          <div class="node ext"><b>실제 정산 확정</b><small>카드사·플랫폼이 실제 금액을 확정</small></div>
+          <div class="arrow">→</div>
+          <div class="node"><b>차액 계산</b><small>예상과 실제의 차이를 건별로 계산</small></div>
+          <div class="arrow">→</div>
+          <div class="node mer"><b>다음 선정산 금액에 자동 반영</b><small>더 드릴 건 얹고, 덜 드릴 건 빼서 지급</small></div>
+        </div>
+        <div class="loop"><div class="lt">이 과정이 매 회차 반복됩니다</div></div>
+      </div>
+
+      <div class="cards">
+        <div class="card card-green">
+          <div class="card-h">따로 청구하지 않습니다</div>
+          <p><b>사장님께 돈을 돌려달라고 청구하거나, 별도로 입금을 요청하지 않습니다.</b></p>
+          <p>다음 회차 지급액에서 더하거나 빼는 방식으로 정리됩니다. 사장님이 따로 해야 할 일은 없습니다.</p>
+          <p>"돈을 토해내야 하나요?"라는 질문에는 <b>"다음 지급액에서 자동으로 맞춰집니다"</b>라고 답하시면 됩니다.</p>
+          <div class="say"><span class="lb">현장에서는 이렇게</span>"돌려주실 필요 없습니다. 다음 회차에서 알아서 맞춰집니다."</div>
+        </div>
+
+        <div class="card card-tint">
+          <div class="card-h">건 단위까지 볼 수 있습니다</div>
+          <p>사장님이 앱에서 차액 내역을 직접 확인할 수 있습니다. 아래 단위까지 나옵니다.</p>
+          <div class="unit">
+            <span class="uchip">매출일</span>
+            <span class="uchip">카드사 · 배달앱</span>
+            <span class="uchip">승인번호</span>
+          </div>
+          <p style="margin-top:12px">"왜 이 금액이 빠졌냐"는 문의는 <b>이 화면에서 건별로 짚어드릴 수 있습니다.</b></p>
+          <div class="say"><span class="lb">현장에서는 이렇게</span>"앱에서 어떤 건 때문에 차이가 났는지 직접 보실 수 있습니다."</div>
+        </div>
+
+        <div class="card card-blue">
+          <div class="card-h">화면 라벨 안내 주의</div>
+          <p>가맹점 앱에는 이 항목이 <b>「예상 지급 차액」</b>이라는 이름으로 표시됩니다.</p>
+          <p>화면에 그렇게 나온다는 사실만 안내해 주세요. <span class="hl">이 라벨이 정확히 무엇을 합산한 값인지는 아직 정의가 확정되지 않았습니다.</span> 뜻을 임의로 설명하면 안 됩니다.</p>
+          <div class="tbdmini">
+            <span class="badge badge-tbd badge-sm">협의 예정</span>
+            <div class="tx">「예상 지급 차액」정의 · 차액 반영 시점(며칠 뒤 회차인지)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 가맹점 앱 「예상 지급 차액」 안내 배너·툴팁 문구 · 차액 상세 목록은 거래일·카드사/배달앱·승인번호 단위로 표시 · 라벨 정의는 미확정(C4)</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

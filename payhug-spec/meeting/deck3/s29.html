@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S29 — 배달앱 채널별</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .col { width: 100%; display: flex; flex-direction: column; }
+  .flow { gap: 0; }
+  .fcol { width: 615px; }
+  .fgap { margin-top: 250px; }
+  .scr.clip { width: 615px; height: 470px; }
+  .scr.clip img { width: 615px; height: auto; display: block; }
+  .cap-d b { color: var(--ink-2); }
+  .quote {
+    margin-top: 18px; width: 100%;
+    display: flex; align-items: flex-start; gap: 18px;
+    background: var(--ph-green-tint); border-radius: 14px; padding: 18px 24px;
+  }
+  .quote-l { flex-shrink: 0; font-size: 17px; font-weight: 800; color: #2F6B18; padding-top: 3px; width: 190px; }
+  .quote-r { flex: 1; min-width: 0; font-size: 18px; line-height: 1.6; color: var(--ink-2); }
+  .quote-r em { font-style: normal; font-weight: 700; color: var(--ph-forest); }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 4 · 사장님이 보는 화면</div>
+    <div class="s-no">29</div>
+  </div>
+
+  <h1 class="s-title">배달앱은 <span class="em">채널별로 나뉩니다</span></h1>
+  <p class="s-sub">같은 배달앱이어도 화면에 뜨는 줄이 다릅니다. 이게 "왜 배민만 많이 떼가냐"는 질문의 답입니다</p>
+
+  <div class="stage">
+    <div class="col">
+
+      <div class="flow">
+
+        <div class="fcol">
+          <div class="fstep ext"><i>1</i> 배달의 민족</div>
+          <div class="scr clip"><img src="img/1414-14726.png" alt="배달의 민족 채널 상세 화면"></div>
+          <div class="cap">
+            <div class="cap-t">차감액 안에 <b>광고비 줄이 있습니다</b></div>
+            <div class="cap-d">「어제 매출액」에서 「차감액」을 빼면 「미리 받는 돈」이 됩니다. 배민은 차감액이 <b>배달의 민족 차감액</b> + <b>광고비</b>로 나뉘어 있습니다. 광고비는 사장님이 배민에 직접 집행하신 광고 대금이라, 배민이 정산할 때 미리 떼고 보냅니다. 페이허그가 가져가는 게 아닙니다.</div>
+          </div>
+        </div>
+
+        <div class="fgap">›</div>
+
+        <div class="fcol">
+          <div class="fstep ext"><i>2</i> 쿠팡이츠</div>
+          <div class="scr clip"><img src="img/1414-15437.png" alt="쿠팡이츠 채널 상세 화면"></div>
+          <div class="cap info">
+            <div class="cap-t">여기엔 <b>광고비 줄이 없습니다</b></div>
+            <div class="cap-d">쿠팡이츠는 차감액이 <b>쿠팡이츠 차감액</b> 한 줄뿐입니다. 줄이 빠진 게 아니라, 그 채널에서 광고비가 발생하지 않았기 때문입니다. <b>플랫폼이 보내주는 정산 내역을 그대로 보여드리는 구조</b>라서 채널마다 줄 구성이 다릅니다.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="quote">
+        <div class="quote-l">화면 안내 문구<br>(원문 그대로)</div>
+        <div class="quote-r">
+          <em>"[만나서 결제]는 배달의 민족 선정산 대상이 아니며 매출액에서 제외돼요."</em><br>
+          <em>"[배민원 주문]의 매출액은 고객의 배달팁이 제외된 금액이에요."</em>
+          &nbsp;— 주문 한 건을 열면 아래쪽에 이 안내가 붙습니다. 사장님께는 이 문장을 <b>그대로 읽어드리세요.</b>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 배달의 민족 / 쿠팡이츠 채널 상세 화면 원본 &nbsp;|&nbsp; 화면 속 날짜·금액·상호는 예시 데이터입니다</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S38 — 영업사원이 반드시 기억할 것</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: stretch; }
+  .wrap { display: flex; flex-direction: column; gap: 11px; width: 100%; height: 100%; }
+
+  .row {
+    display: flex; align-items: stretch; gap: 18px;
+    border: 1.5px solid var(--line); border-radius: 14px; background: #fff;
+    padding: 13px 20px; flex: 1; min-height: 0;
+  }
+  .row.hot { background: var(--ph-danger-tint); border-color: #FFD3D3; }
+  .row.warn { background: var(--ph-warning-tint); border-color: #FFE2BC; }
+
+  .rn {
+    width: 36px; height: 36px; border-radius: 999px; flex-shrink: 0; align-self: center;
+    background: var(--ph-forest); color: #fff;
+    font-family: var(--font-num); font-size: 17px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .row.hot .rn { background: var(--ph-danger); }
+  .row.warn .rn { background: var(--ph-warning); }
+
+  .rt { width: 400px; flex-shrink: 0; align-self: center; }
+  .rt .h { font-size: 20px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.025em; line-height: 1.28; }
+  .row.hot .rt .h { color: #B3121A; }
+  .row.warn .rt .h { color: #8A5200; }
+
+  .rd { flex: 1; min-width: 0; align-self: center; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .rd b { color: var(--ph-forest); font-weight: 800; }
+  .row.hot .rd { color: #7A2A30; }
+  .row.hot .rd b { color: #B3121A; }
+  .row.warn .rd { color: #7A5410; }
+  .row.warn .rd b { color: #8A5200; }
+
+  .rs {
+    width: 520px; flex-shrink: 0; align-self: center;
+    padding-left: 20px; border-left: 2px dashed var(--line-2);
+  }
+  .rs .lb { font-size: 11px; font-weight: 800; color: var(--ink-4); letter-spacing: 0.06em; margin-bottom: 3px; }
+  .rs .tx { font-size: 16px; font-weight: 800; color: var(--ph-forest); line-height: 1.4; letter-spacing: -0.02em; }
+  .row.hot .rs { border-left-color: #F0B9B9; }
+  .row.warn .rs { border-left-color: #EFCF9A; }
+
+  .badgewrap { display: flex; align-items: center; margin-top: 6px; }
+  .s-foot .src { flex: 1; min-width: 0; padding-right: 30px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">38</div>
+  </div>
+
+  <h1 class="s-title">영업사원이 <span class="em">반드시 기억할 7가지</span></h1>
+  <p class="s-sub">현장에서 실제로 사고가 나는 지점만 추렸습니다. 이 7개만 지키면 대부분의 클레임은 생기지 않습니다</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <div class="row hot">
+        <div class="rn">1</div>
+        <div class="rt"><div class="h">락계좌는 출금전용 계좌를 <u>먼저</u></div></div>
+        <div class="rd">일반 입출금 계좌를 먼저 만들면 <b>20일이 지나야</b> 출금전용 계좌를 만들 수 있습니다. 은행 창구에서 순서가 뒤바뀌는 순간 그 자리에서 계약이 멈춥니다. <b>현장 이탈의 최대 원인</b>입니다.</div>
+        <div class="rs"><div class="lb">이렇게 말하세요</div><div class="tx">"출금전용 계좌 먼저, 그다음 입출금 계좌입니다. 순서 바뀌면 20일 기다리셔야 합니다."</div></div>
+      </div>
+
+      <div class="row hot">
+        <div class="rn">2</div>
+        <div class="rt"><div class="h">빠른조회를 안 하면 계약이 멈춥니다</div></div>
+        <div class="rd">빠른조회에 가입하지 않으면 <b>입금계좌 등록 단계로 들어가는 것 자체가 막힙니다.</b> 페이허그 앱에는 신청 화면이 없습니다. <b>은행 인터넷뱅킹에서 사장님이 직접</b> 하셔야 합니다.</div>
+        <div class="rs"><div class="lb">이렇게 말하세요</div><div class="tx">"이건 저희 앱에서 안 되고 은행에서 사장님이 직접 하셔야 합니다. 지금 같이 하시죠."</div></div>
+      </div>
+
+      <div class="row warn">
+        <div class="rn">3</div>
+        <div class="rt"><div class="h">수수료율을 먼저 말하지 마세요</div></div>
+        <div class="rd">문서마다 요율이 <b>여러 값으로 병존</b>하는 상태입니다. 현장에서 한 숫자를 말했다가 계약서 숫자와 다르면 그 자리에서 계약이 깨집니다.
+          <div class="fx-mid badgewrap"><span class="badge badge-check">확인 중</span><div class="fx-t">현재 페이허그 사내 확정 진행 중</div></div>
+        </div>
+        <div class="rs"><div class="lb">이렇게 말하세요</div><div class="tx">"수수료율은 계약서에 기재되는 대로 적용됩니다. 제가 임의로 말씀드릴 수 없습니다."</div></div>
+      </div>
+
+      <div class="row">
+        <div class="rn">4</div>
+        <div class="rt"><div class="h">가입 ≠ 선정산 개시</div></div>
+        <div class="rd">가입이 끝나면 <b>매출 조회만</b> 됩니다. 돈은 아직 안 나옵니다. 계약·서류 심사·각 매출처 제신고가 모두 끝나야 선정산이 시작됩니다. <b>"가입했으니 내일부터 들어온다"고 말하면 안 됩니다.</b></div>
+        <div class="rs"><div class="lb">이렇게 말하세요</div><div class="tx">"가입은 첫 단계고요, 계약과 심사, 계좌 신고까지 끝나야 돈이 나옵니다."</div></div>
+      </div>
+
+      <div class="row hot">
+        <div class="rn">5</div>
+        <div class="rt"><div class="h">플랫폼 ID·비밀번호를 대신 입력하거나 적어두지 마세요</div></div>
+        <div class="rd">사장님의 배민·요기요·쿠팡이츠·여신협회 계정입니다. <b>수첩·카톡·메모장에 남기는 순간 사고</b>입니다. 반드시 <b>사장님이 직접 입력</b>하시게 하고, 화면에서 눈을 돌려 주세요.</div>
+        <div class="rs"><div class="lb">이렇게 말하세요</div><div class="tx">"비밀번호는 제가 보면 안 됩니다. 사장님이 직접 입력해 주세요."</div></div>
+      </div>
+
+      <div class="row hot">
+        <div class="rn">6</div>
+        <div class="rt"><div class="h">계좌를 사장님이 임의로 바꾸면 서비스가 멈춥니다</div></div>
+        <div class="rd">계약상 <b>사전 서면동의 없이는 변경 금지</b>이고, 무단 변경은 <b>이용 중지·계약 해지 사유</b>입니다. 앱에서도 계약 정보는 조회만 됩니다. 바꾸실 일이 생기면 <b>바꾸기 전에 1:1 문의</b>부터.</div>
+        <div class="rs"><div class="lb">이렇게 말하세요</div><div class="tx">"계좌는 임의로 바꾸시면 안 됩니다. 필요하시면 앱 1:1 문의로 먼저 요청해 주세요."</div></div>
+      </div>
+
+      <div class="row warn">
+        <div class="rn">7</div>
+        <div class="rt"><div class="h">"정산계좌"라고 뭉뚱그리지 마세요</div></div>
+        <div class="rd">계좌는 역할이 다릅니다. <b>락계좌(선정산 전용계좌)</b>는 매출대금이 모이는 곳이고, <b>입금계좌</b>는 사장님이 선정산금을 받는 곳입니다. 둘을 섞어 말하면 사장님이 엉뚱한 계좌를 바꿉니다.</div>
+        <div class="rs"><div class="lb">이렇게 말하세요</div><div class="tx">"매출이 모이는 계좌 말씀이신가요, 돈 받으시는 계좌 말씀이신가요?"</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 가맹점 앱 락계좌 개설 순서 안내 문구(20일 룰) · 빠른조회 미가입 시 입금계좌 등록 진입 차단 · 수수료율 미확정(문서 간 값 병존) · 이용계약서 제7·8조 및 양수도계약 제11조⑦ · 계약 용어상 전용계좌(락계좌)와 입금계좌 구분</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

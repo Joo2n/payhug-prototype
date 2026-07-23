@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S36 — 장애·문의 대응</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .ops { display: flex; flex-direction: column; gap: 15px; height: 100%; }
+  .top2 { display: grid; grid-template-columns: 1fr 1.75fr; gap: 18px; flex: 1; min-height: 0; }
+  .badge { white-space: nowrap; }
+
+  .box { border-radius: 18px; padding: 20px 24px; display: flex; flex-direction: column; }
+  .box.in  { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; }
+  .box.ad  { background: var(--surface); border: 1.5px solid var(--line); }
+  .box-h { font-size: 22px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.02em; margin-bottom: 4px; }
+  .box-s { font-size: 16px; color: var(--ink-3); font-weight: 500; margin-bottom: 14px; line-height: 1.4; }
+
+  .inflow { display: flex; flex-direction: column; gap: 6px; }
+  .inflow .node { min-width: 0; padding: 16px 20px; font-size: 18px; }
+  .inflow .node small { font-size: 14px; margin-top: 4px; }
+  .inflow .down { text-align: center; color: var(--line-2); font-size: 22px; font-weight: 700; line-height: 1; }
+  .why { margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--ink-2); }
+  .why b { color: var(--ph-forest); font-weight: 800; }
+
+  .tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; flex: 1; }
+  .tool { background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 17px 19px; display: flex; flex-direction: column; }
+  .tool-t { font-size: 19px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 8px; }
+  .tool-d { font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .tool-case {
+    margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--line-2);
+    font-size: 14px; line-height: 1.5; color: var(--ink-3);
+  }
+  .tool-case b { color: var(--ph-forest); font-weight: 800; }
+  .chip { font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink-3); }
+  .chip.ok { background: var(--ph-mint-tint); color: #0F7A3D; }
+  .chip.bad { background: var(--ph-danger-tint); color: var(--ph-danger); }
+  .chip.long { background: var(--ph-warning-tint); color: #B26A00; }
+
+  .verify { background: var(--ph-blue-tint); border: 1.5px solid #CFE4FF; border-radius: 16px; padding: 15px 24px; display: flex; align-items: center; gap: 22px; }
+  .verify .vh { font-size: 20px; font-weight: 900; color: var(--ph-blue-600); letter-spacing: -0.02em; flex-shrink: 0; width: 180px; line-height: 1.3; }
+  .verify p { font-size: 17px; line-height: 1.5; color: var(--ink-2); }
+  .verify p b { color: var(--ph-forest); font-weight: 800; }
+
+  .tbd-box { padding: 15px 24px; display: flex; align-items: center; gap: 22px; }
+  .tbd-box .tbd-h { font-size: 17px; margin-bottom: 0; flex-shrink: 0; }
+  .tbd3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 26px; flex: 1; }
+  .tbd-row { font-size: 16px; padding: 0; border-bottom: 0; border-left: 1px dashed var(--line-2); padding-left: 20px; }
+  .tbd3 .tbd-row:first-child { border-left: 0; padding-left: 0; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 5 · 정책 설명</div>
+    <div class="s-no">36</div>
+  </div>
+
+  <h1 class="s-title">문제가 생기면 <span class="em">이렇게</span> 처리됩니다</h1>
+  <p class="s-sub">접수는 앱 1:1 문의 한 곳으로 모입니다. 페이허그 안에서 무엇을 보고 처리하는지 알려드립니다.</p>
+
+  <div class="s-body">
+    <div class="ops">
+
+      <div class="top2">
+
+        <div class="box in">
+          <div class="box-h">접수는 앱 1:1 문의로</div>
+          <div class="box-s">사장님이 문제를 알리는 공식 창구</div>
+          <div class="inflow">
+            <div class="node mer"><b>사장님 — 가맹점 앱 1:1 문의</b><small>문의 작성 · 답변 확인</small></div>
+            <div class="down">↓</div>
+            <div class="node ph"><b>페이허그 1:1 문의함</b><small>운영이 문의를 열어 답변을 등록하고 상태를 관리합니다</small></div>
+          </div>
+          <div class="why">
+            <b>왜 문의로만 받나요?</b><br>
+            사장님이 <b>계좌나 가맹점 정보를 앱에서 직접 고칠 수 없기</b> 때문입니다. 계좌 변경·정보 수정은 모두 1:1 문의로 요청해야 처리됩니다.
+          </div>
+          <div class="why" style="margin-top:auto;padding-top:14px;border-top:1px dashed #C9E0B4">
+            <b>영업사원이 대신 처리할 수 없습니다.</b><br>
+            사장님이 직접 앱에서 문의를 남기시도록 안내해 주세요. 전화나 카톡으로 받은 요청은 기록이 남지 않아 처리가 누락됩니다.
+          </div>
+        </div>
+
+        <div class="box ad">
+          <div class="box-h">페이허그 어드민에서 이걸 봅니다</div>
+          <div class="box-s">문의가 들어오면 운영이 확인하는 화면 — 실제로 구현되어 있는 것만 적었습니다</div>
+          <div class="tools">
+            <div class="tool">
+              <div class="tool-t">스크래핑 장애 이력</div>
+              <div class="tool-d">매출 데이터를 못 긁어온 이력을 매출처별로 조회합니다. "어제 매출이 왜 안 잡히냐"는 문의를 여기서 확인합니다.</div>
+              <div class="chips">
+                <span class="chip">카드</span><span class="chip">배민</span><span class="chip">쿠팡이츠</span><span class="chip">요기요</span>
+                <span class="chip ok">정상</span><span class="chip bad">장애</span><span class="chip long">장기 장애</span>
+              </div>
+              <div class="tool-case"><b>이런 문의에 씁니다</b><br>"어제 배민 매출이 하나도 안 보여요"</div>
+            </div>
+            <div class="tool">
+              <div class="tool-t">1:1 문의함</div>
+              <div class="tool-d">사장님이 보낸 문의를 목록으로 받아 대화 형태로 답변합니다. 가맹점 단위로도 그 가맹점의 문의만 모아 볼 수 있습니다.</div>
+              <div class="chips"><span class="chip">문의 목록</span><span class="chip">답변 등록</span><span class="chip">상태 관리</span></div>
+              <div class="tool-case"><b>이런 문의에 씁니다</b><br>"입금계좌를 바꾸고 싶어요"</div>
+            </div>
+            <div class="tool">
+              <div class="tool-t">미정산 누락 추적</div>
+              <div class="tool-d">지급됐어야 하는데 빠진 건을 가맹점·거래일별로 찾아냅니다. 확인 후 개별 지급 처리로 이어집니다.</div>
+              <div class="chips"><span class="chip">누락 건 조회</span><span class="chip">가맹점 · 거래일별</span><span class="chip">페이허그 내부 전용</span></div>
+              <div class="tool-case"><b>이런 문의에 씁니다</b><br>"이 날짜 매출만 지급이 안 됐어요"</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="verify">
+        <div class="vh">락계좌 검증</div>
+        <p>페이허그는 <b>정기적으로 각 가맹점의 선정산 전용계좌(락계좌)가 그대로인지 확인</b>합니다. 사장님이 임의로 정산계좌를 되돌리는 등 <b>불일치가 발견되면 선정산이 중단</b>됩니다.<br>
+        계좌를 바꿔야 할 사정이 생기면 임의로 바꾸지 말고 <b>반드시 1:1 문의로 먼저 요청</b>하도록 안내해 주세요.</p>
+      </div>
+
+      <div class="tbd-box">
+        <div class="tbd-h"><span class="badge badge-tbd">협의 예정</span> <span>규정한 문서가<br>없습니다</span></div>
+        <div class="tbd3">
+          <div class="tbd-row"><span>담당 부서 · 에스컬레이션 경로</span><span class="v">협의 예정</span></div>
+          <div class="tbd-row"><span>장애 대응 SLA</span><span class="v">협의 예정</span></div>
+          <div class="tbd-row"><span>재시도 규칙</span><span class="v">협의 예정</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 어드민 스크래핑 장애 이력·1:1 문의·미정산 누락 추적 화면 실재 · 대응 SLA·에스컬레이션·재시도 규칙을 규정한 문서는 존재하지 않음</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

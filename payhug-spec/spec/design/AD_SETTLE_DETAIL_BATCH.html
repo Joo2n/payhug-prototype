@@ -1,0 +1,107 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">정산 상세 &gt; 배치 선택 상세</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_SETTLE_DETAIL_BATCH</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 정산현황 &gt; 정산 상세</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">배치 클릭 시 배분·원장 상세</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/981_2.png" alt="정산 상세 &gt; 배치 선택 상세">
+        <div class="mk" style="left:12%;top:38%">1</div>
+        <div class="dim" style="left:31%;top:24.8%;height:5%"></div>
+        <div class="mk" style="left:31%;top:27%">2</div>
+        <div class="dim" style="left:31%;top:31.4%;height:24.2%"></div>
+        <div class="mk" style="left:31%;top:43.5%">3</div>
+        <div class="dim" style="left:31%;top:59%;height:30%"></div>
+        <div class="mk" style="left:31%;top:74%">4</div>
+        <div class="dim" style="left:31%;top:92.5%;height:7%"></div>
+        <div class="mk" style="left:31%;top:95.5%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;정산 상세에서 <b>좌측 배치 선택 시 우측에 배분·원장이 채워진 상태</b> (variant)</span>
+        <span class="i red">'만나서결제'=라이더 현장 수령 → 매출 차감·수수료만 차감 · 여기 배분·원장은 락→모 스윕과 무관(회수 개념 혼동 주의 C5)</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">선택<br>표시</td><td class="kn-note">
+<span class="b">좌측 선택 행 파란 강조(왼쪽 세로 바) → 우측 상세 로드</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">배치<br>헤더</td><td class="kn-note">
+<span class="b">"가맹점명 | YYYY-MM-DD 정산 (매출 기준) | N건"</span><span class="i">총 금액 | 오프라인 차감 −금액 | 광고비 차감 −금액 | <b>실 지급</b> 금액 (차감 있을 때만 병기)</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">차감<br>내역</td><td class="kn-note">
+<span class="grp">미회수 차액 이월 (있을 때)</span><span class="i">"차액 정산(환수)이 당일 지급액을 초과하여 지급액은 0원 처리, 회수 못한 금액은 다음 정산에서 차감"</span><span class="grp">현장결제 차감 내역</span><span class="i">주문번호·매장명·매출원·결제수단(<b>현장카드·만나서결제</b> 등)·차감액</span><span class="grp">우리가게클릭비 차감 내역</span><span class="i">매출원·정산일·광고기간·광고비(−)·부가세</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">배분<br>요약</td><td class="kn-note">
+<span class="b">"이해관계자 배분 요약"</span><span class="grp">표 항목</span><span class="i">참여자(<b>법인</b>/<b>사업자</b> 뱃지)·역할·채권매입·시스템 이용료·이체 수수료·차액수수료·배분액·상태</span><span class="i">상태 : 이체완료(초록)·이체대기(노랑)·이체실패(빨강)·부채상계(보라)·기록용(회색) · 기록용은 맨 아래 정렬</span><span class="i">하단 <b>합계</b> 행 · 로딩 "로딩 중..." / 0건 "배분 집계 데이터가 없습니다."</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">원장<br>상세</td><td class="kn-note">
+<span class="b">"수수료 원장 상세" · 부제 "수수료 유형별 이해관계자 배분 내역"</span><span class="i">아코디언 : 시스템 이용료(건별 합산)·거래별 원장·배치레벨 원장, 헤더 클릭 접기/펼치기</span><span class="i">참여자·역할·(유형)·매출·원가·수익·VAT·순수익·배분액 · 소계 (유형 열은 유형 섞인 표에만)</span><span class="i">시스템/이체 수수료 음수 원장엔 <b>납부 → 상대방</b> 뱃지 · 배분액 +초록/−빨강 · 0건 "원장 데이터가 없습니다."</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

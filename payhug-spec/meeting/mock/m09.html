@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M09 — 계약 Step 1/4 · 약관 동의</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+    <div class="ham"><i></i><i></i><i></i></div>
+  </div>
+
+  <!-- progressBars.terms = [true,false,false,false] (L403-408) / off = #e5e7eb (L423) -->
+  <div class="prog">
+    <i class="on"></i>
+    <i style="background:#e5e7eb"></i>
+    <i style="background:#e5e7eb"></i>
+    <i style="background:#e5e7eb"></i>
+  </div>
+
+  <div class="wrap">
+    <div class="card">
+
+      <div class="h1">비대면 계약을 위해<br><span class="em">약관에 동의</span>해 주세요</div>
+      <div class="sub">안전한 서비스를 위해 꼭 필요한 절차예요</div>
+
+      <div class="terms" style="padding:0 8px">
+        <div class="trow">
+          <span class="cb"></span>
+          <span class="tx">(필수) 선정산 서비스 이용약관</span>
+          <span class="ch"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="trow">
+          <span class="cb"></span>
+          <span class="tx">(필수) 개인정보 수집·이용 동의</span>
+          <span class="ch"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="trow">
+          <span class="cb"></span>
+          <span class="tx">(필수) 매출채권 양도 동의</span>
+          <span class="ch"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="trow">
+          <span class="cb"></span>
+          <span class="tx">(선택) 개인정보 제3자 제공 동의 (선택)</span>
+          <span class="ch"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="trow">
+          <span class="cb"></span>
+          <span class="tx">(선택) 마케팅 정보 수신 동의 (선택)</span>
+          <span class="ch"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <!-- isRequiredAgree=false → bg-[#d1d5db] (L485) -->
+      <div class="btn big gray-off" style="margin-top:40px">다음 단계 진행하기</div>
+
+    </div>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · app/contract/terms/page.tsx L16·L403-408·L431-493 / flowStep = "terms", 전체 미체크 초기 상태. 버튼 활성 조건은 필수 약관 전체 동의(isRequiredAgree).<br>※ 약관 항목명은 코드에 하드코딩되어 있지 않고 <b>서버 제공 값</b>(terms API의 term.name / term.is_required)이다. 여기 표기한 5개 항목명은 기존 캡처(demo/img/1414-7891.png)에서 그대로 옮긴 것이며, 코드 원문이 아니다.</div>
+
+</div>
+</body>
+</html>

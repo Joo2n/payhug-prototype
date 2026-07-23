@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>M03 — 플랫폼 계정 연동 (전체 연결됨)</title>
+<link rel="stylesheet" href="mock.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div id="scr">
+
+  <div class="gnb">
+    <div class="logo"><span class="mark">P</span><span class="m">Pay</span><span class="h">hug</span></div>
+    <div class="ham"><i></i><i></i><i></i></div>
+  </div>
+
+  <div class="wrap">
+    <div class="card">
+
+      <div class="h1">플랫폼 계정을 등록해 주세요</div>
+      <div class="sub">매출 수집에 필요한 계정 정보를 입력해 주세요</div>
+
+      <!-- 여신금융협회 -->
+      <div class="plat">
+        <div class="plat-h">
+          <img class="ico" src="logo_card.png" alt="">
+          <div class="nm"><b>여신금융협회</b><span>회원가입 바로가기 ›</span></div>
+          <span class="bdg ok"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13.3337 4L6.00033 11.3333L2.66699 8" stroke="#28a544" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>연결됨</span>
+        </div>
+        <div class="rows">
+          <div class="inp sm">payhug_card</div>
+          <div class="inp sm ph">비밀번호</div>
+          <div class="btn sm re">재검증</div>
+        </div>
+      </div>
+
+      <!-- 배달의민족 -->
+      <div class="plat">
+        <div class="plat-h">
+          <img class="ico" src="logo_baemin.png" alt="">
+          <div class="nm"><b>배달의민족</b><span>배민 사장님 바로가기 ›</span></div>
+          <span class="bdg ok"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13.3337 4L6.00033 11.3333L2.66699 8" stroke="#28a544" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>연결됨</span>
+        </div>
+        <div class="rows">
+          <div class="inp sm">payhug_bm</div>
+          <div class="inp sm ph">비밀번호</div>
+          <div class="btn sm re">재검증</div>
+        </div>
+      </div>
+
+      <!-- 쿠팡이츠 -->
+      <div class="plat">
+        <div class="plat-h">
+          <img class="ico" src="logo_coupang.png" alt="">
+          <div class="nm"><b>쿠팡이츠</b><span>쿠팡이츠 사장님 바로가기 ›</span></div>
+          <span class="bdg ok"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13.3337 4L6.00033 11.3333L2.66699 8" stroke="#28a544" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>연결됨</span>
+        </div>
+        <div class="rows">
+          <div class="inp sm">payhug_cpe</div>
+          <div class="inp sm ph">비밀번호</div>
+          <div class="btn sm re">재검증</div>
+        </div>
+      </div>
+
+      <!-- 요기요 -->
+      <div class="plat">
+        <div class="plat-h">
+          <img class="ico" src="logo_yogiyo.png" alt="">
+          <div class="nm"><b>요기요</b><span>요기요 사장님 바로가기 ›</span></div>
+          <span class="bdg ok"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13.3337 4L6.00033 11.3333L2.66699 8" stroke="#28a544" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>연결됨</span>
+        </div>
+        <div class="rows">
+          <div class="inp sm">payhug_yo</div>
+          <div class="inp sm ph">비밀번호</div>
+          <div class="btn sm re">재검증</div>
+        </div>
+      </div>
+
+      <div class="btn pri" style="margin-top:30px">다음 단계</div>
+
+    </div>
+  </div>
+
+  <div class="note-src">코드 기반 재현 · register-accounts + PlatformAccountsEditor / 4개 행 status=verified, 다음 단계 활성(anyVerified=true)</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계좌 입금 내역</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">ST_AC</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 정산 &gt; 계좌 입금 내역</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">하나은행 전용계좌 실제 입금 리스트</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/828_2.png" alt="계좌 입금 내역">
+        <div class="dim" style="left:7%;top:7.7%;height:2.5%"></div>
+        <div class="mk" style="left:7%;top:8.9%">1</div>
+        <div class="dim" style="left:7%;top:11.6%;height:4.2%"></div>
+        <div class="mk" style="left:7%;top:13.6%">2</div>
+        <div class="dim" style="left:7%;top:18.4%;height:74%"></div>
+        <div class="mk" style="left:7%;top:53%">3</div>
+        <div class="sub" style="left:80%;top:20.5%">3-1</div>
+        <div class="sub" style="left:80%;top:27.5%">3-2</div>
+        <div class="mk" style="left:90%;top:46%">4</div>
+        <div class="mk" style="left:50%;top:96%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;하나은행 <b>전용계좌로 실제 입금된 내역</b> 리스트 (모바일 웹)</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;캡처는 <span class="red">예시(목업)</span> — 입금처가 "페이허그"로 반복 표기됨</span>
+        <span class="b"><span class="g">진입</span> &nbsp;대시보드 "계좌 입금 내역보기"에서 <b>사업자번호</b>를 달고 진입</span><span class="i">사업자번호 없으면 목록 대신 에러 화면 · 진입 시 계좌정보 + 입금내역 10건 자동 로드</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">가운데 제목 <b>"계좌 입금 내역"</b></span><span class="b">왼쪽 <b>뒤로가기</b> 화살표</span><span class="i">방문 기록이 있으면 <b>이전 화면</b>으로, 없으면 대시보드[MC_DASH]로 이동</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">계좌<br>정보</td><td class="kn-note">
+<span class="b"><b>하나은행</b> 로고 + 은행명 + 계좌번호</span><span class="i">입금 계좌는 항상 <b>하나은행 정산 전용계좌</b> · 은행명은 서버값이 비면 <b>"하나은행"</b> 기본 표시</span><span class="i">계좌번호는 <b>값이 있을 때만</b> 표시</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">입금<br>내역</td><td class="kn-note">
+<span class="grp">표 구성</span><span class="i">행 = <b>날짜</b>(좌) · <b>입금처명</b>+<b>시각</b>(가운데) · <b>금액</b>+<b>상태 뱃지</b>(우)</span><span class="i">입금처명 기본값 <b>"페이허그"</b> · 길면 …로 줄여서 표시</span><span class="i">시각 <b>HH:MM</b> · 금액 천단위 [,] 콤마 + "원"</span><span class="i">날짜는 <b>바로 위 행과 날짜가 다를 때만</b> 왼쪽에 M.D로 표기, 같은 날은 빈칸</span><span class="grp"><span class="sb">3-1</span> "미리 받는 돈" 뱃지</span><span class="i"><b>초록색</b> · 선정산 정상 입금(제외 대상 아님) · <b>클릭 없음</b></span><span class="grp"><span class="sb">3-2</span> "선정산 제외액" 뱃지</span><span class="i"><b>파란색</b> · 금액에 <b>밑줄</b> · <b>우측 금액·뱃지 영역</b>만 클릭됨</span><span class="i">뱃지 문구는 <b>서버가 내려주는 값</b>(화면에 하드코딩된 라벨 아님) — "미리 받는 돈" / "선정산 제외액"</span><span class="i red">"선정산 제외액"은 내부 정산 용어 — 가맹점 노출 표현 적정성 확인 필요</span><span class="grp">상황별 문구</span><span class="i">내역 없음 → "입금 내역이 없어요."</span><span class="i">첫 진입 로딩 → 페이지 로딩 화면 표시</span><span class="i">사업자번호 없음·조회 실패 → "정보를 불러올 수 없어요." + <b>[메인으로 가기]</b> → 대시보드[MC_DASH]</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">제외액<br>행 클릭</td><td class="kn-note">
+<span class="b"><b>선정산 제외액</b>(파랑) 건만 <b>우측 금액·뱃지 영역</b>이 클릭됨 <b>(행 전체 아님)</b></span><span class="i">누르면 <b>선정산 제외액 내역</b>[ST_AC_EX]으로 이동 · 해당 지급 건(payoutId) 기준 상세로 진입</span><span class="b"><b>미리 받는 돈</b>(초록) 건은 클릭 동작 없음</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">더불러<br>오기</td><td class="kn-note">
+<span class="b"><b>[내역 더 불러오기]</b> — 연두색 버튼</span><span class="i">다음 페이지가 <b>남아 있을 때만</b> 노출 (10건씩 페이징)</span><span class="i">누르면 다음 10건을 <b>목록 뒤에 이어 붙임</b></span><span class="i">불러오는 동안 <b>"불러오는 중..."</b>으로 바뀌고 버튼 비활성화</span><span class="i">캡처 기준 목록 하단(화면 아래·미노출 영역)에 위치</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

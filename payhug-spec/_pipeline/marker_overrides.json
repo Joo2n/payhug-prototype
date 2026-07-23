@@ -1,0 +1,9863 @@
+{
+ "914:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "1.5%",
+   "height": "10%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.5%",
+   "top": "6.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "13.8%",
+   "height": "11.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "19.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "26%",
+   "height": "12.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "32%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "40.3%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.5%",
+   "top": "41.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "44.8%",
+   "height": "25.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "12.5%",
+   "top": "57.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "72%",
+   "height": "19.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "12.5%",
+   "top": "81.5%",
+   "height": ""
+  }
+ ],
+ "943:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "1.5%",
+   "height": "2.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.9%",
+   "top": "2.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "6.8%",
+   "height": "3.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "8.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "13.9%",
+   "height": "57%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.9%",
+   "top": "27%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "3-1",
+   "left": "72.5%",
+   "top": "13.3%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "3-2",
+   "left": "82%",
+   "top": "13.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "90%",
+   "top": "18.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "15.6%",
+   "top": "22.3%",
+   "height": ""
+  }
+ ],
+ "1002:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "39.5%",
+   "top": "36.8%",
+   "height": "5.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "39.5%",
+   "top": "39.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "39.5%",
+   "top": "44.3%",
+   "height": "13.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "39.5%",
+   "top": "51%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "54.3%",
+   "top": "61.8%",
+   "height": ""
+  }
+ ],
+ "1005:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "39%",
+   "top": "35%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "39%",
+   "top": "36.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "39%",
+   "top": "39.4%",
+   "height": "22.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "39%",
+   "top": "50.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "55.5%",
+   "top": "66.4%",
+   "height": ""
+  }
+ ],
+ "1007:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41.3%",
+   "top": "37.1%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41.3%",
+   "top": "38.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41.3%",
+   "top": "41.6%",
+   "height": "18.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41.3%",
+   "top": "51%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "53.5%",
+   "top": "64.1%",
+   "height": ""
+  }
+ ],
+ "966:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33.8%",
+   "top": "10%",
+   "height": "3.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "33.8%",
+   "top": "11.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "64.3%",
+   "height": "34.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.3%",
+   "top": "81.5%",
+   "height": ""
+  }
+ ],
+ "986:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "90%",
+   "top": "64.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.9%",
+   "top": "63.5%",
+   "height": "35%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "81%",
+   "height": ""
+  }
+ ],
+ "961:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.6%",
+   "top": "11.8%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.2%",
+   "top": "12.85%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.6%",
+   "top": "22.6%",
+   "height": "13.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.2%",
+   "top": "29.2%",
+   "height": ""
+  }
+ ],
+ "952:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "27%",
+   "top": "11.1%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "27%",
+   "top": "12.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "91%",
+   "top": "63.7%",
+   "height": "2.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "91%",
+   "top": "64.8%",
+   "height": ""
+  }
+ ],
+ "979:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "45.5%",
+   "top": "11.6%",
+   "height": "2.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "45.5%",
+   "top": "12.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.8%",
+   "top": "64.3%",
+   "height": "34.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.8%",
+   "top": "73%",
+   "height": ""
+  }
+ ],
+ "971:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "43.7%",
+   "top": "10.4%",
+   "height": "3.0%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "43.7%",
+   "top": "12.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "16.2%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.3%",
+   "top": "17.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "68.7%",
+   "height": "30.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.2%",
+   "top": "83.5%",
+   "height": ""
+  }
+ ],
+ "1035:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "35.3%",
+   "top": "38%",
+   "height": "19%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "35.3%",
+   "top": "47.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "62.5%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "60.8%",
+   "top": "60.6%",
+   "height": ""
+  }
+ ],
+ "963:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.4%",
+   "top": "11.3%",
+   "height": "3.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.4%",
+   "top": "22.6%",
+   "height": "24%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "34.5%",
+   "height": ""
+  }
+ ],
+ "947:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "1.8%",
+   "height": "3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.3%",
+   "top": "3.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "6.3%",
+   "height": "9%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.3%",
+   "top": "10.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "16.4%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.3%",
+   "top": "17.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "20%",
+   "height": "41.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.3%",
+   "top": "40%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "63.9%",
+   "height": "35%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "12.3%",
+   "top": "82%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-1",
+   "left": "19.9%",
+   "top": "67%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-2",
+   "left": "43.1%",
+   "top": "67%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-3",
+   "left": "55.3%",
+   "top": "67%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-4",
+   "left": "70.4%",
+   "top": "67%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-5",
+   "left": "74.9%",
+   "top": "67%",
+   "height": ""
+  }
+ ],
+ "970:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.1%",
+   "top": "11.6%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.4%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.1%",
+   "top": "22.4%",
+   "height": "13.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.4%",
+   "top": "29.1%",
+   "height": ""
+  }
+ ],
+ "1004:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42.8%",
+   "top": "49.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "42.8%",
+   "top": "56%",
+   "height": ""
+  }
+ ],
+ "967:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "11.5%",
+   "height": "2.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "12.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "22.6%",
+   "height": "6.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "25.8%",
+   "height": ""
+  }
+ ],
+ "997:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "66.3%",
+   "top": "20.5%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "66.3%",
+   "top": "24.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "55.5%",
+   "height": "20.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.3%",
+   "top": "65.7%",
+   "height": ""
+  }
+ ],
+ "957:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "34%",
+   "top": "10%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "33.5%",
+   "top": "12.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.6%",
+   "top": "63.5%",
+   "height": "36%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.1%",
+   "top": "71%",
+   "height": ""
+  }
+ ],
+ "999:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41%",
+   "top": "35.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41%",
+   "top": "39.4%",
+   "height": "13.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41%",
+   "top": "57.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "41%",
+   "top": "63.7%",
+   "height": ""
+  }
+ ],
+ "958:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.4%",
+   "top": "2.1%",
+   "height": "3.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.6%",
+   "top": "4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.4%",
+   "top": "7.6%",
+   "height": "2.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.6%",
+   "top": "9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.4%",
+   "top": "11.6%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.6%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.4%",
+   "top": "15.8%",
+   "height": "4.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.6%",
+   "top": "17.85%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.4%",
+   "top": "22.3%",
+   "height": "52.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "11.6%",
+   "top": "48.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-1",
+   "left": "62.5%",
+   "top": "21.8%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-2",
+   "left": "71.5%",
+   "top": "21.8%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-3",
+   "left": "82.3%",
+   "top": "21.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "89.5%",
+   "top": "30%",
+   "height": ""
+  }
+ ],
+ "1019:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.5%",
+   "top": "37.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41%",
+   "top": "41.7%",
+   "height": "6.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41%",
+   "top": "44.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41%",
+   "top": "53%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "40.8%",
+   "top": "61.8%",
+   "height": ""
+  }
+ ],
+ "1022:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41.2%",
+   "top": "49.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41.2%",
+   "top": "54.3%",
+   "height": ""
+  }
+ ],
+ "975:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.2%",
+   "top": "35.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.2%",
+   "top": "38.9%",
+   "height": "15.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40.2%",
+   "top": "46.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "40.2%",
+   "top": "58%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "40.2%",
+   "top": "64.3%",
+   "height": ""
+  }
+ ],
+ "1020:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.5%",
+   "top": "92.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "95%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "97%",
+   "height": ""
+  }
+ ],
+ "1010:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "33%",
+   "top": "43%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33%",
+   "top": "47%",
+   "height": "6.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "33%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "33%",
+   "top": "56%",
+   "height": ""
+  }
+ ],
+ "1024:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41%",
+   "top": "44%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41%",
+   "top": "49.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41%",
+   "top": "51.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "41%",
+   "top": "53.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "41%",
+   "top": "55.5%",
+   "height": ""
+  }
+ ],
+ "1025:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "64%",
+   "top": "87%",
+   "height": "11%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "64%",
+   "top": "90%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "64%",
+   "top": "95.5%",
+   "height": ""
+  }
+ ],
+ "1032:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.5%",
+   "top": "40.7%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40.5%",
+   "top": "44.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "40.5%",
+   "top": "49.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "40.5%",
+   "top": "58.7%",
+   "height": ""
+  }
+ ],
+ "1034:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.5%",
+   "top": "38.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41%",
+   "top": "41.8%",
+   "height": "4.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41%",
+   "top": "44%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41%",
+   "top": "52%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "41%",
+   "top": "61%",
+   "height": ""
+  }
+ ],
+ "1031:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41.7%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41.7%",
+   "top": "52.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41.7%",
+   "top": "56.8%",
+   "height": ""
+  }
+ ],
+ "1023:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "70.5%",
+   "top": "90%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "70.5%",
+   "top": "93%",
+   "height": "6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "70.5%",
+   "top": "96%",
+   "height": ""
+  }
+ ],
+ "1028:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.5%",
+   "top": "19.6%",
+   "height": "4.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "29.5%",
+   "top": "21.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.5%",
+   "top": "25.8%",
+   "height": "60%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "top": "55%",
+   "left": "29.5%",
+   "height": ""
+  }
+ ],
+ "1027:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.5%",
+   "top": "19.3%",
+   "height": "5.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "29.5%",
+   "top": "21.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.5%",
+   "top": "25.8%",
+   "height": "60.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "29.5%",
+   "top": "56%",
+   "height": ""
+  }
+ ],
+ "1057:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42%",
+   "top": "39.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "42%",
+   "top": "47.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "42%",
+   "top": "51.5%",
+   "height": "4.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "42%",
+   "top": "53.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "42%",
+   "top": "60.9%",
+   "height": ""
+  }
+ ],
+ "1095:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "42.3%",
+   "top": "77.5%",
+   "height": "21.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42.3%",
+   "top": "80.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "42.3%",
+   "top": "85.7%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "42.3%",
+   "top": "91%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "42.3%",
+   "top": "96.4%",
+   "height": ""
+  }
+ ],
+ "1033:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "2.2%",
+   "height": "7.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "10.5%",
+   "height": "10%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "15.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "21.8%",
+   "height": "17.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12%",
+   "top": "30.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "42.4%",
+   "height": "29.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12%",
+   "top": "57.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "75.6%",
+   "height": "24%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "12%",
+   "top": "87%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "70.5%",
+   "top": "42.4%",
+   "height": "57.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "70.5%",
+   "top": "68%",
+   "height": ""
+  }
+ ],
+ "1094:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "42.5%",
+   "top": "76.5%",
+   "height": "21.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42.5%",
+   "top": "79%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "42.5%",
+   "top": "84.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "42.5%",
+   "top": "90%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "42.5%",
+   "top": "95.5%",
+   "height": ""
+  }
+ ],
+ "1097:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "57%",
+   "top": "44%",
+   "height": "24%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "57%",
+   "top": "46.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "57%",
+   "top": "52.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "57%",
+   "top": "58.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "57%",
+   "top": "65%",
+   "height": ""
+  }
+ ],
+ "938:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42.8%",
+   "top": "45%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "42.8%",
+   "top": "48.4%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "42.8%",
+   "top": "51%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "42.8%",
+   "top": "56.2%",
+   "height": ""
+  }
+ ],
+ "915:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "1.6%",
+   "height": "3.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "3.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "51.3%",
+   "top": "3.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "7.3%",
+   "height": "52.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12%",
+   "top": "33.4%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "3-1",
+   "left": "14%",
+   "top": "6.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "49.3%",
+   "top": "10.3%",
+   "height": ""
+  }
+ ],
+ "919:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "9.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "13.9%",
+   "height": "7.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "17.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "22.4%",
+   "height": "6.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12%",
+   "top": "25.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "29.9%",
+   "height": "31.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12%",
+   "top": "45.9%",
+   "height": ""
+  }
+ ],
+ "934:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33.7%",
+   "top": "7%",
+   "height": "18.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "33.7%",
+   "top": "16%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33.7%",
+   "top": "27%",
+   "height": "16.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "33.7%",
+   "top": "35%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33.7%",
+   "top": "44.3%",
+   "height": "16.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "33.7%",
+   "top": "52.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33.7%",
+   "top": "62.5%",
+   "height": "33%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "33.7%",
+   "top": "79%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "33.7%",
+   "top": "96%",
+   "height": ""
+  }
+ ],
+ "1093:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41.5%",
+   "top": "84.8%",
+   "height": "9.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41.5%",
+   "top": "86%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41.5%",
+   "top": "89%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41.5%",
+   "top": "91.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "41.5%",
+   "top": "94%",
+   "height": ""
+  }
+ ],
+ "1098:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.6%",
+   "top": "78.5%",
+   "height": "13.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.6%",
+   "top": "79.7%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.6%",
+   "top": "88.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.6%",
+   "top": "91.5%",
+   "height": ""
+  }
+ ],
+ "942:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41.3%",
+   "top": "45.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41.3%",
+   "top": "48.2%",
+   "height": "5.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41.3%",
+   "top": "50.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41.3%",
+   "top": "56.2%",
+   "height": ""
+  }
+ ],
+ "953:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31.5%",
+   "top": "2%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "31.5%",
+   "top": "4.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31.5%",
+   "top": "9.5%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "31.5%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31.5%",
+   "top": "18.5%",
+   "height": "51.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "31.5%",
+   "top": "44%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31.5%",
+   "top": "73%",
+   "height": "8.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "31.5%",
+   "top": "77.2%",
+   "height": ""
+  }
+ ],
+ "949:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "2.4%",
+   "top": "22.1%",
+   "height": "6.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "1.4%",
+   "top": "25.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "54%",
+   "top": "25.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "2.4%",
+   "top": "30.5%",
+   "height": "1.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "1.4%",
+   "top": "31.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "2.4%",
+   "top": "39.8%",
+   "height": "10%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "1.4%",
+   "top": "44.8%",
+   "height": ""
+  }
+ ],
+ "1026:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.8%",
+   "top": "2.7%",
+   "height": "3.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "28.5%",
+   "top": "4.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.8%",
+   "top": "8.8%",
+   "height": "8.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "28.5%",
+   "top": "13.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.8%",
+   "top": "19.7%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "28.5%",
+   "top": "21.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.8%",
+   "top": "25.3%",
+   "height": "61%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "28.5%",
+   "top": "55%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "29.8%",
+   "top": "87.2%",
+   "height": "9.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "28.5%",
+   "top": "92%",
+   "height": ""
+  }
+ ],
+ "929:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "35.5%",
+   "top": "8.5%",
+   "height": "17.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "35.5%",
+   "top": "17%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "35.5%",
+   "top": "27%",
+   "height": "16%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "35.5%",
+   "top": "35%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "35.5%",
+   "top": "44%",
+   "height": "8.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "35.5%",
+   "top": "48%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "35.5%",
+   "top": "53%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "35.5%",
+   "top": "57%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "35.5%",
+   "top": "62.5%",
+   "height": "28%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "35.5%",
+   "top": "76%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "35.5%",
+   "top": "93%",
+   "height": ""
+  }
+ ],
+ "924:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "29.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "34%",
+   "height": "7.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "37.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "42%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.8%",
+   "top": "44.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "46.9%",
+   "height": "19.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.8%",
+   "top": "56.8%",
+   "height": ""
+  }
+ ],
+ "917:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "43.7%",
+   "height": "6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "50.5%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "51.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "55.4%",
+   "height": "17%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.8%",
+   "top": "63.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "64%",
+   "top": "51.8%",
+   "height": ""
+  }
+ ],
+ "946:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "1.2%",
+   "top": "1.2%",
+   "height": "4.0%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "1.2%",
+   "top": "1.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "1.2%",
+   "top": "7.3%",
+   "height": "9.0%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "1.2%",
+   "top": "11.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "1.2%",
+   "top": "18.1%",
+   "height": "11.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "1.2%",
+   "top": "23.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "1.2%",
+   "top": "30.5%",
+   "height": "3.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "1.2%",
+   "top": "32.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "1.2%",
+   "top": "34.8%",
+   "height": "7.0%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "1.2%",
+   "top": "38.0%",
+   "height": ""
+  }
+ ],
+ "993:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "67.8%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.2%",
+   "top": "69%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "70.8%",
+   "height": "17.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.2%",
+   "top": "79.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "53%",
+   "top": "70.5%",
+   "height": ""
+  }
+ ],
+ "995:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "1%",
+   "height": "8.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "11%",
+   "height": "9.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "15.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "55%",
+   "top": "21.8%",
+   "height": "1.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "55%",
+   "top": "22.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "25%",
+   "height": "9.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.8%",
+   "top": "29.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "36.5%",
+   "height": "12.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "11.8%",
+   "top": "43%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "53.3%",
+   "height": "46%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "11.8%",
+   "top": "64%",
+   "height": ""
+  }
+ ],
+ "989:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "7.8%",
+   "height": "15.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "15%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "24.8%",
+   "height": "18.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "34%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "45.5%",
+   "height": "19%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.8%",
+   "top": "55%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "67.5%",
+   "height": "3%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.8%",
+   "top": "69%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "70.8%",
+   "height": "28.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "11.8%",
+   "top": "84%",
+   "height": ""
+  }
+ ],
+ "976:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "8%",
+   "height": "15%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.4%",
+   "top": "15.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "25.5%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.4%",
+   "top": "28%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "31%",
+   "height": "33.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.4%",
+   "top": "47%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "31.5%",
+   "top": "30.6%",
+   "height": ""
+  }
+ ],
+ "998:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "67.6%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "68.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "70.6%",
+   "height": "11.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "76.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "56.8%",
+   "top": "76.5%",
+   "height": ""
+  }
+ ],
+ "981:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "38%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31%",
+   "top": "24.8%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "31%",
+   "top": "27%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31%",
+   "top": "31.4%",
+   "height": "24.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "31%",
+   "top": "43.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31%",
+   "top": "59%",
+   "height": "30%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "31%",
+   "top": "74%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31%",
+   "top": "92.5%",
+   "height": "7%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "31%",
+   "top": "95.5%",
+   "height": ""
+  }
+ ],
+ "1001:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "67.5%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.5%",
+   "top": "68.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "70.5%",
+   "height": "13.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.5%",
+   "top": "77.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "68%",
+   "top": "77.3%",
+   "height": ""
+  }
+ ],
+ "1006:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "20.8%",
+   "height": "2.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.3%",
+   "top": "22.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "58%",
+   "top": "17.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "28.6%",
+   "height": "69%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.3%",
+   "top": "44%",
+   "height": ""
+  }
+ ],
+ "996:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "67.4%",
+   "height": "2.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.5%",
+   "top": "68.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "70.8%",
+   "height": "14.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.5%",
+   "top": "78%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "52.1%",
+   "top": "70.2%",
+   "height": ""
+  }
+ ],
+ "1003:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "67.4%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.9%",
+   "top": "68.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "70.4%",
+   "height": "11.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "top": "76%",
+   "left": "11.9%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "65.5%",
+   "top": "76.5%",
+   "height": ""
+  }
+ ],
+ "1009:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "7%",
+   "height": "13.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "13.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "24.5%",
+   "height": "8.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "28.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "36%",
+   "height": "3%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.8%",
+   "top": "37.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "40%",
+   "height": "15%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.8%",
+   "top": "42.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "15.6%",
+   "top": "44%",
+   "height": ""
+  }
+ ],
+ "1012:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "42.6%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "43.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "45.1%",
+   "height": "1.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "46.9%",
+   "height": "1.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.8%",
+   "top": "47.8%",
+   "height": ""
+  }
+ ],
+ "1036:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "59.4%",
+   "height": "4.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "61.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "64.3%",
+   "height": "3.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "65.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.8%",
+   "top": "68.0%",
+   "height": ""
+  }
+ ],
+ "1013:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "7.5%",
+   "height": "16%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.7%",
+   "top": "15.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "25.6%",
+   "height": "2.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.7%",
+   "top": "26.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "28.3%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.7%",
+   "top": "31.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "35.2%",
+   "height": "9.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.7%",
+   "top": "40%",
+   "height": ""
+  }
+ ],
+ "1060:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "42%",
+   "top": "42%",
+   "height": "15%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42%",
+   "top": "49.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "51.5%",
+   "top": "55.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "58.5%",
+   "top": "55.3%",
+   "height": ""
+  }
+ ],
+ "922:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "22.5%",
+   "top": "8.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "14%",
+   "height": "56%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "42%",
+   "height": ""
+  }
+ ],
+ "1059:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41.7%",
+   "top": "43%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41.7%",
+   "top": "47%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "49.5%",
+   "top": "55%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "55.5%",
+   "top": "55%"
+  }
+ ],
+ "937:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "33.2%",
+   "top": "6.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "15%",
+   "height": "54%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "35%",
+   "height": ""
+  }
+ ],
+ "950:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40%",
+   "top": "19.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40%",
+   "top": "25.5%",
+   "height": "49%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "44%",
+   "top": "70.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "40%",
+   "top": "78.6%",
+   "height": ""
+  }
+ ],
+ "932:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "29.9%",
+   "top": "6.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.6%",
+   "top": "14.5%",
+   "height": "55.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.5%",
+   "top": "42%",
+   "height": ""
+  }
+ ],
+ "945:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "38.6%",
+   "top": "24.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "38.6%",
+   "top": "28.8%",
+   "height": "42.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "38.6%",
+   "top": "50.1%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "38.6%",
+   "top": "75.4%",
+   "height": ""
+  }
+ ],
+ "927:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "26.8%",
+   "top": "6.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "15%",
+   "height": "55%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "40%",
+   "height": ""
+  }
+ ],
+ "959:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41.8%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "50.3%",
+   "top": "55.5%",
+   "height": ""
+  }
+ ],
+ "916:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "19.9%",
+   "top": "5.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "15%",
+   "height": "54.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "42%",
+   "height": ""
+  }
+ ],
+ "955:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "38.8%",
+   "top": "38.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "38.8%",
+   "top": "42.7%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "38.8%",
+   "top": "44.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "38.8%",
+   "top": "48%",
+   "height": "8.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "38.8%",
+   "top": "52.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "38.8%",
+   "top": "58%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "38.8%",
+   "top": "61%",
+   "height": ""
+  }
+ ],
+ "941:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "36.8%",
+   "top": "6.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "14.7%",
+   "height": "55.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "42.4%",
+   "height": ""
+  }
+ ],
+ "962:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "42%",
+   "top": "56.2%",
+   "height": ""
+  }
+ ],
+ "1038:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41%",
+   "top": "46.3%",
+   "height": "7.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41%",
+   "top": "46.9%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41%",
+   "top": "49.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "41%",
+   "top": "51.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "41%",
+   "top": "53.4%",
+   "height": ""
+  }
+ ],
+ "969:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "12.8%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "14%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "18.4%",
+   "height": "34.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "35.7%",
+   "height": ""
+  }
+ ],
+ "1030:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.9%",
+   "top": "8.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "14.6%",
+   "height": "55%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "30%",
+   "height": ""
+  }
+ ],
+ "935:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "30.7%",
+   "top": "35%",
+   "height": "30%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "30.7%",
+   "top": "30.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "30.7%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "61%",
+   "top": "69.2%",
+   "height": ""
+  }
+ ],
+ "940:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "42%",
+   "top": "42.8%",
+   "height": "3.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42%",
+   "top": "44.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "42%",
+   "top": "46.9%",
+   "height": "6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "42%",
+   "top": "49.9%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "51.5%",
+   "top": "56.2%",
+   "height": ""
+  }
+ ],
+ "1062:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "7.5%",
+   "height": "7.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "8.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.9%",
+   "top": "15.5%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "17.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "43%",
+   "top": "18.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.9%",
+   "top": "20.4%",
+   "height": ""
+  }
+ ],
+ "920:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "30.6%",
+   "top": "38.5%",
+   "height": "29%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "30.6%",
+   "top": "27.7%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "30.6%",
+   "top": "34.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "30.6%",
+   "top": "53%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "61.5%",
+   "top": "72%",
+   "height": ""
+  }
+ ],
+ "931:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33.5%",
+   "top": "42.3%",
+   "height": "4.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "33.5%",
+   "top": "44.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "33.5%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "58%",
+   "top": "56.4%",
+   "height": ""
+  }
+ ],
+ "973:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "12.2%",
+   "height": "3.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.6%",
+   "top": "13.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "18.3%",
+   "height": "31.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.6%",
+   "top": "34%",
+   "height": ""
+  }
+ ],
+ "977:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "12.7%",
+   "height": "2.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.5%",
+   "top": "13.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "18.6%",
+   "height": "8.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.5%",
+   "top": "23%",
+   "height": ""
+  }
+ ],
+ "982:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "7.8%",
+   "height": "3.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11%",
+   "top": "9.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "92.5%",
+   "top": "13.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "15.7%",
+   "height": "12.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11%",
+   "top": "22%",
+   "height": ""
+  }
+ ],
+ "1029:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "1.6%",
+   "height": "3.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.9%",
+   "top": "3.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "6.9%",
+   "height": "2.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "8.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "10.6%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.9%",
+   "top": "11.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "14.6%",
+   "height": "55.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.9%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "36%",
+   "top": "14.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-2",
+   "left": "42%",
+   "top": "14.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-3",
+   "left": "63.5%",
+   "top": "14.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-4",
+   "left": "74%",
+   "top": "14.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "92.5%",
+   "top": "18.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.2%",
+   "top": "72%",
+   "height": "12.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "12.9%",
+   "top": "78%",
+   "height": ""
+  }
+ ],
+ "925:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "30.5%",
+   "top": "38.5%",
+   "height": "29%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "29%",
+   "top": "28%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "29%",
+   "top": "34.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "29%",
+   "top": "53%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "62%",
+   "top": "72%",
+   "height": ""
+  }
+ ],
+ "994:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.8%",
+   "top": "37.3%",
+   "height": "26%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.8%",
+   "top": "40%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40.8%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "52%",
+   "top": "60%",
+   "height": ""
+  }
+ ],
+ "991:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.5%",
+   "top": "34.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.5%",
+   "top": "38.5%",
+   "height": "23%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40.5%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "40.5%",
+   "top": "65.7%",
+   "height": ""
+  }
+ ],
+ "1058:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.3%",
+   "top": "32.3%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.3%",
+   "top": "34.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.3%",
+   "top": "38.1%",
+   "height": "8.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40.3%",
+   "top": "42.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.3%",
+   "top": "46.8%",
+   "height": "5.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "40.3%",
+   "top": "49.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.3%",
+   "top": "52.3%",
+   "height": "10.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "40.3%",
+   "top": "57.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.3%",
+   "top": "64.4%",
+   "height": "3.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "40.3%",
+   "top": "66.2%",
+   "height": ""
+  }
+ ],
+ "987:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.2%",
+   "top": "35.9%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.2%",
+   "top": "37.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40.2%",
+   "top": "41.4%",
+   "height": "16.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40.2%",
+   "top": "49.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "51.5%",
+   "top": "61.6%",
+   "height": ""
+  }
+ ],
+ "988:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40%",
+   "top": "38.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "40%",
+   "top": "42.2%",
+   "height": "15.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "40%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "52%",
+   "top": "61.6%",
+   "height": ""
+  }
+ ],
+ "968:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "28.5%",
+   "top": "8.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7.6%",
+   "height": "2.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "8.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.6%",
+   "height": "48%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "42.5%",
+   "height": ""
+  }
+ ],
+ "944:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "1.9%",
+   "height": "4.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.5%",
+   "top": "4.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "7.5%",
+   "height": "14.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.5%",
+   "top": "14.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "22.6%",
+   "height": "11.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.5%",
+   "top": "28.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "37%",
+   "height": "11.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.5%",
+   "top": "43%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "51.2%",
+   "height": "41%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "11.5%",
+   "top": "71.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-1",
+   "left": "21.3%",
+   "top": "49.8%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-2",
+   "left": "76.5%",
+   "top": "49.8%",
+   "height": ""
+  }
+ ],
+ "964:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "26.4%",
+   "top": "7.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7.6%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "8.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.4%",
+   "height": "48%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "42%",
+   "height": ""
+  }
+ ],
+ "951:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "0.7%",
+   "height": "5.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.8%",
+   "top": "2.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "6.8%",
+   "height": "3.0%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.8%",
+   "top": "8.7%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "14%",
+   "top": "6.3%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-2",
+   "left": "36%",
+   "top": "6.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "11.6%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.8%",
+   "top": "13.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.8%",
+   "top": "18.3%",
+   "height": "48.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.8%",
+   "top": "29%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "15.5%",
+   "top": "18.6%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-2",
+   "left": "72%",
+   "top": "18.6%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-3",
+   "left": "52%",
+   "top": "22%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "34%",
+   "top": "38%",
+   "height": ""
+  }
+ ],
+ "956:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "16.1%",
+   "top": "8.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7.6%",
+   "height": "2.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "8.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.8%",
+   "height": "48%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "32%",
+   "height": ""
+  }
+ ],
+ "983:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "38.2%",
+   "top": "7.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7.5%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "8.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.9%",
+   "height": "47.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "42.7%",
+   "height": ""
+  }
+ ],
+ "978:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "36.1%",
+   "top": "7.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7.8%",
+   "height": "2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.3%",
+   "top": "8.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.9%",
+   "height": "48.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.3%",
+   "top": "43%",
+   "height": ""
+  }
+ ],
+ "972:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "32.5%",
+   "top": "8.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "7.9%",
+   "height": "1.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.3%",
+   "top": "8.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "19.5%",
+   "height": "47%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.3%",
+   "top": "30%",
+   "height": ""
+  }
+ ],
+ "960:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "21.8%",
+   "top": "7.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7.5%",
+   "height": "2.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "8.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.6%",
+   "height": "49%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "34%",
+   "height": ""
+  }
+ ],
+ "985:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "40.3%",
+   "top": "7.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7.5%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "8.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.2%",
+   "height": "48.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "42.4%",
+   "height": ""
+  }
+ ],
+ "992:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.9%",
+   "top": "34%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "75.5%",
+   "top": "1%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "75.5%",
+   "top": "2.8%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "93.5%",
+   "top": "1.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "75.5%",
+   "top": "6.8%",
+   "height": "28.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "75.5%",
+   "top": "20%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "75.5%",
+   "top": "90%",
+   "height": "9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "75.5%",
+   "top": "94.5%",
+   "height": ""
+  }
+ ],
+ "841:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "93%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "96%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "99%",
+   "height": ""
+  }
+ ],
+ "990:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "42.2%",
+   "top": "6.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "7.4%",
+   "height": "3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.3%",
+   "top": "8.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.3%",
+   "top": "18.7%",
+   "height": "47.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.3%",
+   "top": "42%",
+   "height": ""
+  }
+ ],
+ "918:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "1.4%",
+   "height": "3.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.5%",
+   "top": "3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "7%",
+   "height": "10.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.5%",
+   "top": "12%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "23%",
+   "top": "9.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "18.6%",
+   "height": "10.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.5%",
+   "top": "23.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "29.6%",
+   "height": "5.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.5%",
+   "top": "32.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "37.6%",
+   "height": "47.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "12.5%",
+   "top": "55%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-1",
+   "left": "18%",
+   "top": "36.7%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-2",
+   "left": "34.5%",
+   "top": "36.7%",
+   "height": ""
+  }
+ ],
+ "928:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "2%",
+   "height": "6.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.2%",
+   "top": "5.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "9%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.2%",
+   "top": "10.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "15.3%",
+   "height": "18.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.2%",
+   "top": "24.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "34.9%",
+   "height": "3.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.2%",
+   "top": "36.7%",
+   "height": ""
+  }
+ ],
+ "965:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "1.6%",
+   "height": "4.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12.3%",
+   "top": "2.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "7.2%",
+   "height": "4.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.3%",
+   "top": "9.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "12.6%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.3%",
+   "top": "13.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.9%",
+   "top": "16.2%",
+   "height": "80%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.3%",
+   "top": "23%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "23.5%",
+   "top": "20.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "88%",
+   "top": "22.8%",
+   "height": "19%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "88%",
+   "top": "31%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-1",
+   "left": "89.7%",
+   "top": "21.8%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "5-2",
+   "left": "94.7%",
+   "top": "21.8%",
+   "height": ""
+  }
+ ],
+ "939:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "34%",
+   "top": "23%",
+   "height": "9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "35%",
+   "top": "27.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "34%",
+   "top": "33%",
+   "height": "15%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "35%",
+   "top": "40.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "34%",
+   "top": "49%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "35%",
+   "top": "51.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "35%",
+   "top": "56%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "52%",
+   "top": "54%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-2",
+   "left": "52%",
+   "top": "56.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-3",
+   "left": "52%",
+   "top": "59%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "34%",
+   "top": "60%",
+   "height": "30%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "35%",
+   "top": "64%",
+   "height": ""
+  }
+ ],
+ "829:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "37%",
+   "height": "20%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "7%",
+   "top": "38.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "43%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "47.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "7%",
+   "top": "52%",
+   "height": ""
+  }
+ ],
+ "921:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "2.2%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "5.3%",
+   "height": "13.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "12.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "21.3%",
+   "height": "5.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "29.3%",
+   "height": "67%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12%",
+   "top": "61%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "26.5%",
+   "top": "28.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-2",
+   "left": "57.5%",
+   "top": "28.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-3",
+   "left": "94.5%",
+   "top": "28.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "47%",
+   "top": "97.4%",
+   "height": "1.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "47%",
+   "top": "98.4%",
+   "height": ""
+  }
+ ],
+ "833:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "1.2%",
+   "height": "4.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "3.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "8.8%",
+   "height": "13.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "15%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "32%",
+   "height": "55%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "55%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "89.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "92.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "6%",
+   "top": "95.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "7",
+   "left": "6%",
+   "top": "98.5%",
+   "height": ""
+  }
+ ],
+ "933:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "16%",
+   "top": "9.3%",
+   "height": "1.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "16%",
+   "top": "10.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "20%",
+   "top": "9.3%",
+   "height": "1.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "20%",
+   "top": "10.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "15%",
+   "height": "24%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.2%",
+   "top": "27%",
+   "height": ""
+  }
+ ],
+ "856:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "2.5%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "4.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "7.5%",
+   "height": "38%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "26.5%",
+   "height": ""
+  }
+ ],
+ "878:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "12.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "57%",
+   "top": "12.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "29%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "44.7%",
+   "height": ""
+  }
+ ],
+ "823:2": [
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "21%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "27.5%",
+   "height": ""
+  }
+ ],
+ "818:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "1.4%",
+   "height": "6.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "4.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "11%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "13.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "17.3%",
+   "height": "5.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "20.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "23.3%",
+   "height": "2%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "24.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "25.5%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "27.5%",
+   "height": ""
+  }
+ ],
+ "873:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "16.8%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "18.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "20.5%",
+   "height": "17.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "29.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "40.1%",
+   "height": "3.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "41.9%",
+   "height": ""
+  }
+ ],
+ "846:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.9%",
+   "top": "41.4%",
+   "height": "17.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.9%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.9%",
+   "top": "54%",
+   "height": ""
+  }
+ ],
+ "851:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41%",
+   "top": "96.8%",
+   "height": "1.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "41%",
+   "top": "97.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "41%",
+   "top": "98.2%",
+   "height": "1.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "41%",
+   "top": "98.6%",
+   "height": ""
+  }
+ ],
+ "845:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "2.5%",
+   "top": "1.1%",
+   "height": "2.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "1.2%",
+   "top": "2.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "16%",
+   "top": "15.6%",
+   "height": "4.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "14.7%",
+   "top": "17.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "16%",
+   "top": "22.3%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "14.7%",
+   "top": "24.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "16%",
+   "top": "31.9%",
+   "height": "12.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "14.7%",
+   "top": "38%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "46%",
+   "top": "96.6%",
+   "height": "1.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "44.3%",
+   "top": "97.3%",
+   "height": ""
+  }
+ ],
+ "868:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "45%",
+   "top": "7.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "11%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "12.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "17.1%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "18.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "20.7%",
+   "height": "17.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "29.3%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "91%",
+   "top": "21.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "40.4%",
+   "height": "3.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "41.9%",
+   "height": ""
+  }
+ ],
+ "862:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "1.5%",
+   "height": "96%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "10%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "18%",
+   "top": "32%",
+   "height": "3.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "18%",
+   "top": "33.8%",
+   "height": ""
+  }
+ ],
+ "884:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "3%",
+   "top": "1%",
+   "height": "7.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "3%",
+   "top": "4.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "10.8%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "17.4%",
+   "height": "5.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "20.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "25.9%",
+   "height": "3.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "27.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "55%",
+   "top": "27.6%",
+   "height": ""
+  }
+ ],
+ "936:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "88%",
+   "top": "15.2%",
+   "height": "2.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "87%",
+   "top": "16.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.2%",
+   "top": "18.5%",
+   "height": "2.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12.2%",
+   "top": "19.9%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12.2%",
+   "top": "21%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12.2%",
+   "top": "22.1%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "12.2%",
+   "top": "23.2%",
+   "height": ""
+  }
+ ],
+ "894:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "16.5%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "18.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "20.5%",
+   "height": "11.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "26%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "32.5%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "35%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "41.9%",
+   "height": ""
+  }
+ ],
+ "890:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "47%",
+   "top": "7.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "10.7%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "16.5%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "19.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "24%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "27.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "40%",
+   "height": "3.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "41.9%",
+   "height": ""
+  }
+ ],
+ "904:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4%",
+   "top": "0.9%",
+   "height": "2.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "4%",
+   "top": "2.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "43%",
+   "top": "6.8%",
+   "height": "10%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "43%",
+   "top": "11.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "20.5%",
+   "height": "7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "30.5%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "32.5%",
+   "height": ""
+  }
+ ],
+ "907:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "3%",
+   "top": "1%",
+   "height": "6.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "3%",
+   "top": "4.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "10.8%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "17%",
+   "height": "6.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "20%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "25.5%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "27.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "60%",
+   "top": "7.2%",
+   "height": ""
+  }
+ ],
+ "824:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "14.5%",
+   "height": "4.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "16.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "46%",
+   "height": "9.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "50.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "56.5%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "58.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "61.5%",
+   "height": "6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "64.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "69%",
+   "height": "10%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "74%",
+   "height": ""
+  }
+ ],
+ "901:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "10%",
+   "height": "38%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "13%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "22%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "44%",
+   "height": ""
+  }
+ ],
+ "898:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.7%",
+   "top": "17.7%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6.7%",
+   "top": "19.7%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "10%",
+   "top": "16.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6.7%",
+   "top": "23.8%",
+   "height": ""
+  }
+ ],
+ "840:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "33%",
+   "top": "6.9%",
+   "height": "1.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "33%",
+   "top": "7.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "15.5%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "18%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "23.5%",
+   "height": "25%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "35.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "51.2%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "53.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "59%",
+   "height": "9.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "64%",
+   "height": ""
+  }
+ ],
+ "817:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "14.5%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "8%",
+   "top": "17.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "22%",
+   "height": "21%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "8%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "44%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "8%",
+   "top": "46.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "69.5%",
+   "height": "10.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "8%",
+   "top": "74%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14%",
+   "top": "42%",
+   "height": "17%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "14%",
+   "top": "47%",
+   "height": ""
+  }
+ ],
+ "854:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4%",
+   "top": "4%",
+   "height": "36%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "4%",
+   "top": "20%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "13%",
+   "top": "41.5%",
+   "height": "9%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "13%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "13%",
+   "top": "53%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "13%",
+   "top": "55.4%",
+   "height": ""
+  }
+ ],
+ "830:2": [
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "3.5%",
+   "top": "6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "8.3%",
+   "height": "11.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "10.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "21%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "25%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "30.9%",
+   "height": "17%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "39.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "50.8%",
+   "height": "4.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "52.9%",
+   "height": ""
+  }
+ ],
+ "848:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "14.5%",
+   "height": "4.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "7%",
+   "top": "16.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "21.5%",
+   "height": "21%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "32%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "42.5%",
+   "height": "2.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "43.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "45%",
+   "height": "4.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "7%",
+   "top": "47.2%",
+   "height": ""
+  }
+ ],
+ "861:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11%",
+   "top": "20.5%",
+   "height": "14.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11%",
+   "top": "27.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11%",
+   "top": "38.4%",
+   "height": "3.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11%",
+   "top": "40%",
+   "height": ""
+  }
+ ],
+ "843:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "24%",
+   "top": "8.3%",
+   "height": "1.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "24%",
+   "top": "8.9%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "14.4%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "16.6%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "20.7%",
+   "height": "21.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "32%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "43.6%",
+   "height": "6.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "47%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "52.8%",
+   "height": "4.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "55.1%"
+  }
+ ],
+ "834:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "4%",
+   "top": "33%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "13%",
+   "top": "42%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "13%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "13%",
+   "top": "52.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "20.5%",
+   "top": "55.8%",
+   "height": ""
+  }
+ ],
+ "844:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "15%",
+   "height": "4.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "7%",
+   "top": "17%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "22%",
+   "height": "22.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "45%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "47%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "57.5%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "7%",
+   "top": "60%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "14.5%",
+   "top": "40%",
+   "height": "20.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "14.5%",
+   "top": "50%",
+   "height": ""
+  }
+ ],
+ "855:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "36%",
+   "top": "6.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "11.4%",
+   "height": "6.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "14.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "20.4%",
+   "height": "14.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "27.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "37.7%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "40%",
+   "height": ""
+  }
+ ],
+ "864:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "9%",
+   "height": "13.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "16%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "25%",
+   "height": "5.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "27.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "31.5%",
+   "height": "31%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12%",
+   "top": "46%",
+   "height": ""
+  }
+ ],
+ "866:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "15%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "21.5%",
+   "height": "17%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "43.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "88%",
+   "top": "13.5%",
+   "height": ""
+  }
+ ],
+ "889:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "7.5%",
+   "height": "40%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "15%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "44%",
+   "height": ""
+  }
+ ],
+ "871:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "8.2%",
+   "height": "1.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "8.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "14%",
+   "height": "5.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "16.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "22.5%",
+   "height": "53.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "49.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "77%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "78.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "85.5%",
+   "height": "8.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5%",
+   "top": "89.9%",
+   "height": ""
+  }
+ ],
+ "870:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "11.5%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "14.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "20%",
+   "height": "15.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "27.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "40%",
+   "height": ""
+  }
+ ],
+ "876:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "90%",
+   "top": "8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "8%",
+   "top": "10.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "12.5%",
+   "height": "29%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "27%",
+   "height": ""
+  }
+ ],
+ "850:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "11.8%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "7%",
+   "top": "14.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "18.5%",
+   "height": "3.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "20.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "22.4%",
+   "height": "10.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "27.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "91%",
+   "top": "20.2%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-3",
+   "left": "88%",
+   "top": "36%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-4",
+   "left": "88%",
+   "top": "52%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "87.5%",
+   "height": "4.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "7%",
+   "top": "89.9%",
+   "height": ""
+  }
+ ],
+ "877:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "14%",
+   "height": "11%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "19.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "26%",
+   "height": "54%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "53%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "82%",
+   "height": "18%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "91%",
+   "height": ""
+  }
+ ],
+ "881:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "7.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "12%",
+   "height": "8.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "16%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "22%",
+   "height": "16%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "43.5%",
+   "height": ""
+  }
+ ],
+ "887:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "1.8%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "5.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "14%",
+   "height": "5.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "16.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "21.5%",
+   "height": "7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "25%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "30%",
+   "height": "23.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "41.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "55%",
+   "height": "4.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5%",
+   "top": "57%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "62%",
+   "height": "10%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "5%",
+   "top": "67%",
+   "height": ""
+  }
+ ],
+ "859:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "31%",
+   "top": "8.6%",
+   "height": "0.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "31%",
+   "top": "9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "14.8%",
+   "height": "5.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "17.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "21.3%",
+   "height": "5.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "29%",
+   "height": "21%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "39.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "52.9%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "55%",
+   "height": ""
+  }
+ ],
+ "872:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "4.5%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "24%",
+   "top": "45%",
+   "height": "11%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "24%",
+   "top": "50.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "24%",
+   "top": "59.5%",
+   "height": ""
+  }
+ ],
+ "885:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6.5%",
+   "top": "2.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "11.5%",
+   "height": "7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6.5%",
+   "top": "15%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "20.5%",
+   "height": "14.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6.5%",
+   "top": "27.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6.5%",
+   "top": "40%",
+   "height": ""
+  }
+ ],
+ "867:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "7.5%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "11.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "16.5%",
+   "height": "15.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "90%",
+   "top": "17.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "34%",
+   "height": ""
+  }
+ ],
+ "906:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "57.5%",
+   "height": "3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "59%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "60.8%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "62%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "63.5%",
+   "height": "11.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "69.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "80.5%",
+   "height": "14%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "87.5%",
+   "height": ""
+  }
+ ],
+ "899:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "8.3%",
+   "height": "1.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "8.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "14.5%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "17%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "21.3%",
+   "height": "5.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "29.3%",
+   "height": "15.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "37%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "49.9%",
+   "height": "3.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "51.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "5.5%",
+   "top": "56%",
+   "height": ""
+  }
+ ],
+ "860:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "16.3%",
+   "height": "11.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "20%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "25.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "30.5%",
+   "height": "20.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "40.5%",
+   "height": ""
+  }
+ ],
+ "895:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "8%",
+   "height": "13.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "12%",
+   "top": "14.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "23.5%",
+   "height": "11.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "12%",
+   "top": "29.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "37%",
+   "height": "15%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "12%",
+   "top": "44.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "53.5%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "12%",
+   "top": "56.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12%",
+   "top": "61.5%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "12%",
+   "top": "64%",
+   "height": ""
+  }
+ ],
+ "891:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "21.3%",
+   "height": "7%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11%",
+   "top": "24.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "29.6%",
+   "height": "23.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11%",
+   "top": "41.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "12.5%",
+   "top": "54.7%",
+   "height": "17.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11%",
+   "top": "63.6%",
+   "height": ""
+  }
+ ],
+ "903:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.5%",
+   "top": "8%",
+   "height": "12%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "11.5%",
+   "top": "13.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.5%",
+   "top": "21.5%",
+   "height": "24%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "11.5%",
+   "top": "33%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.5%",
+   "top": "46.5%",
+   "height": "10%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "11.5%",
+   "top": "51%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.5%",
+   "top": "57%",
+   "height": "3.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "11.5%",
+   "top": "58.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.5%",
+   "top": "61%",
+   "height": "5.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "11.5%",
+   "top": "63.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "11.5%",
+   "top": "69.5%",
+   "height": "9.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "11.5%",
+   "top": "74%",
+   "height": ""
+  }
+ ],
+ "853:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4.5%",
+   "top": "0.7%",
+   "height": "3.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "4.5%",
+   "top": "2.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4.5%",
+   "top": "7.4%",
+   "height": "7.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "4.5%",
+   "top": "11%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "78%",
+   "top": "10%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4.5%",
+   "top": "16.4%",
+   "height": "13.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "4.5%",
+   "top": "23.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4.5%",
+   "top": "33.1%",
+   "height": "18.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "4.5%",
+   "top": "42.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "48.6%",
+   "height": ""
+  }
+ ],
+ "897:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "16.8%",
+   "height": "11.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "19.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "22%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "25%",
+   "height": ""
+  }
+ ],
+ "882:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "30.5%",
+   "top": "8.4%",
+   "height": "1.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "30.5%",
+   "top": "9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "9%",
+   "top": "14.1%",
+   "height": "6.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "9%",
+   "top": "17.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "9%",
+   "top": "22.7%",
+   "height": "14.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "9%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "9%",
+   "top": "40.5%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "9%",
+   "top": "42.7%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "15%",
+   "top": "46.8%",
+   "height": ""
+  }
+ ],
+ "902:2": [
+  {
+   "kind": "dim",
+   "left": "5.5%",
+   "top": "17.5%",
+   "height": "14%",
+   "label": ""
+  },
+  {
+   "kind": "mk",
+   "left": "5.5%",
+   "top": "20%",
+   "label": "1"
+  },
+  {
+   "kind": "mk",
+   "left": "5.5%",
+   "top": "24%",
+   "label": "2"
+  },
+  {
+   "kind": "mk",
+   "left": "5.5%",
+   "top": "28.5%",
+   "label": "3"
+  }
+ ],
+ "880:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "30.3%",
+   "height": "19.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "40.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "53.4%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "56.7%",
+   "height": "13.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "63.3%"
+  }
+ ],
+ "863:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "9%",
+   "height": "2.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "10.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "13%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "15.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "20%",
+   "height": "8%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "31%",
+   "height": "32%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "47%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "66%",
+   "height": "12%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "72%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "80%",
+   "height": "15%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "6%",
+   "top": "87.5%",
+   "height": ""
+  }
+ ],
+ "892:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "3.5%",
+   "top": "30%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "13.5%",
+   "top": "41.5%",
+   "height": "11%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "13.5%",
+   "top": "47%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "21%",
+   "top": "55.5%",
+   "height": ""
+  }
+ ],
+ "905:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4.5%",
+   "top": "2.5%",
+   "height": "94%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "4.5%",
+   "top": "8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "44%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "58%",
+   "height": ""
+  }
+ ],
+ "886:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "57%",
+   "height": "42%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "71%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "77.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "84%",
+   "height": ""
+  }
+ ],
+ "835:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "7.8%",
+   "height": "2.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "9.2%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "11.8%",
+   "height": "5.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "14.3%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "18.9%",
+   "height": "4.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "21%"
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "26.5%",
+   "height": "28.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "40.5%"
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "88%",
+   "top": "26.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "55.8%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "57%"
+  }
+ ],
+ "893:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "8%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "9.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "12.1%",
+   "height": "5.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "14.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "18.9%",
+   "height": "17.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "27.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "39.4%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "40.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "43.2%",
+   "height": "6.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "46.2%",
+   "height": ""
+  }
+ ],
+ "883:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "7.5%",
+   "height": "3.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "9.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "11.5%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "14%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "17.5%",
+   "height": "18%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "26.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "39.5%",
+   "height": "54.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "66%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "70%",
+   "top": "61.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "50%",
+   "top": "96.5%",
+   "height": ""
+  }
+ ],
+ "828:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "7.7%",
+   "height": "2.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "7%",
+   "top": "8.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "11.6%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "13.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "18.4%",
+   "height": "74%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "53%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "3-1",
+   "left": "80%",
+   "top": "20.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "3-2",
+   "left": "80%",
+   "top": "27.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "90%",
+   "top": "46%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "50%",
+   "top": "96%",
+   "height": ""
+  }
+ ],
+ "1066:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "78.2%",
+   "height": "2.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "79.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "44%",
+   "top": "79.3%",
+   "height": ""
+  }
+ ],
+ "874:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "7.8%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "11.5%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "13%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "15.8%",
+   "height": "16.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "24%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "35.5%",
+   "height": "63%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "62%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "50%",
+   "top": "99%",
+   "height": ""
+  }
+ ],
+ "879:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "8.2%",
+   "height": "1.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "12.6%",
+   "height": "4.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "14.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "19.1%",
+   "height": "17.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "27.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "38.6%",
+   "height": "2.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "40.4%",
+   "height": ""
+  }
+ ],
+ "1067:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "26.2%",
+   "height": "1.9%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "7%",
+   "top": "27.1%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "28%",
+   "top": "27.1%",
+   "height": ""
+  }
+ ],
+ "812:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "1%",
+   "height": "12.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "16.3%",
+   "height": "21.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "27.2%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "39.8%",
+   "height": "10.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "44.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "55.6%",
+   "height": "10.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "60.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "71.5%",
+   "height": "10.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5%",
+   "top": "76.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "87.4%",
+   "height": "11.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "5%",
+   "top": "93.1%",
+   "height": ""
+  }
+ ],
+ "816:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "8.5%",
+   "height": "11%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "13.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "21.5%",
+   "height": "7.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "25%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "30.5%",
+   "height": "26%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5.5%",
+   "top": "43%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "58.5%",
+   "height": "34%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "75%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "5.5%",
+   "top": "96.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "6",
+   "left": "5.5%",
+   "top": "98%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "7",
+   "left": "5.5%",
+   "top": "99.4%",
+   "height": ""
+  }
+ ],
+ "1068:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "89%",
+   "top": "28.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "89%",
+   "top": "24.5%",
+   "height": ""
+  }
+ ],
+ "826:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "9.5%",
+   "height": "6.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "12.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "16.5%",
+   "height": "19%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "26%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "92%",
+   "top": "12.8%",
+   "height": ""
+  }
+ ],
+ "825:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "9%",
+   "height": "3%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "10.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "15.6%",
+   "height": "3.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "17.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "22.1%",
+   "height": "2.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "23.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "26.4%",
+   "height": "55%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "40%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "18%",
+   "top": "26.9%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-2",
+   "left": "27%",
+   "top": "26.9%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-3",
+   "left": "42%",
+   "top": "35%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "55%",
+   "top": "45%",
+   "height": ""
+  }
+ ],
+ "1069:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "94%",
+   "top": "91.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "84%",
+   "top": "86%",
+   "height": ""
+  }
+ ],
+ "1070:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "89%",
+   "top": "85.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "71%",
+   "top": "81%",
+   "height": ""
+  }
+ ],
+ "832:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "32%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6.5%",
+   "top": "33.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "37.9%",
+   "height": "5.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6.5%",
+   "top": "40.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "43.9%",
+   "height": "5.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6.5%",
+   "top": "46.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "50%",
+   "height": "11.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6.5%",
+   "top": "55.9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "62.7%",
+   "height": "6%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6.5%",
+   "top": "65.7%",
+   "height": ""
+  }
+ ],
+ "831:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "8%",
+   "height": "4.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "10.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "15.8%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "18.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "22.8%",
+   "height": "3%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "24.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "27.5%",
+   "height": "70%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "34%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "88%",
+   "top": "30.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6.5%",
+   "top": "43%",
+   "height": ""
+  }
+ ],
+ "1071:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "88%",
+   "top": "29%",
+   "height": "25.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "88%",
+   "top": "30.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "88%",
+   "top": "42%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "88%",
+   "top": "53%",
+   "height": ""
+  }
+ ],
+ "822:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5.5%",
+   "top": "7.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "8.8%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "10.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "13%",
+   "height": "79.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "52%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "92%",
+   "top": "10.6%",
+   "height": ""
+  }
+ ],
+ "896:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "8.2%",
+   "height": "1.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6.5%",
+   "top": "9%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "12.3%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6.5%",
+   "top": "14.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "19%",
+   "height": "5.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6.5%",
+   "top": "21.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "25.5%",
+   "height": "68.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6.5%",
+   "top": "59.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "90%",
+   "top": "28.1%",
+   "height": ""
+  }
+ ],
+ "847:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "34.6%",
+   "height": "4.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "36.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "41.4%",
+   "height": "5.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "44%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "48%",
+   "height": "5.3%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "50.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "54.5%",
+   "height": "11.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "60%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "69.4%",
+   "height": "4.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "71.8%",
+   "height": ""
+  }
+ ],
+ "858:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "9.5%",
+   "height": "4.1%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "11.6%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "19.5%",
+   "height": "6.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "22.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "27.3%",
+   "height": "8.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "31.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "38.8%",
+   "height": "8.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "6%",
+   "top": "43%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "50.8%",
+   "height": "4.8%"
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "53.1%",
+   "height": ""
+  }
+ ],
+ "908:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "92%",
+   "top": "1.2%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "92%",
+   "top": "2.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "84%",
+   "top": "2.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "70%",
+   "top": "11%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "47%",
+   "top": "42%",
+   "height": ""
+  }
+ ],
+ "842:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "8.7%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "10.7%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "15.2%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5%",
+   "top": "17.1%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "21.4%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "5%",
+   "top": "23.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "26.4%",
+   "height": "55.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5%",
+   "top": "50%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-1",
+   "left": "16%",
+   "top": "27%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-2",
+   "left": "27%",
+   "top": "27%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "4-3",
+   "left": "41%",
+   "top": "36.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "15%",
+   "top": "60%",
+   "height": ""
+  }
+ ],
+ "820:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4%",
+   "top": "1.6%",
+   "height": "9.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "4%",
+   "top": "5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "13%",
+   "height": "2.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "5.5%",
+   "top": "14.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "91%",
+   "top": "14.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5.5%",
+   "top": "16.5%",
+   "height": "26%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "5.5%",
+   "top": "29%",
+   "height": ""
+  }
+ ],
+ "909:2": [
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "90%",
+   "top": "2.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "43%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "7%",
+   "top": "45%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "47%",
+   "height": "4%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "7%",
+   "top": "49%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "7%",
+   "top": "52%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "7%",
+   "top": "54.5%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "6%",
+   "top": "68%",
+   "height": ""
+  }
+ ],
+ "815:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "0%",
+   "top": "0.5%",
+   "height": "3.6%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "2%",
+   "top": "2.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "4%",
+   "top": "4.6%",
+   "height": "37%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "2.7%",
+   "top": "6.8%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "8%",
+   "top": "12%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "8%",
+   "top": "23%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "50%",
+   "top": "40%",
+   "height": ""
+  }
+ ],
+ "910:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "2.5%",
+   "top": "1%",
+   "height": "3.4%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "2.5%",
+   "top": "2.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "90%",
+   "top": "2.3%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "71%",
+   "top": "4.8%",
+   "height": "5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "71%",
+   "top": "5.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "71%",
+   "top": "8.2%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "71%",
+   "top": "10.5%",
+   "height": ""
+  }
+ ],
+ "838:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "1.4%",
+   "height": "3.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6.5%",
+   "top": "2.8%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "6.8%",
+   "height": "31.7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6.5%",
+   "top": "22.5%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "56%",
+   "top": "8%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-2",
+   "left": "8%",
+   "top": "16.5%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6.5%",
+   "top": "96%",
+   "height": "3.5%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6.5%",
+   "top": "97.7%",
+   "height": ""
+  }
+ ],
+ "852:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "1.3%",
+   "height": "4.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "6%",
+   "top": "3.4%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "6%",
+   "height": "82.5%"
+  },
+  {
+   "kind": "sub",
+   "label": "2-1",
+   "left": "18%",
+   "top": "9%",
+   "height": ""
+  },
+  {
+   "kind": "sub",
+   "label": "2-2",
+   "left": "14%",
+   "top": "15.3%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "6%",
+   "top": "22%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "6%",
+   "top": "88.5%",
+   "height": "11%"
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "6%",
+   "top": "94%",
+   "height": ""
+  }
+ ],
+ "836:2": [
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "5%",
+   "top": "29.4%",
+   "height": "19.2%"
+  },
+  {
+   "kind": "mk",
+   "label": "1",
+   "left": "5%",
+   "top": "31%",
+   "height": ""
+  },
+  {
+   "kind": "dim",
+   "label": "",
+   "left": "8%",
+   "top": "34%",
+   "height": "7%"
+  },
+  {
+   "kind": "mk",
+   "label": "2",
+   "left": "8%",
+   "top": "37.6%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "3",
+   "left": "8%",
+   "top": "43.4%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "4",
+   "left": "8%",
+   "top": "47%",
+   "height": ""
+  },
+  {
+   "kind": "mk",
+   "label": "5",
+   "left": "30%",
+   "top": "47%",
+   "height": ""
+  }
+ ]
+}

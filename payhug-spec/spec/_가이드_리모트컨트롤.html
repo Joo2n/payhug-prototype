@@ -1,0 +1,98 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Remote Control 가이드 · 폰으로 승인받기</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f6f7f9;color:#1a1f2b;line-height:1.72;font-size:15px}
+.wrap{max-width:820px;margin:0 auto;padding:28px 22px 80px}
+h1{font-size:24px;letter-spacing:-.4px;margin:.2em 0 .1em}
+.lead{color:#667085;font-size:14px;margin-bottom:18px}
+.banner{background:#fff8ec;border:1px solid #fec84b;border-radius:10px;padding:12px 15px;font-size:13.5px;color:#7a4b06;margin-bottom:22px}
+.card{background:#fff;border:1px solid #e4e7ec;border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card h2{font-size:17px;margin:0 0 10px;display:flex;align-items:center;gap:9px}
+.num{background:#3538cd;color:#fff;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex:none}
+.card h2 .em{font-size:20px}
+code{background:#eef0ff;color:#3538cd;border:1px solid #d3d6ff;border-radius:5px;padding:1px 7px;font-family:ui-monospace,Menlo,monospace;font-size:13.5px;font-weight:600}
+b{color:#111}
+ul{margin:8px 0;padding-left:22px}li{margin:5px 0}
+.step{background:#f5f7ff;border-left:3px solid #3538cd;border-radius:0 8px 8px 0;padding:9px 13px;margin:8px 0;font-size:14px}
+.tip{background:#e7f6ec;border:1px solid #a6e7c2;border-radius:8px;padding:9px 13px;font-size:13.5px;color:#0a6b40;margin:8px 0}
+.warn{background:#fdeceb;border:1px solid #f7b9b5;border-radius:8px;padding:9px 13px;font-size:13.5px;color:#a3271f;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:6px}
+th,td{border:1px solid #e4e7ec;padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f2f4f7;font-weight:700}
+.kbd{background:#222;color:#fff;border-radius:5px;padding:1px 7px;font-size:12.5px;font-weight:700}
+.oneline{font-size:15px;background:#eef0ff;border-radius:10px;padding:13px 16px;color:#26299c;font-weight:600;margin-bottom:18px}
+</style></head><body><div class="wrap">
+<h1>📱 Remote Control 가이드</h1>
+<div class="lead">데스크톱에서 도는 Claude Code 작업을 <b>폰에서 리모컨처럼</b> 보고 승인하기 · 초보용 · 2026.07.21</div>
+
+<div class="oneline">한 줄 요약 — 컴퓨터는 계속 작업하고, <b>자리를 비워도 폰으로 알림을 받아 폰에서 바로 승인</b>하면 세션이 이어집니다.</div>
+
+<div class="banner">⚠️ 앱 버튼·메뉴 이름은 iOS/Android·버전에 따라 조금 다를 수 있어요. <b>정확한 글자보다 순서·개념</b>을 따라오시면 됩니다. 막히면 저에게 물어보세요.</div>
+
+<div class="card"><h2><span class="em">🤔</span> 왜 쓰나요?</h2>
+<ul>
+<li>로컬 컴퓨터에서 <b>오래 걸리는 작업</b>(대량 분석·생성 등)을 돌리는 중</li>
+<li>자리를 비웠는데, 중간에 <b>"이거 승인해 주세요"</b>가 뜨면 컴퓨터로 돌아가야 함 😫</li>
+<li>Remote Control을 켜면 → 그 순간 <b>폰에 알림</b>이 오고, <b>폰에서 답</b>하면 컴퓨터 세션이 알아서 계속 진행 🎉</li>
+</ul></div>
+
+<div class="card"><h2><span class="num">1</span> 준비물 (딱 2개)</h2>
+<div class="step"><b>① 폰에 Claude 앱 설치</b><br>앱스토어/플레이스토어에서 <b>"Claude"</b> (제작사 Anthropic) 검색 → 설치</div>
+<div class="step"><b>② 컴퓨터와 같은 계정으로 로그인</b><br>지금 이 Claude Code에서 쓰는 것과 <b>동일한 계정</b>으로 앱에 로그인해야 연결됩니다.<br>계정이 헷갈리면 터미널에 <code>/status</code> 를 쳐서 확인할 수 있어요.</div>
+<div class="warn">계정이 <b>API 키</b>가 아니라 <b>claude.ai 구독 계정</b>이어야 Remote Control이 됩니다. 안 되면 터미널에 <code>/login</code> 으로 claude.ai 로그인.</div>
+</div>
+
+<div class="card"><h2><span class="num">2</span> 켜는 법</h2>
+<p><b>방법 A — 지금 이 세션에 바로 붙이기 (가장 쉬움)</b></p>
+<div class="step">지금 대화하는 <b>입력창</b>에 그대로 입력:<br><code>/remote-control</code></div>
+<p style="margin-top:14px"><b>방법 B — 새 세션으로 시작</b></p>
+<div class="step">터미널에서:<br><code>claude --remote-control</code><br><span style="color:#667085;font-size:13px">※ 이 세션 입력창에서 실행하려면 앞에 <span class="kbd">!</span> 를 붙여 <code>! claude --remote-control</code> 처럼 칠 수 있어요.</span></div>
+<div class="tip">✅ 켜지면 화면에 <b>연결용 링크(URL) 또는 QR 코드</b>가 나타납니다. 이걸 폰으로 여는 게 다음 단계예요. (QR이 바로 안 보이면 <span class="kbd">스페이스바</span>를 눌러보세요.)</div>
+</div>
+
+<div class="card"><h2><span class="num">3</span> 폰 연결 + 알림 켜기</h2>
+<div class="step"><b>① 세션 열기</b> — 아래 중 편한 방법 하나<br>
+<ul><li><b>QR 스캔</b>: 폰 카메라(또는 앱 QR 스캔)로 터미널의 QR 촬영 → 세션 자동 열림 (제일 확실)</li>
+<li><b>앱에서 찾기</b>: Claude 앱 하단 <b>"Code"</b> 탭 → 내 세션(녹색 점=온라인) 선택</li>
+<li><b>URL 열기</b>: 터미널에 뜬 링크를 앱/브라우저에 붙여넣기</li></ul></div>
+<div class="step"><b>② 푸시 알림 켜기 (중요!)</b><br>앱 <b>설정(Settings) → 알림(Notifications)</b>에서 <b>"승인/작업 필요 시 알림"</b> 계열 항목을 <b>ON</b><br><span style="color:#667085;font-size:13px">보통 "Push when actions required" / "Push when Claude decides" 같은 이름</span></div>
+<div class="step"><b>③ 폰 시스템 알림 허용</b><br>iOS: 설정 → 알림 → Claude → 알림 허용 <b>ON</b><br>Android: 설정 → 앱 → Claude → 알림 → 허용</div>
+</div>
+
+<div class="card"><h2><span class="num">4</span> 평소 사용 흐름</h2>
+<ul>
+<li>컴퓨터 세션이 작업하다가 <b>승인이 필요</b>해짐</li>
+<li>→ 폰에 <b>푸시 알림</b>: "승인이 필요합니다"</li>
+<li>→ 알림 탭 → 폰에서 <b>내용 확인</b> → 답 입력(예: <code>승인</code>/<code>approve</code>) 또는 버튼 탭</li>
+<li>→ 컴퓨터 세션이 그 답을 받아 <b>계속 진행</b> ✅</li>
+</ul>
+<div class="tip">핵심: <b>실제 작업은 컴퓨터에서</b> 돌고(파일·MCP 다 씀), 폰은 <b>모니터링 + 승인</b>만 합니다.</div>
+</div>
+
+<div class="card"><h2><span class="num">5</span> 문제 해결 체크리스트</h2>
+<p><b>푸시가 안 와요</b></p>
+<ul><li>앱 설정에서 "승인 필요 시 알림"이 <b>ON</b>인지</li>
+<li>폰 시스템에서 Claude 알림이 <b>허용</b>인지</li>
+<li>앱을 <b>완전히 닫았다가 다시 열기</b> (알림 토큰 갱신)</li>
+<li>컴퓨터·폰 모두 <b>인터넷 연결</b> 확인</li></ul>
+<p style="margin-top:12px"><b>연결이 끊겨요</b></p>
+<ul><li>컴퓨터 <b>터미널이 계속 켜져</b> 있어야 함 (닫으면 세션 종료)</li>
+<li>오래(약 10분+) 오프라인이면 종료 → 다시 <code>claude --remote-control</code></li>
+<li>회사 WiFi·방화벽이 막을 수 있음 → 개인 WiFi로 시도</li></ul>
+</div>
+
+<div class="card"><h2><span class="num">6</span> Slack이랑 뭐가 달라요?</h2>
+<table>
+<tr><th></th><th>Remote Control (추천)</th><th>Slack (@Claude)</th></tr>
+<tr><td><b>시작</b></td><td>내 컴퓨터 터미널</td><td>Slack 채널에서 @Claude</td></tr>
+<tr><td><b>실행 위치</b></td><td>내 컴퓨터 (파일·MCP 다 접근)</td><td>클라우드 (내 파일 접근 X)</td></tr>
+<tr><td><b>알림·응답</b></td><td>폰 Claude 앱 푸시 → 폰에서 응답</td><td>Slack 메시지로 응답</td></tr>
+<tr><td><b>이럴 때</b></td><td>내 로컬 작업을 폰으로 관리</td><td>팀이 채널에서 같이 검토</td></tr>
+</table>
+<div class="tip">지금 <b>이 세션</b>(당신 파일·캡처·Figma 파이프라인)을 폰으로 이어받으려면 → <b>Remote Control</b>이 맞습니다. Slack @Claude는 별도 클라우드 세션이라 이 작업을 못 이어받아요.</div>
+</div>
+
+<div class="card" style="background:#eef0ff;border-color:#d3d6ff"><h2><span class="em">🚀</span> 지금 바로 해보기</h2>
+<p style="margin:4px 0 0">입력창에 <code>/remote-control</code> 입력 → 뜬 QR을 폰 Claude 앱으로 스캔 → 알림 ON. 끝!<br>막히는 단계 있으면 몇 번인지 알려주세요. 같이 잡아드릴게요.</p></div>
+
+</div></body></html>

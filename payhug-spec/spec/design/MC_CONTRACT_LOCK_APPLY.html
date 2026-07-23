@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">계약 신청 &gt; 3단계 선정산 락계좌 &gt; 계좌 개설 안내(QR·PC)</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">MC_CONTRACT_LOCK_APPLY</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">mobile web</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 계약 &gt; 3단계 선정산 락계좌 &gt; 계좌 개설 안내</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">출금전용 우선 개설, 20일 룰 안내(가설). 하나은행 My브랜치</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock mob">
+        <img src="../captures/895_2.png" alt="계약 신청 &gt; 3단계 선정산 락계좌 &gt; 계좌 개설 안내(QR·PC)">
+        <div class="dim" style="left:12%;top:8%;height:13.5%"></div>
+        <div class="mk" style="left:12%;top:14.5%">1</div>
+        <div class="dim" style="left:12%;top:23.5%;height:11.5%"></div>
+        <div class="mk" style="left:12%;top:29.3%">2</div>
+        <div class="dim" style="left:12%;top:37%;height:15%"></div>
+        <div class="mk" style="left:12%;top:44.5%">3</div>
+        <div class="dim" style="left:12%;top:53.5%;height:6.5%"></div>
+        <div class="mk" style="left:12%;top:56.8%">4</div>
+        <div class="dim" style="left:12%;top:61.5%;height:5%"></div>
+        <div class="mk" style="left:12%;top:64%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;계약 신청 <b>3단계</b> — 하나은행 My브랜치에서 <b>선정산 락계좌 2종</b>을 개설하도록 안내하는 정적 화면 (입력·조회·서버호출 없음)</span>
+        <span class="b" style="margin-top:5px"><span class="g">데이터</span> &nbsp;QR은 <b>고정 이미지</b>(하나은행 My브랜치), 값 입력·검증 없음</span>
+        <span class="b" style="margin-top:5px"><span class="g">기기 분기</span> &nbsp;접속 화면 폭에 따라 <b>제목 · QR 크기 · 이동버튼/안내문</b>이 자동으로 갈림 (폭 좁으면 모바일 · 넓으면 PC)</span><span class="i">캡처는 <b>모바일</b> 상태 (제목·이동버튼·작은 QR 노출)</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">진행표시<br>· 제목</td><td class="kn-note">
+<span class="b">상단 <b>진행 단계 막대</b> 5칸 중 <b>3번째 단계 진행 중</b></span><span class="i">앞 2칸 = 진한 색 채움 · 3번째 = 연두 강조 · 뒤 2칸 = 회색(미진행)</span><span class="grp">제목 (기기별 분기)</span><span class="i">모바일 → <b>"하나은행 My브랜치에서 계좌를 개설해 주세요"</b></span><span class="i">PC → <b>"휴대폰 카메라로 QR코드를 스캔해 주세요"</b></span><span class="b">안내문 : "아래 <b>두 계좌를 모두</b> 개설해 주세요"</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">두 계좌<br>안내</td><td class="kn-note">
+<span class="b">개설할 <b>계좌 2종</b>을 카드로 안내 (라벨 원문 고수)</span><span class="grp">① 펌뱅킹 출금전용 계좌</span><span class="i">설명 : "선정산금이 입금되는 전용 계좌"</span><span class="grp">② 입출금이 자유로운 사업자계좌</span><span class="i">설명 : "정산금을 입금 받을 계좌"</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">QR<br>· 이동</td><td class="kn-note">
+<span class="b"><b>하나은행 My브랜치 QR</b> 표시 (고정 이미지)</span><span class="i">크기 : 모바일 = 작게 · PC = 크게</span><span class="grp">모바일일 때</span><span class="i"><b>[하나은행 My브랜치로 이동]</b> 버튼 → 하나은행 My브랜치 모바일 페이지가 <b>새 탭</b>으로 열림 (외부 링크)</span><span class="grp">PC일 때</span><span class="i">버튼 없이 안내문만 → "모바일에서만 접속 가능한 페이지입니다. 휴대폰으로 QR코드를 스캔해 주세요."</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">유의<br>사항</td><td class="kn-note">
+<span class="b">개설 순서·유의사항 <b>3줄 안내</b> (문구 원문)</span><span class="i">"출금전용 계좌를 먼저 개설 후, 입출금 계좌를 개설해 주세요"</span><span class="i">"일반 입출금 계좌를 먼저 개설하면 <b>20일 뒤에</b> 출금전용 계좌 개설이 가능해요"</span><span class="i red">20일 룰 근거·기간은 가설 — 개발 확인 필요</span><span class="i">"계좌 개설 후 돌아와서 아래 버튼을 눌러주세요"</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">하단<br>버튼</td><td class="kn-note">
+<span class="b"><b>[계좌 개설 완료]</b> 버튼 → 통장 업로드 화면<b>[MC_CONTRACT_LOCK_UPLOAD]</b>으로 이동</span><span class="i red">실제 개설 여부를 확인하지 않고 눌러도 그냥 다음으로 넘어감 — 검증 시점 정책 확인 필요</span><span class="i">진행 컨텍스트(대상 사업자 · 사업자 추가 · 수정 모드)를 뒤로 넘겨 다음 단계로 전달</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

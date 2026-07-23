@@ -1,0 +1,160 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">가맹점 관리 &gt; 가맹점 상세</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_MERCHANT_DT</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 가맹점관리 &gt; 가맹점 상세</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">가맹점 종합 상세 · 관리자만 편집, 파트너 조회 전용</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/1033_2.png" alt="가맹점 관리 &gt; 가맹점 상세">
+        <div class="dim" style="left:12%;top:0.5%;height:1.6%"></div>
+        <div class="mk" style="left:11.2%;top:1.3%">1</div>
+        <div class="dim" style="left:12%;top:2.5%;height:2.3%"></div>
+        <div class="mk" style="left:11.2%;top:3.6%">2</div>
+        <div class="dim" style="left:12%;top:5.3%;height:4.3%"></div>
+        <div class="mk" style="left:11.2%;top:7.5%">3</div>
+        <div class="dim" style="left:12%;top:10.2%;height:7.6%"></div>
+        <div class="mk" style="left:11.2%;top:14%">4</div>
+        <div class="dim" style="left:12%;top:18.5%;height:16%"></div>
+        <div class="mk" style="left:11.2%;top:26.5%">5</div>
+        <div class="dim" style="left:12%;top:35.3%;height:6%"></div>
+        <div class="mk" style="left:11.2%;top:38.3%">6</div>
+        <div class="dim" style="left:12%;top:42.2%;height:8.3%"></div>
+        <div class="mk" style="left:11.2%;top:46.4%">7</div>
+        <div class="dim" style="left:12%;top:51.4%;height:14.5%"></div>
+        <div class="mk" style="left:11.2%;top:58.6%">8</div>
+        <div class="dim" style="left:70.3%;top:10.1%;height:6.2%"></div>
+        <div class="mk" style="left:69.6%;top:13.2%">9</div>
+        <div class="dim" style="left:70.3%;top:16.6%;height:12.3%"></div>
+        <div class="mk" style="left:69.6%;top:22.7%">10</div>
+        <div class="dim" style="left:70.3%;top:29.8%;height:12.4%"></div>
+        <div class="mk" style="left:69.6%;top:36%">11</div>
+        <div class="dim" style="left:70.3%;top:43.7%;height:8.8%"></div>
+        <div class="mk" style="left:69.6%;top:48.1%">12</div>
+        <div class="dim" style="left:70.3%;top:53.6%;height:14.1%"></div>
+        <div class="mk" style="left:69.6%;top:60.7%">13</div>
+        <div class="dim" style="left:70.3%;top:68.4%;height:21.3%"></div>
+        <div class="mk" style="left:69.6%;top:79%">14</div>
+        <div class="dim" style="left:70.3%;top:90.2%;height:9.7%"></div>
+        <div class="mk" style="left:69.6%;top:95%">15</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;가맹점 1곳의 <b>계약·서류·계약서·정산 상품·수수료·부채·이체</b>를 모두 관리하는 종합 상세. <b>어드민(ADMIN·PAYHUG)만 편집</b>, 파트너는 조회 전용</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;예시(목업) — <b>김성호떡볶이 본점 · 승인완료 · 정산 활성</b> 기준</span>
+        <span class="i">진입 시 자동 로드(가맹점·정산 배정·상품 목록·서명 현황 병렬 조회), 승인+정산활성이면 최상단에 예상정산 경고 배너</span>
+        <span class="b red">전체 높이 캡처 — 15개 섹션 전부 표시 · 수수료율·"매일 11:30" 지급일 근거 미확정(C1·C2), 개업일 "2021.-0.5-"는 목업 포맷 오류</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">예상정산</td><td class="kn-note">
+아직 실제 매출이 들어오지 않은 날은 <b>요일별 평균 매출</b>로 정산 금액을 미리 예측해 해당 날짜에 정산 처리한다는 예고 배너다. 예상 정산 금액은 <b>순지급액 × 할인율</b>로 산출하며, 대상 요일·평균 매출·수수료·마지막 실제 데이터 수신일을 함께 보여 준다. 실제 데이터가 늦어질 때만 노출된다.
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">헤더·<br>액션</td><td class="kn-note">
+상호명과 함께 <b>승인완료·정산활성·이관·수수료면제·회수전용</b> 등 현재 상태 뱃지, 담당자, 같은 대표의 여러 사업자 전환 버튼이 놓인다. 우측 액션은 가맹점 승인/반려, 수동 이체, 과거 매출 데이터 수집, 비밀번호 초기화, 하드리셋으로 상태와 권한에 따라 노출이 달라진다.
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">담당·<br>투자자</td><td class="kn-note">
+<b>소개 파트너</b>는 담당자와 별개로 계약서의 파트너 체인·직인 생성 근거가 된다. <b>담당자</b>는 내부 관리 배정, <b>투자자</b>는 승인 전제 조건으로 매칭 후 매출 건전성 검증이 끝나야 가맹점을 승인할 수 있다. 이미 승인된 뒤 파트너를 바꾸면 계약서 반영을 위해 재서명 요청이 필요하다.
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">기본<br>정보</td><td class="kn-note">
+상호명·사업자번호·대표자·사용자·휴대폰(통신사)·업종·업태·개업일·주소 등 가맹점 원장 정보를 조회하고 수정하는 영역이다. 계약·정산의 기준이 되는 기본 신원 정보를 담는다.
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">계정·<br>증빙</td><td class="kn-note">
+플랫폼별(여신금융협회 카드·배민·쿠팡이츠·요기요) 로그인 계정 연결 상태, 락계좌 연동 상태(정상/이상/장애/스킵), <b>데이터 수집</b>·<b>선정산 포함</b> 토글을 관리한다. 정산계좌 불일치·수집 오류·인증 실패 같은 경고가 계정별로 뜬다. 오른쪽 증빙 서류에서는 사업자등록증·신분증·선정산 전용계좌(통장사본) 미리보기와 하나은행 빠른조회·쿠콘 계좌 등록 상태, 락계좌 검증을 확인한다.
+          </td></tr>
+          <tr><td class="kn-no">6</td><td class="kn-nm">계약·<br>서명</td><td class="kn-note">
+현재 유효한 선정산 서비스 이용계약서의 서명일·PDF 미리보기·다운로드와 <b>재서명 요청</b>을 제공한다. 서명 현황은 본사·소개 파트너·가맹점 각각의 서명 완료 일시와 전원 완료 여부를 보여 주고, 약관 동의 이력에는 동의 일시가 남는다.
+          </td></tr>
+          <tr><td class="kn-no">7</td><td class="kn-nm">1:1<br>문의</td><td class="kn-note">
+가맹점이 올린 문의를 최근순으로 모아 보여 주며, <b>미답변 건수</b>와 상태(대기/처리중/답변완료/종료)·분류(정산/계정/기술) 태그로 구분한다. 정산 금액·계좌 변경 등 실제 문의가 이 화면에서 바로 파악된다.
+          </td></tr>
+          <tr><td class="kn-no">8</td><td class="kn-nm">특이·<br>메모</td><td class="kn-note">
+운영자가 남기는 내부 메모 영역으로, <b>일반·정산·계약·리스크</b> 분류별로 작성·필터하고 핀 고정할 수 있다. 작성자와 일시가 기록되어 정산 판단·리스크 이력을 팀이 공유한다.
+          </td></tr>
+          <tr><td class="kn-no">9</td><td class="kn-nm">정산<br>설정</td><td class="kn-note">
+세 개의 토글로 정산 동작을 제어한다. <b>정산 실행 설정</b>은 매일 자동 정산 실행 여부(실행 시각 표기), <b>수수료 면제</b>는 켜면 수수료를 차감하지 않음, <b>회수 전용</b>은 정상 선정산 지급 대신 회수만 진행하는 모드다. <span class="red">※ '매일 오전 11:30 자동 실행'은 화면 고정 문구 — 실제 지급 캘린더(D+N) 근거 미확정(C2).</span>
+          </td></tr>
+          <tr><td class="kn-no">10</td><td class="kn-nm">상품<br>배정</td><td class="kn-note">
+카드·배달 등 거래 유형별로 적용 중인 <b>정산 상품(수수료 정책)</b>과 배정일을 보여 준다. 표준 채권매입·배달 정산·시스템 이용료·이체 수수료처럼 항목별 요율이 나열되며, 하단에서 거래 유형과 상품을 골라 새 상품을 배정한다. <span class="red">※ 표시 요율(표준 채권매입 1.0%·배달 0.604%·시스템 0.11% 등)은 서버 표시값 — 수수료율 근거 미확정(C1).</span>
+          </td></tr>
+          <tr><td class="kn-no">11</td><td class="kn-nm">카드<br>수수료</td><td class="kn-note">
+카드사마다 <b>개별 수수료율</b>을 직접 수정(0~10%)하고, 카드사별로 <b>선정산 포함/제외</b>를 토글한다. 수수료율은 스크래핑으로 자동 갱신되나 씨티카드 등 미지원 카드사는 수동 관리한다. 이 요율로 승인 단계의 예상 수수료를 계산하고, 매입 확정 시 실제 수수료와의 차액은 자동 정산된다.
+          </td></tr>
+          <tr><td class="kn-no">12</td><td class="kn-nm">차액<br>정산</td><td class="kn-note">
+예상 수수료로 먼저 선정산을 지급한 뒤, 매입이 확정되어 실제 수수료가 확인되면 그 <b>차액을 다음 선정산에서 환급(+) 또는 추가 차감(-)</b>한다. 대기 건과 예정 금액, 이번 달 누적, 전체 누적 금액을 보여 주고 매출 내역·차액 이력으로 이동할 수 있다.
+          </td></tr>
+          <tr><td class="kn-no">13</td><td class="kn-nm">평균<br>매출</td><td class="kn-note">
+최근 3~6개월 매출로 카드·배달·전체의 <b>일평균 매출·수수료율·건수</b>와 카드/배달 비중, 카드사별 매출 비중, 배달 플랫폼별(배민·요기요·쿠팡이츠) 상세와 요일 히트맵을 요약한다. 실제 데이터가 없는 날의 <b>예상 정산액 산출 근거</b>가 되며 재계산할 수 있다.
+          </td></tr>
+          <tr><td class="kn-no">14</td><td class="kn-nm">락계좌<br>입금</td><td class="kn-note">
+플랫폼 락계좌로 하루 2회 자동 수집된 입금 내역을 기간별로 조회한다. 현재 잔액·인출가능액·빠른조회 상태와 <b>플랫폼별 입금 합계</b>, 기간 총 입금액, 개별 거래(입금/출금/잔액/분류)를 보여 주며, 페이허그가 선정산금을 <b>모계좌로 회수(스윕)</b>한 출금도 함께 표시된다. 엑셀 다운로드를 지원한다.
+          </td></tr>
+          <tr><td class="kn-no">15</td><td class="kn-nm">이관<br>부채</td><td class="kn-note">
+타 시스템에서 넘어온 가맹점의 기존 부채를 등록·관리한다. 부채를 등록하면 정산 모드가 <b>회수 모드로 전환</b>되어 정산은 정상 계산하되 가맹점 이체는 생략하고, <b>락계좌에서 잔여 부채만큼만 회수</b>해 상환한다. 최초·잔여·누적 회수 금액과 진행률·회수 이력을 보여 주며, 회수가 끝나면 일반 모드로 전환하며 선정산을 중단한다.
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

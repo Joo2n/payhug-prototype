@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S17 — 빠른조회 서비스 가입</title>
+<link rel="stylesheet" href="deck2.css">
+<style>
+  .stage { flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 16px; margin-top: 16px; }
+  .flowline { height: auto; align-items: flex-start; }
+  .fitem { width: 480px; }
+  .fgap { margin-top: 290px; }
+  .note-under {
+    margin-top: 14px; padding: 15px 18px; border-radius: 12px;
+    background: var(--surface); font-size: 16px; line-height: 1.5; color: var(--ink-2);
+    width: 100%;
+  }
+  .note-under b { color: var(--ph-forest); }
+  .inl { position:static; transform:none; display:flex; width:24px; height:24px; font-size:13px; }
+  .note-under .fx + .fx { margin-top: 7px; }
+  .bank { width: 460px; height: 530px; border-radius: 22px; background: var(--ph-warning-tint);
+          border: 1.5px solid #F5D9AE; padding: 26px 24px; display:flex; flex-direction:column; justify-content:center; }
+  .bank h3 { font-size: 22px; font-weight: 900; color: #8A5200; letter-spacing:-0.02em; margin-bottom: 18px; }
+  .path { background:#fff; border-radius:12px; padding:14px 16px; margin-bottom:12px; border:1px solid #F0E0C6; }
+  .path .pl { font-size:15px; font-weight:800; color:#8A5200; margin-bottom:5px; }
+  .path .pv { font-size:16px; font-weight:600; color:var(--ink-2); line-height:1.45; letter-spacing:-0.01em; }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">17 / STEP 6-2</div>
+  </div>
+
+  <h1 class="s-title">하나은행 <span class="em">빠른조회 서비스</span> 가입</h1>
+  <p class="s-sub">페이허그 앱에는 신청 버튼이 없습니다. 사장님이 하나은행에서 직접 가입하셔야 합니다</p>
+
+  <div class="stage">
+    <div class="flowline">
+
+      <div class="fitem">
+        <div class="fstep ph"><i>1</i> 락계좌 정보 확인 화면</div>
+        <div class="phone clip" style="width:460px;height:530px">
+          <img src="img/1414-4733.png" alt="선정산 전용계좌 정보 확인 화면" style="width:460px;height:auto;margin-top:-529px">
+          <!-- 계좌 출금 비밀번호 4자리 -->
+          <div class="hi" style="top:19.3%;left:10%;bottom:71.4%;right:10%"></div>
+          <div class="mk" style="top:24.0%;left:10%">1</div>
+          <!-- 접혀 있는 빠른조회 안내 -->
+          <div class="hi blue" style="top:39.1%;left:10%;bottom:53.1%;right:10%"></div>
+          <div class="mk blue" style="top:42.9%;left:10%">2</div>
+        </div>
+        <div class="note-under">
+          <div class="fx"><span class="mk inl">1</span><span class="fx-t"><b>통장 출금 비밀번호 4자리</b>를 넣습니다. 이 비밀번호로 락계좌 입금내역을 자동으로 읽어옵니다</span></div>
+          <div class="fx"><span class="mk blue inl">2</span><span class="fx-t">바로 아래 <b>안내가 접혀 있습니다.</b> 눌러서 펼쳐 주세요</span></div>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep"><i>2</i> 펼치면 가입 방법 5단계</div>
+        <div class="phone clip" style="width:460px;height:530px">
+          <img src="img/1414-8230.png" alt="빠른조회 서비스 가입 방법 안내가 펼쳐진 화면" style="width:460px;height:auto;margin-top:-731px">
+          <!-- 개인뱅킹 / 기업뱅킹 경로 -->
+          <div class="hi" style="top:16.1%;left:11%;bottom:64.8%;right:9%"></div>
+          <div class="mk" style="top:25.7%;left:11%">3</div>
+          <!-- 인터넷뱅킹 + 폰뱅킹 모두 허용 -->
+          <div class="hi red" style="top:36.1%;left:11%;bottom:59.2%;right:9%"></div>
+          <div class="mk red" style="top:38.4%;left:11%">4</div>
+        </div>
+        <div class="note-under">
+          <div class="fx"><span class="mk inl">3</span><span class="fx-t"><b>개인사업자와 법인은 메뉴 경로가 다릅니다.</b> 옆 표대로 안내해 주세요</span></div>
+          <div class="fx"><span class="mk red inl">4</span><span class="fx-t">조회 권한을 <b>인터넷뱅킹·폰뱅킹 둘 다 '허용'</b>으로 — 하나만 켜면 조회가 안 됩니다</span></div>
+        </div>
+      </div>
+
+      <div class="fgap">›</div>
+
+      <div class="fitem">
+        <div class="fstep ext"><i>3</i> 하나은행 인터넷뱅킹에서</div>
+        <div class="bank">
+          <h3>가입은 은행 사이트에서 합니다</h3>
+          <div class="path">
+            <div class="pl">개인뱅킹</div>
+            <div class="pv">마이하나 › 계좌정보관리 ›<br>빠른조회관리에서 신청</div>
+          </div>
+          <div class="path">
+            <div class="pl">기업뱅킹</div>
+            <div class="pv">뱅킹관리 › 계좌관리 ›<br>빠른조회계좌관리에서 계좌 선택</div>
+          </div>
+          <div class="path" style="border-color:#F0B9B9;background:var(--ph-danger-tint)">
+            <div class="pl" style="color:#B3121A">공통 — 놓치기 쉬운 곳</div>
+            <div class="pv" style="color:#B3121A">조회 권한 <b>인터넷뱅킹 + 폰뱅킹 모두 '허용'</b><br>계좌비밀번호(안내 시 OTP) 입력해 완료</div>
+          </div>
+        </div>
+        <div class="note-under">
+          페이허그 앱은 <b>가입 방법만 알려줄 뿐</b>입니다. 신청 버튼도, 대행 접수도 없습니다
+        </div>
+      </div>
+
+    </div>
+
+    <div class="punch">
+      빠른조회에 가입하지 않으면 <u>다음 단계(입금계좌 등록)로 아예 넘어갈 수 없습니다</u> — 여기서 멈추면 계약이 진행되지 않습니다
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP6-2 선정산 전용계좌(락계좌) 정보 확인 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

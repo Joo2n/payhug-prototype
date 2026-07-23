@@ -1,0 +1,112 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">약관 관리</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_TERMS</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 약관 관리 &gt; 목록</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">컨텍스트→종류→버전 3계층 트리. 진입 시 3건(context/type/revision) 동시 조회</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/965_2.png" alt="약관 관리">
+        <div class="dim" style="left:11.9%;top:1.6%;height:4.9%"></div>
+        <div class="mk" style="left:12.3%;top:2.2%">1</div>
+        <div class="dim" style="left:11.9%;top:7.2%;height:4.1%"></div>
+        <div class="mk" style="left:12.3%;top:9.3%">2</div>
+        <div class="dim" style="left:11.9%;top:12.6%;height:2.6%"></div>
+        <div class="mk" style="left:12.3%;top:13.9%">3</div>
+        <div class="dim" style="left:11.9%;top:16.2%;height:80%"></div>
+        <div class="mk" style="left:12.3%;top:23%">4</div>
+        <div class="sub" style="left:23.5%;top:20.3%">4-1</div>
+        <div class="dim" style="left:88%;top:22.8%;height:19%"></div>
+        <div class="mk" style="left:88%;top:31%">5</div>
+        <div class="sub" style="left:89.7%;top:21.8%">5-1</div>
+        <div class="sub" style="left:94.7%;top:21.8%">5-2</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;약관을 <b>컨텍스트 &gt; 종류 &gt; 버전</b> 3계층 트리로 관리하는 화면 (검색창 없음)</span>
+        <span class="b"><span class="g">데이터</span> &nbsp;실데이터는 서버 조회값 — <span class="red">캡처는 예시 시드</span> (회원가입 3종 · 전자계약 3종 · 마케팅 수신 1종)</span>
+        <span class="b"><span class="g">로드</span> &nbsp;진입 시 <b>컨텍스트·종류·버전 3종을 동시에</b> 불러옴 (다른 탭 갔다 돌아와도 다시 불러옴)</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"약관 관리"</b> 와 안내문</span><span class="i">"약관 컨텍스트, 종류, 버전을 관리합니다"</span><span class="b">우측 버튼 <b>[종류 추가]</b> · <b>[약관 개정]</b></span><span class="i">[종류 추가] → 약관 종류 추가 모달[AD_TERMS_TYPE_ADD]</span><span class="i">[약관 개정] → 새 버전 등록 모달[AD_TERMS_REVISE] (종류 선택 모드)</span><span class="i">약관 종류가 <b>0개</b>면 개정 못 열고 "약관 종류를 먼저 등록해주세요." 토스트로 막음</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">컨텍스트<br>관리</td><td class="kn-note">
+<span class="b">접힌 카드 <b>"컨텍스트 관리 (N개)"</b> — N = 전체 컨텍스트 수</span><span class="i">누르면 아래로 펼쳐지며 컨텍스트 목록 테이블 노출[AD_TERMS_CTX]</span><span class="i">기본은 <b>접힘</b> 상태</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">컨텍스트<br>필터</td><td class="kn-note">
+<span class="b"><b>[전체]</b> + 컨텍스트별 칩 (기본 <b>전체</b>)</span><span class="i">각 칩 옆 숫자 = 그 컨텍스트에 속한 <b>약관 종류 수</b></span><span class="i">칩 목록은 서버에서 동적으로 불러옴 (고정 아님)</span><span class="b">누르는 <b>즉시</b> 목록이 걸러짐 (서버에 다시 묻지 않음)</span><span class="i">칩은 숫자가 <b>0이어도 항상 노출</b> — 목록에서는 종류 0개인 컨텍스트 그룹만 빠짐(칩은 남음)</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">약관 목록<br>(트리)</td><td class="kn-note">
+<span class="grp">3계층 구성</span><span class="i"><b>①</b> 컨텍스트 그룹 헤더 : 컨텍스트 뱃지 + "N개 종류"</span><span class="i"><b>②</b> 종류 카드 : 종류명 + 코드칩 + 필수/선택 뱃지 + [종류 수정][개정]</span><span class="i"><b>③</b> 버전 테이블 : 각 종류 아래 버전 행들</span><span class="grp">종류 카드 헤더</span><span class="i">종류명이 길면 <b>…로 줄여서</b> 표시</span><span class="i">[종류 수정] → 종류 수정 모달[AD_TERMS_TYPE_EDIT]</span><span class="i">[개정] → 새 버전 등록 모달[AD_TERMS_REVISE_FIXED] (그 종류로 고정)</span><span class="grp"><span class="sb">4-1</span> 컨텍스트 · 필수 뱃지 색</span><span class="i">컨텍스트 : 회원가입 = 하늘 · 전자계약 = 보라</span><span class="i red">그 외 컨텍스트(마케팅 수신 등)는 색 미정의 → 회색 기본값</span><span class="i">종류 : <b>필수</b> = 주황 · <b>선택</b> = 회색</span><span class="grp">상황별 문구</span><span class="i">불러오는 중 → "로딩 중..."</span><span class="i">약관 0건 → "등록된 약관이 없습니다."</span><span class="i">종류에 버전 없음 → "등록된 버전이 없습니다."</span><span class="i red">로드 실패 → "데이터 로드에 실패했습니다." (토스트)</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">버전 행<br>· 관리</td><td class="kn-note">
+<span class="grp">표 항목</span><span class="i">버전 · 제목 · 시행일 · 게시 · 관리</span><span class="i">제목이 길면 <b>…로 줄여서</b> 표시</span><span class="i">행 클릭 이동 없음 — <b>버튼으로만</b> 동작 (행에 마우스 올리면 배경만 옅게 변함)</span><span class="i red">버전 행 정렬 순서는 서버가 준 순서 그대로 — 정렬 기준 개발 확인 필요 (캡처는 1.0→2.0 오름차순)</span><span class="grp"><span class="sb">5-1</span> 게시 토글</span><span class="i">켜짐 = 초록 · 꺼짐 = 회색</span><span class="i">누르면 <b>즉시</b> 게시/미게시 전환, "게시됨"/"미게시됨" 토스트</span><span class="grp"><span class="sb">5-2</span> 관리 버튼</span><span class="i"><b>[미리보기]</b> · <b>[수정]</b> 는 항상 노출</span><span class="i"><b>[삭제]</b> 는 <b>미게시 버전에만</b> 노출 (게시 중이면 숨김)</span><span class="i">[미리보기]→[AD_TERMS_PREVIEW] · [수정]→[AD_TERMS_VER_EDIT] · [삭제]→[AD_TERMS_VER_DEL]</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

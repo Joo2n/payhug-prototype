@@ -1,0 +1,220 @@
+/* ============================================================
+   PayHug — 다우데이타 미팅 덱 v2 (화면 중심)
+   1920×1080 / 슬라이드 1장 = .slide#slide = Figma 프레임 1개
+   원칙: 화면이 주인공. 글자는 화면을 가리키는 최소한의 라벨.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700;900&display=swap');
+
+:root {
+  --font-sans: "Noto Sans KR", -apple-system, "Apple SD Gothic Neo", sans-serif;
+  --font-num:  "Inter", "Noto Sans KR", sans-serif;
+
+  --ph-forest:       #163300;
+  --ph-green:        #9FE870;
+  --ph-green-600:    #7FE141;
+  --ph-green-700:    #5FBE2E;
+  --ph-green-tint:   #F2FAEC;
+  --ph-blue:         #0088FF;
+  --ph-blue-tint:    #EAF3FF;
+  --ph-mint:         #24C764;
+  --ph-mint-tint:    #E8F8EE;
+  --ph-danger:       #FF383C;
+  --ph-danger-tint:  #FFECEC;
+  --ph-warning:      #FF9500;
+  --ph-warning-tint: #FFF3E2;
+  --ph-purple:       #6B4EFF;
+  --ph-purple-tint:  #EFECFF;
+
+  --ink:      #111827;
+  --ink-2:    #374151;
+  --ink-3:    #6B7280;
+  --ink-4:    #9CA3AF;
+  --line:     #E5E7EB;
+  --line-2:   #D1D5DB;
+  --surface:  #F7F9FA;
+  --surface-2:#F1F4F6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; }
+body { font-family: var(--font-sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+/* ---- 슬라이드 골격 (v1보다 헤더가 얇다 — 화면 자리를 최대한 확보) ---- */
+.slide {
+  width: 1920px; height: 1080px;
+  position: relative; overflow: hidden; background: #fff;
+  padding: 44px 72px 52px;
+  display: flex; flex-direction: column;
+}
+
+.s-top { display: flex; align-items: baseline; gap: 20px; margin-bottom: 6px; }
+.s-part {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 17px; font-weight: 700; color: var(--ph-green-700); letter-spacing: -0.01em;
+}
+.s-part::before { content:''; width:22px; height:4px; border-radius:999px; background:var(--ph-green-600); }
+.s-no { margin-left: auto; font-family: var(--font-num); font-size: 17px; font-weight: 600; color: var(--ink-4); }
+
+.s-title { font-size: 42px; font-weight: 900; line-height: 1.15; letter-spacing: -0.03em; color: var(--ph-forest); }
+.s-title .em { color: var(--ph-green-700); }
+.s-sub { margin-top: 8px; font-size: 20px; font-weight: 500; color: var(--ink-3); letter-spacing: -0.015em; }
+
+/* 화면 무대 — 남는 세로를 전부 차지 */
+.stage { flex: 1; min-height: 0; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 40px; }
+
+.s-foot {
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 15px; color: var(--ink-4);
+}
+.s-logo { font-weight: 900; font-size: 17px; color: var(--ph-forest); letter-spacing: -0.02em; }
+.s-logo span { color: var(--ph-green-700); }
+
+/* ============================================================
+   화면 프레임 — .phone
+   원본 캡처는 폭 500px. 확대하지 말 것(흐려짐). height 기준으로 축소 배치.
+   ============================================================ */
+.phone { position: relative; flex-shrink: 0; }
+.phone > img {
+  display: block; width: 100%; height: auto;
+  border: 1.5px solid var(--line); border-radius: 22px;
+  box-shadow: 0 10px 34px rgba(20,40,10,0.13);
+  background: #fff;
+}
+/* 세로가 긴 화면을 위에서 잘라 보여줄 때 */
+.phone.clip { overflow: hidden; border-radius: 22px; border: 1.5px solid var(--line); box-shadow: 0 10px 34px rgba(20,40,10,0.13); }
+.phone.clip > img { border: 0; border-radius: 0; box-shadow: none; }
+
+/* 폭 프리셋 — 한 슬라이드에 몇 장을 놓느냐로 고른다 */
+.w-xl { width: 460px; }   /* 1~2장 */
+.w-lg { width: 400px; }   /* 3장 */
+.w-md { width: 340px; }   /* 4장 */
+.w-sm { width: 290px; }   /* 5장 */
+
+/* 높이 맞춤 — 세로가 긴 화면은 폭 대신 높이로 맞추는 편이 안전하다.
+   원본 500×N 이므로 h-800이면 폭은 자동으로 400×(800/N)이 된다. */
+.h-fit  { height: 100%; }
+.h-fit  > img { height: 100%; width: auto; }
+.h-820  { height: 820px; }  .h-820 > img { height: 820px; width: auto; }
+.h-760  { height: 760px; }  .h-760 > img { height: 760px; width: auto; }
+.h-700  { height: 700px; }  .h-700 > img { height: 700px; width: auto; }
+.h-640  { height: 640px; }  .h-640 > img { height: 640px; width: auto; }
+
+/* 화면 캡션 */
+.phone-cap {
+  margin-top: 14px; text-align: center;
+  font-size: 17px; font-weight: 700; color: var(--ph-forest); letter-spacing: -0.015em;
+}
+.phone-cap small { display: block; margin-top: 3px; font-size: 14px; font-weight: 500; color: var(--ink-4); }
+
+/* 화면 위 번호 마커 — top/left를 %로 지정 */
+.mk {
+  position: absolute; z-index: 4;
+  width: 38px; height: 38px; border-radius: 999px;
+  background: var(--ph-purple); color: #fff;
+  font-family: var(--font-num); font-size: 19px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.28);
+  transform: translate(-50%, -50%);
+}
+.mk.red   { background: var(--ph-danger); }
+.mk.blue  { background: var(--ph-blue); }
+.mk.green { background: var(--ph-green-700); }
+
+/* 화면 위 강조 박스 — %로 영역 지정 */
+.hi {
+  position: absolute; z-index: 3;
+  border: 3px solid var(--ph-purple); border-radius: 12px;
+  background: rgba(107,78,255,0.07);
+  pointer-events: none;
+}
+.hi.red   { border-color: var(--ph-danger); background: rgba(255,56,60,0.07); }
+.hi.blue  { border-color: var(--ph-blue);   background: rgba(0,136,255,0.07); }
+.hi.green { border-color: var(--ph-green-700); background: rgba(95,190,46,0.09); }
+
+/* ============================================================
+   콜아웃 — 화면 옆 짧은 설명. 문단 금지, 한 줄 원칙.
+   ============================================================ */
+.calls { display: flex; flex-direction: column; gap: 26px; max-width: 780px; }
+.call { display: flex; gap: 15px; align-items: flex-start; }
+.call-n {
+  width: 38px; height: 38px; border-radius: 999px; flex-shrink: 0;
+  background: var(--ph-purple); color: #fff;
+  font-family: var(--font-num); font-size: 19px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.call-n.red   { background: var(--ph-danger); }
+.call-n.blue  { background: var(--ph-blue); }
+.call-n.green { background: var(--ph-green-700); }
+.call-b { padding-top: 4px; }
+.call-t { font-size: 23px; font-weight: 800; color: var(--ph-forest); letter-spacing: -0.02em; line-height: 1.3; }
+.call-d { margin-top: 6px; font-size: 18px; line-height: 1.5; color: var(--ink-3); }
+
+/* 강조 한 줄 — 슬라이드당 최대 1개 */
+.punch {
+  margin-top: 6px; padding: 18px 24px; border-radius: 14px;
+  background: var(--ph-danger-tint); border-left: 5px solid var(--ph-danger);
+  font-size: 21px; font-weight: 800; color: #B3121A; line-height: 1.45; letter-spacing: -0.02em;
+}
+.punch.warn { background: var(--ph-warning-tint); border-left-color: var(--ph-warning); color: #8A5200; }
+.punch.info { background: var(--ph-blue-tint);   border-left-color: var(--ph-blue);   color: #084A99; }
+.punch.ok   { background: var(--ph-green-tint);  border-left-color: var(--ph-green-700); color: #2F6B18; }
+
+/* ============================================================
+   플로우 — 화면을 순서대로 늘어놓기
+   ============================================================ */
+.flowline { display: flex; align-items: center; justify-content: center; gap: 0; height: 100%; }
+.flowline .fitem { display: flex; flex-direction: column; align-items: center; }
+.flowline .fgap {
+  flex-shrink: 0; width: 58px; display: flex; align-items: center; justify-content: center;
+  color: var(--line-2); font-size: 34px; font-weight: 700; align-self: flex-start; margin-top: 190px;
+}
+.fstep {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  padding: 5px 14px 5px 6px; border-radius: 999px; background: var(--ph-forest); color: #fff;
+  font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+}
+.fstep i {
+  width: 24px; height: 24px; border-radius: 999px; background: rgba(255,255,255,0.22);
+  font-family: var(--font-num); font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; font-style: normal;
+}
+.fstep.ext { background: var(--ph-warning); }
+.fstep.ph  { background: var(--ph-blue); }
+.fstep.tbd { background: var(--ink-4); }
+
+/* ---- 배지 ---- */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 15px; font-weight: 700; letter-spacing: -0.01em; vertical-align: middle;
+}
+.badge-tbd   { background: var(--surface-2); color: var(--ink-3); border: 1.5px dashed var(--line-2); }
+.badge-check { background: var(--ph-warning-tint); color: #B26A00; }
+.badge-draft { background: var(--ph-purple-tint); color: var(--ph-purple); }
+.badge-warn  { background: var(--ph-danger-tint); color: var(--ph-danger); }
+
+/* ============================================================
+   Figma html-to-design 대응 — 인라인 배지·번호원 겹침 방지
+   변환기가 inline-flex / inline-block 요소를 텍스트 흐름에 반영하지 못해
+   배지 위에 본문 텍스트가 겹쳐 그려진다(브라우저 렌더는 정상이라 눈에 안 띔).
+   부모를 .fx 로 만들면 자식 인라인 요소가 flex item 으로 블록화(computed display:flex)되어
+   변환이 정확해진다. 기존 클래스는 그대로 두고 이 래퍼 안에서만 동작이 바뀐다.
+   ============================================================ */
+.fx { display: flex; align-items: flex-start; gap: 8px; }
+.fx.fx-mid { align-items: center; }
+.fx.fx-wrap { flex-wrap: wrap; }
+.fx > .badge, .fx > .mk, .fx > .chip, .fx > .grp, .fx > .on {
+  flex-shrink: 0; margin-right: 0; vertical-align: baseline;
+}
+.fx > .fx-t { min-width: 0; }
+.fx-col { display: flex; flex-direction: column; gap: 9px; }
+
+/* ---- 유틸 ---- */
+.hl { color: var(--ph-danger); font-weight: 700; }
+.hl-b { background: linear-gradient(transparent 58%, var(--ph-green) 58%); font-weight: 700; }
+.mono { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+.tbd-box {
+  background: var(--surface-2); border: 1.5px dashed var(--line-2);
+  border-radius: 14px; padding: 18px 22px; font-size: 17px; color: var(--ink-3);
+}

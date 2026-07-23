@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v3 S05 — 계좌 3종 구분</title>
+<link rel="stylesheet" href="deck3.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { display: block; }
+  .wrap { display: flex; flex-direction: column; gap: 16px; height: 100%; }
+
+  table.t { table-layout: fixed; }
+  table.t th { font-size: 17px; padding: 11px 18px; }
+  table.t th.hk { width: 190px; background: #0C2200; }
+  table.t th.h1 { background: #B3121A; }
+  table.t th.h2 { background: #2F6B18; }
+  table.t th.h3 { background: #0B4E9B; }
+  table.t th small { display: block; font-size: 14px; font-weight: 600; opacity: 0.85; margin-top: 3px; }
+  table.t td { padding: 9px 18px; font-size: 16px; line-height: 1.45; vertical-align: top; }
+  table.t td.k { font-size: 15.5px; color: var(--ink-3); background: var(--surface-2) !important; font-weight: 800; }
+  table.t td b { color: var(--ph-forest); font-weight: 800; }
+  .yes { color: #0F7A3D; font-weight: 800; }
+  .no  { color: var(--ph-danger); font-weight: 800; }
+  .na  { color: var(--ink-4); font-weight: 700; }
+
+  .bot { display: grid; grid-template-columns: 1.05fr 1fr 0.95fr; gap: 16px; flex: 1; min-height: 0; }
+  .bx { border-radius: 16px; padding: 15px 20px; display: flex; flex-direction: column; }
+  .bx.a { background: var(--surface); border: 1.5px solid var(--line); }
+  .bx.b { background: var(--ph-danger-tint); border: 2px solid var(--ph-danger); }
+  .bx.c { background: var(--ph-warning-tint); border: 1.5px solid #FFDFB0; }
+  .bx-h { font-size: 20px; font-weight: 900; letter-spacing: -0.02em; color: var(--ph-forest); line-height: 1.25; margin-bottom: 8px; }
+  .bx.b .bx-h { color: var(--ph-danger); }
+  .bx.c .bx-h { color: #8A5200; }
+  .bx p { font-size: 15.5px; line-height: 1.48; color: var(--ink-2); }
+  .bx p + p { margin-top: 7px; }
+  .bx p b { color: var(--ph-forest); font-weight: 800; }
+  .strike { text-decoration: line-through; color: var(--ink-4); font-weight: 700; }
+
+  .ord { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+  .ob {
+    background: #fff; border: 1.5px solid var(--line); border-radius: 12px;
+    padding: 10px 14px; font-size: 16px; font-weight: 800; color: var(--ph-forest);
+    display: flex; align-items: center; gap: 8px; line-height: 1.2;
+  }
+  .ob i {
+    flex-shrink: 0; font-style: normal; font-family: var(--font-num); color: #fff; background: var(--ph-forest);
+    border-radius: 999px; width: 22px; height: 22px; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ord .ar { font-size: 20px; color: var(--line-2); font-weight: 700; }
+
+  .aliases { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .aliases span {
+    background: #fff; border: 1.5px solid #FFDFB0; border-radius: 999px;
+    padding: 5px 12px; font-size: 15px; font-weight: 700; color: #8A5200;
+  }
+  .bx .fx-mid { margin-top: auto; padding-top: 12px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 1 · 서비스 구조</div>
+    <div class="s-no">05</div>
+  </div>
+
+  <h1 class="s-title">계좌 3종 — <span class="em">헷갈리면 그 자리에서 사고</span>가 납니다</h1>
+  <p class="s-sub">이름은 비슷한데 역할이 전혀 다릅니다. 영업 현장 사고의 대부분이 이 세 계좌를 섞어 부르는 데서 시작됩니다.</p>
+
+  <div class="stage">
+    <div class="wrap">
+
+      <table class="t">
+        <thead>
+          <tr>
+            <th class="hk">구분</th>
+            <th class="h1">선정산 전용계좌<small>현장에서 부르는 말 — 락계좌</small></th>
+            <th class="h2">입금계좌<small>사장님이 실제로 돈을 받는 계좌</small></th>
+            <th class="h3">모계좌<small>사장님과 직접 관계없는 계좌</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="k">무엇을 하는 곳인가</td>
+            <td>카드사·배달앱 <b>정산금이 들어오는 곳</b></td>
+            <td>페이허그가 <b>선정산금을 넣어주는 곳</b></td>
+            <td>페이허그 <b>운영 계좌</b> — 선정산금이 여기서 나가고, 락계좌에 모인 정산금이 여기로 회수됩니다</td>
+          </tr>
+          <tr>
+            <td class="k">누구 명의인가</td>
+            <td><b>사장님</b></td>
+            <td><b>사장님</b></td>
+            <td><b>페이허그</b></td>
+          </tr>
+          <tr>
+            <td class="k">사장님이 쓸 수 있나</td>
+            <td><span class="no">✕ 못 씁니다 — 출금전용</span><br>돈이 들어와도 사장님이 직접 뺄 수 없습니다. 이 제약이 있어야 선정산이 성립합니다.</td>
+            <td><span class="yes">○ 씁니다 — 자유 입출금</span><br>입금되는 즉시 사장님이 쓰실 수 있습니다.</td>
+            <td><span class="na">— 해당 없음</span><br>사장님이 조회하거나 사용하는 계좌가 아닙니다.</td>
+          </tr>
+          <tr>
+            <td class="k">은행</td>
+            <td><b>하나은행</b> (필수)</td>
+            <td><b>하나은행</b> (필수)</td>
+            <td class="na">—</td>
+          </tr>
+          <tr>
+            <td class="k">개설 순서</td>
+            <td><b>① 먼저 만듭니다</b><br>출금전용계좌 동의서를 은행에 냅니다</td>
+            <td><b>② 그다음에 만듭니다</b><br>등록할 때 1원 인증을 거칩니다</td>
+            <td class="na">— 개설 대상 아님</td>
+          </tr>
+          <tr>
+            <td class="k">계약이 끝나면</td>
+            <td>정산 입금계좌를 <b>원래 계좌로 되돌립니다</b> — 이 원복이 곧 해지입니다. 단 <b>먼저 드린 대금이 전부 메워진 뒤에야</b> 가능합니다.</td>
+            <td>사장님 계좌이므로 <b>그대로 남습니다.</b></td>
+            <td class="na">— 해당 없음</td>
+          </tr>
+          <tr>
+            <td class="k">자주 나오는 오해</td>
+            <td>"정산금이 안 들어왔다"며 <b>이 계좌를 보고 계신</b> 경우가 대부분입니다.</td>
+            <td>"주거래 은행으로 받고 싶다"는 요청이 자주 나옵니다 — <b>하나은행만 됩니다.</b></td>
+            <td>입금자명이 <b>페이허그</b>로 찍혀 "이게 무슨 돈이냐"는 문의가 나옵니다.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="bot">
+
+        <div class="bx a">
+          <div class="bx-h">개설 순서를 어기면 그날 계약이 멈춥니다</div>
+          <p>두 계좌 <b>모두 하나은행</b>이어야 합니다. 그리고 반드시 이 순서로 만들어야 합니다.</p>
+          <div class="ord">
+            <div class="ob"><i>1</i><span>락계좌 (출금전용)</span></div>
+            <div class="ar">→</div>
+            <div class="ob"><i>2</i><span>입출금계좌</span></div>
+          </div>
+          <p><span class="hl">입출금계좌를 먼저 만들면 20일이 지나야</span> 출금전용 계좌를 열 수 있습니다. 사장님이 이미 그날 다른 계좌를 만들었는지 <b>방문 전에 확인</b>해 주세요. 현장 이탈의 가장 흔한 원인입니다.</p>
+        </div>
+
+        <div class="bx b">
+          <div class="bx-h">"정산계좌"라고 말하지 마세요</div>
+          <p><span class="strike">"정산계좌 좀 알려주세요"</span> → 사장님과 영업사원이 서로 다른 계좌를 떠올립니다. 반드시 <b>"선정산 전용계좌(락계좌)"</b> 또는 <b>"입금계좌"</b>라고 이름을 붙여 말해 주세요.</p>
+          <p>사장님이 <b>"돈이 안 들어왔다"</b>고 하시면, 먼저 <b>어느 계좌를 보고 계신지</b> 확인하세요. 락계좌를 보고 계신 경우가 대부분입니다 — 그 계좌에는 사장님이 쓸 돈이 들어오지 않습니다.</p>
+        </div>
+
+        <div class="bx c">
+          <div class="bx-h">문서마다 이름이 다릅니다</div>
+          <p>계약서·앱 화면·운영 문서가 같은 계좌를 서로 다른 이름으로 부릅니다. 사장님이 들고 온 서류의 단어를 그대로 믿지 마세요.</p>
+          <div class="aliases">
+            <span>전용계좌</span><span>선정산 전용계좌</span><span>락계좌</span>
+            <span>입금계좌</span><span>입출금계좌</span><span>지정계좌</span><span>모계좌</span>
+          </div>
+          <div class="fx-mid">
+            <span class="badge badge-check">확인 중</span>
+            <span class="fx-t" style="font-size:15px;line-height:1.45;color:var(--ink-3)"><b style="color:#8A5200">"지정계좌"</b>가 위 셋 중 무엇을 가리키는지는 문서 간 매핑이 아직 정리되지 않았습니다. 현장에서 이 단어로 안내하지 마세요.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 락계좌·입금계좌 모두 하나은행 필수, 출금전용계좌 동의서 징구 · 개설 순서 ①락계좌 →②입출금계좌, 20일 대기는 앱 안내 문구 기준 · 해지=정산 입금계좌 원복(대금 회수 완료 후 가능) · 계좌 명칭 병존</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S23 — 제신고</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .rp { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+
+  .what {
+    display: flex; align-items: center; gap: 20px;
+    background: var(--surface); border: 1.5px solid var(--line);
+    border-radius: 16px; padding: 18px 26px;
+  }
+  .what .lbl { font-size: 16px; font-weight: 800; color: #fff; background: var(--ph-forest); padding: 7px 15px; border-radius: 999px; flex-shrink: 0; }
+  .what .tx { font-size: 20px; color: var(--ink-2); line-height: 1.45; font-weight: 500; }
+  .what .tx b { color: var(--ph-forest); font-weight: 800; }
+
+  .ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; flex: 1; }
+  .way { border-radius: 18px; border: 1.5px solid var(--line); background: #fff; padding: 24px 26px; display: flex; flex-direction: column; }
+  .way-h { display: flex; align-items: center; gap: 11px; margin-bottom: 6px; }
+  .way-h .nm { font-size: 24px; font-weight: 900; color: var(--ph-forest); letter-spacing: -0.02em; }
+  .way-ch { font-size: 15px; font-weight: 800; padding: 5px 12px; border-radius: 999px; background: var(--ph-warning-tint); color: #8A5200; }
+  .way-d { font-size: 18px; line-height: 1.55; color: var(--ink-2); margin-top: 12px; }
+  .way-d b { color: var(--ph-forest); font-weight: 800; }
+  .way-mail {
+    margin-top: 14px; background: var(--surface-2); border-radius: 12px; padding: 12px 16px;
+    font-family: var(--font-num); font-size: 18px; font-weight: 600; color: var(--ink);
+  }
+  .way-foot { margin-top: auto; padding-top: 14px; font-size: 16px; color: var(--ink-3); line-height: 1.5; }
+
+  .manual { background: var(--ph-danger-tint); border: 2px solid var(--ph-danger); border-radius: 18px; padding: 22px 28px; display: flex; gap: 22px; align-items: flex-start; }
+  .manual .mh { font-size: 22px; font-weight: 900; color: var(--ph-danger); letter-spacing: -0.02em; flex-shrink: 0; width: 250px; line-height: 1.3; }
+  .manual p { font-size: 18px; line-height: 1.55; color: var(--ink-2); }
+  .manual p b { color: var(--ph-forest); font-weight: 800; }
+
+  .tbd-box .tbd-h { font-size: 19px; }
+  .tbd-row { font-size: 19px; }
+  .tbd-two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 3 · 신청 이후 ~ 선정산 개시</div>
+    <div class="s-no">23</div>
+  </div>
+
+  <h1 class="s-title">제신고 — 정산 입금계좌를 <span class="em">락계좌로 바꾸는 일</span></h1>
+  <p class="s-sub">승인이 나도 이 작업이 끝나야 선정산이 시작됩니다. 이 구간에서 가장 많이 지연됩니다.</p>
+
+  <div class="s-body">
+    <div class="rp">
+
+      <div class="what">
+        <div class="lbl">제신고란</div>
+        <div class="tx">카드사·배달앱이 <b>정산금을 보내주는 계좌</b>를, 기존 사장님 계좌에서 <b>그 가맹점의 선정산 전용계좌(락계좌)</b>로 바꾸는 작업입니다. 매출처마다 따로 신청해야 합니다.</div>
+      </div>
+
+      <div class="ways">
+        <div class="way">
+          <div class="way-h"><span class="nm">카드사</span><span class="way-ch">VAN 경유</span></div>
+          <div class="way-d"><b>VAN사·밴대리점을 통해 재신고</b>합니다. 가맹점이 쓰는 VAN사에 정산계좌 변경을 접수하는 방식입니다.</div>
+          <div class="way-foot">카드사가 여러 곳이어도 VAN 경로로 한 번에 접수됩니다.</div>
+        </div>
+
+        <div class="way">
+          <div class="way-h"><span class="nm">배민 · 요기요</span><span class="way-ch">사장님 사이트</span></div>
+          <div class="way-d">각 플랫폼의 <b>사장님 사이트에 로그인해 정산계좌를 직접 변경</b>합니다.</div>
+          <div class="way-foot">플랫폼 계정 정보가 필요합니다.</div>
+        </div>
+
+        <div class="way">
+          <div class="way-h"><span class="nm">쿠팡이츠</span><span class="way-ch">메일 접수</span></div>
+          <div class="way-d">화면에서 바꿀 수 없고 <b>메일로 서류를 접수</b>해야 합니다.</div>
+          <div class="way-mail">eatspartners@coupang.com</div>
+          <div class="way-foot">접수 후 플랫폼이 처리해 줄 때까지 기다려야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="manual">
+        <div class="mh">이 구간은<br>시스템이 아닙니다</div>
+        <div>
+          <p><b>제신고는 페이허그 시스템의 기능이 아니라 운영이 손으로 처리하는 작업입니다.</b> 그래서 사장님 앱에도, 총판 어드민에도 <b>제신고 진행 상태를 조회하는 화면이 없습니다.</b></p>
+          <p style="margin-top:8px">현장에서 "지금 어디까지 됐냐"는 질문에 화면을 보여드릴 수 없다는 뜻입니다. 이 점을 미리 알고 안내해 주세요. <b>매출처별로 변경이 끝난 곳부터 선정산이 시작됩니다.</b></p>
+        </div>
+      </div>
+
+      <div class="tbd-box">
+        <div class="tbd-h"><span class="badge badge-tbd">협의 예정</span> <span>아래 두 가지는 문서마다 다르게 적혀 있어 아직 확정되지 않았습니다 — 현장 안내 금지</span></div>
+        <div class="tbd-two">
+          <div class="tbd-row"><span>수행 주체 — 페이허그가 대행하는가, 사장님이 직접 하는가</span><span class="v">협의 예정</span></div>
+          <div class="tbd-row"><span>매출처별 소요 영업일</span><span class="v">협의 예정</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">근거: 전용계좌 등록 경로(카드=VAN/밴대리점 · 배민·요기요=플랫폼 사이트 · 쿠팡이츠=메일) · 제신고 관련 화면·상태값은 앱·어드민 어디에도 없음</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

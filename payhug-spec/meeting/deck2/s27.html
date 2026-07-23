@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S27 — 통장에 찍히는 내역</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: center; gap: 60px; }
+  .left  { display: flex; align-items: center; }
+  .right { flex: 1; max-width: 830px; display: flex; flex-direction: column; justify-content: center; }
+  .calls { gap: 24px; max-width: none; }
+  .chip {
+    display: flex; align-items: center; padding: 3px 12px; border-radius: 8px;
+    font-size: 17px; font-weight: 700;
+  }
+  .chip.g { background: var(--ph-mint-tint); color: #1B8B48; }
+  .chip.b { background: var(--ph-blue-tint); color: #0B6FCC; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 4 · 가맹점이 보는 화면</div>
+    <div class="s-no">27</div>
+  </div>
+
+  <h1 class="s-title">통장에 찍히는 내역 — <span class="em">뱃지 두 종류</span>만 구분하면 됩니다</h1>
+  <p class="s-sub">홈에서 「계좌 입금 내역보기」를 누르면 나오는 화면입니다</p>
+
+  <div class="stage">
+
+    <div class="left">
+      <div class="phone clip" style="width:600px;height:780px">
+        <img src="img/1414-15887.png" style="width:600px;height:auto" alt="계좌 입금 내역">
+
+        <!-- 1) 입금 계좌 -->
+        <div class="hi" style="top:14.5%;left:6%;bottom:76%;right:42%"></div>
+        <div class="mk" style="top:19%;left:60%">1</div>
+
+        <!-- 2) 초록 뱃지 — 미리 받는 돈 -->
+        <div class="hi green" style="top:29.5%;left:73%;bottom:63.5%;right:5%"></div>
+        <div class="mk green" style="top:32.6%;left:70%">2</div>
+
+        <!-- 3) 파랑 뱃지 — 선정산 제외액 -->
+        <div class="hi blue" style="top:40.7%;left:73%;bottom:52.5%;right:5%"></div>
+        <div class="mk blue" style="top:43.7%;left:70%">3</div>
+
+        <!-- 4) 같은 날짜 두 줄 -->
+        <div class="hi red" style="top:38.5%;left:6%;bottom:40%;right:66%"></div>
+        <div class="mk red" style="top:49%;left:37%">4</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="calls">
+
+        <div class="call">
+          <div class="call-n">1</div>
+          <div class="call-b">
+            <div class="call-t">사장님이 등록한 입금계좌</div>
+            <div class="call-d">여기 찍히는 돈이 곧 사장님 통장에 들어간 돈입니다. 보내는 사람은 「페이허그」로 표시됩니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n green">2</div>
+          <div class="call-b">
+            <div class="call-t fx fx-mid"><span class="fx-t">초록</span> <span class="chip g">미리 받는 돈</span></div>
+            <div class="call-d">선정산으로 먼저 드린 입금입니다. 평소에 들어오는 돈은 대부분 이 뱃지입니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n blue">3</div>
+          <div class="call-b">
+            <div class="call-t fx fx-mid"><span class="fx-t">파랑</span> <span class="chip b">선정산 제외액</span></div>
+            <div class="call-d">선정산 대상에서 빠진 금액이 따로 입금된 것입니다. 금액이 작고 가끔 찍힙니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n red">4</div>
+          <div class="call-b">
+            <div class="call-t">같은 날 두 줄이 찍히기도 합니다</div>
+            <div class="call-d">뱃지가 다른 두 건이 같은 날짜에 나란히 들어옵니다 — "왜 두 번 들어왔냐"는 문의가 여기서 나옵니다</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="punch info">
+        사장님 질문 1순위는 <u>"초록이랑 파랑이 뭐가 달라요"</u> 입니다 — 뱃지 색만 보시게 하고, 색이 다르면 성격이 다른 돈이라고 안내해 주세요
+      </div>
+
+      <div class="tbd-box fx" style="margin-top:14px">
+        <span class="badge badge-check">확인 중</span>
+        <span class="fx-t">「선정산 제외액」에 어떤 항목이 들어가는지, 입금 시각 기준은 무엇인지 — 확정 후 별도 안내</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 화면 · 계좌 입금 내역</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

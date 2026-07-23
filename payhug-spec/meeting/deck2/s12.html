@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S12 — 사업자등록증 첨부</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: flex-start; gap: 0; padding-top: 6px; }
+  .flowline { align-items: flex-start; height: auto; }
+  .fitem { width: 470px; }
+  .fgap  { font-size: 20px !important; font-weight: 800 !important; color: var(--ink-4) !important; margin-top: 300px !important; width: 90px !important; }
+  .note-under {
+    margin-top: 16px; padding: 16px 20px; border-radius: 12px;
+    background: var(--surface); font-size: 17px; line-height: 1.55; color: var(--ink-2);
+  }
+  .note-under b { color: var(--ph-forest); }
+  .note-under .ln + .ln { margin-top: 9px; }
+  .mk-inline { position:static; transform:none; display:flex; width:26px; height:26px; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">12 / STEP 4</div>
+  </div>
+
+  <h1 class="s-title">사업자등록증 첨부 — <span class="em">개인</span>이냐 <span class="em">법인</span>이냐부터</h1>
+  <p class="s-sub">사업자 유형을 고르고, 등록증 사진을 올리면 됩니다</p>
+
+  <div class="stage">
+    <div class="flowline">
+
+      <div class="fitem">
+        <div class="fstep"><i>A</i> 개인사업자</div>
+        <div class="phone clip" style="height:570px;width:353px">
+          <img src="img/1414-7110.png" alt="사업자등록증 첨부 — 개인사업자 선택" style="height:665px;width:auto">
+          <div class="hi green" style="top:41.2%;left:12%;bottom:52.9%;right:51%"></div>
+          <div class="mk green" style="top:44.1%;left:12%">1</div>
+          <div class="hi blue" style="top:86.8%;left:15%;bottom:10.5%;right:15%"></div>
+          <div class="mk blue" style="top:88.2%;left:15%">2</div>
+        </div>
+        <div class="note-under">
+          <div class="ln fx"><span class="mk green mk-inline">1</span>
+            <span class="fx-t">기본값이 <b>개인사업자</b>입니다. 대부분의 사장님은 그대로 두시면 됩니다</span></div>
+          <div class="ln fx"><span class="mk blue mk-inline">2</span>
+            <span class="fx-t">등록증이 여러 장이면 <b>한 번에 최대 3장</b>까지 골라 올리시면 됩니다</span></div>
+        </div>
+      </div>
+
+      <div class="fgap">또는</div>
+
+      <div class="fitem">
+        <div class="fstep ph"><i>B</i> 법인사업자</div>
+        <div class="phone clip" style="height:570px;width:353px">
+          <img src="img/1414-7226.png" alt="사업자등록증 첨부 — 법인사업자 선택" style="height:665px;width:auto">
+          <div class="hi red" style="top:41.2%;left:51.2%;bottom:52.9%;right:12%"></div>
+          <div class="mk red" style="top:44.1%;left:51.2%">3</div>
+        </div>
+        <div class="note-under">
+          <div class="ln fx"><span class="mk red mk-inline">3</span>
+            <span class="fx-t"><b>법인사업자</b>를 고르면 다음 화면에서 입력할 항목이 늘어납니다(다음 장)</span></div>
+          <div class="ln fx fx-wrap fx-mid"><span class="fx-t">법인 가맹점을 받을지, 받는다면 어떤 조건인지는 아직 정해지지 않았습니다</span>
+            <span class="badge badge-check">확인 중</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 계약 STEP4 사업자등록증 첨부 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

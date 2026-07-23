@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>S13 — STEP4-1 정보 확인·국세청 진위확인</title>
+<link rel="stylesheet" href="deck.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .wrap { display: grid; grid-template-columns: 700px 1fr; gap: 46px; height: 100%; align-items: stretch; }
+  .col-txt { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-width: 0; }
+  .lead { font-size: 28px; font-weight: 800; color: var(--ph-forest); line-height: 1.45; letter-spacing: -0.025em; }
+  .lead .r { color: var(--ph-danger); }
+  .say { background: var(--ph-green-tint); border: 1.5px solid #DDEFCB; border-radius: 16px; padding: 20px 26px; }
+  .say-l { font-size: 14px; font-weight: 800; color: var(--ph-green-700); letter-spacing: 0.06em; margin-bottom: 8px; }
+  .say p { font-size: 19px; line-height: 1.6; color: var(--ph-forest-700); font-weight: 600; }
+  .shots { gap: 28px; align-items: flex-start; }
+  .shot img { width: 320px; max-height: 560px; }
+  .fields { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .fields span {
+    font-size: 16px; font-weight: 600; padding: 6px 13px; border-radius: 8px;
+    background: var(--surface-2); color: var(--ink-2);
+  }
+  .fields span.add { background: var(--ph-blue-tint); color: #084A99; }
+  /* --- 밀도 조정 --- */
+
+  .card { padding: 16px 21px; }
+  .card p, .card li { font-size: 16.5px; line-height: 1.5; }
+  .card-h { font-size: 19.5px; margin-bottom: 9px; }
+  .tbd-box { padding: 17px 22px; }
+  .tbd-h { margin-bottom: 10px; }
+  .say { padding: 14px 20px; }
+  .say-l { margin-bottom: 6px; }
+  .say p { font-size: 17px; }
+  .lead { font-size: 25px; }
+  ul.b li { margin-bottom: 6px; }
+  .col-txt { gap: 12px; }
+  .shot img { max-height: 500px; }
+  .fields span { font-size: 15px; padding: 5px 11px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">13</div>
+  </div>
+
+  <h1 class="s-title">STEP 4-1 — OCR로 채워지고, <span class="em">국세청이 확인</span>합니다</h1>
+  <p class="s-sub">사진을 올리면 값이 자동으로 들어옵니다. 사장님이 한 번 훑어보고 「정보가 일치해요」를 누릅니다.</p>
+
+  <div class="s-body">
+    <div class="wrap">
+
+      <div class="shots">
+        <div class="shot">
+          <img src="img/1414-7408.png" alt="개인사업자 정보 확인 화면">
+          <div class="cap">개인사업자 — 7칸<small>화면 위쪽만 표시</small></div>
+        </div>
+        <div class="shot">
+          <img src="img/1414-7554.png" alt="법인사업자 정보 확인 화면">
+          <div class="cap">법인사업자 — 4칸 추가<small>화면 위쪽만 표시</small></div>
+        </div>
+      </div>
+
+      <div class="col-txt">
+        <div class="lead">한 글자라도 틀리면 <span class="r">국세청 진위확인에서 막힙니다.</span></div>
+
+        <div class="card card-green">
+          <div class="card-h">자동 입력 → 사장님이 검수</div>
+          <p>화면 안내 원문: <b>"OCR로 자동 입력되었어요 / 잘못 인식된 값이 있으면 직접 수정해주세요"</b><br>모든 칸은 손으로 고칠 수 있습니다. 잘못 읽혔으면 「다시 첨부하기」로 사진부터 다시 올립니다.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-h">확인하는 칸</div>
+          <p style="font-weight:700;color:var(--ph-forest)">개인사업자</p>
+          <div class="fields">
+            <span>사업자등록번호</span><span>상호</span><span>성명</span><span>개업일자</span><span>사업장소재지</span><span>업태</span><span>종목</span>
+          </div>
+          <p style="font-weight:700;color:var(--ph-forest);margin-top:14px">법인사업자 — 위와 같고 <b>4칸이 더 붙습니다</b></p>
+          <div class="fields">
+            <span class="add">법인등록번호</span><span class="add">본점소재지</span><span class="add">대표유형 (단독/공동/각자)</span><span class="add">사업자등록일</span>
+          </div>
+          <p style="margin-top:12px;font-size:17px;color:var(--ink-3)">법인은 「상호」가 <b>법인명(상호)</b>, 「성명」이 <b>대표자명</b>으로 바뀝니다.</p>
+        </div>
+
+        <div class="card card-warn">
+          <div class="card-h">「정보가 일치해요」를 누르면</div>
+          <p>먼저 <b>국세청 진위확인</b>을 거치고, 통과해야 등록됩니다. 실패하면 국세청이 보내온 안내 메시지가 그대로 뜨고 <b>다음 단계로 넘어가지 못합니다.</b></p>
+        </div>
+
+        <div class="say">
+          <div class="say-l">현장 멘트</div>
+          <p>"사진만 찍으면 자동으로 채워지는데, 그대로 국세청에 조회가 들어갑니다. 상호랑 개업일자는 꼭 한 번 봐주세요."</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 계약 STEP4-1 사업자 정보 확인 화면 · 화면 세로 일부만 표시</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>v2 S10 — 가입 완료 후 화면</title>
+<link rel="stylesheet" href="deck2.css">
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+<style>
+  .stage { align-items: stretch; gap: 70px; }
+  .left  { display: flex; align-items: center; }
+  .right { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .calls { max-width: 1020px; }
+  .punch { margin-top: 34px; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <div class="s-top">
+    <div class="s-part">PART 2 · 가입에서 선정산 개시까지</div>
+    <div class="s-no">10 / STEP 2 → 3</div>
+  </div>
+
+  <h1 class="s-title">가입 완료 — <span class="em">여기서 계약을 시작</span>해야 합니다</h1>
+  <p class="s-sub">이 화면을 보고 "다 됐다"고 생각하는 사장님이 가장 많습니다</p>
+
+  <div class="stage">
+
+    <div class="left">
+      <div class="phone clip" style="height:620px;width:554px">
+        <img src="img/1414-389.png" alt="가입 완료 후 홈 화면" style="height:900px;width:auto">
+        <!-- 환영 문구 -->
+        <div class="hi green" style="top:53.6%;left:9%;bottom:32.5%;right:9%"></div>
+        <div class="mk green" style="top:60.5%;left:9%">1</div>
+        <!-- 안내 문구 -->
+        <div class="hi red" style="top:67.9%;left:9%;bottom:27.9%;right:9%"></div>
+        <div class="mk red" style="top:70%;left:9%">2</div>
+        <!-- CTA -->
+        <div class="hi blue" style="top:77.7%;left:9%;bottom:12.9%;right:9%"></div>
+        <div class="mk blue" style="top:82.3%;left:9%">3</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="calls">
+
+        <div class="call">
+          <div class="call-n green">1</div>
+          <div class="call-b">
+            <div class="call-t">가입은 여기서 끝납니다</div>
+            <div class="call-d">약관 동의와 휴대폰 본인인증을 마치면 이 화면이 뜹니다. 회원가입은 완료된 상태입니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n red">2</div>
+          <div class="call-b">
+            <div class="call-t">그런데 선정산금은 <u>아직</u> 안 나옵니다</div>
+            <div class="call-d">화면 문구도 "선정산 서비스를 <b>신청해</b> 보세요"입니다. 계약과 심사를 마쳐야 지급이 시작됩니다</div>
+          </div>
+        </div>
+
+        <div class="call">
+          <div class="call-n blue">3</div>
+          <div class="call-b">
+            <div class="call-t">버튼은 「매출 조회하기」 하나뿐</div>
+            <div class="call-d">매출은 바로 볼 수 있습니다. 다만 이 화면에 「계약하기」 버튼은 없으니 메뉴로 직접 안내해 주세요</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="punch">
+        가입만 하고 멈춘 사장님이 나중에 "왜 돈이 안 들어오죠?"라고 묻습니다 — 이 화면에서 바로 계약 단계로 이어 주세요
+      </div>
+    </div>
+
+  </div>
+
+  <div class="s-foot">
+    <div class="src">가맹점 앱 · 회원가입 완료 직후 홈 화면</div>
+    <div class="s-logo">pay<span>hug</span></div>
+  </div>
+
+</div>
+</body>
+</html>

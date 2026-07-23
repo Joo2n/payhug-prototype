@@ -1,0 +1,109 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
+.frame{position:relative;width:1920px;min-height:1280px;background:#fff;border:1px solid #222}
+.meta{display:flex;border-bottom:1px solid #222}
+.metabar{flex:1}
+.mrow{display:flex;border-bottom:1px solid #cfcfd4;height:46px}
+.mrow:last-child{border-bottom:none}
+.lbl{background:#E5E5EA;border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:700;white-space:nowrap}
+.val{border-right:1px solid #cfcfd4;display:flex;align-items:center;padding:0 14px;font-size:14px}
+.logo{width:150px;display:flex;align-items:center;justify-content:center;border-left:1px solid #222;font-weight:800;font-size:22px;letter-spacing:-.5px}
+.logo b{color:#111}.logo i{color:#2ac06d;font-style:normal}
+.body{display:flex;min-height:calc(1280px - 93px)}
+.left{width:1360px;border-right:1px solid #222;padding:26px 30px;position:relative}
+.mock{position:relative;width:1250px;margin:0 auto}
+.mock.mob{width:440px}
+.mock img{width:100%;display:block;border:1px solid #ececf0;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mock.mob img{border-radius:16px}
+.mk{position:absolute;width:17px;height:17px;border-radius:50%;background:#4b47d6;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.22);z-index:7;transform:translate(-50%,-50%)}
+.sub{position:absolute;height:16px;padding:0 5px;border-radius:8px;background:#4b47d6;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:6;transform:translate(-50%,-50%);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.dim{position:absolute;width:0;border-left:1.5px solid #7b6cf0;z-index:4}
+.dim::before,.dim::after{content:"";position:absolute;left:-4px;width:9px;border-top:1.5px solid #7b6cf0}
+.dim::before{top:0}.dim::after{bottom:-1.5px}
+.right{width:560px;overflow:visible}
+.kn-h{background:#E5E5EA;padding:9px 16px;font-size:14px;font-weight:700;border-bottom:1px solid #cfcfd4}
+.kn-memo{padding:10px 16px;font-size:13px;color:#333;border-bottom:1px solid #eee;line-height:1.8}
+.kn-memo .g{color:#3538cd;font-weight:800}
+.kn-memo b{color:#1a1f2b;font-weight:700}
+.kn-memo .b{display:block}.kn-memo .i{display:block;padding-left:14px;color:#5C5D62}
+.kn-memo .red{color:#FF383C}
+.kn-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.kn-tbl th{background:#f4f4f6;text-align:left;padding:7px 10px;font-weight:700;font-size:12px;border-bottom:1px solid #d7d7dc}
+.kn-tbl td{padding:11px 10px 13px;vertical-align:top;border-bottom:1px solid #eef0f2}
+.kn-no{width:28px;font-weight:800;color:#4b47d6}
+.kn-nm{width:78px;font-weight:700;color:#1a1f2b}
+.kn-note{line-height:1.85}
+.kn-note b{font-weight:700;color:#1a1f2b}
+.kn-note .b{display:block;margin-top:1px}
+.kn-note .i{display:block;padding-left:16px;color:#55565b;position:relative}
+.kn-note .i:before{content:"–";position:absolute;left:4px;color:#b0b2b8}
+.kn-note .red{color:#FF383C}
+.kn-note .sb{color:#fff;background:#4b47d6;border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800;margin-right:3px}
+.kn-note .grp{display:block;margin-top:9px;font-weight:700;color:#1a1f2b}
+</style><script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script></head><body>
+<div class="frame">
+  <div class="meta">
+    <div class="metabar">
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Page</div><div class="val" style="width:260px">매출 조회</div>
+        <div class="lbl" style="width:74px">Page ID</div><div class="val" style="width:150px">AD_SALES</div>
+        <div class="lbl" style="width:70px">System</div><div class="val" style="width:96px">pc</div>
+        <div class="lbl" style="width:52px">Date</div><div class="val" style="width:110px">2026.07.21</div>
+        <div class="lbl" style="width:62px">Writer</div><div class="val" style="flex:1">이서준</div>
+      </div>
+      <div class="mrow">
+        <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 어드민 &gt; 매출조회 &gt; 목록</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">가맹점 목록. 행 클릭 시 [AD_SALES_DT] 이동</div>
+      </div>
+    </div>
+    <div class="logo"><b>Pay</b><i>hug</i></div>
+  </div>
+  <div class="body">
+    <div class="left">
+      <div class="mock">
+        <img src="../captures/943_2.png" alt="매출 조회">
+        <div class="dim" style="left:14.2%;top:1.5%;height:2.5%"></div>
+        <div class="mk" style="left:12.9%;top:2.7%">1</div>
+        <div class="dim" style="left:14.2%;top:6.8%;height:3.4%"></div>
+        <div class="mk" style="left:12.9%;top:8.5%">2</div>
+        <div class="dim" style="left:14.2%;top:13.9%;height:57%"></div>
+        <div class="mk" style="left:12.9%;top:27%">3</div>
+        <div class="sub" style="left:72.5%;top:13.3%">3-1</div>
+        <div class="sub" style="left:82%;top:13.3%">3-2</div>
+        <div class="mk" style="left:90%;top:18.2%">4</div>
+        <div class="mk" style="left:15.6%;top:22.3%">5</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="kn-h">key note</div>
+      <div class="kn-memo">
+        <span class="b"><span class="g">화면 성격</span> &nbsp;매출·매입을 조회할 <b>가맹점을 고르는 목록</b> 화면 (행 클릭으로 매출 상세 진입하는 관문)</span>
+        <span class="b" style="margin-top:5px"><span class="g">데이터</span> &nbsp;현재는 <span class="red">예시(목업) 14개 가맹점</span> 기준</span>
+        <span class="i">진입하면 목록을 자동으로 불러옴 · 다른 탭 보다 돌아오거나 창 포커스가 돌아와도 다시 불러옴</span>
+      </div>
+      <table class="kn-tbl">
+        <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
+<span class="b">제목 <b>"매출 조회"</b> 와 안내문</span><span class="i">"가맹점을 선택하여 매출/매입 데이터를 조회합니다."</span><span class="b">오른쪽에 <b>총 N개 가맹점</b> 표시 (캡처 기준 총 14개)</span><span class="i">검색과 상관없이 <b>전체 가맹점 수</b> — 검색어를 넣어도 이 숫자는 줄지 않음 (표는 걸러진 목록, 카운트는 전체 목록으로 서로 다름)</span><span class="i">불러오기 전·실패 시 <b>0</b>으로 표시</span>
+          </td></tr>
+          <tr><td class="kn-no">2</td><td class="kn-nm">검색</td><td class="kn-note">
+<span class="b"><b>가맹점명 · 사업자번호 · 대표자명</b>으로 검색</span><span class="i">일부만 입력해도 찾아줌 (부분일치) · 입력 글자수 제한 없음</span><span class="b">입력하는 <b>즉시</b> 목록이 걸러짐 (서버에 다시 묻지 않음)</span><span class="b">검색어를 지우면 <b>전체 목록으로 복원</b></span><span class="b">입력창 안내문 : "가맹점명, 사업자번호, 대표자명으로 검색"</span>
+          </td></tr>
+          <tr><td class="kn-no">3</td><td class="kn-nm">가맹점<br>목록</td><td class="kn-note">
+<span class="grp">정렬 순서 (위에서부터 · 사용자가 바꾸는 토글 없음)</span><span class="i"><b>①</b> 계약 <b>승인</b> + 정산 <b>활성</b> 가맹점</span><span class="i"><b>②</b> 계약 <b>승인</b> + 정산 <b>비활성</b></span><span class="i"><b>③</b> 계약 <b>미승인</b></span><span class="grp">표 항목</span><span class="i">번호 · 가맹점명 · 사업자번호 · 대표자 · 주소 · 계약상태 · 정산 · (마우스 올리면 나오는 버튼 칸)</span><span class="i">번호는 정렬·검색 후 <b>위에서부터 다시 매겨짐</b> (원본 순번 아님(내부 id 아님))</span><span class="i">사업자번호는 <b>하이픈 형식에 맞춰</b> 표기 (예 123-45-67890)</span><span class="i">주소가 길면 <b>…로 줄여서</b> 표시</span><span class="i">행에 마우스를 올리면 <b>배경색이 진해지고</b> 가맹점명이 강조색으로 바뀜 (누를 수 있다는 표시)</span><span class="grp"><span class="sb">3-1</span> 계약상태 뱃지</span><span class="i"><b>승인</b> = 초록 · <b>대기</b> = 회색 · <b>거절</b> = 빨강</span><span class="i">그 외 알 수 없는 값은 <b>대기</b>(회색)로 처리</span><span class="grp"><span class="sb">3-2</span> 정산 뱃지</span><span class="i"><b>활성</b> = 초록 · <b>비활성</b> = 회색</span><span class="i red">활성/비활성을 무엇으로 판단하는지는 개발 확인 필요</span><span class="grp">상황별 문구</span><span class="i">불러오는 중 → "로딩 중..."</span><span class="i">검색어 있는데 결과 없음 → "검색 결과가 없습니다."</span><span class="i">검색어 없이 데이터 0건 → "등록된 가맹점이 없습니다."</span>
+          </td></tr>
+          <tr><td class="kn-no">4</td><td class="kn-nm">마우스<br>올림 버튼</td><td class="kn-note">
+<span class="b">평소엔 숨어 있다가, <b>행에 마우스를 올리면</b> 오른쪽 끝에 함께 나타남</span><span class="b">계약이 <b>'대기'</b>인 가맹점에만 → <b>[승인]</b> 버튼</span><span class="i">누르면 <b>가맹점 상세(승인) 화면</b>[AD_MERCHANT_DT]으로 이동</span><span class="i">탭 모드에서는 <b>"○○ 승인"</b> 탭으로 열림, 아니면 현재 화면 전환</span><span class="i">행을 누르는 것(매출 이동)과는 <b>따로 동작</b></span><span class="b">모든 행에 → <b>[매출 &gt;]</b> 이동 표시</span><span class="i">클릭 동작이 따로 없는 안내 표시 · 행 어디를 눌러도 매출 상세로 이동</span>
+          </td></tr>
+          <tr><td class="kn-no">5</td><td class="kn-nm">행 클릭</td><td class="kn-note">
+<span class="b">행을 누르면 그 가맹점의 <b>매출 상세 화면</b>[AD_SALES_DT]으로 이동</span><span class="i">탭 모드에서는 <b>"○○ 매출"</b> 탭으로 열림 (가맹점명 + " 매출"), 아니면 현재 화면 전환</span>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>
