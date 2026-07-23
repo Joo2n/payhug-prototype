@@ -3,7 +3,15 @@
     "allow": [
       "mcp__claude_ai_Figma__get_metadata",
       "mcp__figma__get_metadata",
-      "Bash(gh repo *)"
+      "Bash(gh repo *)",
+      "mcp__claude_design__get_project",
+      "Read(//Users/semi/Library/LaunchAgents/**)",
+      "Read(//Library/LaunchAgents/**)",
+      "Bash(osascript -e 'tell application \"System Events\" to get the name of every login item')",
+      "Read(//Users/semi/**)",
+      "Bash(gh auth *)",
+      "Bash(curl -sL https://admin.payhug.io/ -o /private/tmp/claude-501/-Users-semi-cursor-payhug/4ee172b2-eb09-4604-b44b-435eb48ccafa/scratchpad/admin.html)",
+      "mcp__figma__get_screenshot"
     ]
   }
 }

@@ -1,3 +1,7 @@
 .DS_Store
 # 재생성 파생물(node payhug-spec/_pipeline/gen_design_fig.js 로 복원)
 payhug-spec/spec/design_fig/
+
+# 참고용 프론트 레포(별도 소스, 레포에 포함하지 않음)
+01_payhug-admin-web-main/
+02_payhug-merchant-web-main/
