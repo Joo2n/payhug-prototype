@@ -1,0 +1,61 @@
+Trying to load the allocator multiple times. This is *not* supported.
+[21004:5474722:0812/154243.143508:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143682:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143687:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143692:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143696:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143702:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143705:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143708:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143712:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[21004:5474722:0812/154243.143754:ERROR:gpu/command_buffer/service/shared_image/shared_image_manager.cc:395] SharedImageManager::ProduceMemory: Trying to Produce a Memory representation from a non-existent mailbox.
+[20999:5474689:0812/154243.154389:ERROR:base/process/process_mac.cc:53] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)
+[20999:5474689:0812/154243.154400:ERROR:base/process/process_mac.cc:98] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)
+[20999:5474689:0812/154243.157257:ERROR:base/process/process_mac.cc:53] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)
+[20999:5474689:0812/154243.157279:ERROR:base/process/process_mac.cc:98] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)
+[20999:5474689:0812/154245.999254:ERROR:base/process/process_mac.cc:53] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)
+[20999:5474689:0812/154246.003066:ERROR:base/process/process_mac.cc:98] task_policy_set TASK_SUPPRESSION_POLICY: (ipc/send) invalid destination port (0x10000003)
+[20999:5474675:0812/154246.150518:ERROR:google_apis/gcm/engine/registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[21172:5476037:0812/154300.481570:VERBOSE1:chrome/updater/updater.cc:374] Version: 152.0.7933.0, opt, ARM_64, command line: /Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake-all --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[21172:5476037:0812/154300.482182:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.1, arch: arm64, System uptime (seconds): 158070, parent pid: 20999
+[21172:5476037:0812/154300.483731:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/semi/Library/Application Support/Google/GoogleUpdater): 805439229952B (750.124GiB) / 994610155520B (926.303GiB)
+[21172:5476037:0812/154300.483742:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/0b/d63qdxfx0plfncyj_dwfmgb40000gn/T/): 805439229952B (750.124GiB) / 994610155520B (926.303GiB)
+[21172:5476037:0812/154300.483809:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[21174:5476042:0812/154300.490547:VERBOSE1:chrome/updater/updater.cc:374] Version: 152.0.7933.0, opt, ARM_64, command line: /Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --crash-handler --database=/Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/Crashpad --url=https://clients2.google.com/cr/report --annotation=prod=Update4 --annotation=ver=152.0.7933.0 --handshake-fd=6 --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[21174:5476042:0812/154300.490876:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.1, arch: arm64, System uptime (seconds): 158070, parent pid: 1
+[21174:5476042:0812/154300.491998:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/semi/Library/Application Support/Google/GoogleUpdater): 805439221760B (750.124GiB) / 994610155520B (926.303GiB)
+[21174:5476042:0812/154300.492008:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/0b/d63qdxfx0plfncyj_dwfmgb40000gn/T/): 805439221760B (750.124GiB) / 994610155520B (926.303GiB)
+[21174:5476042:0812/154300.492065:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[21172:5476037:0812/154300.492408:VERBOSE1:chrome/updater/crash_reporter.cc:124] Crash handler launched and ready.
+[21172:5476037:0812/154300.492939:VERBOSE1:chrome/updater/crash_client.cc:108] Found 0 completed crash reports
+[21172:5476037:0812/154300.492991:VERBOSE1:chrome/updater/crash_client.cc:132] Found 0 pending crash reports
+[21172:5476037:0812/154300.493034:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/semi/Library/Application Support/Google/RLZ/Crashpad/settings.dat: No such file or directory (2)
+[21172:5476037:0812/154300.493066:VERBOSE1:chrome/updater/updater.cc:105] Crash reporting initialized.
+[21172:5476050:0812/154300.493280:VERBOSE1:chrome/updater/app/app_wakeall.cc:58] Launching `/Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake`
+[21175:5476054:0812/154300.499183:VERBOSE1:chrome/updater/updater.cc:374] Version: 152.0.7933.0, opt, ARM_64, command line: /Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[21175:5476054:0812/154300.499528:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.1, arch: arm64, System uptime (seconds): 158070, parent pid: 21172
+[21175:5476054:0812/154300.500627:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/semi/Library/Application Support/Google/GoogleUpdater): 805439221760B (750.124GiB) / 994610155520B (926.303GiB)
+[21175:5476054:0812/154300.500636:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/0b/d63qdxfx0plfncyj_dwfmgb40000gn/T/): 805439221760B (750.124GiB) / 994610155520B (926.303GiB)
+[21175:5476054:0812/154300.500683:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[21177:5476058:0812/154300.507501:VERBOSE1:chrome/updater/updater.cc:374] Version: 152.0.7933.0, opt, ARM_64, command line: /Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --crash-handler --database=/Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/Crashpad --url=https://clients2.google.com/cr/report --annotation=prod=Update4 --annotation=ver=152.0.7933.0 --handshake-fd=6 --enable-logging --vmodule=*/components/update_client/*=2,*/chrome/enterprise_companion/*=2,*/chrome/updater/*=2
+[21177:5476058:0812/154300.507827:VERBOSE1:chrome/updater/updater.cc:377] OS version: 26.5.1, arch: arm64, System uptime (seconds): 158070, parent pid: 1
+[21177:5476058:0812/154300.508825:VERBOSE1:chrome/updater/updater.cc:382] Available disk space in install directory (/Users/semi/Library/Application Support/Google/GoogleUpdater): 805439221760B (750.124GiB) / 994610155520B (926.303GiB)
+[21177:5476058:0812/154300.508834:VERBOSE1:chrome/updater/updater.cc:386] Available disk space in temporary directory (/var/folders/0b/d63qdxfx0plfncyj_dwfmgb40000gn/T/): 805439221760B (750.124GiB) / 994610155520B (926.303GiB)
+[21177:5476058:0812/154300.508885:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS START event to the history log
+[21175:5476054:0812/154300.509184:VERBOSE1:chrome/updater/crash_reporter.cc:124] Crash handler launched and ready.
+[21175:5476054:0812/154300.509651:VERBOSE1:chrome/updater/crash_client.cc:108] Found 0 completed crash reports
+[21175:5476054:0812/154300.509703:VERBOSE1:chrome/updater/crash_client.cc:132] Found 0 pending crash reports
+[21175:5476054:0812/154300.509744:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:145] open /Users/semi/Library/Application Support/Google/RLZ/Crashpad/settings.dat: No such file or directory (2)
+[21175:5476054:0812/154300.509772:VERBOSE1:chrome/updater/updater.cc:105] Crash reporting initialized.
+[21175:5476054:0812/154300.509889:VERBOSE1:chrome/updater/ipc/update_service_internal_proxy_mojo.cc:61] Run
+[21175:5476054:0812/154316.084184:VERBOSE1:chrome/updater/app/app.cc:52] Shutdown: 0
+[21175:5476054:0812/154316.084990:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[21175:5476054:0812/154316.085048:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--wake) returned 0.
+[21172:5476050:0812/154316.245552:VERBOSE1:chrome/updater/app/app_wakeall.cc:68] `/Users/semi/Library/Application Support/Google/GoogleUpdater/152.0.7933.0/GoogleUpdater.app/Contents/MacOS/GoogleUpdater --wake` exited 0
+[21172:5476037:0812/154316.245870:VERBOSE1:chrome/updater/app/app.cc:52] Shutdown: 0
+[21172:5476037:0812/154316.246201:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[21172:5476037:0812/154316.246215:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--wake-all) returned 0.
+[21177:5476058:0812/154326.093873:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[21177:5476058:0812/154326.093906:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--crash-handler) returned 0.
+[21174:5476042:0812/154326.095264:VERBOSE2:chrome/updater/event_history.cc:265] Emitted a UPDATER_PROCESS END event to the history log
+[21174:5476042:0812/154326.095305:VERBOSE1:chrome/updater/updater.cc:419] UpdaterMain (--crash-handler) returned 0.

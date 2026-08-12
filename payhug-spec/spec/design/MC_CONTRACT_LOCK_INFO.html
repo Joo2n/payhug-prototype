@@ -55,7 +55,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
       </div>
       <div class="mrow">
         <div class="lbl" style="width:64px">Flow</div><div class="val" style="width:544px">로그인 &gt; 계약 &gt; 3단계 선정산 락계좌 &gt; 정보 확인</div>
-        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">락계좌=하나은행(081) 강제, 출금비번 4자리. 이용계약 제7조① 지정계좌=하나은행</div>
+        <div class="lbl" style="width:52px">Note</div><div class="val" style="flex:1">락계좌=하나은행(081) 강제, 출금비번 4자리. (근거=코드 bankCodeMap, 약관 조항 아님)</div>
       </div>
     </div>
     <div class="logo"><b>Pay</b><i>hug</i></div>
@@ -83,7 +83,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
       <div class="kn-memo">
         <span class="b"><span class="g">화면 성격</span> &nbsp;선정산 <b>락계좌(선정산 전용계좌) 등록</b> 플로우의 '정보 확인' 단계 화면 (한 페이지 안에서 info→verify→fast_inquiry 상태로 전이)</span>
         <span class="b"><span class="g">데이터</span> &nbsp;계좌주명·은행명·계좌번호는 앞 단계 통장 사진 <b>OCR로 자동 입력</b>됨 (앞 화면 쿼리로 전달 · 예시값 김성호·하나은행·38091234567890)</span>
-        <span class="b"><span class="g">정책</span> &nbsp;락계좌는 <b>하나은행(081)만</b> 등록 가능 &mdash; 이용계약 제7조① 지정계좌=하나은행</span>
+        <span class="b"><span class="g">정책</span> &nbsp;락계좌는 <b>하나은행(081)만</b> 등록 가능 &mdash; 근거=코드(bankCodeMap 081 검증) · 약관 조항 근거는 코드 약관에 없음(확인필요)</span>
       </div>
       <table class="kn-tbl">
         <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>

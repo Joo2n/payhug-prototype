@@ -1,0 +1,1047 @@
+[
+{
+"doc": "1584:2",
+"pageid": "AD_SALES",
+"img": "Image (매출 조회)"
+},
+{
+"doc": "1591:2",
+"pageid": "AD_SIM",
+"img": "Image (정산 시뮬레이션)"
+},
+{
+"doc": "1593:2",
+"pageid": "AD_SETTLE_DIFF",
+"img": "Image (차액 정산)"
+},
+{
+"doc": "1592:2",
+"pageid": "AD_SETTLE_DETAIL",
+"img": "Image (정산 상세)"
+},
+{
+"doc": "1596:2",
+"pageid": "AD_SETTLE_TRANSFER",
+"img": "Image (이체 내역)"
+},
+{
+"doc": "1597:2",
+"pageid": "AD_PRODUCT",
+"img": "Image (정산 상품관리)"
+},
+{
+"doc": "1599:2",
+"pageid": "AD_HOME",
+"img": "Image (관리자 대시보드)"
+},
+{
+"doc": "1598:2",
+"pageid": "AD_SALES_DT",
+"img": "Image (매출 조회 &gt; 가맹점 상세)"
+},
+{
+"doc": "1600:2",
+"pageid": "AD_SALES_DT_PAYOUT",
+"img": "Image (매출 조회 &gt; 가맹점 상세 (지급예정일 기준))"
+},
+{
+"doc": "1601:2",
+"pageid": "AD_SALES_DT_CANCEL",
+"img": "Image (매출 조회 &gt; 가맹점 상세 (거래상태 취소 필터))"
+},
+{
+"doc": "1602:2",
+"pageid": "AD_SALES_DT_NORMAL",
+"img": "Image (매출 조회 &gt; 가맹점 상세 (거래상태 정상 필터))"
+},
+{
+"doc": "1603:2",
+"pageid": "AD_SALES_DT_BM",
+"img": "Image (매출 조회 &gt; 가맹점 상세 (배달의민족 필터))"
+},
+{
+"doc": "1604:2",
+"pageid": "AD_SALES_DT_ADJUST",
+"img": "Image (매출 조회 &gt; 가맹점 상세 (차액정산 내역 펼침))"
+},
+{
+"doc": "1605:2",
+"pageid": "AD_SALES_DT_ADD_CARD",
+"img": "Image (매출 조회 &gt; 가맹점 상세 &gt; 단건 등록(카드 승인))"
+},
+{
+"doc": "1606:2",
+"pageid": "AD_MERCHANT_REJECT",
+"img": "Image (가맹점 관리 (반려 필터))"
+},
+{
+"doc": "1607:2",
+"pageid": "AD_MERCHANT_LEGACY",
+"img": "Image (가맹점 관리 &gt; 부채 가맹점 등록)"
+},
+{
+"doc": "1608:2",
+"pageid": "AD_MERCHANT_DT_LOCKVERIFY",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 플랫폼 락계좌 검증 확인)"
+},
+{
+"doc": "1609:2",
+"pageid": "AD_MERCHANT_DT_LOCKDETAIL",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 플랫폼 락계좌 연결 상세)"
+},
+{
+"doc": "1611:2",
+"pageid": "AD_MERCHANT_DT_RESIGN",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 계약 재서명 요청)"
+},
+{
+"doc": "1610:2",
+"pageid": "AD_MERCHANT_DT_FEERESET",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 카드 수수료 기본값 초기화)"
+},
+{
+"doc": "1613:2",
+"pageid": "AD_MERCHANT_DT_TRANSFER",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 수동 이체)"
+},
+{
+"doc": "1612:2",
+"pageid": "AD_MERCHANT_DT_WEEKDAY",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 (요일별 상세 테이블 펼침))"
+},
+{
+"doc": "1614:2",
+"pageid": "AD_MERCHANT_DT_ADJUST",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 차액 정산 이력)"
+},
+{
+"doc": "1616:2",
+"pageid": "AD_MERCHANT_DT_IDCARD",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 신분증 등록)"
+},
+{
+"doc": "1615:2",
+"pageid": "AD_MERCHANT_DT_REJECT",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 가맹점 반려)"
+},
+{
+"doc": "1617:2",
+"pageid": "AD_MERCHANT_ASSIGN",
+"img": "Image (가맹점 관리 &gt; 담당자 변경)"
+},
+{
+"doc": "1619:2",
+"pageid": "AD_MERCHANT_DT_DEBT",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 이관 부채 등록)"
+},
+{
+"doc": "1620:2",
+"pageid": "AD_MERCHANT_DT_PLATFORM",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 플랫폼 계정 추가)"
+},
+{
+"doc": "1621:2",
+"pageid": "AD_PRODUCT_GENERAL",
+"img": "Image (정산 상품관리 &gt; 일반 상품 펼침)"
+},
+{
+"doc": "1622:2",
+"pageid": "AD_PRODUCT_ADD",
+"img": "Image (정산 상품관리 &gt; 상품 생성)"
+},
+{
+"doc": "1623:2",
+"pageid": "AD_PRODUCT_DEACT",
+"img": "Image (정산 상품관리 &gt; 비활성화 확인)"
+},
+{
+"doc": "1625:2",
+"pageid": "AD_SIM_MULTI",
+"img": "Image (정산 시뮬레이션 &gt; 거래 다건 입력)"
+},
+{
+"doc": "1624:2",
+"pageid": "AD_PRODUCT_DELETE",
+"img": "Image (정산 상품관리 &gt; 삭제 확인)"
+},
+{
+"doc": "1627:2",
+"pageid": "AD_SETTLE_DIFF_CARD",
+"img": "Image (차액 정산 &gt; 카드 수수료 차액)"
+},
+{
+"doc": "1628:2",
+"pageid": "AD_SETTLE_DETAIL_BATCH",
+"img": "Image (정산 상세 &gt; 배치 선택 상세)"
+},
+{
+"doc": "1629:2",
+"pageid": "AD_SETTLE_DIFF_DELIVERY",
+"img": "Image (차액 정산 &gt; 배달 수수료 차액)"
+},
+{
+"doc": "1630:2",
+"pageid": "AD_SETTLE_DIFF_ESTIMATED",
+"img": "Image (차액 정산 &gt; 예상매출 대사)"
+},
+{
+"doc": "1634:2",
+"pageid": "AD_SETTLE_RECORD",
+"img": "Image (선정산 결과 &gt; 이미지급(기록만) 확인)"
+},
+{
+"doc": "1635:2",
+"pageid": "AD_PARTNER_PAYHUG",
+"img": "Image (회원 관리 &gt; 페이허그 필터)"
+},
+{
+"doc": "1637:2",
+"pageid": "AD_PARTNER_SALES",
+"img": "Image (회원 관리 &gt; 영업 필터)"
+},
+{
+"doc": "1638:2",
+"pageid": "AD_PARTNER_SALESORG",
+"img": "Image (회원 관리 &gt; 영업조직 필터)"
+},
+{
+"doc": "1639:2",
+"pageid": "AD_PARTNER_ADMIN",
+"img": "Image (회원 관리 &gt; 관리자 필터)"
+},
+{
+"doc": "1640:2",
+"pageid": "AD_PARTNER_ADD",
+"img": "Image (회원 관리 &gt; 회원 등록)"
+},
+{
+"doc": "1642:2",
+"pageid": "AD_PARTNER_DEACT",
+"img": "Image (회원 관리 &gt; 회원 비활성화 확인)"
+},
+{
+"doc": "1643:2",
+"pageid": "AD_PARTNER_DELETE",
+"img": "Image (회원 관리 &gt; 회원 삭제 확인)"
+},
+{
+"doc": "1644:2",
+"pageid": "AD_PARTNER_INVESTOR",
+"img": "Image (회원 관리 &gt; 투자자 필터)"
+},
+{
+"doc": "1645:2",
+"pageid": "AD_TERMS_REVISE",
+"img": "Image (약관 관리 &gt; 약관 개정 (종류 선택))"
+},
+{
+"doc": "1646:2",
+"pageid": "AD_TERMS_PREVIEW",
+"img": "Image (약관 관리 &gt; 버전 미리보기)"
+},
+{
+"doc": "1647:2",
+"pageid": "AD_TERMS_VER_DEL",
+"img": "Image (약관 관리 &gt; 약관 버전 삭제 확인)"
+},
+{
+"doc": "1648:2",
+"pageid": "AD_TERMS_VER_EDIT",
+"img": "Image (약관 관리 &gt; 약관 버전 수정)"
+},
+{
+"doc": "1649:2",
+"pageid": "AD_TERMS",
+"img": "Image (약관 관리)"
+},
+{
+"doc": "1650:2",
+"pageid": "AD_TERMS_CTX",
+"img": "Image (약관 관리 &gt; 컨텍스트 관리 펼침)"
+},
+{
+"doc": "1652:2",
+"pageid": "AD_BALANCE",
+"img": "Image (모 계좌 잔액 조회)"
+},
+{
+"doc": "1653:2",
+"pageid": "AD_TERMS_TYPE_EDIT",
+"img": "Image (약관 관리 &gt; 약관 종류 수정)"
+},
+{
+"doc": "1651:2",
+"pageid": "AD_TERMS_TYPE_ADD",
+"img": "Image (약관 관리 &gt; 약관 종류 추가)"
+},
+{
+"doc": "1655:2",
+"pageid": "AD_INQUIRY",
+"img": "Image (1:1 문의 &gt; 목록)"
+},
+{
+"doc": "1654:2",
+"pageid": "AD_BALANCE_DEPOSIT",
+"img": "Image (모 계좌 잔액 조회 &gt; 외부 입금 등록)"
+},
+{
+"doc": "1656:2",
+"pageid": "AD_INQUIRY_ANSWERED",
+"img": "Image (1:1 문의 &gt; 목록 (답변완료 필터))"
+},
+{
+"doc": "1657:2",
+"pageid": "AD_INQUIRY_CLOSED",
+"img": "Image (1:1 문의 &gt; 목록 (종료 필터))"
+},
+{
+"doc": "1658:2",
+"pageid": "AD_INQUIRY_SETTLEMENT",
+"img": "Image (1:1 문의 &gt; 목록 (정산 카테고리))"
+},
+{
+"doc": "1659:2",
+"pageid": "AD_INQUIRY_ACCOUNT",
+"img": "Image (1:1 문의 &gt; 목록 (계정 카테고리))"
+},
+{
+"doc": "1660:2",
+"pageid": "AD_LOG",
+"img": "Image (활동 로그)"
+},
+{
+"doc": "1662:2",
+"pageid": "AD_AI_CUSTOM",
+"img": "Image (AI 모니터링 어시스턴트 &gt; 시간범위 직접 지정)"
+},
+{
+"doc": "1661:2",
+"pageid": "AD_AI_ANSWER",
+"img": "Image (AI 모니터링 어시스턴트 &gt; 질문 후 분석 응답)"
+},
+{
+"doc": "1663:2",
+"pageid": "AD_MERCHANT_DT_SCRAPE",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 매출 데이터 수집)"
+},
+{
+"doc": "1664:2",
+"pageid": "AD_MERCHANT",
+"img": "Image (가맹점 관리)"
+},
+{
+"doc": "1666:2",
+"pageid": "AD_MERCHANT_DT",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세)"
+},
+{
+"doc": "1665:2",
+"pageid": "AD_SETTLE",
+"img": "Image (선정산 결과)"
+},
+{
+"doc": "1667:2",
+"pageid": "AD_SETTLE_BILL",
+"img": "Image (계산서 발행)"
+},
+{
+"doc": "1669:2",
+"pageid": "AD_SETTLE_VOC",
+"img": "Image (VOC 대응)"
+},
+{
+"doc": "1668:2",
+"pageid": "AD_SETTLE_PREVIEW",
+"img": "Image (선정산 결과 &gt; 바로이체 미리보기)"
+},
+{
+"doc": "1670:2",
+"pageid": "AD_SCRAPING",
+"img": "Image (스크래핑 장애 이력)"
+},
+{
+"doc": "1672:2",
+"pageid": "AD_SALES_DT_CARD",
+"img": "Image (매출 조회 &gt; 가맹점 상세 (카드 · 카드사 필터))"
+},
+{
+"doc": "1671:2",
+"pageid": "AD_SETTLE_MISSED",
+"img": "Image (선정산 결과 &gt; 미정산 누락 추적 펼침)"
+},
+{
+"doc": "1673:2",
+"pageid": "AD_SALES_DT_ADD_PURCHASE",
+"img": "Image (매출 조회 &gt; 가맹점 상세 &gt; 단건 등록(카드 매입))"
+},
+{
+"doc": "1674:2",
+"pageid": "AD_SALES_DT_OLD",
+"img": "Image (매출 조회 &gt; 가맹점 상세 (오래된순 정렬))"
+},
+{
+"doc": "1675:2",
+"pageid": "AD_SALES_DT_ADD_DELIVERY",
+"img": "Image (매출 조회 &gt; 가맹점 상세 &gt; 단건 등록(배달 플랫폼))"
+},
+{
+"doc": "1676:2",
+"pageid": "AD_SALES_DT_EXCEL",
+"img": "Image (매출 조회 &gt; 가맹점 상세 &gt; 엑셀 업로드)"
+},
+{
+"doc": "1677:2",
+"pageid": "AD_MERCHANT_PENDING",
+"img": "Image (가맹점 관리 (심사대기 필터))"
+},
+{
+"doc": "1678:2",
+"pageid": "AD_MERCHANT_APPROVED",
+"img": "Image (가맹점 관리 (승인 필터))"
+},
+{
+"doc": "1679:2",
+"pageid": "AD_MERCHANT_DT_OLDCONTRACT",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 (이전 계약서 펼침))"
+},
+{
+"doc": "1680:2",
+"pageid": "AD_MERCHANT_NONE",
+"img": "Image (가맹점 관리 (미등록 필터))"
+},
+{
+"doc": "1681:2",
+"pageid": "AD_MERCHANT_DT_HARDRESET",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 유저 하드리셋)"
+},
+{
+"doc": "1682:2",
+"pageid": "AD_MERCHANT_DT_ADJUST_DONE",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 차액 정산 이력 (완료 필터))"
+},
+{
+"doc": "1683:2",
+"pageid": "AD_MERCHANT_DT_ADJSTAT",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 (차액 정산 상세 통계 펼침))"
+},
+{
+"doc": "1684:2",
+"pageid": "AD_MERCHANT_DT_ADJUST_PENDING",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 차액 정산 이력 (대기 필터))"
+},
+{
+"doc": "1685:2",
+"pageid": "AD_MERCHANT_DT_BANKACCT",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 입출금 계좌 등록)"
+},
+{
+"doc": "1686:2",
+"pageid": "AD_MERCHANT_DT_LOCKACCT",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 선정산 전용계좌 등록)"
+},
+{
+"doc": "1687:2",
+"pageid": "AD_MERCHANT_DT_RESET",
+"img": "Image (가맹점 관리 &gt; 가맹점 상세 &gt; 비밀번호 초기화)"
+},
+{
+"doc": "1688:2",
+"pageid": "AD_PRODUCT_DAOU",
+"img": "Image (정산 상품관리 &gt; 다우 상품 펼침)"
+},
+{
+"doc": "1689:2",
+"pageid": "AD_PRODUCT_EDIT",
+"img": "Image (정산 상품관리 &gt; 상품 수정)"
+},
+{
+"doc": "1690:2",
+"pageid": "AD_SETTLE_DIFFLIST",
+"img": "Image (선정산 차액 정산 내역)"
+},
+{
+"doc": "1691:2",
+"pageid": "AD_SETTLE_DIFF_CARDFILTER",
+"img": "Image (차액 정산 &gt; 매출유형 카드 필터)"
+},
+{
+"doc": "1692:2",
+"pageid": "AD_SETTLE_DIFF_CARRY",
+"img": "Image (차액 정산 &gt; 미회수 이월)"
+},
+{
+"doc": "1693:2",
+"pageid": "AD_SETTLE_DIFF_CLAWBACK",
+"img": "Image (차액 정산 &gt; 취소 환수)"
+},
+{
+"doc": "1694:2",
+"pageid": "AD_SETTLE_DIRECT",
+"img": "Image (선정산 결과 &gt; 바로이체 확인)"
+},
+{
+"doc": "1695:2",
+"pageid": "AD_SETTLE_EXPAND",
+"img": "Image (선정산 결과 &gt; 가맹점 건별 상세 펼침)"
+},
+{
+"doc": "1696:2",
+"pageid": "AD_SETTLE_TRANSFER_COLLECT",
+"img": "Image (이체 내역 &gt; 회수 2단계 펼침)"
+},
+{
+"doc": "1697:2",
+"pageid": "AD_PARTNER_EDIT",
+"img": "Image (회원 관리 &gt; 회원 수정)"
+},
+{
+"doc": "1698:2",
+"pageid": "AD_PARTNER_PARTNER",
+"img": "Image (회원 관리 &gt; 파트너 필터)"
+},
+{
+"doc": "1699:2",
+"pageid": "AD_PARTNER_AFFILIATE",
+"img": "Image (회원 관리 &gt; 제휴사 필터)"
+},
+{
+"doc": "1700:2",
+"pageid": "AD_PARTNER_PROFILE",
+"img": "Image (회원 관리 &gt; 프로필 관리)"
+},
+{
+"doc": "1701:2",
+"pageid": "AD_TERMS_REVISE_FIXED",
+"img": "Image (약관 관리 &gt; 약관 개정 (종류 고정))"
+},
+{
+"doc": "1702:2",
+"pageid": "AD_PARTNER",
+"img": "Image (회원 관리)"
+},
+{
+"doc": "1703:2",
+"pageid": "AD_TERMS_SIGNUP",
+"img": "Image (약관 관리 &gt; 목록 (회원가입 필터))"
+},
+{
+"doc": "1704:2",
+"pageid": "AD_TERMS_CONTRACT",
+"img": "Image (약관 관리 &gt; 목록 (전자계약 필터))"
+},
+{
+"doc": "1705:2",
+"pageid": "AD_TERMS_MARKETING",
+"img": "Image (약관 관리 &gt; 목록 (마케팅 수신 필터))"
+},
+{
+"doc": "1706:2",
+"pageid": "AD_INQUIRY_PENDING",
+"img": "Image (1:1 문의 &gt; 목록 (대기 필터))"
+},
+{
+"doc": "1707:2",
+"pageid": "AD_TERMS_CTX_EDIT",
+"img": "Image (약관 관리 &gt; 컨텍스트 수정)"
+},
+{
+"doc": "1708:2",
+"pageid": "AD_TERMS_CTX_ADD",
+"img": "Image (약관 관리 &gt; 컨텍스트 추가)"
+},
+{
+"doc": "1709:2",
+"pageid": "AD_INQUIRY_PROGRESS",
+"img": "Image (1:1 문의 &gt; 목록 (처리중 필터))"
+},
+{
+"doc": "1710:2",
+"pageid": "AD_INQUIRY_GENERAL",
+"img": "Image (1:1 문의 &gt; 목록 (일반 카테고리))"
+},
+{
+"doc": "1711:2",
+"pageid": "AD_INQUIRY_PAYMENT",
+"img": "Image (1:1 문의 &gt; 목록 (결제 카테고리))"
+},
+{
+"doc": "1712:2",
+"pageid": "AD_AI",
+"img": "Image (AI 모니터링 어시스턴트)"
+},
+{
+"doc": "1714:2",
+"pageid": "AD_INQUIRY_TECH",
+"img": "Image (1:1 문의 &gt; 목록 (기술 카테고리))"
+},
+{
+"doc": "1713:2",
+"pageid": "AD_INQUIRY_DT",
+"img": "Image (1:1 문의 &gt; 상세 (메시지 스레드 드로어))"
+},
+{
+"doc": "1715:2",
+"pageid": "AD_LOGIN",
+"img": "Image (관리자 로그인)"
+},
+{
+"doc": "1836:2",
+"pageid": "MC_CONTRACT_TERMS_AGREE",
+"img": ""
+},
+{
+"doc": "2103:2",
+"pageid": "MC_LANDING",
+"img": "Image (MC_LANDING)"
+},
+{
+"doc": "2149:2",
+"pageid": "MC_LANDING_FAQ",
+"img": "Image (MC_LANDING_FAQ)"
+},
+{
+"doc": "2147:2",
+"pageid": "MC_LANDING_LOGIN",
+"img": "Image (MC_LANDING_LOGIN)"
+},
+{
+"doc": "2148:2",
+"pageid": "MC_DASH",
+"img": "Image (MC_DASH)"
+},
+{
+"doc": "2150:2",
+"pageid": "MC_DASH_DONE",
+"img": "Image (MC_DASH_DONE)"
+},
+{
+"doc": "2153:2",
+"pageid": "MC_DASH_BIZSEL",
+"img": "Image (MC_DASH_BIZSEL)"
+},
+{
+"doc": "2151:2",
+"pageid": "MC_DASH_PENDING",
+"img": "Image (MC_DASH_PENDING)"
+},
+{
+"doc": "2152:2",
+"pageid": "MC_DASH_UNAPPROVED",
+"img": "Image (MC_DASH_UNAPPROVED)"
+},
+{
+"doc": "2154:2",
+"pageid": "MC_DASH_INQUIRY",
+"img": "Image (MC_DASH_INQUIRY)"
+},
+{
+"doc": "2157:2",
+"pageid": "MC_DASH_APPLIED",
+"img": "Image (MC_DASH_APPLIED)"
+},
+{
+"doc": "2155:2",
+"pageid": "MC_DASH_PROGRESS",
+"img": "Image (MC_DASH_PROGRESS)"
+},
+{
+"doc": "2156:2",
+"pageid": "MC_DASH_REJECT",
+"img": "Image (MC_DASH_REJECT)"
+},
+{
+"doc": "2158:2",
+"pageid": "MC_DASH_RESIGN",
+"img": "Image (MC_DASH_RESIGN)"
+},
+{
+"doc": "2161:2",
+"pageid": "MC_COMMON_PROFILE",
+"img": "Image (MC_COMMON_PROFILE)"
+},
+{
+"doc": "2159:2",
+"pageid": "MC_COMMON_LOGOUT",
+"img": "Image (MC_COMMON_LOGOUT)"
+},
+{
+"doc": "2160:2",
+"pageid": "MC_COMMON_NOTI_DD",
+"img": "Image (MC_COMMON_NOTI_DD)"
+},
+{
+"doc": "2162:2",
+"pageid": "MC_COMMON_MENU",
+"img": "Image (MC_COMMON_MENU)"
+},
+{
+"doc": "2165:2",
+"pageid": "MC_NOTI",
+"img": "Image (MC_NOTI)"
+},
+{
+"doc": "2164:2",
+"pageid": "MC_MYINFO_INQUIRY_LIST",
+"img": "Image (MC_MYINFO_INQUIRY_LIST)"
+},
+{
+"doc": "2163:2",
+"pageid": "MC_MYINFO_INQUIRY_NEW_ALT",
+"img": "Image (MC_MYINFO_INQUIRY_NEW_ALT)"
+},
+{
+"doc": "2166:2",
+"pageid": "MC_MYINFO_INQUIRY_DT_ALT",
+"img": "Image (MC_MYINFO_INQUIRY_DT_ALT)"
+},
+{
+"doc": "2130:2",
+"pageid": "PH_LO",
+"img": "Image (PH_LO)"
+},
+{
+"doc": "2133:2",
+"pageid": "PH_LO_COMPANY",
+"img": "Image (PH_LO_COMPANY)"
+},
+{
+"doc": "2131:2",
+"pageid": "PH_LO_EXPIRED",
+"img": "Image (PH_LO_EXPIRED)"
+},
+{
+"doc": "2132:2",
+"pageid": "PH_LO_LOADING",
+"img": "Image (PH_LO_LOADING)"
+},
+{
+"doc": "2134:2",
+"pageid": "PH_JO_TERMS",
+"img": "Image (PH_JO_TERMS)"
+},
+{
+"doc": "2137:2",
+"pageid": "PH_JO_TERMS_ALL",
+"img": "Image (PH_JO_TERMS_ALL)"
+},
+{
+"doc": "2136:2",
+"pageid": "PH_JO_TERMS_MODAL",
+"img": "Image (PH_JO_TERMS_MODAL)"
+},
+{
+"doc": "2135:2",
+"pageid": "PH_JO_AUTH",
+"img": "Image (PH_JO_AUTH)"
+},
+{
+"doc": "2138:2",
+"pageid": "PH_JO_PW",
+"img": "Image (PH_JO_PW)"
+},
+{
+"doc": "2141:2",
+"pageid": "PH_JO_PW_CHECK",
+"img": "Image (PH_JO_PW_CHECK)"
+},
+{
+"doc": "2140:2",
+"pageid": "PH_JO_PW_TIP_CAPS",
+"img": "Image (PH_JO_PW_TIP_CAPS)"
+},
+{
+"doc": "2139:2",
+"pageid": "PH_JO_AUTH_EXIST",
+"img": "Image (PH_JO_AUTH_EXIST)"
+},
+{
+"doc": "2142:2",
+"pageid": "PH_JO_DONE",
+"img": "Image (PH_JO_DONE)"
+},
+{
+"doc": "2145:2",
+"pageid": "PH_PW_FI",
+"img": "Image (PH_PW_FI)"
+},
+{
+"doc": "2143:2",
+"pageid": "PH_PW_RE",
+"img": "Image (PH_PW_RE)"
+},
+{
+"doc": "2144:2",
+"pageid": "PH_PW_FI_NONE",
+"img": "Image (PH_PW_FI_NONE)"
+},
+{
+"doc": "2146:2",
+"pageid": "PH_PW_RE_DONE",
+"img": "Image (PH_PW_RE_DONE)"
+},
+{
+"doc": "2169:2",
+"pageid": "MC_CONTRACT",
+"img": "Image (MC_CONTRACT)"
+},
+{
+"doc": "2167:2",
+"pageid": "MC_CONTRACT_EDIT",
+"img": "Image (MC_CONTRACT_EDIT)"
+},
+{
+"doc": "2168:2",
+"pageid": "MC_CONTRACT_PENDING",
+"img": "Image (MC_CONTRACT_PENDING)"
+},
+{
+"doc": "2170:2",
+"pageid": "MC_CONTRACT_BIZ_UPLOAD",
+"img": "Image (MC_CONTRACT_BIZ_UPLOAD)"
+},
+{
+"doc": "2172:2",
+"pageid": "MC_CONTRACT_BIZ_UPLOAD_CORP",
+"img": "Image (MC_CONTRACT_BIZ_UPLOAD_CORP)"
+},
+{
+"doc": "2171:2",
+"pageid": "MC_CONTRACT_BIZ_INFO",
+"img": "Image (MC_CONTRACT_BIZ_INFO)"
+},
+{
+"doc": "2173:2",
+"pageid": "MC_CONTRACT_BIZ_INFO_CORP",
+"img": "Image (MC_CONTRACT_BIZ_INFO_CORP)"
+},
+{
+"doc": "2174:2",
+"pageid": "MC_CONTRACT_ID_UPLOAD",
+"img": "Image (MC_CONTRACT_ID_UPLOAD)"
+},
+{
+"doc": "2175:2",
+"pageid": "MC_CONTRACT_ID_INFO",
+"img": "Image (MC_CONTRACT_ID_INFO)"
+},
+{
+"doc": "2176:2",
+"pageid": "MC_CONTRACT_ID_INFO_DRIVER",
+"img": "Image (MC_CONTRACT_ID_INFO_DRIVER)"
+},
+{
+"doc": "2177:2",
+"pageid": "MC_CONTRACT_LOCK_APPLY",
+"img": "Image (MC_CONTRACT_LOCK_APPLY)"
+},
+{
+"doc": "2178:2",
+"pageid": "MC_CONTRACT_LOCK_UPLOAD",
+"img": "Image (MC_CONTRACT_LOCK_UPLOAD)"
+},
+{
+"doc": "2179:2",
+"pageid": "MC_CONTRACT_LOCK_INFO",
+"img": "Image (MC_CONTRACT_LOCK_INFO)"
+},
+{
+"doc": "2180:2",
+"pageid": "MC_CONTRACT_LOCK_FASTGUIDE",
+"img": "Image (MC_CONTRACT_LOCK_FASTGUIDE)"
+},
+{
+"doc": "2181:2",
+"pageid": "MC_CONTRACT_LOCK_VERIFY",
+"img": "Image (MC_CONTRACT_LOCK_VERIFY)"
+},
+{
+"doc": "2182:2",
+"pageid": "MC_CONTRACT_LOCK_FASTINQ",
+"img": "Image (MC_CONTRACT_LOCK_FASTINQ)"
+},
+{
+"doc": "2184:2",
+"pageid": "MC_CONTRACT_DEPOSIT_UPLOAD",
+"img": "Image (MC_CONTRACT_DEPOSIT_UPLOAD)"
+},
+{
+"doc": "2183:2",
+"pageid": "MC_CONTRACT_DEPOSIT_GATE",
+"img": "Image (MC_CONTRACT_DEPOSIT_GATE)"
+},
+{
+"doc": "2185:2",
+"pageid": "MC_CONTRACT_DEPOSIT_INFO",
+"img": "Image (MC_CONTRACT_DEPOSIT_INFO)"
+},
+{
+"doc": "2186:2",
+"pageid": "MC_CONTRACT_DEPOSIT_VERIFY",
+"img": "Image (MC_CONTRACT_DEPOSIT_VERIFY)"
+},
+{
+"doc": "2188:2",
+"pageid": "MC_CONTRACT_PLATFORM",
+"img": "Image (MC_CONTRACT_PLATFORM)"
+},
+{
+"doc": "2187:2",
+"pageid": "MC_CONTRACT_SIGN",
+"img": "Image (MC_CONTRACT_SIGN)"
+},
+{
+"doc": "2189:2",
+"pageid": "MC_CONTRACT_SIGN_ALLAGREE",
+"img": "Image (MC_CONTRACT_SIGN_ALLAGREE)"
+},
+{
+"doc": "2190:2",
+"pageid": "MC_CONTRACT_SIGN_TERMSMODAL",
+"img": "Image (MC_CONTRACT_SIGN_TERMSMODAL)"
+},
+{
+"doc": "2192:2",
+"pageid": "MC_CONTRACT_SIGN_PREVIEW",
+"img": "Image (MC_CONTRACT_SIGN_PREVIEW)"
+},
+{
+"doc": "2191:2",
+"pageid": "MC_CONTRACT_SIGN_PREVIEW_ZOOM",
+"img": "Image (MC_CONTRACT_SIGN_PREVIEW_ZOOM)"
+},
+{
+"doc": "2193:2",
+"pageid": "MC_CONTRACT_SIGN_INPUT",
+"img": "Image (MC_CONTRACT_SIGN_INPUT)"
+},
+{
+"doc": "2194:2",
+"pageid": "MC_CONTRACT_SIGN_CONFIRM",
+"img": "Image (MC_CONTRACT_SIGN_CONFIRM)"
+},
+{
+"doc": "2195:2",
+"pageid": "MC_CONTRACT_SIGN_DONE",
+"img": "Image (MC_CONTRACT_SIGN_DONE)"
+},
+{
+"doc": "2116:2",
+"pageid": "ST_MA",
+"img": "Image (ST_MA)"
+},
+{
+"doc": "2114:2",
+"pageid": "ST_MA_TIP_DIFF",
+"img": "Image (ST_MA_TIP_DIFF)"
+},
+{
+"doc": "2118:2",
+"pageid": "ST_MA_CARD",
+"img": "Image (ST_MA_CARD)"
+},
+{
+"doc": "2121:2",
+"pageid": "ST_MA_CARD_DT",
+"img": "Image (ST_MA_CARD_DT)"
+},
+{
+"doc": "2120:2",
+"pageid": "ST_MA_DELIV",
+"img": "Image (ST_MA_DELIV)"
+},
+{
+"doc": "2119:2",
+"pageid": "ST_MA_DELIV_TIP",
+"img": "Image (ST_MA_DELIV_TIP)"
+},
+{
+"doc": "2123:2",
+"pageid": "ST_MA_DELIV_DT",
+"img": "Image (ST_MA_DELIV_DT)"
+},
+{
+"doc": "2124:2",
+"pageid": "ST_DIFF",
+"img": "Image (ST_DIFF)"
+},
+{
+"doc": "2122:2",
+"pageid": "ST_DIFF_TIP_NORMAL",
+"img": "Image (ST_DIFF_TIP_NORMAL)"
+},
+{
+"doc": "2125:2",
+"pageid": "ST_DIFF_TIP_MEET_DONE",
+"img": "Image (ST_DIFF_TIP_MEET_DONE)"
+},
+{
+"doc": "2127:2",
+"pageid": "ST_DIFF_TIP_MEET_PLAN",
+"img": "Image (ST_DIFF_TIP_MEET_PLAN)"
+},
+{
+"doc": "2129:2",
+"pageid": "ST_AC",
+"img": "Image (ST_AC)"
+},
+{
+"doc": "2126:2",
+"pageid": "ST_AC_EX",
+"img": "Image (ST_AC_EX)"
+},
+{
+"doc": "2128:2",
+"pageid": "ST_AC_EX_TIP",
+"img": "Image (ST_AC_EX_TIP)"
+},
+{
+"doc": "2107:2",
+"pageid": "MC_MYINFO",
+"img": "Image (MC_MYINFO)"
+},
+{
+"doc": "2108:2",
+"pageid": "MC_MYINFO_CONTRACT",
+"img": "Image (MC_MYINFO_CONTRACT)"
+},
+{
+"doc": "2109:2",
+"pageid": "MC_MYINFO_CONTRACT_PREVIEW",
+"img": "Image (MC_MYINFO_CONTRACT_PREVIEW)"
+},
+{
+"doc": "2106:2",
+"pageid": "MC_MYINFO_CONTRACT_TERMS",
+"img": "Image (MC_MYINFO_CONTRACT_TERMS)"
+},
+{
+"doc": "2112:2",
+"pageid": "MC_MYINFO_ACCOUNTS",
+"img": "Image (MC_MYINFO_ACCOUNTS)"
+},
+{
+"doc": "2111:2",
+"pageid": "MC_MYINFO_ACCOUNTS_EDIT",
+"img": "Image (MC_MYINFO_ACCOUNTS_EDIT)"
+},
+{
+"doc": "2113:2",
+"pageid": "MC_MYINFO_INQUIRY",
+"img": "Image (MC_MYINFO_INQUIRY)"
+},
+{
+"doc": "2110:2",
+"pageid": "MC_MYINFO_INQUIRY_NEW",
+"img": "Image (MC_MYINFO_INQUIRY_NEW)"
+},
+{
+"doc": "2115:2",
+"pageid": "MC_MYINFO_INQUIRY_DT",
+"img": "Image (MC_MYINFO_INQUIRY_DT)"
+},
+{
+"doc": "2117:2",
+"pageid": "MC_MYINFO_PW",
+"img": "Image (MC_MYINFO_PW)"
+}
+]

@@ -74,20 +74,20 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#222}
     <div class="right">
       <div class="kn-h">key note</div>
       <div class="kn-memo">
-        <span class="b"><span class="g">화면 성격</span> &nbsp;<b>입출금 전용계좌 등록</b> 모달 — 어드민. 통장사본 OCR, 은행 제한 없음</span>
+        <span class="b"><span class="g">화면 성격</span> &nbsp;<b>입출금 계좌 등록</b> 모달 — 어드민. 통장사본 OCR, 은행 제한 없음</span>
         <span class="b red">캡처는 서류 완비 상태라 모달 미표시 — 구조는 코드 기준, 마커는 증빙 서류 카드 위치</span>
       </div>
       <table class="kn-tbl">
         <thead><tr><th class="kn-no">No</th><th class="kn-nm">이름</th><th>설명</th></tr></thead>
         <tbody>
           <tr><td class="kn-no">1</td><td class="kn-nm">헤더</td><td class="kn-note">
-<span class="b">제목 <b>"입출금 전용계좌 등록"</b> (라벨 원문 고수 — '입금계좌')</span>
+<span class="b">제목 <b>"입출금 계좌 등록"</b> (코드 purposeLabel 기준 — '전용' 없음)</span>
           </td></tr>
           <tr><td class="kn-no">2</td><td class="kn-nm">통장사본 업로드</td><td class="kn-note">
 <span class="b">"통장사본 업로드 (필수, 파일 선택 시 OCR 자동 인식)" — 이미지만</span>
           </td></tr>
           <tr><td class="kn-no">3</td><td class="kn-nm">입력</td><td class="kn-note">
-<span class="b">은행명 · 계좌번호 · 예금주 · 계좌 출금 비밀번호</span><span class="i">락계좌 아니므로 <b>은행 제한 없음</b>(하나은행 강제 규칙 미적용)</span>
+<span class="b">은행명 · 계좌번호 · 예금주</span><span class="i">락계좌 아니므로 <b>은행 제한 없음</b>(하나은행 강제 규칙 미적용) · '계좌 출금 비밀번호' 필드는 락계좌(PRE_PAYMENT) 전용이라 이 모달엔 없음</span>
           </td></tr>
           <tr><td class="kn-no">4</td><td class="kn-nm">버튼</td><td class="kn-note">
 <span class="b"><b>[등록]</b> / [취소]</span>

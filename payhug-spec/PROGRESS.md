@@ -1,7 +1,17 @@
 # PayHug 화면설계·기능명세·IA 진행 상태
 
 > **이어쓰기 문서.** 다음 세션은 이 파일만 보면 이어서 진행 가능. (worktree = `~/cursor/payhug` 전용)
-> 최종 업데이트: **2026-07-23**
+> 최종 업데이트: **2026-08-12**
+
+## 2026-08-12 세션 — 화면설계서 전수 현행화 + 누락 보강 + 정책 문서화
+
+산출물·데이터 = `_pipeline/enhance_202608/` (discovery/ 코드 인벤토리 2종·capture_urls, audit2/ 감사 4종+placeholder, newsheets/ 신규 시트 콘텐츠, newdocs/ PH 문서 원고·형식 레시피).
+
+1. **최신 코드 기준 확보**: `gh repo clone`으로 admin(develop 9e2741b, 08-10)·merchant(e083af8, 08-08) 신선본. 시트 작성 시점(어드민 07.21/가맹점 07.28) 이후 변경 파일 특정(admin 23·merchant 5).
+2. **디스크립션 전수 감사·교정(Figma 303:173)**: 감사 4팀 → H/M 교정 **어드민 129노드(전부 Apple SD→Noto 재구성 레시피, 오버플로 58건 폭 고정)** + 가맹점 33노드(Arimo 직접 수정) + 화면 라벨 22건(광고비→플랫폼 차감 12, 락계좌 상태칩 이상→불일치·스킵→검증 필요+색 9, 안내문 1) + **placeholder 심화 행 19노드 복원**(RESIGN·TRANSFER·WEEKDAY·SALES_DT_OLD·PARTNER) + ST_MA_DELIV 키노트 '환급액 그룹' 신규 행. 구판 정산 시트 4장(1665/1592/1667/1695)에 빨간 '신판 참조' 배지. L(줄번호 밀림 ~67건)은 의도적 보류.
+3. **누락 화면 보강(신규 시트 8장, 섹션 2759:2883)**: AD_P_HOME·AD_P_SETTLE(총판 시점 2) / AD_MERCHANT_DT_CONTRACTRESET·BIZEDIT / AD_SALES_DT_ADD_RESULT / MC_CONTRACT_SIGN_GATE·BIZ_TYPEFIX / ST_MA_DELIV_REFUND. 화면은 **로컬 실행 캡처 파이프라인**으로 추출: scratchpad `run-admin`/`run-merchant`(목데이터 이식+`?__devuser=` 인증시드+`/__preview/*` 하네스, MOCK_API=1, 3001/3000) → capture.js 태그 + **헤드리스 크롬**(`--headless=new` + 해시 URL, 창 안 띄움 — 사용자 데스크톱 방해 금지 요청) → generate_figma_design 폴링. 미승인 대시보드 2시트(2152/2154)는 화면 제자리 스왑.
+4. **PH_화면설계서(IFX) 정산 정책 문서**: 사용자 요청으로 IFX `3783:890` "[정책] 정산" 페이지에 3388:367 형식(A4 정책 프레임)으로 정산 3화면+정산현황·원장 문서 제작 — 원고 `newdocs/settle3_content.md`·`settle_rest_content.md`, 형식 `format_recipe.md`(Apple SD 로드 불가→Noto Black/Bold 신규 생성). ※ 종전 "IFX 안 건드림" 제약은 이 페이지에 한해 사용자 지시로 해제.
+5. **발견 사항**: 정산 현황은 6탭(차액 정산·이체 내역·VOC 포함), 총판(참여자) 분기는 별도 레이아웃 없이 userType 가림, `/settlements/[id]/fee-adjustments`는 고아 라우트+404 링크 결함, 계약 초기화 버튼 isAdmin 가드 부재 의심, 플랫폼 '환급액'과 6대 개념 '환급' 매핑 미확정(07 등재 후보).
 
 ## 지금 어디까지 됐나
 
