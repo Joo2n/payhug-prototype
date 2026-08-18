@@ -1,0 +1,62 @@
+{
+ "page": "2807:2212",
+ "file": "Tcf69tIciGxmlqCIuRb0iI",
+ "template": "2103:2",
+ "import_page": "2822:2294",
+ "sheets": {
+  "AD_MEMBER": {
+   "node": "2839:2",
+   "x": 0,
+   "mock": "m1_list",
+   "import_node": "2829:2"
+  },
+  "AD_MEMBER_ADD": {
+   "node": "2847:2",
+   "x": 2200,
+   "mock": "m2_add_sales",
+   "import_node": "2830:2"
+  },
+  "AD_MEMBER_ADD_TOP": {
+   "node": "2849:2",
+   "x": 4400,
+   "mock": "m3_add_top",
+   "import_node": "2831:2"
+  },
+  "AD_MEMBER_EDIT": {
+   "node": "2853:2",
+   "x": 6600,
+   "mock": "m4_edit",
+   "import_node": "2832:2"
+  },
+  "AD_MEMBER_PROFILE": {
+   "node": "2860:2",
+   "x": 8800,
+   "mock": "m5_profile",
+   "import_node": "2833:2"
+  },
+  "AD_MEMBER_CHAIN": {
+   "node": "2862:2",
+   "x": 11000,
+   "mock": "m6_chain",
+   "import_node": "2834:2"
+  },
+  "AD_MEMBER_EXCEPT": {
+   "node": "2866:2",
+   "x": 13200,
+   "mock": "m7_except",
+   "import_node": "2835:2"
+  },
+  "AD_MEMBER_GNB": {
+   "node": "2873:2",
+   "x": 15400,
+   "mock": "m8_gnb",
+   "import_node": "2836:2"
+  },
+  "AD_MERCHANT_FEE2": {
+   "node": "2875:2",
+   "x": 17600,
+   "mock": "m9_merchant_fee",
+   "import_node": "2837:2"
+  }
+ }
+}

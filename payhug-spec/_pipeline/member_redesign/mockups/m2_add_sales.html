@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>회원 등록 — 영업</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1920px;font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#111827;background:#f9fafb}
+.scene{position:relative;width:1920px;height:1600px;overflow:hidden;background:#f9fafb}
+/* ── backdrop (blurred list) ─────────── */
+.backdrop{position:absolute;inset:0;display:flex;filter:blur(3px)}
+.bd-side{width:240px;flex-shrink:0;background:#1B2537;color:#9ca3af;padding:16px 12px;font-size:14px}
+.bd-logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:18px;font-weight:700;padding:8px 8px 20px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:16px}
+.bd-mark{width:32px;height:32px;border-radius:8px;background:#7FE141;color:#163300;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.bd-logo em{font-style:normal;color:#7FE141}
+.bd-glabel{font-size:11px;font-weight:600;color:#6b7280;letter-spacing:.06em;padding:14px 12px 4px}
+.bd-mi{padding:8px 12px;border-radius:8px;font-weight:500;white-space:nowrap}
+.bd-mi.active{background:#7FE141;color:#fff}
+.bd-main{flex:1;padding:24px}
+.bd-h1{font-size:24px;font-weight:700;color:#111827}
+.bd-sub{margin-top:4px;font-size:14px;color:#6b7280;margin-bottom:24px}
+.bd-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.bd-card table{width:100%;border-collapse:collapse;font-size:14px}
+.bd-card th{background:#f9fafb;padding:12px 16px;text-align:left;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb}
+.bd-card td{padding:12px 16px;border-bottom:1px solid #f3f4f6;color:#374151}
+/* ── dim + modal ─────────────────────── */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.modal-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.modal{width:640px;background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.m-head{display:flex;align-items:center;justify-content:space-between;padding:24px;border-bottom:1px solid #f3f4f6}
+.m-title{font-size:18px;font-weight:700;color:#111827}
+.m-x{color:#9ca3af}
+.m-x svg{width:20px;height:20px}
+.m-body{padding:24px;display:flex;flex-direction:column;gap:20px}
+.m-foot{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:24px;border-top:1px solid #f3f4f6}
+.btn-cancel{padding:8px 16px;font-size:14px;color:#4b5563;border:1px solid #d1d5db;border-radius:8px;background:#fff}
+.btn-submit{padding:8px 20px;font-size:14px;font-weight:500;background:#4da119;color:#fff;border-radius:8px;border:none}
+/* ── form primitives ─────────────────── */
+.sec{display:flex;flex-direction:column;gap:12px}
+.sec-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#374151}
+.sec-bar{width:6px;height:16px;border-radius:999px;background:#65c826}
+.sec-bar.amber{background:#f59e0b}
+.f-label{display:block;font-size:14px;font-weight:500;color:#374151;margin-bottom:4px}
+.req{color:#ef4444}
+.f-input{width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;background:#fff;color:#111827}
+.f-input.ph{color:#9ca3af}
+.f-select{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;background:#fff;color:#374151}
+.f-select svg{width:14px;height:14px;color:#9ca3af}
+.f-help{font-size:12px;color:#9ca3af;margin-top:4px}
+.tg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;font-size:14px;color:#374151}
+.toggle-row small{font-size:12px;color:#9ca3af;margin-left:4px}
+.tg{position:relative;width:36px;height:20px;border-radius:999px;background:#d1d5db;flex-shrink:0}
+.tg .knob{position:absolute;top:3px;left:4px;width:14px;height:14px;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.tg.on{background:#65c826}
+.tg.on .knob{left:18px}
+/* 직속 상위 유형 (읽기전용 칩) */
+.parent-type{display:flex;align-items:center;gap:8px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px}
+.parent-type .val{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;background:#fff7ed;color:#c2410c}
+.parent-type .note{font-size:12px;color:#9ca3af}
+/* 검색 + 드롭다운 */
+.f-search{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 12px;border:1px solid #65c826;border-radius:8px;font-size:14px;background:#fff;color:#111827;box-shadow:0 0 0 2px rgba(101,200,38,.15)}
+.f-search svg{width:16px;height:16px;color:#9ca3af}
+.dd{margin-top:4px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);overflow:hidden}
+.dd-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;font-size:14px;color:#374151;border-bottom:1px solid #f3f4f6}
+.dd-item:last-child{border-bottom:none}
+.dd-item.sel{background:#f4fdf0;color:#3a7a15;font-weight:600}
+.dd-sub{font-size:12px;color:#9ca3af;font-weight:400;margin-left:6px;font-family:"SF Mono",ui-monospace,Menlo,monospace}
+.dd-check svg{width:16px;height:16px;color:#4da119}
+/* 요율 세트 표 */
+.rt-wrap{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.rt{width:100%;border-collapse:collapse;font-size:14px}
+.rt th{background:#f9fafb;padding:8px 16px;font-size:13px;font-weight:500;color:#4b5563;text-align:left;border-bottom:1px solid #f3f4f6}
+.rt th.c{text-align:center}
+.rt th.r{text-align:right}
+.rt td{padding:8px 16px;border-bottom:1px solid #f3f4f6;background:#fff}
+.rt tr:last-child td{border-bottom:none}
+.fee-badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600}
+.fb-margin{background:#eef2ff;color:#4338ca}
+.fb-system{background:#ecfdf5;color:#047857}
+.fb-transfer{background:#fffbeb;color:#b45309}
+.rt-val{display:flex;align-items:center;justify-content:flex-end;gap:4px}
+.rt-input{width:88px;padding:4px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;text-align:right;background:#fff;color:#111827}
+.rt-unit{font-size:12px;color:#6b7280}
+.rt-ex{font-size:11px;color:#9ca3af;white-space:nowrap}
+.rt-vat{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:1px solid #d1d5db;border-radius:4px;font-size:12px;color:#374151;background:#fff}
+.rt-vat svg{width:10px;height:10px;color:#9ca3af}
+.pr-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.pr-item .pl{display:block;font-size:12px;font-weight:500;color:#6b7280;margin-bottom:4px}
+.pr-select{display:flex;align-items:center;justify-content:space-between;width:100%;padding:6px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:#fff;color:#374151}
+.pr-select svg{width:12px;height:12px;color:#9ca3af}
+/* 계약 구조 미리보기 */
+.chain-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:18px 12px}
+.chain{display:flex;align-items:center}
+.ch-node{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;text-align:center;min-width:84px}
+.ch-role{font-size:11px;font-weight:600;margin-bottom:2px}
+.ch-name{font-size:13px;font-weight:600;color:#111827;white-space:nowrap}
+.r-partner{color:#3a7a15}
+.r-salesorg{color:#c2410c}
+.r-sales{color:#b45309}
+.ch-link{position:relative;flex:1;display:flex;align-items:center;justify-content:center;min-width:66px;height:40px}
+.ch-line{position:absolute;left:0;right:6px;top:50%;height:2px;background:#d1d5db;margin-top:-1px}
+.ch-arrow{position:absolute;right:0;top:50%;margin-top:-5px;width:6px;height:10px}
+.ch-chip{position:relative;z-index:1;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;border-radius:999px;padding:2px 8px;font-size:10px;font-weight:700;white-space:nowrap}
+.ch-chip.now{background:#e5facf;color:#29570e;border-color:#b0eb75}
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <div class="backdrop">
+    <div class="bd-side">
+      <div class="bd-logo"><div class="bd-mark">P</div><div>PayHug <em>Admin</em></div></div>
+      <div class="bd-mi">홈</div>
+      <div class="bd-glabel">가맹점</div>
+      <div class="bd-mi">가맹점 관리</div><div class="bd-mi">매출 조회</div><div class="bd-mi">1:1 문의</div>
+      <div class="bd-glabel">정산</div>
+      <div class="bd-mi">정산 현황</div><div class="bd-mi">정산 시뮬레이션</div>
+      <div class="bd-glabel">관리자</div>
+      <div class="bd-mi">모 계좌 잔액 조회</div><div class="bd-mi active">회원 관리</div><div class="bd-mi">약관 관리</div><div class="bd-mi">스크래핑 장애 이력</div><div class="bd-mi">활동 로그</div><div class="bd-mi">AI 모니터링 어시스턴트</div>
+    </div>
+    <div class="bd-main">
+      <div class="bd-h1">회원 관리</div>
+      <div class="bd-sub">회원(투자자, 파트너, 영업조직, 영업, 제휴사, 관리자)을 등록하고 직속 계약 관계를 관리합니다.</div>
+      <div class="bd-card">
+        <table>
+          <thead><tr><th>이름</th><th>유형</th><th>직속 상위</th><th>직속 계약 수수료율</th><th>계약 구조</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td>페이허그</td><td>페이허그</td><td>-</td><td>-</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>A파트너</td><td>파트너</td><td>- (최상위)</td><td>-</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>B파트너</td><td>파트너</td><td>A파트너</td><td>0.50% (예시)</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>투게더페이</td><td>영업조직</td><td>B파트너</td><td>0.30% (예시)</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>안현준</td><td>영업</td><td>투게더페이</td><td>0.10% (예시)</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>박전영</td><td>영업</td><td>투게더페이</td><td>0.10% (예시)</td><td>보기 ›</td><td>비활성</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="dim"></div>
+
+  <div class="modal-layer">
+    <div class="modal">
+      <div class="m-head">
+        <div class="m-title">회원 등록</div>
+        <div class="m-x"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></div>
+      </div>
+
+      <div class="m-body">
+
+        <div class="sec">
+          <div class="sec-h"><span class="sec-bar"></span>기본 정보</div>
+          <div>
+            <label class="f-label">이름 <span class="req">*</span></label>
+            <div class="f-input">안현준</div>
+          </div>
+          <div>
+            <label class="f-label">아이디 / 휴대폰번호 <span class="req">*</span></label>
+            <div class="f-input">sales_hyunjun</div>
+            <p class="f-help">로그인 시 아이디로 사용됩니다.</p>
+          </div>
+          <div>
+            <label class="f-label">비밀번호 <span class="req">*</span></label>
+            <div class="f-input">••••••••</div>
+          </div>
+          <div>
+            <label class="f-label">유형 <span class="req">*</span></label>
+            <div class="f-select"><span>영업</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div>
+          </div>
+          <div class="tg-grid">
+            <div class="toggle-row"><span>법인 여부</span><span class="tg"><span class="knob"></span></span></div>
+            <div class="toggle-row"><span>사업자 여부<small>(VAT 적용 기준)</small></span><span class="tg"><span class="knob"></span></span></div>
+          </div>
+          <div>
+            <label class="f-label">추천 코드</label>
+            <div class="f-input">S001</div>
+            <p class="f-help">가맹점 가입 URL에 사용되는 고유 코드</p>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><span class="sec-bar amber"></span>계약 관계</div>
+
+          <div>
+            <label class="f-label">직속 상위 유형</label>
+            <div class="parent-type"><span class="val">영업조직</span><span class="note">유형에 따라 자동 결정</span></div>
+          </div>
+
+          <div>
+            <label class="f-label">직속 상위 회원 <span class="req">*</span></label>
+            <div class="f-search"><span>투게더페이</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div>
+            <div class="dd">
+              <div class="dd-item sel"><span>투게더페이<span class="dd-sub">sales_org · 영업조직</span></span><span class="dd-check"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></span></div>
+              <div class="dd-item"><span>세일즈허브<span class="dd-sub">sales_hub · 영업조직</span></span></div>
+            </div>
+            <p class="f-help">영업조직에 해당하는 회원만 검색됩니다.</p>
+          </div>
+
+          <div>
+            <label class="f-label">계약 수수료율 세트 <span class="req">*</span></label>
+            <div class="rt-wrap">
+              <table class="rt">
+                <thead>
+                  <tr><th>항목</th><th class="r">값</th><th class="c">VAT</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="fee-badge fb-margin">채권매입</span></td>
+                    <td><div class="rt-val"><span class="rt-input">0.10</span><span class="rt-unit">%</span><span class="rt-ex">(예시)</span></div></td>
+                    <td style="text-align:center"><span class="rt-vat">별도 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg></span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="fee-badge fb-system">시스템이용료</span></td>
+                    <td><div class="rt-val"><span class="rt-input">0.05</span><span class="rt-unit">%</span><span class="rt-ex">(예시)</span></div></td>
+                    <td style="text-align:center"><span class="rt-vat">별도 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg></span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="fee-badge fb-transfer">이체수수료</span></td>
+                    <td><div class="rt-val"><span class="rt-input">300</span><span class="rt-unit">원</span><span class="rt-ex">(예시)</span></div></td>
+                    <td style="text-align:center"><span class="rt-vat">별도 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pr-grid">
+              <div class="pr-item"><span class="pl">시스템이용료 납부 주체</span><div class="pr-select"><span>가맹점 부담</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg></div></div>
+              <div class="pr-item"><span class="pl">이체수수료 납부 주체</span><div class="pr-select"><span>가맹점 부담</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg></div></div>
+              <div class="pr-item"><span class="pl">시스템이용료 수취 주체</span><div class="pr-select"><span>상위 수취</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg></div></div>
+              <div class="pr-item"><span class="pl">이체수수료 수취 주체</span><div class="pr-select"><span>상위 수취</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg></div></div>
+            </div>
+            <p class="f-help">선택한 직속 상위 회원과 현재 회원 사이에 적용되는 계약 수수료율입니다.</p>
+          </div>
+
+          <div>
+            <label class="f-label">계약 구조 미리보기</label>
+            <div class="chain-box">
+              <div class="chain">
+                <div class="ch-node"><div class="ch-role r-partner">상위파트너</div><div class="ch-name">A파트너</div></div>
+                <div class="ch-link"><span class="ch-line"></span><svg class="ch-arrow" viewBox="0 0 6 10"><path d="M0 0L6 5L0 10Z" fill="#d1d5db"/></svg><span class="ch-chip">0.50% (예시)</span></div>
+                <div class="ch-node"><div class="ch-role r-partner">하위파트너</div><div class="ch-name">B파트너</div></div>
+                <div class="ch-link"><span class="ch-line"></span><svg class="ch-arrow" viewBox="0 0 6 10"><path d="M0 0L6 5L0 10Z" fill="#d1d5db"/></svg><span class="ch-chip">0.30% (예시)</span></div>
+                <div class="ch-node"><div class="ch-role r-salesorg">영업조직</div><div class="ch-name">투게더페이</div></div>
+                <div class="ch-link"><span class="ch-line"></span><svg class="ch-arrow" viewBox="0 0 6 10"><path d="M0 0L6 5L0 10Z" fill="#d1d5db"/></svg><span class="ch-chip now">0.10% (이번 입력)</span></div>
+                <div class="ch-node"><div class="ch-role r-sales">영업</div><div class="ch-name">안현준</div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="m-foot">
+        <span class="btn-cancel">취소</span>
+        <span class="btn-submit">등록</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

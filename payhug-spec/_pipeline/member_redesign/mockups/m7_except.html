@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>회원 등록 예외 상태</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1920px;font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#111827;background:#f3f4f6}
+.wrap{display:flex;gap:16px;padding:16px;width:1920px}
+.panel{width:460px;flex-shrink:0;display:flex;flex-direction:column;gap:8px}
+.cap{font-size:12px;font-weight:500;color:#6b7280;padding-left:2px}
+.panel-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;min-height:400px;display:flex;flex-direction:column;gap:12px}
+.panel-card.center{align-items:center;justify-content:center}
+/* form */
+.f-label{display:block;font-size:14px;font-weight:500;color:#374151;margin-bottom:4px}
+.req{color:#ef4444}
+.f-search{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 12px;border:1px solid #65c826;border-radius:8px;font-size:14px;background:#fff;color:#9ca3af;box-shadow:0 0 0 2px rgba(101,200,38,.15)}
+.f-search svg{width:16px;height:16px;color:#9ca3af}
+.f-select{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;background:#fff;color:#374151}
+.f-select.err{border-color:#fca5a5;box-shadow:0 0 0 2px rgba(239,68,68,.12)}
+.f-select svg{width:14px;height:14px;color:#9ca3af}
+.f-help{font-size:12px;color:#9ca3af;margin-top:4px}
+/* dropdown */
+.dd{margin-top:4px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);overflow:hidden}
+.dd-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;font-size:14px;color:#374151;border-bottom:1px solid #f3f4f6}
+.dd-item:last-child{border-bottom:none}
+.dd-sub{font-size:12px;color:#9ca3af;font-weight:400;margin-left:6px;font-family:"SF Mono",ui-monospace,Menlo,monospace}
+.dd-item.off{background:#f9fafb;color:#9ca3af}
+.dd-item.off .dd-sub{color:#d1d5db}
+.b-off{display:inline-flex;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:#f3f4f6;color:#6b7280;white-space:nowrap}
+/* 배너 */
+.banner{display:flex;gap:8px;align-items:flex-start;border-radius:8px;padding:12px;font-size:13px;line-height:1.5}
+.banner svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.banner b{font-weight:600}
+.bn-red{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.bn-red svg{color:#ef4444}
+.bn-amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+.bn-amber svg{color:#d97706}
+.cycle{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:12px;font-weight:600}
+/* 확인 다이얼로그 */
+.dialog{width:384px;background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,.12),0 8px 10px -6px rgba(0,0,0,.1);border:1px solid #f3f4f6;padding:24px}
+.dlg-icon{width:40px;height:40px;border-radius:999px;background:#fffbeb;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.dlg-icon svg{width:20px;height:20px;color:#f59e0b}
+.dlg-title{font-size:16px;font-weight:700;color:#111827;margin-bottom:4px}
+.dlg-desc{font-size:14px;color:#6b7280;line-height:1.6;margin-bottom:24px}
+.dlg-foot{display:flex;justify-content:flex-end;gap:8px}
+.btn-cancel{padding:8px 16px;font-size:14px;color:#4b5563;border:1px solid #d1d5db;border-radius:8px;background:#fff}
+.btn-amber{padding:8px 16px;font-size:14px;font-weight:500;background:#f59e0b;color:#fff;border-radius:8px;border:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ① 비활성 상위 -->
+  <div class="panel">
+    <div class="cap">① 비활성 회원은 직속 상위 검색에서 선택 불가</div>
+    <div class="panel-card">
+      <div>
+        <label class="f-label">직속 상위 회원 <span class="req">*</span></label>
+        <div class="f-search"><span>영업조직 검색</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div>
+        <div class="dd">
+          <div class="dd-item"><span>투게더페이<span class="dd-sub">sales_org · 영업조직</span></span></div>
+          <div class="dd-item"><span>세일즈허브<span class="dd-sub">sales_hub · 영업조직</span></span></div>
+          <div class="dd-item off"><span>옛영업조직<span class="dd-sub">old_org · 영업조직</span></span><span class="b-off">비활성 — 선택 불가</span></div>
+        </div>
+        <p class="f-help">영업조직에 해당하는 회원만 검색됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ② 순환 구조 -->
+  <div class="panel">
+    <div class="cap">② 순환 구조 등록 차단 에러</div>
+    <div class="panel-card">
+      <div>
+        <label class="f-label">직속 상위 회원 <span class="req">*</span></label>
+        <div class="f-select err"><span>안현준 (영업)</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div>
+      </div>
+      <div class="banner bn-red">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span><b>순환 구조는 등록할 수 없습니다.</b><br><span class="cycle">안현준 → 투게더페이 → … → 안현준</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 중간 단계 생략 -->
+  <div class="panel">
+    <div class="cap">③ 중간 단계 생략 연결 확인 다이얼로그</div>
+    <div class="panel-card center">
+      <div class="dialog">
+        <div class="dlg-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+        <div class="dlg-title">계약 관계 확인</div>
+        <div class="dlg-desc">중간 단계 없이 상위파트너 아래에 영업조직을 연결합니다. 계속할까요?</div>
+        <div class="dlg-foot"><span class="btn-cancel">취소</span><span class="btn-amber">계속</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ 다중 상위 -->
+  <div class="panel">
+    <div class="cap">④ 기존 직속 상위 계약 존재 안내</div>
+    <div class="panel-card">
+      <div>
+        <label class="f-label">직속 상위 회원 <span class="req">*</span></label>
+        <div class="f-select"><span>세일즈허브 (영업조직)</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div>
+      </div>
+      <div class="banner bn-amber">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+        <span><b>이미 직속 상위(투게더페이)와의 계약이 있습니다.</b></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

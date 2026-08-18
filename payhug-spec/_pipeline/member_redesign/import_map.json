@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "file_key": "Tcf69tIciGxmlqCIuRb0iI",
+    "page_id": "2822:2294",
+    "page_name": "[정산_정책 백업]",
+    "imported_at": "2026-08-19",
+    "note": "generate_figma_design 네이티브 임포트. 프레임 폭 1922(캡처 뷰포트 1922, 내부 Body 1920). 모두 동일 페이지에 배치됨.",
+    "capture_ids": {
+      "m1_list": "5bde322d-8715-4d1f-bc36-1b6d25883aa3",
+      "m2_add_sales": "15a9b18b-89b5-4a18-967f-a1e3536f3836",
+      "m3_add_top": "43faba25-f3ed-4fc5-8b5c-80dfcd87bae8",
+      "m4_edit": "55343599-ef6c-449e-bd04-e9b1ef1afd38",
+      "m5_profile": "bc979d8b-8c2a-4482-98c7-09d4b04002dd",
+      "m6_chain": "9630bd6c-8c3d-4fd3-bf52-917dbe88c970",
+      "m7_except": "7a0869ed-cdb9-4215-ae26-e772f64868da",
+      "m8_gnb": "bfe2a0d9-adb6-4df2-b304-2795c3b149cf",
+      "m9_merchant_fee": "03d650c5-fbe0-4d25-a944-12853c8a08c9"
+    }
+  },
+  "m1_list": {"node_id": "2829:2", "name": "회원 관리 목록", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"},
+  "m2_add_sales": {"node_id": "2830:2", "name": "회원 등록 — 영업", "width": 1922, "height": 1600, "page": "[정산_정책 백업] (2822:2294)"},
+  "m3_add_top": {"node_id": "2831:2", "name": "회원 등록 — 최상위·파트너 위치", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"},
+  "m4_edit": {"node_id": "2832:2", "name": "회원 수정 — 관계 변경", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"},
+  "m5_profile": {"node_id": "2833:2", "name": "회원 프로필 — 직속 계약", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"},
+  "m6_chain": {"node_id": "2834:2", "name": "계약 구조 조회", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"},
+  "m7_except": {"node_id": "2835:2", "name": "회원 등록 예외 상태", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"},
+  "m8_gnb": {"node_id": "2836:2", "name": "메뉴 구성 — 관리자·총판 시점", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"},
+  "m9_merchant_fee": {"node_id": "2837:2", "name": "가맹점 상세 — 적용 계약 체인", "width": 1922, "height": 1513, "page": "[정산_정책 백업] (2822:2294)"}
+}

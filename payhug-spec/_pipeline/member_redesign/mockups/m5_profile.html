@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>회원 프로필 — 직속 계약</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1920px;font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#111827;background:#f9fafb}
+.scene{position:relative;width:1920px;height:1060px;overflow:hidden;background:#f9fafb}
+/* ── backdrop ────────────────────────── */
+.backdrop{position:absolute;inset:0;display:flex;filter:blur(3px)}
+.bd-side{width:240px;flex-shrink:0;background:#1B2537;color:#9ca3af;padding:16px 12px;font-size:14px}
+.bd-logo{display:flex;align-items:center;gap:10px;color:#fff;font-size:18px;font-weight:700;padding:8px 8px 20px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:16px}
+.bd-mark{width:32px;height:32px;border-radius:8px;background:#7FE141;color:#163300;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.bd-logo em{font-style:normal;color:#7FE141}
+.bd-glabel{font-size:11px;font-weight:600;color:#6b7280;letter-spacing:.06em;padding:14px 12px 4px}
+.bd-mi{padding:8px 12px;border-radius:8px;font-weight:500;white-space:nowrap}
+.bd-mi.active{background:#7FE141;color:#fff}
+.bd-main{flex:1;padding:24px}
+.bd-h1{font-size:24px;font-weight:700;color:#111827}
+.bd-sub{margin-top:4px;font-size:14px;color:#6b7280;margin-bottom:24px}
+.bd-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.bd-card table{width:100%;border-collapse:collapse;font-size:14px}
+.bd-card th{background:#f9fafb;padding:12px 16px;text-align:left;font-size:12px;font-weight:600;color:#6b7280;border-bottom:1px solid #e5e7eb}
+.bd-card td{padding:12px 16px;border-bottom:1px solid #f3f4f6;color:#374151}
+/* ── dim + modal ─────────────────────── */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.modal-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.modal{width:600px;background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+.m-head{display:flex;align-items:center;justify-content:space-between;padding:24px;border-bottom:1px solid #f3f4f6}
+.m-title{font-size:18px;font-weight:700;color:#111827}
+.m-x{color:#9ca3af}
+.m-x svg{width:20px;height:20px}
+.m-body{padding:24px;display:flex;flex-direction:column;gap:20px}
+.m-foot{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:24px;border-top:1px solid #f3f4f6}
+.btn-cancel{padding:8px 16px;font-size:14px;color:#4b5563;border:1px solid #d1d5db;border-radius:8px;background:#fff}
+/* ── sections ────────────────────────── */
+.sec{display:flex;flex-direction:column;gap:10px}
+.sec-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#374151}
+.sec-bar{width:6px;height:16px;border-radius:999px;background:#65c826}
+.sec-bar.amber{background:#f59e0b}
+.inf-card{border:1px solid #f3f4f6;border-radius:8px;padding:4px 16px}
+.inf{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #f3f4f6;font-size:14px}
+.inf:last-child{border-bottom:none}
+.inf .k{width:110px;color:#6b7280;font-size:13px;flex-shrink:0}
+.inf .v{color:#111827;font-weight:500}
+.mono{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:13px}
+.badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600}
+.b-sales{background:#fffbeb;color:#b45309}
+.b-salesorg{background:#fff7ed;color:#c2410c}
+.b-active{background:#f0fdf4;color:#15803d}
+/* 요율 세트 표 (읽기 전용) */
+.rt-wrap{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.rt{width:100%;border-collapse:collapse;font-size:13px}
+.rt th{background:#f9fafb;padding:8px 12px;font-size:12px;font-weight:500;color:#4b5563;text-align:left;border-bottom:1px solid #f3f4f6;white-space:nowrap}
+.rt th.r{text-align:right}
+.rt th.c{text-align:center}
+.rt td{padding:8px 12px;border-bottom:1px solid #f3f4f6;background:#fff;white-space:nowrap}
+.rt tr:last-child td{border-bottom:none}
+.rt td.r{text-align:right}
+.rt td.c{text-align:center;color:#4b5563}
+.fee-badge{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600}
+.fb-margin{background:#eef2ff;color:#4338ca}
+.fb-system{background:#ecfdf5;color:#047857}
+.fb-transfer{background:#fffbeb;color:#b45309}
+.rate-txt{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:12px;font-weight:600;color:#374151}
+.rate-txt small{font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;font-weight:500;color:#9ca3af;font-size:11px}
+.dash{color:#9ca3af}
+/* 전체 구조 보기 버튼 */
+.btn-chain{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:10px 0;background:#f4fdf0;border:1px solid #cef4a7;border-radius:8px;font-size:14px;font-weight:600;color:#4da119}
+</style>
+</head>
+<body>
+<div class="scene">
+
+  <div class="backdrop">
+    <div class="bd-side">
+      <div class="bd-logo"><div class="bd-mark">P</div><div>PayHug <em>Admin</em></div></div>
+      <div class="bd-mi">홈</div>
+      <div class="bd-glabel">가맹점</div>
+      <div class="bd-mi">가맹점 관리</div><div class="bd-mi">매출 조회</div><div class="bd-mi">1:1 문의</div>
+      <div class="bd-glabel">정산</div>
+      <div class="bd-mi">정산 현황</div><div class="bd-mi">정산 시뮬레이션</div>
+      <div class="bd-glabel">관리자</div>
+      <div class="bd-mi">모 계좌 잔액 조회</div><div class="bd-mi active">회원 관리</div><div class="bd-mi">약관 관리</div><div class="bd-mi">스크래핑 장애 이력</div><div class="bd-mi">활동 로그</div><div class="bd-mi">AI 모니터링 어시스턴트</div>
+    </div>
+    <div class="bd-main">
+      <div class="bd-h1">회원 관리</div>
+      <div class="bd-sub">회원(투자자, 파트너, 영업조직, 영업, 제휴사, 관리자)을 등록하고 직속 계약 관계를 관리합니다.</div>
+      <div class="bd-card">
+        <table>
+          <thead><tr><th>이름</th><th>유형</th><th>직속 상위</th><th>직속 계약 수수료율</th><th>계약 구조</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td>페이허그</td><td>페이허그</td><td>-</td><td>-</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>A파트너</td><td>파트너</td><td>- (최상위)</td><td>-</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>B파트너</td><td>파트너</td><td>A파트너</td><td>0.50% (예시)</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>투게더페이</td><td>영업조직</td><td>B파트너</td><td>0.30% (예시)</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>안현준</td><td>영업</td><td>투게더페이</td><td>0.10% (예시)</td><td>보기 ›</td><td>활성</td></tr>
+            <tr><td>박전영</td><td>영업</td><td>투게더페이</td><td>0.10% (예시)</td><td>보기 ›</td><td>비활성</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="dim"></div>
+
+  <div class="modal-layer">
+    <div class="modal">
+      <div class="m-head">
+        <div class="m-title">안현준 — 프로필</div>
+        <div class="m-x"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></div>
+      </div>
+
+      <div class="m-body">
+
+        <div class="sec">
+          <div class="sec-h"><span class="sec-bar"></span>회원 정보</div>
+          <div class="inf-card">
+            <div class="inf"><span class="k">이름</span><span class="v">안현준</span></div>
+            <div class="inf"><span class="k">유형</span><span class="v"><span class="badge b-sales">영업</span></span></div>
+            <div class="inf"><span class="k">상태</span><span class="v"><span class="badge b-active">활성</span></span></div>
+            <div class="inf"><span class="k">아이디</span><span class="v mono">sales_hyunjun</span></div>
+          </div>
+        </div>
+
+        <div class="sec">
+          <div class="sec-h"><span class="sec-bar amber"></span>직속 계약 관계</div>
+          <div class="inf-card">
+            <div class="inf"><span class="k">직속 상위</span><span class="v">투게더페이</span></div>
+            <div class="inf"><span class="k">상위 유형</span><span class="v"><span class="badge b-salesorg">영업조직</span></span></div>
+            <div class="inf"><span class="k">적용일</span><span class="v mono">2026.08.19</span></div>
+          </div>
+          <div class="rt-wrap">
+            <table class="rt">
+              <thead>
+                <tr><th>항목</th><th class="r">값</th><th class="c">VAT</th><th class="c">납부 주체</th><th class="c">수취 주체</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="fee-badge fb-margin">채권매입</span></td>
+                  <td class="r"><span class="rate-txt">0.10% <small>(예시)</small></span></td>
+                  <td class="c">별도</td>
+                  <td class="c"><span class="dash">—</span></td>
+                  <td class="c"><span class="dash">—</span></td>
+                </tr>
+                <tr>
+                  <td><span class="fee-badge fb-system">시스템이용료</span></td>
+                  <td class="r"><span class="rate-txt">0.05% <small>(예시)</small></span></td>
+                  <td class="c">별도</td>
+                  <td class="c">가맹점 부담</td>
+                  <td class="c">상위 수취</td>
+                </tr>
+                <tr>
+                  <td><span class="fee-badge fb-transfer">이체수수료</span></td>
+                  <td class="r"><span class="rate-txt">300원 <small>(예시)</small></span></td>
+                  <td class="c">별도</td>
+                  <td class="c">가맹점 부담</td>
+                  <td class="c">상위 수취</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="btn-chain">전체 구조 보기 ›</div>
+
+      </div>
+
+      <div class="m-foot">
+        <span class="btn-cancel">닫기</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
