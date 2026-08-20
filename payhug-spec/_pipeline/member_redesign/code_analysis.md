@@ -28,7 +28,7 @@
 | 상위 후보 계산 `parentCandidates` | `app/partners/page.tsx:860~866` | `status === "ACTIVE" && id !== editTargetId`만 필터. **유형 제한 없음** — 전체 활성 회원이 후보 | 필터 조건에 유형 규칙 추가 필요(신규 로직) |
 | 수정 시 스코프 밖 상위 보존 | `app/partners/page.tsx:867~871` | 기존 상위가 조회 스코프(자기+하위) 밖이면 옵션에 unshift하여 "없음(최상위)" 오표시 방지 | 재사용 (관계 편집에서도 동일 문제 발생) |
 | 프로필 모달 `ProfileModal` (사업자정보 + OCR + 직인) | `app/partners/page.tsx:108~454` | 회원의 사업자/법인/개인 프로필. 계약 관계 정보 없음 | 재사용. [직속 계약 관계] 섹션은 신규 |
-| 가입 링크 생성기 `SignupLinkGenerator` | `app/partners/page.tsx:688~803` | referralCode 기반 URL 생성 | 재사용 (§⑤-추천코드 참조) |
+| 가입 링크 생성기 `SignupLinkGenerator` | `app/partners/page.tsx:688~803` | referralCode 기반 URL 생성 — 파트너/제휴사/영업 3드롭다운 | **폐기** — R4·R5(난수 가입 링크 자동 발급)로 대체. 병행 기간(Q2ⓑ) 중 구 생성기 및 기배포 partnerCode/salesCode URL의 유효성(유지/차단)은 확인 필요 (§⑤-추천코드 참조) |
 | 비활성화/삭제 확인 다이얼로그 | `app/partners/page.tsx:1191~1227` | 삭제 안내문에 "정산 상품에 배정된 경우 삭제할 수 없습니다"(1214) | 재사용하되 안내문 문구는 관계 기준으로 대체 대상 |
 | 유형 상수 (`USER_TYPE_OPTIONS`/`LABELS`/`BADGE`) | `app/partners/page.tsx:29~62` | INVESTOR·PAYHUG·PARTNER·AFFILIATE·SALES·SALES_ORG·ADMIN 7종 | 재사용. '상위파트너/하위파트너' 값은 없음 |
 
