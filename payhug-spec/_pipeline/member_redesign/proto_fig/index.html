@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>회원 관리 — 인터랙티브 프로토타입 v2 (2026-08-19 정책 반영)</title>
+<title>회원 관리 — 인터랙티브 프로토타입 v2 (2026-08-20 정책 반영)</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{width:1920px;font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#111827;background:#f9fafb}
@@ -280,7 +280,7 @@ select.f-input{appearance:auto}
 .h-focus{outline:none;border-color:#65c826 !important;box-shadow:0 0 0 2px rgba(101,200,38,.15) !important}
 /* G 비교안 — hover 팝오버 · 인라인 펼침 · 통합 뷰 · 풀컬럼 표 */
 .rate-hcell{cursor:help;border-bottom:1px dotted #d1d5db;padding-bottom:1px}
-.ratepop{position:fixed;z-index:45;display:none;min-width:320px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 10px 15px -3px rgba(0,0,0,.12),0 4px 6px -4px rgba(0,0,0,.1);padding:10px 14px}
+.ratepop{position:fixed;z-index:45;display:none;min-width:320px;max-width:560px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 10px 15px -3px rgba(0,0,0,.12),0 4px 6px -4px rgba(0,0,0,.1);padding:10px 14px}
 .rp-title{font-size:12px;font-weight:700;color:#374151;padding-bottom:6px;border-bottom:1px solid #f3f4f6}
 .rp-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px solid #f3f4f6;font-size:12px;color:#374151}
 .rp-rate{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-weight:600;color:#374151}
@@ -290,6 +290,22 @@ select.f-input{appearance:auto}
 .xband{display:flex;flex-direction:column;gap:8px;padding:4px 4px 8px}
 .xband-h{display:flex;align-items:center;font-size:12px;font-weight:700;color:#374151}
 .xband-cap{font-size:11px;color:#9ca3af}
+/* 컴팩트 체인 (행 확장·요율 팝오버 공용) — 1줄 구조 + 1줄 구간 요율, 내용 폭·왼쪽 정렬 */
+.cchain{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px 8px}
+.cc-node{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:4px 10px;white-space:nowrap}
+.cc-node.me{border:1.5px solid #7FE141;background:#f8fdf3}
+.cc-role{font-size:10px;font-weight:700}
+.cc-name{font-size:13px;font-weight:600;color:#111827}
+.cc-arrow{color:#9ca3af;font-size:14px;font-weight:700;flex-shrink:0}
+.cc-rates{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:12px;color:#374151}
+.cc-cap{font-size:11px;font-weight:700;color:#6b7280}
+.cc-seg{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.cc-pair{color:#6b7280}
+.cc-rate{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-weight:600;color:#374151}
+.cc-rate small{font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#9ca3af;font-weight:500;font-size:11px}
+.cc-sep{color:#d1d5db}
+.cc-note{font-size:13px;color:#6b7280;line-height:1.6;padding:2px 0}
+.cc-note b{color:#374151}
 .tbl th.c,.tbl td.c{text-align:center}
 .tbl.dense th,.tbl.dense td{padding:10px 6px;font-size:12px}
 .tbl.compact th,.tbl.compact td{padding:8px 10px;font-size:12px}
@@ -304,6 +320,24 @@ select.f-input{appearance:auto}
 .pb-detail{font-size:11px;color:#6b7280;width:100%}
 .parahint{display:flex;align-items:center;gap:8px;border:1.5px dashed #c4b5fd;background:#faf5ff;border-radius:999px;padding:4px 14px;font-size:12px;color:#6d28d9}
 .v-node.ghost{border-style:dashed;background:#f9fafb}
+/* v2.1 — 콘솔 결정 반영: 거래유형 요율 탭 · 페이허그 계약율 입력 · 정산 실행 게이트 · 배분 동결 · 가입 링크 · 병행 배지 */
+.rtabs{display:inline-flex;align-items:center;gap:4px;margin-left:10px}
+.rtab{padding:3px 12px;border:1px solid #d1d5db;border-radius:6px;background:#fff;font-size:12px;font-weight:600;color:#6b7280;cursor:pointer}
+.rtab.active{background:#f4fdf0;border-color:#4da119;color:#3a7a15}
+.rtabs .rt-ex{margin-left:6px}
+.v-chip.frz{background:#fffbeb;color:#b45309;border-color:#fde68a}
+.b-warn{background:#fef3c7;color:#b45309}
+.gitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #fecaca;background:#fef2f2;border-radius:8px;font-size:13px}
+.gitem.ok{border-color:#bbf7d0;background:#f0fdf4}
+.gitem+.gitem{margin-top:6px}
+.gmark{width:20px;height:20px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;background:#fee2e2;color:#dc2626;flex-shrink:0}
+.gitem.ok .gmark{background:#dcfce7;color:#15803d}
+.glabel{font-weight:600;color:#374151;white-space:nowrap}
+.gnote{color:#6b7280;font-size:12px;flex:1}
+.tg.dis{opacity:.45;cursor:not-allowed}
+.sb-par{margin-left:auto;padding:1px 8px;border-radius:999px;background:rgba(127,225,65,.15);color:#7FE141;font-size:10px;font-weight:700;white-space:nowrap}
+.sb-par-sub{width:100%;padding-left:28px;font-size:10px;color:#6b7280;white-space:nowrap}
+.joinbox{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -326,6 +360,7 @@ select.f-input{appearance:auto}
         <div class="sb-items">
           <a class="sb-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span>정산 현황</span></a>
           <a class="sb-item"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm3.75-6.75A2.25 2.25 0 0119.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75z"/></svg><span>정산 시뮬레이션</span></a>
+          <a class="sb-item" style="flex-wrap:wrap" id="sbProduct"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span>정산 상품관리</span><span class="sb-par">병행 운영</span><span class="sb-par-sub">신규 계약은 관계 요율</span><span class="sb-par-sub">배정 정보는 참여자(총판) 비노출 승계</span></a>
         </div>
       </div>
       <div class="sb-group">
@@ -349,12 +384,13 @@ select.f-input{appearance:auto}
   <main class="main">
     <div class="proto-bar">
       <span class="proto-badge">프로토타입 v2</span>
-      <span class="proto-badge" style="background:#7c3aed">2026-08-19 정책 반영</span>
+      <span class="proto-badge" style="background:#7c3aed">2026-08-20 정책·이슈 반영</span>
       <span>목데이터·요율은 전부 예시 — 새로고침 시 초기화 (백엔드 없음)</span>
       <a class="proto-link" href="index.html">이전판(계약 위치 라디오) 보기 →</a>
       <a class="proto-link" href="mockups.html">화면설계 목업 보기 ›</a>
+      <a class="proto-link" style="cursor:pointer" onclick="openGateDemo('unmet')">정산 실행 게이트 데모 ›</a>
       <span class="proto-spacer"></span>
-      <span class="devtg" onclick="toggleSkip()"><span class="tg" id="skipTg"><span class="knob"></span></span>skip-level 허용 <span class="badge b-tbd">확인 필요</span><span style="font-weight:400;color:#b45309">— 개발자용</span></span>
+      <span class="devtg" onclick="toggleSkip()"><span class="tg" id="skipTg"><span class="knob"></span></span>skip-level 허용<span style="font-weight:400;color:#b45309">— 확정: 확인 다이얼로그 후 연결 · 동일 유형 다단 적층만 정책 확인 필요 · 개발자용</span></span>
     </div>
 
     <div class="page-head">
@@ -373,7 +409,7 @@ select.f-input{appearance:auto}
     <div class="card"><table>
       <thead><tr>
         <th>ID</th><th>이름</th><th>아이디</th><th>유형</th><th>법인</th><th>추천코드</th>
-        <th>직속 상위</th><th>직속 계약 수수료율 <small>(채권매입 대표)</small></th><th>계약 구조</th><th>상태</th><th class="r">관리</th>
+        <th>직속 상위</th><th>직속 계약 수수료율 <small>(채권매입 대표 · 카드 기준)</small></th><th>계약 구조</th><th>상태</th><th class="r">관리</th>
       </tr></thead>
       <tbody id="listBody"></tbody>
     </table></div>
@@ -407,30 +443,32 @@ function resetData(){
     {id:37,name:'제휴테크', loginId:'affiliate_tech', type:'AFFILIATE', position:null, corporate:true, business:false, referralCode:'F001', status:'ACTIVE'},
     {id:41,name:'안현준', loginId:'sales_hyunjun', type:'SALES', position:null, corporate:false, business:false, referralCode:'S001', status:'ACTIVE'},
     {id:44,name:'박전영', loginId:'sales_jeonyoung', type:'SALES', position:null, corporate:false, business:false, referralCode:'S002', status:'INACTIVE'},
-    {id:51,name:'엔케이페이먼츠', loginId:'nk_payments', type:'PARTNER', position:'UPPER', corporate:true, business:true, referralCode:'P010', status:'ACTIVE'},
+    {id:51,name:'엔케이페이먼츠', loginId:'nk_payments', type:'PARTNER', position:'UPPER', corporate:true, business:true, referralCode:'P010', status:'ACTIVE', phRate:{card:'0.90',dly:'1.10'}},
     {id:52,name:'메타플레이', loginId:'meta_play', type:'PARTNER', position:'LOWER', corporate:true, business:true, referralCode:'P011', status:'ACTIVE'},
     {id:53,name:'세일즈원', loginId:'sales_one', type:'SALES_ORG', position:null, corporate:true, business:true, referralCode:'T003', status:'ACTIVE'},
     {id:54,name:'이서준', loginId:'sales_seojun', type:'SALES', position:null, corporate:false, business:false, referralCode:'S003', status:'ACTIVE'},
     {id:61,name:'다우데이타', loginId:'daou_data', type:'AFFILIATE', position:null, corporate:true, business:true, referralCode:'F002', status:'ACTIVE'}
   ];
-  function rel(id,p,c,m,s,t,from,to,st){var e=defRateExtras();return {id:id,parentId:p,childId:c,rates:{margin:m,systemFee:s,transferFeeWon:t},vat:e.vat,payer:e.payer,receiver:e.receiver,effectiveFrom:from,effectiveTo:to,status:st}}
+  /* v2.1 Q1 — 관계 1건 = 카드/배달앱 요율 세트 2개 (m=카드 채권매입, md=배달앱 채권매입 — 전부 예시) */
+  function rel(id,p,c,m,md,s,t,from,to,st){var e=defRateExtras();return {id:id,parentId:p,childId:c,rates:{margin:m,systemFee:s,transferFeeWon:t},ratesDly:{margin:md,systemFee:s,transferFeeWon:t},vat:e.vat,payer:e.payer,receiver:e.receiver,effectiveFrom:from,effectiveTo:to,status:st}}
   relations=[
-    rel(1,12,15,'0.50','0.05','300','2026-07-01',null,'ACTIVE'),
-    rel(2,15,23,'0.30','0.05','300','2026-07-01',null,'ACTIVE'),
-    rel(3,15,24,'0.30','0.05','300','2026-07-01',null,'ACTIVE'),
-    rel(4,23,41,'0.10','0.05','300','2026-07-01',null,'ACTIVE'),
-    rel(5,23,44,'0.10','0.05','300','2026-07-01',null,'ACTIVE'),
-    rel(6,15,25,'0.30','0.05','300','2026-05-01','2026-06-30','ENDED'),
-    rel(7,51,52,'0.45','0.05','300','2026-07-01',null,'ACTIVE'),
-    rel(8,52,53,'0.25','0.05','300','2026-07-01',null,'ACTIVE'),
-    rel(9,53,54,'0.12','0.05','300','2026-07-01',null,'ACTIVE')
+    rel(1,12,15,'0.50','0.70','0.05','300','2026-07-01',null,'ACTIVE'),
+    rel(2,15,23,'0.30','0.50','0.05','300','2026-07-01',null,'ACTIVE'),
+    rel(3,15,24,'0.30','0.50','0.05','300','2026-07-01',null,'ACTIVE'),
+    rel(4,23,41,'0.10','0.30','0.05','300','2026-07-01',null,'ACTIVE'),
+    rel(5,23,44,'0.10','0.30','0.05','300','2026-07-01',null,'ACTIVE'),
+    rel(6,15,25,'0.30','0.50','0.05','300','2026-05-01','2026-06-30','ENDED'),
+    rel(7,51,52,'0.45','0.65','0.05','300','2026-07-01',null,'ACTIVE'),
+    rel(8,52,53,'0.25','0.45','0.05','300','2026-07-01',null,'ACTIVE'),
+    rel(9,53,54,'0.12','0.32','0.05','300','2026-07-01',null,'ACTIVE')
   ];
   nextMemberId=100;nextRelId=100;
 }
 /* v2 병렬 배분 트랙 — 투자자 연결(선택) · 제휴 직계약 (순차 체인과 별개, 각각 배분) */
 var PARALLELS=[
   {id:1,kind:'INVESTOR',memberId:3,anchorId:51},
-  {id:2,kind:'AFFILIATE_DIRECT',memberId:61,anchorId:1,fee:'0.6'}
+  {id:2,kind:'AFFILIATE_DIRECT',memberId:61,anchorId:1,fee:'0.6'},
+  {id:3,kind:'AFFILIATE_DIRECT',memberId:37,anchorId:1,fee:'0.55'}
 ];
 function investorLinks(anchorId){return PARALLELS.filter(function(p){return p.kind==='INVESTOR'&&p.anchorId===anchorId})}
 function directDeal(memberId){return PARALLELS.filter(function(p){return p.kind==='AFFILIATE_DIRECT'&&p.memberId===memberId})[0]||null}
@@ -443,6 +481,34 @@ function activeRel(childId){for(var i=0;i<relations.length;i++)if(relations[i].c
 function relHistory(childId){return relations.filter(function(r){return r.childId===childId}).sort(function(a,b){return a.effectiveFrom<b.effectiveFrom?1:-1})}
 function childRels(id){return relations.filter(function(r){return r.parentId===id&&r.status==='ACTIVE'})}
 function fmtDate(d){return d?d.replace(/-/g,'.'):'—'}
+/* v2.1 Q1 — 조회 화면 거래유형 탭 (대표값은 카드) */
+var viewRateTab='CARD';
+function relSet(r){return viewRateTab==='DLY'&&r.ratesDly?r.ratesDly:r.rates}
+function setLabel(){return viewRateTab==='DLY'?'배달앱':'카드'}
+function rateTabsHTML(reopen){
+  function b(t,l){return '<button class="rtab'+(viewRateTab===t?' active':'')+'" onclick="viewRateTab=\''+t+'\';'+reopen+'">'+l+'</button>'}
+  return '<span class="rtabs">'+b('CARD','카드')+b('DLY','배달앱')+'<span class="rt-ex">거래유형별 세트 — 대표값은 카드 (예시)</span></span>';
+}
+/* v2.1 R4·R5 — 가입 링크(난수 URL 예시, 캡처 안정성을 위해 시드 고정) */
+function genLinkToken(seed){
+  var chars='abcdefghjkmnpqrstuvwxyz23456789',sd=0,out='',i;
+  for(i=0;i<seed.length;i++)sd=(sd*31+seed.charCodeAt(i))>>>0;
+  for(i=0;i<10;i++){sd=(Math.imul(sd,1103515245)+12345)>>>0;out+=chars.charAt(Math.floor(sd/4294967296*chars.length))}
+  return out;
+}
+function joinLink(m){return 'https://join.payhug.example/r/'+genLinkToken((m.loginId||'')+'#'+m.id)}
+function copyJoinLink(id){
+  var m=memberById(id);if(!m)return;
+  var url=joinLink(m);
+  function done(ok){toast(ok?'<b>가입 링크 복사</b> — <span class="mono">'+esc(url)+'</span>':'<b>복사 실패</b> — 수동으로 복사하세요: <span class="mono">'+esc(url)+'</span>')}
+  function fallback(){
+    var ta=document.createElement('textarea');ta.value=url;ta.style.cssText='position:fixed;left:-9999px';document.body.appendChild(ta);ta.select();
+    var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+    ta.remove();done(ok);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(function(){done(true)},fallback);
+  else fallback();
+}
 var TYPES={PAYHUG:{label:'페이허그',cls:'b-payhug',role:'r-payhug'},INVESTOR:{label:'투자자',cls:'b-investor',role:'r-etc'},PARTNER:{label:'파트너',cls:'b-partner',role:'r-partner'},AFFILIATE:{label:'제휴사',cls:'b-affiliate',role:'r-etc'},SALES:{label:'영업',cls:'b-sales',role:'r-sales'},SALES_ORG:{label:'영업조직',cls:'b-salesorg',role:'r-salesorg'},ADMIN:{label:'관리자',cls:'b-admin',role:'r-etc'}};
 function roleLabel(m){if(m.type==='PARTNER')return activeRel(m.id)?'하위파트너':'상위파트너';return TYPES[m.type].label} /* v2: 관계 기준 자동 판별 */
 function typeBadge(m){return '<span class="badge '+TYPES[m.type].cls+'">'+esc(roleLabel(m))+'</span>'}
@@ -459,6 +525,13 @@ function ancestorChain(id){ /* [자기 제외 부모, 조부모, ...] */
   var out=[],cur=id,g=0;
   while(g++<50){var r=activeRel(cur);if(!r)break;cur=r.parentId;var m=memberById(cur);if(!m)break;out.push(m)}
   return out;
+}
+function descendantsCount(id){ /* C1 — 활성 관계 기준 하위 전체 인원(체인 표기 영향 범위) */
+  var n=0,queue=[id],g=0;
+  while(queue.length&&g++<200){
+    childRels(queue.shift()).forEach(function(r){n++;queue.push(r.childId)});
+  }
+  return n;
 }
 
 /* ═════════════════ 토스트 · 확인 다이얼로그 ═════════════════ */
@@ -485,7 +558,8 @@ function closeConfirm(ok){$('#confirmLayer').classList.remove('open');var cb=con
 
 /* ═════════════════ 목록 ═════════════════ */
 var filterType='ALL',searchQ='',devSkip=false,expandedId=null;
-var TABS=[['ALL','전체'],['INVESTOR','투자자'],['PAYHUG','페이허그'],['PARTNER','파트너'],['AFFILIATE','제휴사'],['SALES','영업'],['SALES_ORG','영업조직'],['ADMIN','관리자']];
+/* L2 — 유형 탭은 계층순: 체인 상단부터(페이허그→파트너→영업조직→영업), 병렬 유형(제휴사·투자자)·관리자는 후순위 */
+var TABS=[['ALL','전체'],['PAYHUG','페이허그'],['PARTNER','파트너'],['SALES_ORG','영업조직'],['SALES','영업'],['AFFILIATE','제휴사'],['INVESTOR','투자자'],['ADMIN','관리자']];
 function renderTabs(){
   $('#tabs').innerHTML=TABS.map(function(t){
     var n=t[0]==='ALL'?members.length:members.filter(function(m){return m.type===t[0]}).length;
@@ -501,7 +575,7 @@ function renderList(){
   }).map(function(m){
     var rel=activeRel(m.id),p=rel?memberById(rel.parentId):null,ddeal=directDeal(m.id);
     var parentCell=p?'<span class="tparent">'+esc(p.name)+'</span>':(ddeal?'<span class="tparent">페이허그 <span class="rel">(직계약·병렬)</span></span>':(m.type==='PARTNER'?'<span class="tnone">- (최상위)</span>':'<span class="tnone">-</span>'));
-    var rateCell=rel?'<span class="trate rate-hcell" data-mid="'+m.id+'" onmouseenter="showRatePop(this,'+m.id+')" onmouseleave="hideRatePop()">'+esc(rel.rates.margin)+'% <small>(예시)</small></span>':(ddeal?'<span class="trate">'+esc(ddeal.fee)+'% <small>(수수료만·예시)</small></span>':'<span class="tnone">-</span>');
+    var rateCell=rel?'<span class="trate rate-hcell" data-mid="'+m.id+'" onmouseenter="showRatePop(this,'+m.id+')" onmouseleave="hideRatePop()">'+esc(rel.rates.margin)+'% <small>(카드·예시)</small></span>':(ddeal?'<span class="trate">'+esc(ddeal.fee)+'% <small>(수수료만·예시)</small></span>':'<span class="tnone">-</span>');
     var chips='<span class="chipset">'+(m.corporate?'<span class="chip c-corp">법인</span>':'<span class="chip c-personal">개인</span>')+(m.business?'<span class="chip c-biz">사업자</span>':'')+'</span>';
     var acts='<span class="act act-profile" onclick="openProfile('+m.id+')" style="cursor:pointer">프로필</span>';
     if(m.type!=='PAYHUG'){
@@ -541,7 +615,7 @@ function reactivate(id){var m=memberById(id);m.status='ACTIVE';renderAll();toast
 function toggleSkip(){
   devSkip=!devSkip;
   $('#skipTg').classList.toggle('on',devSkip);
-  toast(devSkip?'<b>skip-level 허용 ON</b> — 상위 검색에 전체 유형이 표시됩니다. 정책 확인 필요 항목입니다.':'skip-level 허용 OFF');
+  toast(devSkip?'<b>skip-level 허용 ON</b> — 상위 검색에 전체 유형이 표시됩니다. 중간 단계 생략 연결은 확인 다이얼로그 후 허용(확정)됩니다. 동일 유형 다단 적층은 정책 확인 필요(다단 적층).':'skip-level 허용 OFF');
 }
 
 /* ═════════════════ 모달 인프라 ═════════════════ */
@@ -571,11 +645,12 @@ function matchPtype(m,ptype){
 }
 function newForm(mode){
   var e=defRateExtras();
-  return {mode:mode,memberId:null,name:'',phone:'',loginId:'',password:'',type:'SALES',position:null,status:'ACTIVE',origParentId:null,corporate:false,business:false,referralCode:'',
-    parentId:null,parentQuery:'',ddOpen:false,cycleErr:null,auto:{loginId:'',pw:'',ref:''},
-    rates:{margin:'',systemFee:'',transferFeeWon:'300'},vat:e.vat,payer:e.payer,receiver:e.receiver};
+  return {mode:mode,memberId:null,name:'',phone:'',loginId:'',password:'',type:'SALES',origType:null,typeMismatch:null,position:null,status:'ACTIVE',origParentId:null,corporate:false,business:false,referralCode:'',
+    parentId:null,parentQuery:'',ddOpen:false,cycleErr:null,auto:{loginId:'',pw:'',ref:'',link:''},
+    rateTab:'CARD',rates:{margin:'',systemFee:'',transferFeeWon:'300'},ratesDly:{margin:'',systemFee:'',transferFeeWon:'300'},
+    phRate:{card:'',dly:''},vat:e.vat,payer:e.payer,receiver:e.receiver};
 }
-/* v2 자동 생성 — 아이디(기업명 코드 4자+순번) · 추천코드(난수 6자) · 초기 비밀번호(휴대폰 뒤 4자리) */
+/* v2.1 자동 생성(R5) — 아이디(기업 코드 4자+순번, 예: creb1) · 비밀번호(기업 코드 4자+휴대폰 뒷자리, 예: creb5678) · 추천코드(난수 6자) · 가입 링크(난수 URL) — 전부 예시 */
 var RO_CHO=['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
 var RO_JUNG=['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
 var RO_JONG=['','g','kk','gs','n','nj','nh','d','l','lg','lm','lb','ls','lt','lp','lh','m','b','bs','s','ss','ng','j','ch','k','t','p','h'];
@@ -588,12 +663,17 @@ function romanize(str){
   }
   return out;
 }
+function corpCode(name){
+  var c=romanize(name).toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,4);
+  if(!c)return '';
+  while(c.length<4)c+='x';
+  return c;
+}
 function genLoginId(name){
-  var code=romanize(name).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);
+  var code=corpCode(name);
   if(!code)return '';
-  while(code.length<4)code+='X';
-  var n=members.filter(function(m){return m.loginId.toUpperCase().indexOf(code)===0}).length+1;
-  return code+(n<10?'0':'')+n;
+  var n=members.filter(function(m){return m.loginId.toLowerCase().indexOf(code)===0}).length+1;
+  return code+n;
 }
 function genReferral(seedStr){
   var chars='ABCDEFGHJKMNPQRSTUVWXYZ23456789',out='',sd=0,i;
@@ -607,7 +687,12 @@ function autoGen(){
   var name=F.name.trim(),digits=(F.phone||'').replace(/\D/g,'');
   if(name&&(F.loginId===''||F.loginId===F.auto.loginId)){var g=genLoginId(name);if(g){F.loginId=g;F.auto.loginId=g;setInVal('#in-login',g)}}
   if(name&&(F.referralCode===''||F.referralCode===F.auto.ref)){var rc=genReferral(name);F.referralCode=rc;F.auto.ref=rc;setInVal('#in-ref',rc)}
-  if(digits.length>=8&&(F.password===''||F.password===F.auto.pw)){var pw=digits.slice(-4);F.password=pw;F.auto.pw=pw;setInVal('#in-pw',pw)}
+  if(name&&digits.length>=8&&(F.password===''||F.password===F.auto.pw)){var pw=corpCode(name)+digits.slice(-4);F.password=pw;F.auto.pw=pw;setInVal('#in-pw',pw)}
+  var jp=$('#joinPreview');
+  if(jp){
+    if(name){F.auto.link='https://join.payhug.example/r/'+genLinkToken(name+'#'+digits);jp.textContent=F.auto.link}
+    else{F.auto.link='';jp.textContent='이름 입력 시 난수 URL 자동 발급'}
+  }
 }
 function openAddModal(){
   F=newForm('add');
@@ -617,14 +702,17 @@ function openAddModal(){
 function openEditModal(id){
   var m=memberById(id);if(!m)return;
   F=newForm('edit');
-  F.memberId=id;F.name=m.name;F.phone=m.phone||'';F.loginId=m.loginId;F.type=m.type;F.position=m.position;F.status=m.status;
+  F.memberId=id;F.name=m.name;F.phone=m.phone||'';F.loginId=m.loginId;F.type=m.type;F.origType=m.type;F.position=m.position;F.status=m.status;
   F.corporate=m.corporate;F.business=m.business;F.referralCode=m.referralCode;
   var rel=activeRel(id);
   if(m.type==='PARTNER')F.position=rel?'LOWER':'UPPER'; /* v2: 관계 기준 자동 판별 */
   F.origParentId=rel?rel.parentId:null;
+  if(m.phRate)F.phRate={card:m.phRate.card||'',dly:m.phRate.dly||''};
   if(rel){
     F.parentId=rel.parentId;F.parentQuery=memberById(rel.parentId).name;
     F.rates={margin:rel.rates.margin,systemFee:rel.rates.systemFee,transferFeeWon:rel.rates.transferFeeWon};
+    var rd=rel.ratesDly||rel.rates;
+    F.ratesDly={margin:rd.margin,systemFee:rd.systemFee,transferFeeWon:rd.transferFeeWon};
     F.vat={margin:rel.vat.margin,systemFee:rel.vat.systemFee,transferFee:rel.vat.transferFee};
     F.payer={systemFee:rel.payer.systemFee,transferFee:rel.payer.transferFee};
     F.receiver={systemFee:rel.receiver.systemFee,transferFee:rel.receiver.transferFee};
@@ -634,13 +722,16 @@ function openEditModal(id){
 }
 function formShell(title,submitLabel){
   var isEdit=F.mode==='edit';
+  var typeOptions=[['SALES','영업'],['SALES_ORG','영업조직'],['PARTNER','파트너'],['INVESTOR','투자자'],['AFFILIATE','제휴사'],['ADMIN','관리자']].map(function(o){
+      return '<option value="'+o[0]+'"'+(F.type===o[0]?' selected':'')+'>'+o[1]+'</option>';
+    }).join('');
+  /* C1 — 수정 모달에서도 회원 유형 변경(정정) 가능: 새 유형 기준 상위 규칙 재검증 + 관계 이력(종료→신규) 처리 */
   var typeField=isEdit
-    ? '<div><label class="f-label">유형</label><div class="parent-type">'+typeBadge(memberById(F.memberId)||{type:F.type,position:F.position})+'<span class="note">유형 변경 — 확인 필요</span></div></div>'
+    ? '<div><label class="f-label">회원 유형</label>'+
+      '<select class="f-input" id="typeSel" onchange="onTypeChange(this.value)">'+typeOptions+'</select>'+
+      '<p class="f-help">유형 정정 — 변경하면 새 유형 기준으로 상위 유형 규칙을 재검증하며, 저장 시 기존 상위 관계는 종료일이 기록된 뒤 새 관계가 생성됩니다.</p></div>'
     : '<div><label class="f-label">유형 <span class="req">*</span></label>'+
-      '<select class="f-input" id="typeSel" onchange="onTypeChange(this.value)">'+
-      [['SALES','영업'],['SALES_ORG','영업조직'],['PARTNER','파트너'],['INVESTOR','투자자'],['AFFILIATE','제휴사'],['ADMIN','관리자']].map(function(o){
-        return '<option value="'+o[0]+'"'+(F.type===o[0]?' selected':'')+'>'+o[1]+'</option>';
-      }).join('')+'</select></div>';
+      '<select class="f-input" id="typeSel" onchange="onTypeChange(this.value)">'+typeOptions+'</select></div>';
   var statusField=isEdit
     ? '<div><label class="f-label">상태</label><select class="f-input" id="statusSel" onchange="F.status=this.value">'+
       [['ACTIVE','활성'],['INACTIVE','비활성']].map(function(o){
@@ -655,15 +746,15 @@ function formShell(title,submitLabel){
         '<input class="f-input" id="in-name" value="'+esc(F.name)+'" placeholder="예: 홍길동 / 조직명" oninput="F.name=this.value;autoGen();renderPreviewBox()"><p class="f-err"></p></div>'+
       '<div id="fw-phone"><label class="f-label">휴대폰번호 '+(isEdit?'':'<span class="req">*</span>')+'</label>'+
         '<input class="f-input" id="in-phone" value="'+esc(F.phone||'')+'" placeholder="예: 010-1234-5678" oninput="F.phone=this.value;autoGen()">'+
-        (isEdit?'':'<p class="f-help">뒤 4자리가 초기 비밀번호로 자동 설정됩니다.</p>')+'<p class="f-err"></p></div>'+
+        (isEdit?'':'<p class="f-help">기업 코드 4자+뒤 4자리가 초기 비밀번호로 자동 설정됩니다 (예: creb5678 — 예시).</p>')+'<p class="f-err"></p></div>'+
       '<div id="fw-login"><label class="f-label">아이디 <span class="req">*</span></label>'+
-        '<input class="f-input'+(isEdit?'':' mono')+'" id="in-login" value="'+esc(F.loginId)+'" placeholder="'+(isEdit?'예: sales_hyunjun':'이름 입력 시 자동 생성 (예: META02)')+'" oninput="F.loginId=this.value">'+
-        '<p class="f-help">'+(isEdit?'로그인 시 아이디로 사용됩니다.':'기업명 앞 코드 4자(영문)+순번 자동 생성 — 수정 가능. 로그인 시 아이디로 사용됩니다.')+'</p><p class="f-err"></p></div>'+
+        '<input class="f-input'+(isEdit?'':' mono')+'" id="in-login" value="'+esc(F.loginId)+'" placeholder="'+(isEdit?'예: sales_hyunjun':'이름 입력 시 자동 생성 (예: creb1 — 예시)')+'" oninput="F.loginId=this.value">'+
+        '<p class="f-help">'+(isEdit?'로그인 시 아이디로 사용됩니다.':'기업 코드 4자(영문 소문자)+순번 자동 생성 (예: creb1 — 예시) — 수정 가능. 로그인 시 아이디로 사용됩니다.')+'</p><p class="f-err"></p></div>'+
       (isEdit
         ?'<div id="fw-pw"><label class="f-label">비밀번호</label><input class="f-input" type="password" id="in-pw" placeholder="변경 시에만 입력" oninput="F.password=this.value"><p class="f-err"></p></div>'
         :'<div id="fw-pw"><label class="f-label">비밀번호 <span class="req">*</span></label>'+
-         '<input class="f-input mono" id="in-pw" value="'+esc(F.password)+'" placeholder="휴대폰번호 입력 시 자동 설정" oninput="F.password=this.value">'+
-         '<p class="f-help">휴대폰번호 뒤 4자리가 초기 비밀번호로 자동 설정됩니다 — <b>최초 로그인 시 변경</b>.</p><p class="f-err"></p></div>')+
+         '<input class="f-input mono" id="in-pw" value="'+esc(F.password)+'" placeholder="이름·휴대폰번호 입력 시 자동 설정" oninput="F.password=this.value">'+
+         '<p class="f-help">기업 코드 4자+휴대폰 뒷자리 4자리가 초기 비밀번호로 자동 설정됩니다 (예: creb5678 — 예시) — <b>최초 로그인 시 변경</b>.</p><p class="f-err"></p></div>')+
       typeField+
       statusField+
       '<div class="tg-grid">'+
@@ -673,6 +764,9 @@ function formShell(title,submitLabel){
       '<div><label class="f-label">추천 코드</label>'+
         '<input class="f-input'+(isEdit?'':' mono')+'" id="in-ref" value="'+esc(F.referralCode)+'" placeholder="'+(isEdit?'예: S001':'이름 입력 시 자동 생성 (난수 6자)')+'" oninput="F.referralCode=this.value">'+
         '<p class="f-help">가맹점 가입 URL에 사용되는 고유 코드'+(isEdit?'':' — 난수 6자 자동 생성, 수정 가능')+'</p></div>'+
+      (isEdit?'':'<div><label class="f-label">가입 링크 (자동 발급)</label>'+
+        '<div class="pr-fixed mono" id="joinPreview">'+esc(F.auto.link||'이름 입력 시 난수 URL 자동 발급')+'</div>'+
+        '<p class="f-help">난수 URL 자동 발급 (예시) — 가맹점 가입 경로(계약 파트너 체인 시작점)로 사용됩니다. 발급 주체 정책 — <span class="badge b-tbd">확인 필요</span></p></div>')+
     '</div>'+
     '<div id="contractWrap"></div>'+
     '<div id="formBanner"></div>'+
@@ -684,6 +778,16 @@ function onTypeChange(v){
   F.type=v;
   F.position=v==='PARTNER'?F.position:null; /* 파트너 계약 위치는 기본 미선택 */
   F.parentId=null;F.parentQuery='';F.cycleErr=null;F.ddOpen=false;
+  /* C1 — 유형 정정(수정 모달): 새 유형 기준 상위 규칙 재검증 — 현 상위가 적합하면 유지, 부적합하면 비우고 재선택 유도 */
+  if(F.mode==='edit'){
+    F.typeMismatch=null;
+    var rule=parentRule(v,F.position);
+    if(rule.kind==='search'&&F.origParentId!=null){
+      var op=memberById(F.origParentId);
+      if(op&&matchPtype(op,rule.ptype)){F.parentId=op.id;F.parentQuery=op.name}
+      else if(op)F.typeMismatch={parentName:op.name,parentRole:roleLabel(op),needLabel:rule.typeLabel};
+    }
+  }
   renderContract();
 }
 function onPartnerParent(v){ /* v2: 파트너 직속 상위 select — "없음(최상위)"=상위파트너, 상위파트너 선택=하위파트너 자동 판별 */
@@ -701,6 +805,13 @@ function renderContract(){
   var w=$('#contractWrap');if(!w)return;
   var rule=parentRule(F.type,F.position);
   var html='<div class="sec"><div class="sec-h"><span class="sec-bar amber"></span>계약 관계</div>';
+  /* C1 — 유형 정정 배너: 재검증 안내 → 현 상위 부적합 경고 → 하위 체인 표기 영향 */
+  if(F.mode==='edit'&&F.origType&&F.type!==F.origType){
+    var dN=descendantsCount(F.memberId);
+    html+='<div class="banner bn-amber">'+warnSvg+'<span><b>유형 정정 — '+esc(TYPES[F.origType].label)+' → '+esc(TYPES[F.type].label)+'.</b> 새 유형 기준으로 상위 유형 규칙을 다시 적용합니다. 저장 시 기존 상위 관계는 종료일이 기록되고 새 관계가 생성됩니다.</span></div>';
+    if(F.typeMismatch)html+='<div class="banner bn-red">'+warnSvg+'<span><b>현 직속 상위 부적합</b> — '+esc(F.typeMismatch.parentName)+'('+esc(F.typeMismatch.parentRole)+')은(는) '+esc(TYPES[F.type].label)+'의 상위 규칙('+esc(F.typeMismatch.needLabel)+')에 맞지 않습니다. 직속 상위를 다시 선택하세요.</span></div>';
+    if(dN>0)html+='<div class="banner bn-gray">'+warnSvg+'<span><b>하위 '+dN+'명의 체인 표기가 바뀝니다.</b> 하위 회원의 목록 배지·체인 조회 표기가 새 유형 기준으로 표시됩니다.</span></div>';
+  }
   if(F.mode==='edit'&&(rule.kind==='search'||F.type==='PARTNER')){
     html+='<div class="banner bn-amber" id="editNotice">'+warnSvg+'<span><b>변경 시 기존 관계는 종료 처리되고 새 이력이 생성됩니다.</b> 직속 상위 또는 계약 수수료율을 변경하면 변경일('+fmtDate(TODAY)+')부터 새 계약 관계가 적용됩니다.</span></div>';
   }
@@ -721,7 +832,12 @@ function renderContract(){
     html+='<div><label class="f-label">파트너 위치 — 자동 판별</label><div class="parent-type"><span class="val pt-partner">'+(F.position==='UPPER'?'상위파트너':'하위파트너')+'</span><span class="note">직속 상위 관계 기준 자동 판별 (별도 선택 없음)</span></div></div>';
     if(F.position==='UPPER'){
       html+='<div class="banner bn-gray">'+warnSvg+'<span><b>최상위(상위파트너)로 판별되었습니다 — 직속 상위 없음.</b> 하위 관계가 생기면 배분 체인의 최상단이 됩니다.</span></div>';
-      html+='<div><label class="f-label">페이허그와의 계약 수수료율</label><div class="parent-type"><span class="badge b-tbd">확인 필요</span><span class="note">페이허그 ↔ 상위파트너(최상위) 구간 — 정책 확정 시 입력</span></div></div>';
+      html+='<div id="fw-phrate"><label class="f-label">페이허그와의 계약율 (채권매입)</label>'+
+        '<div class="rt-wrap"><table class="rt"><tbody>'+
+        '<tr><td><span class="fee-badge fb-margin">카드</span></td><td><div class="rt-val"><input class="rt-input" id="ph-card" value="'+esc(F.phRate.card)+'" placeholder="예: 0.90" inputmode="decimal" oninput="F.phRate.card=this.value;renderPreviewBox()"><span class="rt-unit">%</span><span class="rt-ex">(예시)</span></div></td></tr>'+
+        '<tr><td><span class="fee-badge fb-margin">배달앱</span></td><td><div class="rt-val"><input class="rt-input" id="ph-dly" value="'+esc(F.phRate.dly)+'" placeholder="예: 1.10" inputmode="decimal" oninput="F.phRate.dly=this.value;renderPreviewBox()"><span class="rt-unit">%</span><span class="rt-ex">(예시)</span></div></td></tr>'+
+        '</tbody></table></div>'+
+        '<p class="f-help">페이허그 ↔ 상위파트너(최상위) 구간 계약율 — 등록 화면에서 입력. 값은 전부 예시이며 체인 조회의 페이허그 구간에 표시됩니다.</p></div>';
       html+='<div id="previewBox"></div></div>';
       w.innerHTML=html;renderPreviewBox();return;
     }
@@ -749,11 +865,15 @@ function renderContract(){
   w.innerHTML=html;
   renderPreviewBox();
 }
-function ratesBlockHTML(){ /* v2: 이체수수료 전 건 300원 고정 + 이체료 수취 주체 "페이허그 수취 — 확인 필요" 고정 */
-  return '<div id="fw-rates"><label class="f-label">계약 수수료율 세트 <span class="req">*</span></label>'+
-    '<div class="rt-wrap"><table class="rt"><thead><tr><th>항목</th><th class="r">값</th><th class="c">VAT</th></tr></thead><tbody>'+
-    rateRow('margin','채권매입','fb-margin','%','예: 0.10')+
-    rateRow('systemFee','시스템이용료','fb-system','%','예: 0.05')+
+function setFormRateTab(t){F.rateTab=t;renderContract()}
+function ratesBlockHTML(){ /* v2.1 Q1: 관계 1건 = 카드/배달앱 세트 2개(탭) · 이체수수료 전 건 300원 고정 · 이체료 수취 주체 "페이허그 수취 — 확인 필요" 고정 */
+  var setKey=F.rateTab==='DLY'?'ratesDly':'rates';
+  function ftab(t,l){return '<button class="rtab'+(F.rateTab===t?' active':'')+'" onclick="setFormRateTab(\''+t+'\')">'+l+'</button>'}
+  return '<div id="fw-rates"><label class="f-label">계약 수수료율 세트 <span class="req">*</span>'+
+    '<span class="rtabs">'+ftab('CARD','카드')+ftab('DLY','배달앱')+'<span class="rt-ex">거래유형별 세트 2개 — 대표값은 카드 (전부 예시)</span></span></label>'+
+    '<div class="rt-wrap"><table class="rt"><thead><tr><th>항목 <small>('+(F.rateTab==='DLY'?'배달앱':'카드')+' 세트)</small></th><th class="r">값</th><th class="c">VAT</th></tr></thead><tbody>'+
+    rateRow(setKey,'margin','채권매입','fb-margin','%',F.rateTab==='DLY'?'예: 0.30':'예: 0.10')+
+    rateRow(setKey,'systemFee','시스템이용료','fb-system','%','예: 0.05')+
     '<tr><td><span class="fee-badge fb-transfer">이체수수료</span></td>'+
     '<td><div class="rt-val"><span class="rate-txt">300원</span><span class="rt-ex">(전 건 고정·예시)</span></div></td>'+
     '<td style="text-align:center"><select class="rt-vat" onchange="F.vat.transferFee=this.value">'+
@@ -765,14 +885,14 @@ function ratesBlockHTML(){ /* v2: 이체수수료 전 건 300원 고정 + 이체
       prSel('receiver','systemFee','시스템이용료 수취 주체',['상위 수취','하위 수취'])+
       '<div class="pr-item"><span class="pl">이체수수료 수취 주체</span><div class="pr-fixed">페이허그 수취<span class="badge b-tbd">확인 필요</span></div></div>'+
     '</div>'+
-    '<p class="f-help">선택한 직속 상위 회원과 현재 회원 사이에 적용되는 계약 수수료율입니다. 숫자는 전부 예시. 이체수수료는 전 건 300원 고정(예시).</p>'+
-    '<div class="tbd-notes" style="margin-top:4px"><span class="badge b-tbd">거래유형 차등 — 확인 필요</span><span class="badge b-tbd">투자자 배분 — 확인 필요</span></div>'+
+    '<p class="f-help">선택한 직속 상위 회원과 현재 회원 사이에 적용되는 계약 수수료율입니다. 관계 1건 = 카드/배달앱 세트 2개 — 두 세트 모두 입력. VAT·납부/수취 주체는 두 세트 공통. 숫자는 전부 예시. 이체수수료는 전 건 300원 고정(예시).</p>'+
+    '<div class="tbd-notes" style="margin-top:4px"><span class="badge b-tbd">투자자 배분 — 확인 필요</span></div>'+
     '<p class="f-err"></p></div>';
 }
-function rateRow(key,label,cls,unit,ph){
+function rateRow(setKey,key,label,cls,unit,ph){
   var vatKey=key==='transferFeeWon'?'transferFee':key;
   return '<tr><td><span class="fee-badge '+cls+'">'+label+'</span></td>'+
-    '<td><div class="rt-val"><input class="rt-input" value="'+esc(F.rates[key])+'" placeholder="'+ph+'" inputmode="decimal" oninput="F.rates.'+key+'=this.value;renderPreviewBox()"><span class="rt-unit">'+unit+'</span><span class="rt-ex">(예시)</span></div></td>'+
+    '<td><div class="rt-val"><input class="rt-input" value="'+esc(F[setKey][key])+'" placeholder="'+ph+'" inputmode="decimal" oninput="F.'+setKey+'.'+key+'=this.value;renderPreviewBox()"><span class="rt-unit">'+unit+'</span><span class="rt-ex">(예시)</span></div></td>'+
     '<td style="text-align:center"><select class="rt-vat" onchange="F.vat.'+vatKey+'=this.value">'+
       ['별도','포함'].map(function(o){return '<option'+(F.vat[vatKey]===o?' selected':'')+'>'+o+'</option>'}).join('')+'</select></td></tr>';
 }
@@ -791,14 +911,16 @@ function renderParentDD(){
     var sub=m.loginId+' · '+roleLabel(m);
     if(m.status!=='ACTIVE')return '<div class="dd-item off"><span>'+esc(m.name)+'<span class="dd-sub">'+esc(sub)+'</span></span><span class="b-off">비활성 — 선택 불가</span></div>';
     var sel=F.parentId===m.id;
-    return '<div class="dd-item'+(sel?' sel':'')+'" onclick="pickParent('+m.id+','+(ext?'true':'false')+')"><span>'+esc(m.name)+'<span class="dd-sub">'+esc(sub)+'</span></span>'+(sel?checkSvg:'')+'</div>';
+    /* A2 — 동일 유형 적층(예: 영업조직→영업조직)은 별개 정책 대기 항목 */
+    var stack=ext&&m.type===F.type?'<span class="badge b-tbd" style="margin-left:6px">정책 확인 필요(다단 적층)</span>':'';
+    return '<div class="dd-item'+(sel?' sel':'')+'" onclick="pickParent('+m.id+','+(ext?'true':'false')+')"><span>'+esc(m.name)+'<span class="dd-sub">'+esc(sub)+'</span></span>'+stack+(sel?checkSvg:'')+'</div>';
   }
   var primary=members.filter(function(m){return matchPtype(m,rule.ptype)&&hit(m)});
   var html=primary.length?primary.map(function(m){return item(m,false)}).join(''):'<div class="dd-item none">검색 결과 없음</div>';
   if(devSkip){
     var extended=members.filter(function(m){return !matchPtype(m,rule.ptype)&&hit(m)});
     if(extended.length){
-      html+='<div class="dd-cap">skip-level — 전체 유형 (개발자 · 확인 필요)</div>'+extended.map(function(m){return item(m,true)}).join('');
+      html+='<div class="dd-cap">skip-level — 전체 유형 (중간 단계 생략 · 확인 다이얼로그 후 연결)</div>'+extended.map(function(m){return item(m,true)}).join('');
     }
   }
   dd.innerHTML='<div class="dd">'+html+'</div>';
@@ -815,7 +937,11 @@ function pickParent(id,ext){
   F.cycleErr=null;
   if(ext){
     var p=memberById(id);
-    showConfirm('계약 관계 확인','중간 단계 없이 <b>'+esc(roleLabel(p))+'('+esc(p.name)+')</b> 아래에 <b>'+esc(TYPES[F.type].label)+'</b>을(를) 직접 연결합니다. skip-level 연결 허용 여부는 <b>확인 필요</b> 항목입니다. 계속할까요?','계속',function(){
+    /* A2 — 중간 단계 생략 연결은 확정(확인 다이얼로그 후 허용). 동일 유형 다단 적층만 별개 정책 대기 */
+    var desc=p.type===F.type
+      ?'동일 유형을 겹쳐 <b>'+esc(roleLabel(p))+'('+esc(p.name)+')</b> 아래에 같은 유형 <b>'+esc(TYPES[F.type].label)+'</b>을(를) 연결합니다. 다단 적층 허용 여부는 <span class="badge b-tbd">정책 확인 필요(다단 적층)</span> 항목입니다. 계속할까요?'
+      :'중간 단계 없이 <b>'+esc(roleLabel(p))+'('+esc(p.name)+')</b> 아래에 <b>'+esc(TYPES[F.type].label)+'</b>을(를) 직접 연결합니다. skip-level 연결은 확정 동작으로, 이 다이얼로그에서 확인하면 허용됩니다. 계속할까요?';
+    showConfirm('계약 관계 확인',desc,'계속',function(){
       F.parentId=id;F.parentQuery=p.name;applyParentPick();
     });
     return;
@@ -853,9 +979,12 @@ function renderPreviewBox(){
   var newRoleCls=TYPES[F.type].role;
   var html='<label class="f-label">계약 구조 미리보기</label><div class="chain-box">';
   if(rule.kind==='top'){
+    var hasPh=String(F.phRate.card).trim()!==''||String(F.phRate.dly).trim()!=='';
     html+='<div class="chain">'+
       chNodeHTML('페이허그','r-payhug','페이허그',false)+
-      chLinkHTML('확인 필요','tbd')+
+      (hasPh
+        ?chLinkHTML('카드 '+(String(F.phRate.card).trim()||'—')+'% · 배달앱 '+(String(F.phRate.dly).trim()||'—')+'% (이번 입력·예시)','now')
+        :chLinkHTML('확인 필요','tbd'))+
       chNodeHTML(newRole,newRoleCls,newName,true)+
       '</div>';
   }else if(!F.parentId){
@@ -871,11 +1000,12 @@ function renderPreviewBox(){
       var n=nodes[i];
       parts.push(chNodeHTML(roleLabel(n),TYPES[n.type].role,n.name,false));
       if(i<nodes.length-1){
-        var r=activeRel(nodes[i+1].id);
-        parts.push(chLinkHTML(r?r.rates.margin+'% (예시)':'확인 필요',r?'':'tbd'));
+        var r=activeRel(nodes[i+1].id),dnp=nodes[i+1];
+        var phr=!r&&dnp.phRate&&(dnp.phRate.card||dnp.phRate.dly)?dnp.phRate:null;
+        parts.push(chLinkHTML(r?r.rates.margin+'% (카드·예시)':(phr?(phr.card||'—')+'% (카드·등록 입력·예시)':'확인 필요'),r||phr?'':'tbd'));
       }
     }
-    var mchip=(String(F.rates.margin).trim()!==''?F.rates.margin+'%':'—')+' (이번 입력·예시)';
+    var mchip=(String(F.rates.margin).trim()!==''?F.rates.margin+'%':'—')+' (이번 입력·카드·예시)';
     parts.push(chLinkHTML(mchip,'now'));
     parts.push(chNodeHTML(newRole,newRoleCls,newName,true));
     html+='<div class="chain">'+parts.join('')+'</div>';
@@ -917,7 +1047,7 @@ function submitForm(){
     if(dup){
       var drel=activeRel(dup.id);
       if(drel){
-        return formBanner('bn-amber','<b>이미 등록된 회원('+esc(dup.name)+')의 아이디입니다.</b> 이 회원은 직속 상위(<b>'+esc(memberById(drel.parentId).name)+'</b>)와의 활성 계약이 이미 있어, 등록 흐름으로 중복 관계를 만들 수 없습니다 — <b>다중 상위 차단</b>. 관계 변경은 수정 흐름을 사용하세요.');
+        return formBanner('bn-amber','<b>이미 등록된 회원('+esc(dup.name)+')의 아이디입니다.</b> 이 회원은 직속 상위(<b>'+esc(memberById(drel.parentId).name)+'</b>)와의 활성 계약이 이미 있어, 등록 흐름으로 중복 관계를 만들 수 없습니다 — <b>다중 상위 차단(활성 상위 1개 제한)</b>. 상위를 바꾸려면 <b>수정에서 변경</b> — 기존 관계는 종료일이 기록되고 새 관계가 생성됩니다.');
       }
       return formBanner('bn-amber','<b>이미 등록된 회원('+esc(dup.name)+')의 아이디입니다.</b> 신규 등록 대신 수정 흐름을 사용하세요.');
     }
@@ -932,9 +1062,13 @@ function submitForm(){
     if(F.cycleErr){renderCycleBanner();$('#cycleBanner').scrollIntoView({block:'center'});return false}
     var pm=memberById(F.parentId);
     if(!pm||pm.status!=='ACTIVE')return fieldError('fw-parent','비활성 회원은 직속 상위로 선택할 수 없습니다.');
-    if(!isNum(F.rates.margin))return fieldError('fw-rates','채권매입 요율을 입력하세요. (예: 0.10)');
-    if(!isNum(F.rates.systemFee))return fieldError('fw-rates','시스템이용료 요율을 입력하세요. (예: 0.05)');
-    F.rates.transferFeeWon='300'; /* v2: 전 건 고정 */
+    /* v2.1 Q1 — 관계 1건 = 카드/배달앱 세트 2개, 둘 다 검증 (에러 시 해당 탭으로 전환) */
+    var rateErr=function(tab,msg){if(F.rateTab!==tab){F.rateTab=tab;renderContract()}return fieldError('fw-rates',msg)};
+    if(!isNum(F.rates.margin))return rateErr('CARD','카드 채권매입 요율을 입력하세요. (예: 0.10)');
+    if(!isNum(F.rates.systemFee))return rateErr('CARD','카드 시스템이용료 요율을 입력하세요. (예: 0.05)');
+    if(!isNum(F.ratesDly.margin))return rateErr('DLY','배달앱 채권매입 요율을 입력하세요 — 관계 1건 = 카드/배달앱 세트 2개. (예: 0.30)');
+    if(!isNum(F.ratesDly.systemFee))return rateErr('DLY','배달앱 시스템이용료 요율을 입력하세요. (예: 0.05)');
+    F.rates.transferFeeWon='300';F.ratesDly.transferFeeWon='300'; /* v2: 전 건 고정 */
   }
   /* 저장 */
   if(F.mode==='add')commitAdd(rule);else commitEdit(rule);
@@ -943,6 +1077,7 @@ function submitForm(){
 function relFromForm(childId){
   return {id:nextRelId++,parentId:F.parentId,childId:childId,
     rates:{margin:String(F.rates.margin).trim(),systemFee:String(F.rates.systemFee).trim(),transferFeeWon:String(F.rates.transferFeeWon).trim()},
+    ratesDly:{margin:String(F.ratesDly.margin).trim(),systemFee:String(F.ratesDly.systemFee).trim(),transferFeeWon:String(F.ratesDly.transferFeeWon).trim()},
     vat:{margin:F.vat.margin,systemFee:F.vat.systemFee,transferFee:F.vat.transferFee},
     payer:{systemFee:F.payer.systemFee,transferFee:F.payer.transferFee},
     receiver:{systemFee:F.receiver.systemFee,transferFee:F.receiver.transferFee},
@@ -958,7 +1093,11 @@ function commitAdd(rule){
     relations.push(relFromForm(id));
     msg+=' (직속 상위: '+esc(memberById(F.parentId).name)+', 적용일 '+fmtDate(TODAY)+')';
   }else if(rule.kind==='top'){
-    msg+=' — 최상위 등록. 페이허그 구간 요율은 확인 필요.';
+    var hasPh=String(F.phRate.card).trim()!==''||String(F.phRate.dly).trim()!=='';
+    if(hasPh)members[members.length-1].phRate={card:String(F.phRate.card).trim(),dly:String(F.phRate.dly).trim()};
+    msg+=hasPh
+      ?' — 최상위 등록. 페이허그 구간 계약율: 카드 '+esc(String(F.phRate.card).trim()||'—')+'% · 배달앱 '+esc(String(F.phRate.dly).trim()||'—')+'% (예시).'
+      :' — 최상위 등록. 페이허그 구간 계약율 미입력 — 확인 필요.';
   }else if(rule.kind==='none'){
     msg+=F.type==='AFFILIATE'?' — 페이허그 직계약(병렬) · 수수료율 확인 필요.':' — 계약 관계는 확인 필요 상태로 보류.';
   }
@@ -966,14 +1105,19 @@ function commitAdd(rule){
 }
 function commitEdit(rule){
   var m=memberById(F.memberId);
+  var typeChanged=!!F.origType&&F.type!==F.origType; /* C1 — 유형 정정 */
   m.name=F.name.trim();m.phone=(F.phone||'').trim();m.loginId=F.loginId.trim();m.status=F.status||m.status;m.corporate=F.corporate;m.business=F.business;m.referralCode=F.referralCode.trim();
+  if(typeChanged){m.type=F.type;m.position=F.type==='PARTNER'?F.position:null}
   var msg='<b>수정 완료</b> — '+esc(m.name);
   if(rule.kind==='search'){
     var cur=activeRel(m.id);
-    var changed=!cur||cur.parentId!==F.parentId
+    var curDly=cur&&(cur.ratesDly||cur.rates);
+    var changed=typeChanged||!cur||cur.parentId!==F.parentId
       ||String(cur.rates.margin)!==String(F.rates.margin).trim()
       ||String(cur.rates.systemFee)!==String(F.rates.systemFee).trim()
       ||String(cur.rates.transferFeeWon)!==String(F.rates.transferFeeWon).trim()
+      ||String(curDly.margin)!==String(F.ratesDly.margin).trim()
+      ||String(curDly.systemFee)!==String(F.ratesDly.systemFee).trim()
       ||cur.vat.margin!==F.vat.margin||cur.vat.systemFee!==F.vat.systemFee||cur.vat.transferFee!==F.vat.transferFee
       ||cur.payer.systemFee!==F.payer.systemFee||cur.payer.transferFee!==F.payer.transferFee
       ||cur.receiver.systemFee!==F.receiver.systemFee||cur.receiver.transferFee!==F.receiver.transferFee;
@@ -987,14 +1131,25 @@ function commitEdit(rule){
   }else if(rule.kind==='top'){
     var cur2=activeRel(m.id);
     if(cur2){cur2.status='ENDED';cur2.effectiveTo=TODAY;msg='<b>기존 관계 종료</b> — '+esc(m.name)+' 최상위(직속 상위 없음) 전환 (종료일 '+fmtDate(TODAY)+')'}
+    var hasPh2=String(F.phRate.card).trim()!==''||String(F.phRate.dly).trim()!=='';
+    m.phRate=hasPh2?{card:String(F.phRate.card).trim(),dly:String(F.phRate.dly).trim()}:null;
+  }else if(typeChanged){
+    /* C1 — 상위 관계를 입력받지 않는 유형으로 정정: 기존 관계는 종료일 기록 */
+    var cur3=activeRel(m.id);
+    if(cur3){cur3.status='ENDED';cur3.effectiveTo=TODAY;msg='<b>기존 관계 종료</b> — '+esc(m.name)+' (종료일 '+fmtDate(TODAY)+') · 새 유형은 이 화면에서 상위 관계를 입력받지 않습니다'}
+  }
+  if(typeChanged){
+    var dN2=descendantsCount(m.id);
+    msg='<b>유형 정정</b> — '+esc(TYPES[F.origType].label)+' → '+esc(roleLabel(m))+' · '+msg+(dN2>0?' · 하위 '+dN2+'명 체인 표기 변경':'');
   }
   closeModal();renderAll();toast(msg);
 }
 
 /* ═════════════════ 프로필 모달 ═════════════════ */
 function rateCells(r){
-  return '<td class="r"><span class="rate-txt">'+esc(r.rates.margin)+'% <small>(예시)</small></span></td>'+
-    '<td class="r"><span class="rate-txt">'+esc(r.rates.systemFee)+'% <small>(예시)</small></span></td>'+
+  var rs=relSet(r);
+  return '<td class="r"><span class="rate-txt">'+esc(rs.margin)+'% <small>('+setLabel()+'·예시)</small></span></td>'+
+    '<td class="r"><span class="rate-txt">'+esc(rs.systemFee)+'% <small>(예시)</small></span></td>'+
     '<td class="r"><span class="rate-txt">'+esc(r.rates.transferFeeWon)+'원 <small>(고정·예시)</small></span></td>';
 }
 function openProfile(id){
@@ -1010,20 +1165,25 @@ function openProfile(id){
     '<div class="inf"><span class="k">법인 / 사업자</span><span class="v"><span class="chipset">'+(m.corporate?'<span class="chip c-corp">법인</span>':'<span class="chip c-personal">개인</span>')+(m.business?'<span class="chip c-biz">사업자</span>':'')+'</span></span></div>'+
     '<div class="inf"><span class="k">추천코드</span><span class="v">'+(m.referralCode?'<code class="ref">'+esc(m.referralCode)+'</code>':'<span class="dash">—</span>')+'</span></div>'+
   '</div></div>';
-  html+='<div class="sec"><div class="sec-h"><span class="sec-bar amber"></span>직속 계약 관계 (현재)</div>';
+  html+='<div class="sec"><div class="sec-h"><span class="sec-bar amber"></span>직속 계약 관계 (현재)'+(rel&&p?rateTabsHTML('openProfile('+id+')'):'')+'</div>';
   if(rel&&p){
+    var rs=relSet(rel);
     html+='<div class="inf-card">'+
       '<div class="inf"><span class="k">직속 상위</span><span class="v">'+esc(p.name)+'</span></div>'+
       '<div class="inf"><span class="k">상위 유형</span><span class="v">'+typeBadge(p)+'</span></div>'+
       '<div class="inf"><span class="k">적용일</span><span class="v mono">'+fmtDate(rel.effectiveFrom)+'</span></div>'+
     '</div>'+
-    '<div class="rt-wrap"><table class="rt"><thead><tr><th>항목</th><th class="r">값</th><th class="c">VAT</th><th class="c">납부 주체</th><th class="c">수취 주체</th></tr></thead><tbody>'+
-      '<tr><td><span class="fee-badge fb-margin">채권매입</span></td><td class="r"><span class="rate-txt">'+esc(rel.rates.margin)+'% <small>(예시)</small></span></td><td class="c">'+esc(rel.vat.margin)+'</td><td class="c"><span class="dash">—</span></td><td class="c"><span class="dash">—</span></td></tr>'+
-      '<tr><td><span class="fee-badge fb-system">시스템이용료</span></td><td class="r"><span class="rate-txt">'+esc(rel.rates.systemFee)+'% <small>(예시)</small></span></td><td class="c">'+esc(rel.vat.systemFee)+'</td><td class="c">'+esc(rel.payer.systemFee)+'</td><td class="c">'+esc(rel.receiver.systemFee)+'</td></tr>'+
+    '<div class="rt-wrap"><table class="rt"><thead><tr><th>항목 <small>('+setLabel()+' 세트)</small></th><th class="r">값</th><th class="c">VAT</th><th class="c">납부 주체</th><th class="c">수취 주체</th></tr></thead><tbody>'+
+      '<tr><td><span class="fee-badge fb-margin">채권매입</span></td><td class="r"><span class="rate-txt">'+esc(rs.margin)+'% <small>('+setLabel()+'·예시)</small></span></td><td class="c">'+esc(rel.vat.margin)+'</td><td class="c"><span class="dash">—</span></td><td class="c"><span class="dash">—</span></td></tr>'+
+      '<tr><td><span class="fee-badge fb-system">시스템이용료</span></td><td class="r"><span class="rate-txt">'+esc(rs.systemFee)+'% <small>('+setLabel()+'·예시)</small></span></td><td class="c">'+esc(rel.vat.systemFee)+'</td><td class="c">'+esc(rel.payer.systemFee)+'</td><td class="c">'+esc(rel.receiver.systemFee)+'</td></tr>'+
       '<tr><td><span class="fee-badge fb-transfer">이체수수료</span></td><td class="r"><span class="rate-txt">'+esc(rel.rates.transferFeeWon)+'원 <small>(전 건 고정·예시)</small></span></td><td class="c">'+esc(rel.vat.transferFee)+'</td><td class="c">'+esc(rel.payer.transferFee)+'</td><td class="c">'+esc(rel.receiver.transferFee)+' <span class="badge b-tbd">확인 필요</span></td></tr>'+
     '</tbody></table></div>';
-  }else if(m.type==='PARTNER'){ /* v2: 관계 기준 — 활성 상위 관계 없으면 최상위 */
-    html+='<div class="banner bn-gray">'+warnSvg+'<span><b>최상위 — 직속 상위 없음.</b> 페이허그 ↔ 상위파트너 구간 계약 수수료율은 <span class="badge b-tbd">확인 필요</span></span></div>';
+  }else if(m.type==='PARTNER'){ /* v2: 관계 기준 — 활성 상위 관계 없으면 최상위. Q3: 등록 입력값 있으면 표시 */
+    if(m.phRate&&(m.phRate.card||m.phRate.dly)){
+      html+='<div class="banner bn-gray">'+warnSvg+'<span><b>최상위 — 직속 상위 없음.</b> 페이허그 ↔ 상위파트너 구간 계약율(채권매입): <span class="rate-txt">카드 '+esc(m.phRate.card||'—')+'% · 배달앱 '+esc(m.phRate.dly||'—')+'%</span> <small>(등록 화면 입력·예시)</small></span></div>';
+    }else{
+      html+='<div class="banner bn-gray">'+warnSvg+'<span><b>최상위 — 직속 상위 없음.</b> 페이허그 ↔ 상위파트너 구간 계약율 미입력 — <span class="badge b-tbd">확인 필요</span></span></div>';
+    }
   }else if(m.type==='PAYHUG'){
     html+='<div class="banner bn-gray">'+warnSvg+'<span><b>페이허그는 체인 최상단</b> — 상위 계약이 없습니다.</span></div>';
   }else if(m.type==='AFFILIATE'&&directDeal(m.id)){
@@ -1039,7 +1199,7 @@ function openProfile(id){
       var pp=memberById(r.parentId);
       return '<div class="hist"><span class="period">'+fmtDate(r.effectiveFrom)+' ~ '+(r.effectiveTo?fmtDate(r.effectiveTo):'현재')+'</span>'+
         '<span class="rel-p">상위: '+esc(pp?pp.name:'?')+'</span>'+
-        '<span class="rates">채권매입 '+esc(r.rates.margin)+'% · 시스템 '+esc(r.rates.systemFee)+'% · 이체 '+esc(r.rates.transferFeeWon)+'원 고정 (예시)</span>'+
+        '<span class="rates">채권매입 카드 '+esc(r.rates.margin)+'%·배달앱 '+esc((r.ratesDly||r.rates).margin)+'% · 시스템 '+esc(r.rates.systemFee)+'% · 이체 '+esc(r.rates.transferFeeWon)+'원 고정 (예시)</span>'+
         '<span class="badge '+(r.status==='ACTIVE'?'b-active">적용 중':'b-ended">종료')+'</span></div>';
     }).join('')+'</div>';
   }else{
@@ -1064,13 +1224,22 @@ function openProfile(id){
 
 /* ═════════════════ 계약 구조 모달 ═════════════════ */
 function vNodeHTML(m,isMe){
-  return '<div class="v-node'+(isMe?' me':'')+'">'+typeBadge(m)+'<span class="v-name">'+esc(m.name)+'</span></div>';
+  return '<div class="v-node'+(isMe?' me':'')+'">'+typeBadge(m)+'<span class="v-name">'+esc(m.name)+'</span>'+
+    (m.status==='INACTIVE'?'<span class="badge b-inactive">비활성</span>':'')+'</div>';
 }
-function vLinkHTML(rel){
+function vLinkHTML(rel,dn,frz){
   var arrow='<span class="v-line"></span><svg class="v-arrow" viewBox="0 0 10 6"><path d="M0 0L5 6L10 0Z" fill="#d1d5db"/></svg>';
-  if(!rel)return '<div class="v-link">'+arrow+'<div class="v-box"><span class="v-chip tbd">계약 수수료율 — 확인 필요</span></div></div>';
-  return '<div class="v-link">'+arrow+'<div class="v-box"><span class="v-chip">채권매입 '+esc(rel.rates.margin)+'% (예시)</span>'+
-    '<span class="v-detail">시스템이용료 '+esc(rel.rates.systemFee)+'% · 이체수수료 '+esc(rel.rates.transferFeeWon)+'원(전 건 고정) · VAT '+esc(rel.vat.margin)+' (예시)</span></div></div>';
+  var frzChip=frz?'<span class="v-chip frz">해당 상위 몫 배분 동결</span>':'';
+  if(!rel){
+    if(dn&&dn.phRate&&(dn.phRate.card||dn.phRate.dly)){
+      return '<div class="v-link">'+arrow+'<div class="v-box"><span class="v-chip">채권매입 카드 '+esc(dn.phRate.card||'—')+'% · 배달앱 '+esc(dn.phRate.dly||'—')+'% (예시)</span>'+
+        '<span class="v-detail">페이허그 ↔ 최상위 구간 — 등록 화면 입력값 (예시)</span>'+frzChip+'</div></div>';
+    }
+    return '<div class="v-link">'+arrow+'<div class="v-box"><span class="v-chip tbd">계약 수수료율 — 확인 필요</span>'+frzChip+'</div></div>';
+  }
+  var rs=relSet(rel);
+  return '<div class="v-link">'+arrow+'<div class="v-box"><span class="v-chip">채권매입 '+esc(rs.margin)+'% ('+setLabel()+'·예시)</span>'+
+    '<span class="v-detail">시스템이용료 '+esc(rs.systemFee)+'% · 이체수수료 '+esc(rel.rates.transferFeeWon)+'원(전 건 고정) · VAT '+esc(rel.vat.margin)+' (예시)</span>'+frzChip+'</div></div>';
 }
 function openChain(id,full,para){
   var m=memberById(id);if(!m)return;
@@ -1083,9 +1252,14 @@ function openChain(id,full,para){
     vparts.push(vNodeHTML(nodes[i],nodes[i].id===m.id));
     if(i===0&&nodes[i].type==='PAYHUG'&&invs.length)vparts.push(parabandHTML(invs,!!para,id,full));
     if(i<nodes.length-1){
-      vparts.push(vLinkHTML(activeRel(nodes[i+1].id)));
+      vparts.push(vLinkHTML(activeRel(nodes[i+1].id),nodes[i+1],nodes[i].status==='INACTIVE'));
     }
   }
+  /* v2.1 Q7 — 비활성 상위가 낀 체인: 경고 배지 + 해당 상위 몫 배분 동결 */
+  var inUps=nodes.filter(function(n){return n.id!==m.id&&n.status==='INACTIVE'});
+  var frzBanner=inUps.length
+    ?'<div class="banner bn-amber">'+warnSvg+'<span><span class="badge b-warn" style="margin-right:6px">상위 비활성</span><b>'+inUps.map(function(n){return esc(n.name)}).join(' · ')+'</b> — 체인에 비활성 상위가 있습니다. 관계·정산은 유지되고 <b>해당 상위 몫 배분은 동결</b>됩니다. 동결분 처리(보류/귀속/소급) <span class="badge b-tbd">확인 필요</span></span></div>'
+    :'';
   /* 하위 트리 */
   var kids=childRels(id).map(function(r){
     var c=memberById(r.childId);if(!c)return '';
@@ -1093,14 +1267,16 @@ function openChain(id,full,para){
   }).join('');
   var html='<div class="m-head"><div><div class="m-title-wrap"><span class="m-title">계약 구조</span><span class="b-readonly">조회 전용</span></div>'+
     '<div class="m-sub">'+esc(m.name)+' ('+esc(roleLabel(m))+') 기준 상위 계약 체인</div></div>'+xBtn+'</div>'+
-  '<div class="m-body">'+
+  '<div class="m-body">'+frzBanner+
     '<div class="vchain-box"><div class="vchain">'+vparts.join('')+'</div></div>';
   html+='<div><div class="sec-h"><span class="sec-bar amber"></span>관계별 계약 수수료율'+
+    rateTabsHTML('openChain('+m.id+','+(full?'true':'false')+','+(para?'true':'false')+')')+
     '<button class="tlink" style="margin-left:10px" onclick="openChain('+m.id+','+(full?'false':'true')+','+(para?'true':'false')+')">'+(full?'기본 컬럼으로 접기 ▴':'VAT·납부/수취 컬럼 펼치기 ▾')+'</button></div>'+
     chainTableHTML(nodes,full?'full':'basic')+'</div>';
   html+='<div><div class="sec-h"><span class="sec-bar"></span>직속 하위 ('+childRels(id).length+')</div>'+
     (kids?'<div class="kids">'+kids+'</div>':'<p class="kids-empty">직속 하위 회원이 없습니다.</p>')+'</div>';
-  html+='<div class="tbd-notes"><span class="badge b-tbd">페이허그 구간 요율 — 확인 필요</span><span class="badge b-tbd">거래유형 차등 — 확인 필요</span><span class="badge b-tbd">투자자 배분 — 확인 필요</span></div>';
+  var topHasPh=nodes.length>1&&nodes[1].phRate&&(nodes[1].phRate.card||nodes[1].phRate.dly);
+  html+='<div class="tbd-notes">'+(topHasPh?'':'<span class="badge b-tbd">페이허그 구간 계약율 미입력 — 확인 필요</span>')+'<span class="badge b-tbd">투자자 배분 — 확인 필요</span></div>';
   html+='</div><div class="m-foot"><button class="btn-cancel" onclick="closeModal()">닫기</button></div>';
   openModal(html,true);
 }
@@ -1159,7 +1335,10 @@ function chainTableHTML(nodes,mode){
     var up=nodes[j],dn=nodes[j+1],r=activeRel(dn.id);
     var row='<tr><td class="tname">'+esc(up.name)+'</td><td class="tname">'+esc(dn.name)+'</td>';
     if(!compact)row+='<td class="rel">'+esc(roleLabel(up))+' → '+esc(roleLabel(dn))+'</td>';
-    row+=(r?rateCells(r):'<td class="r">'+tbd+'</td><td class="r">'+tbd+'</td><td class="r">'+tbd+'</td>');
+    var phr=!r&&dn.phRate&&(dn.phRate.card||dn.phRate.dly)?dn.phRate:null;
+    row+=(r?rateCells(r)
+      :(phr?'<td class="r"><span class="rate-txt">'+esc((viewRateTab==='DLY'?phr.dly:phr.card)||'—')+'% <small>('+setLabel()+'·등록 입력·예시)</small></span></td><td class="r">'+tbd+'</td><td class="r">'+tbd+'</td>'
+        :'<td class="r">'+tbd+'</td><td class="r">'+tbd+'</td><td class="r">'+tbd+'</td>'));
     if(full){
       row+=r
         ?'<td class="c">'+esc(r.vat.margin)+'</td><td><span class="rel" style="font-size:11px;line-height:1.5">시스템 '+esc(r.payer.systemFee)+' · '+esc(r.receiver.systemFee)+'<br>이체 '+esc(r.payer.transferFee)+' · '+esc(r.receiver.transferFee)+'</span></td>'
@@ -1168,7 +1347,7 @@ function chainTableHTML(nodes,mode){
     row+='<td class="mono">'+(r?fmtDate(r.effectiveFrom):'<span class="dash">—</span>')+'</td></tr>';
     trows.push(row);
   }
-  var head='<tr><th>상위 회원</th><th>하위 회원</th>'+(compact?'':'<th>관계</th>')+'<th class="r">채권매입</th><th class="r">시스템이용료</th><th class="r">이체수수료</th>'+(full?'<th class="c">VAT</th><th>납부 · 수취</th>':'')+'<th>적용일</th></tr>';
+  var head='<tr><th>상위 회원</th><th>하위 회원</th>'+(compact?'':'<th>관계</th>')+'<th class="r">채권매입 <small>('+setLabel()+')</small></th><th class="r">시스템이용료 <small>('+setLabel()+')</small></th><th class="r">이체수수료</th>'+(full?'<th class="c">VAT</th><th>납부 · 수취</th>':'')+'<th>적용일</th></tr>';
   var cols=6+(compact?0:1)+(full?2:0);
   return '<div class="tbl-card"><table class="tbl'+(full?' dense':'')+(compact?' compact':'')+'"><thead>'+head+'</thead><tbody>'+
     (trows.length?trows.join(''):'<tr><td colspan="'+cols+'"><div class="empty-row">표시할 관계가 없습니다 — 페이허그는 체인 최상단입니다.</div></td></tr>')+
@@ -1180,14 +1359,9 @@ function showRatePop(el,id){
   var pop=$('#ratePop');if(!pop||!el)return;
   var nodes=fullChainNodes(id);
   if(nodes.length<2)return;
-  var rows='';
-  for(var j=0;j<nodes.length-1;j++){
-    var up=nodes[j],dn=nodes[j+1],r=activeRel(dn.id);
-    rows+='<div class="rp-row"><span>'+esc(up.name)+' → '+esc(dn.name)+'</span>'+
-      (r?'<span class="rp-rate">'+esc(r.rates.margin)+'% <small>(예시)</small></span>':'<span class="badge b-tbd">확인 필요</span>')+'</div>';
-  }
-  pop.innerHTML='<div class="rp-title">계약 체인 — 관계별 채권매입 요율</div>'+rows+
-    '<div class="rp-cap">채권매입 기준 · 전 구간 (예시) — hover 비교안, 세부는 [보기 ›]</div>';
+  pop.innerHTML='<div class="rp-title">계약 체인 — 관계별 채권매입 요율 (카드 기준)</div>'+
+    '<div style="display:flex;flex-direction:column;gap:8px;padding:8px 0 2px">'+ccStructHTML(nodes,id)+ccRatesHTML(nodes)+'</div>'+
+    '<div class="rp-cap">채권매입 카드 기준 · 전 구간 (예시) — 배달앱 세트는 [보기 ›] 조회 모달 탭에서 확인 · 총판(참여자) 시점은 자기+하위 체인 한정 노출(상위 방향 비노출)</div>';
   var rect=el.getBoundingClientRect();
   pop.style.display='block';
   var pw=pop.offsetWidth,ph=pop.offsetHeight;
@@ -1198,28 +1372,66 @@ function showRatePop(el,id){
   pop.style.top=Math.round(Math.max(8,top))+'px';
 }
 function hideRatePop(){var pop=$('#ratePop');if(pop)pop.style.display='none'}
-/* [비교안 G3] 목록 행 인라인 확장(아코디언) */
+/* [비교안 G3] 목록 행 인라인 확장(아코디언) — 컴팩트 2줄: 구조(칩+화살표) → 구간 요율 나열 */
 function toggleExpand(id){expandedId=expandedId===id?null:id;renderList()}
-function expandRowHTML(m){
-  if(directDeal(m.id))return '<tr class="xrow"><td colspan="11"><div class="xband">'+
-    '<div class="xband-h">페이허그 직계약 — 병렬 수취 <span class="badge b-tbd" style="margin-left:8px">비교안 — 인라인 펼침</span></div>'+
-    '<div class="xband-cap">채권매입 없음 · 수수료만 '+esc(directDeal(m.id).fee)+'% (예시) · 각각 정산 — 세부는 [보기 ›] 조회 모달에서 확인</div>'+
-    '</div></td></tr>';
-  var nodes=fullChainNodes(m.id);
+function ccNodeChip(n,isMe){
+  return '<span class="cc-node'+(isMe?' me':'')+'"><span class="cc-role '+TYPES[n.type].role+'">'+esc(roleLabel(n))+'</span><span class="cc-name">'+esc(n.name)+'</span></span>';
+}
+function ccStructHTML(nodes,meId){ /* 1줄째 — 구조: 노드 칩+화살표, 내용 폭만큼 왼쪽 정렬(길면 줄바꿈) */
   var parts=[];
   for(var i=0;i<nodes.length;i++){
-    var n=nodes[i];
-    parts.push(chNodeHTML(roleLabel(n),TYPES[n.type].role,n.name,n.id===m.id));
-    if(i<nodes.length-1){
-      var r=activeRel(nodes[i+1].id);
-      parts.push(chLinkHTML(r?r.rates.margin+'% (예시)':'확인 필요',r?'':'tbd'));
-    }
+    parts.push(ccNodeChip(nodes[i],nodes[i].id===meId));
+    if(i<nodes.length-1)parts.push('<span class="cc-arrow">→</span>');
   }
-  return '<tr class="xrow"><td colspan="11"><div class="xband">'+
-    '<div class="xband-h">계약 체인 — 관계별 채권매입 요율 <span class="badge b-tbd" style="margin-left:8px">비교안 — 인라인 펼침</span></div>'+
-    '<div class="chain-box" style="background:#fff"><div class="chain">'+parts.join('')+'</div></div>'+
-    '<div class="xband-cap">세부 요율(시스템이용료 · 이체수수료 · VAT · 납부/수취)은 [보기 ›] 조회 모달에서 확인 (예시)</div>'+
-  '</div></td></tr>';
+  return '<div class="cchain">'+parts.join('')+'</div>';
+}
+function ccSegRate(dn){ /* dn=하위 노드 — 상위↔dn 구간 요율 (Q3 입력값 있으면 페이허그 구간은 그 값) */
+  var r=activeRel(dn.id);
+  if(r)return '<span class="cc-rate">'+esc(r.rates.margin)+'% <small>(예시)</small></span>';
+  var phr=dn.phRate&&(dn.phRate.card||dn.phRate.dly)?dn.phRate:null;
+  if(phr)return '<span class="cc-rate">'+esc(phr.card||'—')+'% <small>(등록 입력·예시)</small></span>';
+  return '<span class="badge b-tbd">확인 필요</span>';
+}
+function ccRatesHTML(nodes){ /* 2줄째 — 구간별 요율 컴팩트 나열 */
+  var segs=[];
+  for(var j=0;j<nodes.length-1;j++){
+    var up=nodes[j],dn=nodes[j+1];
+    segs.push('<span class="cc-seg"><span class="cc-pair">'+esc(up.name)+'↔'+esc(dn.name)+'</span>'+ccSegRate(dn)+'</span>');
+  }
+  return '<div class="cc-rates"><span class="cc-cap">구간 요율(채권매입·카드)</span>'+segs.join('<span class="cc-sep">·</span>')+'</div>';
+}
+function ccJoinboxHTML(m){
+  return '<div class="joinbox"><span style="font-size:12px;font-weight:700;color:#374151">가입 링크</span>'+
+    '<code class="ref mono">'+esc(joinLink(m))+'</code><span class="rt-ex">(난수 URL·예시)</span>'+
+    '<button class="act act-edit" style="cursor:pointer" onclick="copyJoinLink('+m.id+')">복사</button>'+
+    '<span class="xband-cap">추천코드 '+esc(m.referralCode||'—')+' — 가맹점 가입 경로(계약 파트너 체인 시작점) · 발급 주체 정책 — 확인 필요</span></div>';
+}
+function expandRowHTML(m){
+  var open='<tr class="xrow"><td colspan="11"><div class="xband">',close='</div></td></tr>';
+  var tag='<span class="badge b-tbd" style="margin-left:8px">비교안 — 인라인 펼침</span>';
+  var dd=directDeal(m.id);
+  if(dd){
+    var ph=members.filter(function(x){return x.type==='PAYHUG'})[0];
+    return open+'<div class="xband-h">계약 구조 — 페이허그 직계약 (병렬 수취) '+tag+'</div>'+
+      '<div class="cchain">'+ccNodeChip(ph,false)+'<span class="cc-arrow">⇄</span>'+ccNodeChip(m,true)+'</div>'+
+      '<div class="cc-rates"><span class="cc-cap">구간 요율</span><span class="cc-seg"><span class="cc-pair">페이허그↔'+esc(m.name)+'</span><span class="cc-rate">수수료 '+esc(dd.fee)+'% <small>(예시)</small></span></span><span class="cc-sep">·</span><span class="cc-seg cc-pair">채권매입 없음 — 각각 정산</span></div>'+
+      '<div class="xband-cap">배분 체인 미포함 · 이체수수료 300원(전 건 고정·예시) — 세부는 [보기 ›] 조회 모달에서 확인</div>'+close;
+  }
+  var notice=null;
+  if(m.type==='PAYHUG')notice='<b>상위 관계 없음 — 최상위.</b> 페이허그는 계약 체인의 최상단입니다.';
+  else if(m.type==='INVESTOR'){
+    var anchors=PARALLELS.filter(function(p){return p.kind==='INVESTOR'&&p.memberId===m.id}).map(function(p){var am=memberById(p.anchorId);return am?am.name:'?'});
+    notice=anchors.length
+      ?'<b>상위 관계 없음 — 투자자 병렬 연결(선택).</b> '+esc(anchors.join(' · '))+' 체인에 병렬 배분으로 참여합니다 (예시) — 세부는 [보기 ›] 조회 모달에서 확인.'
+      :'<b>상위 관계 없음 — 투자자.</b> 배분 체인에 들어가지 않는 병렬 연결(선택) 유형입니다.';
+  }
+  else if(!activeRel(m.id)&&roleLabel(m)!=='상위파트너')notice='<b>상위 관계 없음</b> — [수정]에서 직속 상위를 연결하세요.';
+  if(notice)return open+'<div class="xband-h">계약 구조 '+tag+'</div><div class="cc-note">'+notice+'</div>'+close;
+  var nodes=fullChainNodes(m.id);
+  return open+'<div class="xband-h">계약 구조 — 상위 계약 체인 '+tag+'</div>'+
+    ccStructHTML(nodes,m.id)+ccRatesHTML(nodes)+ccJoinboxHTML(m)+
+    '<div class="xband-cap">요율 전부 예시 · 카드 기준 — 배달앱 세트·세부 요율(시스템이용료 · 이체수수료 · VAT · 납부/수취)은 [보기 ›] 조회 모달에서 확인</div>'+
+    '<div class="xband-cap">총판(참여자) 시점에서는 행 확장·요율 노출이 <b>자기+하위 체인 한정</b> — 상위 방향 요율·가입 링크는 비노출 (B1)</div>'+close;
 }
 /* [비교안 G4] 프로필 안 전체 체인 통합 뷰 토글 */
 function toggleProfileChain(id){
@@ -1231,12 +1443,55 @@ function toggleProfileChain(id){
   var vparts=[];
   for(var i=0;i<nodes.length;i++){
     vparts.push(vNodeHTML(nodes[i],nodes[i].id===id));
-    if(i<nodes.length-1)vparts.push(vLinkHTML(activeRel(nodes[i+1].id)));
+    if(i<nodes.length-1)vparts.push(vLinkHTML(activeRel(nodes[i+1].id),nodes[i+1],nodes[i].status==='INACTIVE'));
   }
   w.innerHTML='<div class="sec"><div class="sec-h"><span class="sec-bar amber"></span>전체 계약 체인 — 통합 뷰 (비교안)</div>'+
     '<div class="vchain-box"><div class="vchain">'+vparts.join('')+'</div></div>'+
     chainTableHTML(nodes,'compact')+'</div>';
   if(btn)btn.innerHTML='전체 체인 접기 ▴';
+}
+
+/* ═════════════════ v2.1 Q6 — 정산 실행 게이트 데모 (가맹점 요율 화면 · AD_MERCHANT_FEE2 계열) ═════════════════ */
+var GATE={
+  unmet:{merchant:'크레브식당 (예시)',chain:false,rate:false,
+    chainNote:'담당 영업(체인) 미지정 — 담당 체인이 없습니다',
+    rateNote:'체인 내 관계 요율 미입력 구간이 있습니다'},
+  met:{merchant:'메타분식 (예시)',chain:true,rate:true,
+    chainNote:'담당: 이서준 (영업) — 계약 체인 연결됨',
+    rateNote:'전 구간 관계 요율 유효 (카드·배달앱 세트)'}
+};
+var gateScn='unmet',gateOn=false;
+function gateItem(label,ok,note){
+  return '<div class="gitem'+(ok?' ok':'')+'"><span class="gmark">'+(ok?'✓':'✗')+'</span><span class="glabel">'+label+'</span><span class="gnote">'+esc(note)+'</span>'+
+    (ok?'':'<button class="tlink" onclick="gateGo()">설정하러 가기 →</button>')+'</div>';
+}
+function gateGo(){closeModal();toast('<b>설정하러 가기 (데모)</b> — 회원 관리에서 담당 체인 연결·관계 요율 입력 후 다시 시도합니다.')}
+function toggleGate(){
+  gateOn=!gateOn;openGateDemo(gateScn);
+  toast(gateOn?'<b>정산 실행 활성화</b> — 조건 충족 (데모)':'정산 실행 비활성화 (데모)');
+}
+function openGateDemo(scn){
+  gateScn=scn||'unmet';
+  var g=GATE[gateScn],ok=g.chain&&g.rate;
+  if(!ok)gateOn=false;
+  function stab(s,l){return '<button class="rtab'+(gateScn===s?' active':'')+'" onclick="openGateDemo(\''+s+'\')">'+l+'</button>'}
+  var html='<div class="m-head"><div><div class="m-title-wrap"><span class="m-title">가맹점 요율 — 정산 실행 활성화</span><span class="b-readonly">게이트 데모</span></div>'+
+    '<div class="m-sub">AD_MERCHANT_FEE2 계열 — 활성화 조건: 담당 체인 존재 + 관계 요율 유효</div></div>'+xBtn+'</div>'+
+  '<div class="m-body">'+
+    '<div><span class="rtabs" style="margin-left:0">'+stab('unmet','미충족 예시')+stab('met','충족 예시')+'<span class="rt-ex">가맹점명·수치는 전부 예시</span></span></div>'+
+    '<div class="inf-card">'+
+      '<div class="inf"><span class="k">가맹점</span><span class="v">'+esc(g.merchant)+'</span></div>'+
+      '<div class="inf"><span class="k">게이트 상태</span><span class="v">'+(ok?'<span class="badge b-active">조건 충족 — 활성화 가능</span>':'<span class="badge b-warn">조건 미충족 — 활성화 불가</span>')+'</span></div>'+
+    '</div>'+
+    '<div class="toggle-row" '+(ok?'onclick="toggleGate()"':'style="cursor:not-allowed"')+'><span>정산 실행 활성화'+
+      '<small>'+(ok?(gateOn?'— 활성 (데모)':'— 클릭해 활성화 (데모)'):'— 아래 조건을 모두 충족하면 켤 수 있습니다')+'</small></span>'+
+      '<span class="tg'+(gateOn?' on':'')+(ok?'':' dis')+'"><span class="knob"></span></span></div>'+
+    '<div class="sec"><div class="sec-h"><span class="sec-bar amber"></span>활성화 조건 체크리스트</div>'+
+      '<div>'+gateItem('담당 체인 존재',g.chain,g.chainNote)+gateItem('관계 요율 유효',g.rate,g.rateNote)+'</div>'+
+    '</div>'+
+    '<p class="f-help">조건을 모두 충족하면 토글을 켤 수 있습니다. 미충족 항목은 "설정하러 가기"로 이동해 해소합니다. 충족 시 알림 UX — <span class="badge b-tbd">확인 필요</span></p>'+
+  '</div><div class="m-foot"><button class="btn-cancel" onclick="closeModal()">닫기</button></div>';
+  openModal(html);
 }
 
 /* ═════════════════ 부팅 ═════════════════ */
@@ -1282,6 +1537,7 @@ if(HARNESS_STATE){
     openAddModal();fillBasic('신규영업','010-1234-5678');
     pickParent(23,false);
     F.rates={margin:'0.10',systemFee:'0.05',transferFeeWon:'300'};
+    F.ratesDly={margin:'0.30',systemFee:'0.05',transferFeeWon:'300'}; /* v2.1 Q1 — 두 세트 */
     renderContract();
   }
   var SCENES={
@@ -1321,6 +1577,10 @@ if(HARNESS_STATE){
     E2:function(){openEditModal(41);F.parentQuery='세일즈허브';pickParent(24,false)},
     E3:function(){openEditModal(41);F.rates.margin='0.20';submitForm()},
     E4:function(){openEditModal(41);F.status='INACTIVE';var sel=$('#statusSel');if(sel)sel.value='INACTIVE'},
+    E5:function(){ /* C1 — 유형 정정 데모: 메타플레이가 영업으로 오등록돼 있다는 가정 → 영업조직으로 정정(상위 재검증·재선택 유도·하위 영향 안내) */
+      var mp=memberById(52);mp.type='SALES';mp.position=null;renderAll();
+      openEditModal(52);setType('SALES_ORG');hFocus($('#typeSel'));
+    },
     F1:function(){openProfile(41)},
     F2:function(){openProfile(12)},
     F3:function(){openProfile(3)},
@@ -1337,7 +1597,23 @@ if(HARNESS_STATE){
     H2:function(){openChain(51,false,true)},
     H3:function(){openAddModal();fillBasic('다우데이타','010-5678-1234');setType('AFFILIATE')},
     H4:function(){openChain(61)},
-    H5:function(){openAddModal();fillBasic('메타플레이','010-2345-6789');hFocus($('#in-login'))}
+    H5:function(){openAddModal();fillBasic('메타플레이','010-2345-6789');hFocus($('#in-login'))},
+    /* Flow I — 콘솔 결정 반영 (2026-08-19) */
+    I1:function(){ /* Q1 — 요율 세트 카드/배달앱 탭 (배달앱 탭 활성) */
+      sceneC1();F.rateTab='DLY';renderContract();hFocus(document.querySelector('#fw-rates .rtab.active'));
+    },
+    I2:function(){ /* Q3 — 최상위 선택 시 페이허그 계약율 입력 */
+      openAddModal();setType('PARTNER');fillBasic('뉴파트너스','010-7777-3333');onPartnerParent('TOP');
+      F.phRate={card:'0.90',dly:'1.10'};renderContract();hFocus($('#ph-card'));
+    },
+    I3:function(){openGateDemo('unmet')}, /* Q6 — 게이트 조건 체크리스트(미충족) */
+    I4:function(){ /* Q7 — 비활성 상위 경고 + 배분 동결 */
+      memberById(53).status='INACTIVE';renderAll();openChain(54);
+    },
+    I5:function(){toggleExpand(54)}, /* R4 — 행 확장: 한 줄 체인 + 가입 링크 복사 */
+    I6:function(){ /* R5 — 자동 생성 개정: 아이디·비밀번호·추천코드·가입 링크 */
+      openAddModal();fillBasic('메타플레이','010-2345-6789');hFocus($('#joinPreview'));
+    }
   };
   var fn=SCENES[id];
   if(fn)fn();
@@ -1362,17 +1638,19 @@ if(location.search.indexOf('selftest')>=0){
   (function(){
     var out=[],pass=0,fail=0;
     function t(name,fn){try{var r=fn();if(r){pass++;out.push('PASS '+name)}else{fail++;out.push('FAIL '+name)}}catch(e){fail++;out.push('FAIL '+name+' :: '+e.message)}}
-    t('초기 데이터: 회원 15 · 관계 9 · 병렬 2',function(){return members.length===15&&relations.length===9&&PARALLELS.length===2});
+    t('초기 데이터: 회원 15 · 관계 9 · 병렬 3',function(){return members.length===15&&relations.length===9&&PARALLELS.length===3});
     t('영업의 상위 규칙 = 영업조직 검색',function(){var r=parentRule('SALES',null);return r.kind==='search'&&r.ptype==='SALES_ORG'});
     t('상위파트너 규칙 = 최상위 잠금',function(){return parentRule('PARTNER','UPPER').kind==='top'});
     t('투자자 규칙 = 계약 섹션 숨김',function(){return parentRule('INVESTOR',null).kind==='none'});
     t('순환 감지: 투게더페이 상위로 안현준 지정',function(){var c=cycleCheck(23,41);return !!c&&c[c.length-1]===23});
     t('빈 폼 제출 시 이름 에러 우선',function(){openAddModal();submitForm();var e=document.querySelector('#fw-name .f-err');var ok=e&&e.classList.contains('show');closeModal();return ok});
-    t('등록 실동작: 회원+관계 생성',function(){
+    t('등록 실동작: 회원+관계 생성(카드·배달 2세트)',function(){
       openAddModal();F.name='테스트영업';F.phone='010-9999-8888';F.loginId='test_sales';F.password='pw123456';F.type='SALES';
       F.parentId=23;F.parentQuery='투게더페이';F.rates={margin:'0.10',systemFee:'0.05',transferFeeWon:'300'};
+      F.ratesDly={margin:'0.30',systemFee:'0.05',transferFeeWon:'300'};
       var mc=members.length,rc=relations.length;submitForm();
-      return members.length===mc+1&&relations.length===rc+1&&activeRel(members[members.length-1].id).parentId===23});
+      var nr=activeRel(members[members.length-1].id);
+      return members.length===mc+1&&relations.length===rc+1&&nr.parentId===23&&nr.ratesDly.margin==='0.30'});
     t('중복 아이디 등록 차단(다중 상위)',function(){
       openAddModal();F.name='중복시도';F.phone='010-9999-8888';F.loginId='sales_hyunjun';F.password='pw123456';
       F.parentId=24;F.rates={margin:'0.10',systemFee:'0.05',transferFeeWon:'300'};
@@ -1393,17 +1671,112 @@ if(location.search.indexOf('selftest')>=0){
       devSkip=true;openAddModal();onTypeChange('SALES');F.ddOpen=true;renderParentDD();
       var h=$('#parentDD').innerHTML;var ok=h.indexOf('skip-level')>=0&&h.indexOf('A파트너')>=0;closeModal();devSkip=false;return ok});
     t('v2: 파트너 위치 관계 기준 판별',function(){return roleLabel(memberById(12))==='상위파트너'&&roleLabel(memberById(15))==='하위파트너'&&roleLabel(memberById(51))==='상위파트너'&&roleLabel(memberById(52))==='하위파트너'});
-    t('v2: 아이디 자동 생성 메타플레이→META02',function(){return genLoginId('메타플레이')==='META02'});
-    t('v2: 이체수수료 300 고정 + 페이허그 수취 기본',function(){var f0=newForm('add');return f0.rates.transferFeeWon==='300'&&f0.receiver.transferFee==='페이허그 수취'});
+    t('v2.1: 아이디 자동 생성 메타플레이→meta2 (기업 코드 4자+순번)',function(){return genLoginId('메타플레이')==='meta2'});
+    t('v2: 이체수수료 300 고정(두 세트) + 페이허그 수취 기본',function(){var f0=newForm('add');return f0.rates.transferFeeWon==='300'&&f0.ratesDly.transferFeeWon==='300'&&f0.receiver.transferFee==='페이허그 수취'});
     t('v2: 파트너 없음(최상위) 선택 → 상위파트너 판별',function(){
       openAddModal();onTypeChange('PARTNER');onPartnerParent('TOP');
-      var ok=F.position==='UPPER'&&$('#contractWrap').innerHTML.indexOf('페이허그와의 계약 수수료율')>=0;closeModal();return ok});
+      var ok=F.position==='UPPER'&&$('#contractWrap').innerHTML.indexOf('페이허그와의 계약율')>=0;closeModal();return ok});
     t('v2: 파트너 상위 선택 → 하위파트너 판별+요율 입력',function(){
       openAddModal();onTypeChange('PARTNER');onPartnerParent('51');
       var ok=F.position==='LOWER'&&F.parentId===51&&$('#contractWrap').innerHTML.indexOf('하위파트너')>=0&&$('#contractWrap').innerHTML.indexOf('fw-rates')>=0;closeModal();return ok});
     t('v2: 병렬 데이터 — 다우 직계약 · 투자자 연결',function(){return !!directDeal(61)&&investorLinks(51).length===1});
     t('v2: 직계약 체인 뷰 — 양수인·병렬 수취·용어 제한',function(){
       openChain(61);var h=$('#modalBox').innerHTML;var ok=h.indexOf('양수인')>=0&&h.indexOf('병렬 수취')>=0&&h.indexOf('최상위')<0&&h.indexOf('파트너')<0;closeModal();return ok});
+    /* ── v2.1 콘솔 결정 반영 (2026-08-19) ── */
+    t('v2.1 Q1: 시드 관계 = 카드/배달앱 2세트',function(){
+      var r=relations[0];return !!r.ratesDly&&r.ratesDly.margin==='0.70'&&r.rates.margin==='0.50'&&r.ratesDly.margin!==r.rates.margin});
+    t('v2.1 Q1: 폼 배달앱 탭 전환',function(){
+      openAddModal();setFormRateTab('DLY');
+      var h=$('#contractWrap').innerHTML;var ok=F.rateTab==='DLY'&&h.indexOf('배달앱 세트')>=0;closeModal();return ok});
+    t('v2.1 Q1: 배달앱 세트 미입력 시 등록 차단',function(){
+      openAddModal();F.name='세트검증';F.phone='010-9999-7777';F.loginId='set_check';F.password='pw1';
+      F.parentId=23;F.rates={margin:'0.10',systemFee:'0.05',transferFeeWon:'300'};
+      var blocked=submitForm()===false&&F.rateTab==='DLY';closeModal();return blocked});
+    t('v2.1 Q1: 조회 모달 배달앱 탭 표기',function(){
+      viewRateTab='DLY';openChain(41);var h=$('#modalBox').innerHTML;
+      var ok=h.indexOf('배달앱')>=0&&h.indexOf('0.30')>=0;viewRateTab='CARD';closeModal();return ok});
+    t('v2.1 Q3: 최상위 등록 — 페이허그 계약율 입력 칸+저장',function(){
+      openAddModal();onTypeChange('PARTNER');onPartnerParent('TOP');
+      var hasInput=$('#contractWrap').innerHTML.indexOf('ph-card')>=0;
+      F.name='탑파트너스';F.phone='010-1111-2222';F.loginId='top_partners';F.password='pw1';
+      F.phRate={card:'0.90',dly:'1.10'};submitForm();
+      var nm=members[members.length-1];
+      return hasInput&&nm.loginId==='top_partners'&&!!nm.phRate&&nm.phRate.card==='0.90'});
+    t('v2.1 Q3: 체인 페이허그 구간 — 입력값 표시(엔케이) vs 칩 유지(A파트너)',function(){
+      openChain(52);var h1=$('#modalBox').innerHTML;closeModal();
+      openChain(15);var h2=$('#modalBox').innerHTML;closeModal();
+      return h1.indexOf('등록 화면 입력값')>=0&&h1.indexOf('0.90')>=0&&h2.indexOf('등록 화면 입력값')<0});
+    t('v2.1 Q5: 다중 상위 차단 — 수정 경로 안내 문구',function(){
+      openAddModal();F.name='중복시도2';F.phone='010-9999-8888';F.loginId='sales_hyunjun';F.password='pw1';
+      F.parentId=24;F.rates={margin:'0.10',systemFee:'0.05',transferFeeWon:'300'};F.ratesDly={margin:'0.30',systemFee:'0.05',transferFeeWon:'300'};
+      submitForm();var b=$('#formBanner');var ok=b&&b.innerHTML.indexOf('종료일이 기록')>=0&&b.innerHTML.indexOf('활성 상위 1개 제한')>=0;closeModal();return ok});
+    t('v2.1 Q6: 게이트 미충족 — 체크리스트+설정하러 가기',function(){
+      openGateDemo('unmet');var h=$('#modalBox').innerHTML;
+      var ok=h.indexOf('담당 체인 존재')>=0&&h.indexOf('관계 요율 유효')>=0&&h.indexOf('설정하러 가기')>=0&&h.indexOf('활성화 불가')>=0;closeModal();return ok});
+    t('v2.1 Q6: 게이트 충족 — 토글 가능',function(){
+      openGateDemo('met');var h=$('#modalBox').innerHTML;
+      var noLink=h.indexOf('gateGo')<0&&h.indexOf('조건 충족')>=0;
+      toggleGate();var on=gateOn===true&&$('#modalBox').innerHTML.indexOf('tg on')>=0;
+      gateOn=false;closeModal();return noLink&&on});
+    t('v2.1 Q7: 비활성 상위 — 경고 배지+배분 동결+확인 필요',function(){
+      memberById(53).status='INACTIVE';openChain(54);var h=$('#modalBox').innerHTML;
+      var ok=h.indexOf('상위 비활성')>=0&&h.indexOf('배분 동결')>=0&&h.indexOf('확인 필요')>=0;
+      closeModal();memberById(53).status='ACTIVE';return ok});
+    t('v2.1 R4: 행 확장 — 가입 링크+복사 버튼',function(){
+      var h=expandRowHTML(memberById(54));
+      return h.indexOf('join.payhug.example')>=0&&h.indexOf('복사')>=0&&typeof copyJoinLink==='function'});
+    t('v2.1 R5: 자동 생성 — meta2/meta6789/난수 링크',function(){
+      openAddModal();F.name='메타플레이';F.phone='010-2345-6789';autoGen();
+      var jp=$('#joinPreview');
+      var ok=F.loginId==='meta2'&&F.password==='meta6789'&&F.referralCode.length===6&&jp&&jp.textContent.indexOf('https://join.payhug.example/r/')===0;
+      closeModal();return ok});
+    t('v2.1 Q2b: 사이드바 정산 상품관리 — 병행 운영 배지',function(){
+      var el=document.getElementById('sbProduct');
+      return !!el&&el.innerHTML.indexOf('정산 상품관리')>=0&&el.innerHTML.indexOf('병행 운영')>=0&&el.innerHTML.indexOf('신규 계약은 관계 요율')>=0});
+    /* ── 2026-08-20 이슈 반영 (C1·A2·L2·B5·B1·B2) ── */
+    t('L2: 유형 탭 계층순 — 페이허그→파트너→영업조직→영업',function(){
+      var ids=TABS.map(function(x){return x[0]});
+      return ids[0]==='ALL'&&ids.indexOf('PAYHUG')<ids.indexOf('PARTNER')&&ids.indexOf('PARTNER')<ids.indexOf('SALES_ORG')&&ids.indexOf('SALES_ORG')<ids.indexOf('SALES')});
+    t('B5: 병행 배지 부기 — 참여자(총판) 비노출 승계',function(){
+      var el=document.getElementById('sbProduct');
+      return !!el&&el.innerHTML.indexOf('배정 정보는 참여자(총판) 비노출 승계')>=0});
+    t('B1: 행 확장 — 총판 시점 자기+하위 체인 한정 표기',function(){
+      var h=expandRowHTML(memberById(54));
+      return h.indexOf('자기+하위 체인 한정')>=0&&h.indexOf('상위 방향')>=0});
+    t('B2: 가입 링크 — 발급 주체 정책 확인 필요 라벨',function(){
+      openAddModal();var h=$('#modalBox').innerHTML;var ok=h.indexOf('발급 주체 정책')>=0&&h.indexOf('확인 필요')>=0;closeModal();return ok});
+    t('A2: skip-level 확정 — 교차 유형 다이얼로그에 확인 필요 없음',function(){
+      devSkip=true;openAddModal();onTypeChange('SALES_ORG');F.ddOpen=true;renderParentDD();
+      pickParent(12,true);
+      var d=$('#confirmBox').innerHTML;
+      var ok=d.indexOf('중간 단계 없이')>=0&&d.indexOf('확인 필요')<0&&d.indexOf('확정')>=0;
+      closeConfirm(true);
+      var picked=F.parentId===12;
+      closeModal();devSkip=false;return ok&&picked});
+    t('A2: 동일 유형 적층 — 정책 확인 필요(다단 적층) 배지·다이얼로그',function(){
+      devSkip=true;openAddModal();onTypeChange('SALES_ORG');F.ddOpen=true;renderParentDD();
+      var listOk=$('#parentDD').innerHTML.indexOf('다단 적층')>=0;
+      pickParent(23,true);
+      var dlgOk=$('#confirmBox').innerHTML.indexOf('정책 확인 필요(다단 적층)')>=0;
+      closeConfirm(false);closeModal();devSkip=false;return listOk&&dlgOk});
+    t('E5: 유형 정정 — 상위 부적합 경고+재선택 유도',function(){
+      var m=memberById(52);var t0=m.type,p0=m.position;m.type='SALES';m.position=null;
+      openEditModal(52);onTypeChange('SALES_ORG');
+      var h=$('#contractWrap').innerHTML;
+      var ok=h.indexOf('유형 정정')>=0&&h.indexOf('직속 상위 부적합')>=0&&h.indexOf('하위 2명의 체인 표기')>=0&&F.parentId===null;
+      var blocked=submitForm()===false;
+      closeModal();m.type=t0;m.position=p0;
+      return ok&&blocked});
+    t('E5: 유형 정정 저장 — 관계 종료+새 이력+유형 반영',function(){
+      var m=memberById(52);m.type='SALES';m.position=null;
+      var before=relHistory(52).length;
+      openEditModal(52);onTypeChange('SALES_ORG');
+      F.parentQuery='B파트너';pickParent(15,false);
+      F.rates={margin:'0.28',systemFee:'0.05',transferFeeWon:'300'};
+      F.ratesDly={margin:'0.48',systemFee:'0.05',transferFeeWon:'300'};
+      submitForm();
+      var h=relHistory(52);var ended=h.filter(function(r){return r.status==='ENDED'&&r.effectiveTo===TODAY});
+      return m.type==='SALES_ORG'&&h.length===before+1&&ended.length>=1&&activeRel(52).parentId===15});
     var el=document.getElementById('selftest-result');
     el.textContent='SELFTEST '+pass+'/'+(pass+fail)+' :: '+out.join(' | ');
     document.title='SELFTEST '+pass+'/'+(pass+fail);

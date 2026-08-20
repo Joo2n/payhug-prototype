@@ -1,0 +1,17 @@
+{
+  "file": "Tcf69tIciGxmlqCIuRb0iI",
+  "import_page": "2822:2294",
+  "source": "~/cursor/payhug-member-redesign/v2.html (commit 8906a1c, 58상태)",
+  "captured_at": "2026-08-20",
+  "states": [
+    { "id": "E5", "node_id": "3001:2", "width": 1922, "height": 1918, "page": "2822:2294", "x": 33107, "y": 0 },
+    { "id": "I1", "node_id": "3002:2", "width": 1922, "height": 1641, "page": "2822:2294", "x": 35069, "y": 0 },
+    { "id": "I2", "node_id": "3004:2", "width": 1922, "height": 1513, "page": "2822:2294", "x": 40955, "y": 0 },
+    { "id": "I3", "node_id": "3005:2", "width": 1922, "height": 1513, "page": "2822:2294", "x": 38993, "y": 0 },
+    { "id": "I4", "node_id": "3003:2", "width": 1922, "height": 1513, "page": "2822:2294", "x": 37031, "y": 0 },
+    { "id": "I5", "node_id": "3007:2", "width": 1922, "height": 1513, "page": "2822:2294", "x": 44879, "y": 0 },
+    { "id": "I6", "node_id": "3008:2", "width": 1922, "height": 1626, "page": "2822:2294", "x": 46841, "y": 0 },
+    { "id": "D6", "node_id": "3010:2", "width": 1922, "height": 1627, "page": "2822:2294", "x": 48803, "y": 0 },
+    { "id": "D7", "node_id": "3006:2", "width": 1922, "height": 1627, "page": "2822:2294", "x": 42917, "y": 0 }
+  ]
+}
