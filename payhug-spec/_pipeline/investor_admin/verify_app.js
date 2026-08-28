@@ -426,8 +426,10 @@ async function main(){
     document.querySelector('[data-act=aq-chk][data-i="0"]').click();
     document.querySelector('[data-act=aq-sign]').click();
     document.querySelector('[data-act=aq-sign-go]').click();
-    for(var i=0;i<AQ.sel.length;i++) if(AQ.sel[i]) AQ.signed[i]=true;
+    /* 1.5초 타이머를 기다리지 않고 같은 전이를 그대로 재현한다 — 선택 비우기까지 포함 */
+    for(var i=0;i<AQ.sel.length;i++) if(AQ.sel[i]){ AQ.signed[i]=true; AQ.sel[i]=false; }
     AQ.phase='done'; DIRTY['acquisition-list']=1; refresh('acquisition-list');
+    var qSel=document.querySelector('[data-mount=ab-count]').textContent.trim();
     document.querySelector('[data-act=aq-done-ok]').click();
     var q1=aqRows();
     go('merchants'); go('acquisition-list');
@@ -436,8 +438,16 @@ async function main(){
     go('acquisition-list','default');
     var q3=aqRows();
     out.push({case:'서명 완료 — 대기 목록에서 빠지고 메뉴를 오가도 남는다',
-      전:q0, 서명후:q1, 메뉴왕복후:q2, 상태리셋후:q3, 저장소항목:storageUsed,
-      pass: q0===3 && q1===2 && q2===2 && q3===3 && storageUsed===0});
+      전:q0, 서명후:q1, 메뉴왕복후:q2, 상태리셋후:q3, 저장소항목:storageUsed, 서명직후선택건수:qSel,
+      pass: q0===3 && q1===2 && q2===2 && q3===3 && storageUsed===0 && qSel==='0'});
+
+    /* 목록에서 빠진 행이 선택 건수에 남지 않는다 — 서명 완료 상태로 바로 들어와도 같다 */
+    go('acquisition-list','done');
+    var d0=aqRows(), d1=document.querySelector('[data-mount=ab-count]').textContent.trim();
+    var d2=document.querySelector('[data-mount=ab-btn]').disabled;
+    out.push({case:'서명 완료 — 선택 건수는 남은 행만 센다', 남은행:d0, 선택건수:d1, 서명하기비활성:d2,
+      pass: d0===1 && d1==='0' && d2===true});
+    go('acquisition-list','default');
 
     go('merchants','default');
     var m0=document.querySelectorAll('[data-mount=mc-tbl] tbody tr').length;

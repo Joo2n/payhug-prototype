@@ -1,8 +1,33 @@
 # -*- coding: utf-8 -*-
 """2026-08-28 미팅 결론 16항목 기계 검사. 근거는 meeting_20260828.md · request_register.md."""
-import os, re, sys, json
+import os, re, sys, json, html as H
+from collections import Counter
 
 R = '/Users/semi/cursor/payhug-investor-admin'
+REG = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'request_register.md')
+
+
+def _reg_table(head):
+    """레지스터의 예외 표를 읽어 {문서: Counter({문자열: 건수})} 로 돌려준다.
+
+    예외를 검증기가 들고 있으면 판정 기준이 검증기 안에서 넓어진다. 기준은 레지스터에만 둔다."""
+    md = open(REG, encoding='utf-8').read()
+    body = md[md.index(head) + len(head):]
+    body = body.split('\n## ')[0]
+    out = {}
+    for ln in body.split('\n'):
+        c = [x.strip() for x in ln.strip().strip('|').split('|')] if ln.strip().startswith('|') else []
+        if len(c) < 3 or not c[0].startswith('`'):
+            continue
+        doc, tok, n = c[0].strip('`'), c[1].strip('`'), c[2]
+        if not n.isdigit():
+            continue
+        out.setdefault(doc, Counter())[tok] += int(n)
+    if not out:
+        raise SystemExit('!! 레지스터에서 예외 표를 못 읽었다 — ' + head)
+    return out
+
+
 def rd(n):
     p = os.path.join(R, n)
     return open(p, encoding='utf-8').read() if os.path.exists(p) else ''
@@ -82,21 +107,50 @@ chk(14, '대상정산금채권 — 가맹점당 투자자 1명 / 투자자 1:N',
 chk(15, '순현금 — 쿠콘 명의 케이뱅크 계좌', '케이뱅크' in T['GLO'], '')
 
 # ── 문서 형식 (D-19·D-20 / F-1~F-7) ────────────────────────────
-bad = [w for w in ('카드 한 장', '값의 출처', '이 값은 어디서 오나') if w in T['GLO']]
-chk(16, '문서 사용법 안내 삭제', not bad, '잔재 ' + (','.join(bad) or '없음'))
+# 낱말 목록이면 표현만 바꾼 자기설명이 통과한다. 판정 기준은 레지스터 「D-19 기계 검사」.
+SELF_PART = r'(카드(?!사)|목차|검색창|부제|꼬리표|라이트박스|마커|이 문서|이 표|아래 (?:두 )?표|이 페이지)'
+SELF_HOWTO = r'(붙인다|붙는다|내렸다|내린다|쳐도|눌러|누르면|하면 된다|보면 된다|찾을 때|열린다|한 규칙)'
+SELF_LIT = ('카드 한 장', '값의 출처', '이 값은 어디서 오나')
+
+def _blocks(h):
+    """자기설명은 산문에 산다 — <p>·<li> 안만 본다. 표 칸·컨트롤 라벨은 안내문이 아니다."""
+    h = re.sub(r'<(script|style)\b.*?</\1>', ' ', h, flags=re.S|re.I)
+    out = []
+    for m in re.finditer(r'<(p|li)\b[^>]*>(.*?)</\1>', h, re.S|re.I):
+        t = re.sub(r'\s+', ' ', H.unescape(re.sub(r'<[^>]+>', ' ', m.group(2)))).strip()
+        if t: out.append(t)
+    return out
+
+selfdoc = {}
+for nm, h in DOCS.items():
+    k = [b for b in _blocks(h)
+         if (re.search(SELF_PART, b) and re.search(SELF_HOWTO, b))
+         or any(w in b for w in SELF_LIT)]
+    if k: selfdoc[nm] = k
+chk(16, '문서 사용법 안내 0건 (자기설명 문장 패턴)', not selfdoc,
+    '; '.join(f'{nm} {len(v)}건 — {v[0][:40]}' for nm, v in selfdoc.items()) or '없음')
 chk(17, '목차 제목 = 목차', '용어 50건' not in T['GLO'] and '목차' in T['GLO'], '')
 chk(18, '목차 표 화면 열 삭제', '.html ›' not in T['GLO'], '')
 chk(19, '값의 출처 접힘 블록 삭제', 'details class="more"' not in GLO, '')
 
-# 파일명 노출 — archive는 예외(D-20)
-# 근거 인용(`파일:라인`)과 산출물 경로 표는 G-2·G-7이 요구하는 것이라 예외
-ALLOW = {'capability.html': 3, 'feasibility.html': 3}   # 근거 인용 · 산출물 경로 표
-leak = {}
+# 파일명 노출 — archive는 D-20 본문의 예외(파일 추적이 본질)
+# 그 밖의 예외는 검증기가 정하지 않는다. 레지스터 「D-20 예외 — 근거 인용·산출물 경로」를 읽어
+# (문서, 문자열, 건수) 를 그대로 기대값으로 쓴다. 숫자 예산을 들고 있으면 판정 기준이 여기서 넓어진다.
+ALLOW = _reg_table('## D-20 예외 — 근거 인용·산출물 경로')
+leak, stale20 = {}, []
 for nm, h in DOCS.items():
-    k = len(re.findall(r'[A-Za-z][A-Za-z0-9_\-]*\.html', txt(h)))
-    if k > ALLOW.get(nm, 0): leak[nm] = k
-chk(20, '.html 파일명 화면 노출 0건 (근거 인용 예외)', not leak,
-    ', '.join(f'{k} {v}' for k, v in leak.items()) or f'예외 {sum(ALLOW.values())}건 외 없음')
+    got = Counter(re.findall(r'[A-Za-z][A-Za-z0-9_\-]*\.html', txt(h)))
+    want = ALLOW.get(nm, Counter())
+    for tok, n in got.items():
+        if want.get(tok, 0) != n:
+            leak.setdefault(nm, []).append(f'{tok} {n}건(등재 {want.get(tok, 0)})')
+    for tok, n in want.items():
+        if got.get(tok, 0) != n:
+            stale20.append(f'{nm} {tok} 등재 {n} · 실측 {got.get(tok, 0)}')
+chk(20, '.html 파일명 화면 노출 = 레지스터 등재분뿐', not leak and not stale20,
+    ('; '.join(f'{k} ' + ', '.join(v) for k, v in leak.items())
+     + ('  낡은 등재 ' + '; '.join(stale20) if stale20 else ''))
+    or f'등재 {sum(sum(c.values()) for c in ALLOW.values())}건 일치')
 
 appleak = re.findall(r'[A-Za-z][A-Za-z0-9_\-]*\.html', T['APP'])
 chk(21, '통합본 갤러리 슬러그·파일명 노출 0건', not appleak,
@@ -127,6 +181,10 @@ UI_ORIG = [
      'payhug-admin-web/app/sales/[bizNo]/page.tsx:929'),
     ('검색 결과가 없습니다.',
      'payhug-admin-web/app/sales/page.tsx:122'),
+    ('비밀번호 변경에 실패했습니다.',
+     'payhug-merchant-web/app/my-info/change-password/page.tsx:65'),
+    ('서버 통신 중 오류가 발생했습니다.',
+     'payhug-merchant-web/app/my-info/change-password/page.tsx:69'),
 ]
 
 def _ui_strip(t):
@@ -140,10 +198,6 @@ for nm, h in DOCS.items():
     t = txt(h)
     if nm == 'inquiry.html':      # 대표께 복사해 보내는 편지 본문(pre.src, display:none)은 존댓말 유지
         t = txt(re.sub(r'<pre[^>]*>.*?</pre>', ' ', h, flags=re.S))
-    if nm == 'feasibility.html':  # 개발팀에 던지는 질문 문항은 의문형 유지
-        t = re.sub(r'[^ ]*습니까', ' ', t)
-    if nm == 'capability.html':   # <code> 안은 인용이다 — 제품 UI 원문·경로·API 이름이지 우리 문장이 아니다
-        t = txt(re.sub(r'<code>.*?</code>', ' ', h, flags=re.S))
     t = _ui_strip(t)              # 레지스터에 등재된 제품 UI 원문만 뺀다
     k = len(re.findall(r'(입니다|습니다)[.\s]', t)) + \
         len(re.findall(r'(요청하신|지시에 따라|말씀하신)', t))
