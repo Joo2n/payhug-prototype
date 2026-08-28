@@ -9,7 +9,7 @@
 
 대상 문구는 앵커를 통째로 적어 둔다. 문서 표현이 바뀌면 여기서 걸리고, 그때 앵커를 고친다.
 """
-import io, os, re, sys
+import io, os, re, sys, zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -33,6 +33,23 @@ def feas_rows():
     for k in ('term', 'screen', 'state', 'func', 'out'):
         assert out.get(k), '구현 가능성 문서 tb-%s 판정 행 0건' % k
     return out
+
+
+def xlsx_notes():
+    """엑셀 산출물에 남아 있는 `※` 주석 수 — 파일을 풀어 XML 전수를 센다.
+
+    시트에 설명을 적지 않는다는 확정으로 build_xlsx.py 의 put_notice·put_note 가 빈 함수다.
+    문서가 "주석 N건"을 손으로 적으면 그 결정이 뒤집힐 때 낡는다 — 실물에서 센다.
+    """
+    n, xd = 0, os.path.join(REPO, 'assets', 'xlsx')
+    for f in sorted(os.listdir(xd)):
+        if not f.endswith('.xlsx'):
+            continue
+        with zipfile.ZipFile(os.path.join(xd, f)) as z:
+            for e in z.namelist():
+                if e.endswith('.xml'):
+                    n += z.read(e).decode('utf-8', 'replace').count('※')
+    return n
 
 
 def cap_counts():
@@ -62,6 +79,8 @@ def cap_counts():
     dual = sum(1 for r in rows if len(re.findall(r'<span class="j j-\w+">', r)) > 1)
     return dict(acts=len(acts), rows=len(rows), blocks=len(blocks), a=a, d=d, b=b, dual=dual)
 
+
+C['xlsxNotes'] = xlsx_notes()
 
 _C = cap_counts()
 _F = feas_rows()
@@ -135,8 +154,8 @@ RULES = [
   '화면 블록 막대는 엑셀 미리보기 {xlsPreview}종을'),
 
  (REPO + '/feasibility.html',
-  r'<div class="note-band">엑셀 \d+종의 <code>※</code>',
-  '<div class="note-band">엑셀 {xlsx}종의 <code>※</code>'),
+  r'<div class="note-band"><b>엑셀 \d+종에 <code>※</code> 주석 \d+건',
+  '<div class="note-band"><b>엑셀 {xlsx}종에 <code>※</code> 주석 {xlsxNotes}건'),
  (REPO + '/feasibility.html',
   r'<span class="qtx">엑셀 \d+종을 서버에서 생성합니까',
   '<span class="qtx">엑셀 {xlsx}종을 서버에서 생성합니까'),
@@ -161,14 +180,27 @@ RULES = [
   '엑셀 미리보기 {xlsPreview}종을 1건으로 계산'),
 
  (HERE + '/feasibility.md',
-  r'엑셀 \d+종의 `※` 주석',
-  '엑셀 {xlsx}종의 `※` 주석'),
+  r'엑셀 \d+종에 `※` 주석 \d+건',
+  '엑셀 {xlsx}종에 `※` 주석 {xlsxNotes}건'),
  (HERE + '/feasibility.md',
   r'엑셀 \d+종을 서버에서 생성합니까',
   '엑셀 {xlsx}종을 서버에서 생성합니까'),
  (HERE + '/feasibility.md',
   r'\| 엑셀 파일을 내려받는다\(미리보기 \d+종\)',
   '| 엑셀 파일을 내려받는다(미리보기 {xlsPreview}종)'),
+
+ (REPO + '/capability.html',
+  r'시트의 <code>※</code> 주석은 \d+건',
+  '시트의 <code>※</code> 주석은 {xlsxNotes}건'),
+ (REPO + '/capability.html',
+  r'실제 <code>\.xlsx</code> \d+개가 <code>assets/xlsx/</code>에 동봉',
+  '실제 <code>.xlsx</code> {xlsx}개가 <code>assets/xlsx/</code>에 동봉'),
+ (HERE + '/capability_manuscript.md',
+  r'시트의 `※` 주석은 \d+건',
+  '시트의 `※` 주석은 {xlsxNotes}건'),
+ (HERE + '/capability_manuscript.md',
+  r'실제 `\.xlsx` \d+개가 `assets/xlsx/`에 동봉',
+  '실제 `.xlsx` {xlsx}개가 `assets/xlsx/`에 동봉'),
 
  (HERE + '/glossary_manuscript.md',
   r'\| `가맹점별 투자자산 증명서` · 엑셀 \d+종 \|',
