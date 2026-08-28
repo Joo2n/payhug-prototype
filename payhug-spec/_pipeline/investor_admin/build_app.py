@@ -937,7 +937,7 @@ STANDALONE_HTML = '''
       <span class="logo-mark" role="img" aria-label="PayHug"></span>
       <div>
         <h1>PayHug <em>투자자 어드민</em> — 화면 설계(안)</h1>
-        <p class="sub">사이드바 메뉴 {MENUS}개 — {MENULIST}. 아래 화면과 상태를 눌러서 오갈 수 있고 엑셀은 실제로 내려받는다.</p>
+        <p class="sub">사이드바 메뉴 {MENUS}개 — {MENULIST}</p>
       </div>
       <span class="hero-date">2026-08-27</span>
     </div>

@@ -45,13 +45,41 @@ ACQ  = (rd('acquisition.html') + rd('acquisition--confirm.html')
 # 92건의 파일명 노출과 폐기값 32.35% 를 이고 배포되고 있었다. 그래서 디렉터리를 훑는다.
 # archive.html 은 파일 추적이 본질이라 파일명 노출 예외(D-20).
 ROOT = sorted(f for f in os.listdir(R) if f.endswith('.html'))
-DOCS = {n: rd(n) for n in ROOT if n != 'archive.html'}
+# 배포는 루트만이 아니다. assets/ 안 HTML 도 주소로 열린다 — `assets/components.html` 이
+# 그 틈으로 D+1 회수 예정(C2 미확정)·존댓말 7건·문서 사용법 안내를 이고 배포되고 있었다.
+ASSETS = sorted('assets/' + f for f in os.listdir(os.path.join(R, 'assets'))
+                if f.endswith('.html'))
+DOCS = {n: rd(n) for n in ROOT + ASSETS if n != 'archive.html'}
+
+
+def _script_text(h):
+    """<script> 안 문자열 리터럴도 화면 텍스트다.
+
+    통합본과 `review.html` 은 본문을 스크립트에서 그린다. 태그만 걷어내면 그 본문이
+    통째로 검사 밖에 남는다 — 실제로 JS 문자열에 위반을 심으면 16·20·21·22·26 이
+    전부 통과했다. 문자열 하나가 통째로 ASCII 토큰(경로·파일명·클래스·셀렉터)이면
+    화면에 그려지는 말이 아니라 값이므로 뺀다.
+    """
+    out = []
+    for m in re.finditer(r'<script\b[^>]*>(.*?)</script>', h, re.S | re.I):
+        for q in re.finditer(r"'(?:\\.|[^'\\\n])*'"
+                             r'|"(?:\\.|[^"\\\n])*"'
+                             r'|`(?:\\.|[^`\\])*`', m.group(1)):
+            v = q.group(0)[1:-1]
+            if re.fullmatch(r'[\x20-\x7e]*', v) and not re.search(r'[가-힣]', v) \
+               and not re.search(r'\s', v):
+                continue                      # 경로·파일명·셀렉터 따위 값
+            out.append(v)
+    return ' '.join(out)
+
 
 def txt(h):
-    """태그를 걷어낸 화면 노출 텍스트만."""
-    h = re.sub(r'<(script|style)\b.*?</\1>', ' ', h, flags=re.S|re.I)
-    h = re.sub(r'<[^>]+>', ' ', h)
-    return re.sub(r'\s+', ' ', h)
+    """태그를 걷어낸 화면 노출 텍스트 + 스크립트가 그리는 텍스트."""
+    js = _script_text(h)
+    h = re.sub(r'<(script|style)\b.*?</\1>', ' ', h, flags=re.S | re.I)
+    h = re.sub(r'<!--.*?-->', ' ', h, flags=re.S)      # 주석은 화면에 안 뜬다
+    h = re.sub(r'<[^>]+>', ' ', h + ' ' + re.sub(r'<[^>]+>', ' ', js))
+    return re.sub(r'\s+', ' ', H.unescape(h))
 
 T = {k: txt(v) for k, v in
      dict(APP=APP, IDX=IDX, GLO=GLO, MER=MER, COO=COO, CON=CON, ACQ=ACQ).items()}
@@ -111,23 +139,47 @@ chk(15, '순현금 — 쿠콘 명의 케이뱅크 계좌', '케이뱅크' in T['
 SELF_PART = r'(카드(?!사)|목차|검색창|부제|꼬리표|라이트박스|마커|이 문서|이 표|아래 (?:두 )?표|이 페이지)'
 SELF_HOWTO = r'(붙인다|붙는다|내렸다|내린다|쳐도|눌러|누르면|하면 된다|보면 된다|찾을 때|열린다|한 규칙)'
 SELF_LIT = ('카드 한 장', '값의 출처', '이 값은 어디서 오나')
+# 편집 행위를 서술하는 종결. `이 문서`·`카드` 같은 지시어를 안 써도 자기설명은 성립한다 —
+# `먼저 이 한 장을 보면` · `한자리에 모은 것이다` · `누구에게 물을지로 갈라 두었다` 가
+# 종전 낱말 조합을 전부 비껴갔다. 도입부 읽는 법 안내는 이 종결로 잡는다.
+SELF_EDIT = (r'(한자리에 모은 것이다|모아 둔 것이다|모아 두었다|갈라 두었다|갈라 놓았다|'
+             r'떼어 [^.]{0,20}있게|보면 나머지|보면 된다|왼쪽에서 찾으면|복사해 사용|'
+             r'이 문서에 넣지 않는다|이 문서에 적지 않는다)')
+# COMBO 는 산문에만 건다 — 표 칸의 `요약 카드 … 누르면 넘어간다` 는 값이 뜨는 자리 서술이지
+# 안내문이 아니다(D-19 본문). LIT·EDIT 는 <dd>·<div>·<td> 까지 전부 건다.
+PROSE = r'(p|li|dd|blockquote)'
+WIDE = r'(p|li|dd|dt|div|td|figcaption|blockquote|small|summary)'
+# review.html 은 프로토타입 조작 확인 목록이 본문이라 COMBO 예외 — 레지스터 「D-19 예외」.
+COMBO_SKIP = {'review.html'}
 
-def _blocks(h):
-    """자기설명은 산문에 산다 — <p>·<li> 안만 본다. 표 칸·컨트롤 라벨은 안내문이 아니다."""
-    h = re.sub(r'<(script|style)\b.*?</\1>', ' ', h, flags=re.S|re.I)
+
+def _blocks(h, tags):
+    """자기설명은 산문에 산다.
+
+    종전에는 <p>·<li> 안만 봤다 — <dd>·<div> 안 `값의 출처` 2건이 그 틈으로 통과했다.
+    스크립트가 그리는 본문도 블록으로 친다(통합본·review 는 본문이 전부 거기 있다).
+    """
+    src = re.sub(r'<(script|style)\b.*?</\1>', ' ', h, flags=re.S|re.I)
+    src = re.sub(r'<!--.*?-->', ' ', src, flags=re.S)
     out = []
-    for m in re.finditer(r'<(p|li)\b[^>]*>(.*?)</\1>', h, re.S|re.I):
+    for m in re.finditer(r'<' + tags + r'\b[^>]*>(.*?)</\1>', src, re.S|re.I):
         t = re.sub(r'\s+', ' ', H.unescape(re.sub(r'<[^>]+>', ' ', m.group(2)))).strip()
+        if t: out.append(t)
+    # 스크립트 문자열은 문장 단위로 쪼개 블록처럼 본다
+    for t in re.split(r'(?<=다[.])\s|(?<=[.!?])\s', re.sub(r'<[^>]+>', ' ', _script_text(h))):
+        t = re.sub(r'\s+', ' ', H.unescape(t)).strip()
         if t: out.append(t)
     return out
 
 selfdoc = {}
 for nm, h in DOCS.items():
-    k = [b for b in _blocks(h)
-         if (re.search(SELF_PART, b) and re.search(SELF_HOWTO, b))
-         or any(w in b for w in SELF_LIT)]
-    if k: selfdoc[nm] = k
-chk(16, '문서 사용법 안내 0건 (자기설명 문장 패턴)', not selfdoc,
+    k = [b for b in _blocks(h, WIDE)
+         if re.search(SELF_EDIT, b) or any(w in b for w in SELF_LIT)]
+    if nm not in COMBO_SKIP:
+        k += [b for b in _blocks(h, PROSE)
+              if re.search(SELF_PART, b) and re.search(SELF_HOWTO, b)]
+    if k: selfdoc[nm] = sorted(set(k))
+chk(16, f'문서 사용법 안내 0건 — 배포 HTML {len(DOCS)}장', not selfdoc,
     '; '.join(f'{nm} {len(v)}건 — {v[0][:40]}' for nm, v in selfdoc.items()) or '없음')
 chk(17, '목차 제목 = 목차', '용어 50건' not in T['GLO'] and '목차' in T['GLO'], '')
 chk(18, '목차 표 화면 열 삭제', '.html ›' not in T['GLO'], '')
@@ -202,7 +254,7 @@ for nm, h in DOCS.items():
     k = len(re.findall(r'(입니다|습니다)[.\s]', t)) + \
         len(re.findall(r'(요청하신|지시에 따라|말씀하신)', t))
     if k: g1[nm] = k
-chk(22, f'G-1 문체 — 루트 HTML {len(DOCS)}장', not g1,
+chk(22, f'G-1 문체 — 배포 HTML {len(DOCS)}장', not g1,
     ', '.join(f'{k} {v}' for k, v in g1.items()) or '위반 0')
 
 # 편지 예외의 근거 — pre.src 가 화면에 안 뜬다는 것. 뜨게 되면 예외가 아니다.
@@ -212,12 +264,34 @@ chk(27, '편지 본문 예외 근거 — pre.src 화면 비노출', _hid and _in
     f'pre.src {_inq.count(chr(60) + "pre class=" + chr(34) + "src" + chr(34))}블록 · '
     + ('display:none' if _hid else '화면에 뜬다'))
 
-# 배포 명단 무결 — 루트 HTML 이 전부 counts 가 아는 갈래(문서·화면·상태)에 든다.
+# 배포 명단 무결.
+# 종전 기준은 `counts.screen_files() | counts.state_files()` 였는데 그 둘이 파일명 규칙(`--`)에서
+# 갈래를 되뽑는 함수라 합집합이 늘 루트 HTML 전량과 같았다 — 구조상 항상 PASS 였고
+# `zz-stray.html` 을 넣어도 통과했다. 판정은 손으로 든 명단으로 한다:
+#   기본 화면·문서 = 생성기(`build_readme.py`)가 이름과 뜻을 들고 있는 것
+#   상태 낱장      = 모체가 그 명단에 있고, 랜딩(`index.html`)에 카드로 걸려 있는 것
+# 명단에 이름이 있는데 파일이 없어도 FAIL 이다(명단이 낡았다는 뜻).
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import counts as _cnt
-_known = set(_cnt.DOCS) | set(_cnt.screen_files()) | set(_cnt.state_files())
-_stray = [f for f in ROOT if f not in _known]
-chk(28, '배포 루트 HTML 전량이 실측 명단에 든다', not _stray, '명단 밖 ' + (', '.join(_stray) or '없음'))
+import build_readme as _rdm
+_decl = ({'index.html', 'app.html'} | set(_rdm.DOC_NAME)
+         | {v + '.html' for v in _rdm.MENU_FILE.values()}
+         | {k + '.html' for k in _rdm.SUB_NAME})
+_idx = rd('index.html')
+_stray = []
+for f in ROOT:
+    if '--' in f:
+        if f.split('--')[0] + '.html' not in _decl:
+            _stray.append(f + ' 모체 미등재')
+    elif f not in _decl:
+        _stray.append(f + ' 생성기 명단 밖')
+    if f != 'index.html' and f not in _idx:
+        _stray.append(f + ' 랜딩 미등재')
+_gone = [f for f in sorted(_decl) if not os.path.exists(os.path.join(R, f))]
+chk(28, '배포 루트 HTML 전량이 명단·랜딩에 든다', not _stray and not _gone,
+    ('명단 밖 ' + ', '.join(_stray) if _stray else '')
+    + ('  낡은 명단 ' + ', '.join(_gone) if _gone else '')
+    or f'루트 {len(ROOT)}장 · 명단 {len(_decl)}건 전량 일치')
 
 pw = len(re.findall(r'PW_(MSG|DONE_MSG|CAPS_MSG)', APP))   # 비밀번호 메시지는 <script> 안이라 화면 텍스트에 안 잡힌다
 _app = T['APP']
@@ -237,6 +311,39 @@ chk(26, 'G-1 문체 — 통합본 (등재된 제품 UI 원문만 예외)', appst
 emo = sum(len(re.findall(r'[\U0001F300-\U0001FAFF✅❌⭐✨]', txt(h)))
           for h in DOCS.values())
 chk(23, 'G-1 이모지 0건', emo == 0, f'{emo}건')
+
+# ── 내려받기 실물 PDF 본문 (D-19·D-20·G-1) ──────────────────────
+# 화면에서 걷어낸 고지가 PDF 안에 남아 있어도 종전 검사는 HTML 만 봐서 못 잡았다.
+# `투자자산증명서` 는 화면이 약속하는 실물이고 대표께 그대로 나가므로 같은 잣대를 건다.
+PDF_DIR = os.path.join(R, 'assets', 'docs')
+_pdfs = sorted(f for f in os.listdir(PDF_DIR) if f.endswith('.pdf'))
+try:
+    import fitz as _fitz
+    _ptxt = {}
+    for f in _pdfs:
+        d = _fitz.open(os.path.join(PDF_DIR, f))
+        _ptxt[f] = re.sub(r'\s+', ' ', ''.join(pg.get_text() for pg in d))
+        d.close()
+    _pdf_bad = {}
+    for f, t in _ptxt.items():
+        b = []
+        b += [f'파일명 {x}' for x in set(re.findall(r'[A-Za-z][A-Za-z0-9_\-]*\.(?:html|md|py|json)', t))]
+        b += [f'문체 {x}' for x in set(re.findall(r'\w*(?:입니다|습니다)[.\s]', t))]
+        b += [f'자기설명 {w}' for w in SELF_LIT if w in t]
+        b += [f'자기설명 {re.search(SELF_EDIT, t).group(0)}'] if re.search(SELF_EDIT, t) else []
+        b += [f'고지 {w}' for w in ('예시값', '확인필요', '본 문서는', '본 파일이') if w in t]
+        if b:
+            _pdf_bad[f] = b
+    chk(29, f'PDF 본문 — 문서 사용법·파일명·문체 0건 ({len(_pdfs)}건)', not _pdf_bad,
+        '; '.join(f'{k} ' + ', '.join(v) for k, v in _pdf_bad.items())
+        or f'{len(_pdfs)}건 · 본문 {sum(len(v) for v in _ptxt.values()):,}자 검사')
+    # `견본` 표기는 review.html 이 근거로 삼는다 — PDF 에서 사라지면 그 서술이 거짓이 된다.
+    _mark = {f: t.count('견본') for f, t in _ptxt.items()}
+    chk(30, 'PDF 견본 표기 유지 (review.html 근거)', all(v > 0 for v in _mark.values()),
+        ' · '.join(f'{k} {v}건' for k, v in _mark.items()) or '없음')
+except ImportError:
+    chk(29, 'PDF 본문 — 문서 사용법·파일명·문체 0건', False, 'PyMuPDF 없음 — 검사 못 함')
+    chk(30, 'PDF 견본 표기 유지 (review.html 근거)', False, 'PyMuPDF 없음 — 검사 못 함')
 
 # 정적 화면 = 서식된 값 / 통합본 = 원시 시드값(합계·행합은 런타임 계산)
 # 기대값은 채권 원장이 내보낸 사실값에서 읽는다 — 검증기에 숫자를 손으로 적지 않는다.

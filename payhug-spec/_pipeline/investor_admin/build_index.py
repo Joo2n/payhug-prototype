@@ -217,7 +217,7 @@ o.append('''
     <div class="app-icon">%s</div>
     <div>
       <div class="app-name"><em>통합</em> 프로토타입</div>
-      <p class="app-desc">사이드바 메뉴 %d개 &mdash; %s. 아래 화면과 상태를 눌러서 오갈 수 있고 엑셀은 실제로 내려받는다.</p>
+      <p class="app-desc">사이드바 메뉴 %d개 &mdash; %s</p>
     </div>
     <span class="app-go">열기</span>
   </a>

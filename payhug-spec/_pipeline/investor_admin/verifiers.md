@@ -4,7 +4,8 @@
 
 | 검증기 | 대상 | 보는 것 |
 |---|---|---|
-| `verify_0828.py` | `payhug-investor-admin` 정적 HTML | 8/28 미팅 결론 26항목 |
+| `verify_0828.py` | `payhug-investor-admin` 배포 HTML 전량(루트 + `assets/*.html`) · `assets/docs/*.pdf` | 8/28 미팅 결론 30항목. 화면 텍스트에 `<script>` 안 문자열 리터럴을 포함한다 |
+| `verify_0828_negative.py` | 위 검증기 자신 | 음성 시험 — 네 범위(`<script>` 문자열 · `assets/*.html` · PDF 본문 · 명단 밖 낱장)에 위반 16가지를 심어 전부 FAIL 로 잡히는지 |
 | `verify_app.js` | `payhug-investor-admin/app.html` | 죽은 컨트롤·상태 도달·레이아웃·콘솔 |
 | `verify_proto.js` | `payhug-investor-prototype/index.html` | 시연본 전건 — 메뉴·상태·다운로드 실물·바깥 통로 |
 | `verify_sync_chain.js` | 원본 ↔ 시연본 | 변환 손실 |

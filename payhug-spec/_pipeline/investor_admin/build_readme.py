@@ -34,6 +34,12 @@ SUB_NAME = {
     'xls-profit-status': '엑셀 산출물 서식 — 투자수익 현황',
     'xls-profit-daily': '엑셀 산출물 서식 — 일별 투자수익',
 }
+ASSET_NOTE = {
+    'base.css': '공용 스타일 (실측 토큰: 사이드바 #1B2537, primary #7FE141 등)',
+    'sheet.css': '엑셀 미리보기 전용 (xls-*.html · app.html에서 로드)',
+    'template.html': '화면 스켈레톤. 사이드바 메뉴 실측 원본',
+    'logo-icon.png': '로고 원본. 화면 렌더는 base.css의 .logo-mark data URI',
+}
 DOC_NAME = {
     'glossary.html': '용어 해설 — 용어 50건 · 화면 캡처 위치 표시',
     'capability.html': '산출물이 무엇을 말할 수 있나',
@@ -72,7 +78,12 @@ def facts():
     # 몇 장을 부르는지는 배포 HTML 을 훑어 센다 — 손으로 적으면 마커가 옮겨갈 때마다 낡는다.
     shots = [os.path.basename(f) for f in d('assets/shots/')]
     html_all = ''.join(io.open(os.path.join(REPO, f), encoding='utf-8').read() for f in root_html)
+    # 확장자 나열도 실측이다. 손으로 적으면 없는 형식(ZIP)이 안내에 남는다.
+    ext = lambda p: sorted({os.path.splitext(f)[1][1:].upper() for f in d(p)} - {''})
     return dict(
+        docExt=ext('assets/docs/'),
+        dlExt=sorted(set(ext('assets/docs/')) | set(ext('assets/xlsx/'))),
+        assetCommonNames=sorted(os.path.basename(f) for f in d('assets/') if f.count('/') == 1),
         shotsUsed=len([x for x in shots if x in html_all]),
         appStates=counts.app_states(),
         all=len(fs), rootHtml=len(root_html), rootDoc=len([f for f in fs if f.endswith('.md')]),
@@ -109,15 +120,16 @@ def build():
     W('| %s | 시연본. `app.html` 한 판만, 바깥으로 나가는 통로 없음 |' % PROTO)
     W('| %s | 용어 해설 단독본 |' % GLOSS)
     W('')
-    W('전체본은 `main` 에 올라간 %d개 파일을 그대로 서비스한다. 한글 이름을 쓰는 PDF·ZIP·XLSX·TXT 도 같은 주소에서 바로 열린다.'
-      % (F['all'] - F['wf']))
+    W('전체본은 `main` 에 올라간 %d개 파일을 그대로 서비스한다. 한글 이름을 쓰는 %s 도 같은 주소에서 바로 열린다.'
+      % (F['all'] - F['wf'], '·'.join(F['dlExt'])))
     W('')
     W('| 구획 | 수 | 내역 |')
     W('|---|---|---|')
     W('| 루트 HTML | %d | 통합 프로토타입 1 · 기본 화면 %d · 상태 %d · 랜딩 1 · 설명 문서 %d |'
       % (F['rootHtml'], len(F['screens']), len(F['states']), len(F['docs'])))
     W('| 루트 문서 | %d | `README.md` `DESIGN_REF.md` |' % F['rootDoc'])
-    W('| `assets/` 공용 | %d | `base.css` `sheet.css` `template.html` `components.html` `logo-icon.png` |' % F['assetCommon'])
+    W('| `assets/` 공용 | %d | %s |'
+      % (F['assetCommon'], ' '.join('`%s`' % n for n in F['assetCommonNames'])))
     W('| 내려받기 실물 | %d | `assets/docs/` %d · `assets/xlsx/` %d |'
       % (F['assetDocs'] + F['assetXlsx'], F['assetDocs'], F['assetXlsx']))
     W('| 화면 캡처 | %d | `assets/shots/` — 정적 화면 촬영본. 용어 해설이 카드에 거는 것은 %d장 |'
@@ -182,12 +194,10 @@ def build():
       % (len(F['screens']), len(F['states']), len(F['docs'])))
     W('├── scripts/              # 시연본·용어 단독본 변환기')
     W('└── assets/')
-    W('    ├── base.css          # 공용 스타일 (실측 토큰: 사이드바 #1B2537, primary #7FE141 등)')
-    W('    ├── sheet.css         # 엑셀 미리보기 전용 (xls-*.html · app.html에서 로드)')
-    W('    ├── template.html     # 화면 스켈레톤')
-    W('    ├── components.html   # 컴포넌트 갤러리')
-    W('    ├── logo-icon.png     # 로고 원본. 화면 렌더는 base.css의 .logo-mark data URI')
-    W('    ├── docs/             # 내려받기 실물 %d (PDF · ZIP · TXT)' % F['assetDocs'])
+    for nm in F['assetCommonNames']:
+        W('    ├── %-18s# %s' % (nm, ASSET_NOTE.get(nm, '공용 자산')))
+    W('    ├── docs/             # 내려받기 실물 %d (%s)'
+      % (F['assetDocs'], ' · '.join(F['docExt'])))
     W('    ├── xlsx/             # 내려받기 실물 %d (XLSX)' % F['assetXlsx'])
     W('    └── shots/            # 화면 캡처 %d — 용어 해설이 거는 것 %d'
       % (F['assetShots'], F['shotsUsed']))
