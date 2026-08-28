@@ -1140,10 +1140,25 @@ var XLSX = {
   'assets-merchant': {file:'가맹점별투자자산_2026-08-27_2026-08-27.xlsx', size:'@@SZ:가맹점별투자자산_2026-08-27_2026-08-27.xlsx@@', made:'@@MT:가맹점별투자자산_2026-08-27_2026-08-27.xlsx@@', sheet:'가맹점별 투자자산', screen:'xls-assets-merchant', from:'invest-assets'},
   'profit-status':   {file:'투자수익현황_2026-08-21_2026-08-27.xlsx',   size:'@@SZ:투자수익현황_2026-08-21_2026-08-27.xlsx@@', made:'@@MT:투자수익현황_2026-08-21_2026-08-27.xlsx@@', sheet:'투자수익 현황',   screen:'xls-profit-status',   from:'invest-profit'},
   'profit-daily':    {file:'일별투자수익_2026-08-21_2026-08-27.xlsx',   size:'@@SZ:일별투자수익_2026-08-21_2026-08-27.xlsx@@', made:'@@MT:일별투자수익_2026-08-21_2026-08-27.xlsx@@', sheet:'일별 투자수익',   screen:'xls-profit-daily',    from:'invest-profit'},
-  /* 주별·월별은 실물 파일만 둔다 — 미리보기 낱장은 일별 것 하나로 충분하다(서식이 같다). */
-  'profit-weekly':   {file:'주별투자수익_2026-08-03_2026-08-30.xlsx',   sheet:'주별 투자수익',   screen:null, from:'invest-profit'},
-  'profit-monthly':  {file:'월별투자수익_2026-03-01_2026-08-31.xlsx',   sheet:'월별 투자수익',   screen:null, from:'invest-profit'}
+  /* 주별·월별은 실물 파일만 둔다 — 미리보기 낱장은 일별 것 하나로 충분하다(서식이 같다).
+     `수익 현황`도 집계 단위마다 기간이 달라 3벌이다 — 카드가 4주를 말하는데 파일이 일주일이면
+     화면과 파일이 다른 기간을 말한다. */
+  'profit-weekly':   {file:'주별투자수익_2026-08-03_2026-08-30.xlsx',   size:'@@SZ:주별투자수익_2026-08-03_2026-08-30.xlsx@@', made:'@@MT:주별투자수익_2026-08-03_2026-08-30.xlsx@@', sheet:'주별 투자수익',   screen:null, from:'invest-profit'},
+  'profit-monthly':  {file:'월별투자수익_2026-03-01_2026-08-31.xlsx',   size:'@@SZ:월별투자수익_2026-03-01_2026-08-31.xlsx@@', made:'@@MT:월별투자수익_2026-03-01_2026-08-31.xlsx@@', sheet:'월별 투자수익',   screen:null, from:'invest-profit'},
+  'profit-status-weekly':  {file:'투자수익현황_2026-08-03_2026-08-30.xlsx', size:'@@SZ:투자수익현황_2026-08-03_2026-08-30.xlsx@@', made:'@@MT:투자수익현황_2026-08-03_2026-08-30.xlsx@@', sheet:'투자수익 현황', screen:null, from:'invest-profit'},
+  'profit-status-monthly': {file:'투자수익현황_2026-03-01_2026-08-31.xlsx', size:'@@SZ:투자수익현황_2026-03-01_2026-08-31.xlsx@@', made:'@@MT:투자수익현황_2026-03-01_2026-08-31.xlsx@@', sheet:'투자수익 현황', screen:null, from:'invest-profit'}
 };
+
+/* 투자수익 표는 일별·주별·월별 3단이고 엑셀도 3벌이다 — 지금 보고 있는 표를 그대로 내려준다.
+   `수익 현황` 카드도 같다. 카드에 적힌 기간과 파일명의 기간이 갈리면 안 된다.
+   미리보기 화면(파일바·시트)과 다운로드가 같은 답을 쓰도록 해석은 이 함수 하나에서만 한다. */
+var PROFIT_XLS = {daily:'profit-daily', weekly:'profit-weekly', monthly:'profit-monthly'};
+var PROFIT_STATUS_XLS = {daily:'profit-status', weekly:'profit-status-weekly', monthly:'profit-status-monthly'};
+function xlsKey(k){
+  if(k === 'profit-daily')  return PROFIT_XLS[PF.gran] || k;
+  if(k === 'profit-status') return PROFIT_STATUS_XLS[PF.gran] || k;
+  return k;
+}
 
 /* ═══ 화면·상태 레지스터 ═══ */
 var MENU_OF = {
@@ -2639,10 +2654,10 @@ function sheetData(key){
     rows.push({n:12, c:[null, null, null, null, null, null, null]});
   } else {
     cols = [44, 140, 175, 175, 150, 130, 130, 0];
-    var daily = true, dr = pfDays();
-    rows.push({n:1, c:[{v:(daily ? '일별' : '월별') + ' 투자수익 — ' + PF.from + ' ~ ' + PF.to + ' / ' + INVESTOR, c:'c-title', span:7}]});
+    var dr = pfRows();
+    rows.push({n:1, c:[{v:GRAN_LABEL[PF.gran] + ' 투자수익 — ' + PF.from + ' ~ ' + PF.to + ' / ' + INVESTOR, c:'c-title', span:7}]});
     rows.push({n:2, c:[null, null, null, null, null, null, null]});
-    rows.push({n:3, c:[{v:daily ? '정산예정일' : '정산예정월', c:'c-head'}, {v:'상환액', c:'c-head r'}, {v:'투자실행금', c:'c-head r'},
+    rows.push({n:3, c:[{v:GRAN_COL[PF.gran], c:'c-head'}, {v:'상환액', c:'c-head r'}, {v:'투자실행금', c:'c-head r'},
                        {v:'투자 수익', c:'c-head r'}, {v:'W금융일수', c:'c-head r'}, {v:'Ty수익율', c:'c-head r'}, null]});
     for(i = 0; i < dr.length; i++){
       var d = dr[i];
@@ -2660,8 +2675,8 @@ function sheetData(key){
   return {cols:cols, rows:rows};
 }
 function renderXls(key){
-  var meta = XLSX[key], sec = SEC(meta.screen), d = sheetData(key), i;
-  M('filebar', meta.screen).innerHTML =
+  var scr = XLSX[key].screen, meta = XLSX[xlsKey(key)], sec = SEC(scr), d = sheetData(key), i;
+  M('filebar', scr).innerHTML =
     '<div class="fb-left"><div class="fb-icon">' + svg('grid', 1.8) + '</div><div>' +
       '<div class="fb-name">' + meta.file + '</div>' +
       '<div class="fb-meta"><span>' + meta.size + '</span><span class="dot">·</span>' +
@@ -2669,14 +2684,14 @@ function renderXls(key){
     '</div></div>' +
     '<a class="btn btn-primary" href="assets/xlsx/' + encodeURIComponent(meta.file) + '" download data-act="xls-get" data-xls="' + key + '">' +
       svg('excel') + ' 엑셀 파일 내려받기</a>';
-  M('sheettabs', meta.screen).innerHTML = '<span class="sheet-tab active">' + meta.sheet + '</span>';
+  M('sheettabs', scr).innerHTML = '<span class="sheet-tab active">' + meta.sheet + '</span>';
   var cg = '<colgroup>';
   for(i = 0; i < d.cols.length; i++) cg += d.cols[i] ? '<col style="width:' + d.cols[i] + 'px">' : '<col>';
   cg += '</colgroup>';
   var head = '<thead><tr class="col-head"><th class="corner"></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th></tr></thead>';
   var body = '<tbody>';
   for(i = 0; i < d.rows.length; i++) body += sheetRow(d.rows[i].n, d.rows[i].c, d.rows[i].cls);
-  M('sheet', meta.screen).innerHTML = cg + head + body + '</tbody>';
+  M('sheet', scr).innerHTML = cg + head + body + '</tbody>';
 }
 RENDER['xls-assets-status']   = function(){ renderXls('assets-status'); };
 RENDER['xls-assets-merchant'] = function(){ renderXls('assets-merchant'); };
@@ -2744,11 +2759,8 @@ function xlsBusy(el, on){
     if(el.dataset.idle !== undefined){ el.innerHTML = el.dataset.idle; delete el.dataset.idle; }
   }
 }
-/* 투자수익 표는 일별·주별·월별 3단이고 엑셀도 3벌이다 — 지금 보고 있는 표를 그대로 내려준다. */
-var PROFIT_XLS = {daily:'profit-daily', weekly:'profit-weekly', monthly:'profit-monthly'};
 ACT['xls-open']  = function(el){
-  var k = el.dataset.xls;
-  if(k === 'profit-daily') k = PROFIT_XLS[PF.gran] || k;
+  var k = xlsKey(el.dataset.xls);
   var meta = XLSX[k];
   pullFile('assets/xlsx/', meta.file, 0);
   if(k === 'assets-merchant'){
@@ -2766,7 +2778,7 @@ ACT['cert-open'] = function(){ IA.cert = true; refresh('invest-assets'); };
 ACT['cert-issue']= function(){ IA.cert = false; refresh('invest-assets'); go('certificate'); };
 ACT['cert-pdf']  = function(){ showToast(CERT_PDF + ' 내려받기 완료'); };
 ACT['xls-get']   = function(el){
-  var k = el.dataset.xls;
+  var k = xlsKey(el.dataset.xls);
   if(k === 'assets-merchant'){
     PEND['invest-assets'] = 'download';
     toastServed = 'invest-assets/download:' + XLSX[k].file;   /* 이 클릭이 이미 파일을 내려줬다 — 재전달 금지 */

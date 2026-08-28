@@ -37,11 +37,16 @@ DATES = ('      <div class="filter-row">\n'
          '        <button class="btn btn-outline">초기화</button>\n'
          '      </div>\n')
 
-# 집계 단위별 — (표 제목, 열머리, 표 엑셀 파일)
+# 집계 단위별 — (표 제목, 열머리, 표 엑셀 파일, 현황 카드 엑셀 파일)
+#   현황 카드도 집계 단위마다 기간이 다르다. 카드가 4주를 말하는데 링크가 일주일 파일이면
+#   화면과 파일이 다른 기간을 말한다 — 그래서 두 링크를 따로 맞춘다.
 GRAN = {
-    'daily':   ('일별 투자수익', '정산예정일', '일별투자수익_2026-08-21_2026-08-27.xlsx'),
-    'weekly':  ('주별 투자수익', '정산예정주', '주별투자수익_2026-08-03_2026-08-30.xlsx'),
-    'monthly': ('월별 투자수익', '정산예정월', '월별투자수익_2026-03-01_2026-08-31.xlsx'),
+    'daily':   ('일별 투자수익', '정산예정일', '일별투자수익_2026-08-21_2026-08-27.xlsx',
+                '투자수익현황_2026-08-21_2026-08-27.xlsx'),
+    'weekly':  ('주별 투자수익', '정산예정주', '주별투자수익_2026-08-03_2026-08-30.xlsx',
+                '투자수익현황_2026-08-03_2026-08-30.xlsx'),
+    'monthly': ('월별 투자수익', '정산예정월', '월별투자수익_2026-03-01_2026-08-31.xlsx',
+                '투자수익현황_2026-03-01_2026-08-31.xlsx'),
 }
 
 BLOCK = re.compile(r'    <div class="search-bar">.*?\n    </div>\n', re.S)
@@ -261,6 +266,10 @@ def assert_period(name, frm, to, gran):
         return '행 0 · 카드 %s' % per[0]
     assert n == len(rows), '%s 표 행 %d ≠ %d' % (name, n, len(rows))
 
+    xl = re.findall(r'href="assets/xlsx/([^"]+)" download', s)
+    assert xl == [GRAN[gran][3], GRAN[gran][2]], \
+        '%s 엑셀 링크 %s ≠ %s' % (name, xl, [GRAN[gran][3], GRAN[gran][2]])
+
     ft = FOOTV.search(s).group(0)
     fnums = re.findall(r'<td class="num">([\d,.%]+)', ft)
     assert fnums[:3] == list(foot[:3]), '%s 표 합계 %s ≠ %s' % (name, fnums[:3], list(foot[:3]))
@@ -291,16 +300,21 @@ def one(name, pre, frm, to, gran):
         s = put_tips(s, 0, ec_days(frm, to))
 
     # 표 제목·열머리·엑셀 링크 — 그 집계 단위 것으로
-    title, col, xls = GRAN[gran]
+    title, col, xls, xls_status = GRAN[gran]
     s = re.sub(r'(<!-- )[가-힣]*\s*투자수익 카드 -->', r'\g<1>%s 카드 -->' % title, s)
     s = re.sub(r'(<h2 class="card-title">)[가-힣]+ 투자수익(</h2>)', r'\g<1>%s\g<2>' % title, s)
     s = re.sub(r'(<th>)정산예정[일주월](</th>)', r'\g<1>%s\g<2>' % col, s)
     s = re.sub(r'(href="assets/xlsx/)(?:일별|주별|월별)투자수익_[^"]+(" download)', r'\g<1>%s\g<2>' % xls, s)
+    # 결과 없음 낱장은 두 버튼이 모두 disabled 라 링크가 없다 — 있을 때만 맞춘다.
+    n = len(re.findall(r'href="assets/xlsx/투자수익현황_[^"]+" download', s))
+    assert n == (0 if name == 'invest-profit--empty.html' else 1), \
+        '%s 현황 카드 엑셀 링크 %d건' % (name, n)
+    s = re.sub(r'(href="assets/xlsx/)투자수익현황_[^"]+(" download)', r'\g<1>%s\g<2>' % xls_status, s)
     s = put_title(s, name)
 
     io.open(p, 'w', encoding='utf-8').write(s)
-    print('%-34s 프리셋 %-12s %s ~ %s · %-7s · %s%s'
-          % (name, '·'.join(l + ('*' if o else '') for l, o in pre), frm, to, gran, xls,
+    print('%-34s 프리셋 %-12s %s ~ %s · %-7s · %s + %s%s'
+          % (name, '·'.join(l + ('*' if o else '') for l, o in pre), frm, to, gran, xls, xls_status,
              ' · 달력 유지' if pop else ''))
 
 

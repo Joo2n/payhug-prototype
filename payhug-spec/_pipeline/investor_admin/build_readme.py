@@ -46,7 +46,7 @@ DOC_NAME = {
 XLS_BTN = [
     ('투자 자산', '엑셀 다운로드 (현황)', '투자자산현황', 'xls-assets-status.html'),
     ('투자 자산', '엑셀 다운로드 (가맹점별)', '가맹점별투자자산', 'xls-assets-merchant.html'),
-    ('투자 수익', '엑셀 다운로드 (수익 현황)', '투자수익현황', 'xls-profit-status.html'),
+    ('투자 수익', '수익 현황 엑셀 다운로드 — 집계 단위 일별·주별·월별', '투자수익현황', 'xls-profit-status.html'),
     ('투자 수익', '표 엑셀 다운로드 — 집계 단위 일별·주별·월별', '별투자수익', 'xls-profit-daily.html'),
 ]
 

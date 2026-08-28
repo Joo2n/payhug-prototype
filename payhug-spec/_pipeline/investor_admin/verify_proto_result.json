@@ -32,7 +32,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgba(127, 225, 65, 1)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -62,7 +62,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -92,7 +92,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -107,7 +107,7 @@
    "visible": true,
    "state": "default",
    "hash": "#password",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -370,7 +370,7 @@
  ],
  "downloads": [
   {
-   "key": "assets-status",
+   "key": "assets-status/default",
    "expect": "투자자산현황_2026-08-27_2026-08-27.xlsx",
    "click": "ok",
    "viewAfter": "invest-assets",
@@ -381,7 +381,7 @@
    "pass": true
   },
   {
-   "key": "assets-merchant",
+   "key": "assets-merchant/default",
    "expect": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
    "click": "ok",
    "viewAfter": "invest-assets",
@@ -392,7 +392,7 @@
    "pass": true
   },
   {
-   "key": "profit-status",
+   "key": "profit-status/default",
    "expect": "투자수익현황_2026-08-21_2026-08-27.xlsx",
    "click": "ok",
    "viewAfter": "invest-profit",
@@ -403,7 +403,7 @@
    "pass": true
   },
   {
-   "key": "profit-daily",
+   "key": "profit-daily/default",
    "expect": "일별투자수익_2026-08-21_2026-08-27.xlsx",
    "click": "ok",
    "viewAfter": "invest-profit",
@@ -411,6 +411,50 @@
    "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
    "bytes": 5866,
    "srcBytes": 5866,
+   "pass": true
+  },
+  {
+   "key": "profit-status/weekly",
+   "expect": "투자수익현황_2026-08-03_2026-08-30.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-08-03_2026-08-30.xlsx",
+   "bytes": 5468,
+   "srcBytes": 5468,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/weekly",
+   "expect": "주별투자수익_2026-08-03_2026-08-30.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "주별투자수익_2026-08-03_2026-08-30.xlsx",
+   "bytes": 5788,
+   "srcBytes": 5788,
+   "pass": true
+  },
+  {
+   "key": "profit-status/monthly",
+   "expect": "투자수익현황_2026-03-01_2026-08-31.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-03-01_2026-08-31.xlsx",
+   "bytes": 5474,
+   "srcBytes": 5474,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/monthly",
+   "expect": "월별투자수익_2026-03-01_2026-08-31.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "월별투자수익_2026-03-01_2026-08-31.xlsx",
+   "bytes": 5870,
+   "srcBytes": 5870,
    "pass": true
   }
  ],
@@ -1602,8 +1646,8 @@
   },
   {
    "at": "xls-profit-daily/default",
-   "sw": 1434,
-   "cw": 1434,
+   "sw": 1440,
+   "cw": 1440,
    "pass": true
   },
   {

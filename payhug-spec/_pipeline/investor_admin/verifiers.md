@@ -9,11 +9,11 @@
 | `verify_proto.js` | `payhug-investor-prototype/index.html` | 시연본 전건 — 메뉴·상태·다운로드 실물·바깥 통로 |
 | `verify_sync_chain.js` | 원본 ↔ 시연본 | 변환 손실 |
 | `verify_rows.js` | 표 | 행·순번·선택 |
-| `verify_toast.js` | 다운로드 | 토스트 문구 ↔ 실물 바이트 |
+| `verify_toast.js` | 다운로드 | 토스트 문구 ↔ 실물 바이트 (엑셀 8종 · 집계 단위 3단 포함) |
 | `verify_links.py` | 링크·자산 | 전건 200 |
-| `verify_crossscreen.py` | 화면 간 | 숫자 일치 |
+| `verify_crossscreen.py` | 화면 간 | 숫자 일치 · 수익 현황 카드 ↔ 같은 기간 엑셀 실물 |
 | `verify_identity.js` | 산식 | 항등식 |
-| `verify_period.js` | 기간 필터 | 기간·집계 단위 조작 |
+| `verify_period.js` | 기간 필터 | 기간·집계 단위 조작 · 낱장/미리보기 엑셀 링크가 그 기간 파일인지 |
 | `verify_password.js` | 비밀번호 화면 | 실물 대조 |
 | `verify_sim.js` | 투자 시뮬레이션 | 입력 → 산출 |
 | `verify_glossary.js` | 용어 해설 | 앵커 도달·가로 넘침·본문 링크 대상·기호 검색·목차 |
@@ -22,7 +22,7 @@
 | `verify_feasibility.js` | 구현 가능성 문서 | 근거 인용 |
 | `verify_deployed.py` | 배포 3주소 | 익명 수신 바이트로 표식 대조 |
 | `gate_prototype.js` · `gate_glossary.js` | 배포 게이트 | push 전 차단 |
-| `sync_counts.py --check` | 문서 개수 표기 | `counts.py` 실측 ↔ 손으로 쓰는 문서 + `README.md` 재생성분(어긋나면 종료코드 1) |
+| `sync_counts.py --check` | 문서 개수 표기 | `counts.py` 파일 실측 + 문서 자신의 판정 행 실측(구현 가능성 5표 · 화면별 기능 명세 §3) ↔ 손으로 쓰는 문서 + `README.md` 재생성분(어긋나면 종료코드 1) |
 | `sync_profit_static.py` | 투자 수익 낱장 5종 | 검색 카드·표를 다시 찍고 카드↔표 기간 일치를 assert |
 | `build_readme.py --check` | `README.md` | 개수·화면 목록이 실측과 같은지 (`sync_counts.py --check` 가 함께 돈다) |
 
