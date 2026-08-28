@@ -1,21 +1,21 @@
 {
  "_meta": {
   "source": "/Users/semi/cursor/payhug-investor-admin",
-  "sourceCommit": "f8392ed",
+  "sourceCommit": "38c2fcf",
   "measuredAt": "2026-08-28",
   "counts": {
-   "htmlFilesRoot": 43,
+   "htmlFilesRoot": 42,
    "htmlFilesAssets": 2,
    "screens": 15,
-   "states": 21,
-   "interactions": 93,
+   "states": 20,
+   "interactions": 91,
    "defects": {
     "H": 3,
     "M": 9,
     "L": 8
    }
   },
-  "note": "개별 HTML 35개는 Figma 임포트용 원본으로 그대로 보존한다. app.html은 이 사양만 근거로 새로 조립한다. 2026-08-28 대표 미팅 §1(M-1~M-4)·2차 화면 지시(N-1~N-8)·3차 정정 적용."
+  "note": "개별 HTML 34개는 Figma 임포트용 원본으로 그대로 보존한다. app.html은 이 사양만 근거로 새로 조립한다. 2026-08-28 대표 미팅 §1(M-1~M-4)·2차 화면 지시(N-1~N-8)·3차 정정 적용."
  },
  "menus": [
   {
@@ -200,14 +200,6 @@
      "trigger": "집계 단위 토글에서 월별 선택 · 프리셋 6개월",
      "from": "invest-profit",
      "marker": "월별",
-     "markerClass": "badge badge-gray state-badge"
-    },
-    {
-     "id": "invest-profit-datepicker",
-     "file": "invest-profit--datepicker.html",
-     "trigger": "시작일 입력칸 클릭 · 달력 팝오버 열림",
-     "from": "invest-profit",
-     "marker": "기간 선택",
      "markerClass": "badge badge-gray state-badge"
     },
     {
@@ -683,15 +675,15 @@
    "screen": "invest-profit",
    "selector_or_label": "input[type=date] / 시작일",
    "type": "input",
-   "action": "달력 열기",
-   "target": "invest-profit-datepicker"
+   "action": "브라우저 기본 날짜 피커 열림",
+   "target": null
   },
   {
    "screen": "invest-profit",
    "selector_or_label": "input[type=date] / 종료일",
    "type": "input",
-   "action": "달력 열기",
-   "target": "invest-profit-datepicker"
+   "action": "브라우저 기본 날짜 피커 열림",
+   "target": null
   },
   {
    "screen": "invest-profit",
@@ -734,20 +726,6 @@
    "type": "toggle",
    "action": "집계 단위 전환",
    "target": "invest-profit-monthly"
-  },
-  {
-   "screen": "invest-profit-datepicker",
-   "selector_or_label": ".dp-nav / 이전 달·다음 달",
-   "type": "button",
-   "action": "월 이동",
-   "target": null
-  },
-  {
-   "screen": "invest-profit-datepicker",
-   "selector_or_label": ".dp-cell / 날짜 셀 1~31",
-   "type": "button",
-   "action": "기간 선택 (21~27 범위 표기)",
-   "target": null
   },
   {
    "screen": "invest-profit-monthly",
@@ -1457,7 +1435,7 @@
    "title": "상태 파일에서 엑셀·발급 버튼의 링크 소실",
    "files": [
     "invest-assets--page2/-download/-cert-confirm/-empty",
-    "invest-profit--monthly/-datepicker/-empty"
+    "invest-profit--monthly/-empty"
    ],
    "fix": "통합본에서는 상태와 무관하게 동일 액션 핸들러 부여"
   },

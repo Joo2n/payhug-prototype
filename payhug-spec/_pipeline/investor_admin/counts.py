@@ -13,8 +13,7 @@ REPO = '/Users/semi/cursor/payhug-investor-admin'
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, 'counts.json')
 
-# 등재에서 빼는 상태 낱장은 없다. 파일이 배포에 실려 주소로 열리면 상태 수에 든다 —
-# invest-profit--datepicker 를 여기서 빼 두었더니 어느 목록에도 없이 배포만 되는 낱장이 됐다.
+# 등재에서 빼는 상태 낱장은 없다. 파일이 배포에 실려 주소로 열리면 상태 수에 든다.
 
 # 화면이 아닌 문서 낱장
 DOCS = {'index.html', 'glossary.html', 'capability.html',
@@ -54,8 +53,8 @@ def state_files():
 def app_states():
     """통합본이 실제로 태우는 상태 수 — app.html STATE_META 실측.
 
-    상태 낱장 수로 대신 적으면 통합본에 없는 낱장이 생겼을 때 문장이 거짓이 된다
-    (invest-profit--datepicker 가 그 경우다). 기본 상태는 null 이라 label 이 없다.
+    상태 낱장 수로 대신 적으면 통합본에 없는 낱장이 생겼을 때 문장이 거짓이 된다.
+    기본 상태는 null 이라 label 이 없다.
     """
     s = io.open(os.path.join(REPO, 'app.html'), encoding='utf-8').read()
     i = s.index('{', s.index('STATE_META'))

@@ -323,8 +323,7 @@ async function main(){
      ['assets/xlsx/투자수익현황_2026-08-03_2026-08-30.xlsx', 'assets/xlsx/주별투자수익_2026-08-03_2026-08-30.xlsx']],
     ['invest-profit--monthly.html',    '3개월·6개월*', M3, '2026-03-01', '2026-08-31', 6, '월별 투자수익', '정산예정월',
      ['assets/xlsx/투자수익현황_2026-03-01_2026-08-31.xlsx', 'assets/xlsx/월별투자수익_2026-03-01_2026-08-31.xlsx']],
-    ['invest-profit--empty.html',      '일주일·금월',  D3, '2026-02-01', '2026-02-07', 0, '일별 투자수익', '정산예정일', []],
-    ['invest-profit--datepicker.html', '일주일*·금월', D3, '2026-08-21', '2026-08-27', 7, '일별 투자수익', '정산예정일', XW]
+    ['invest-profit--empty.html',      '일주일·금월',  D3, '2026-02-01', '2026-02-07', 0, '일별 투자수익', '정산예정일', []]
   ];
   for(const [f, pre, gr, frm, to, rows, title, col, xls] of STATIC){
     await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/' + f}); await sleep(600);

@@ -61,11 +61,10 @@ DESC = {
  "build_app.py":"통합본 생성기",
  "app_spec.json":"통합본 제작 사양","sync_app_spec.py":"통합본 사양 개수 동기화기 — _meta.counts 를 사양 배열·저장소 실측으로 덮는다","app_build_notes.md":"통합본 조립 지침","app_build_result.md":"통합본 제작 결과·검증",
  "DESIGN_REF.md":"디자인 실측 레퍼런스","README.md":"레포 안내",
- "invest-profit--datepicker.html":"투자 수익 · 기간 선택 — 시작일 달력 팝오버 열림(2026-08-21~08-27 범위 선택) · 기간 역전 경고",
  "review.html":"순차 확인 — 무엇을 어느 순서로 볼지 단계별 항목",
  "glossary-legacy.html":"용어 해설 구버전 — 만기 10~13일·ty 3.57% 시절의 동결 스냅샷. 대표 정의(만기 2.0~6.2일)와 뿌리부터 어긋나 배포에서 뺐다. 파이프라인에만 둔다",
  "feasibility.html":"구현 가능성 검토 — 화면·데이터 항목별 실현 조건. 착수 불가 0건",
- "feasibility.md":"구현 가능성 검토 원고 — 등급 A39·B37·C35·D11·E0",
+ "feasibility.md":"구현 가능성 검토 원고 — 등급 A38·B37·C38·D11·E0",
  "base.css":"공용 스타일 — 실측 디자인 토큰(사이드바 #1B2537 · primary #7FE141)",
  "sheet.css":"엑셀 미리보기 전용 스타일 — xls-*.html · app.html 로드",
  "template.html":"화면 스켈레톤 — 사이드바·헤더 슬라이스 원본. 서빙 대상 아님",
@@ -164,8 +163,6 @@ DESC = {
  "counts.py":"메뉴·화면·상태·엑셀 개수 실측 — 문서에 적는 개수의 단일 원천",
  "counts.json":"개수 실측값 — 생성기·동기화기가 읽는 기준 수치",
  "sync_counts.py":"개수 표기 동기화기 — 생성기 없는 문서의 개수를 실측으로 덮는다",
- "재양도합의서_선택3건_20260827.zip":"계약기록 `선택 문서 다운로드` 묶음 — 재양도 합의서 3건",
- "재양도합의서_전체16건_20260827.zip":"계약기록 `전체 다운로드` 묶음 — 재양도 합의서 16건",
 }
 def desc(fn):
     if fn in DESC: return DESC[fn]
@@ -173,10 +170,9 @@ def desc(fn):
     if m: return f"{DESC.get(m.group(1)+'.html','화면').split(' —')[0]} · 상태: {m.group(2)}"
     if fn.startswith("xls-"): return "엑셀 산출물 서식 — Figma 임포트 전용, 화면 흐름 진입점 아님"
     if fn.endswith(".xlsx"): return "엑셀 파일 — 다운로드 버튼 연결 대상"
-    if fn.startswith("재양도합의서_M"): return "재양도 합의서 견본 — 계약기록 파일 링크 대상"
-    if fn.startswith("계약서_서명대기_"): return "서명 대기 계약서 견본 — 정산채권 양수 `계약서 보기` 대상"
     if fn.startswith("투자자산증명서_"): return "투자자산 증명서 견본 — certificate.html `PDF 다운로드` 대상"
-    if fn.startswith("전자서명결과_") and ("선택" in fn or "전체" in fn): return "계약기록 `선택 문서 다운로드` 묶음"
+    if fn.startswith("전자서명결과_전체"): return "계약기록 `선택 문서 다운로드` — 전 행 선택 시 내려가는 묶음"
+    if fn.startswith("전자서명결과_선택"): return "계약기록 `선택 문서 다운로드` — 기본 선택 3건 묶음"
     if fn.startswith("전자서명결과_"): return "계약기록 행 파일 — 전자서명 결과"
     if fn == "정산금채권_재양도_합의서.txt": return "계약서보기 `계약서 원문 열기` 대상"
     if fn.endswith("_result.json"): return "검증 결과 — " + fn[:-12].replace("verify_", "") + " 실행 산출"
@@ -233,7 +229,7 @@ gitn=len([l for l in gitn.split("\n") if l.strip()])
 now=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 SEC=[("통합·설명 문서",docs,REPO_URL),("기본 화면",base_scr,REPO_URL),("상태 화면",st_scr,REPO_URL),
      ("엑셀 산출물 서식 화면 (Figma 전용)",xls,REPO_URL),("엑셀 파일",xlsx,REPO_URL),
-     ("계약·증명 문서 (견본)",pdocs,REPO_URL),
+     ("계약·증명 문서",pdocs,REPO_URL),
      ("공용 자산",[a for a in assets if a["fn"]!="xlsx"],REPO_URL),("레포 문서",meta,REPO_URL),
      ("원고·분석·검증 (파이프라인)",pipe,PIPE_URL)]
 body="".join(

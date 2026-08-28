@@ -68,7 +68,12 @@ def facts():
     assert len(screens) + 1 == counts.C['screens'], (len(screens), counts.C['screens'])
     assert len(states) == counts.C['states'], (len(states), counts.C['states'])
     d = lambda p: [f for f in fs if f.startswith(p)]
+    # 캡처는 정적 화면 전량을 찍어 두지만 용어 카드가 실제로 거는 것은 그중 일부다.
+    # 몇 장을 부르는지는 배포 HTML 을 훑어 센다 — 손으로 적으면 마커가 옮겨갈 때마다 낡는다.
+    shots = [os.path.basename(f) for f in d('assets/shots/')]
+    html_all = ''.join(io.open(os.path.join(REPO, f), encoding='utf-8').read() for f in root_html)
     return dict(
+        shotsUsed=len([x for x in shots if x in html_all]),
         appStates=counts.app_states(),
         all=len(fs), rootHtml=len(root_html), rootDoc=len([f for f in fs if f.endswith('.md')]),
         docs=docs, states=states, screens=screens,
@@ -115,7 +120,8 @@ def build():
     W('| `assets/` 공용 | %d | `base.css` `sheet.css` `template.html` `components.html` `logo-icon.png` |' % F['assetCommon'])
     W('| 내려받기 실물 | %d | `assets/docs/` %d · `assets/xlsx/` %d |'
       % (F['assetDocs'] + F['assetXlsx'], F['assetDocs'], F['assetXlsx']))
-    W('| 화면 캡처 | %d | `assets/shots/` — 용어 해설이 카드마다 불러 쓴다 |' % F['assetShots'])
+    W('| 화면 캡처 | %d | `assets/shots/` — 정적 화면 촬영본. 용어 해설이 카드에 거는 것은 %d장 |'
+      % (F['assetShots'], F['shotsUsed']))
     W('| 동기화 스크립트 | %d | `scripts/` — 시연본·용어 단독본 변환기 |' % F['scripts'])
     W('')
     W('## 진입점')
@@ -157,7 +163,7 @@ def build():
     W('`xls-*.html` %d종은 Figma 임포트 전용 서식이다. 화면 흐름의 진입점이 아니며, 엑셀 버튼은 미리보기를 거치지 않고 파일을 바로 내려준다.'
       % C['xlsPreview'])
     W('')
-    W('상태 낱장 %d종은 전량이 랜딩·아카이브·구현 가능성 판정에 등재된다. 배포에 실려 주소로 열리는 낱장을 목록 밖에 두지 않는다. 통합본이 태우는 상태는 %d종이고, `invest-profit--datepicker`(시작일 달력 팝오버 열림)는 Figma 임포트용 낱장으로만 둔다.'
+    W('상태 낱장 %d종은 전량이 랜딩·아카이브·구현 가능성 판정에 등재되고, 통합본이 태우는 상태 %d종과 같다. 배포에 실려 주소로 열리는 낱장을 목록 밖에 두지 않는다.'
       % (len(F['states']), F['appStates']))
     W('')
     W('### 설명 문서 %d' % len(F['docs']))
@@ -183,7 +189,8 @@ def build():
     W('    ├── logo-icon.png     # 로고 원본. 화면 렌더는 base.css의 .logo-mark data URI')
     W('    ├── docs/             # 내려받기 실물 %d (PDF · ZIP · TXT)' % F['assetDocs'])
     W('    ├── xlsx/             # 내려받기 실물 %d (XLSX)' % F['assetXlsx'])
-    W('    └── shots/            # 화면 캡처 %d (용어 해설용)' % F['assetShots'])
+    W('    └── shots/            # 화면 캡처 %d — 용어 해설이 거는 것 %d'
+      % (F['assetShots'], F['shotsUsed']))
     W('```')
     W('')
     W('## 엑셀 다운로드 대응')
@@ -199,9 +206,10 @@ def build():
         W('| %s | %s | %s | `%s` |'
           % (scr, btn, ' · '.join('`assets/xlsx/%s`' % h for h in hit), fig))
     W('')
-    W('계약기록의 `선택 문서 다운로드`는 고른 행의 전자서명 결과를 하나로 묶은 텍스트를 내려준다 — `assets/docs/전자서명결과_선택3건_20260827.txt` · `assets/docs/전자서명결과_전체16건_20260827.txt`. 재양도합의서 PDF %d건과 묶음 ZIP %d건도 같은 폴더에 있다.'
-      % (len([f for f in os.listdir(os.path.join(REPO, 'assets/docs')) if f.startswith('재양도합의서_M')]),
-         len([f for f in os.listdir(os.path.join(REPO, 'assets/docs')) if f.endswith('.zip')])))
+    _docs = os.listdir(os.path.join(REPO, 'assets/docs'))
+    W('계약기록의 `선택 문서 다운로드`는 고른 행의 전자서명 결과를 하나로 묶은 텍스트를 내려준다 — `assets/docs/전자서명결과_선택3건_20260827.txt` · `assets/docs/전자서명결과_전체16건_20260827.txt`. 같은 폴더에 행별 전자서명 결과 %d건과 계약서 원문이 텍스트로, 투자자산 증명서가 PDF %d건으로 있다.'
+      % (len([f for f in _docs if f.startswith('전자서명결과_M')]),
+         len([f for f in _docs if f.endswith('.pdf')])))
     W('')
     W('## 참고')
     W('')

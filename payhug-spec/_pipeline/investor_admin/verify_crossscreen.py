@@ -92,7 +92,6 @@ def html_profit(p):
 want_daily = [(x['d'], x['repay'], x['exec'], x['profit'], x['w'], str(x['ty'])) for x in DAILY]
 want_mon   = [(x['d'], x['repay'], x['exec'], x['profit'], x['w'], str(x['ty'])) for x in MONTHLY]
 chk('invest-profit 일별 7행', html_profit('invest-profit.html'), want_daily)
-chk('invest-profit--datepicker 일별 7행', html_profit('invest-profit--datepicker.html'), want_daily)
 chk('invest-profit--monthly 월별 6행', html_profit('invest-profit--monthly.html'), want_mon)
 
 # ── 주별·월별 낱장 ↔ 주별·월별 엑셀 실물 ─────────────────────────

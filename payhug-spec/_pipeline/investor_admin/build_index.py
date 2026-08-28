@@ -33,7 +33,6 @@ MAIN = [
  ('invest-profit.html','투자 수익','trend','badge-primary','투자','기간 검색·일별/주별/월별 투자수익·산식',
   [('주별','invest-profit--weekly.html'),
    ('월별','invest-profit--monthly.html'),
-   ('기간 선택','invest-profit--datepicker.html'),
    ('결과 없음','invest-profit--empty.html')]),
  ('invest-sim.html','투자 시뮬레이션','calc','badge-primary','투자','기준 변수·채권 입력·투자 자산/수익 산출',
   [('실행 결과','invest-sim--result.html')]),
@@ -150,7 +149,6 @@ HEAD = '''<!doctype html>
   }
   .doc-card .doc-icon svg { width: 18px; height: 18px; }
   .doc-card .d-name { font-size: 15px; line-height: 22px; font-weight: 700; color: var(--gray-900); }
-  .doc-card .d-tag{display:inline-block;vertical-align:1px;margin-left:6px;background:var(--primary-100);color:var(--primary-800);border-radius:9999px;padding:1px 8px;font-size:10.5px;line-height:16px;font-weight:700}
 .doc-card .d-desc { font-size: 12px; line-height: 16px; color: var(--gray-400); margin-top: 1px; }
 
   /* 섹션 제목 */
@@ -228,7 +226,7 @@ o.append('''
     <a class="doc-card" href="glossary.html">
       <div class="doc-icon">%s</div>
       <div>
-        <div class="d-name">용어 해설 <span class="d-tag">최신</span></div>
+        <div class="d-name">용어 해설</div>
         <div class="d-desc">화면과 엑셀에 쓰인 계산식 용어 50건</div>
       </div>
     </a>

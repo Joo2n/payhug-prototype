@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""투자 수익 정적 낱장 5종을 통합본(app.html)의 같은 상태에 맞춘다.
+"""투자 수익 정적 낱장 4종을 통합본(app.html)의 같은 상태에 맞춘다.
 
 검색 카드(프리셋 줄·날짜 줄·집계 단위 토글), 현황 카드 값, 표 제목·열머리·본문·합계,
 표 엑셀 링크를 그 상태 그대로 맞춘다.
@@ -8,7 +8,6 @@
   invest-profit--weekly.html      주별 · 4주     2026-08-03 ~ 2026-08-30 · 4행   (신설)
   invest-profit--monthly.html     월별 · 6개월   2026-03-01 ~ 2026-08-31 · 6행
   invest-profit--empty.html       일별 · 직접입력 2026-02-01 ~ 2026-02-07 · 0행
-  invest-profit--datepicker.html  일별 · 일주일  2026-08-21 ~ 2026-08-27 · 7행 (달력 열림)
 
 주별 낱장은 월별 낱장을 본으로 삼아 만든다 — 두 화면이 버킷 표라는 점에서 구조가 같다.
 """
@@ -25,8 +24,7 @@ TOGGLE = ('      <div class="toggle">\n'
 DATES = ('      <div class="filter-row">\n'
          '        <div class="filter-field">\n'
          '          <label>시작일</label>\n'
-         '          <input type="date" class="input%s" value="%s">\n'
-         '%s'
+         '          <input type="date" class="input" value="%s">\n'
          '        </div>\n'
          '        <div class="filter-tilde">~</div>\n'
          '        <div class="filter-field">\n'
@@ -50,7 +48,6 @@ GRAN = {
 }
 
 BLOCK = re.compile(r'    <div class="search-bar">.*?\n    </div>\n', re.S)
-POPUP = re.compile(r'(          <div class="datepicker">.*?\n          </div>\n)', re.S)
 TBODY = re.compile(r'          <tbody>\n.*?\n          </tfoot>\n', re.S)
 
 
@@ -66,11 +63,11 @@ def presets(pairs):
 WARN = '      <p class="range-warn" hidden>시작일은 종료일보다 이후일 수 없습니다.</p>\n'
 
 
-def search_bar(pre, frm, to, gran, focus='', popup=''):
+def search_bar(pre, frm, to, gran):
     act = lambda g: ' active' if g == gran else ''
     return ('    <div class="search-bar">\n'
             + presets(pre)
-            + DATES % (focus, frm, popup, to)
+            + DATES % (frm, to)
             + WARN
             + TOGGLE % (act('daily'), act('weekly'), act('monthly'))
             + '    </div>\n')
@@ -195,7 +192,6 @@ def put_card(s, v):
 PLAN = [
     ('invest-profit.html',             DAILY_PRE(True),  '2026-08-21', '2026-08-27', 'daily'),
     ('invest-profit--empty.html',      DAILY_PRE(False), '2026-02-01', '2026-02-07', 'daily'),
-    ('invest-profit--datepicker.html', DAILY_PRE(True),  '2026-08-21', '2026-08-27', 'daily'),
     ('invest-profit--monthly.html',    [('3개월', False), ('6개월', True)],
                                                          '2026-03-01', '2026-08-31', 'monthly'),
     ('invest-profit--weekly.html',     [('4주', True), ('12주', False)],
@@ -204,7 +200,6 @@ PLAN = [
 
 # 낱장별 상태 이름 — 문서 제목 · 제목줄 뱃지가 같은 값을 쓴다
 BADGE = {'invest-profit.html': '', 'invest-profit--empty.html': '결과 없음',
-         'invest-profit--datepicker.html': '기간 선택',
          'invest-profit--monthly.html': '월별', 'invest-profit--weekly.html': '주별'}
 
 
@@ -285,12 +280,7 @@ def one(name, pre, frm, to, gran):
     m = BLOCK.search(s)
     if not m:
         sys.exit('검색 카드 못 찾음 — ' + name)
-    old = m.group(0)
-    pop = POPUP.search(old)
-    new = search_bar(pre, frm, to, gran,
-                     focus=' is-focused' if pop else '',
-                     popup=pop.group(1) if pop else '')
-    s = s[:m.start()] + new + s[m.end():]
+    s = s[:m.start()] + search_bar(pre, frm, to, gran) + s[m.end():]
 
     if name != 'invest-profit--empty.html':
         s = put_card(s, VIEW[gran])
@@ -313,9 +303,8 @@ def one(name, pre, frm, to, gran):
     s = put_title(s, name)
 
     io.open(p, 'w', encoding='utf-8').write(s)
-    print('%-34s 프리셋 %-12s %s ~ %s · %-7s · %s + %s%s'
-          % (name, '·'.join(l + ('*' if o else '') for l, o in pre), frm, to, gran, xls, xls_status,
-             ' · 달력 유지' if pop else ''))
+    print('%-34s 프리셋 %-12s %s ~ %s · %-7s · %s + %s'
+          % (name, '·'.join(l + ('*' if o else '') for l, o in pre), frm, to, gran, xls, xls_status))
 
 
 if __name__ == '__main__':

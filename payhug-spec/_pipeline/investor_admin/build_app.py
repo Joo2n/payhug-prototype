@@ -193,10 +193,6 @@ CSS = r'''
   .toast-info .t-close { color: var(--primary-600); }
   .toast .t-close svg { width: 16px; height: 16px; }
 
-  /* ── 필터 입력 포커스 ─────────────────────────────────────── */
-  .filter-field { position: relative; }
-  .input.is-focused { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(127,225,65,0.2); }
-
   /* ── 서명 목록·하단 액션바 ────────────────────────────────── */
   .sign-row { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--gray-50); }
   .sign-row:last-child { border-bottom: 0; }
@@ -1477,7 +1473,7 @@ var SEED = {
     clearSignTimer();
     AQ.doc = null;
     if(s === 'default'){ AQ.sel = [false, false, false]; AQ.signed = [false, false, false]; AQ.phase = 'list'; }
-    else if(s === 'done'){ AQ.sel = [true, true, false]; AQ.signed = [true, true, false]; AQ.phase = 'done'; }
+    else if(s === 'done'){ AQ.sel = [false, false, false]; AQ.signed = [true, true, false]; AQ.phase = 'done'; }
     else if(s === 'doc'){ AQ.sel = [false, false, false]; AQ.signed = [false, false, false]; AQ.phase = 'list'; AQ.doc = 0; }
     else { AQ.sel = [true, true, false]; AQ.signed = [false, false, false]; AQ.phase = s; }
   },
@@ -2877,7 +2873,8 @@ ACT['aq-sign-go'] = function(){
   clearSignTimer();
   signTimer = setTimeout(function(){
     signTimer = null;
-    for(var i = 0; i < AQ.sel.length; i++) if(AQ.sel[i]) AQ.signed[i] = true;
+    /* 서명된 행은 대기 목록에서 빠진다 — 선택도 함께 비워야 선택 건수가 없는 행을 세지 않는다 */
+    for(var i = 0; i < AQ.sel.length; i++) if(AQ.sel[i]){ AQ.signed[i] = true; AQ.sel[i] = false; }
     AQ.phase = 'done';
     DIRTY['acquisition-list'] = 1;         /* 메뉴를 오가도 서명 결과가 남는다 */
     refresh('acquisition-list');
