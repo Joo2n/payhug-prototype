@@ -10,6 +10,13 @@ OUT  = os.path.join(REPO, "archive.html")
 # 레포 파일은 상대 경로 — 서버 없이도, Pages 에서도 열린다.
 # 파이프라인 파일은 배포본에 없다. 링크를 걸면 전건 죽은 링크가 되므로 경로 문자열로만 싣는다(G-7).
 REPO_URL, PIPE_URL = "", None
+# 배포 호스트가 내주지 않는 파일 — 링크를 걸면 로컬에선 열리고 배포에선 404 다.
+# Vercel 정적 배포는 README.md 를 산출물에서 뺀다(실측: /README.md 404 · /DESIGN_REF.md 200).
+# 그래서 README.md 는 링크 없이 경로 문자열로만 싣는다.
+NO_SERVE = {"README.md"}
+# 배포 = git 이 추적하는 것만 나간다. 추적 밖 파일은 로컬에 있어도 배포에서 죽는다.
+TRACKED = set(subprocess.run(["git", "-C", REPO, "-c", "core.quotepath=false", "ls-files"],
+                             capture_output=True, text=True).stdout.split("\n"))
 
 DESC = {
  "index.html":"랜딩 — 전 화면 목록 진입점","app.html":"통합 프로토타입 — 메뉴·버튼이 실제 동작하는 단일 HTML",
@@ -56,7 +63,7 @@ DESC = {
  "DESIGN_REF.md":"디자인 실측 레퍼런스","README.md":"레포 안내",
  "invest-profit--datepicker.html":"폐기 대상 — 커스텀 달력 열림 상태 전용 화면. 네이티브 input[type=date] 단독으로 통일해 통합본·index 에서 제외. glossary.html 이 링크를 걸고 있어 파일만 남긴다",
  "review.html":"순차 확인 — 무엇을 어느 순서로 볼지 단계별 항목",
- "glossary-legacy.html":"용어 해설 구버전 — 만기 10~13일 시절의 동결 스냅샷. 대표 정의(만기 2.0~6.2일)와 어긋나 현행 문서 어디에서도 링크하지 않는다",
+ "glossary-legacy.html":"용어 해설 구버전 — 만기 10~13일·ty 3.57% 시절의 동결 스냅샷. 대표 정의(만기 2.0~6.2일)와 뿌리부터 어긋나 배포에서 뺐다. 파이프라인에만 둔다",
  "feasibility.html":"구현 가능성 검토 — 화면·데이터 항목별 실현 조건. 착수 불가 0건",
  "feasibility.md":"구현 가능성 검토 원고 — 등급 A39·B37·C35·D11·E0",
  "base.css":"공용 스타일 — 실측 디자인 토큰(사이드바 #1B2537 · primary #7FE141)",
@@ -191,7 +198,7 @@ def rows(items, base):
     r=[]
     for i in items:
         fn=html.escape(i["fn"])
-        if base is None:
+        if base is None or i["rel"] in NO_SERVE:
             cell=f'<span class="nl">{fn}</span>'
         else:
             cell=f'<a href="{(base+"/" if base else "")+html.escape(i["rel"])}" target="_blank">{fn}</a>'
@@ -213,7 +220,7 @@ TODO=(f'<section id="todo"><h2>작업 목록 <span class="cnt">{_dn}/{len(_td)} 
  f'<tbody>{_tr}</tbody></table></div></section>')
 
 root=[f for f in scan(REPO) if f["fn"].endswith(".html")]
-docs=[f for f in root if f["fn"] in ("index.html","app.html","glossary.html","glossary-legacy.html",
+docs=[f for f in root if f["fn"] in ("index.html","app.html","glossary.html",
       "capability.html","feasibility.html","inquiry.html","review.html","archive.html")]
 xls =[f for f in root if f["fn"].startswith("xls-")]
 scr =[f for f in root if f not in docs and f not in xls]
@@ -275,7 +282,8 @@ tr:hover td{{background:#fafdf8}}
 &nbsp;·&nbsp; 갱신 <code>python3 {PIPE}/build_archive.py</code></div>
 {TODO}\n{body}</div></body></html>'''
 
-# G-7 — 죽은 링크 0건. 로컬 서버 주소·레포 밖 경로는 배포본에서 전건 죽는다.
+# G-7 — 죽은 링크 0건. 판정 기준은 로컬 파일 존재가 아니라 배포에서 열리는가다.
+#   ① 로컬 서버 주소  ② 디스크에 없음  ③ git 추적 밖(배포에 안 나감)  ④ 호스트가 안 내주는 파일
 _href = re.findall(r'<a[^>]+href="([^"]+)"', DOC)
 _dead = []
 for h in _href:
@@ -283,10 +291,15 @@ for h in _href:
         continue
     if h.startswith(("http://", "https://")):
         if "localhost" in h or "127.0.0.1" in h:
-            _dead.append(h)
+            _dead.append(h + " (로컬 서버)")
         continue
-    if not os.path.exists(os.path.join(REPO, h.split("#")[0].split("?")[0])):
-        _dead.append(h)
+    rel = h.split("#")[0].split("?")[0]
+    if not os.path.exists(os.path.join(REPO, rel)):
+        _dead.append(rel + " (디스크 없음)")
+    elif rel not in TRACKED:
+        _dead.append(rel + " (git 추적 밖 — 배포에 안 나간다)")
+    elif rel in NO_SERVE:
+        _dead.append(rel + " (호스트 미서빙)")
 assert not _dead, "죽은 링크 %d건: %s" % (len(_dead), ", ".join(sorted(set(_dead))[:10]))
 
 open(OUT, "w").write(DOC)

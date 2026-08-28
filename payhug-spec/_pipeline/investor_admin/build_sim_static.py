@@ -14,6 +14,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 # ── 사이드바 8메뉴 동기화 ─────────────────────────────────────────
 TPL = io.open(os.path.join(REPO, 'assets/template.html'), encoding='utf-8').read()
+# 스켈레톤은 assets/ 안에 있어 <base href="../"> 로 상대경로 기준을 루트로 되돌린다.
+# 루트에 놓이는 화면에는 그 줄이 있으면 안 된다 — 여기서 걷어 낸다.
+TPL = re.sub(r'<!-- 이 파일만 assets/.*?-->\n<base href="\.\./">\n', '', TPL, count=1, flags=re.S)
+assert '<base' not in TPL
 NAV_NEW = re.search(r'( *<a class="nav-item" data-menu="invest-sim".*?</a>\n)', TPL, re.S).group(1)
 ANCHOR  = '          <span>투자 수익</span>\n        </a>\n'
 SKIP    = {'app.html'}

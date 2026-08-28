@@ -29,17 +29,36 @@ def chk(name, ok, detail=""):
     rows.append((name, ok, detail))
 
 
+def html_files():
+    """검사 대상 = 루트 HTML + assets/ HTML. assets/ 안의 파일도 배포에서 주소로 열린다."""
+    out = [f for f in sorted(os.listdir(REPO)) if f.endswith(".html") and f not in SKIP_FILES]
+    out += ["assets/" + f for f in sorted(os.listdir(os.path.join(REPO, "assets")))
+            if f.endswith(".html")]
+    return out
+
+
+BASE_TAG = re.compile(r'<base[^>]*href="([^"]+)"[^>]*>')
+
 targets = {}
-for f in sorted(os.listdir(REPO)):
-    if not f.endswith(".html") or f in SKIP_FILES:
-        continue
+for f in html_files():
     s = io.open(os.path.join(REPO, f), encoding="utf-8").read()
-    for h in HREF.findall(s):
+    # 배포 주소 기준으로 푼다 — 링크는 그 파일이 놓인 자리에서 상대다.
+    # <base href> 가 있으면 그것이 기준이다(assets/template.html 이 ../ 로 루트를 가리킨다).
+    bm = BASE_TAG.search(s)
+    root = os.path.dirname(f)
+    if bm:
+        root = os.path.normpath(os.path.join(root, bm.group(1)))
+        root = "" if root == "." else root
+    for h in HREF.findall(BASE_TAG.sub(" ", s)):     # <base> 는 링크가 아니라 기준이다
         if h.startswith(("http://", "https://", "#", "mailto:", "data:", "//")):
             continue
         if "'+" in h or '"+' in h or "' +" in h or '" +' in h:   # JS 문자열 조립 — 아래 동적 대조에서 본다
             continue
-        targets.setdefault(h, []).append(f)
+        rel = os.path.normpath(os.path.join(root, h)) if root else h
+        if rel.startswith(".."):
+            chk("%s → %s" % (f, h), False, "레포 밖으로 나간다")
+            continue
+        targets.setdefault(rel, []).append(f)
 
 print("로컬 링크 고유 %d개 / 참조 %d건" % (len(targets), sum(len(v) for v in targets.values())))
 

@@ -2777,7 +2777,7 @@ ACT['xls-get']   = function(el){
 ACT['toast-close'] = function(){ hideToast(); };
 
 /* 메뉴 그룹 접힘 — 원본 AdminLayout.tsx:486(<button>), :494(셰브론 -rotate-90 duration-200).
-   종전에는 <div> 에 셰브론만 붙어 눌러도 반응이 없었다. */
+   그룹 머리 전체가 누름 대상이다. */
 ACT['nav-group'] = function(el){
   var g = el.closest('.nav-group');
   if(!g) return;
@@ -2805,8 +2805,7 @@ ACT['preset'] = function(el){
   refresh('invest-profit');
 };
 /* 날짜 칸은 어디를 눌러도 달력이 뜬다 — 숫자 부분(2026. 08. 21.)을 눌러도 마찬가지다.
-   종전에는 오른쪽 달력 아이콘을 정확히 눌러야만 열렸다.
-   원본 어드민은 showPicker() 를 쓰지 않아(레포 0건) 같은 불편이 있다 — 이 산출물만 다르다.
+   원본 어드민은 showPicker() 를 쓰지 않아(레포 0건) 아이콘을 정확히 눌러야 열린다 — 이 산출물만 다르다.
    showPicker() 는 사용자 제스처 안에서만 되고 브라우저에 없을 수도 있어 try 로 감싼다.
    막히면 브라우저 기본 동작(아이콘 클릭·타이핑) 그대로라 잃는 것이 없다.
    키보드 Tab 으로 들어온 포커스에서는 열지 않는다 — 탭 이동마다 달력이 덮이면 키보드 조작이 막힌다. */
@@ -3051,7 +3050,7 @@ document.addEventListener('change', function(e){
   var el = e.target.closest && e.target.closest('[data-act]');
   if(!el) return;
   /* 날짜 입력이 조회 조건을 움직인다 — 원본 DateRangeFilter.tsx:116-123 의 value/onChange 대응.
-     종전에는 change 를 받는 코드가 없어 사용자가 친 값이 버려졌다. */
+     사용자가 직접 친 값도 여기서 받는다. */
   if(el.dataset.act === 'pf-date'){
     /* 고른 날짜는 그 자리에서 집계 단위 경계로 스냅한다 —
        주별이면 그 날짜가 속한 주(월~일), 월별이면 그 달(1일~말일)이 통째로 잡힌다. */

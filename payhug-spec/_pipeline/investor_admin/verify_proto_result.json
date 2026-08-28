@@ -32,7 +32,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -47,7 +47,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-sim",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -62,7 +62,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -92,7 +92,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgb(127, 225, 65)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -847,7 +847,7 @@
   },
   {
    "at": "invest-profit/default",
-   "h": 1244,
+   "h": 1248,
    "empties": [
     "pf-from",
     "pf-to"
@@ -859,7 +859,7 @@
   },
   {
    "at": "invest-profit/monthly",
-   "h": 1199,
+   "h": 1203,
    "empties": [
     "pf-from",
     "pf-to"
@@ -871,7 +871,7 @@
   },
   {
    "at": "invest-profit/empty",
-   "h": 984,
+   "h": 988,
    "empties": [
     "pf-from",
     "pf-to"

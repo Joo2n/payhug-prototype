@@ -135,6 +135,9 @@ VIEW = {
                 RM.MSUM['exec'], RM.MSUM['profit'], RM.MSUM['ty'], RM.MSUM['tyAsset']),
 }
 
+# Ty 두 칸의 ty-label 은 put_tips 가 툴팁 마크업으로 채운다. 라벨 안쪽을 고정 문자열로 잡으면
+# 한 번 채워진 화면에서는 카드가 통째로 안 잡히고 re.sub 가 조용히 0건을 돌려준다 —
+# 주별 낱장이 월별 값을 그대로 이고 있던 원인이다. 라벨 안쪽은 문구만 보고 건너뛴다.
 CARD = re.compile(
     r'(<div class="summary-label">검색대상기간</div>\s*<div style="[^"]*">)[^<]*(</div>\s*'
     r'<div class="summary-sub mono">)[^<]*(</div>.*?'
@@ -142,9 +145,9 @@ CARD = re.compile(
     r'<span class="unit">원</span></div>.*?'
     r'<div class="summary-label">투자수익</div>\s*<div class="summary-value">)[\d,]*('
     r'<span class="unit">원</span></div>.*?'
-    r'<div class="ty-label">투자실행금액 대비</div>\s*<div class="summary-value">)[\d.]*('
+    r'투자실행금액 대비.*?<div class="summary-value">)[\d.]*('
     r'<span class="unit">%</span>.*?'
-    r'<div class="ty-label">투자자산 대비</div>\s*<div class="summary-value">)[\d.]*('
+    r'투자자산 대비.*?<div class="summary-value">)[\d.]*('
     r'<span class="unit">%</span>)', re.S)
 
 
@@ -177,9 +180,11 @@ def put_tips(s, psa, ec_days):
 
 def put_card(s, v):
     lbl, sub, _rows, _foot_, ex, pf, ty4, ty5 = v
-    return CARD.sub(lambda m: (m.group(1) + lbl + m.group(2) + sub + m.group(3) + f(ex)
-                               + m.group(4) + f(pf) + m.group(5) + str(ty4) + m.group(6)
-                               + str(ty5) + m.group(7)), s, count=1)
+    out, n = CARD.subn(lambda m: (m.group(1) + lbl + m.group(2) + sub + m.group(3) + f(ex)
+                                  + m.group(4) + f(pf) + m.group(5) + str(ty4) + m.group(6)
+                                  + str(ty5) + m.group(7)), s, count=1)
+    assert n == 1, '현황 카드를 못 잡았다 — 카드가 표와 다른 기간을 이고 남는다'
+    return out
 
 
 PLAN = [
@@ -192,6 +197,11 @@ PLAN = [
                                                          '2026-08-03', '2026-08-30', 'weekly'),
 ]
 
+# 낱장별 상태 이름 — 문서 제목 · 제목줄 뱃지가 같은 값을 쓴다
+BADGE = {'invest-profit.html': '', 'invest-profit--empty.html': '결과 없음',
+         'invest-profit--datepicker.html': '기간 선택',
+         'invest-profit--monthly.html': '월별', 'invest-profit--weekly.html': '주별'}
+
 
 def ec_days(frm, to):
     """EC 합에 들어가는 날수 = 조회 기간에 원장이 갖고 있는 일자 수(통합본 ecDays 와 같다)."""
@@ -199,13 +209,65 @@ def ec_days(frm, to):
 
 
 def make_weekly():
-    """월별 낱장을 본으로 주별 낱장을 만든다 — 검색 카드는 뒤이어 one() 이 맞춘다."""
+    """월별 낱장을 본으로 주별 낱장을 만든다 — 검색 카드·제목은 뒤이어 one() 이 맞춘다."""
     s = io.open(REPO + 'invest-profit--monthly.html', encoding='utf-8').read()
-    s = s.replace('<span class="badge badge-gray state-badge">월별</span>',
-                  '<span class="badge badge-gray state-badge">주별</span>')
     s = put_card(s, VIEW['weekly'])
     s = TBODY.sub(lambda m: table_block(VIEW['weekly'][2], VIEW['weekly'][3]), s, count=1)
     io.open(REPO + 'invest-profit--weekly.html', 'w', encoding='utf-8').write(s)
+
+
+def put_title(s, name):
+    """문서 제목 · 제목줄 뱃지를 그 낱장 상태로. 본을 뜬 화면의 이름이 남지 않게 한다."""
+    b = BADGE[name]
+    s = re.sub(r'<title>PayHug Admin — 투자 수익[^<]*</title>',
+               '<title>PayHug Admin — 투자 수익%s</title>' % (' (%s)' % b if b else ''), s, count=1)
+    s = re.sub(r'(<h1 class="page-title">투자 수익)(?: <span class="badge badge-gray state-badge">'
+               r'[^<]*</span>)?(</h1>)',
+               r'\g<1>%s\g<2>' % (' <span class="badge badge-gray state-badge">%s</span>' % b if b else ''),
+               s, count=1)
+    return s
+
+
+PERIOD = re.compile(r'<div class="summary-sub mono">([^<]*)</div>')
+DATEIN = re.compile(r'<input type="date" class="input[^"]*" value="([\d-]+)"')
+FOOTV  = re.compile(r'<tfoot>.*?</tfoot>', re.S)
+CARDV  = re.compile(r'<div class="summary-label">(?:투자실행금|투자수익)</div>\s*'
+                    r'<div class="summary-value">([\d,]*)<span class="unit">원</span>')
+
+
+def assert_period(name, frm, to, gran):
+    """카드와 표가 같은 기간을 말하는지 낱장에서 직접 읽어 대조한다.
+
+    D-36·D-37 — 화면 숫자는 원장 한 벌에서 나오고, 한 화면 안에서 카드와 표가 어긋나면 안 된다.
+    주별 낱장이 월별 카드(6개월·88,449,097,042)를 이고 표는 4주 합계를 보이던 일을 여기서 막는다.
+    """
+    s = io.open(REPO + name, encoding='utf-8').read()
+    lbl, sub, rows, foot = VIEW[gran][0], VIEW[gran][1], VIEW[gran][2], VIEW[gran][3]
+    empty = name == 'invest-profit--empty.html'
+
+    got = DATEIN.findall(s)
+    assert got == [frm, to], '%s 조회 입력 %s ≠ %s~%s' % (name, got, frm, to)
+
+    per = PERIOD.findall(s)
+    assert len(per) == 1, '%s 검색대상기간 %d건' % (name, len(per))
+    want = '%s ~ %s' % (frm, to) if empty else sub
+    assert per[0] == want, '%s 카드 기간 %s ≠ 조회 %s' % (name, per[0], want)
+
+    body = re.search(r'<tbody>(.*?)</tbody>', s, re.S).group(1)
+    n = body.count('<tr>')
+    if empty:
+        assert n == 1 and '조회 결과가 없습니다.' in body, '%s 빈 상태 행 %d건' % (name, n)
+        assert CARDV.findall(s) == ['0', '0'], '%s 빈 상태인데 카드에 값이 있다' % name
+        return '행 0 · 카드 %s' % per[0]
+    assert n == len(rows), '%s 표 행 %d ≠ %d' % (name, n, len(rows))
+
+    ft = FOOTV.search(s).group(0)
+    fnums = re.findall(r'<td class="num">([\d,.%]+)', ft)
+    assert fnums[:3] == list(foot[:3]), '%s 표 합계 %s ≠ %s' % (name, fnums[:3], list(foot[:3]))
+    cv = CARDV.findall(s)
+    assert cv == [foot[1], foot[2]], '%s 카드 값 %s ≠ 표 합계 %s' % (name, cv, [foot[1], foot[2]])
+    assert lbl in s, '%s 검색대상기간 라벨 %s 없음' % (name, lbl)
+    return '행 %d · 카드 %s %s · 합계 %s' % (n, lbl, per[0], foot[1])
 
 
 def one(name, pre, frm, to, gran):
@@ -234,6 +296,7 @@ def one(name, pre, frm, to, gran):
     s = re.sub(r'(<h2 class="card-title">)[가-힣]+ 투자수익(</h2>)', r'\g<1>%s\g<2>' % title, s)
     s = re.sub(r'(<th>)정산예정[일주월](</th>)', r'\g<1>%s\g<2>' % col, s)
     s = re.sub(r'(href="assets/xlsx/)(?:일별|주별|월별)투자수익_[^"]+(" download)', r'\g<1>%s\g<2>' % xls, s)
+    s = put_title(s, name)
 
     io.open(p, 'w', encoding='utf-8').write(s)
     print('%-34s 프리셋 %-12s %s ~ %s · %-7s · %s%s'
@@ -246,3 +309,6 @@ if __name__ == '__main__':
         if a[0] == 'invest-profit--weekly.html':
             make_weekly()
         one(*a)
+    print('-- 카드 ↔ 표 기간 일치 --')
+    for name, _pre, frm, to, gran in PLAN:
+        print('  %-34s %s' % (name, assert_period(name, frm, to, gran)))
