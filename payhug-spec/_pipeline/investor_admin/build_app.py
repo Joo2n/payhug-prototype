@@ -1934,12 +1934,15 @@ var SIM_PLAT = [
 var SIM_DUR = {card:2, bm:3, cpe:5, yo:6};
 function simLabel(k){ for(var i = 0; i < SIM_PLAT.length; i++) if(SIM_PLAT[i].k === k) return SIM_PLAT[i].label; return k; }
 function simDue(sd, plat){ return sd ? addDays(sd, SIM_DUR[plat] || 0) : sd; }
+/* 미회수 4행(1~4)은 30:30:20:20 — 2x0.3 + 3x0.3 + 5x0.2 + 6x0.2 = 3.7 로, W 가 투자 자산 화면의
+   3.7 일과 같은 자리에 선다. 만기 4행(5~8)은 40:40:10:10 — PSD 3.1 로 투자 수익 화면 일별 합계와
+   같은 자리다. 미회수 합 10억은 그대로라 투자실행액 998,900,000 도 그대로다. */
 function simSeedRows(){
   return [
-    {plat:'card', amt:400000000, sd:'2026-08-26', dd:'2026-08-28'},
-    {plat:'bm',   amt:400000000, sd:'2026-08-26', dd:'2026-08-29'},
-    {plat:'cpe',  amt:100000000, sd:'2026-08-26', dd:'2026-08-31'},
-    {plat:'yo',   amt:100000000, sd:'2026-08-26', dd:'2026-09-01'},
+    {plat:'card', amt:300000000, sd:'2026-08-26', dd:'2026-08-28'},
+    {plat:'bm',   amt:300000000, sd:'2026-08-26', dd:'2026-08-29'},
+    {plat:'cpe',  amt:200000000, sd:'2026-08-26', dd:'2026-08-31'},
+    {plat:'yo',   amt:200000000, sd:'2026-08-26', dd:'2026-09-01'},
     {plat:'card', amt:200000000, sd:'2026-08-22', dd:'2026-08-24'},
     {plat:'bm',   amt:200000000, sd:'2026-08-22', dd:'2026-08-25'},
     {plat:'cpe',  amt:50000000,  sd:'2026-08-21', dd:'2026-08-26'},
