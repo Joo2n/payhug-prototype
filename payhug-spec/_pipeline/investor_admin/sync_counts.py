@@ -134,8 +134,9 @@ C['capBlockHypW'], C['capBlockChkW'], C['capBlockNaW'] = _bw
 #  (파일, 정규식, 실측을 끼운 치환문)  — 정규식은 반드시 1건만 잡혀야 한다
 RULES = [
  (REPO + '/review.html',
-  r'const CNT = \{menus:\d+, screens:\d+, states:\d+, xlsx:\d+\};',
-  'const CNT = {{menus:{menus}, screens:{screens}, states:{states}, xlsx:{xlsx}}};'),
+  r'const CNT = \{menus:\d+, screens:\d+, states:\d+, appStates:\d+, xlsx:\d+\};',
+  'const CNT = {{menus:{menus}, screens:{screens}, states:{states}, '
+  'appStates:{appStates}, xlsx:{xlsx}}};'),
 
  (REPO + '/capability.html',
   r'<td>엑셀 \d+종 \+ 투자자산 증명서\(전자서명값 표시\)',
@@ -297,8 +298,10 @@ RULES = [
   r'\| HTML 파일 \| \d+ \(화면 \d+ \+ 상태 변형 \d+ \+ 공용 부품 \d+\) \|',
   '| HTML 파일 | {kitHtml} (화면 {screenFiles} + 상태 변형 {states} + 공용 부품 {assetParts}) |'),
  (HERE + '/capability_manuscript.md',
-  r'\| 상태 변형 \| \d+ \(레포 상태 파일 \d+ 중',
-  '| 상태 변형 | {states} (레포 상태 파일 {statesAll} 중'),
+  r'\| 상태 변형 \| \d+ \|', '| 상태 변형 | {states} |'),
+ (HERE + '/capability_manuscript.md',
+  r'\(HTML \d+개 = 화면 \d+ \+ 상태 변형 \d+ \+ 공용 부품 \d+\)',
+  '(HTML {kitHtml}개 = 화면 {screenFiles} + 상태 변형 {states} + 공용 부품 {assetParts})'),
 
  # 구현 가능성 판정 대상 — 화면(낱장 + 랜딩) · 상태 · 합계
  (REPO + '/feasibility.html',

@@ -158,10 +158,10 @@ chk(27, '편지 본문 예외 근거 — pre.src 화면 비노출', _hid and _in
     f'pre.src {_inq.count(chr(60) + "pre class=" + chr(34) + "src" + chr(34))}블록 · '
     + ('display:none' if _hid else '화면에 뜬다'))
 
-# 배포 명단 무결 — 루트 HTML 이 전부 counts 가 아는 갈래(문서·화면·상태·폐기)에 든다.
+# 배포 명단 무결 — 루트 HTML 이 전부 counts 가 아는 갈래(문서·화면·상태)에 든다.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import counts as _cnt
-_known = set(_cnt.DOCS) | set(_cnt.RETIRED) | set(_cnt.screen_files()) | set(_cnt.state_files())
+_known = set(_cnt.DOCS) | set(_cnt.screen_files()) | set(_cnt.state_files())
 _stray = [f for f in ROOT if f not in _known]
 chk(28, '배포 루트 HTML 전량이 실측 명단에 든다', not _stray, '명단 밖 ' + (', '.join(_stray) or '없음'))
 

@@ -63,15 +63,15 @@ def facts():
     fs = tracked()
     root_html = sorted(f for f in fs if f.endswith('.html') and '/' not in f)
     docs = [f for f in root_html if f in counts.DOCS and f != 'index.html']
-    states = [f for f in root_html if '--' in f and f not in counts.RETIRED]
-    retired = [f for f in root_html if f in counts.RETIRED]
+    states = [f for f in root_html if '--' in f]
     screens = [f for f in root_html if f not in counts.DOCS and '--' not in f and f != 'app.html']
     assert len(screens) + 1 == counts.C['screens'], (len(screens), counts.C['screens'])
     assert len(states) == counts.C['states'], (len(states), counts.C['states'])
     d = lambda p: [f for f in fs if f.startswith(p)]
     return dict(
+        appStates=counts.app_states(),
         all=len(fs), rootHtml=len(root_html), rootDoc=len([f for f in fs if f.endswith('.md')]),
-        docs=docs, states=states, retired=retired, screens=screens,
+        docs=docs, states=states, screens=screens,
         assetCommon=len([f for f in d('assets/') if f.count('/') == 1]),
         assetDocs=len(d('assets/docs/')), assetXlsx=len(d('assets/xlsx/')),
         assetShots=len(d('assets/shots/')), scripts=len(d('scripts/')),
@@ -109,8 +109,8 @@ def build():
     W('')
     W('| 구획 | 수 | 내역 |')
     W('|---|---|---|')
-    W('| 루트 HTML | %d | 통합 프로토타입 1 · 기본 화면 %d · 상태 %d · 폐기 상태 %d · 랜딩 1 · 설명 문서 %d |'
-      % (F['rootHtml'], len(F['screens']), len(F['states']), len(F['retired']), len(F['docs'])))
+    W('| 루트 HTML | %d | 통합 프로토타입 1 · 기본 화면 %d · 상태 %d · 랜딩 1 · 설명 문서 %d |'
+      % (F['rootHtml'], len(F['screens']), len(F['states']), len(F['docs'])))
     W('| 루트 문서 | %d | `README.md` `DESIGN_REF.md` |' % F['rootDoc'])
     W('| `assets/` 공용 | %d | `base.css` `sheet.css` `template.html` `components.html` `logo-icon.png` |' % F['assetCommon'])
     W('| 내려받기 실물 | %d | `assets/docs/` %d · `assets/xlsx/` %d |'
@@ -123,8 +123,8 @@ def build():
     W('| 파일 | 용도 |')
     W('|---|---|')
     W('| `index.html` | 랜딩. 통합 프로토타입 진입 + 화면·상태 전량 목록 |')
-    W('| `app.html` | 통합 프로토타입. 화면 %d · 상태 %d 전부를 한 파일에서 조작. 메뉴 전환·엑셀 실제 내려받기·모달·검색·페이지네이션 동작. `#화면/상태` 해시 딥링크 |'
-      % (len(F['screens']), len(F['states'])))
+    W('| `app.html` | 통합 프로토타입. 화면 %d · 상태 %d 를 한 파일에서 조작. 메뉴 전환·엑셀 실제 내려받기·모달·검색·페이지네이션 동작. `#화면/상태` 해시 딥링크 |'
+      % (len(F['screens']), F['appStates']))
     W('')
     W('개별 HTML은 Figma 네이티브 임포트용 정적 원본(1파일 = 1프레임)이고, `app.html`은 조작 가능한 프로토타입이다. 두 산출물은 역할이 다르며 서로를 대체하지 않는다.')
     W('')
@@ -157,8 +157,8 @@ def build():
     W('`xls-*.html` %d종은 Figma 임포트 전용 서식이다. 화면 흐름의 진입점이 아니며, 엑셀 버튼은 미리보기를 거치지 않고 파일을 바로 내려준다.'
       % C['xlsPreview'])
     W('')
-    W('폐기 상태 %d종(%s)은 랜딩·통합본·Figma 계획에 등재하지 않는다. 원본 어드민이 커스텀 드롭다운을 쓰지 않고 날짜도 `input[type=date]` 단독이라 컨트롤 열림 상태를 따로 그리지 않는다. 용어 해설이 캡처를 참조해 파일만 남긴다.'
-      % (len(F['retired']), ' · '.join('`%s`' % f for f in F['retired'])))
+    W('상태 낱장 %d종은 전량이 랜딩·아카이브·구현 가능성 판정에 등재된다. 배포에 실려 주소로 열리는 낱장을 목록 밖에 두지 않는다. 통합본이 태우는 상태는 %d종이고, `invest-profit--datepicker`(시작일 달력 팝오버 열림)는 Figma 임포트용 낱장으로만 둔다.'
+      % (len(F['states']), F['appStates']))
     W('')
     W('### 설명 문서 %d' % len(F['docs']))
     W('')
@@ -172,8 +172,8 @@ def build():
     W('```')
     W('├── index.html            # 랜딩 (통합본 진입 + 전량 목록)')
     W('├── app.html              # 통합 프로토타입')
-    W('├── *.html                # 기본 화면 %d + 상태 %d + 폐기 상태 %d + 설명 문서 %d'
-      % (len(F['screens']), len(F['states']), len(F['retired']), len(F['docs'])))
+    W('├── *.html                # 기본 화면 %d + 상태 %d + 설명 문서 %d'
+      % (len(F['screens']), len(F['states']), len(F['docs'])))
     W('├── scripts/              # 시연본·용어 단독본 변환기')
     W('└── assets/')
     W('    ├── base.css          # 공용 스타일 (실측 토큰: 사이드바 #1B2537, primary #7FE141 등)')

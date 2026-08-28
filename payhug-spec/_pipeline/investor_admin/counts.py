@@ -13,9 +13,8 @@ REPO = '/Users/semi/cursor/payhug-investor-admin'
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, 'counts.json')
 
-# 랜딩·통합본에 등재하지 않는 낱장 — 커스텀 달력 열림 상태 전용이라 네이티브 input[type=date]
-# 단독 통일로 폐기됐다. 파일만 남아 있어(용어 해설이 캡처를 참조) 화면 수에서 뺀다.
-RETIRED = {'invest-profit--datepicker.html'}
+# 등재에서 빼는 상태 낱장은 없다. 파일이 배포에 실려 주소로 열리면 상태 수에 든다 —
+# invest-profit--datepicker 를 여기서 빼 두었더니 어느 목록에도 없이 배포만 되는 낱장이 됐다.
 
 # 화면이 아닌 문서 낱장
 DOCS = {'index.html', 'glossary.html', 'capability.html',
@@ -42,13 +41,34 @@ def _root_html():
 
 
 def screen_files():
-    """기본 화면 = 통합본 + 문서·상태·폐기분을 뺀 낱장."""
+    """기본 화면 = 통합본 + 문서·상태 낱장을 뺀 낱장."""
     return ['app.html'] + [f for f in _root_html()
                            if f not in DOCS and f != 'app.html' and '--' not in f]
 
 
 def state_files():
-    return [f for f in _root_html() if '--' in f and f not in RETIRED]
+    """상태 낱장 = 파일명에 `--` 가 든 루트 HTML 전량."""
+    return [f for f in _root_html() if '--' in f]
+
+
+def app_states():
+    """통합본이 실제로 태우는 상태 수 — app.html STATE_META 실측.
+
+    상태 낱장 수로 대신 적으면 통합본에 없는 낱장이 생겼을 때 문장이 거짓이 된다
+    (invest-profit--datepicker 가 그 경우다). 기본 상태는 null 이라 label 이 없다.
+    """
+    s = io.open(os.path.join(REPO, 'app.html'), encoding='utf-8').read()
+    i = s.index('{', s.index('STATE_META'))
+    d, j = 0, i
+    while True:                                   # 중괄호 균형으로 리터럴 끝을 찾는다
+        if s[j] == '{':
+            d += 1
+        elif s[j] == '}':
+            d -= 1
+            if d == 0:
+                break
+        j += 1
+    return len(re.findall(r'\{\s*label\s*:', s[i:j + 1]))
 
 
 def counts():
@@ -60,7 +80,7 @@ def counts():
         menuGroups=[[k, v] for k, v in g],
         screens=len(screen_files()),
         states=len(state_files()),
-        statesAll=len([f for f in _root_html() if '--' in f]),
+        appStates=app_states(),
         xlsx=len([f for f in os.listdir(xd) if f.endswith('.xlsx')]),
         xlsPreview=len([f for f in _root_html() if f.startswith('xls-')]),
         assetParts=len([f for f in os.listdir(ad) if f.endswith('.html')]))
