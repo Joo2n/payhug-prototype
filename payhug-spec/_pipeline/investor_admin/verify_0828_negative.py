@@ -118,6 +118,37 @@ mk_pdf('PDF 본문 — 파일명 노출', '자세한 것은 glossary.html 참조
 mk_pdf('PDF 본문 — 예시값 고지', 'W금융일수는 예시값이다.', [29])
 mk_pdf('PDF 본문 — 존댓말', '본 문서는 견본입니다.', [29])
 
+# ── 6. `~ㅂ니다` 종결 — `입니다`·`습니다` 밖 ─────────────────────
+# 종전 판정식은 그 두 낱말뿐이라 나머지 `~ㅂ니다` 가 통째로 검사 밖이었다.
+# 레지스터 「G-1 판정식 — `~ㅂ니다` 종결까지 본다」. 심는 자리는 판정식을 쓰는 세 항목 전부.
+mk_app('script 문자열 — ~ㅂ니다 종결', "const _t = '반영이 자동으로 걸립니다.';", [22, 26])
+mk_tpl('assets HTML — ~ㅂ니다 종결', '<p>다음 화면으로 이동이 열립니다.</p>', [22])
+mk_pdf('PDF 본문 — ~ㅂ니다 종결', '금액이 통째로 밀립니다.', [29])
+
+FEA = os.path.join(R, 'feasibility.html')
+def mk_fea(name, fn, want):
+    bak = {}
+    def ap():
+        bak['s'] = io.open(FEA, encoding='utf-8').read()
+        io.open(FEA, 'w', encoding='utf-8').write(fn(bak['s']))
+    def un():
+        io.open(FEA, 'w', encoding='utf-8').write(bak['s'])
+    case(name, want, ap, un)
+
+# 개발 확인 문항 면제가 문항 단위인지 — 절 단위면 아래 둘이 통과한다
+mk_fea('feasibility 문항 밖 ~ㅂ니다',
+       lambda s: s.replace('</body>', '<p>이 값은 다음 배치에서 밀립니다.</p></body>', 1), [22])
+mk_fea('feasibility qlist 안 qid 없는 항목',
+       lambda s: s.replace('<ul class="qlist">',
+                           '<ul class="qlist"><li>여기서 산출이 통째로 밀립니다.</li>', 1), [22, 31])
+
+# 등재분 소실 — 표가 낡으면 그것도 FAIL
+mk_fea('등재 제품 UI 원문 소실 — 재양도 합의서 …작성됩니다',
+       lambda s: s.replace("재양도 합의서가 '투자자 없음' 버전으로 작성됩니다",
+                           '재양도 합의서 분기가 존재한다'), [26])
+mk_fea('개발 확인 문항 절 소실',
+       lambda s: re.sub(r'<ul class="qlist">.*?</ul>', ' ', s, flags=re.S), [31])
+
 # ── 실행 ────────────────────────────────────────────────────────
 base, _ = run()
 print('기준선 FAIL:', [n for n, r in base.items() if r == 'FAIL'] or '없음')

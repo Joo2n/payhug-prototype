@@ -209,6 +209,14 @@ chk(21, '통합본 갤러리 슬러그·파일명 노출 0건', not appleak,
     f'{len(appleak)}건 ' + (','.join(sorted(set(appleak))[:5]) if appleak else ''))
 
 # ── 게이트 ─────────────────────────────────────────────────────
+# G-1 문체 판정식.
+# 종전 판정식은 `입니다|습니다` 두 낱말이라 `~ㅂ니다` 종결이 통째로 검사 밖이었다 —
+# `작성됩니다`·`밀립니다`·`걸립니다`·`열립니다` 4건이 그 틈으로 배포에 실려 있었다.
+# 앞 음절 종성이 ㅂ(한글 조합 종성 인덱스 17)인 음절 + `니다` 를 전부 같은 취급으로 본다.
+# `입`(ㅇㅣㅂ)·`습`(ㅅㅡㅂ)도 종성 ㅂ이라 종전 두 낱말은 이 집합의 부분집합 — 넓히기만 하고 좁히지 않는다.
+# 종결 뒤 구분자(`[.\s]`)도 요구하지 않는다 — 요구하면 문장 끝이 아닌 자리가 다시 빠진다.
+_JONG_B = ''.join(chr(0xAC00 + i * 28 + 17) for i in range(19 * 21))   # 종성 ㅂ 음절 399자
+STYLE = r'[' + _JONG_B + r']니다'
 # G-1 예외는 레지스터 「G-1 예외 — 제품 UI 원문」에 등재된 문구에만 준다.
 # 종전 기준은 `appstyle <= 8` 이라 출처 없는 존댓말이 7건까지 통과했다 — 임계값을 없애고 등재분만 뺀다.
 # 등재분이 화면에서 사라지면 레지스터가 낡은 것이므로 그것도 FAIL 이다.
@@ -237,6 +245,10 @@ UI_ORIG = [
      'payhug-merchant-web/app/my-info/change-password/page.tsx:65'),
     ('서버 통신 중 오류가 발생했습니다.',
      'payhug-merchant-web/app/my-info/change-password/page.tsx:69'),
+    # `~ㅂ니다` 판정식으로 넓히며 드러난 제품 UI 원문 — `feasibility.html:715` 근거 인용 자리.
+    # 원본은 홑따옴표가 `&lsquo;`/`&rsquo;` 라 우리 문서의 ASCII 따옴표와 글자만 다르다.
+    ('재양도 합의서가 \'투자자 없음\' 버전으로 작성됩니다',
+     'payhug-admin-web/app/merchants/[id]/page.tsx:957'),
 ]
 
 def _ui_strip(t):
@@ -245,13 +257,28 @@ def _ui_strip(t):
     return t
 
 
+def _qdrop(h):
+    """개발 확인 문항만 걷어낸다 — 레지스터 「G-1 예외 (2)」 둘째 갈래.
+
+    `ul.qlist` 안에서 `span.qid` 를 달고 질문 종결(`니까`)을 품은 `<li>` 만 뺀다.
+    절을 통째로 빼면 그 안에 아무 산문이나 숨을 수 있으므로 면제는 문항 단위로만 준다."""
+    def _ul(m):
+        return re.sub(r'<li\b[^>]*>.*?</li>',
+                      lambda x: ' ' if ('class="qid"' in x.group(0) and '니까' in x.group(0))
+                      else x.group(0),
+                      m.group(0), flags=re.S)
+    return re.sub(r'<ul class="qlist">.*?</ul>', _ul, h, flags=re.S)
+
+
 g1 = {}
 for nm, h in DOCS.items():
     t = txt(h)
     if nm == 'inquiry.html':      # 대표께 복사해 보내는 편지 본문(pre.src, display:none)은 존댓말 유지
         t = txt(re.sub(r'<pre[^>]*>.*?</pre>', ' ', h, flags=re.S))
+    if nm == 'feasibility.html':  # 개발자에게 던지는 질문 32문항은 존댓말이 맞다 — 화면 문구가 아니다
+        t = txt(_qdrop(h))
     t = _ui_strip(t)              # 레지스터에 등재된 제품 UI 원문만 뺀다
-    k = len(re.findall(r'(입니다|습니다)[.\s]', t)) + \
+    k = len(re.findall(STYLE, t)) + \
         len(re.findall(r'(요청하신|지시에 따라|말씀하신)', t))
     if k: g1[nm] = k
 chk(22, f'G-1 문체 — 배포 HTML {len(DOCS)}장', not g1,
@@ -263,6 +290,16 @@ _hid = 'pre.src{display:none}' in _inq.replace(' ', '')
 chk(27, '편지 본문 예외 근거 — pre.src 화면 비노출', _hid and _inq.count('<pre class="src"') > 0,
     f'pre.src {_inq.count(chr(60) + "pre class=" + chr(34) + "src" + chr(34))}블록 · '
     + ('display:none' if _hid else '화면에 뜬다'))
+
+# 개발 확인 문항 예외의 근거 — 그 목록이 실제로 수신자(개발)에게 던지는 질문이라는 것.
+# 문항이 사라지면 등재가 낡은 것이고, `qid` 없이 혹은 질문 종결 없이 산문이 섞이면 면제 대상이 아니다.
+_fea = rd('feasibility.html')
+_qul = ''.join(re.findall(r'<ul class="qlist">.*?</ul>', _fea, re.S))
+_qli = re.findall(r'<li\b[^>]*>.*?</li>', _qul, re.S)
+_qex = [x for x in _qli if 'class="qid"' in x and '니까' in x]
+_qbad = [re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', '', x)).strip()[:40] for x in _qli if x not in _qex]
+chk(31, '개발 확인 문항 예외 근거 — qid 달린 질문 종결 문항', bool(_qex) and not _qbad,
+    f'면제 문항 {len(_qex)}건 / 문항 아닌 항목 ' + (', '.join(_qbad) if _qbad else '0건'))
 
 # 배포 명단 무결.
 # 종전 기준은 `counts.screen_files() | counts.state_files()` 였는데 그 둘이 파일명 규칙(`--`)에서
@@ -301,7 +338,7 @@ for _s, _src in UI_ORIG:
     # 통합본은 표를 스크립트에서 그린다 — txt() 가 <script> 를 걷어내므로 원문에서도 센다
     seen_orig[_s] = _app.count(_s) + _union.count(_s)
     _app = _app.replace(_s, ' ')
-appstyle = len(re.findall(r'(입니다|습니다)[.\s<]', _app))
+appstyle = len(re.findall(STYLE, _app))
 stale = [f'{s_}(등재만 남고 화면에 0건)' for s_, n_ in seen_orig.items() if n_ == 0]
 chk(26, 'G-1 문체 — 통합본 (등재된 제품 UI 원문만 예외)', appstyle == 0 and not stale,
     f'등재 외 {appstyle}건 / 예외 등재 {len(UI_ORIG)}종 실측 {sum(seen_orig.values())}건'
@@ -328,7 +365,7 @@ try:
     for f, t in _ptxt.items():
         b = []
         b += [f'파일명 {x}' for x in set(re.findall(r'[A-Za-z][A-Za-z0-9_\-]*\.(?:html|md|py|json)', t))]
-        b += [f'문체 {x}' for x in set(re.findall(r'\w*(?:입니다|습니다)[.\s]', t))]
+        b += [f'문체 {x}' for x in set(re.findall(r'\w*' + STYLE, t))]
         b += [f'자기설명 {w}' for w in SELF_LIT if w in t]
         b += [f'자기설명 {re.search(SELF_EDIT, t).group(0)}'] if re.search(SELF_EDIT, t) else []
         b += [f'고지 {w}' for w in ('예시값', '확인필요', '본 문서는', '본 파일이') if w in t]
