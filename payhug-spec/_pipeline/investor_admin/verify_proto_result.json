@@ -47,7 +47,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-sim",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -62,7 +62,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -92,7 +92,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -376,8 +376,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5733,
-   "srcBytes": 5733,
+   "bytes": 5732,
+   "srcBytes": 5732,
    "pass": true
   },
   {
@@ -387,8 +387,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
-   "bytes": 6543,
-   "srcBytes": 6543,
+   "bytes": 6542,
+   "srcBytes": 6542,
    "pass": true
   },
   {
@@ -639,7 +639,7 @@
   "states": 20
  },
  "console": [],
- "scanned": 104,
+ "scanned": 103,
  "a11y": [
   {
    "where": "acquisition-list/default",
@@ -1661,20 +1661,20 @@
   "items": [
    {
     "name": "투자자산 카드 Ty",
-    "want": "12.95%",
-    "got": "12.95%",
+    "want": "10.85%",
+    "got": "10.85%",
     "pass": true
    },
    {
     "name": "자산표 투자실행액 W",
-    "want": "3.1일",
-    "got": "3.1일",
+    "want": "3.7일",
+    "got": "3.7일",
     "pass": true
    },
    {
     "name": "자산표 투자실행액 Ty",
-    "want": "12.95%",
-    "got": "12.95%",
+    "want": "10.85%",
+    "got": "10.85%",
     "pass": true
    },
    {
@@ -1785,14 +1785,14 @@
    },
    {
     "name": "엑셀 투자자산현황 W",
-    "want": "3.1",
-    "got": "3.1",
+    "want": "3.7",
+    "got": "3.7",
     "pass": true
    },
    {
     "name": "엑셀 투자자산현황 Ty",
-    "want": "12.95%",
-    "got": "12.95%",
+    "want": "10.85%",
+    "got": "10.85%",
     "pass": true
    },
    {
@@ -1810,8 +1810,8 @@
    "label": "증명서 PDF",
    "name": "투자자산증명서_20260827.pdf",
    "saved": "투자자산증명서_20260827.pdf",
-   "bytes": 370155,
-   "srcBytes": 370155,
+   "bytes": 270156,
+   "srcBytes": 270156,
    "pass": true
   },
   {
