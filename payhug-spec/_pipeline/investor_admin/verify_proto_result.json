@@ -1,0 +1,1782 @@
+{
+ "menus": [
+  {
+   "menu": "kcoon",
+   "screen": "(외부)",
+   "label": "쿠콘 관리 현금",
+   "href": "https://www.we-bank.co.kr/main_00100.act",
+   "target": "_blank",
+   "rel": "noopener",
+   "pass": true
+  },
+  {
+   "menu": "invest-assets",
+   "screen": "invest-assets",
+   "label": "투자 자산",
+   "active": "invest-assets",
+   "visible": true,
+   "state": "default",
+   "hash": "#invest-assets",
+   "bg": "rgb(127, 225, 65)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "invest-returns",
+   "screen": "invest-profit",
+   "label": "투자 수익",
+   "active": "invest-returns",
+   "visible": true,
+   "state": "default",
+   "hash": "#invest-profit",
+   "bg": "rgb(127, 225, 65)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "invest-sim",
+   "screen": "invest-sim",
+   "label": "투자 시뮬레이션",
+   "active": "invest-sim",
+   "visible": true,
+   "state": "default",
+   "hash": "#invest-sim",
+   "bg": "rgba(127, 225, 65, 1)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "merchants",
+   "screen": "merchants",
+   "label": "가맹점",
+   "active": "merchants",
+   "visible": true,
+   "state": "default",
+   "hash": "#merchants",
+   "bg": "rgba(127, 225, 65, 0.992)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "receivables",
+   "screen": "acquisition-list",
+   "label": "정산채권 양수",
+   "active": "receivables",
+   "visible": true,
+   "state": "default",
+   "hash": "#acquisition-list",
+   "bg": "rgba(127, 225, 65, 0.992)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "contracts",
+   "screen": "contracts",
+   "label": "계약기록",
+   "active": "contracts",
+   "visible": true,
+   "state": "default",
+   "hash": "#contracts",
+   "bg": "rgba(127, 225, 65, 0.97)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "password",
+   "screen": "password",
+   "label": "비밀번호 변경",
+   "active": "password",
+   "visible": true,
+   "state": "default",
+   "hash": "#password",
+   "bg": "rgba(127, 225, 65, 0.992)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  }
+ ],
+ "states": [
+  {
+   "screen": "invest-assets",
+   "want": "page2",
+   "state": "page2",
+   "visible": true,
+   "hash": "#invest-assets/page2",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-assets\"] → click [data-act=\"ia-page\"][data-page=\"2\"]",
+   "pass": true
+  },
+  {
+   "screen": "invest-assets",
+   "want": "download",
+   "state": "download",
+   "visible": true,
+   "hash": "#invest-assets/download",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-assets\"] → click [data-mount=\"ia-xls-merchant\"] → wait 600ms",
+   "pass": true
+  },
+  {
+   "screen": "invest-assets",
+   "want": "cert-confirm",
+   "state": "cert-confirm",
+   "visible": true,
+   "hash": "#invest-assets/cert-confirm",
+   "modal": "invest-assets-cert-confirm",
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-assets\"] → click [data-act=\"cert-open\"]",
+   "pass": true
+  },
+  {
+   "screen": "invest-assets",
+   "want": "empty",
+   "state": "empty",
+   "visible": true,
+   "hash": "#invest-assets/empty",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "hash #invest-assets/empty",
+   "pass": true
+  },
+  {
+   "screen": "invest-profit",
+   "want": "monthly",
+   "state": "monthly",
+   "visible": true,
+   "hash": "#invest-profit/monthly",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-returns\"] → click [data-act=\"pf-gran\"][data-gran=\"monthly\"]",
+   "pass": true
+  },
+  {
+   "screen": "invest-profit",
+   "want": "empty",
+   "state": "empty",
+   "visible": true,
+   "hash": "#invest-profit/empty",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-returns\"] → change [data-mount=\"pf-from\"] = 2026-02-01 → change [data-mount=\"pf-to\"] = 2026-02-07",
+   "pass": true
+  },
+  {
+   "screen": "invest-sim",
+   "want": "result",
+   "state": "result",
+   "visible": true,
+   "hash": "#invest-sim/result",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-sim\"] → click [data-mount=\"sim-go\"] → wait 500ms",
+   "pass": true
+  },
+  {
+   "screen": "merchants",
+   "want": "filtered",
+   "state": "filtered",
+   "visible": true,
+   "hash": "#merchants/filtered",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"merchants\"] → change [data-mount=\"mc-sector\"] = 음식점업 → type [data-mount=\"mc-kw\"] = 곱창 → click [data-act=\"mc-search\"]",
+   "pass": true
+  },
+  {
+   "screen": "merchants",
+   "want": "empty",
+   "state": "empty",
+   "visible": true,
+   "hash": "#merchants/empty",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"merchants\"] → type [data-mount=\"mc-kw\"] = 라멘 → click [data-act=\"mc-search\"]",
+   "pass": true
+  },
+  {
+   "screen": "acquisition-list",
+   "want": "confirm",
+   "state": "confirm",
+   "visible": true,
+   "hash": "#acquisition-list/confirm",
+   "modal": "acquisition-confirm",
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"receivables\"] → click [data-act=\"aq-chk\"][data-i=\"0\"] → click [data-act=\"aq-chk\"][data-i=\"1\"] → click [data-act=\"aq-sign\"]",
+   "pass": true
+  },
+  {
+   "screen": "acquisition-list",
+   "want": "signing",
+   "state": "signing",
+   "visible": true,
+   "hash": "#acquisition-list/signing",
+   "modal": "acquisition-signing",
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"receivables\"] → click [data-act=\"aq-chk\"][data-i=\"0\"] → click [data-act=\"aq-chk\"][data-i=\"1\"] → click [data-act=\"aq-sign\"] → click [data-act=\"aq-sign-go\"]",
+   "pass": true
+  },
+  {
+   "screen": "acquisition-list",
+   "want": "done",
+   "state": "done",
+   "visible": true,
+   "hash": "#acquisition-list/done",
+   "modal": "acquisition-done",
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"receivables\"] → click [data-act=\"aq-chk\"][data-i=\"0\"] → click [data-act=\"aq-chk\"][data-i=\"1\"] → click [data-act=\"aq-sign\"] → click [data-act=\"aq-sign-go\"] → wait 1800ms",
+   "pass": true
+  },
+  {
+   "screen": "contracts",
+   "want": "all",
+   "state": "all",
+   "visible": true,
+   "hash": "#contracts/all",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"contracts\"] → click [data-act=\"ct-all\"]",
+   "pass": true
+  },
+  {
+   "screen": "contracts",
+   "want": "downloaded",
+   "state": "downloaded",
+   "visible": true,
+   "hash": "#contracts/downloaded",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"contracts\"] → click [data-act=\"ct-all\"] → click [data-act=\"ct-download\"]",
+   "pass": true
+  },
+  {
+   "screen": "contracts",
+   "want": "empty",
+   "state": "empty",
+   "visible": true,
+   "hash": "#contracts/empty",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "hash #contracts/empty",
+   "pass": true
+  },
+  {
+   "screen": "password",
+   "want": "weak",
+   "state": "weak",
+   "visible": true,
+   "hash": "#password/weak",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"password\"] → type [data-mount=\"pw-new\"] = 12345678",
+   "pass": true
+  },
+  {
+   "screen": "password",
+   "want": "error",
+   "state": "error",
+   "visible": true,
+   "hash": "#password/error",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"password\"] → type [data-mount=\"pw-new\"] = payhug!2026 → type [data-mount=\"pw-cfm\"] = payhug!2025",
+   "pass": true
+  },
+  {
+   "screen": "password",
+   "want": "done",
+   "state": "done",
+   "visible": true,
+   "hash": "#password/done",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"password\"] → type [data-mount=\"pw-cur\"] = payhug!2025 → type [data-mount=\"pw-new\"] = payhug!2026 → type [data-mount=\"pw-cfm\"] = payhug!2026 → click [data-act=\"pw-submit\"]",
+   "pass": true
+  },
+  {
+   "screen": "coocon",
+   "want": "(외부링크·D-14)",
+   "state": "(외부링크·D-14)",
+   "visible": true,
+   "declaredStates": [
+    "default"
+   ],
+   "modal": false,
+   "nav": {
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "ok": true,
+    "target": "_blank",
+    "rel": "noopener"
+   },
+   "btn": {
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "ok": true,
+    "target": "_blank",
+    "rel": "noopener"
+   },
+   "before": {
+    "active": "invest-assets",
+    "view": "invest-assets",
+    "hash": "#invest-assets"
+   },
+   "after": {
+    "active": "invest-assets",
+    "view": "invest-assets",
+    "hash": "#invest-assets"
+   },
+   "steps": "STATE_META.coocon 확인 → 링크 속성 확인 → kcoon 클릭(기본동작 차단) → SPA 무변동 확인",
+   "err": null,
+   "pass": true
+  }
+ ],
+ "downloads": [
+  {
+   "key": "assets-status",
+   "expect": "투자자산현황_2026-08-27_2026-08-27.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-assets",
+   "noPreviewScreen": true,
+   "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
+   "bytes": 5733,
+   "srcBytes": 5733,
+   "pass": true
+  },
+  {
+   "key": "assets-merchant",
+   "expect": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-assets",
+   "noPreviewScreen": true,
+   "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
+   "bytes": 6543,
+   "srcBytes": 6543,
+   "pass": true
+  },
+  {
+   "key": "profit-status",
+   "expect": "투자수익현황_2026-08-21_2026-08-27.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-08-21_2026-08-27.xlsx",
+   "bytes": 5467,
+   "srcBytes": 5467,
+   "pass": true
+  },
+  {
+   "key": "profit-daily",
+   "expect": "일별투자수익_2026-08-21_2026-08-27.xlsx",
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
+   "bytes": 5866,
+   "srcBytes": 5866,
+   "pass": true
+  }
+ ],
+ "dead": [],
+ "data": [
+  {
+   "case": "열 정렬 머리글 0건(D-28) · 보기 갯수 10/20/50 이 즉시 다시 그린다(D-25·D-29)",
+   "sortLeft": 0,
+   "표": [
+    {
+     "tbl": "ia-merch",
+     "opts": [
+      "10",
+      "20",
+      "50"
+     ],
+     "n10": 10,
+     "n20": 16,
+     "n50": 16,
+     "pagesAt20": 0,
+     "ok": true
+    },
+    {
+     "tbl": "mc-tbl",
+     "opts": [
+      "10",
+      "20",
+      "50"
+     ],
+     "n10": 10,
+     "n20": 16,
+     "n50": 16,
+     "pagesAt20": 0,
+     "ok": true
+    },
+    {
+     "tbl": "ct-tbl",
+     "opts": [
+      "10",
+      "20",
+      "50"
+     ],
+     "n10": 10,
+     "n20": 16,
+     "n50": 16,
+     "pagesAt20": 0,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "case": "가맹점 검색어 필터",
+   "rowsBefore": 10,
+   "rowsAfter": 2,
+   "countBefore": "총16건12",
+   "countAfter": "총2건",
+   "pass": true
+  },
+  {
+   "case": "기간·집계 단위 변경 시 합계 재계산",
+   "weekRows": 7,
+   "weekFoot": [
+    "합계",
+    "3,514,938,075",
+    "3,511,071,647",
+    "3,866,428",
+    "3.1가중평균",
+    "12.97%가중평균"
+   ],
+   "monthPresetRows": 27,
+   "monthPresetFoot": [
+    "합계",
+    "13,206,736,170",
+    "13,192,208,775",
+    "14,527,395",
+    "3.0가중평균",
+    "13.20%가중평균"
+   ],
+   "monthlyRows": 1,
+   "monthlyFoot": [
+    "합계",
+    "13,206,736,170",
+    "13,192,208,775",
+    "14,527,395",
+    "3.0가중평균",
+    "13.20%가중평균"
+   ],
+   "pass": true
+  },
+  {
+   "case": "업종 필터 — 네이티브 select·데이터 파생 옵션·조건 적용",
+   "tag": "SELECT",
+   "opts": [
+    "전체",
+    "음식점업"
+   ],
+   "dataSectors": [
+    "음식점업"
+   ],
+   "customLeft": 0,
+   "picked": "음식점업",
+   "chips": "적용된조건업종:음식점업조건초기화",
+   "pass": true
+  },
+  {
+   "case": "날짜 입력이 조회 조건을 움직인다",
+   "rowsBefore": 7,
+   "rowsAfter": 3,
+   "valueKept": "2026-08-25",
+   "period": "2026-08-25 ~ 2026-08-27",
+   "pass": true
+  },
+  {
+   "case": "역전 범위 방어 — 달력 잠금 0 · 안내문 · 버튼 비활성",
+   "clamp": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "pickerAlive": true,
+   "warnShown": true,
+   "searchDisabled": true,
+   "pass": true
+  },
+  {
+   "case": "검색창 Enter → 조회 실행",
+   "rows": 2,
+   "pass": true
+  },
+  {
+   "case": "모달 배경 클릭 닫기 — 진행 오버레이만 예외",
+   "closed": [
+    "invest-assets/cert-confirm",
+    "acquisition-list/confirm",
+    "acquisition-list/done"
+   ],
+   "kept": [],
+   "signingKept": true,
+   "pass": true
+  },
+  {
+   "case": "메뉴 그룹 접힘",
+   "tag": "BUTTON",
+   "before": false,
+   "after": true,
+   "aria": "false",
+   "pass": true
+  },
+  {
+   "case": "계약기록 전체 선택",
+   "before": "선택 문서 다운로드 (3)",
+   "after": "선택 문서 다운로드 (16)",
+   "count": "총16건",
+   "headChecked": [
+    false,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "데이터 없음 상태 지표 0 치환",
+   "hasAmount": true,
+   "zeroed": true,
+   "pass": true
+  }
+ ],
+ "selfcheck": {
+  "merchantSum": 1523100000,
+  "assetExecRow": 1523100000,
+  "execMatch": true,
+  "assetTotal": 1628400000,
+  "ratioSum": 100,
+  "ledgerDays": 180,
+  "ledgerProfitSum": 97401053,
+  "monthRollupSum": 97401053,
+  "rollupMatchesLedger": true,
+  "contracts": 16,
+  "signQueue": 3,
+  "screens": 14,
+  "states": 20
+ },
+ "console": [],
+ "scanned": 104,
+ "a11y": [
+  {
+   "where": "acquisition-list/default",
+   "label": "김성호떡볶이 본점계약 생성일 2026-08-",
+   "tag": "div",
+   "cls": "sign-row pickable",
+   "act": "aq-row"
+  },
+  {
+   "where": "acquisition-list/default",
+   "label": "달빛곱창 홍대점계약 생성일 2026-08-2",
+   "tag": "div",
+   "cls": "sign-row pickable",
+   "act": "aq-row"
+  },
+  {
+   "where": "acquisition-list/default",
+   "label": "바다마루 횟집계약 생성일 2026-08-27",
+   "tag": "div",
+   "cls": "sign-row pickable",
+   "act": "aq-row"
+  },
+  {
+   "where": "acquisition-list/confirm",
+   "label": "김성호떡볶이 본점계약 생성일 2026-08-",
+   "tag": "div",
+   "cls": "sign-row pickable selected",
+   "act": "aq-row"
+  },
+  {
+   "where": "acquisition-list/confirm",
+   "label": "달빛곱창 홍대점계약 생성일 2026-08-2",
+   "tag": "div",
+   "cls": "sign-row pickable selected",
+   "act": "aq-row"
+  },
+  {
+   "where": "acquisition-list/confirm",
+   "label": "바다마루 횟집계약 생성일 2026-08-27",
+   "tag": "div",
+   "cls": "sign-row pickable",
+   "act": "aq-row"
+  },
+  {
+   "where": "acquisition-list/done",
+   "label": "바다마루 횟집계약 생성일 2026-08-27",
+   "tag": "div",
+   "cls": "sign-row pickable",
+   "act": "aq-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "1M2026-0001김성호떡볶이 본점전자서명",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "2M2026-0002달빛곱창 홍대점전자서명결",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "3M2026-0004바다마루 횟집전자서명결과",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "4M2026-0009청춘포차 신촌점전자서명결",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "5M2026-0003성호분식 2호점전자서명결",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "6M2026-0005한강커피 잠원점전자서명결",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "7M2026-0008골목냉면전자서명결과_M2",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "8M2026-0010왕십리곱창타운전자서명결과",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "9M2026-0012대박국수 사당점전자서명결",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "10M2026-0014착한고기 은평점전자서명",
+   "tag": "tr",
+   "cls": "clickable",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "1M2026-0001김성호떡볶이 본점전자서명",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "2M2026-0002달빛곱창 홍대점전자서명결",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "3M2026-0004바다마루 횟집전자서명결과",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "4M2026-0009청춘포차 신촌점전자서명결",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "5M2026-0003성호분식 2호점전자서명결",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "6M2026-0005한강커피 잠원점전자서명결",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "7M2026-0008골목냉면전자서명결과_M2",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "8M2026-0010왕십리곱창타운전자서명결과",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "9M2026-0012대박국수 사당점전자서명결",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "10M2026-0014착한고기 은평점전자서명",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  }
+ ],
+ "newtab": [
+  {
+   "where": "coocon/default",
+   "label": "We-bank 바로가기",
+   "href": "https://www.we-bank.co.kr/main_00100.act"
+  }
+ ],
+ "layout": [
+  {
+   "at": "invest-assets/default",
+   "h": 1379,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/page2",
+   "h": 1199,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/download",
+   "h": 1379,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/cert-confirm",
+   "h": 1379,
+   "empties": [],
+   "modals": [
+    "invest-assets-cert-confirm"
+   ],
+   "wantModal": "invest-assets-cert-confirm",
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/empty",
+   "h": 994,
+   "empties": [
+    "ia-size",
+    "ia-merch-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/default",
+   "h": 1248,
+   "empties": [
+    "pf-from",
+    "pf-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/monthly",
+   "h": 1203,
+   "empties": [
+    "pf-from",
+    "pf-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/empty",
+   "h": 988,
+   "empties": [
+    "pf-from",
+    "pf-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-sim/default",
+   "h": 1035,
+   "empties": [
+    "sim-r",
+    "sim-cash",
+    "sim-unpaid",
+    "sim-over",
+    "sim-from",
+    "sim-to",
+    "sim-out"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-sim/result",
+   "h": 2451,
+   "empties": [
+    "sim-r",
+    "sim-cash",
+    "sim-unpaid",
+    "sim-over",
+    "sim-from",
+    "sim-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "merchants/default",
+   "h": 798,
+   "empties": [
+    "mc-kw",
+    "mc-chips"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "merchants/filtered",
+   "h": 459,
+   "empties": [
+    "mc-kw"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "merchants/empty",
+   "h": 461,
+   "empties": [
+    "mc-kw",
+    "mc-size",
+    "mc-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/default",
+   "h": 503,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/confirm",
+   "h": 503,
+   "empties": [],
+   "modals": [
+    "acquisition-confirm"
+   ],
+   "wantModal": "acquisition-confirm",
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/signing",
+   "h": 503,
+   "empties": [],
+   "modals": [
+    "acquisition-signing"
+   ],
+   "wantModal": "acquisition-signing",
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/done",
+   "h": 353,
+   "empties": [],
+   "modals": [
+    "acquisition-done"
+   ],
+   "wantModal": "acquisition-done",
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "contracts/default",
+   "h": 724,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "contracts/all",
+   "h": 724,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "contracts/downloaded",
+   "h": 724,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "contracts/empty",
+   "h": 322,
+   "empties": [
+    "ct-size",
+    "ct-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "coocon/default",
+   "h": 282,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/default",
+   "h": 565,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/weak",
+   "h": 572,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/error",
+   "h": 565,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/done",
+   "h": 565,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "certificate/default",
+   "h": 1104,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-assets-status/default",
+   "h": 549,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-assets-merchant/default",
+   "h": 885,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-profit-status/default",
+   "h": 605,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-profit-daily/default",
+   "h": 437,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "login/default",
+   "h": 1113,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  }
+ ],
+ "escape": {
+  "offsite": [
+   {
+    "where": "invest-assets/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-assets/page2",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-assets/download",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-assets/cert-confirm",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-assets/empty",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-profit/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-profit/monthly",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-profit/empty",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-sim/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "invest-sim/result",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "merchants/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "merchants/filtered",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "merchants/empty",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "acquisition-list/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "acquisition-list/confirm",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "acquisition-list/signing",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "acquisition-list/done",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "contracts/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "contracts/all",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "contracts/downloaded",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "contracts/empty",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "coocon/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "password/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "password/weak",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "password/error",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "password/done",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "certificate/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "xls-assets-status/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "xls-assets-merchant/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "xls-profit-status/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   },
+   {
+    "where": "xls-profit-daily/default",
+    "href": "https://www.we-bank.co.kr/main_00100.act",
+    "label": "쿠콘 관리 현금",
+    "target": "_blank"
+   }
+  ],
+  "sibling": [],
+  "banned": [],
+  "asset": [
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0001.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0002.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0004.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0009.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0003.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0005.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0008.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0010.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0012.txt"
+   },
+   {
+    "where": "contracts/default",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0014.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0001.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0002.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0004.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0009.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0003.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0005.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0008.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0010.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0012.txt"
+   },
+   {
+    "where": "contracts/all",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0014.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0001.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0002.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0004.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0009.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0003.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0005.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0008.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0010.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0012.txt"
+   },
+   {
+    "where": "contracts/downloaded",
+    "path": "/assets/docs/%EC%A0%84%EC%9E%90%EC%84%9C%EB%AA%85%EA%B2%B0%EA%B3%BC_M2026-0014.txt"
+   },
+   {
+    "where": "certificate/default",
+    "path": "/assets/docs/%ED%88%AC%EC%9E%90%EC%9E%90%EC%82%B0%EC%A6%9D%EB%AA%85%EC%84%9C_20260827.pdf"
+   },
+   {
+    "where": "xls-assets-status/default",
+    "path": "/assets/xlsx/%ED%88%AC%EC%9E%90%EC%9E%90%EC%82%B0%ED%98%84%ED%99%A9_2026-08-27_2026-08-27.xlsx"
+   },
+   {
+    "where": "xls-assets-merchant/default",
+    "path": "/assets/xlsx/%EA%B0%80%EB%A7%B9%EC%A0%90%EB%B3%84%ED%88%AC%EC%9E%90%EC%9E%90%EC%82%B0_2026-08-27_2026-08-27.xlsx"
+   },
+   {
+    "where": "xls-profit-status/default",
+    "path": "/assets/xlsx/%ED%88%AC%EC%9E%90%EC%88%98%EC%9D%B5%ED%98%84%ED%99%A9_2026-08-21_2026-08-27.xlsx"
+   },
+   {
+    "where": "xls-profit-daily/default",
+    "path": "/assets/xlsx/%EC%9D%BC%EB%B3%84%ED%88%AC%EC%9E%90%EC%88%98%EC%9D%B5_2026-08-21_2026-08-27.xlsx"
+   }
+  ],
+  "hash": 222,
+  "total": 319,
+  "docText": [],
+  "dockOptions": "도크 없음"
+ },
+ "overflow": [
+  {
+   "at": "invest-assets/default",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/page2",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/empty",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/default",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/monthly",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "invest-sim/default",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "invest-sim/result",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "merchants/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "merchants/filtered",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/confirm",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "contracts/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "contracts/all",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "coocon/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "password/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "certificate/default",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "xls-assets-status/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "xls-assets-merchant/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "xls-profit-status/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  },
+  {
+   "at": "xls-profit-daily/default",
+   "sw": 1434,
+   "cw": 1434,
+   "pass": true
+  },
+  {
+   "at": "login/default",
+   "sw": 1440,
+   "cw": 1440,
+   "pass": true
+  }
+ ],
+ "numbers": {
+  "items": [
+   {
+    "name": "투자자산 카드 Ty",
+    "want": "12.95%",
+    "got": "12.95%",
+    "pass": true
+   },
+   {
+    "name": "자산표 투자실행액 W",
+    "want": "3.1일",
+    "got": "3.1일",
+    "pass": true
+   },
+   {
+    "name": "자산표 투자실행액 Ty",
+    "want": "12.95%",
+    "got": "12.95%",
+    "pass": true
+   },
+   {
+    "name": "기본 기간 ④ 투자실행금액 대비",
+    "want": "12.97%",
+    "got": "12.97%",
+    "pass": true
+   },
+   {
+    "name": "기본 기간 ⑤ 투자자산 대비",
+    "want": "10.72%",
+    "got": "10.72%",
+    "pass": true
+   },
+   {
+    "name": "기본 기간 PSA",
+    "want": "PSA3,511,071,647원",
+    "got": "PSA3,511,071,647원",
+    "pass": true
+   },
+   {
+    "name": "기본 기간 PSC",
+    "want": "PSC737,100,000원",
+    "got": "PSC737,100,000원",
+    "pass": true
+   },
+   {
+    "name": "일별 표 합계 W",
+    "want": "3.1",
+    "got": "3.1",
+    "pass": true
+   },
+   {
+    "name": "일별 표 합계 Ty",
+    "want": "12.97%",
+    "got": "12.97%",
+    "pass": true
+   },
+   {
+    "name": "일별 표 W↔Ty 7행",
+    "want": "전건 원장 일치",
+    "got": "어긋남 0",
+    "pass": true,
+    "seenW": [
+     "3.0",
+     "3.1",
+     "3.2"
+    ]
+   },
+   {
+    "name": "일별 표 W 3.0 행 Ty",
+    "want": "13.40%",
+    "got": "13.40%",
+    "pass": true
+   },
+   {
+    "name": "월별 ④ 투자실행금액 대비",
+    "want": "12.97%",
+    "got": "12.97%",
+    "pass": true
+   },
+   {
+    "name": "월별 ⑤ 투자자산 대비",
+    "want": "10.68%",
+    "got": "10.68%",
+    "pass": true
+   },
+   {
+    "name": "월별 표 합계 W",
+    "want": "3.1",
+    "got": "3.1",
+    "pass": true
+   },
+   {
+    "name": "월별 표 합계 Ty",
+    "want": "12.97%",
+    "got": "12.97%",
+    "pass": true
+   },
+   {
+    "name": "월별 표 6행 W·Ty",
+    "want": "2026-03|3.2|12.71% , 2026-04|3.0|13.18% , 2026-05|3.1|12.98% , 2026-06|3.2|12.68% , 2026-07|3.1|13.11% , 2026-08|3.0|13.20%",
+    "got": "2026-03|3.2|12.71% , 2026-04|3.0|13.18% , 2026-05|3.1|12.98% , 2026-06|3.2|12.68% , 2026-07|3.1|13.11% , 2026-08|3.0|13.20%",
+    "pass": true
+   },
+   {
+    "name": "엑셀 일별투자수익 W↔Ty 7행",
+    "want": "전건 원장 일치",
+    "got": "어긋남 0",
+    "pass": true,
+    "seenW": [
+     "3.0",
+     "3.1",
+     "3.2"
+    ]
+   },
+   {
+    "name": "엑셀 투자수익현황 ④",
+    "want": "12.97%",
+    "got": "12.97%",
+    "pass": true
+   },
+   {
+    "name": "엑셀 투자수익현황 ⑤",
+    "want": "10.72%",
+    "got": "10.72%",
+    "pass": true
+   },
+   {
+    "name": "엑셀 투자자산현황 W",
+    "want": "3.1",
+    "got": "3.1",
+    "pass": true
+   },
+   {
+    "name": "엑셀 투자자산현황 Ty",
+    "want": "12.95%",
+    "got": "12.95%",
+    "pass": true
+   },
+   {
+    "name": "가맹점별 비중 합",
+    "want": "100",
+    "got": "100",
+    "pass": true
+   }
+  ],
+  "ratioSum": 100,
+  "fail": 0
+ },
+ "docs": [
+  {
+   "label": "증명서 PDF",
+   "name": "투자자산증명서_20260827.pdf",
+   "saved": "투자자산증명서_20260827.pdf",
+   "bytes": 370155,
+   "srcBytes": 370155,
+   "pass": true
+  },
+  {
+   "label": "전체 16건 전자서명 결과",
+   "name": "전자서명결과_전체16건_20260827.txt",
+   "saved": "전자서명결과_전체16건_20260827.txt",
+   "bytes": 69423,
+   "srcBytes": 69423,
+   "pass": true
+  }
+ ]
+}
