@@ -7,11 +7,12 @@
       Ai = 순지급액 x (1 - 할인율 0.11%)
       Di = 정산예정일 - 선정산일            (한편넣기 · 정수 · 2~7일)
 
-    투자실행액       = Σ Ai (정산예정일이 기준일을 지나지 않은 것 = 회수 안 된 것)
-    가맹점별 투자금액 = 그 가맹점 채권의 Σ Ai
-    하루 투자실행금   = 정산예정일이 그날인 채권의 Σ Ai
-    w금융일수        = Σ (Ai x Di) / Σ Ai
+    미회수 채권 = 정산예정일 > 기준일. 잔액 계통 세 값은 전부 이 모집단이다.
+    투자실행액       = 미회수 Σ Ai
+    가맹점별 투자금액 = 그 가맹점 미회수 채권의 Σ Ai
+    w금융일수        = 미회수 Σ (Ai x Di) / 미회수 Σ Ai
     ty수익율         = 할인율 x 365 / w금융일수
+    하루 투자실행금   = 정산예정일이 그날인 채권의 Σ Ai   (유량 계통 · 모집단이 다르다)
 
     투자수익(채권매입수수료)은 순지급액이 앵커다 — D-31 확정.
       하루 투자수익  = floor(그날 Σ 순지급액 x 할인율)
@@ -26,13 +27,13 @@
     ② 구성비 가맹점 16건의 일일 선정산 규모 · 플랫폼 구성비 (BOOKROWS)
     ③ 패턴   요일·주차에 따른 규모 계수와 배달 비중 틸트 (날짜에서 결정 · 무작위 아님)
 
-물리 관계 — 잔액 = 유량 x 만기 (Little's Law)
-    투자실행액(잔액)은 최근 만기 이내에 실행된 채권만 남은 것이라
-    하루 평균 투자실행금(유량) x w금융일수(만기) 와 같아진다.
-    가중치가 유량이므로 여기서 쓰는 w금융일수는 대상정산금채권 전체(회수분 포함)의
-    금액가중평균이다 — 대표 정의서의 '대상정산금채권' 정의(가맹점ID + 선정산일자가
-    합의서 효력기간)에 회수 여부 제한이 없는 것과 같다. ty수익율이 투하자본 대비
-    연환산 수익률이 되려면 이 가중치여야 한다.
+w금융일수의 모집단 — 미회수 채권만
+    대표 정의서가 `투자 실행액`을 '회수되지 않은 순지급액 합계'로 못 박았고, w금융일수는
+    같은 표 같은 행의 옆 칸이다. `투자 자산` 화면의 W금융일수는 지금 깔려 있는 돈이
+    평균 며칠짜리냐를 보는 자리라 이미 회수된 채권은 그 평균에 들어가지 않는다.
+    가맹점별 W도 같다 — 옆 칸 `투자금액`이 미회수 기준이므로 W도 미회수 기준이다.
+    회수분까지 세는 모집단은 잔액 계통이 아니라 유량 계통(SD(D-1) · PSD)이 쓴다.
+    이 셋은 이름만 같고 세는 묶음이 다르다.
 
 가맹점 규모 구간 — 기준은 일일 선정산 규모다.
     고액  일 5,000만원 이상      4건   카드 매출 비중 높음 → 만기 짧고 부족율 낮음
@@ -113,9 +114,8 @@ BOOKROWS = [
 #   TILT  그날 채권 묶음의 배달 비중 틸트. + 면 카드 비중을 그만큼 덜어 배달앱 쪽으로 옮긴다.
 #         주기를 7일이 아닌 13·29일로 잡은 것은, 만기 2~7일이 섞이면 7일 주기가 상쇄돼
 #         정산예정일 기준 묶음에서 만기 차이가 드러나지 않기 때문이다.
-#   위상(_PH)은 임의값이 아니다 — 잔액 = 유량 x 만기 잔차가 최소가 되는 조합을 골랐다.
-#   만기가 긴 채권이 기준일에 몰리면 잔액이 유량보다 앞서 나가므로, 기준일 부근 틸트가
-#   전 구간 평균과 어긋나지 않는 위상이어야 물리 관계가 선다.
+#   위상(_PH)은 고정 예시값이다. 규모가중 평균 0 정규화(DAYTILT)를 거치므로 위상을 바꿔도
+#   전체 W금융일수는 흔들리지 않고, 달별·일자별 W가 어느 자리에서 흔들리는지만 달라진다.
 SIZE_WD = {0: 0.021, 1: 0.006, 2: -0.004, 3: -0.028, 4: -0.033, 5: 0.017, 6: 0.021}
 SIZE_A, SIZE_P, SIZE_PH = 0.030, 11.0, 6
 TILT = ((0.190, 13.0, 10),      # 주 단위 배달 쏠림
@@ -237,13 +237,12 @@ def wavg(rows):
     return (sum(D(r['ai']) * r['di'] for r in rows) / D(a)) if a else D(0)
 
 
-W_RAW = wavg(RECEIVABLES)                        # 대상정산금채권 전체의 w금융일수
+W_RAW = wavg(OPEN)                               # w금융일수 — 미회수 채권만 (모집단은 투자실행액과 같다)
 W_BOOK = r1(W_RAW)
+# ty수익율은 화면 표기 W(소수 1자리)에서 낸다. 가맹점별 행도 같은 규칙이라
+# (ty_of(x['w'])) 잔액 계통 전 행이 화면 값에서 되짚어지는 한 산식으로 선다.
 TY_BOOK = ty_of(W_BOOK)
 assert FLOOR <= W_RAW <= CEIL, 'w금융일수가 현실 범위 밖이다: %s' % W_RAW
-assert ty_of(W_RAW) == TY_BOOK, \
-    'w금융일수 표기 반올림에서 ty수익율이 갈린다: raw %s → %s / 표기 %s → %s' \
-    % (W_RAW, ty_of(W_RAW), W_BOOK, TY_BOOK)
 
 # ── 가맹점별 ────────────────────────────────────────────────────
 _SAMPLE = [r for r in RECEIVABLES if SAMPLE[0] <= r['adv'] <= SAMPLE[1]]
@@ -260,11 +259,12 @@ MERCHANTS = []
 for m in BOOKROWS:
     mid = m[0]
     mine = [r for r in RECEIVABLES if r['mid'] == mid]
+    myopen = [r for r in mine if r['due'] > ASOF]      # 투자금액·W금융일수의 모집단
     MERCHANTS.append(dict(
         mid=mid, name=m[1], biz=m[2], ceo=m[3], sector=m[4], item=m[5], signed=m[6],
         tier=m[7], tierName=TIER_NAME[m[7]], flow=m[8], mix=m[9],
-        amount=sum(r['ai'] for r in mine if r['due'] > ASOF),
-        wraw=wavg(mine), w=r1(wavg(mine)),
+        amount=sum(r['ai'] for r in myopen),
+        wraw=wavg(myopen), w=r1(wavg(myopen)),
         sraw=shortfall([r for r in _SAMPLE if r['mid'] == mid]),
         dayflow=sum(r['ai'] for r in mine) // len(ADV_DAYS)))
 MERCHANTS.sort(key=lambda x: -x['amount'])
@@ -314,7 +314,7 @@ def _ty_safe(w):
     return (D(str(ty_of(w))) - RPCT * DAYS / D(str(w))).copy_abs() != D('0.005')
 
 
-for _w in sorted({x['w'] for x in MERCHANTS}):
+for _w in sorted({W_BOOK} | {x['w'] for x in MERCHANTS}):
     assert _ty_safe(_w), 'ty 반올림 경계에 걸린 W금융일수: %s' % _w
 
 for _r in LEDGER:
@@ -426,10 +426,9 @@ if __name__ == '__main__':
         print('  %s  %2d일  실행 %15s  수익 %11s  상환 %16s  W %s  Ty %s%%'
               % (g['d'], g['n'], f(g['exec']), f(g['profit']), f(g['repay']), g['w'], g['ty']))
     print('  합계 실행 %s · 하루 평균 %s' % (f(sum(r['exec'] for r in LEDGER)), f(DAY_AVG)))
-    est = D(DAY_AVG) * W_RAW
-    print('  잔액 = 유량 x 만기 검산 — %s x %s = %s  vs 투자실행액 %s  (%s%%)'
-          % (f(DAY_AVG), W_RAW.quantize(D('0.0001')), f(int(est)), f(EXEC),
-             ((est / D(EXEC) - 1) * 100).quantize(D('0.001'))))
+    print('  모집단 대조 — 미회수 %s건 W %s / 전체 %s건 W %s (전체 기준은 화면에 쓰지 않는다)'
+          % (f(len(OPEN)), W_RAW.quantize(D('0.0001')),
+             f(len(RECEIVABLES)), wavg(RECEIVABLES).quantize(D('0.0001'))))
     wk = [r for r in LEDGER if '2026-08-21' <= r['d'] <= '2026-08-27']
     print('  기본 일주일 실행 %s · 수익 %s · %d건'
           % (f(sum(x['exec'] for x in wk)), f(sum(x['profit'] for x in wk)), len(wk)))
