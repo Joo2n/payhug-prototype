@@ -109,6 +109,8 @@ async function main(){
        집계 단위가 종료일을 주·달 경계까지 넓혀도 원장에 없는 날에는 EC 가 없다 —
        그래서 조회 기간뿐 아니라 원장 구간으로도 자른다. LEDGER_SPAN 은 daily_ledger.py 기준. */
     var LEDGER_SPAN = ${JSON.stringify(FACTS.ledgerSpan)};
+    /* 날짜 -> [W, Ty, 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감] — 원장 사실값 */
+    var TYBD = ${JSON.stringify(FACTS.tyByDate)};
     function ecDaysOf(rs){
       var pr = periodRange(), n = 0;
       rs.forEach(function(x){
@@ -188,6 +190,29 @@ async function main(){
       r.cardHasExec && r.cardHasTotal, r);
   }
 
+  /* ── 1-b) 비중 = 최대잉여법 ──
+     0.1pp 눈금으로 내린 뒤 남는 눈금을 소수부가 큰 행부터 나눠 준다. 합은 정확히 100.0 이고
+     어느 행도 정확값에서 한 눈금(0.1pp)을 넘게 밀리지 않는다.
+     잔차를 최대 금액 행 하나에 몰면 그 행만 여러 눈금 밀려 SUMPRODUCT 검산에서 드러난다. */
+  {
+    const r = await P(`
+      go('invest-assets', 'default');
+      var m = collectAssets(), base = 0, bad = [], sum = 0;
+      m.forEach(function(x){ base += x.amount; });
+      m.forEach(function(x){
+        var exact = x.amount / base * 100;
+        sum = Math.round((sum + x.ratio) * 10) / 10;
+        if(Math.abs(x.ratio - exact) >= 0.1)
+          bad.push(x.name + ' 표기 ' + x.ratio + ' vs 정확 ' + exact.toFixed(4));
+      });
+      var st = rowsOf('[data-mount=ia-status]');
+      return {sum:sum, bad:bad, base:base, rows:m.length,
+              top:{name:m[0].name, ratio:m[0].ratio, exact:+(m[0].amount / base * 100).toFixed(4)},
+              statusSum:Math.round((num(st[0][5]) + num(st[1][5])) * 10) / 10};`);
+    push('비중 최대잉여법 — 합 100.0 · 각 행 잔차 < 0.1pp',
+      r.sum === 100 && r.bad.length === 0 && r.statusSum === 100, r);
+  }
+
   /* ── 2) 투자수익 — 기간·granularity 조작 후 항등식 ── */
   /* '어제' 프리셋은 스토리보드 슬라이드7 에 없어 뺐다 — 하루 구간은 날짜를 직접 넣어 만든다. */
   const DAY1 = ['2026-08-26', '2026-08-26'];
@@ -218,11 +243,18 @@ async function main(){
       var bad = [], ex = 0, pr = 0, rp = 0, wn = 0, tn = 0;
       rs.forEach(function(x){
         var isDay = String(x.d).length === 10;
-        /* 채권매입수수료 앵커는 순지급액이다(D-31) — 수익 = floor(그날 Σ순지급액 x 할인율).
-           화면에는 순지급액 열이 없으므로 투자실행금에서 되짚는다.
-           순지급액 = 투자실행금 / (1 - 할인율) 이고, 원장이 채권 1건씩 원 단위로 맞춘 뒤
-           더하므로 되짚은 값과 1원 안쪽에서만 벌어진다(원장 실측 최대 0.998원). */
-        if(isDay && Math.abs(x.profit - x.exec * RATE / (1 - RATE)) > 1.5) bad.push(x.d + ' 수익');
+        /* [기준 교체 2026-08-30] 예전엔 수익을 투자실행금에서 되짚어 봤다
+           (수익 = floor(그날 Σ순지급액 x 할인율), 순지급액 = 투자실행금 / (1 - 할인율)).
+           대표 정의서 [2번 이미지] MD-1i 로 수수료에서 부족액을 빼게 되면서 되짚기가 성립하지 않는다.
+           화면에는 순지급액도 부족액도 열이 없으므로 원장 사실값(TYBD)과 행 단위로 맞춘다 — 더 좁은 검사다.
+           아울러 부족액 차감은 음수가 될 수 없으므로 수익은 되짚은 수수료를 넘지 못한다. */
+        if(isDay){
+          var wantRow = TYBD[x.d];
+          if(!wantRow) bad.push(x.d + ' 원장에 없는 날짜');
+          else if(wantRow[2] !== x.exec || wantRow[3] !== x.profit || wantRow[4] !== x.repay)
+            bad.push(x.d + ' 수익');
+          if(x.profit <= 0 || x.profit - x.exec * RATE / (1 - RATE) > 1.5) bad.push(x.d + ' 수익 상한');
+        }
         if(x.repay !== x.exec + x.profit) bad.push(x.d + ' 상환액');
         if(Math.abs(x.ty - tyFrom(x.exec, x.profit, x.w)) > (isDay ? 0.005 : TY_SLACK(x.w))) bad.push(x.d + ' Ty');
         ex += x.exec; pr += x.profit; rp += x.repay; wn += x.w * x.exec; tn += x.ty * x.exec;
@@ -283,19 +315,23 @@ async function main(){
       return {rows:rs.length, amountSum:amt, ratioSum:rat, bad:bad,
               footAmount:num(ft[1]), footRatio:num(ft[5]),
               count:document.querySelector('[data-mount=cert-count]').textContent.trim()};`);
-    push('증명서 16행 · 합계 · 비중',
+    push('증명서 ' + FACTS.merchants.length + '행 · 합계 · 비중',
       r.rows === FACTS.merchants.length && r.amountSum === FACTS.exec && r.ratioSum === 100 && r.bad.length === 0 &&
       r.footAmount === FACTS.exec && r.footRatio === 100 && r.count === FACTS.merchants.length + '개', r);
   }
 
   /* ── 5) 엑셀 미리보기 ↔ 화면 ── */
   {
+    /* 시트 행 자리는 로스터 곳수에서 나온다 — 머리 3줄(제목·공백·열머리) 다음이 본문이고
+       그 다음 줄이 합계다. 검증기에 행 번호를 손으로 적지 않는다. */
+    const NR = FACTS.merchants.length;
     const r = await P(`
+      var NR = ${NR};
       var SH = function(scr){ return 'section[data-screen="' + scr + '"] [data-mount=sheet]'; };
       go('xls-assets-merchant', 'default');
       var all = rowsOf(SH('xls-assets-merchant'));
-      var rs = all.slice(3, 19).map(function(c){ return {n:c[0], name:c[1], amount:num(c[2]), ratio:num(c[6])}; });
-      var tot = all[19];
+      var rs = all.slice(3, 3 + NR).map(function(c){ return {n:c[0], name:c[1], amount:num(c[2]), ratio:num(c[6])}; });
+      var tot = all[3 + NR];
       go('xls-assets-status', 'default');
       var st = rowsOf(SH('xls-assets-status')).slice(3, 6).map(function(c){ return {name:c[1], amount:num(c[2]), ratio:num(c[6])}; });
       var amt = 0, rat = 0;
@@ -311,16 +347,22 @@ async function main(){
 
   /* ── 8) 카드 5값 = 표 합계 — 기간 4종 x (일별 → 월별 → 다시 일별) ──
      조회 기간을 바꾸면 표가 따라가고, 카드는 그 표의 합계와 같아야 한다.
-     집계 단위를 바꾸면 기간이 지워지지 않고 그 단위 경계로 넓혀 스냅된다(period_design.md).
+     직접 고른 기간은 집계 단위를 바꿔도 지워지지 않고 그 단위 경계로 넓혀 스냅된다(period_design.md).
      그래서 '월별'과, 그 스냅된 기간을 그대로 물려받은 '일별 복귀'가 같은 기간이고,
-     이 둘의 카드 5값은 같아야 한다(월별 표 = 일별 원장의 달별 합). */
+     이 둘의 카드 5값은 같아야 한다(월별 표 = 일별 원장의 달별 합).
+     네 구간 전부 프리셋이 아닌 직접입력이다 — 프리셋을 보고 있을 때 단위를 바꾸면
+     새 단위의 같은 자리 프리셋으로 넘어가므로(기간이 통째로 갈린다) 이 대조의 전제가 성립하지 않는다.
+     프리셋 쪽 거동은 verify_period.js 가 따로 본다.
+     종료일은 기준일 2026-08-27 에서 끊긴다 — 달 경계(08-31)로 넓히지 않는다. */
   {
     /* [라벨, 프리셋, 일별 기간, 일별 행수, 월별 스냅 기간, 월별 행수, 스냅 기간의 일별 행수] */
     const PRESETS = [
-      ['하루',   null,    '2026-08-26', '2026-08-26', 1,   '2026-08-01', '2026-08-31', 1, 27],
-      ['일주일', 'week',  '2026-08-21', '2026-08-27', 7,   '2026-08-01', '2026-08-31', 1, 27],
-      ['금월',   'month', '2026-08-01', '2026-08-27', 27,  '2026-08-01', '2026-08-31', 1, 27],
-      ['6개월',  null,    '2026-03-01', '2026-08-27', 180, '2026-03-01', '2026-08-31', 6, 180]
+      ['하루',  null, '2026-08-26', '2026-08-26', 1,   '2026-08-01', '2026-08-27', 1, 27],
+      ['8일',   null, '2026-08-20', '2026-08-27', 8,   '2026-08-01', '2026-08-27', 1, 27],
+      ['26일',  null, '2026-08-02', '2026-08-27', 26,  '2026-08-01', '2026-08-27', 1, 27],
+      /* 03-01~08-27 은 월별로 스냅하면 6개월 프리셋 자리라 단위를 되돌릴 때 프리셋 이동이 걸린다 —
+         전제(기간 유지)를 지키려고 프리셋과 겹치지 않는 5개월 구간을 쓴다. */
+      ['5개월', null, '2026-04-01', '2026-08-27', 149, '2026-04-01', '2026-08-27', 5, 149]
     ];
     const rows = [], bad = [];
     for(const [label, preset, from, to, nDaily, mFrom, mTo, nMonthly, nBack] of PRESETS){
@@ -386,17 +428,19 @@ async function main(){
 
   /* ── 6) 항등식 — 채권 원장 하나에서 나온 값들이 서로 어긋나지 않는가 ──
 
-     걷어낸 검사 — `잔액 = 유량 x 만기` (Little's Law)
-        투자실행액 = 하루 평균 투자실행금 x W금융일수 를 허용 오차 2.0% 로 보던 케이스를
-        2026-08-29 에 지웠다. 이유 둘이다.
-          · 대표 정의서에 이 항등식이 없다. 숫자 정합을 잡으려고 이쪽에서 만든 검사다.
-          · 이 검사를 통과시키려고 W금융일수 모집단이 대상정산금채권 전체(회수분 포함)로
-            잡혀 있었다. 정의서 근거가 없는 검사가 정의서 해석을 밀어낸 자리다.
-        W금융일수는 옆 칸 투자실행액과 같은 미회수 모집단으로 되돌렸고(daily_ledger.py),
-        미회수 기준 W(3.7일)로는 이 항등식이 성립하지 않는다 — 미회수분은 만기가 긴 채권이
-        더 오래 남아 있어 유량 평균보다 길기 때문이다. 성립하지 않는 것이 맞다.
+     ① `잔액 = 유량 x 만기` (Little's Law) — 투자실행액 = 하루 평균 투자실행금 x W금융일수,
+        허용 오차 2.0%. 2026-08-29 에 한 번 걷어냈다가 2026-08-30 에 되살린 검사다.
+        걷어낼 때의 사유는 「W 모집단이 미회수분이라 이 항등식이 성립하지 않는다」였다.
+        대표 정의서 원문에서 '회수되지 않은' 한정은 투자 실행액 줄에만 붙어 있고
+        대상정산금채권 정의에는 회수 여부 조건이 없다. 대표 실측 엑셀(`정산주기.xlsx` H41)의
+        2.7504068548610725 도 365일 발생분 전수 가중평균이다. 그래서 모집단을 발생 기준으로
+        되돌렸고(daily_ledger.py), 항등식이 부수 결과로 다시 선다.
+        허용 오차를 두는 것은 원장의 일별 표 구간(180일)이 채권 발생 구간(193일)보다 짧아
+        하루 평균이 그만큼 흔들리기 때문이다.
      ② 가맹점별 투자금액 합 = 투자실행액
-     ③ W금융일수 ⊂ [2.0, 6.2] (플랫폼별 평균만기 실측 하한·상한) · 채권 한 건 Di ⊂ [2, 7]
+     ③ W금융일수 ⊂ FACTS.wBound (플랫폼별 평균만기 실측 하한·상한) · 채권 한 건 Di ⊂ FACTS.diBound
+        경계값은 검증기에 적지 않는다 — platform_duration.py 의 FLOOR/CEIL·DI_MIN/DI_MAX 가
+        daily_ledger.facts() 를 거쳐 ledger_facts.json 으로 나온 것을 읽는다.
      ④ Ty수익율 — 잔액 계통(투자실행액 행·가맹점별 행)은 `할인율 x 365 / W금융일수`,
         일별 원장 행은 `(투자수익 / 투자실행금 x 100) x 365 / W금융일수`.
         분자가 다르다 — 잔액 쪽은 순지급액 대비, 일별 쪽은 투자실행금 대비다(simulation_design.md L-4).
@@ -404,7 +448,11 @@ async function main(){
      ⑤ S입금부족율 = Σ SLi / Σ SAi — 원장 표본집합(선정산일 D-20 ~ D-11)에서 나온 값과 같은가.
         아울러 부족율이 할인율을 넘으면 투자자 몫 수익을 다 먹고도 원금이 모자란다. */
   {
-    const WFLOOR = 2.0, WCEIL = 6.2, DIFLOOR = 2, DICEIL = 7;
+    /* 범위 가드의 경계 — platform_duration.py 가 내는 값을 원장 사실값으로 받아 쓴다.
+       숫자를 여기 적으면 플랫폼 만기 실측이 바뀔 때 검증기가 옛 경계를 지킨다. */
+    const WFLOOR = Number(FACTS.wBound[0]), WCEIL = Number(FACTS.wBound[1]);
+    const DIFLOOR = Number(FACTS.diBound[0]), DICEIL = Number(FACTS.diBound[1]);
+    const WRANGE = '[' + FACTS.wBound.join(', ') + ']', DIRANGE = '[' + FACTS.diBound.join(', ') + ']';
     const r = await P(`
       go('invest-assets', 'default');
       var st = rowsOf('[data-mount=ia-status]');
@@ -431,14 +479,20 @@ async function main(){
     if(r.merSum !== r.stExec) bad.push('가맹점 합 ' + r.merSum + ' != 투자실행액 ' + r.stExec);
     if(r.stExec !== FACTS.exec) bad.push('투자실행액 ' + r.stExec + ' != 원장 ' + FACTS.exec);
     if(r.merRows !== FACTS.merchants.length) bad.push('로스터 ' + r.merRows + '건');
-    if(r.wMin < WFLOOR || r.wMax > WCEIL) bad.push('W ' + r.wMin + '~' + r.wMax + ' ⊄ [2.0, 6.2]');
+    if(r.wMin < WFLOOR || r.wMax > WCEIL) bad.push('W ' + r.wMin + '~' + r.wMax + ' ⊄ ' + WRANGE);
     if(FACTS.diRange[0] < DIFLOOR || FACTS.diRange[1] > DICEIL)
-      bad.push('채권 Di ' + FACTS.diRange.join('~') + ' ⊄ [2, 7]');
+      bad.push('채권 Di ' + FACTS.diRange.join('~') + ' ⊄ ' + DIRANGE);
     if(r.tyBad.length) bad.push('Ty 산식 불일치 (잔액=할인율x365/W · 일별=SMRx365/SD) — ' + r.tyBad.join(','));
     if(String(r.s) !== String(Number(FACTS.s))) bad.push('S ' + r.s + ' != 원장 ' + FACTS.s);
     if(Number(FACTS.sRaw) >= Number(FACTS.rate))
       bad.push('S입금부족율 ' + FACTS.sRaw + '% >= 할인율 ' + FACTS.rate + '%');
     if(r.dayAvg !== FACTS.dayAvg) bad.push('하루 평균 투자실행금 ' + r.dayAvg + ' != 원장 ' + FACTS.dayAvg);
+    /* ① 잔액 = 유량 x 만기 — 허용 오차 2.0% */
+    const little = r.dayAvg * Number(FACTS.wRaw);
+    const littleGap = Math.abs(little - FACTS.exec) / FACTS.exec * 100;
+    if(littleGap > 2.0)
+      bad.push('잔액=유량x만기 어긋남 ' + littleGap.toFixed(2) + '% (하루평균 ' + r.dayAvg +
+               ' x W ' + FACTS.wRaw + ' = ' + Math.round(little) + ' vs 투자실행액 ' + FACTS.exec + ')');
     push('항등식 — 가맹점합 · W범위 · Ty · 부족율',
       bad.length === 0,
       {bad, dayAvg:r.dayAvg, w:r.w, merSum:r.merSum, wMin:r.wMin, wMax:r.wMax,
@@ -451,7 +505,11 @@ async function main(){
   let fail = 0;
   OUT.cases.forEach(c => { if(!c.pass) fail++; console.log((c.pass ? 'PASS ' : 'FAIL ') + c.case + '  ' + JSON.stringify(c.detail)); });
   console.log('== 항등식 ' + OUT.cases.length + '건 · FAIL ' + fail + ' · 콘솔 에러 ' + OUT.console.length);
+  OUT.console.slice(0, 10).forEach(c => console.log('  - ' + c));
+  /* 콘솔 에러를 걷어 찍어 놓고 종료코드에는 안 넣던 자리(2026-08-30 이전).
+     형제 검증기(verify_rows.js:213 · verify_toast.js:229 · verify_app.js:809)와 같은 방식으로 맞춘다.
+     스크립트가 죽어 숫자가 안 그려지면 항등식은 화면에서 읽을 값이 없는데도 통과할 수 있다. */
   ws.close(); chrome.kill(); server.close();
-  process.exit(fail ? 1 : 0);
+  process.exit(fail || OUT.console.length ? 1 : 0);
 }
 main().catch(e => { console.error('IDENTITY ERROR', e); process.exit(1); });

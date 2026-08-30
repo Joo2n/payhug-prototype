@@ -1,0 +1,17 @@
+== 맵 적용 (텍스트) ==
+  invest-profit--datepicker.html   12건
+  invest-profit--monthly.html      11건
+  invest-profit.html               12건
+  xls-profit-daily.html            9건
+  xls-profit-status.html           4건
+  locator 오류 0 []
+== 로스터 16건 ==
+  invest-assets.html                 변경 True (페이지 1)
+  invest-assets--page2.html          변경 True (페이지 2)
+  invest-assets--download.html       변경 True (페이지 1)
+  invest-assets--cert-confirm.html   변경 True (페이지 1)
+  certificate.html                   16행 · 대상 16개
+  xls-assets-status.html             현황 3행
+  xls-assets-merchant.html           16행 + 합계
+  merchants·contracts 건수·페이지네이션
+  assets/xlsx 4종

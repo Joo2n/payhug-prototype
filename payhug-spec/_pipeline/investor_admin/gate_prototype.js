@@ -1,0 +1,382 @@
+/* 시연본 게이트 — 창 없이(--headless=new) 돌리고, 하나라도 걸리면 종료코드 1.
+   sync_prototype.sh 가 push 직전에 부른다. 통과해야만 올라간다.
+
+   원본 app.html 의 버튼 구성이 바뀌어도 흔들리지 않게, 화면 이동은 go()·해시로 몬다.
+   상태 도달 클릭 시퀀스 같은 깊은 검증은 verify_proto.js 가 따로 본다.
+
+   사용: node gate_prototype.js [--url https://...]        (url 생략 시 로컬 파일 서버)   */
+const http = require('http'), fs = require('fs'), path = require('path'), os = require('os');
+const { spawn } = require('child_process');
+
+const REPO = process.env.DST_REPO || '/Users/semi/cursor/payhug-investor-prototype';
+/* 원본 app.html — 화면·상태 수를 여기서 실측해 시연본과 대조한다(게이트에 고정 숫자를 박지 않는다). */
+const SRC_APP = process.env.SRC_APP || '/Users/semi/cursor/payhug-investor-admin/app.html';
+const argUrl = (process.argv.find(a => a.startsWith('--url=')) || '').slice(6);
+const URL_IN = argUrl || process.env.GATE_URL || '';
+const PORT = 8400 + (process.pid % 90), DPORT = 9100 + (process.pid % 90);
+const SPORT = 8600 + (process.pid % 90);
+const DL = fs.mkdtempSync(path.join(os.tmpdir(), 'gate-'));
+const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const MIME = {'.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8',
+  '.png':'image/png', '.pdf':'application/pdf', '.zip':'application/zip',
+  '.xlsx':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'};
+const ALLOWED_HOSTS = ['www.we-bank.co.kr', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+
+function serve(root){
+  return http.createServer((req, res) => {
+    const p = path.join(root, decodeURIComponent(req.url.split('?')[0]));
+    fs.readFile(p, (e, b) => {
+      if(e){ res.writeHead(404); res.end('nope'); return; }
+      res.writeHead(200, {'Content-Type': MIME[path.extname(p)] || 'application/octet-stream'});
+      res.end(b);
+    });
+  });
+}
+const server = serve(REPO);
+const srcServer = serve(path.dirname(SRC_APP));   /* 원본 실측용 */
+
+let msgId = 0, ws, pending = new Map();
+const consoleErrors = [];
+const fails = [];
+function send(m, p){ const id = ++msgId; ws.send(JSON.stringify({id, method:m, params:p||{}}));
+  return new Promise(res => pending.set(id, {res})); }
+async function ev(x){
+  const r = await send('Runtime.evaluate', {expression:'(function(){' + x + '})()', returnByValue:true});
+  if(r.exceptionDetails) throw new Error(JSON.stringify(r.exceptionDetails.exception || r.exceptionDetails.text));
+  return r.result.value;
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function check(name, pass, detail){
+  console.log((pass ? '  PASS ' : '  FAIL ') + name + (detail === undefined ? '' : '  ' + detail));
+  if(!pass) fails.push(name);
+}
+
+async function main(){
+  await new Promise(r => server.listen(PORT, r));
+  await new Promise(r => srcServer.listen(SPORT, r));
+  const TARGET = URL_IN || ('http://127.0.0.1:' + PORT + '/index.html');
+  console.log('게이트 대상:', TARGET);
+  const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'gp-'));
+  const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT,
+    '--user-data-dir=' + profile, '--no-first-run', '--no-default-browser-check',
+    '--disable-gpu', '--window-size=1440,1200', 'about:blank'], {stdio:'ignore'});
+
+  let targets = null;
+  for(let i = 0; i < 60 && !targets; i++){
+    await sleep(300);
+    try {
+      targets = await new Promise((res, rej) => {
+        http.get({host:'127.0.0.1', port:DPORT, path:'/json'}, r => {
+          let d = ''; r.on('data', c => d += c); r.on('end', () => res(JSON.parse(d)));
+        }).on('error', rej);
+      });
+    } catch(e){ targets = null; }
+  }
+  ws = new WebSocket(targets.find(t => t.type === 'page').webSocketDebuggerUrl);
+  await new Promise(r => ws.addEventListener('open', r));
+  ws.addEventListener('message', e => {
+    const m = JSON.parse(e.data);
+    if(m.id && pending.has(m.id)){ pending.get(m.id).res(m.result); pending.delete(m.id); return; }
+    if(m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error')
+      consoleErrors.push(m.params.args.map(a => a.value || a.description || a.type).join(' '));
+    if(m.method === 'Runtime.exceptionThrown')
+      consoleErrors.push(String(m.params.exceptionDetails.exception && m.params.exceptionDetails.exception.description || m.params.exceptionDetails.text));
+    if(m.method === 'Log.entryAdded' && m.params.entry.level === 'error')
+      consoleErrors.push(m.params.entry.text + ' ' + (m.params.entry.url || ''));
+  });
+  await send('Runtime.enable'); await send('Log.enable'); await send('Page.enable');
+  await send('Browser.setDownloadBehavior', {behavior:'allow', downloadPath: DL});
+
+  /* 0) 원본 app.html 실측 — 시연본과 대조할 기준을 게이트가 들고 있지 않고 원본에서 읽는다.
+        화면·상태는 계속 늘어난다(D-14 로 invest-profit/weekly 신설). 고정 숫자를 두면 늘 때마다 게이트가 깨진다. */
+  let SRCREG = null;
+  if(fs.existsSync(SRC_APP)){
+    await send('Page.navigate', {url:'http://127.0.0.1:' + SPORT + '/' + encodeURIComponent(path.basename(SRC_APP))});
+    await sleep(2200);
+    try {
+      SRCREG = await ev('var c=window.__selfcheck();' +
+        'return {screens:c.screens, states:c.states, order:SCREEN_ORDER.slice()};');
+    } catch(e){ SRCREG = null; }
+  }
+  consoleErrors.length = 0;   /* 원본 페이지에서 난 것은 이 게이트 대상이 아니다 — verify_app.js 가 본다 */
+  check('원본 app.html 실측', SRCREG !== null,
+        SRCREG ? SRCREG.screens + '화면 · 상태 ' + SRCREG.states : SRC_APP + ' 를 읽지 못했다 (SRC_APP 로 지정)');
+
+  await send('Page.navigate', {url: TARGET});
+  await sleep(2200);
+
+  /* 1) 화면·상태 전건이 그려지는가 (이동은 go() 로 — 버튼 구성 변화에 흔들리지 않는다) */
+  const walk = await ev(`
+    var out={screens:[], bad:[], states:0};
+    SCREEN_ORDER.forEach(function(sc){
+      var meta=STATE_META[sc]||{'default':null};
+      Object.keys(meta).forEach(function(st){
+        go(sc, st);
+        var sec=document.querySelector('section.screen[data-screen="'+sc+'"]');
+        var h=sec?sec.getBoundingClientRect().height:0;
+        if(st!=='default') out.states++;
+        if(!sec || sec.hidden || sec.dataset.state!==st || h<200)
+          out.bad.push(sc+'/'+st+' hidden='+(sec?sec.hidden:'없음')+' state='+(sec?sec.dataset.state:'-')+' h='+Math.round(h));
+      });
+      out.screens.push(sc);
+    });
+    go('invest-assets','default');
+    return out;
+  `);
+  check('화면 전건 렌더 (' + walk.screens.length + '화면 · 상태 ' + walk.states + ')',
+        walk.bad.length === 0, walk.bad.slice(0, 5).join(' | '));
+
+  /* 2) 사이드바 메뉴 전건 — 쿠콘 1개를 뺀 나머지는 클릭 전환, 쿠콘은 외부 링크.
+        D-14: 쿠콘 관리 현금은 중간 화면 없이 바로 We-bank 로 나간다.
+        app.html 의 .nav-item[data-menu=kcoon] 은 <a href="https://www.we-bank.co.kr/…" target="_blank" rel="noopener">.
+        SPA 전환을 기대하면 영원히 FAIL 이고, 클릭하면 새 탭이 열려 게이트가 흔들린다 — 주소가 걸린 외부 링크인지를 본다.
+        통합본 검증기 verify_app.js 도 같은 기준이다. 실측 전건을 그대로 본다(검사를 뺀 것이 아니다). */
+  const KCOON_HOST = 'www.we-bank.co.kr';
+  /* 메뉴 수를 숫자로 박지 않는다 — 사이드바에 실제로 걸린 .nav-item 을 세고,
+     외부 링크(target=_blank)만 덜어 낸 나머지를 SPA 전환 대상으로 본다. 메뉴가 늘면 검사도 저절로 늘어난다. */
+  const NAV = await ev(`
+    return Array.prototype.map.call(document.querySelectorAll('.sidebar .nav-item[data-menu]'), function(a){
+      return {m:a.dataset.menu, ext:a.getAttribute('target')==='_blank'}; });`);
+  const SPA_MENUS = NAV.filter(x => !x.ext).map(x => x.m);
+  const menu = await ev(`
+    var bad=[];
+    ${JSON.stringify(SPA_MENUS)}.forEach(function(m){
+      var n=document.querySelector('.nav-item[data-menu="'+m+'"]');
+      if(!n){ bad.push(m+' 없음'); return; }
+      n.click();
+      if(document.body.dataset.active!==m) bad.push(m+' -> active='+document.body.dataset.active);
+      if(document.querySelector('.page').hidden) bad.push(m+' 사이드바 숨김');
+    });
+    var k=document.querySelector('.nav-item[data-menu="kcoon"]');
+    if(!k) bad.push('kcoon 없음');
+    else {
+      var h=k.getAttribute('href')||'', u=null;
+      try{ u=new URL(h); }catch(e){}
+      if(!u || u.protocol!=='https:' || u.host!==${JSON.stringify(KCOON_HOST)}) bad.push('kcoon href='+h);
+      if(k.getAttribute('target')!=='_blank') bad.push('kcoon target='+k.getAttribute('target'));
+      if((k.getAttribute('rel')||'').indexOf('noopener')<0) bad.push('kcoon rel='+k.getAttribute('rel'));
+      if(!/쿠콘/.test(k.textContent)) bad.push('kcoon 라벨='+k.textContent.trim());
+    }
+    go('invest-assets','default');
+    return bad;
+  `);
+  check('사이드바 메뉴 ' + NAV.length + ' (SPA ' + SPA_MENUS.length + ' 전환 · 쿠콘 1 외부링크)',
+        menu.length === 0 && NAV.length === SPA_MENUS.length + 1, menu.join(' | '));
+
+  /* 3) 로고 — 자기 자신의 메인 화면으로만 */
+  const logo = await ev(`
+    go('contracts','default');
+    var a=document.querySelector('.sidebar-logo a');
+    if(!a) return {err:'로고 없음'};
+    a.click();
+    return {href:a.getAttribute('href'), view:document.body.dataset.view, host:location.host};
+  `);
+  check('로고 -> 자기 자신 메인', logo.view === 'invest-assets' && (logo.href === 'index.html' || logo.href === '#invest-assets'),
+        JSON.stringify(logo));
+
+  /* 4) 바깥으로 나가는 통로 — 화면·상태 전 조합의 클릭 가능 요소 전수 */
+  const esc = await ev(`
+    var BAD=/glossary|capability|feasibility|inquiry|archive|review/i;
+    var here=location.pathname, self=here.replace(/[^/]*$/,'')+'index.html';
+    var out={offsite:[], sibling:[], banned:[], hash:0, asset:0, total:0}, seen={};
+    function scan(where){
+      Array.prototype.forEach.call(document.querySelectorAll('a[href],area[href],form[action]'), function(e){
+        if(e.getClientRects().length===0) return;
+        var h=e.getAttribute('href')||e.getAttribute('action')||'';
+        var k=where+'::'+h; if(seen[k]) return; seen[k]=1;
+        out.total++;
+        if(BAD.test(h)) out.banned.push(where+' '+h);
+        if(h.charAt(0)==='#'){ out.hash++; return; }
+        var u; try{ u=new URL(h, location.href); }catch(err){ out.sibling.push(where+' '+h); return; }
+        if(u.origin!==location.origin){ out.offsite.push(u.host); return; }
+        if(u.pathname.indexOf('/assets/')>=0){ out.asset++; return; }
+        if(u.pathname!==here && u.pathname!==self) out.sibling.push(where+' '+h+' -> '+u.pathname);
+      });
+    }
+    SCREEN_ORDER.forEach(function(sc){
+      var meta=STATE_META[sc]||{'default':null};
+      Object.keys(meta).forEach(function(st){ go(sc,st); scan(sc+'/'+st); });
+    });
+    var d=document.querySelector('[data-act=dock-toggle]');
+    if(d){ go('invest-assets','default'); d.click(); scan('dock/open'); d.click(); }
+    go('invest-assets','default');
+    out.offsite=out.offsite.filter(function(v,i,a){return a.indexOf(v)===i;});
+    return out;
+  `);
+  const badHosts = esc.offsite.filter(h => ALLOWED_HOSTS.indexOf(h) < 0);
+  check('형제 문서 링크 0', esc.sibling.length === 0, esc.sibling.slice(0, 4).join(' | '));
+  check('금칙 문자열 링크 0', esc.banned.length === 0, esc.banned.slice(0, 4).join(' | '));
+  check('허용 밖 외부 호스트 0', badHosts.length === 0, badHosts.join(','));
+  console.log('       (링크 총 ' + esc.total + ' — 해시 ' + esc.hash + ' · 자산 ' + esc.asset +
+              ' · 허용 외부 ' + esc.offsite.join(',') + ')');
+
+  /* 5) 엑셀 레지스터 전건 실물 수신 — 바이트 일치.
+        어느 버튼이 어느 파일을 주는지는 게이트가 알지 않는다. 하드코딩하면 또 낡는다:
+        D-14 로 주별·월별이 생겼는데 전용 버튼(data-xls=profit-weekly/monthly)이 없다 —
+        일별 버튼 하나가 PF.gran 에 따라 갈린다(app.html: var PROFIT_XLS, ACT['xls-open']).
+        그래서 pullFile 을 잠시 가로채 화면·상태를 돌며 "이 버튼이 무슨 파일을 부르는가"를 앱에게 물어 경로를 찾고,
+        찾은 경로로 진짜 클릭해 받는다. XLSX 에 항목이 늘어도 경로는 저절로 따라온다. */
+  /* file 이 없는 자리(미리보기 화면을 가리키는 키)는 도달 경로를 따질 대상이 아니다 */
+  const meta = (await ev('return Object.keys(XLSX).map(function(k){ return {key:k, file:XLSX[k].file}; });'))
+                 .filter(m => !!m.file);
+  const norm = x => x.normalize('NFC');
+  /* 조합 = 화면·상태 + (투자 수익은) 그 화면의 프리셋 칩까지.
+     투자 수익 엑셀은 프리셋마다 파일이 갈리므로 상태만 돌면 절반이 도달 경로 없음으로 남는다.
+     프리셋 목록도 화면이 스스로 갖고 있는 것을 받아 쓴다 — 게이트에 기간을 적지 않는다. */
+  const combos = await ev(`
+    var out=[];
+    SCREEN_ORDER.forEach(function(s){
+      var m=STATE_META[s]||{'default':null};
+      Object.keys(m).forEach(function(t){
+        go(s,t);
+        var sec=document.querySelector('section.screen[data-screen="'+s+'"]');
+        var n=sec?sec.querySelectorAll('[data-act="xls-open"]').length:0;
+        if(!n) return;
+        var pres=[].map.call(sec.querySelectorAll('.preset-btn'), function(b){ return b.dataset.preset; });
+        if(pres.length) pres.forEach(function(p){ out.push([s,t,n,p]); });
+        else out.push([s,t,n,null]);
+      });
+    });
+    go('invest-assets','default');
+    return out;
+  `);
+  await ev('window.__pull=[]; if(!window.__pullOrig){ window.__pullOrig=pullFile;' +
+           ' pullFile=function(d,n){ window.__pull.push(n); }; } return 1;');
+  const route = {};                       /* 파일명 -> {s:화면, t:상태, p:프리셋, i:버튼 순번} */
+  /* 화면을 세우고 프리셋 칩을 누르는 것을 한 틱에 몰지 않는다 — 해시 갱신이 겹치면 마지막 해시가
+     상태를 다시 심어, 방금 누른 프리셋이 아니라 그 상태의 씨앗 기간이 잡힌다. */
+  for(const [s, t, n, p] of combos){
+    for(let i = 0; i < n; i++){
+      await ev(`go(${JSON.stringify(s)},${JSON.stringify(t)}); return 1;`);
+      await sleep(120);
+      if(p){
+        await ev(`var b=document.querySelector('section.screen[data-screen="'+${JSON.stringify(s)}+
+                  '"] .preset-btn[data-preset="'+${JSON.stringify(p)}+'"]');
+                  if(b){ var g=document.querySelector('[data-act=pf-gran][data-gran="'+PRESET_GRAN[${JSON.stringify(p)}]+'"]');
+                         if(g) g.click(); }
+                  return 1;`);
+        await sleep(120);
+        await ev(`var b=document.querySelector('section.screen[data-screen="'+${JSON.stringify(s)}+
+                  '"] .preset-btn[data-preset="'+${JSON.stringify(p)}+'"]');
+                  if(b) b.click(); return 1;`);
+        await sleep(120);
+      }
+      const pulled = await ev(`
+        var b=document.querySelector('section.screen[data-screen="'+${JSON.stringify(s)}+'"]')
+              .querySelectorAll('[data-act="xls-open"]')[${i}];
+        if(!b || b.disabled) return [];
+        window.__pull=[]; b.click(); return window.__pull.slice();`);
+      await sleep(400);                   /* xlsBusy 가 350ms 동안 버튼을 잠근다 */
+      pulled.forEach(f => { if(!route[f]) route[f] = {s:s, t:t, p:p, i:i}; });
+    }
+  }
+  const noRoute = meta.filter(m => !route[m.file]).map(m => m.key + ' 도달 경로 없음');
+  const stray = Object.keys(route).filter(f => !meta.some(m => m.file === f)).map(f => '레지스터 밖 ' + f);
+  check('엑셀 도달 경로 (레지스터 ' + meta.length + '종 ↔ 화면 버튼)',
+        noRoute.length === 0 && stray.length === 0, noRoute.concat(stray).join(' | '));
+
+  for(const m of meta){
+    const r = route[m.file];
+    const src = path.join(REPO, 'assets/xlsx', m.file);
+    const want = fs.existsSync(src) ? fs.statSync(src).size : -1;
+    if(!r){ check('엑셀 ' + m.key, false, '도달 경로 없음 / 원본 ' + want + 'B'); continue; }
+    fs.readdirSync(DL).forEach(f => { try{ fs.unlinkSync(path.join(DL, f)); }catch(e){} });
+    await send('Page.navigate', {url: TARGET}); await sleep(1600);
+    await send('Browser.setDownloadBehavior', {behavior:'allow', downloadPath: DL});
+    await ev(`go(${JSON.stringify(r.s)},${JSON.stringify(r.t)}); return 1;`);
+    await sleep(120);
+    if(r.p){
+      await ev(`var g=document.querySelector('[data-act=pf-gran][data-gran="'+PRESET_GRAN[${JSON.stringify(r.p)}]+'"]');
+                if(g) g.click(); return 1;`);
+      await sleep(120);
+      await ev(`var b=document.querySelector('.preset-btn[data-preset="'+${JSON.stringify(r.p)}+'"]');
+                if(b) b.click(); return 1;`);
+      await sleep(120);
+    }
+    const clicked = await ev(`
+      var b=document.querySelector('section.screen[data-screen="'+${JSON.stringify(r.s)}+'"]')
+            .querySelectorAll('[data-act="xls-open"]')[${r.i}];
+      if(!b) return '없음'; b.click(); return 'ok';`);
+    let got = null;
+    for(let i = 0; i < 30 && !got; i++){
+      await sleep(200);
+      const hit = fs.readdirSync(DL).find(f => !f.endsWith('.crdownload') && norm(f).replace(/ \(\d+\)/, '') === norm(m.file));
+      if(hit && fs.statSync(path.join(DL, hit)).size > 0) got = path.join(DL, hit);
+    }
+    check('엑셀 ' + m.key, clicked === 'ok' && !!got && fs.statSync(got).size === want,
+          (got ? fs.statSync(got).size : 0) + 'B / 원본 ' + want + 'B  <- ' + r.s + '/' + r.t +
+          (r.p ? '/' + r.p : '') + ' #' + r.i);
+  }
+
+  /* 6) 콘솔 · 가로 오버플로 · 숫자 */
+  await send('Page.navigate', {url: TARGET}); await sleep(1800);
+  const of = await ev(`
+    var bad=[];
+    SCREEN_ORDER.forEach(function(sc){
+      go(sc,'default');
+      if(document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)
+        bad.push(sc+' '+document.documentElement.scrollWidth+'>'+document.documentElement.clientWidth);
+    });
+    go('invest-assets','default'); return bad;
+  `);
+  check('가로 오버플로 0', of.length === 0, of.join(' | '));
+  const sc = await ev('return window.__selfcheck();');
+  check('비중 합 100.0%', sc.ratioSum === 100, String(sc.ratioSum));
+  check('투자실행금 화면 간 일치', sc.execMatch === true, String(sc.assetExecRow));
+  check('일별 원장 = 월별 롤업', sc.rollupMatchesLedger === true, sc.ledgerProfitSum + ' / ' + sc.monthRollupSum);
+  /* 투자자산 대비 Ty수익율 — 절대값을 박지 않는다.
+     2026-08-28 버킷 Ty 산식 정정으로 이 값이 2.24% -> 8.15% 로 움직였다
+     (app.html tyAssetOf: PSC 를 기준일 잔액 1개(스톡)가 아니라 EC 일수만큼 쌓이는 유량으로 센다).
+     숫자를 박아 두면 재산출 때마다 게이트가 깨지고, 그때 숫자만 갈아 끼우면 근거 없는 추인이 된다.
+     그래서 화면이 스스로 내놓은 값끼리 맞는지를 본다 — ⑤ = ④ x PSA/(PSA+PSC), PSA·PSC 는 툴팁에 찍힌 금액.
+     같은 함수를 다시 부르는 것이 아니라 표기값으로 되짚는 것이라 항등식이 실제로 걸린다.
+     절대값 자체는 verify_identity.js 가 기간 7종으로 따로 본다(대표 정의서 ⑤). */
+  const ty = await ev(`
+    go('invest-profit','default');
+    var sec=document.querySelector('section.screen[data-screen="invest-profit"]');
+    var box=sec.querySelector('.ty-split');
+    if(!box) return {err:'ty-split 없음'};
+    if(box.children.length!==2) return {err:'ty 칸 '+box.children.length+'개'};
+    function num(t){ return Number(String(t).replace(/[^0-9.\\-]/g,'')); }
+    var c0=box.children[0], c1=box.children[1], got={};
+    Array.prototype.forEach.call(c1.querySelectorAll('.tip-row'), function(r){
+      got[r.children[0].textContent.trim()] = num(r.children[1].textContent);
+    });
+    var four=num(c0.querySelector('.summary-value').textContent);
+    var five=num(c1.querySelector('.summary-value').textContent);
+    go('invest-assets','default');
+    return {four:four, five:five, psa:got['PSA'], psc:got['PSC'],
+            label:c1.textContent.indexOf('투자자산 대비')>=0};
+  `);
+  const tyWant = (ty && ty.psa + ty.psc) ? ty.four * ty.psa / (ty.psa + ty.psc) : NaN;
+  check('Ty수익율 ⑤ = ④ x PSA/(PSA+PSC) — 툴팁 표기값으로 되짚기',
+        !ty.err && ty.label === true && ty.four > 0 && ty.five > 0 && ty.five <= ty.four &&
+        Math.abs(ty.five - tyWant) <= 0.02,
+        JSON.stringify(ty) + ' want=' + (isNaN(tyWant) ? 'NaN' : tyWant.toFixed(3)));
+  check('콘솔 에러 0', consoleErrors.length === 0, consoleErrors.slice(0, 3).join(' | '));
+
+  /* 화면·상태 수 — 고정 숫자를 박지 않는다.
+     시연본이 원본에서 빼는 것은 랜딩 갤러리(index) 화면 1건뿐이고(sync_prototype.py), 상태는 하나도 빼지 않는다.
+     그러니 "원본 - 1화면 · 상태 동수" 가 기준이고, 상태가 늘어도(D-14 invest-profit/weekly) 저절로 따라간다.
+     덤으로 DOM 섹션 수 ↔ SCREEN_ORDER ↔ STATE_META 가 서로 어긋나지 않는지도 같이 본다. */
+  const reg = await ev('return {order:SCREEN_ORDER.slice(), meta:Object.keys(STATE_META)};');
+  const regBad = [];
+  if(sc.screens !== reg.order.length) regBad.push('DOM 섹션 ' + sc.screens + ' ≠ SCREEN_ORDER ' + reg.order.length);
+  if(reg.meta.length !== reg.order.length) regBad.push('STATE_META ' + reg.meta.length + ' ≠ SCREEN_ORDER ' + reg.order.length);
+  if(sc.states !== walk.states) regBad.push('STATE_META 상태 ' + sc.states + ' ≠ 렌더 확인 ' + walk.states);
+  if(SRCREG){
+    const dropped = SRCREG.order.filter(x => reg.order.indexOf(x) < 0);
+    if(dropped.length !== 1 || dropped[0] !== 'index')
+      regBad.push('원본에서 빠진 화면 ' + JSON.stringify(dropped) + ' — index 1건이어야 한다');
+    if(sc.screens !== SRCREG.screens - 1) regBad.push('화면 ' + sc.screens + ' ≠ 원본 ' + SRCREG.screens + ' - 1');
+    if(sc.states !== SRCREG.states) regBad.push('상태 ' + sc.states + ' ≠ 원본 ' + SRCREG.states);
+  }
+  check('화면·상태 = 원본 - 랜딩 1화면 (' + sc.screens + '화면 · 상태 ' + sc.states + ')',
+        regBad.length === 0, regBad.join(' | '));
+
+  console.log(fails.length ? '\n게이트 실패 ' + fails.length + '건: ' + fails.join(', ')
+                           : '\n게이트 통과 — 바깥으로 나가는 통로 0건.');
+  ws.close(); chrome.kill(); server.close(); srcServer.close();
+  process.exit(fails.length ? 1 : 0);
+}
+main().catch(e => { console.error('GATE ERROR', e); process.exit(1); });

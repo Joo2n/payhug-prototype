@@ -1,0 +1,405 @@
+{
+ "marks": [
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "18.611,40.043,18.875,3.592",
+   "ink": 0.0132,
+   "cap": "투자 자산 · 가맹점",
+   "ok": true
+  },
+  {
+   "shot": "merchants",
+   "kind": "indirect",
+   "mark": "22.083,21.917,12.500,4.208",
+   "ink": 0.0266,
+   "cap": "가맹점 · 가맹점ID",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "18.611,40.043,18.875,3.592",
+   "ink": 0.0132,
+   "cap": "투자 자산 · 가맹점",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "18.611,44.436,14.222,3.986",
+   "ink": 0.0305,
+   "cap": "투자 수익 · 정산예정일",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "77.632,44.436,10.819,3.986",
+   "ink": 0.038,
+   "cap": "투자 수익 · W금융일수",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "18.611,44.436,14.222,3.986",
+   "ink": 0.0305,
+   "cap": "투자 수익 · 정산예정일",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "32.139,44.436,17.167,3.986",
+   "ink": 0.0148,
+   "cap": "투자 수익 · 상환액",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "48.056,20.697,10.347,3.592",
+   "ink": 0.0391,
+   "cap": "투자 자산 · W금융일수",
+   "ok": true
+  },
+  {
+   "shot": "merchants",
+   "kind": "direct",
+   "mark": "83.021,21.917,15.035,4.208",
+   "ink": 0.0414,
+   "cap": "가맹점 · 채권매입업체ID",
+   "ok": true
+  },
+  {
+   "shot": "contracts",
+   "kind": "direct",
+   "mark": "20.278,9.083,8.125,2.500",
+   "ink": 0.185,
+   "cap": "계약기록 · 재양도합의서 목록",
+   "ok": true
+  },
+  {
+   "shot": "contracts",
+   "kind": "indirect",
+   "mark": "20.278,9.083,8.125,2.500",
+   "ink": 0.185,
+   "cap": "계약기록 · 재양도합의서 목록",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "18.611,40.043,18.875,3.592",
+   "ink": 0.0132,
+   "cap": "투자 자산 · 가맹점",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "38.382,91.430,4.090,2.418",
+   "ink": 0.1305,
+   "cap": "투자 자산 · 0.11%",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "18.611,23.578,14.431,3.912",
+   "ink": 0.035,
+   "cap": "투자 자산 · 투자실행액",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "65.083,44.436,13.243,3.986",
+   "ink": 0.0201,
+   "cap": "투자 수익 · 투자 수익",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "18.611,23.578,14.431,3.912",
+   "ink": 0.035,
+   "cap": "투자 자산 · 투자실행액",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "18.611,23.578,14.431,3.912",
+   "ink": 0.035,
+   "cap": "투자 자산 · 투자실행액",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "18.611,26.778,14.431,3.912",
+   "ink": 0.0207,
+   "cap": "투자 자산 · 순현금",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "86.535,20.697,11.521,3.592",
+   "ink": 0.0136,
+   "cap": "투자 자산 · 보관",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "48.056,20.697,10.347,3.592",
+   "ink": 0.0391,
+   "cap": "투자 자산 · W금융일수",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "48.056,20.697,10.347,3.592",
+   "ink": 0.0391,
+   "cap": "투자 자산 · W금융일수",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "68.208,20.697,9.861,3.592",
+   "ink": 0.0315,
+   "cap": "투자 자산 · TY수익율",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "77.375,20.697,9.861,3.592",
+   "ink": 0.0171,
+   "cap": "투자 자산 · 비중",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "18.611,20.697,14.431,3.592",
+   "ink": 0.0202,
+   "cap": "투자 자산 · 자산 구분",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "86.535,20.697,11.521,3.592",
+   "ink": 0.0136,
+   "cap": "투자 자산 · 보관",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "18.611,29.979,14.431,3.876",
+   "ink": 0.05,
+   "cap": "투자 자산 · 합계 (투자자산)",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "36.792,40.043,17.007,3.592",
+   "ink": 0.0271,
+   "cap": "투자 자산 · 투자금액 (원)",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "86.674,1.920,11.451,3.129",
+   "ink": 0.1136,
+   "cap": "투자 자산 · 기준일 2026-08-27",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "32.139,44.436,17.167,3.986",
+   "ink": 0.0148,
+   "cap": "투자 수익 · 상환액",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "32.139,44.436,17.167,3.986",
+   "ink": 0.0148,
+   "cap": "투자 수익 · 상환액",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "57.715,20.697,11.188,3.592",
+   "ink": 0.0437,
+   "cap": "투자 자산 · S입금부족율",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "57.715,20.697,11.188,3.592",
+   "ink": 0.0437,
+   "cap": "투자 자산 · S입금부족율",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "indirect",
+   "mark": "20.278,82.788,76.111,2.205",
+   "ink": 0.0123,
+   "cap": "투자 자산 · 수익 산정 기준",
+   "ok": true
+  },
+  {
+   "shot": "invest-assets",
+   "kind": "direct",
+   "mark": "57.715,20.697,11.188,3.592",
+   "ink": 0.0437,
+   "cap": "투자 자산 · S입금부족율",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "32.139,44.436,17.167,3.986",
+   "ink": 0.0148,
+   "cap": "투자 수익 · 상환액",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "48.611,44.436,17.167,3.986",
+   "ink": 0.0248,
+   "cap": "투자 수익 · 투자실행금",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "65.083,44.436,13.243,3.986",
+   "ink": 0.0201,
+   "cap": "투자 수익 · 투자 수익",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "87.750,44.436,10.306,3.986",
+   "ink": 0.0294,
+   "cap": "투자 수익 · TY수익율",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "77.632,44.436,10.819,3.986",
+   "ink": 0.038,
+   "cap": "투자 수익 · W금융일수",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "87.750,44.436,10.306,3.986",
+   "ink": 0.0294,
+   "cap": "투자 수익 · TY수익율",
+   "ok": true
+  },
+  {
+   "shot": "coocon",
+   "kind": "indirect",
+   "mark": "51.833,18.667,12.993,3.833",
+   "ink": 0.6915,
+   "cap": "쿠콘 관리 현금 · We-bank 바로가기",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "38.771,29.676,14.812,2.052",
+   "ink": 0.0528,
+   "cap": "투자 수익 · 투자실행금",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "56.292,29.676,12.528,2.052",
+   "ink": 0.0421,
+   "cap": "투자 수익 · 투자수익",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "71.528,29.676,23.194,2.052",
+   "ink": 0.0249,
+   "cap": "투자 수익 · Ty수익율",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "18.611,72.494,14.222,5.249",
+   "ink": 0.0148,
+   "cap": "투자 수익 · 합계",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "indirect",
+   "mark": "69.792,29.676,26.597,6.472",
+   "ink": 0.0507,
+   "cap": "투자 수익 · Ty수익율 투자실행금액 대비 6.91% 투자자산 대비 4.07%",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "69.792,29.676,26.597,6.472",
+   "ink": 0.0507,
+   "cap": "투자 수익 · Ty수익율 투자실행금액 대비 6.91% 투자자산 대비 4.07%",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "69.792,29.676,26.597,6.472",
+   "ink": 0.0507,
+   "cap": "투자 수익 · Ty수익율 투자실행금액 대비 6.91% 투자자산 대비 4.07%",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "87.750,44.436,10.306,3.986",
+   "ink": 0.0294,
+   "cap": "투자 수익 · TY수익율",
+   "ok": true
+  },
+  {
+   "shot": "invest-profit",
+   "kind": "direct",
+   "mark": "20.278,29.676,15.785,2.052",
+   "ink": 0.0551,
+   "cap": "투자 수익 · 검색대상기간",
+   "ok": true
+  }
+ ],
+ "fail": 0
+}

@@ -1,0 +1,382 @@
+{
+ "claims": [
+  "showToast(xf + ' 내려받기 완료')",
+  "showToast(meta.file + ' 내려받기 완료')",
+  "showToast(CERT_PDF + ' 내려받기 완료')",
+  "showToast(XLSX[k].file + ' 내려받기 완료')"
+ ],
+ "cases": [
+  {
+   "id": "xls-get assets-status",
+   "toast": "투자자산현황_2026-08-27_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "투자자산현황_2026-08-27_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5714,
+     "srcBytes": 5714,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-get assets-merchant",
+   "toast": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 6138,
+     "srcBytes": 6138,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-get profit-status",
+   "toast": "투자수익현황_2026-08-21_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "투자수익현황_2026-08-21_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5468,
+     "srcBytes": 5468,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-get profit-daily",
+   "toast": "일별투자수익_2026-08-21_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "일별투자수익_2026-08-21_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5864,
+     "srcBytes": 5864,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 투자자산 현황 직행",
+   "toast": "투자자산현황_2026-08-27_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "투자자산현황_2026-08-27_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5714,
+     "srcBytes": 5714,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 가맹점별 투자자산 직행",
+   "toast": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 6138,
+     "srcBytes": 6138,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "cert-pdf 증명서 PDF",
+   "toast": "투자자산증명서_20260827.pdf 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "투자자산증명서_20260827.pdf",
+     "saved": true,
+     "bytes": 244211,
+     "srcBytes": 244211,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "상태 진입 #invest-assets/download",
+   "toast": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": "해당없음",
+   "files": [
+    {
+     "name": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 6138,
+     "srcBytes": 6138,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 일주일 수익 현황",
+   "toast": "투자수익현황_2026-08-21_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "투자수익현황_2026-08-21_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5468,
+     "srcBytes": 5468,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 일주일 투자수익 표",
+   "toast": "일별투자수익_2026-08-21_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "일별투자수익_2026-08-21_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5864,
+     "srcBytes": 5864,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 금월 수익 현황",
+   "toast": "투자수익현황_2026-08-01_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "투자수익현황_2026-08-01_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5465,
+     "srcBytes": 5465,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 금월 투자수익 표",
+   "toast": "일별투자수익_2026-08-01_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "일별투자수익_2026-08-01_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 6734,
+     "srcBytes": 6734,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 4주 수익 현황",
+   "toast": "투자수익현황_2026-08-03_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "투자수익현황_2026-08-03_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5463,
+     "srcBytes": 5463,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 4주 투자수익 표",
+   "toast": "주별투자수익_2026-08-03_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "주별투자수익_2026-08-03_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5751,
+     "srcBytes": 5751,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 12주 수익 현황",
+   "toast": "투자수익현황_2026-06-08_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "투자수익현황_2026-06-08_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5465,
+     "srcBytes": 5465,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 12주 투자수익 표",
+   "toast": "주별투자수익_2026-06-08_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "주별투자수익_2026-06-08_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 6156,
+     "srcBytes": 6156,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 3개월 수익 현황",
+   "toast": "투자수익현황_2026-06-01_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "투자수익현황_2026-06-01_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5469,
+     "srcBytes": 5469,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 3개월 투자수익 표",
+   "toast": "월별투자수익_2026-06-01_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "월별투자수익_2026-06-01_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5703,
+     "srcBytes": 5703,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 6개월 수익 현황",
+   "toast": "투자수익현황_2026-03-01_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "투자수익현황_2026-03-01_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5469,
+     "srcBytes": 5469,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "xls-open 6개월 투자수익 표",
+   "toast": "월별투자수익_2026-03-01_2026-08-27.xlsx 내려받기 완료",
+   "toastShown": true,
+   "claimsDone": true,
+   "기간일치": true,
+   "files": [
+    {
+     "name": "월별투자수익_2026-03-01_2026-08-27.xlsx",
+     "saved": true,
+     "bytes": 5843,
+     "srcBytes": 5843,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "id": "계약기록 내려받기 잠금 — 토스트 0 · 파일 0",
+   "bulkDisabled": true,
+   "rowBtns": 6,
+   "rowLive": 0,
+   "docAnchors": 0,
+   "toast": "월별투자수익_2026-03-01_2026-08-27.xlsx 내려받기 완료",
+   "saved": [],
+   "pass": true
+  },
+  {
+   "id": "#contracts/downloaded 딥링크 — 완료 주장 없음",
+   "toast": "월별투자수익_2026-03-01_2026-08-27.xlsx 내려받기 완료",
+   "view": "contracts",
+   "saved": [],
+   "pass": true
+  },
+  {
+   "id": "토스트 자동 소멸 3,000ms",
+   "shown": true,
+   "closeBtn": 0,
+   "goneAfter": true,
+   "pass": true
+  },
+  {
+   "id": "duration 0 → X 닫기 버튼",
+   "closeBtn": 1,
+   "stillAfter3s": true,
+   "closedByX": true,
+   "pass": true
+  }
+ ],
+ "console": []
+}

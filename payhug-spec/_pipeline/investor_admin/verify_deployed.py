@@ -6,12 +6,12 @@
 남았는데 배포본이 옛 설명 문단을 그대로 서비스하고 있었다. 로컬 게이트는 로컬 파일을 보므로
 이 구멍을 못 잡는다. 그래서 실제 URL 에서 받은 바이트로만 판정한다.
 
-  시연(prototype) · 전체(demo)  — 있어야: 주별 계약서보기 하나인증서 12주 3.1
+  시연(prototype) · 전체(demo)  — 있어야: 주별 계약서보기 하나인증서 12주 W금융일수(원장 사실값)
                                   없어야: 예시값 / 표시 1- / 확인필요 / 용어 안내
   용어(glossary)                — 있어야: 가중평균만기 케이뱅크
                                   없어야: 카드 한 장 / 값의 출처 / 용어 50건 / 관리자 어드민
 
-전체본 루트는 화면 갤러리 랜딩이라 지표값(하나인증서·12주·3.1)이 랜딩에 없다.
+전체본 루트는 화면 갤러리 랜딩이라 지표값(하나인증서·12주·W금융일수)이 랜딩에 없다.
 랜딩에 값을 심는 것은 근거 없는 생성(D-8)이므로 전체본은 콘텐츠 화면에서 센다.
 
 무엇을 세는가 — 화면 문구만 센다(오탐 교정)
@@ -30,13 +30,18 @@
   주석 잔존은 FAIL 로 세지 않고 건수만 남긴다.
 """
 import html as _html
-import json, os, re, sys, urllib.request
+import io, json, os, re, sys, urllib.request
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+# 숫자 기대값은 검증기에 손으로 적지 않는다 — daily_ledger.py 가 내는 원장 사실값을 읽는다.
+FACTS = json.load(io.open(os.path.join(HERE, 'ledger_facts.json'), encoding='utf-8'))
+W_DAYS = FACTS['weekW']        # W금융일수 계열 — 기본 조회기간(일주일) 합계 행
 
 DEMO  = 'https://payhug-investor-demo.vercel.app'
 PROTO = 'https://payhug-investor-prototype.vercel.app'
 GLOSS = 'https://payhug-investor-glossary.vercel.app'
 
-NEED_APP = ['주별', '계약서보기', '하나인증서', '12주', '3.1']
+NEED_APP = ['주별', '계약서보기', '하나인증서', '12주', W_DAYS]
 BAN_APP  = ['예시값', '표시 1-', '확인필요', '용어 안내']
 NEED_GL  = ['가중평균만기', '케이뱅크']
 BAN_GL   = ['카드 한 장', '값의 출처', '용어 50건', '관리자 어드민']

@@ -1,0 +1,455 @@
+{
+ "file_key": "Tcf69tIciGxmlqCIuRb0iI",
+ "page_node_id": "3066:328",
+ "page_name": "[투자자 어드민] 제안서 첨부용",
+ "source_repo": "/Users/semi/cursor/payhug-investor-admin",
+ "source_commit": "093a07b",
+ "source_commit_short": "093a07b",
+ "prev_source_commit": "b0717bf",
+ "staging_copy": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/_fig",
+ "staging_css_patch": "prep_fig.py patch_css() 자동 적용 — ① --font-mono 를 Figma 내장 'Roboto Mono' 로 교체(원본 스택은 Chrome 에서 Menlo 로 해석되는데 Figma 에 Menlo 가 없어 hasMissingFont 가 되고 숫자 셀이 말줄임된다) ② sheet.css text-overflow:ellipsis 2곳 제거. 스테이징 사본 전용, 원본 레포 무변경",
+ "frame_count": 35,
+ "grid": {
+  "columns_x": [
+   0,
+   1600,
+   3200,
+   4800
+  ],
+  "row_pitch_y": 2613,
+  "frame_width": 1440,
+  "frame_height": "화면별 콘텐츠 높이(503~1755)"
+ },
+ "capture": {
+  "script": "_pipeline/investor_admin/figcap_ia.sh",
+  "server": "http://localhost:8903 (루트=_fig)",
+  "viewport_correction_px": 87,
+  "figmadelay_default": 2500,
+  "runner": "_pipeline/investor_admin/run_import_0828.sh",
+  "font_gate": "prep_fig.py fontgate"
+ },
+ "not_imported": [
+  "app.html",
+  "archive.html",
+  "capability.html",
+  "feasibility.html",
+  "glossary.html",
+  "inquiry.html",
+  "invest-profit--datepicker.html (폐기)",
+  "review.html"
+ ],
+ "frames": [
+  {
+   "file": "invest-assets.html",
+   "frame_name": "01 투자 자산",
+   "node_id": "3304:2",
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 1407,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3255:2"
+  },
+  {
+   "file": "certificate.html",
+   "frame_name": "02 투자자산 증명서",
+   "node_id": "3303:2",
+   "x": 1600,
+   "y": 0,
+   "w": 1440,
+   "h": 1168,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3253:2"
+  },
+  {
+   "file": "invest-profit.html",
+   "frame_name": "03 투자 수익",
+   "node_id": "3254:2",
+   "x": 3200,
+   "y": 0,
+   "w": 1440,
+   "h": 1267,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3195:2"
+  },
+  {
+   "file": "coocon.html",
+   "frame_name": "04 쿠콘 관리 현금",
+   "node_id": "3257:2",
+   "x": 4800,
+   "y": 0,
+   "w": 1440,
+   "h": 571,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3202:2"
+  },
+  {
+   "file": "merchants.html",
+   "frame_name": "05 가맹점",
+   "node_id": "3260:2",
+   "x": 0,
+   "y": 2613,
+   "w": 1440,
+   "h": 862,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3239:2"
+  },
+  {
+   "file": "acquisition.html",
+   "frame_name": "06 정산채권 양수",
+   "node_id": "3259:2",
+   "x": 1600,
+   "y": 2613,
+   "w": 1440,
+   "h": 653,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3238:2"
+  },
+  {
+   "file": "contracts.html",
+   "frame_name": "07 계약기록",
+   "node_id": "3258:2",
+   "x": 3200,
+   "y": 2613,
+   "w": 1440,
+   "h": 788,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3237:2"
+  },
+  {
+   "file": "password.html",
+   "frame_name": "08 비밀번호 변경",
+   "node_id": "3265:2",
+   "x": 4800,
+   "y": 2613,
+   "w": 1440,
+   "h": 629,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3203:2"
+  },
+  {
+   "file": "invest-assets--page2.html",
+   "frame_name": "01-a 투자 자산 — 2페이지",
+   "node_id": "3306:2",
+   "x": 0,
+   "y": 5226,
+   "w": 1440,
+   "h": 1227,
+   "action": "정리 대상 — 폐기",
+   "replaced_node_id": "3263:2",
+   "retire_reason": "로스터 9건이 표 보기 갯수 기본 10건 안에 다 들어가 2페이지에 도달할 수 없다. 낱장 invest-assets--page2.html 을 폐기했다(2026-08-30). Figma 프레임은 이 파일에서 표시만 하고 건드리지 않는다."
+  },
+  {
+   "file": "invest-assets--download.html",
+   "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
+   "node_id": "3305:2",
+   "x": 1600,
+   "y": 5226,
+   "w": 1440,
+   "h": 1407,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3262:2"
+  },
+  {
+   "file": "invest-assets--cert-confirm.html",
+   "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
+   "node_id": "3307:2",
+   "x": 3200,
+   "y": 5226,
+   "w": 1440,
+   "h": 1407,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3264:2"
+  },
+  {
+   "file": "invest-assets--empty.html",
+   "frame_name": "01-d 투자 자산 — 데이터 없음",
+   "node_id": "3270:2",
+   "x": 4800,
+   "y": 5226,
+   "w": 1440,
+   "h": 1059,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3191:2"
+  },
+  {
+   "file": "invest-profit--monthly.html",
+   "frame_name": "03-a 투자 수익 — 월별",
+   "node_id": "3269:2",
+   "x": 0,
+   "y": 7839,
+   "w": 1440,
+   "h": 1222,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3193:2"
+  },
+  {
+   "file": "invest-profit--empty.html",
+   "frame_name": "03-b 투자 수익 — 결과 없음",
+   "node_id": "3268:2",
+   "x": 1600,
+   "y": 7839,
+   "w": 1440,
+   "h": 1044,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3196:2"
+  },
+  {
+   "file": "invest-profit--weekly.html",
+   "frame_name": "03-c 투자 수익 — 주별",
+   "node_id": "3292:2",
+   "x": 3200,
+   "y": 7839,
+   "w": 1440,
+   "h": 1132,
+   "action": "신규 임포트"
+  },
+  {
+   "file": "merchants--filtered.html",
+   "frame_name": "05-a 가맹점 — 검색 적용",
+   "node_id": "3267:2",
+   "x": 0,
+   "y": 10452,
+   "w": 1440,
+   "h": 571,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3208:2"
+  },
+  {
+   "file": "merchants--empty.html",
+   "frame_name": "05-b 가맹점 — 결과 없음",
+   "node_id": "3275:2",
+   "x": 1600,
+   "y": 10452,
+   "w": 1440,
+   "h": 571,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3197:2"
+  },
+  {
+   "file": "acquisition--confirm.html",
+   "frame_name": "06-a 정산채권 양수 — 서명 확인",
+   "node_id": "3273:2",
+   "x": 0,
+   "y": 13065,
+   "w": 1440,
+   "h": 653,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3241:2"
+  },
+  {
+   "file": "acquisition--signing.html",
+   "frame_name": "06-b 정산채권 양수 — 서명 진행",
+   "node_id": "3274:2",
+   "x": 1600,
+   "y": 13065,
+   "w": 1440,
+   "h": 653,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3240:2"
+  },
+  {
+   "file": "acquisition--done.html",
+   "frame_name": "06-c 정산채권 양수 — 서명 완료",
+   "node_id": "3272:2",
+   "x": 3200,
+   "y": 13065,
+   "w": 1440,
+   "h": 571,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3242:2"
+  },
+  {
+   "file": "acquisition--doc.html",
+   "frame_name": "06-d 정산채권 양수 — 계약서 내용",
+   "node_id": "3291:2",
+   "x": 4800,
+   "y": 13065,
+   "w": 1440,
+   "h": 653,
+   "action": "신규 임포트"
+  },
+  {
+   "file": "contracts--all.html",
+   "frame_name": "07-a 계약기록 — 전체 선택",
+   "node_id": "3277:2",
+   "x": 0,
+   "y": 15678,
+   "w": 1440,
+   "h": 788,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3244:2"
+  },
+  {
+   "file": "contracts--downloaded.html",
+   "frame_name": "07-b 계약기록 — 다운로드 완료",
+   "node_id": "3279:2",
+   "x": 1600,
+   "y": 15678,
+   "w": 1440,
+   "h": 788,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3243:2"
+  },
+  {
+   "file": "contracts--empty.html",
+   "frame_name": "07-c 계약기록 — 문서 없음",
+   "node_id": "3278:2",
+   "x": 3200,
+   "y": 15678,
+   "w": 1440,
+   "h": 571,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3245:2"
+  },
+  {
+   "file": "password--weak.html",
+   "frame_name": "08-a 비밀번호 변경 — 규칙 미충족",
+   "node_id": "3280:2",
+   "x": 0,
+   "y": 18291,
+   "w": 1440,
+   "h": 637,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3217:2"
+  },
+  {
+   "file": "password--error.html",
+   "frame_name": "08-b 비밀번호 변경 — 확인값 불일치",
+   "node_id": "3283:2",
+   "x": 1600,
+   "y": 18291,
+   "w": 1440,
+   "h": 630,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3218:2"
+  },
+  {
+   "file": "password--done.html",
+   "frame_name": "08-c 비밀번호 변경 — 변경 완료",
+   "node_id": "3284:2",
+   "x": 3200,
+   "y": 18291,
+   "w": 1440,
+   "h": 630,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3220:2"
+  },
+  {
+   "file": "index.html",
+   "frame_name": "09 화면 갤러리",
+   "node_id": "3309:2",
+   "x": 4800,
+   "y": 18291,
+   "w": 1440,
+   "h": 1863,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3293:2"
+  },
+  {
+   "file": "login.html",
+   "frame_name": "10 로그인",
+   "node_id": "3282:2",
+   "x": 0,
+   "y": 20904,
+   "w": 1440,
+   "h": 505,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3205:2"
+  },
+  {
+   "file": "xls-assets-status.html",
+   "frame_name": "11 엑셀 산출물 서식 — 투자자산 현황",
+   "node_id": "3311:2",
+   "x": 1600,
+   "y": 20904,
+   "w": 1440,
+   "h": 613,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3285:2"
+  },
+  {
+   "file": "xls-assets-merchant.html",
+   "frame_name": "12 엑셀 산출물 서식 — 가맹점별 투자자산",
+   "node_id": "3312:2",
+   "x": 3200,
+   "y": 20904,
+   "w": 1440,
+   "h": 1005,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3288:2"
+  },
+  {
+   "file": "xls-profit-status.html",
+   "frame_name": "13 엑셀 산출물 서식 — 투자수익 현황",
+   "node_id": "3314:2",
+   "x": 4800,
+   "y": 20904,
+   "w": 1440,
+   "h": 669,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3287:2"
+  },
+  {
+   "file": "xls-profit-daily.html",
+   "frame_name": "14 엑셀 산출물 서식 — 일별 투자수익",
+   "node_id": "3313:2",
+   "x": 0,
+   "y": 23517,
+   "w": 1440,
+   "h": 753,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3289:2"
+  },
+  {
+   "file": "invest-sim.html",
+   "frame_name": "15 투자 시뮬레이션",
+   "node_id": "3310:2",
+   "x": 1600,
+   "y": 23517,
+   "w": 1440,
+   "h": 1123,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3295:2"
+  },
+  {
+   "file": "invest-sim--result.html",
+   "frame_name": "15-a 투자 시뮬레이션 — 실행 결과",
+   "node_id": "3308:2",
+   "x": 3200,
+   "y": 23517,
+   "w": 1440,
+   "h": 2541,
+   "action": "재임포트 교체",
+   "replaced_node_id": "3296:2"
+  }
+ ],
+ "retired": [
+  {
+   "file": "coocon--confirm.html",
+   "frame_name": "04-a 쿠콘 관리 현금 — 이동 확인",
+   "deleted_node_id": "3216:2",
+   "reason": "원본 파일 삭제 — coocon.html 과 동일해져 상태 화면이 성립하지 않음",
+   "status": "삭제 완료"
+  },
+  {
+   "file": "invest-profit--datepicker.html",
+   "frame_name": "03-d 투자 수익 — 기간 선택",
+   "deleted_node_id": "3298:2",
+   "status": "삭제 완료",
+   "reason": "093a07b 에서 원본 파일 폐기 — 커스텀 달력 팝오버가 실물에 없는 컴포넌트로 판정"
+  }
+ ],
+ "deleted_orphans": [
+  "3189:14605",
+  "3189:15019",
+  "3189:15380",
+  "3189:15742",
+  "3189:16095",
+  "3189:16281",
+  "3189:16460",
+  "3189:16726"
+ ],
+ "source_commit_note": "캡처 기준 = 093a07b. 완료 시점 HEAD 는 36f3473 이나 그 사이 변경은 archive.html · glossary.html · inquiry.html 3건뿐이고 전부 비임포트 대상이라 35화면은 두 커밋에서 diff 0. W금융일수 3.1→3.7일 · Ty수익율 12.95→10.85% 정정(미회수 기준)이 잔액 계통에 반영됨. invest-profit 계열의 3.1·12.97% 는 기간 만기 묶음 PSD 라 정상값이며 정정 대상이 아니다",
+ "head_at_completion": "36f3473"
+}

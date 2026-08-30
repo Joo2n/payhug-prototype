@@ -1,21 +1,21 @@
 {
  "_meta": {
   "source": "/Users/semi/cursor/payhug-investor-admin",
-  "sourceCommit": "6fe47e7",
+  "sourceCommit": "ff24384",
   "measuredAt": "2026-08-28",
   "counts": {
-   "htmlFilesRoot": 42,
+   "htmlFilesRoot": 40,
    "htmlFilesAssets": 1,
    "screens": 15,
-   "states": 20,
-   "interactions": 91,
+   "states": 19,
+   "interactions": 89,
    "defects": {
     "H": 3,
     "M": 9,
     "L": 8
    }
   },
-  "note": "개별 HTML 34개는 Figma 임포트용 원본으로 그대로 보존한다. app.html은 이 사양만 근거로 새로 조립한다. 2026-08-28 대표 미팅 §1(M-1~M-4)·2차 화면 지시(N-1~N-8)·3차 정정 적용."
+  "note": "개별 HTML 32개는 Figma 임포트용 원본으로 그대로 보존한다. app.html은 이 사양만 근거로 새로 조립한다. 2026-08-28 대표 미팅 §1(M-1~M-4)·2차 화면 지시(N-1~N-8)·3차 정정 적용."
  },
  "menus": [
   {
@@ -111,14 +111,6 @@
    "isState": false,
    "chrome": "sidebar",
    "states": [
-    {
-     "id": "invest-assets-page2",
-     "file": "invest-assets--page2.html",
-     "trigger": "가맹점별 투자자산 표 페이지네이션 2 클릭",
-     "from": "invest-assets",
-     "marker": "2페이지",
-     "markerClass": "badge badge-gray state-badge"
-    },
     {
      "id": "invest-assets-download",
      "file": "invest-assets--download.html",
@@ -575,24 +567,10 @@
   },
   {
    "screen": "invest-assets",
-   "selector_or_label": ".pagination .page-btn / 2",
-   "type": "pagination",
-   "action": "2페이지 이동",
-   "target": "invest-assets-page2"
-  },
-  {
-   "screen": "invest-assets",
    "selector_or_label": ".pagination .page-arrow / 이전·다음",
    "type": "pagination",
    "action": "페이지 이동",
    "target": null
-  },
-  {
-   "screen": "invest-assets-page2",
-   "selector_or_label": ".pagination .page-btn / 1",
-   "type": "pagination",
-   "action": "1페이지 복귀",
-   "target": "invest-assets"
   },
   {
    "screen": "invest-assets-download",
@@ -1434,7 +1412,7 @@
    "severity": "M",
    "title": "상태 파일에서 엑셀·발급 버튼의 링크 소실",
    "files": [
-    "invest-assets--page2/-download/-cert-confirm/-empty",
+    "invest-assets--download/-cert-confirm/-empty",
     "invest-profit--monthly/-empty"
    ],
    "fix": "통합본에서는 상태와 무관하게 동일 액션 핸들러 부여"

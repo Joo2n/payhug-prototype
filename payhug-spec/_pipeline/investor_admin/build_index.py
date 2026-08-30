@@ -27,7 +27,7 @@ def svg(key, cls=''):
 # (파일, 화면명, 아이콘, 그룹뱃지클래스, 그룹라벨, 설명, [(상태라벨, 파일), ...])
 MAIN = [
  ('invest-assets.html','투자 자산','credit','badge-primary','투자','현황·가맹점별 투자자산·산식·엑셀/증명서 다운로드',
-  [('2페이지','invest-assets--page2.html'),('엑셀 다운로드 완료','invest-assets--download.html'),
+  [('엑셀 다운로드 완료','invest-assets--download.html'),
    ('증명서 발급 확인','invest-assets--cert-confirm.html'),('데이터 없음','invest-assets--empty.html')]),
  ('certificate.html','투자자산 증명서','shield','badge-primary','투자','전자문서 미리보기·서명 검증',[]),
  ('invest-profit.html','투자 수익','trend','badge-primary','투자','기간 검색·일별/주별/월별 투자수익·산식',

@@ -1,0 +1,653 @@
+{
+  "cards": [
+    {
+      "term": "정산금채권",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "정산금채권 ID",
+      "symbol": "i",
+      "symbol_ko": "채권 한 건을 가리키는 번호",
+      "parts": [],
+      "variants": [],
+      "source": "ceo_definitions.md 1번 이미지"
+    },
+    {
+      "term": "플랫폼ID",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "매출일자",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "선정산일",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "정산예정일",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "순지급액",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "금융일수",
+      "symbol": "Di",
+      "symbol_ko": "i번 채권의 금융일수",
+      "parts": [
+        {
+          "sym": "D",
+          "ko": "금융일수 — 그 채권이 묶인 날수(선정산일 → 정산예정일)"
+        },
+        {
+          "sym": "i",
+          "ko": "채권 하나를 가리키는 번호. 정산금채권 ID가 그 번호다"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "DD-1i",
+          "ko": "정산예정일이 전일자인 대상정산금채권의 Di"
+        },
+        {
+          "sym": "Dpi",
+          "ko": "정산예정일이 선택한 기간에 든 대상정산금채권의 Di"
+        }
+      ],
+      "source": "ceo_definitions.md 1번 이미지"
+    },
+    {
+      "term": "유동화투자자",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "정산금채권 재양도 합의서",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "효력기간",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "대상정산금채권",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "유동화투자자의 할인율",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "Ai",
+      "symbol": "Ai",
+      "symbol_ko": "i번 채권 투자 집행액",
+      "parts": [
+        {
+          "sym": "A",
+          "ko": "Amount, 투자 집행 금액"
+        },
+        {
+          "sym": "i",
+          "ko": "채권 하나를 가리키는 번호. 정산금채권 ID가 그 번호다"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "AD-1i",
+          "ko": "정산예정일이 전일자인 대상정산금채권의 Ai"
+        },
+        {
+          "sym": "Api",
+          "ko": "정산예정일이 선택한 기간에 든 대상정산금채권의 Ai"
+        }
+      ],
+      "source": "ceo_definitions.md 1번 이미지"
+    },
+    {
+      "term": "채권매입수수료",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "회수되지 않은 순지급액",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "투자 실행액",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "순현금 (투자 자산 · 잔액)",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "쿠콘 가상계좌",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "Di",
+      "symbol": "Di",
+      "symbol_ko": "i번 채권의 금융일수",
+      "parts": [
+        {
+          "sym": "D",
+          "ko": "금융일수 — 그 채권이 묶인 날수(선정산일 → 정산예정일)"
+        },
+        {
+          "sym": "i",
+          "ko": "채권 하나를 가리키는 번호. 정산금채권 ID가 그 번호다"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "DD-1i",
+          "ko": "정산예정일이 전일자인 대상정산금채권의 Di"
+        },
+        {
+          "sym": "Dpi",
+          "ko": "정산예정일이 선택한 기간에 든 대상정산금채권의 Di"
+        }
+      ],
+      "source": "ceo_definitions.md 1번 이미지"
+    },
+    {
+      "term": "w금융일수 (투자 자산 · 잔액)",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "ty수익율 (투자 자산 · 잔액)",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "비중",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "자산 구분",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "보관",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "투자자산",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "가맹점별 투자금액",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "기준일자",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "미지급금",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "과지급금",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "SLi",
+      "symbol": "SLi",
+      "symbol_ko": "표본 i번 채권의 입금 부족액",
+      "parts": [
+        {
+          "sym": "S",
+          "ko": "Sample, 표본집합에 속한 것만 센다"
+        },
+        {
+          "sym": "L",
+          "ko": "Lack 또는 Loss, 부족분"
+        },
+        {
+          "sym": "i",
+          "ko": "채권 번호"
+        }
+      ],
+      "variants": [],
+      "source": "ceo_definitions.md 1번 이미지"
+    },
+    {
+      "term": "SAi",
+      "symbol": "SAi",
+      "symbol_ko": "표본 i번 채권 투자 집행액",
+      "parts": [
+        {
+          "sym": "S",
+          "ko": "Sample, 표본집합에 속한 것만 센다"
+        },
+        {
+          "sym": "A",
+          "ko": "Ai와 같은 값 — 순지급액 × (1 − 할인율)"
+        },
+        {
+          "sym": "i",
+          "ko": "채권 번호"
+        }
+      ],
+      "variants": [],
+      "source": "ceo_definitions.md 1번 이미지"
+    },
+    {
+      "term": "표본집합",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "S입금부족율",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "상환액 (일별 배치 · 하루치)",
+      "symbol": "SBD-1",
+      "symbol_ko": "전일자 상환액 합계",
+      "parts": [
+        {
+          "sym": "S",
+          "ko": "Sum — 합계"
+        },
+        {
+          "sym": "B",
+          "ko": "채권 한 건의 상환액 — 원문 Σ BD-1i의 B"
+        },
+        {
+          "sym": "D-1",
+          "ko": "전일자"
+        }
+      ],
+      "variants": [],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "투자실행금 (일별 배치 · 하루치)",
+      "symbol": "SAD-1",
+      "symbol_ko": "전일자 투자실행금 합계",
+      "parts": [
+        {
+          "sym": "S",
+          "ko": "Sum — 합계"
+        },
+        {
+          "sym": "A",
+          "ko": "Ai — 순지급액 × (1 − 할인율)"
+        },
+        {
+          "sym": "D-1",
+          "ko": "전일자"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "PSA",
+          "ko": "정산예정일이 선택한 기간에 든 SAD-1들의 합계"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "투자수익 (일별 배치 · 하루치)",
+      "symbol": "SMD-1",
+      "symbol_ko": "전일자 투자수익 합계",
+      "parts": [
+        {
+          "sym": "S",
+          "ko": "Sum — 합계"
+        },
+        {
+          "sym": "M",
+          "ko": "채권 한 건의 투자수익 — 원문 MD-1i의 M"
+        },
+        {
+          "sym": "D-1",
+          "ko": "전일자"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "PSM",
+          "ko": "정산예정일이 선택한 기간에 든 SMD-1들의 합계"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "투자수익율 (일별 배치 · 하루치)",
+      "symbol": "SMRD-1",
+      "symbol_ko": "전일자 투자수익율",
+      "parts": [
+        {
+          "sym": "S",
+          "ko": "Sum — 합계"
+        },
+        {
+          "sym": "MR",
+          "ko": "투자수익율 — Σ MD-1i ÷ Σ AD-1i"
+        },
+        {
+          "sym": "D-1",
+          "ko": "전일자"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "PSMR",
+          "ko": "범위를 선택한 기간으로 넓힌 SMRD-1"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "w금융일수 (일별 배치 · 하루치)",
+      "symbol": "SDD-1",
+      "symbol_ko": "전일자 w금융일수",
+      "parts": [
+        {
+          "sym": "S",
+          "ko": "Sum — 합계"
+        },
+        {
+          "sym": "D",
+          "ko": "금융일수 — DD-1i"
+        },
+        {
+          "sym": "D-1",
+          "ko": "전일자"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "PSD",
+          "ko": "범위를 선택한 기간으로 넓힌 SDD-1"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "ty수익율 (일별 배치 · 하루치)",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    },
+    {
+      "term": "순현금 (일별 배치 · 자정 시점)",
+      "symbol": "EC",
+      "symbol_ko": "전일자 자정 현금잔액",
+      "parts": [
+        {
+          "sym": "E",
+          "ko": "End — 마감(자정). 원고는 EC를 'End Cash(마감 현금) 정도로 읽힌다'고 적었다"
+        },
+        {
+          "sym": "C",
+          "ko": "Cash — 쿠콘 가상계좌 현금 잔액"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "PSC",
+          "ko": "선택한 기간의 EC들의 합"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "투자실행금 (투자 수익 · 기간 합계)",
+      "symbol": "PSA",
+      "symbol_ko": "기간 투자실행금 합계",
+      "parts": [
+        {
+          "sym": "P",
+          "ko": "Period — 기간"
+        },
+        {
+          "sym": "SA",
+          "ko": "하루치 투자실행금 SAD-1"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "SAD-1",
+          "ko": "정산예정일이 전일자인 하루치 투자실행금"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "투자수익 (투자 수익 · 기간 합계)",
+      "symbol": "PSM",
+      "symbol_ko": "기간 투자수익 합계",
+      "parts": [
+        {
+          "sym": "P",
+          "ko": "Period — 기간"
+        },
+        {
+          "sym": "SM",
+          "ko": "하루치 투자수익 SMD-1"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "SMD-1",
+          "ko": "정산예정일이 전일자인 하루치 투자수익"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "PSMR",
+      "symbol": "PSMR",
+      "symbol_ko": "기간 투자수익율",
+      "parts": [
+        {
+          "sym": "P",
+          "ko": "Period — 기간"
+        },
+        {
+          "sym": "SMR",
+          "ko": "하루치 투자수익율 SMRD-1과 같은 구조 — PSM ÷ PSA"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "SMRD-1",
+          "ko": "범위를 전일자 하루치로 좁힌 PSMR"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "PSD",
+      "symbol": "PSD",
+      "symbol_ko": "기간 w금융일수",
+      "parts": [
+        {
+          "sym": "P",
+          "ko": "Period — 기간"
+        },
+        {
+          "sym": "SD",
+          "ko": "하루치 w금융일수 SDD-1과 같은 구조 — (Σ Api × Dpi) ÷ PSA"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "SDD-1",
+          "ko": "범위를 전일자 하루치로 좁힌 PSD"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "PSC",
+      "symbol": "PSC",
+      "symbol_ko": "기간 자정 현금잔액 합계",
+      "parts": [
+        {
+          "sym": "P",
+          "ko": "Period — 기간"
+        },
+        {
+          "sym": "C",
+          "ko": "자정 현금잔액 EC"
+        }
+      ],
+      "variants": [
+        {
+          "sym": "EC",
+          "ko": "전일자 자정 하루치 현금잔액"
+        }
+      ],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "ty수익율 › 투자실행금액 대비 (투자 수익 · 기간 합계)",
+      "symbol": "④",
+      "symbol_ko": "2번 이미지 현황 표 4번 — 투자실행금액 대비 ty수익율(기간 집계)",
+      "parts": [],
+      "variants": [],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "ty수익율 › 투자자산 대비 (투자 수익 · 기간 합계)",
+      "symbol": "⑤",
+      "symbol_ko": "2번 이미지 현황 표 5번 — 투자자산 대비 ty수익율(기간 집계)",
+      "parts": [],
+      "variants": [],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "ty수익율 (일별 표 · 행 단위)",
+      "symbol": "⑥",
+      "symbol_ko": "2번 이미지 일별 투자수익 표 6번 — 투자실행금액 대비 ty수익율(행 단위 하루치)",
+      "parts": [],
+      "variants": [],
+      "source": "ceo_definitions.md 2번 이미지"
+    },
+    {
+      "term": "검색대상기간",
+      "symbol": null,
+      "symbol_ko": null,
+      "parts": [],
+      "variants": [],
+      "source": "원문에 기호 없음"
+    }
+  ]
+}

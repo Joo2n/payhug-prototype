@@ -1,0 +1,322 @@
+[
+ {
+  "file": "invest-assets",
+  "name": "01 투자 자산",
+  "x": 0,
+  "y": 0,
+  "vh": 1536,
+  "old_node": "3070:2",
+  "action": "replace",
+  "new_node": "3083:2"
+ },
+ {
+  "file": "certificate",
+  "name": "02 투자자산 증명서",
+  "x": 1600,
+  "y": 0,
+  "vh": 1224,
+  "old_node": "3069:2",
+  "action": "replace",
+  "new_node": "3084:2"
+ },
+ {
+  "file": "invest-profit",
+  "name": "03 투자 수익",
+  "x": 3200,
+  "y": 0,
+  "vh": 1429,
+  "old_node": "3068:2",
+  "action": "replace",
+  "new_node": "3085:2"
+ },
+ {
+  "file": "coocon",
+  "name": "04 쿠콘 관리 현금",
+  "x": 4800,
+  "y": 0,
+  "vh": 689,
+  "old_node": "3072:2",
+  "action": "replace",
+  "new_node": "3088:2"
+ },
+ {
+  "file": "merchants",
+  "name": "05 가맹점",
+  "x": 0,
+  "y": 2613,
+  "vh": 776,
+  "old_node": "3071:2",
+  "action": "replace",
+  "new_node": "3087:2"
+ },
+ {
+  "file": "acquisition",
+  "name": "06 정산채권 양수",
+  "x": 1600,
+  "y": 2613,
+  "vh": 578,
+  "old_node": "3073:2",
+  "action": "replace",
+  "new_node": "3086:2"
+ },
+ {
+  "file": "contracts",
+  "name": "07 계약기록",
+  "x": 3200,
+  "y": 2613,
+  "vh": 753,
+  "old_node": "3075:2",
+  "action": "replace",
+  "new_node": "3089:2"
+ },
+ {
+  "file": "password",
+  "name": "08 비밀번호 변경",
+  "x": 4800,
+  "y": 2613,
+  "vh": 559,
+  "old_node": "3074:2",
+  "action": "replace",
+  "new_node": "3092:2"
+ },
+ {
+  "file": "invest-assets--page2",
+  "name": "01-a 투자 자산 — 2페이지",
+  "x": 0,
+  "y": 5226,
+  "vh": 1536,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3095:2"
+ },
+ {
+  "file": "invest-assets--download",
+  "name": "01-b 투자 자산 — 엑셀 다운로드 완료",
+  "x": 1600,
+  "y": 5226,
+  "vh": 1536,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3090:2"
+ },
+ {
+  "file": "invest-assets--cert-confirm",
+  "name": "01-c 투자 자산 — 증명서 발급 확인",
+  "x": 3200,
+  "y": 5226,
+  "vh": 1536,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3093:2"
+ },
+ {
+  "file": "invest-assets--empty",
+  "name": "01-d 투자 자산 — 데이터 없음",
+  "x": 4800,
+  "y": 5226,
+  "vh": 1331,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3096:2"
+ },
+ {
+  "file": "invest-profit--monthly",
+  "name": "03-a 투자 수익 — 월별",
+  "x": 0,
+  "y": 7839,
+  "vh": 1384,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3091:2"
+ },
+ {
+  "file": "invest-profit--empty",
+  "name": "03-b 투자 수익 — 결과 없음",
+  "x": 1600,
+  "y": 7839,
+  "vh": 1271,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3094:2"
+ },
+ {
+  "file": "coocon--confirm",
+  "name": "04-a 쿠콘 관리 현금 — 이동 확인",
+  "x": 3200,
+  "y": 7839,
+  "vh": 689,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3097:2"
+ },
+ {
+  "file": "merchants--filtered",
+  "name": "05-a 가맹점 — 검색 적용",
+  "x": 0,
+  "y": 10452,
+  "vh": 542,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3098:2"
+ },
+ {
+  "file": "merchants--empty",
+  "name": "05-b 가맹점 — 결과 없음",
+  "x": 1600,
+  "y": 10452,
+  "vh": 732,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3101:2"
+ },
+ {
+  "file": "acquisition--confirm",
+  "name": "06-a 정산채권 양수 — 서명 확인",
+  "x": 0,
+  "y": 13065,
+  "vh": 578,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3104:2"
+ },
+ {
+  "file": "acquisition--signing",
+  "name": "06-b 정산채권 양수 — 서명 진행",
+  "x": 1600,
+  "y": 13065,
+  "vh": 578,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3099:2"
+ },
+ {
+  "file": "acquisition--done",
+  "name": "06-c 정산채권 양수 — 서명 완료",
+  "x": 3200,
+  "y": 13065,
+  "vh": 578,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3102:2"
+ },
+ {
+  "file": "contracts--all",
+  "name": "07-a 계약기록 — 전체 선택",
+  "x": 0,
+  "y": 15678,
+  "vh": 753,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3105:2"
+ },
+ {
+  "file": "contracts--downloaded",
+  "name": "07-b 계약기록 — 다운로드 완료",
+  "x": 1600,
+  "y": 15678,
+  "vh": 753,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3100:2"
+ },
+ {
+  "file": "contracts--empty",
+  "name": "07-c 계약기록 — 문서 없음",
+  "x": 3200,
+  "y": 15678,
+  "vh": 582,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3103:2"
+ },
+ {
+  "file": "password--weak",
+  "name": "08-a 비밀번호 변경 — 규칙 미충족",
+  "x": 0,
+  "y": 18291,
+  "vh": 637,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3106:2"
+ },
+ {
+  "file": "password--error",
+  "name": "08-b 비밀번호 변경 — 확인값 불일치",
+  "x": 1600,
+  "y": 18291,
+  "vh": 581,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3107:2"
+ },
+ {
+  "file": "password--done",
+  "name": "08-c 비밀번호 변경 — 변경 완료",
+  "x": 3200,
+  "y": 18291,
+  "vh": 533,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3110:2"
+ },
+ {
+  "file": "index",
+  "name": "09 화면 갤러리",
+  "x": 4800,
+  "y": 18291,
+  "vh": 1739,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3113:2"
+ },
+ {
+  "file": "login",
+  "name": "10 로그인",
+  "x": 0,
+  "y": 20904,
+  "vh": 543,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3108:2"
+ },
+ {
+  "file": "xls-assets-status",
+  "name": "11 엑셀 산출물 서식 — 투자자산 현황",
+  "x": 1600,
+  "y": 20904,
+  "vh": 667,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3111:2"
+ },
+ {
+  "file": "xls-assets-merchant",
+  "name": "12 엑셀 산출물 서식 — 가맹점별 투자자산",
+  "x": 3200,
+  "y": 20904,
+  "vh": 1059,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3114:2"
+ },
+ {
+  "file": "xls-profit-status",
+  "name": "13 엑셀 산출물 서식 — 투자수익 현황",
+  "x": 4800,
+  "y": 20904,
+  "vh": 723,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3109:2"
+ },
+ {
+  "file": "xls-profit-daily",
+  "name": "14 엑셀 산출물 서식 — 일별 투자수익",
+  "x": 0,
+  "y": 23517,
+  "vh": 807,
+  "old_node": null,
+  "action": "new",
+  "new_node": "3112:2"
+ }
+]

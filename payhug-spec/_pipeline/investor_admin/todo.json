@@ -1,0 +1,260 @@
+[
+ {
+  "n": 1,
+  "t": "인수·현황 파악 — 영상 19프레임 판독, 요청 레지스터",
+  "s": "done",
+  "o": "request_register.md"
+ },
+ {
+  "n": 2,
+  "t": "용어 원고 24건 (플로우차트 제외 개정)",
+  "s": "done",
+  "o": "glossary_manuscript.md"
+ },
+ {
+  "n": 3,
+  "t": "용어 설명 HTML — 정의 요청 19문항",
+  "s": "done",
+  "o": "glossary.html"
+ },
+ {
+  "n": 4,
+  "t": "투자자 뷰·기능 원고 (행위 35·데이터 49)",
+  "s": "done",
+  "o": "capability_manuscript.md"
+ },
+ {
+  "n": 5,
+  "t": "기능 설명 HTML — 개발 확인 질문 23",
+  "s": "done",
+  "o": "capability.html"
+ },
+ {
+  "n": 6,
+  "t": "화면 전수 인벤토리 — 결함 20건",
+  "s": "done",
+  "o": "screen_inventory.md"
+ },
+ {
+  "n": 7,
+  "t": "스토리보드 대비 커버리지 대조",
+  "s": "done",
+  "o": "storyboard_coverage.md"
+ },
+ {
+  "n": 8,
+  "t": "PPT 밖 추가 화면 발굴 14건",
+  "s": "done",
+  "o": "new_screens_manuscript.md"
+ },
+ {
+  "n": 9,
+  "t": "결함 수정 H-1·H-2·H-3 + M급 4건",
+  "s": "done",
+  "o": "app_build_result.md"
+ },
+ {
+  "n": 10,
+  "t": "통합 프로토타입 app.html — 70항목 PASS·죽은 버튼 0",
+  "s": "done",
+  "o": "app.html"
+ },
+ {
+  "n": 11,
+  "t": "엑셀 실물 4 + 미리보기 화면 4",
+  "s": "done",
+  "o": "assets/xlsx/"
+ },
+ {
+  "n": 12,
+  "t": "배포 경로 실측 검증 — Pages 제약 전항 통과",
+  "s": "done",
+  "o": "deploy_verify.md"
+ },
+ {
+  "n": 13,
+  "t": "Figma 기존 8장 검수 + 임포트 계획 33프레임",
+  "s": "done",
+  "o": "figma_import_plan.md"
+ },
+ {
+  "n": 14,
+  "t": "1차 검증 루프 — 29항목 판정",
+  "s": "done",
+  "o": "verify_loop1.md"
+ },
+ {
+  "n": 15,
+  "t": "작업물 추적 아카이브",
+  "s": "done",
+  "o": "archive.html"
+ },
+ {
+  "n": 16,
+  "t": "요율 정정 117건 + 로스터 통일 — 비중 합 100.0%",
+  "s": "done",
+  "o": "rate_apply_result.md"
+ },
+ {
+  "n": 17,
+  "t": "실물 산출물 — PDF 20·zip 2 생성, 배선 56건",
+  "s": "done",
+  "o": "artifact_gap.md"
+ },
+ {
+  "n": 18,
+  "t": "잔여 배선 + 허위주장 6종 + a11y 84건 — 검증 5종 전부 PASS",
+  "s": "done",
+  "o": "wiring_final.md"
+ },
+ {
+  "n": 19,
+  "t": "UI 실물 대조 188항목 — 폰트 일치, 색 불일치 14",
+  "s": "done",
+  "o": "ui_fidelity.md"
+ },
+ {
+  "n": 20,
+  "t": "UI 색 정정 31토큰 — ΔE 3.86→0.48, 불일치 0",
+  "s": "done",
+  "o": "ui_fidelity.md §5"
+ },
+ {
+  "n": 21,
+  "t": "Figma 임포트 32프레임 — 검수 양호 32 / 보수 0",
+  "s": "done",
+  "o": "3066:328"
+ },
+ {
+  "n": 22,
+  "t": "2차 검증 루프 39항목 — 게이트 통과4/부분5, 배포 불가 판정",
+  "s": "done",
+  "o": "verify_loop2.md"
+ },
+ {
+  "n": 23,
+  "t": "GitHub Pages 배포 — 72파일, 전 페이지 200",
+  "s": "done",
+  "o": "joo2n.github.io"
+ },
+ {
+  "n": 24,
+  "t": "전체 파일 표 전달",
+  "s": "done",
+  "o": "archive.html"
+ },
+ {
+  "n": 25,
+  "t": "임의 요소 색출 131건 — 임의생성 8, 오분류 3 발견",
+  "s": "done",
+  "o": "fabrication_audit.md"
+ },
+ {
+  "n": 26,
+  "t": "용어 해설 원고 50건 — 가르치는 구조 7블록",
+  "s": "done",
+  "o": "glossary_manuscript.md"
+ },
+ {
+  "n": 27,
+  "t": "대표 정의 영향 분석 27건 (P1 14) — 비중 구조변경 없음",
+  "s": "done",
+  "o": "ceo_impact.md"
+ },
+ {
+  "n": 28,
+  "t": "대표 정의·임의요소 정정 적용 + 재검증",
+  "s": "wait",
+  "o": "—"
+ },
+ {
+  "n": 29,
+  "t": "동작 일치 검증 80항목 — 이탈 24(시급 4), 필터 네이티브 결론",
+  "s": "done",
+  "o": "behavior_parity.md"
+ },
+ {
+  "n": 30,
+  "t": "순차 확인 페이지 11단계",
+  "s": "done",
+  "o": "review.html"
+ },
+ {
+  "n": 31,
+  "t": "대표님 문의서 — 대표 7문항 + 개발·백엔드 부록 30건 (복사 검증 18/18)",
+  "s": "done",
+  "o": "inquiry.html"
+ },
+ {
+  "n": 32,
+  "t": "임의 요소 정정 — 워드마크 잔존 0, PDF 20 재생성",
+  "s": "done",
+  "o": "fabrication_fix.md"
+ },
+ {
+  "n": 33,
+  "t": "용어 문서 5필드 재구조화 — 카드 50·기호사전 28",
+  "s": "done",
+  "o": "glossary.html"
+ },
+ {
+  "n": 34,
+  "t": "동작 이탈 정정 — 검증 5종 통과, ⑤ 투자자산 대비 Ty수익율 = (④ × PSA) ÷ (PSA + PSC)",
+  "s": "done",
+  "o": "behavior_parity.md §5"
+ },
+ {
+  "n": 35,
+  "t": "공유용 주소 3개 배포 — 시연·용어·전체",
+  "s": "done",
+  "o": "vercel_deploy.md"
+ },
+ {
+  "n": 36,
+  "t": "게이트 미달 5건 해소 + 토스트 잔류 정정",
+  "s": "done",
+  "o": "gate_fix.md"
+ },
+ {
+  "n": 37,
+  "t": "착수불가 3건 정정 — E 0건 확정, 문항 7→4",
+  "s": "done",
+  "o": "grade_revision.md"
+ },
+ {
+  "n": 38,
+  "t": "Figma 9프레임 재임포트 — 양호 9/보수 0, 전수 32프레임 정합",
+  "s": "done",
+  "o": "3066:328"
+ },
+ {
+  "n": 39,
+  "t": "월별 표·카드 기간 기준 — 조회 기간 연동",
+  "s": "done",
+  "o": "monthly_fix.md §1"
+ },
+ {
+  "n": 40,
+  "s": "done",
+  "t": "화면 기준 용어 매핑표 — 13항목+추가 14행, 층위 28/22, 이름 규칙 통일 15건",
+  "o": "term_mapping.md"
+ },
+ {
+  "n": 41,
+  "t": "용어 전용 공유 주소 (glossary.vercel.app)",
+  "s": "done",
+  "o": "vercel"
+ },
+ {
+  "n": 42,
+  "t": "시연 전용 공유 주소 (prototype.vercel.app)",
+  "s": "done",
+  "o": "vercel"
+ },
+ {
+  "n": 43,
+  "t": "계약기록 다운로드 비활성 — 전자서명 결과물 파일 형식 회신 대기",
+  "s": "ask",
+  "o": "대표 확인 요청 Q-5"
+ }
+]

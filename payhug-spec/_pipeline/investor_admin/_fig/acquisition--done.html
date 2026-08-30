@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>PayHug Admin — 정산채권 양수 · 서명 완료</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<style>
+  /* 화면 전용 — 색상은 base.css 변수만 사용 */
+  .notice-green { background: var(--primary-50); border-color: var(--primary-200); color: var(--primary-700); }
+  .chk { width: 16px; height: 16px; accent-color: var(--primary); flex-shrink: 0; cursor: pointer; }
+  .sign-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 24px; border-bottom: 1px solid var(--gray-50);
+  }
+  .sign-row:last-child { border-bottom: 0; }
+  .sign-row.selected { background: var(--primary-50); }
+  .sign-row .m-name { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+  .sign-row .m-date { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+  .sign-row .m-date .mono { color: var(--gray-500); }
+  .doc-link { font-size: 14px; font-weight: 500; color: var(--primary-600); text-decoration: none; white-space: nowrap; }
+  .doc-link:hover { text-decoration: underline; }
+  /* 선택 건수는 목록 아래 왼쪽, 서명 버튼은 가운데 — 쪽번호 줄과 같은 3열 격자다.
+     원본 어드민의 다중선택 액션 바도 건수를 왼쪽에 둔다(PreSettlementTab.tsx:1214·1264). */
+  .sign-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 20px 24px 24px; border-top: 1px solid var(--gray-100); background: var(--gray-50); }
+  .sign-foot .sel-count { justify-self: start; font-size: 13px; color: var(--gray-600); }
+  .sign-foot .sel-count b { color: var(--gray-900); }
+  .sign-foot .btn { min-width: 240px; justify-content: center; padding: 12px 40px; font-size: 16px; border-radius: 12px; }
+  .list-tools { display: flex; align-items: center; gap: 8px; }
+  .tbl-head-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--gray-100); }
+  .state-flag {
+    display: inline-block; margin-left: 10px; vertical-align: middle;
+    padding: 4px 10px; border-radius: 9999px;
+    background: var(--gray-100); color: var(--gray-500);
+    font-size: 12px; line-height: 16px; font-weight: 500;
+  }
+  .done-head { text-align: center; }
+  .done-icon {
+    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 16px;
+    background: var(--primary-50); color: var(--primary-600);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .done-icon svg { width: 28px; height: 28px; }
+  .done-title { font-size: 18px; line-height: 28px; font-weight: 700; color: var(--gray-900); margin: 0 0 6px; }
+  .done-desc { font-size: 14px; line-height: 20px; color: var(--gray-500); margin: 0; }
+  .done-list { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+  .done-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--primary-50); border-radius: 10px; padding: 10px 14px;
+  }
+  .done-item svg { width: 16px; height: 16px; color: var(--primary-600); flex-shrink: 0; }
+  .done-item .n { flex: 1; font-size: 14px; font-weight: 600; color: var(--gray-900); }
+  .done-item .d { font-size: 12px; color: var(--gray-400); }
+</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=block" rel="stylesheet">
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body data-active="receivables">
+<div class="page">
+
+  <!-- ═══════════ 사이드바 (수정 금지 — 화면마다 동일) ═══════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html">
+        <span class="logo-mark" role="img" aria-label="PayHug"></span>
+        <span class="wordmark">PayHug <em>Admin</em></span>
+      </a>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group" data-group="invest">
+        <div class="nav-group-label">
+          <span>투자</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <a class="nav-item" data-menu="invest-assets" href="invest-assets.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          <span>투자 자산</span>
+        </a>
+        <a class="nav-item" data-menu="invest-returns" href="invest-profit.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          <span>투자 수익</span>
+        </a>
+        <a class="nav-item" data-menu="invest-sim" href="invest-sim.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm3.75-6.75A2.25 2.25 0 0119.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75z"/></svg>
+          <span>투자 시뮬레이션</span>
+        </a>
+      </div>
+
+      <div class="nav-group" data-group="merchant">
+        <div class="nav-group-label">
+          <span>가맹점</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <a class="nav-item" data-menu="merchants" href="merchants.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>가맹점</span>
+        </a>
+        <a class="nav-item" data-menu="receivables" href="acquisition.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>정산채권 양수</span>
+        </a>
+        <a class="nav-item" data-menu="contracts" href="contracts.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span>계약기록</span>
+        </a>
+      </div>
+
+      <div class="nav-group" data-group="manage">
+        <div class="nav-group-label">
+          <span>관리</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        <a class="nav-item" data-menu="kcoon" href="coocon.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span>쿠콘 관리 현금</span>
+          <svg class="ext" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <a class="nav-item" data-menu="password" href="password.html">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span>비밀번호 변경</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="avatar">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      </div>
+      <div class="info">
+        <p class="name">㈜테스트인베스트</p>
+        <button class="logout">로그아웃</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════ 콘텐츠 영역 ═══════════ -->
+  <main class="content" style="padding-bottom:120px">
+    <div class="page-header">
+      <h1 class="page-title">정산채권 양수 <span class="state-flag">서명 완료</span></h1>
+    </div>
+
+    <!-- 안내 배너 -->
+    <div class="notice notice-green">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span>서명 완료 <b class="mono">2건</b> · 서명 대기 <b class="mono">1건</b>.</span>
+    </div>
+
+    <!-- 서명 대기 목록 -->
+    <div class="card" style="padding:0; overflow:hidden">
+      <div class="tbl-head-bar">
+        <span class="card-title" style="margin:0">서명 대기 목록</span>
+        <div class="list-tools">
+          <button class="btn btn-ghost">전체 선택</button>
+          <button class="btn btn-ghost" disabled>선택 해제</button>
+        </div>
+      </div>
+
+      <div class="sign-row pickable">
+        <input type="checkbox" class="chk">
+        <div style="flex:1; min-width:0">
+          <div class="m-name">바다마루 횟집</div>
+          <div class="m-date">계약 생성일 <span class="mono">2026-08-27</span></div>
+        </div>
+        <span class="badge badge-amber">서명 대기</span>
+        <a class="doc-link" href="acquisition--doc.html">계약서보기</a>
+      </div>
+      <div class="sign-foot">
+        <span class="sel-count">선택 <b class="mono">0</b>건</span>
+        <button class="btn btn-primary" disabled>서명하기</button>
+      </div>
+    </div>
+
+  </main>
+
+
+
+  <!-- 서명 완료 모달 -->
+  <div class="modal-backdrop">
+    <div class="modal md">
+      <div class="modal-body" style="padding-top:32px">
+        <div class="done-head">
+          <div class="done-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3 class="done-title">서명 완료</h3>
+          <p class="done-desc">정산금채권 양수도 계약 <b class="mono">2건</b> 서명 완료.<br>서명값은 계약기록에 보관.</p>
+        </div>
+
+        <div class="done-list">
+          <div class="done-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="n">김성호떡볶이 본점</span>
+            <span class="d mono">2026-08-25</span>
+          </div>
+          <div class="done-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span class="n">달빛곱창 홍대점</span>
+            <span class="d mono">2026-08-26</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline" href="contracts.html">계약기록 보기</a>
+        <a class="btn btn-primary" href="acquisition.html">확인</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

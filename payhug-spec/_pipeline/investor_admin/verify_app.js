@@ -9,6 +9,15 @@ const { spawn } = require('child_process');
 
 const REPO = '/Users/semi/cursor/payhug-investor-admin';
 const OUTDIR = '/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin';
+/* 숫자 기대값은 검증기에 손으로 적지 않는다 — daily_ledger.py 가 내는 원장 사실값을 읽는다.
+   verify_identity.js:13 · verify_proto.js:14 · verify_period.js:14 와 같은 원천이다. */
+const FACTS = JSON.parse(fs.readFileSync(path.join(OUTDIR, 'ledger_facts.json'), 'utf8'));
+const ROSTER = FACTS.merchants.length;                    /* 가맹점 로스터 곳수 — 계약기록 건수도 같은 명단이다 */
+/* 가맹점 검색 예시어 `곱창` 에 걸리는 곳수 — 검증기에 적지 않고 원장 명단에서 센다.
+   로스터가 바뀌면 걸리는 곳수도 같이 바뀐다. */
+const MC_KW = '곱창';
+const MC_HITS = FACTS.merchants.filter(m => String(m[0]).indexOf(MC_KW) >= 0).length;
+const TOTAL_TXT = FACTS.total.toLocaleString('en-US');    /* 투자자산 = 투자실행액 + 순현금 */
 const PORT = 8700 + (process.pid % 90), DPORT = 9400 + (process.pid % 90);
 const DL = fs.mkdtempSync(path.join(os.tmpdir(), 'phdl-'));
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -93,6 +102,19 @@ async function main(){
     });
     return out;`);
   R.menuCount = await evalJS("return document.querySelectorAll('.sidebar .nav-item[data-menu]').length;");
+  /* 곳수를 재 놓고 판정에 안 넣던 자리(2026-08-30 이전). 사이드바에서 메뉴가 통째로 사라져도
+     MENUS 가 같이 줄어 아래 for 문이 그만큼 덜 돌 뿐, 아무 검사도 실패하지 않았다.
+     기준은 검증기가 정하지 않는다 — 앱이 스스로 선언한 MENU_OF(화면→메뉴 대응표)의
+     서로 다른 비어 있지 않은 메뉴 값이 사이드바에 하나씩 있어야 한다. 8 을 박지 않는다. */
+  R.menuDeclared = await evalJS(
+    "var v={}; Object.keys(MENU_OF).forEach(function(k){ if(MENU_OF[k]) v[MENU_OF[k]]=1; });" +
+    "var dom=[].map.call(document.querySelectorAll('.sidebar .nav-item[data-menu]'), function(e){ return e.dataset.menu; });" +
+    "var want=Object.keys(v).sort(), got=dom.slice().sort();" +
+    "return {want:want, got:got, dup:dom.length!==new Set(dom).size};");
+  R.menus.push({menu:'(사이드바 구성)', screen:'-', label:'선언된 메뉴 전건이 사이드바에 하나씩',
+    선언:R.menuDeclared.want, 그려진것:R.menuDeclared.got, 곳수:R.menuCount,
+    pass: JSON.stringify(R.menuDeclared.want) === JSON.stringify(R.menuDeclared.got)
+          && !R.menuDeclared.dup && R.menuCount === R.menuDeclared.want.length});
   /* 쿠콘 관리 현금 — 메뉴를 누르면 중간 화면 없이 바로 We-bank 로 나간다.
      SPA 화면 전환이 아니므로 링크 자체(주소·새 창)를 본다. */
   const kc = await evalJS(
@@ -122,9 +144,6 @@ async function main(){
 
   /* ── 2) 상태 전건: 실제 클릭 시퀀스 ── */
   const SEQ = [
-    ['invest-assets','page2', [
-      ['nav','.nav-item[data-menu="invest-assets"]'],
-      ['click','[data-act="ia-page"][data-page="2"]']]],
     ['invest-assets','download', [
       ['nav','.nav-item[data-menu="invest-assets"]'],
       ['click','[data-mount="ia-xls-merchant"]'],
@@ -228,41 +247,86 @@ async function main(){
       pass: !err && got.visible && got.state === state});
   }
 
-  /* ── 3) 엑셀 8건 — 원본처럼 중간 화면 없이 즉시 파일이 나오는지 실측 ──
+  /* ── 3) 엑셀 — 원본처럼 중간 화면 없이 즉시 파일이 나오는지 실측 ──
      판정 = 실물 파일이 디스크에 떨어지고(바이트 일치) 화면이 미리보기로 넘어가지 않는다.
-     투자 수익은 버튼 2개가 집계 단위 3단을 타므로 상태별로 6번을 따로 본다 —
-     카드가 4주를 말하는데 일주일 파일이 나가면 여기서 걸린다. */
+     조합은 화면이 스스로 갖고 있는 프리셋 표에서 가져온다 — 기간을 검증기에 손으로 적지 않는다.
+     파일명이 그 프리셋의 시작일·종료일을 그대로 달고 있는지도 함께 본다.
+     화면은 27행 금월인데 파일은 일주일치가 나가던 자리가 여기서 걸린다. */
+  const PRESETS = await evalJS(`
+    var out = [];
+    for(var k in PRESET_RANGE)
+      out.push({k:k, gran:PRESET_GRAN[k], label:PRESET_LABEL[k],
+                from:PRESET_RANGE[k][0], to:PRESET_RANGE[k][1]});
+    return out;`);
   const CASES = [
     {key:'assets-status',   screen:'invest-assets', state:'default', file:'투자자산현황_2026-08-27_2026-08-27.xlsx'},
-    {key:'assets-merchant', screen:'invest-assets', state:'default', file:'가맹점별투자자산_2026-08-27_2026-08-27.xlsx'},
-    {key:'profit-status',   screen:'invest-profit', state:'default', file:'투자수익현황_2026-08-21_2026-08-27.xlsx'},
-    {key:'profit-daily',    screen:'invest-profit', state:'default', file:'일별투자수익_2026-08-21_2026-08-27.xlsx'},
-    {key:'profit-status',   screen:'invest-profit', state:'weekly',  file:'투자수익현황_2026-08-03_2026-08-30.xlsx'},
-    {key:'profit-daily',    screen:'invest-profit', state:'weekly',  file:'주별투자수익_2026-08-03_2026-08-30.xlsx'},
-    {key:'profit-status',   screen:'invest-profit', state:'monthly', file:'투자수익현황_2026-03-01_2026-08-31.xlsx'},
-    {key:'profit-daily',    screen:'invest-profit', state:'monthly', file:'월별투자수익_2026-03-01_2026-08-31.xlsx'}
+    {key:'assets-merchant', screen:'invest-assets', state:'default', file:'가맹점별투자자산_2026-08-27_2026-08-27.xlsx'}
   ];
+  for(const p of PRESETS)
+    for(const key of ['profit-status', 'profit-daily'])
+      CASES.push({key, screen:'invest-profit', state:'default', preset:p});
   for(const c of CASES){
     fs.readdirSync(DL).forEach(f => { try{ fs.unlinkSync(path.join(DL, f)); }catch(e){} });
     await evalJS('go(' + JSON.stringify(c.screen) + ', ' + JSON.stringify(c.state) + '); return 1;');
+    if(c.preset){
+      /* 집계 단위 탭을 누르고 그 단위의 프리셋 칩을 누른다 — 사람이 하는 순서 그대로 */
+      await evalJS(`document.querySelector('[data-act=pf-gran][data-gran=${c.preset.gran}]').click();
+                    document.querySelector('[data-act=preset][data-preset=${c.preset.k}]').click(); return 1;`);
+      const got = await evalJS(`var k = xlsKey(${JSON.stringify(c.key)});
+        return {from:PF.from, to:PF.to, gran:PF.gran, key:k, file:k ? XLSX[k].file : null};`);
+      c.file = got.file;
+      c.periodOk = !!got.file && got.from === c.preset.from && got.to === c.preset.to
+                   && got.gran === c.preset.gran
+                   && got.file.indexOf('_' + c.preset.from + '_' + c.preset.to + '.xlsx') > 0;
+    } else {
+      c.periodOk = true;
+    }
     await sleep(250);
-    const click = await evalJS('var b=document.querySelector(\'[data-act="xls-open"][data-xls="' + c.key + '"]\');' +
-      'if(!b) return "missing"; b.click(); return "ok";');
+    const click = c.file ? await evalJS('var b=document.querySelector(\'[data-act="xls-open"][data-xls="' + c.key + '"]\');' +
+      'if(!b) return "missing"; b.click(); return "ok";') : '파일 없음';
     await sleep(120);
     const view = await evalJS('return document.body.dataset.view;');
     let got = null;
-    for(let i = 0; i < 25 && !got; i++){
+    for(let i = 0; i < 25 && !got && c.file; i++){
       await sleep(200);
       const f = path.join(DL, c.file);
       if(fs.existsSync(f) && fs.statSync(f).size > 0) got = f;
     }
     await sleep(500);
-    const src = path.join(REPO, 'assets/xlsx', c.file);
+    const src = c.file ? path.join(REPO, 'assets/xlsx', c.file) : null;
     const direct = (view === c.screen);
-    R.downloads.push({key:c.key + '/' + c.state, expect:c.file, click, viewAfter:view, noPreviewScreen:direct,
+    R.downloads.push({key:c.key + '/' + (c.preset ? c.preset.label : c.state), expect:c.file,
+      기간:c.preset ? c.preset.from + '~' + c.preset.to : '기준일', 기간일치:c.periodOk,
+      click, viewAfter:view, noPreviewScreen:direct,
       file: got ? path.basename(got) : null,
-      bytes: got ? fs.statSync(got).size : 0, srcBytes: fs.statSync(src).size,
-      pass: !!got && direct && fs.statSync(got).size === fs.statSync(src).size});
+      bytes: got ? fs.statSync(got).size : 0, srcBytes: src && fs.existsSync(src) ? fs.statSync(src).size : -1,
+      pass: !!got && direct && c.periodOk && fs.statSync(got).size === fs.statSync(src).size});
+  }
+
+  /* 프리셋 밖 기간(직접입력)에는 실물이 없다 — 버튼이 잠기고, 눌러도 토스트가 나오지 않는다(D-39). */
+  {
+    fs.readdirSync(DL).forEach(f => { try{ fs.unlinkSync(path.join(DL, f)); }catch(e){} });
+    const off = await evalJS(`
+      go('invest-profit','default');
+      var sec = document.querySelector('section[data-screen="invest-profit"]');
+      var t = document.querySelector('[data-mount=toast]');
+      var ti = sec.querySelector('[data-mount=pf-to]');
+      ti.value = '2026-08-25'; ti.dispatchEvent(new Event('change',{bubbles:true}));
+      hideToast();                       /* 앞선 다운로드 토스트를 걷고 시작한다 */
+      var x1 = sec.querySelector('[data-mount=pf-xls1]'), x2 = sec.querySelector('[data-mount=pf-xls2]');
+      var st = {label:(sec.querySelector('.stat-period')||{}).textContent,
+                keyStatus:xlsKey('profit-status'), keyDaily:xlsKey('profit-daily'),
+                d1:!!x1.disabled, d2:!!x2.disabled, cursor:getComputedStyle(x1).cursor};
+      x1.click(); x2.click();
+      st.toastHidden = t.hidden;
+      return st;`);
+    await sleep(600);
+    const dropped = fs.readdirSync(DL).filter(f => f.endsWith('.xlsx'));
+    R.downloads.push({key:'profit/직접입력 — 실물 없는 기간', expect:'없음', 기간:'2026-08-21~2026-08-25',
+      라벨:off.label, 잠금:[off.d1, off.d2], cursor:off.cursor, 토스트숨김:off.toastHidden,
+      떨어진파일:dropped, keys:[off.keyStatus, off.keyDaily],
+      pass: off.label === '직접입력' && off.keyStatus === null && off.keyDaily === null
+            && off.d1 && off.d2 && off.cursor === 'not-allowed' && off.toastHidden && dropped.length === 0});
   }
 
   /* ── 4) 죽은 컨트롤 전수 스캔 ──
@@ -308,7 +372,7 @@ async function main(){
       if(e.dataset.act==='cert-open' && document.querySelector('[data-modal]:not([hidden])')) return true;
       return false;
     }
-    var TARGETS=[['invest-assets','default'],['invest-assets','page2'],['invest-assets','empty'],['invest-assets','cert-confirm'],
+    var TARGETS=[['invest-assets','default'],['invest-assets','empty'],['invest-assets','cert-confirm'],
       ['invest-profit','default'],['invest-profit','weekly'],['invest-profit','monthly'],['invest-profit','empty'],
       ['invest-sim','default'],['invest-sim','result'],
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
@@ -409,7 +473,7 @@ async function main(){
       sizePick(t[1],50); var n50=rowsOf(t[2]);
       sizePick(t[1],10);
       szOut.push({tbl:t[1], opts:opts, n10:n10, n20:n20, n50:n50, pagesAt20:pgs,
-        ok: opts.join(',')==='10,20,50' && n10===10 && n20===16 && n50===16 && pgs===0});
+        ok: opts.join(',')==='10,20,50' && n10===Math.min(10,${ROSTER}) && n20===${ROSTER} && n50===${ROSTER} && pgs===0});
       go(t[0],'default');
     });
     out.push({case:'보기 갯수 10/20/50 — 고르면 즉시 다시 그린다', 표:szOut,
@@ -429,12 +493,15 @@ async function main(){
     document.querySelector('[data-act=aq-done-ok]').click();
     var q1=aqRows();
     go('merchants'); go('acquisition-list');
-    var q2=aqRows(), storageUsed=0;
-    try{ storageUsed = localStorage.length + sessionStorage.length; }catch(e){ storageUsed = 0; }
+    var q2=aqRows(), storageUsed=0, storageErr='';
+    /* 예외를 0 으로 삼키면 판정식 storageUsed===0 이 그대로 통과한다 — 저장소를 못 읽었는데 통과.
+       -1 로 두어 실패로 떨어뜨린다(2026-08-30 수정). */
+    try{ storageUsed = localStorage.length + sessionStorage.length; }
+    catch(e){ storageUsed = -1; storageErr = String(e && e.message || e).slice(0,80); }
     go('acquisition-list','default');
     var q3=aqRows();
     out.push({case:'서명 완료 — 대기 목록에서 빠지고 메뉴를 오가도 남는다',
-      전:q0, 서명후:q1, 메뉴왕복후:q2, 상태리셋후:q3, 저장소항목:storageUsed, 서명직후선택건수:qSel,
+      전:q0, 서명후:q1, 메뉴왕복후:q2, 상태리셋후:q3, 저장소항목:storageUsed, 저장소오류:storageErr, 서명직후선택건수:qSel,
       pass: q0===3 && q1===2 && q2===2 && q3===3 && storageUsed===0 && qSel==='0'});
 
     /* 목록에서 빠진 행이 선택 건수에 남지 않는다 — 서명 완료 상태로 바로 들어와도 같다 */
@@ -453,7 +520,7 @@ async function main(){
     var m1=document.querySelectorAll('[data-mount=mc-tbl] tbody tr').length;
     var t1=document.querySelector('[data-mount=mc-page]').textContent.replace(/\\s+/g,'');
     out.push({case:'가맹점 검색어 필터', rowsBefore:m0, rowsAfter:m1, countBefore:t0, countAfter:t1,
-      pass: m0===10 && m1===2 && t0.indexOf('총16건')>=0 && t1.indexOf('총2건')>=0});
+      pass: m0===Math.min(10,${ROSTER}) && m1===${MC_HITS} && t0.indexOf('총${ROSTER}건')>=0 && t1.indexOf('총${MC_HITS}건')>=0});
 
     go('invest-profit','default');
     function foot(){ var f=document.querySelector('[data-mount=pf-tbl] tfoot tr'); return f? Array.prototype.map.call(f.children,function(c){return c.textContent.trim();}) : null; }
@@ -474,7 +541,7 @@ async function main(){
     out.push({case:'기간·granularity 변경 시 합계 재계산', weekRows:wr, weekSum:w&&w[3], ydayRows:yr, ydaySum:y&&y[3],
       monthRows:mr, monthSum:mo&&mo[3], monthRange:mFrom+'~'+mTo, m6Rows:m6r, m6Sum:m6&&m6[3],
       pass: wr===7 && yr===1 && mr===1 && m6r===6
-            && mFrom==='2026-08-01' && mTo==='2026-08-31'
+            && mFrom==='2026-08-01' && mTo==='2026-08-27'
             && w[3]!==y[3] && y[3]!==mo[3] && mo[3]!==m6[3]});
 
     /* 업종 필터 — 네이티브 select 로 고르면 조건이 실제로 적용되는지.
@@ -529,7 +596,7 @@ async function main(){
     kw.value='곱창'; kw.dispatchEvent(new Event('input',{bubbles:true}));
     kw.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
     var eRows=document.querySelectorAll('[data-mount=mc-tbl] tbody tr').length;
-    out.push({case:'검색창 Enter → 조회 실행', rows:eRows, pass: eRows===2});
+    out.push({case:'검색창 Enter → 조회 실행', rows:eRows, pass: eRows===${MC_HITS}});
     go('merchants','default');
 
     /* 모달 배경 클릭으로는 닫히지 않는다 (D-40) — 여는 자리는 MODAL_OF 로 역산한다 */
@@ -565,7 +632,14 @@ async function main(){
     document.querySelector('[data-act=ct-all]').click();
     var c1=ctSel();
     var lab=document.querySelector('[data-mount=ct-dl-label]').textContent;
-    out.push({case:'계약기록 전체 선택', before:c0, after:c1, button:lab, pass:c0==='3건 선택' && c1==='16건 선택' && lab.indexOf('(16)')>0});
+    /* 고를 수 있는 행 = 서명이 끝난 계약. 서명 대기 큐에 남은 가맹점은 내려받을 문서가 없어 체크박스가 잠긴다.
+       기대값을 검증기에 적지 않는다 — 화면이 세는 수를 그대로 받아 대조한다. */
+    var ctWant = ctSignedCount(CONTRACTS);
+    var ctLocked = document.querySelectorAll('section[data-screen=contracts] tbody input.chk[disabled]').length;
+    out.push({case:'계약기록 전체 선택 — 서명 완료 행만', before:c0, after:c1, button:lab,
+      고를수있는행:ctWant, 잠긴체크박스:ctLocked, 총행:CONTRACTS.length,
+      pass:c0==='3건 선택' && c1===ctWant+'건 선택' && lab.indexOf('('+ctWant+')')>0
+           && ctLocked===CONTRACTS.length-ctWant});
 
     /* 신설 버튼 3종 — 계약기록 선택 해제 · 서명 대기 목록 전체 선택/선택 해제 · 행 클릭 선택 */
     document.querySelector('[data-act=ct-clear]').click();
@@ -624,15 +698,37 @@ async function main(){
     var s1=document.querySelector('[data-mount=ia-summary]').textContent.replace(/\\s+/g,' ');
     go('invest-assets','empty');
     var s2=document.querySelector('[data-mount=ia-summary]').textContent.replace(/\\s+/g,' ');
-    out.push({case:'데이터 없음 상태 지표 0 치환', hasAmount:s1.indexOf('1,628,400,000')>=0, zeroed:s2.indexOf('1,628,400,000')<0,
-      pass: s1.indexOf('1,628,400,000')>=0 && s2.indexOf('1,628,400,000')<0});
+    out.push({case:'데이터 없음 상태 지표 0 치환', hasAmount:s1.indexOf('${TOTAL_TXT}')>=0, zeroed:s2.indexOf('${TOTAL_TXT}')<0,
+      pass: s1.indexOf('${TOTAL_TXT}')>=0 && s2.indexOf('${TOTAL_TXT}')<0});
     go('invest-assets','default');
     return out;
   `);
 
+  /* ── 5-b) 서명 진행 모달은 스스로 빠져나간다 ──
+     이 모달에는 X 도 닫기도 없고 배경·ESC 로도 닫히지 않는다(D-40). 나가는 길은 1.5초 뒤 서명 완료 하나뿐이라,
+     주소로 곧장 들어온 사람(#acquisition-list/signing)에게도 그 타이머가 걸려 있어야 한다.
+     씨앗이 상태만 놓고 타이머를 안 걸면 그 주소로 들어온 사람은 갇힌다. */
+  {
+    await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/app.html#acquisition-list/signing'});
+    await sleep(1400);
+    const at0 = await evalJS(`var s=document.querySelector('section[data-screen=acquisition-list]');
+      return {state:s.dataset.state, modal:(document.querySelector('[data-modal]:not([hidden])')||{dataset:{}}).dataset.modal,
+              closers:document.querySelectorAll('[data-modal="acquisition-signing"] [data-act]').length};`);
+    await sleep(2200);
+    const at1 = await evalJS(`var s=document.querySelector('section[data-screen=acquisition-list]');
+      return {state:s.dataset.state, modal:(document.querySelector('[data-modal]:not([hidden])')||{dataset:{}}).dataset.modal,
+              hash:location.hash};`);
+    R.data.push({case:'딥링크 #acquisition-list/signing — 닫는 버튼 0 · 1.5초 뒤 서명 완료로 넘어간다',
+      들어왔을때:at0, 기다린뒤:at1,
+      pass: at0.state === 'signing' && at0.modal === 'acquisition-signing' && at0.closers === 0
+            && at1.state === 'done' && at1.modal === 'acquisition-done'});
+    await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/app.html'});
+    await sleep(1400);
+  }
+
   /* ── 6) 화면·상태 조합 레이아웃 점검 ── */
   R.layout = await evalJS(`
-    var T=[['invest-assets','default'],['invest-assets','page2'],['invest-assets','download'],['invest-assets','cert-confirm'],['invest-assets','empty'],
+    var T=[['invest-assets','default'],['invest-assets','download'],['invest-assets','cert-confirm'],['invest-assets','empty'],
       ['invest-profit','default'],['invest-profit','weekly'],['invest-profit','monthly'],['invest-profit','empty'],
       ['invest-sim','default'],['invest-sim','result'],
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
@@ -780,7 +876,27 @@ async function main(){
     (m.scroll ? ' 스크롤=' + JSON.stringify(m.scroll) : '') + (m.err ? ' ' + m.err : ''), m.pass)));
   console.log('== selfcheck ==', JSON.stringify(R.selfcheck));
 
+  /* ── 종료코드 ── FAIL 이 하나라도 있으면 1 로 끝난다.
+     형제 검증기(verify_rows.js:213 · verify_toast.js:229 · verify_period.js:405)와 같은 방식이다.
+     화면에 FAIL 을 찍고도 exit=0 으로 끝나, 종료코드로 판정하는 실행기·CI 가 실패를 못 보던 것을 막는다.
+     섹션 이름을 손으로 적지 않고 R 안에서 `pass` 를 가진 항목을 전수로 훑는다 —
+     검사를 새로 넣어도 저절로 종료코드에 들어온다. 판정 누락이 생길 자리가 없다.
+     pass!==true 는 전부 실패로 센다 — try/catch 가 낸 pass:null(SKIP)도 실패다.
+     콘솔 에러·죽은 컨트롤은 pass 필드가 없어 따로 더한다. */
+  const graded = [];
+  (function walk(node, at){
+    if(Array.isArray(node)){ node.forEach((v, i) => walk(v, at + '[' + i + ']')); return; }
+    if(node && typeof node === 'object'){
+      if(Object.prototype.hasOwnProperty.call(node, 'pass')) graded.push({at: at, pass: node.pass, item: node});
+      Object.keys(node).forEach(k => { if(k !== 'pass') walk(node[k], at + '.' + k); });
+    }
+  })(R, 'R');
+  const failed = graded.filter(g => g.pass !== true);
+  console.log('== 합계 == 판정 ' + graded.length + '건 · PASS ' + (graded.length - failed.length) +
+    ' · FAIL ' + failed.length + ' · 콘솔 에러 ' + R.console.length + ' · 죽은 컨트롤 ' + R.dead.length);
+  failed.forEach(g => console.log('  FAIL ' + g.at + '  ' + JSON.stringify(g.item).slice(0, 300)));
+
   ws.close(); chrome.kill(); server.close();
-  process.exit(0);
+  process.exit(failed.length || R.console.length || R.dead.length ? 1 : 0);
 }
 main().catch(e => { console.error('VERIFY ERROR', e); process.exit(1); });

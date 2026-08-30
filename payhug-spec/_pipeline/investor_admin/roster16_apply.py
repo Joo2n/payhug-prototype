@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
-"""요율 정정 맵 적용 + 로스터 16건 통일 — 정적 HTML·xlsx 실파일 수정."""
+"""폐기 — 대체: sync_assets_static.py
+
+요율 정정 맵 적용 + 로스터 16건 통일 — 정적 HTML·xlsx 실파일 수정.
+
+돌리지 마라. locator 가 옛 값 문자열(`1,389,800,000` `11.2일` `3.59%` `92.4%`
+`대상 가맹점 8개`)이라 지금 값에서는 전건 0건 치환이고, 0건 치환은 실패로 보이지 않는다.
+값이 바뀔 때마다 locator 를 손으로 갈아야 하는 구조라 한 세대마다 반드시 죽는다.
+
+같은 자리를 지금 그리는 곳
+    sync_assets_static.py   투자자산 낱장 4종·증명서·투자자산 엑셀 미리보기 2종·건수
+                            (라벨·열머리로 자리를 잡는다 — 값을 locator 로 쓰지 않는다)
+    build_xlsx.py           assets/xlsx 실물 8종
+    rate_fix_map_gen.py     요율 정정 맵
+"""
 import io, os, re, json, sys
 from decimal import Decimal as D
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -272,6 +285,12 @@ def fix_xlsx():
     wb.save(p)
 
 if __name__ == '__main__':
+    raise SystemExit('폐기 — 대체: sync_assets_static.py. '
+                     'locator 가 옛 값 문자열이라 지금 돌리면 전건 0건 치환이다.')
+
+
+if __name__ == '__main__':
+
     c, e = apply_map()
     P('== 맵 적용 (텍스트) ==')
     for k in sorted(c): P('  %-32s %d건' % (k, c[k]))

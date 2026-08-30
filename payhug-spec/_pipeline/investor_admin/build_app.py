@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """app.html 조립 — 화면·상태 전량을 한 파일에서 조작하는 단일 HTML 애플리케이션.
 
-개별 HTML 34개는 Figma 임포트용 정적 원본으로 보존한다. 이 스크립트는 app.html만 새로 쓴다.
+개별 HTML 33개는 Figma 임포트용 정적 원본으로 보존한다. 이 스크립트는 app.html만 새로 쓴다.
 사이드바·산식 카드·용어 안내·쿠콘 본문·로그인 카드는 원본 파일에서 문자 그대로 옮긴다.
 """
 import os, re, sys
@@ -60,7 +60,7 @@ COOCON  = '<div class="link-wrap">' + COOCON
 assert SIDEBAR.count('nav-item') == 8, SIDEBAR.count('nav-item')
 
 # 쿠콘 관리 현금 — 메뉴를 누르면 중간 화면 없이 바로 We-bank 로 나간다(대표 미팅 2026-08-28 M-4).
-# 정적 낱장 34개의 사이드바는 화면마다 같아야 해서 손대지 않는다. 통합본에서만 바깥으로 건다.
+# 정적 낱장 33개의 사이드바는 화면마다 같아야 해서 손대지 않는다. 통합본에서만 바깥으로 건다.
 WEBANK = 'https://www.we-bank.co.kr/main_00100.act'
 _kc = SIDEBAR.count('data-menu="kcoon" href="coocon.html"')
 assert _kc == 1, _kc
@@ -1116,38 +1116,34 @@ var CONTRACTS = [
 @@CONTRACTS@@
 ];
 
+/* 서명 대기 큐 — 계약기록의 `전자서명 결과`도 이 목록 하나에서 갈린다(roster16_model.SIGN_PENDING).
+   여기 남아 있는 가맹점은 아직 서명 전이라 계약기록에도 문서가 없다. */
 var SIGNQ = [
-  {mid:'M2026-0001', name:'김성호떡볶이 본점', created:'2026-08-25'},
-  {mid:'M2026-0002', name:'달빛곱창 홍대점',   created:'2026-08-26'},
-  {mid:'M2026-0004', name:'바다마루 횟집',     created:'2026-08-27'}
+@@SIGNQ@@
 ];
 
 /* 파일명 규칙 — 원본 `{내용}_{시작일}_{종료일}.xlsx`, 날짜 YYYY-MM-DD
    (TransferRecordsTab.tsx:318 · overview/page.tsx:658 · PreSettlementTab.tsx:394 · LockAccountDeposits.tsx:219).
-   투자자산 2건은 기준일 스냅샷이라 시작=종료, 투자수익 2건은 기본 조회기간(일주일). */
+   투자자산 2건은 기준일 스냅샷이라 시작=종료다.
+   투자 수익은 화면에서 도달 가능한 프리셋 조합마다 자기 파일을 갖는다 — 6조합 x (표 · 수익 현황) = 12.
+   열쇠는 `집계 단위:시작일:종료일` 이다. 집계 단위만 보고 고르면 같은 단위 안에서 기간이 갈리는
+   두 조합(일별 일주일·금월)이 한 파일을 가리켜, 화면은 27행 금월인데 파일은 일주일치가 된다.
+   `profit-status`·`profit-daily` 는 미리보기 화면을 가리키는 자리이고 파일을 갖지 않는다. */
 var XLSX = {
   'assets-status':   {file:'투자자산현황_2026-08-27_2026-08-27.xlsx',   size:'@@SZ:투자자산현황_2026-08-27_2026-08-27.xlsx@@', made:'@@MT:투자자산현황_2026-08-27_2026-08-27.xlsx@@', sheet:'투자자산 현황',   screen:'xls-assets-status',   from:'invest-assets'},
   'assets-merchant': {file:'가맹점별투자자산_2026-08-27_2026-08-27.xlsx', size:'@@SZ:가맹점별투자자산_2026-08-27_2026-08-27.xlsx@@', made:'@@MT:가맹점별투자자산_2026-08-27_2026-08-27.xlsx@@', sheet:'가맹점별 투자자산', screen:'xls-assets-merchant', from:'invest-assets'},
-  'profit-status':   {file:'투자수익현황_2026-08-21_2026-08-27.xlsx',   size:'@@SZ:투자수익현황_2026-08-21_2026-08-27.xlsx@@', made:'@@MT:투자수익현황_2026-08-21_2026-08-27.xlsx@@', sheet:'투자수익 현황',   screen:'xls-profit-status',   from:'invest-profit'},
-  'profit-daily':    {file:'일별투자수익_2026-08-21_2026-08-27.xlsx',   size:'@@SZ:일별투자수익_2026-08-21_2026-08-27.xlsx@@', made:'@@MT:일별투자수익_2026-08-21_2026-08-27.xlsx@@', sheet:'일별 투자수익',   screen:'xls-profit-daily',    from:'invest-profit'},
-  /* 주별·월별은 실물 파일만 둔다 — 미리보기 낱장은 일별 것 하나로 충분하다(서식이 같다).
-     `수익 현황`도 집계 단위마다 기간이 달라 3벌이다 — 카드가 4주를 말하는데 파일이 일주일이면
-     화면과 파일이 다른 기간을 말한다. */
-  'profit-weekly':   {file:'주별투자수익_2026-08-03_2026-08-30.xlsx',   size:'@@SZ:주별투자수익_2026-08-03_2026-08-30.xlsx@@', made:'@@MT:주별투자수익_2026-08-03_2026-08-30.xlsx@@', sheet:'주별 투자수익',   screen:null, from:'invest-profit'},
-  'profit-monthly':  {file:'월별투자수익_2026-03-01_2026-08-31.xlsx',   size:'@@SZ:월별투자수익_2026-03-01_2026-08-31.xlsx@@', made:'@@MT:월별투자수익_2026-03-01_2026-08-31.xlsx@@', sheet:'월별 투자수익',   screen:null, from:'invest-profit'},
-  'profit-status-weekly':  {file:'투자수익현황_2026-08-03_2026-08-30.xlsx', size:'@@SZ:투자수익현황_2026-08-03_2026-08-30.xlsx@@', made:'@@MT:투자수익현황_2026-08-03_2026-08-30.xlsx@@', sheet:'투자수익 현황', screen:null, from:'invest-profit'},
-  'profit-status-monthly': {file:'투자수익현황_2026-03-01_2026-08-31.xlsx', size:'@@SZ:투자수익현황_2026-03-01_2026-08-31.xlsx@@', made:'@@MT:투자수익현황_2026-03-01_2026-08-31.xlsx@@', sheet:'투자수익 현황', screen:null, from:'invest-profit'}
+  'profit-status':   {screen:'xls-profit-status', from:'invest-profit'},
+  'profit-daily':    {screen:'xls-profit-daily',  from:'invest-profit'},
+@@XLSPROFIT@@
 };
 
-/* 투자수익 표는 일별·주별·월별 3단이고 엑셀도 3벌이다 — 지금 보고 있는 표를 그대로 내려준다.
-   `수익 현황` 카드도 같다. 카드에 적힌 기간과 파일명의 기간이 갈리면 안 된다.
+/* 지금 보고 있는 기간·집계 단위의 파일을 고른다. 프리셋 밖 기간(직접입력)에는 실물이 없어 null 이다 —
+   부르는 쪽은 null 이면 버튼을 잠그고 토스트도 내지 않는다(D-39: 없는 파일을 말하지 않는다).
    미리보기 화면(파일바·시트)과 다운로드가 같은 답을 쓰도록 해석은 이 함수 하나에서만 한다. */
-var PROFIT_XLS = {daily:'profit-daily', weekly:'profit-weekly', monthly:'profit-monthly'};
-var PROFIT_STATUS_XLS = {daily:'profit-status', weekly:'profit-status-weekly', monthly:'profit-status-monthly'};
 function xlsKey(k){
-  if(k === 'profit-daily')  return PROFIT_XLS[PF.gran] || k;
-  if(k === 'profit-status') return PROFIT_STATUS_XLS[PF.gran] || k;
-  return k;
+  if(k !== 'profit-status' && k !== 'profit-daily') return k;
+  var c = k + '@' + PF.gran + ':' + PF.from + ':' + PF.to;
+  return XLSX[c] ? c : null;
 }
 
 /* ═══ 화면·상태 레지스터 ═══ */
@@ -1163,7 +1159,6 @@ var STANDALONE = ['index', 'login'];
 var STATE_META = {
   'invest-assets': {
     'default':null,
-    'page2':        {label:'2페이지',          cls:'badge-gray'},
     'download':     {label:'엑셀 다운로드 완료', cls:'badge-gray'},
     'cert-confirm': {label:'증명서 발급 확인',   cls:'badge-gray'},
     'empty':        {label:'데이터 없음',       cls:'badge-gray'}
@@ -1224,7 +1219,7 @@ var FILE2SCREEN = {
   'xls-profit-status.html':'xls-profit-status', 'xls-profit-daily.html':'xls-profit-daily'
 };
 var STATEFILE = {
-  'invest-assets--page2.html':'invest-assets/page2', 'invest-assets--download.html':'invest-assets/download',
+  'invest-assets--download.html':'invest-assets/download',
   'invest-assets--cert-confirm.html':'invest-assets/cert-confirm', 'invest-assets--empty.html':'invest-assets/empty',
   'invest-profit--weekly.html':'invest-profit/weekly',
   'invest-profit--monthly.html':'invest-profit/monthly',
@@ -1251,17 +1246,37 @@ function pct(v, d){ return (v===null||v===undefined) ? '-' : Number(v).toFixed(d
 function fx(v, d){ return Number(v).toFixed(d); }
 function sum(a, k){ var t=0; for(var i=0;i<a.length;i++) t += a[i][k]; return t; }
 /* 비중 — 소수 1자리 반올림 후 잔차를 최대 금액 행에 흡수해 합계를 정확히 100.0 으로 닫는다 */
+/* 비중 — 최대잉여법. 0.1pp 눈금으로 내린 뒤 남는 눈금을 소수부가 큰 행부터 하나씩 나눠 준다.
+   잔차를 최대 금액 행 하나에 몰면 그 행만 눈금 여러 개만큼 밀린다(9행에서 -0.2pp = 눈금 4개).
+   합은 정확히 100.0 이고, 어느 행도 정확값에서 한 눈금을 넘게 벗어나지 않는다.
+   생성기 roster16_model.ratios() 와 같은 규칙이라 화면·엑셀·증명서가 다른 비중을 말하지 않는다. */
 function ratios(a, base){
-  var i, out = [], k = 0, t = 0;
-  for(i = 0; i < a.length; i++){
-    out.push(base ? Math.round(a[i].amount / base * 1000) / 10 : 0);
-    t += out[i];
-    if(a[i].amount > a[k].amount) k = i;
+  var i, n = a.length, out = [], ord = [], t = 0;
+  if(!n) return out;
+  for(i = 0; i < n; i++){
+    var raw = base ? a[i].amount * 1000 / base : 0, fl = Math.floor(raw);
+    out.push(fl); t += fl;
+    ord.push({i:i, fr:raw - fl, amt:a[i].amount});
   }
-  if(a.length) out[k] = Math.round((out[k] + (100 - t)) * 10) / 10;
+  var rest = base ? Math.max(0, Math.min(n, 1000 - t)) : 0;
+  ord.sort(function(x, y){ return (y.fr - x.fr) || (y.amt - x.amt) || (x.i - y.i); });
+  for(i = 0; i < rest; i++) out[ord[i].i] += 1;
+  for(i = 0; i < n; i++) out[i] = out[i] / 10;
   return out;
 }
 function wavg(a, k, wk){ var n=0, d=0; for(var i=0;i<a.length;i++){ n += a[i][k]*a[i][wk]; d += a[i][wk]; } return d? n/d : 0; }
+/* W금융일수와 S입금부족율은 한 행에 나란히 서지만 모집단이 다르다.
+   옆 칸 금액(미회수 Σ Ai)까지 셋이 각자 다른 집합에서 나오므로, 행을 금액으로 가중평균해도
+   현황표의 두 칸과 맞아떨어지지 않는다. 그 모집단을 열머리 툴팁이 그대로 적는다.
+   건수는 채권 원장 실측이다(daily_ledger.py) — 화면에 손으로 적지 않는다. */
+var POP_W = {of:'대상정산금채권 전체 (발생 기준)', n:'@@POPW@@'};
+var POP_S = {of:'선정산일 D-20 ~ D-11 표본',       n:'@@POPS@@'};
+function popTh(label, p){
+  return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">' + label + '</span>' +
+         '<span class="tip-panel">' + p.of +
+           '<span class="tip-row"><span>채권 건수</span><span class="tip-green">' + p.n + '</span></span>' +
+         '</span></span></th>';
+}
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function Q(sel, root){ return (root||document).querySelector(sel); }
 function QA(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
@@ -1314,22 +1329,30 @@ function sunEnd(s){ return addDays(monStart(s), 6); }
 function mFirst(s){ return s.slice(0, 7) + '-01'; }
 function mLast(s){ var d = dt(mFirst(s)); return ds(new Date(d.getFullYear(), d.getMonth() + 1, 0)); }
 function mShift(s, n){ var d = dt(mFirst(s)); return ds(new Date(d.getFullYear(), d.getMonth() + n, 1)); }
-/* 스냅 — 시작일은 단위의 처음으로, 종료일은 단위의 끝으로. 일별은 고른 날짜 그대로다. */
+/* 스냅 — 시작일은 단위의 처음으로, 종료일은 단위의 끝으로. 일별은 고른 날짜 그대로다.
+   종료일은 기준일에서 끊는다. 주·달 경계로 넓히면 기준일 뒤의 빈 날짜까지 끌고 오는데,
+   그 자리는 원장에 값이 없어 마지막 버킷만 작게 나오고 앞 버킷들과 나란히 놓여 급락으로 읽힌다. */
 function snapFrom(s, g){ return !s ? s : (g === 'weekly' ? monStart(s) : (g === 'monthly' ? mFirst(s) : s)); }
-function snapTo(s, g){ return !s ? s : (g === 'weekly' ? sunEnd(s) : (g === 'monthly' ? mLast(s) : s)); }
+function snapTo(s, g){
+  if(!s) return s;
+  if(g === 'weekly')  return sunEnd(s) > BASE_DATE ? BASE_DATE : sunEnd(s);
+  if(g === 'monthly') return mLast(s)  > BASE_DATE ? BASE_DATE : mLast(s);
+  return s;
+}
 
 /* 프리셋 = 기간을 채우는 단축키. 집계 단위마다 묶음이 다르다.
    범위를 그 단위 경계에 맞춰 둬야 눌러 채운 기간이 스냅을 다시 통과해도 그대로다.
    일별 둘(일주일·금월)은 스토리보드 슬라이드7 그대로이고,
    주·달 묶음은 원본 DateRangeFilter.tsx:23-61 의 '최근 3개월' ·
    MerchantAvgSalesSummary.tsx:168-176 의 3~6개월 조회범위와 같은 계열이다. */
+/* 종료일은 여섯 묶음 전부 기준일이다 — 프리셋이 원장보다 앞서 나가지 않는다. */
 var PRESET_RANGE = {
   week:  [addDays(BASE_DATE, -6),               BASE_DATE],
   month: [mFirst(BASE_DATE),                    BASE_DATE],
-  w4:    [addDays(monStart(BASE_DATE), -21),    sunEnd(BASE_DATE)],
-  w12:   [addDays(monStart(BASE_DATE), -77),    sunEnd(BASE_DATE)],
-  m3:    [mShift(BASE_DATE, -2),                mLast(BASE_DATE)],
-  m6:    [mShift(BASE_DATE, -5),                mLast(BASE_DATE)]
+  w4:    [addDays(monStart(BASE_DATE), -21),    BASE_DATE],
+  w12:   [addDays(monStart(BASE_DATE), -77),    BASE_DATE],
+  m3:    [mShift(BASE_DATE, -2),                BASE_DATE],
+  m6:    [mShift(BASE_DATE, -5),                BASE_DATE]
 };
 var PRESET_LABEL = {week:'일주일', month:'금월', w4:'4주', w12:'12주', m3:'3개월', m6:'6개월'};
 var PRESET_GRAN  = {week:'daily', month:'daily', w4:'weekly', w12:'weekly', m3:'monthly', m6:'monthly'};
@@ -1343,10 +1366,19 @@ function activePreset(){
     if(PRESET_GRAN[k] === PF.gran && PRESET_RANGE[k][0] === PF.from && PRESET_RANGE[k][1] === PF.to) return k;
   return null;
 }
+/* 단위마다 짧은 묶음·긴 묶음 두 개. 집계 단위를 바꿔도 보던 자리(짧은 쪽/긴 쪽)를 그대로 잇는다. */
+var PRESET_SLOT = {daily:['week', 'month'], weekly:['w4', 'w12'], monthly:['m3', 'm6']};
+function presetSlot(k){
+  for(var g in PRESET_SLOT){ var i = PRESET_SLOT[g].indexOf(k); if(i >= 0) return i; }
+  return -1;
+}
 var RATE_PCT = 0.11;                 /* 할인율 — 이 산출물의 고정 입력값(D-21). 요율을 정하는 곳은 이 화면이 아니다 */
 var MC = {sector:'전체', buyer:'전체', kw:'', page:1, applied:null};
 var AQ = {sel:[false,false,false], signed:[false,false,false], phase:'list', doc:null};
-var CT = {sel:{'M2026-0001':1, 'M2026-0004':1, 'M2026-0006':1}, page:1, empty:false};
+/* 계약기록 기본 선택 — 서명이 끝난 계약만 고를 수 있다(roster16_model.contract_default_sel). */
+var CT_SEL0 = {@@CTSEL@@};
+function ctSel0(){ var o = {}, k; for(k in CT_SEL0) o[k] = 1; return o; }
+var CT = {sel:ctSel0(), page:1, empty:false};
 /* 비밀번호 — 원본 훅(usePasswordInputValue·usePasswordPolicyField·useConfirmPasswordField)의 상태를 그대로 옮긴다.
    blurred = 새 비밀번호 칸에서 한 번이라도 포커스가 빠졌는가(규칙 오류 문구를 그때부터 보인다)
    spaceNew·spaceCfm = 공백을 눌렀을 때 2200ms 동안만 켜지는 일시 오류
@@ -1409,7 +1441,6 @@ var DERIVE = {
     if(IA.empty) return 'empty';
     if(IA.cert) return 'cert-confirm';
     if(IA.downloaded) return 'download';
-    if(IA.page === 2) return 'page2';
     return 'default';
   },
   'invest-profit': function(){
@@ -1429,7 +1460,8 @@ var DERIVE = {
   },
   'contracts': function(){
     if(CT.empty) return 'empty';
-    if(ctSelCount() === CONTRACTS.length) return 'all';
+    var sg = ctSignedCount(CONTRACTS);
+    if(sg > 0 && ctSelCount() === sg) return 'all';    /* 고를 수 있는 것을 다 골랐을 때 */
     return 'default';
   },
   'password': function(){
@@ -1441,7 +1473,7 @@ var DERIVE = {
   }
 };
 var SEED = {
-  'invest-assets': function(s){ IA.empty = (s === 'empty'); IA.cert = (s === 'cert-confirm'); IA.downloaded = (s === 'download'); IA.page = (s === 'page2') ? 2 : 1; },
+  'invest-assets': function(s){ IA.empty = (s === 'empty'); IA.cert = (s === 'cert-confirm'); IA.downloaded = (s === 'download'); IA.page = 1; },
   'invest-profit': function(s){
     if(s === 'weekly'){ PF.gran = 'weekly'; PF.from = PRESET_RANGE.w4[0]; PF.to = PRESET_RANGE.w4[1]; }
     else if(s === 'monthly'){ PF.gran = 'monthly'; PF.from = PRESET_RANGE.m6[0]; PF.to = PRESET_RANGE.m6[1]; }
@@ -1467,12 +1499,14 @@ var SEED = {
     else if(s === 'done'){ AQ.sel = [false, false, false]; AQ.signed = [true, true, false]; AQ.phase = 'done'; }
     else if(s === 'doc'){ AQ.sel = [false, false, false]; AQ.signed = [false, false, false]; AQ.phase = 'list'; AQ.doc = 0; }
     else { AQ.sel = [true, true, false]; AQ.signed = [false, false, false]; AQ.phase = s; }
+    if(s === 'signing') armSignTimer();     /* 씨앗으로 놓은 진행 화면도 1.5초 뒤 서명 완료로 넘어간다 */
   },
   'contracts': function(s){
     CT.empty = (s === 'empty'); CT.page = 1;
-    if(s === 'all'){ CT.sel = {}; for(var i = 0; i < CONTRACTS.length; i++) CT.sel[CONTRACTS[i].mid] = 1; }
+    if(s === 'all'){ CT.sel = {}; for(var i = 0; i < CONTRACTS.length; i++)
+      if(ctSigned(CONTRACTS[i].mid)) CT.sel[CONTRACTS[i].mid] = 1; }
     else if(s === 'empty'){ CT.sel = {}; }
-    else { CT.sel = {'M2026-0001':1, 'M2026-0004':1, 'M2026-0006':1}; }
+    else { CT.sel = ctSel0(); }
   },
   'password': function(s){
     pwClearSpaceTimers();
@@ -1610,6 +1644,20 @@ function syncToast(id, st){
   if(!toastTimer) M('toast').hidden = true;
 }
 function clearSignTimer(){ if(signTimer){ clearTimeout(signTimer); signTimer = null; } }
+/* 서명 진행 모달은 스스로 닫히는 화면이다 — X 도 닫기도 없고 1.5초 뒤 서명 완료로 넘어간다.
+   자연 동선(서명 진행 버튼)과 씨앗(#acquisition-list/signing)이 같은 함수를 불러 타이머를 건다.
+   씨앗에서 타이머가 빠지면 그 주소로 들어온 사람은 빠져나갈 통로가 없다. */
+function armSignTimer(){
+  clearSignTimer();
+  signTimer = setTimeout(function(){
+    signTimer = null;
+    /* 서명된 행은 대기 목록에서 빠진다 — 선택도 함께 비워야 선택 건수가 없는 행을 세지 않는다 */
+    for(var i = 0; i < AQ.sel.length; i++) if(AQ.sel[i]){ AQ.signed[i] = true; AQ.sel[i] = false; }
+    AQ.phase = 'done';
+    DIRTY['acquisition-list'] = 1;         /* 메뉴를 오가도 서명 결과가 남는다 */
+    refresh('acquisition-list');
+  }, 1500);
+}
 '''
 
 # ════════════════════════════════════════════════════════════════
@@ -1644,17 +1692,18 @@ RENDER['invest-assets'] = function(){
       '<div class="summary-sub">비중 ' + fx(rCash, 1) + '% · 보관 ㈜쿠콘</div></div>' +
     '<div class="summary-card"><div class="summary-label">Ty수익율</div>' +
       '<div class="summary-value">' + fx(tyv, 2) + '<span class="unit">%</span></div>' +
-      '<div class="summary-sub">' + (wv === null ? 'W금융일수 집계 대상 없음' : 'W금융일수 ' + fx(wv, 1) + '일 기준') + '</div></div>';
+      '<div class="summary-sub">' + (wv === null ? 'W금융일수 집계 대상 없음' : 'W금융일수 ' + fx(wv, 2) + '일 기준') + '</div></div>';
 
-  var h = '<thead><tr><th>자산 구분</th><th class="num">금액 (원)</th><th class="num">W금융일수</th>' +
-          '<th class="num">S입금부족율</th><th class="num">Ty수익율</th><th class="num">비중</th><th>보관</th></tr></thead><tbody>';
+  var h = '<thead><tr><th>자산 구분</th><th class="num">금액 (원)</th>' + popTh('W금융일수', POP_W) +
+          popTh('S입금부족율', POP_S) +
+          '<th class="num">Ty수익율</th><th class="num">비중</th><th>보관</th></tr></thead><tbody>';
   if(!arows.length){ h += emptyRow(7, '조회 결과가 없습니다.'); }
   else {
     for(i = 0; i < arows.length; i++){
       var a = arows[i];
       h += '<tr><td><span class="name">' + a.name + '</span></td>' +
            '<td class="num"><span class="strong">' + fmt(a.amount) + '</span></td>' +
-           '<td class="num">' + (a.w === null ? '<span class="none">-</span>' : fx(a.w, 1) + '일') + '</td>' +
+           '<td class="num">' + (a.w === null ? '<span class="none">-</span>' : fx(a.w, 2) + '일') + '</td>' +
            '<td class="num">' + (a.s === null ? '<span class="none">-</span>' : pct(a.s, 2)) + '</td>' +
            '<td class="num">' + (a.ty === null ? '<span class="none">-</span>' : pct(a.ty, 2)) + '</td>' +
            '<td class="num">' + fx(aRatio[i], 1) + '%</td><td>' + a.keeper + '</td></tr>';
@@ -1674,8 +1723,9 @@ RENDER['invest-assets'] = function(){
   if(IA.page > pages) IA.page = 1;
   var slice = view.slice((IA.page - 1) * iaSize, IA.page * iaSize);
   var mm = M('ia-merch', 'invest-assets'), mp = M('ia-merch-page', 'invest-assets');
-  var IA_HEAD = '<th>가맹점</th><th class="num">투자금액 (원)</th><th class="num">W금융일수</th>' +
-                '<th class="num">S입금부족율</th><th class="num">Ty수익율</th><th class="num">비중</th>';
+  var IA_HEAD = '<th>가맹점</th><th class="num">투자금액 (원)</th>' + popTh('W금융일수', POP_W) +
+                popTh('S입금부족율', POP_S) +
+                '<th class="num">Ty수익율</th><th class="num">비중</th>';
   if(!mrows.length){
     mm.innerHTML = emptyTable(IA_HEAD, 6, '조회 결과가 없습니다.');
     mp.innerHTML = '';
@@ -1686,7 +1736,7 @@ RENDER['invest-assets'] = function(){
       var m = slice[i];
       t += '<tr><td><span class="name">' + m.name + '</span></td>' +
            '<td class="num"><span class="strong">' + fmt(m.amount) + '</span></td>' +
-           '<td class="num">' + fx(m.w, 1) + '일</td><td class="num">' + pct(m.s, 2) + '</td>' +
+           '<td class="num">' + fx(m.w, 2) + '일</td><td class="num">' + pct(m.s, 2) + '</td>' +
            '<td class="num">' + pct(m.ty, 2) + '</td><td class="num">' + fx(m.ratio, 1) + '%</td></tr>';
     }
     mm.innerHTML = t + '</tbody></table></div>';
@@ -1709,7 +1759,7 @@ RENDER['certificate'] = function(){
     '<thead><tr><th>가맹점</th><th>투자금액 (원)</th><th>W금융일수</th><th>S입금부족율</th><th>Ty수익율</th><th>비중</th></tr></thead><tbody>';
   for(i = 0; i < MERCHANTS.length; i++){
     var m = MERCHANTS[i];
-    h += '<tr><td>' + m.name + '</td><td class="num">' + fmt(m.amount) + '</td><td class="num">' + fx(m.w, 1) + '일</td>' +
+    h += '<tr><td>' + m.name + '</td><td class="num">' + fmt(m.amount) + '</td><td class="num">' + fx(m.w, 2) + '일</td>' +
          '<td class="num">' + pct(m.s, 2) + '</td><td class="num">' + pct(m.ty, 2) + '</td>' +
          '<td class="num">' + fx(cRatio[i], 1) + '%</td></tr>';
   }
@@ -1753,9 +1803,13 @@ function rollupBy(days, keyOf, labelOf){
 function rollupMonths(days){
   return rollupBy(days, function(d){ return d.slice(0, 7); }, function(d){ return d.slice(0, 7); });
 }
-/* 주 라벨은 그 주의 월요일 ~ 일요일이다. 조회 기간이 주를 일부만 덮어도 라벨은 주 경계를 쓴다. */
+/* 주 라벨은 그 주의 월요일 ~ 일요일이다. 조회 종료일에서 끊긴 주는 종료일까지만 적는다 —
+   그 자리는 며칠이 빠진 부분 주라 금액이 앞 주들보다 작다. 라벨이 7일을 말하면 급락으로 읽힌다. */
 function rollupWeeks(days){
-  return rollupBy(days, monStart, function(d){ return monStart(d) + ' ~ ' + sunEnd(d).slice(5); });
+  return rollupBy(days, monStart, function(d){
+    var e = sunEnd(d);
+    return monStart(d) + ' ~ ' + (e > PF.to ? PF.to : e).slice(5);
+  });
 }
 /* 현황 카드 ④ 와 표 합계 행의 Ty수익율 = PSMR x 365 / PSD (대표 정의서).
    PSMR = 기간 투자수익 / 기간 투자실행금, PSD = 투자실행금 가중평균 W금융일수.
@@ -1857,17 +1911,21 @@ RENDER['invest-profit'] = function(){
       var r = view[i];
       t += '<tr><td class="mono">' + r.d + '</td><td class="num">' + fmt(r.repay) + '</td>' +
            '<td class="num">' + fmt(r.exec) + '</td><td class="num"><span class="strong">' + fmt(r.profit) + '</span></td>' +
-           '<td class="num">' + fx(r.w, 1) + '</td><td class="num">' + pct(r.ty, 2) + '</td></tr>';
+           '<td class="num">' + fx(r.w, 2) + '</td><td class="num">' + pct(r.ty, 2) + '</td></tr>';
     }
     t += '</tbody><tfoot><tr><td>합계</td><td class="num">' + fmt(repay) + '</td><td class="num">' + fmt(exec) +
          '</td><td class="num">' + fmt(profit) + '</td>' +
-         '<td class="num">' + fx(wAvg, 1) + '<span class="avg-sub">가중평균</span></td>' +
+         '<td class="num">' + fx(wAvg, 2) + '<span class="avg-sub">가중평균</span></td>' +
          '<td class="num">' + fx(tyExec, 2) + '%<span class="avg-sub">가중평균</span></td></tr></tfoot>';
     t += '</table></div>';
     box.innerHTML = t;
   }
+  /* 프리셋 밖 기간(직접입력)에는 그 기간의 실물 파일이 없다 — 버튼을 잠근다.
+     원본 어드민의 잠금 규격 그대로 disabled 속성 하나로 두고(.btn:disabled 가 회색·cursor:not-allowed),
+     눌리지 않으니 없는 파일을 말하는 토스트도 나가지 않는다(D-39). */
   var x1 = M('pf-xls1', 'invest-profit'), x2 = M('pf-xls2', 'invest-profit');
-  x1.disabled = !rows.length; x2.disabled = !rows.length;
+  x1.disabled = !rows.length || !xlsKey('profit-status');
+  x2.disabled = !rows.length || !xlsKey('profit-daily');
   
 };
 
@@ -1886,31 +1944,31 @@ var SIM_PLAT = [
   {k:'cpe',  label:'쿠팡이츠',   d:5},
   {k:'yo',   label:'요기요',     d:6}
 ];
-/* 플랫폼별 만기 = round(DURATION) — platform_duration.py:46 실측 2.0 / 3.4 / 4.7 / 6.2.
+/* 플랫폼별 만기 = round(DURATION) — platform_duration.py 도수분포 실측 2.0 / 3.4 / 4.7 / 6.2.
    채권 한 건의 금융일수는 선정산일과 정산예정일의 날짜 차이라 정수만 나온다. 실측 4.7 일(쿠팡이츠)은
    플랫폼 전체의 금액가중 평균이고, 채권 1건에 그 평균을 그대로 넣을 수는 없어 반올림한 5 를 기본값으로 둔다.
    정산예정일 칸을 직접 고치면 그 행의 만기는 입력한 날짜대로 다시 잡힌다. */
 var SIM_DUR = {card:2, bm:3, cpe:5, yo:6};
 function simLabel(k){ for(var i = 0; i < SIM_PLAT.length; i++) if(SIM_PLAT[i].k === k) return SIM_PLAT[i].label; return k; }
 function simDue(sd, plat){ return sd ? addDays(sd, SIM_DUR[plat] || 0) : sd; }
-/* 미회수 4행(1~4)은 30:30:20:20 — 2x0.3 + 3x0.3 + 5x0.2 + 6x0.2 = 3.7 로, W 가 투자 자산 화면의
-   3.7 일과 같은 자리에 선다. 만기 4행(5~8)은 40:40:10:10 — PSD 3.1 로 투자 수익 화면 일별 합계와
-   같은 자리다. 미회수 합 10억은 그대로라 투자실행액 998,900,000 도 그대로다. */
+/* 미회수 4행(1~4)은 60:25:10:5 — 2x0.60 + 3x0.25 + 5x0.10 + 6x0.05 = 2.75 로, W 가 투자 자산
+   화면의 2.75 일과 같은 자리에 선다. 만기 4행(5~8)도 같은 구성이라 PSD 2.75 로 투자 수익 화면
+   일별 합계와 같은 자리다. 미회수 합 8,000만이라 투자실행액 79,912,000 이 된다. */
 function simSeedRows(){
   return [
-    {plat:'card', amt:300000000, sd:'2026-08-26', dd:'2026-08-28'},
-    {plat:'bm',   amt:300000000, sd:'2026-08-26', dd:'2026-08-29'},
-    {plat:'cpe',  amt:200000000, sd:'2026-08-26', dd:'2026-08-31'},
-    {plat:'yo',   amt:200000000, sd:'2026-08-26', dd:'2026-09-01'},
-    {plat:'card', amt:200000000, sd:'2026-08-22', dd:'2026-08-24'},
-    {plat:'bm',   amt:200000000, sd:'2026-08-22', dd:'2026-08-25'},
-    {plat:'cpe',  amt:50000000,  sd:'2026-08-21', dd:'2026-08-26'},
-    {plat:'yo',   amt:50000000,  sd:'2026-08-21', dd:'2026-08-27'}
+    {plat:'card', amt:48000000, sd:'2026-08-26', dd:'2026-08-28'},
+    {plat:'bm',   amt:20000000, sd:'2026-08-26', dd:'2026-08-29'},
+    {plat:'cpe',  amt:8000000,  sd:'2026-08-26', dd:'2026-08-31'},
+    {plat:'yo',   amt:4000000,  sd:'2026-08-26', dd:'2026-09-01'},
+    {plat:'card', amt:24000000, sd:'2026-08-22', dd:'2026-08-24'},
+    {plat:'bm',   amt:10000000, sd:'2026-08-22', dd:'2026-08-25'},
+    {plat:'cpe',  amt:4000000,  sd:'2026-08-21', dd:'2026-08-26'},
+    {plat:'yo',   amt:2000000,  sd:'2026-08-21', dd:'2026-08-27'}
   ];
 }
-/* 미지급률·과지급률 기본값은 S입금부족율이 투자 자산 화면의 0.07% 와 같아지는 자리에 둔다 —
-   S = (미지급률 - 과지급률) / (1 - 할인율) = 0.07 / 0.9989 = 0.07%. 두 화면이 같은 값을 띄운다. */
-var SIM_DEFAULT = {r:0.11, cash:105300000, unpaid:0.08, over:0.01,
+/* 미지급률·과지급률 기본값은 S입금부족율이 투자 자산 화면의 0.06% 와 같아지는 자리에 둔다 —
+   S = (미지급률 - 과지급률) / (1 - 할인율) = 0.06 / 0.9989 = 0.06%. 두 화면이 같은 값을 띄운다. */
+var SIM_DEFAULT = {r:0.11, cash:20000000, unpaid:0.07, over:0.01,
                    from:'2026-08-21', to:'2026-08-27'};
 function simSeed(){
   var o = {rows:simSeedRows(), result:null, running:false, redraw:true}, k;
@@ -2067,7 +2125,7 @@ function simResultHtml(){
       '<div class="summary-sub">비중 ' + fx(R.SH[1], 1) + '% · 보관 ㈜쿠콘</div></div>' +
     '<div class="summary-card"><div class="summary-label">Ty수익율</div>' +
       '<div class="summary-value">' + fx(R.TY, 2) + '<span class="unit">%</span></div>' +
-      '<div class="summary-sub">W금융일수 ' + fx(R.W, 1) + '일 기준</div></div>' +
+      '<div class="summary-sub">W금융일수 ' + fx(R.W, 2) + '일 기준</div></div>' +
   '</div>';
 
   /* ② 채권별 산출 — 기간 밖 행은 회색 이탤릭으로 두고 집계에서 뺀다 (page.tsx:366-369 · :560) */
@@ -2095,7 +2153,7 @@ function simResultHtml(){
     '<th class="num">W금융일수</th><th class="num">S입금부족율</th><th class="num">Ty수익율</th>' +
     '<th class="num">비중</th><th>보관</th></tr></thead><tbody>' +
     '<tr><td><span class="name">투자실행액</span></td><td class="num"><span class="strong">' + fmt(R.EXEC) + '</span></td>' +
-      '<td class="num">' + fx(R.W, 1) + '일</td><td class="num">' + pct(R.S, 2) + '</td>' +
+      '<td class="num">' + fx(R.W, 2) + '일</td><td class="num">' + pct(R.S, 2) + '</td>' +
       '<td class="num">' + pct(R.TY, 2) + '</td><td class="num">' + fx(R.SH[0], 1) + '%</td><td>㈜페이허그</td></tr>' +
     '<tr><td><span class="name">순현금</span></td><td class="num"><span class="strong">' + fmt(R.cash) + '</span></td>' +
       '<td class="num"><span class="none">-</span></td><td class="num"><span class="none">-</span></td>' +
@@ -2132,11 +2190,11 @@ function simResultHtml(){
       var g = R.rows[i];
       h += '<tr><td class="mono">' + g.d + '</td><td class="num">' + fmt(g.B) + '</td>' +
         '<td class="num">' + fmt(g.A) + '</td><td class="num"><span class="strong">' + fmt(g.M) + '</span></td>' +
-        '<td class="num">' + fx(g.W, 1) + '</td><td class="num">' + pct(g.TY, 2) + '</td></tr>';
+        '<td class="num">' + fx(g.W, 2) + '</td><td class="num">' + pct(g.TY, 2) + '</td></tr>';
     }
     h += '</tbody><tfoot><tr><td>합계</td><td class="num">' + fmt(R.PSB) + '</td>' +
       '<td class="num">' + fmt(R.PSA) + '</td><td class="num">' + fmt(R.PSM) + '</td>' +
-      '<td class="num">' + fx(R.PSD, 1) + '<span class="avg-sub">가중평균</span></td>' +
+      '<td class="num">' + fx(R.PSD, 2) + '<span class="avg-sub">가중평균</span></td>' +
       '<td class="num">' + fx(R.TY4, 2) + '%<span class="avg-sub">가중평균</span></td></tr></tfoot></table></div>';
   }
   h += '</div>';
@@ -2319,6 +2377,13 @@ RENDER['acquisition-list'] = function(){
 
 /* ───────── 계약기록 ───────── */
 function ctSelCount(){ var n = 0; for(var k in CT.sel) if(CT.sel[k]) n++; return n; }
+/* 전자서명 결과는 정산채권 양수의 서명 대기 큐에서 갈린다 — 큐에 남아 있으면 아직 문서가 없다.
+   양수 화면에서 서명하면 그 자리에서 이 표의 같은 행이 문서를 갖는다. 두 화면이 한 목록을 본다. */
+function ctSigned(mid){
+  for(var i = 0; i < SIGNQ.length; i++) if(SIGNQ[i].mid === mid) return !!AQ.signed[i];
+  return true;
+}
+function ctSignedCount(rows){ var n = 0, i; for(i = 0; i < rows.length; i++) if(ctSigned(rows[i].mid)) n++; return n; }
 RENDER['contracts'] = function(){
   var rows0 = CT.empty ? [] : CONTRACTS, i;
   var rows = rows0;
@@ -2336,7 +2401,8 @@ RENDER['contracts'] = function(){
 
   var box = M('ct-tbl', 'contracts');
   var ctp = M('ct-page', 'contracts');
-  var allOn = (n === rows.length);
+  var signedN = ctSignedCount(rows);
+  var allOn = (signedN > 0 && n === signedN);      /* 고를 수 있는 것은 서명이 끝난 계약뿐 */
   var CT_HEAD = '<th style="width:48px"><input type="checkbox" class="chk" data-act="ct-all"' + (allOn ? ' checked' : '') + '></th>' +
     '<th class="no">No</th><th>MID</th><th>가맹점</th>' +
     '<th>전자서명 결과</th><th class="center">서명 수단</th>';
@@ -2352,15 +2418,19 @@ RENDER['contracts'] = function(){
   ctp.hidden = false;
   var t = '<div class="tbl-scroll"><table class="tbl"><thead><tr>' + CT_HEAD + '</tr></thead><tbody>';
   for(i = 0; i < slice.length; i++){
-    var c = slice[i], on = !!CT.sel[c.mid];
+    var c = slice[i], sg = ctSigned(c.mid), on = sg && !!CT.sel[c.mid];
     /* 순번은 쪽이 넘어가도 이어진다 — 머리에 적은 총 건수와 같은 축이라야 행을 가리킬 수 있다.
        원본 어드민의 순번(sales/page.tsx:143 등)은 쪽나눔이 없는 표라 배열 인덱스 그대로다. */
-    t += '<tr class="clickable' + (on ? ' selected' : '') + '" data-act="ct-row" data-mid="' + c.mid + '">' +
-      '<td><input type="checkbox" class="chk" data-act="ct-chk" data-mid="' + c.mid + '"' + (on ? ' checked' : '') + '></td>' +
+    t += (sg ? '<tr class="clickable' + (on ? ' selected' : '') + '" data-act="ct-row" data-mid="' + c.mid + '">'
+             : '<tr data-mid="' + c.mid + '">') +
+      '<td><input type="checkbox" class="chk"' +
+        (sg ? ' data-act="ct-chk" data-mid="' + c.mid + '"' + (on ? ' checked' : '') : ' disabled') + '></td>' +
       '<td class="no">' + ((CT.page - 1) * ctSize + i + 1) + '</td>' +
       '<td class="mono">' + c.mid + '</td><td><span class="name">' + c.name + '</span></td>' +
-      '<td><button type="button" class="btn btn-excel" data-act="ct-doc" disabled>' + svg('excel') + ' 문서 다운로드</button></td>' +
-      '<td class="center"><span class="badge badge-green">하나인증서</span></td></tr>';
+      (sg ? '<td><button type="button" class="btn btn-excel" data-act="ct-doc" disabled>' + svg('excel') + ' 문서 다운로드</button></td>' +
+            '<td class="center"><span class="badge badge-green">하나인증서</span></td>'
+          : '<td><span class="badge badge-amber">서명 대기</span></td>' +
+            '<td class="center"><span class="none">-</span></td>') + '</tr>';
   }
   box.innerHTML = t + '</tbody></table></div>';
   M('ct-size', 'contracts').innerHTML = sizeSel('ct-tbl');
@@ -2571,7 +2641,7 @@ function sheetData(key){
     for(i = 0; i < ASSET_ROWS.length; i++){
       var a = ASSET_ROWS[i];
       rows.push({n:4 + i, c:[{v:a.name}, {v:fmt(a.amount), c:'c-num'},
-        a.w === null ? {v:''} : {v:fx(a.w, 1), c:'c-num'}, a.s === null ? {v:''} : {v:pct(a.s, 2), c:'c-num'},
+        a.w === null ? {v:''} : {v:fx(a.w, 2), c:'c-num'}, a.s === null ? {v:''} : {v:pct(a.s, 2), c:'c-num'},
         a.ty === null ? {v:''} : {v:pct(a.ty, 2), c:'c-num'},
         {v:fx(sRatio[i], 1) + '%', c:'c-num'}, {v:a.keeper}]});
     }
@@ -2588,7 +2658,7 @@ function sheetData(key){
                        {v:'S입금부족율', c:'c-head r'}, {v:'Ty수익율', c:'c-head r'}, {v:'비중', c:'c-head r'}, null]});
     for(i = 0; i < MERCHANTS.length; i++){
       var m = MERCHANTS[i];
-      rows.push({n:4 + i, c:[{v:m.name}, {v:fmt(m.amount), c:'c-num'}, {v:fx(m.w, 1), c:'c-num'},
+      rows.push({n:4 + i, c:[{v:m.name}, {v:fmt(m.amount), c:'c-num'}, {v:fx(m.w, 2), c:'c-num'},
         {v:pct(m.s, 2), c:'c-num'}, {v:pct(m.ty, 2), c:'c-num'}, {v:fx(xRatio[i], 1) + '%', c:'c-num'}, null]});
     }
     var tot = 4 + MERCHANTS.length;
@@ -2622,29 +2692,40 @@ function sheetData(key){
     for(i = 0; i < dr.length; i++){
       var d = dr[i];
       rows.push({n:4 + i, c:[{v:d.d}, {v:fmt(d.repay), c:'c-num'}, {v:fmt(d.exec), c:'c-num'},
-        {v:fmt(d.profit), c:'c-num'}, {v:fx(d.w, 1), c:'c-num'}, {v:pct(d.ty, 2), c:'c-num'}, null]});
+        {v:fmt(d.profit), c:'c-num'}, {v:fx(d.w, 2), c:'c-num'}, {v:pct(d.ty, 2), c:'c-num'}, null]});
     }
     var nn = 4 + dr.length;
     rows.push({n:nn, cls:'r-total', c:[{v:'합계'}, {v:fmt(sum(dr, 'repay')), c:'c-num'}, {v:fmt(sum(dr, 'exec')), c:'c-num'},
       {v:fmt(sum(dr, 'profit')), c:'c-num'},
-      {v:dr.length ? fx(wavg(dr, 'w', 'exec'), 1) : '0.0', c:'c-num'},
+      {v:dr.length ? fx(wavg(dr, 'w', 'exec'), 2) : '0.00', c:'c-num'},
       {v:dr.length ? fx(tyOfRows(dr), 2) + '%' : '0.00%', c:'c-num'}, null]});
     rows.push({n:nn + 1, c:[null, null, null, null, null, null, null]});
     rows.push({n:nn + 2, c:[null, null, null, null, null, null, null]});
   }
   return {cols:cols, rows:rows};
 }
+/* 시트 이름 — 실물이 없을 때도 지금 보고 있는 표가 무엇인지는 시트 탭이 그대로 말한다 */
+function sheetName(key){
+  if(key === 'profit-status') return '투자수익 현황';
+  if(key === 'profit-daily')  return GRAN_LABEL[PF.gran] + ' 투자수익';
+  return XLSX[key].sheet;
+}
 function renderXls(key){
-  var scr = XLSX[key].screen, meta = XLSX[xlsKey(key)], sec = SEC(scr), d = sheetData(key), i;
-  M('filebar', scr).innerHTML =
+  var scr = XLSX[key].screen, k = xlsKey(key), meta = k ? XLSX[k] : null;
+  var sec = SEC(scr), d = sheetData(key), i, fb = M('filebar', scr);
+  /* 시트는 지금 화면이 조회한 기간을 그린다. 그 기간의 실물이 없으면 파일바에 이름을 적지 않는다 —
+     파일바와 시트가 다른 기간을 말하는 자리를 없앤다. 잠금은 원본 규격(disabled 속성 · 회색 · cursor:not-allowed). */
+  fb.classList.toggle('is-off', !meta);
+  fb.innerHTML =
     '<div class="fb-left"><div class="fb-icon">' + svg('grid', 1.8) + '</div><div>' +
-      '<div class="fb-name">' + meta.file + '</div>' +
-      '<div class="fb-meta"><span>' + meta.size + '</span><span class="dot">·</span>' +
-      '<span>생성일시 <span class="mono">' + meta.made + '</span></span><span class="dot">·</span><span>시트 1개</span></div>' +
+      '<div class="fb-name">' + (meta ? meta.file : '-') + '</div>' +
+      '<div class="fb-meta"><span>' + (meta ? meta.size : '-') + '</span><span class="dot">·</span>' +
+      '<span>생성일시 <span class="mono">' + (meta ? meta.made : '-') + '</span></span><span class="dot">·</span><span>시트 1개</span></div>' +
     '</div></div>' +
-    '<a class="btn btn-primary" href="assets/xlsx/' + encodeURIComponent(meta.file) + '" download data-act="xls-get" data-xls="' + key + '">' +
-      svg('excel') + ' 엑셀 파일 내려받기</a>';
-  M('sheettabs', scr).innerHTML = '<span class="sheet-tab active">' + meta.sheet + '</span>';
+    (meta ? '<a class="btn btn-primary" href="assets/xlsx/' + encodeURIComponent(meta.file) +
+              '" download data-act="xls-get" data-xls="' + key + '">' + svg('excel') + ' 엑셀 파일 내려받기</a>'
+          : '<button type="button" class="btn btn-primary" disabled>' + svg('excel') + ' 엑셀 파일 내려받기</button>');
+  M('sheettabs', scr).innerHTML = '<span class="sheet-tab active">' + sheetName(key) + '</span>';
   var cg = '<colgroup>';
   for(i = 0; i < d.cols.length; i++) cg += d.cols[i] ? '<col style="width:' + d.cols[i] + 'px">' : '<col>';
   cg += '</colgroup>';
@@ -2721,6 +2802,7 @@ function xlsBusy(el, on){
 }
 ACT['xls-open']  = function(el){
   var k = xlsKey(el.dataset.xls);
+  if(!k) return;                                          /* 실물이 없는 기간 — 내려주지도, 말하지도 않는다 */
   var meta = XLSX[k];
   pullFile('assets/xlsx/', meta.file, 0);
   if(k === 'assets-merchant'){
@@ -2739,6 +2821,7 @@ ACT['cert-issue']= function(){ IA.cert = false; refresh('invest-assets'); go('ce
 ACT['cert-pdf']  = function(){ showToast(CERT_PDF + ' 내려받기 완료'); };
 ACT['xls-get']   = function(el){
   var k = xlsKey(el.dataset.xls);
+  if(!k) return;                                          /* 실물이 없는 기간 — 토스트도 내지 않는다 */
   if(k === 'assets-merchant'){
     PEND['invest-assets'] = 'download';
     toastServed = 'invest-assets/download:' + XLSX[k].file;   /* 이 클릭이 이미 파일을 내려줬다 — 재전달 금지 */
@@ -2793,10 +2876,17 @@ ACT['pf-reset']  = function(){ setState('invest-profit', 'default'); showInfo('�
 ACT['pf-gran']   = function(el){
   var g = el.dataset.gran;
   if(g === PF.gran){ refresh('invest-profit'); return; }
+  var slot = presetSlot(activePreset());
   PF.gran = g;
-  /* 기간은 그대로 둔다 — 새 단위 경계로 넓혀 스냅할 뿐이다. 걸친 단위를 전부 덮는다.
-     예) 일별 08-21~08-27 → 주별 08-17~08-30(두 주) · 월별 08-01~08-31(한 달) */
-  PF.from = snapFrom(PF.from, g); PF.to = snapTo(PF.to, g);
+  if(slot >= 0){
+    /* 프리셋을 보고 있었으면 새 단위의 같은 자리 프리셋으로 넘어간다 — 탭을 눌렀다고 직접입력으로 떨어지지 않는다.
+       예) 일별 일주일 → 주별 4주 → 월별 3개월 → 일별 일주일 (되돌아오면 처음 그 자리) */
+    var r = PRESET_RANGE[PRESET_SLOT[g][slot]];
+    PF.from = r[0]; PF.to = r[1];
+  } else {
+    /* 직접 고른 기간은 지우지 않는다 — 새 단위 경계로 넓혀 스냅할 뿐이다. */
+    PF.from = snapFrom(PF.from, g); PF.to = snapTo(PF.to, g);
+  }
   refresh('invest-profit');                 /* 검색을 다시 누르게 하지 않는다 */
 };
 /* 가맹점 */
@@ -2831,15 +2921,7 @@ ACT['aq-chk'] = function(el){
 ACT['aq-sign'] = function(){ if(aqCount() === 0) return; AQ.phase = 'confirm'; refresh('acquisition-list'); };
 ACT['aq-sign-go'] = function(){
   AQ.phase = 'signing'; refresh('acquisition-list');
-  clearSignTimer();
-  signTimer = setTimeout(function(){
-    signTimer = null;
-    /* 서명된 행은 대기 목록에서 빠진다 — 선택도 함께 비워야 선택 건수가 없는 행을 세지 않는다 */
-    for(var i = 0; i < AQ.sel.length; i++) if(AQ.sel[i]){ AQ.signed[i] = true; AQ.sel[i] = false; }
-    AQ.phase = 'done';
-    DIRTY['acquisition-list'] = 1;         /* 메뉴를 오가도 서명 결과가 남는다 */
-    refresh('acquisition-list');
-  }, 1500);
+  armSignTimer();
 };
 ACT['aq-to-contracts'] = function(){
   var mids = [], i;
@@ -2858,7 +2940,8 @@ ACT['aq-done-ok'] = function(){ AQ.phase = 'list'; for(var i = 0; i < AQ.sel.len
 /* 계약기록 */
 ACT['ct-all'] = function(el){
   CT.sel = {};
-  if(el.checked) for(var i = 0; i < CONTRACTS.length; i++) CT.sel[CONTRACTS[i].mid] = 1;
+  if(el.checked) for(var i = 0; i < CONTRACTS.length; i++)
+    if(ctSigned(CONTRACTS[i].mid)) CT.sel[CONTRACTS[i].mid] = 1;   /* 서명 대기 행은 고를 문서가 없다 */
   refresh('contracts');
 };
 ACT['ct-chk'] = function(el){
@@ -3126,14 +3209,14 @@ DOC = '''<!doctype html>
 </head>
 <!--
   통합 프로토타입 — 한 파일에서 화면 @@SCREENS@@ · 상태 @@STATES@@ 전부를 조작한다.
-  개별 HTML 34개는 Figma 임포트용 정적 원본으로 별도 보존한다(이 파일이 대체하지 않는다).
+  개별 HTML 33개는 Figma 임포트용 정적 원본으로 별도 보존한다(이 파일이 대체하지 않는다).
   화면은 데이터 모델에서만 그린다. 표·합계·비중은 조작 결과로 계산되며 하드코딩하지 않는다.
-  딥링크: #<화면>/<상태>  예) #invest-assets/page2 · #acquisition-list/signing
+  딥링크: #<화면>/<상태>  예) #invest-assets/download · #acquisition-list/signing
 -->
 <body data-active="invest-assets" data-view="invest-assets">
 <div class="page">
 
-  <!-- ═══════════ 사이드바 (개별 화면 32개와 동일 마크업) ═══════════ -->
+  <!-- ═══════════ 사이드바 (개별 화면 31개와 동일 마크업) ═══════════ -->
   %s
 
   <!-- ═══════════ 콘텐츠 영역 ═══════════ -->
@@ -3171,11 +3254,33 @@ _MER = ',\n'.join(
 _AST = ',\n'.join([
     "  {name:'\ud22c\uc790\uc2e4\ud589\uc561', amount:%d, w:%s, s:%s, ty:%s, "
     "keeper:'\u321c\ud398\uc774\ud5c8\uadf8'}"
-    % (RM.EXEC, RM.r1(RM.W_W), RM.r2(RM.S_W), RM.TY_W),
+    % (RM.EXEC, RM.r2(RM.W_W), RM.r2(RM.S_W), RM.TY_W),
     "  {name:'\uc21c\ud604\uae08',     amount:%d,  w:null,  s:null, ty:null, "
     "keeper:'\u321c\ucfe0\ucf58'}" % RM.CASH])
 _CON = ',\n'.join("  {mid:'%s', name:'%s', signed:'%s'}" % (x[4], x[0], x[9]) for x in RM.ROSTER)
+_SQ  = ',\n'.join("  {mid:'%s', name:'%s', created:'%s'}" % q for q in RM.sign_queue())
+_CTS = ', '.join("'%s':1" % m for m in RM.contract_default_sel())
+
+# 투자 수익 엑셀 — 화면에서 도달 가능한 프리셋 조합을 build_xlsx 가 찍은 그대로 등재한다.
+# 두 생성기가 같은 PRESETS 를 보므로 화면이 부르는 이름과 실물 파일 이름이 갈릴 자리가 없다.
+import build_xlsx as BX
+
+def _xrow(key, gran, frm, to, fname, sheet):
+    return ("  '%s@%s:%s:%s': {file:'%s', size:'@@SZ:%s@@', made:'@@MT:%s@@', "
+            "sheet:'%s', screen:null, from:'invest-profit'}"
+            % (key, gran, frm, to, fname, fname, fname, sheet))
+
+_XLSP = []
+for _k, _gran, _label, _frm, _to in BX.PRESETS:
+    _XLSP.append(_xrow('profit-daily', _gran, _frm, _to,
+                       BX.profit_file(_gran, _frm, _to), '%s 투자수익' % BX.GRAN_NAME[_gran]))
+    _XLSP.append(_xrow('profit-status', _gran, _frm, _to,
+                       BX.status_file(_frm, _to), '투자수익 현황'))
+_XLS_PROFIT = ',\n'.join(_XLSP)
 for _k, _v in (('@@MERCHANTS@@', _MER), ('@@ASSETROWS@@', _AST), ('@@CONTRACTS@@', _CON),
+               ('@@XLSPROFIT@@', _XLS_PROFIT), ('@@SIGNQ@@', _SQ), ('@@CTSEL@@', _CTS),
+               ('@@POPW@@', '%s건' % format(len(daily_ledger.RECEIVABLES), ',')),
+               ('@@POPS@@', '%s건' % format(daily_ledger.facts()['sampleReceivables'], ',')),
                ('@@LEDGER@@', daily_ledger.js_array()),
                ('@@SCREENS@@', str(counts.C['screens'])),
                ('@@STATES@@', str(counts.C['states']))):

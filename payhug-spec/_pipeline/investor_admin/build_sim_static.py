@@ -180,7 +180,7 @@ def result_block(R):
     h += ('      <div class="summary-card">\n        <div class="summary-label">Ty수익율</div>\n'
           '        <div class="summary-value">%s<span class="unit">%%</span></div>\n'
           '        <div class="summary-sub">W금융일수 %s일 기준</div>\n      </div>\n'
-          % (fx(R['TY'], 2), fx(R['W'], 1)))
+          % (fx(R['TY'], 2), fx(R['W'], 2)))
     h += '    </div>\n\n'
 
     h += ('    <div class="tbl-wrap mb-6">\n      <div class="tbl-head"><h2>채권별 산출</h2></div>\n'
@@ -206,7 +206,7 @@ def result_block(R):
     h += ('            <tr><td><span class="name">투자실행액</span></td><td class="num"><span class="strong">%s</span></td>'
           '<td class="num">%s일</td><td class="num">%s</td><td class="num">%s</td><td class="num">%s%%</td>'
           '<td>㈜페이허그</td></tr>\n'
-          % (fmt(R['EXEC']), fx(R['W'], 1), pct(R['S'], 2), pct(R['TY'], 2), fx(R['SH'][0], 1)))
+          % (fmt(R['EXEC']), fx(R['W'], 2), pct(R['S'], 2), pct(R['TY'], 2), fx(R['SH'][0], 1)))
     h += ('            <tr><td><span class="name">순현금</span></td><td class="num"><span class="strong">%s</span></td>'
           '<td class="num"><span class="none">-</span></td><td class="num"><span class="none">-</span></td>'
           '<td class="num"><span class="none">-</span></td><td class="num">%s%%</td><td>㈜쿠콘</td></tr>\n'
@@ -256,13 +256,13 @@ def result_block(R):
         h += ('            <tr><td class="mono">%s</td><td class="num">%s</td><td class="num">%s</td>'
               '<td class="num"><span class="strong">%s</span></td><td class="num">%s</td>'
               '<td class="num">%s</td></tr>\n'
-              % (g['d'], fmt(g['B']), fmt(g['A']), fmt(g['M']), fx(g['W'], 1), pct(g['TY'], 2)))
+              % (g['d'], fmt(g['B']), fmt(g['A']), fmt(g['M']), fx(g['W'], 2), pct(g['TY'], 2)))
     h += ('          </tbody>\n          <tfoot>\n'
           '            <tr><td>합계</td><td class="num">%s</td><td class="num">%s</td><td class="num">%s</td>'
           '<td class="num">%s<span class="avg-sub">가중평균</span></td>'
           '<td class="num">%s%%<span class="avg-sub">가중평균</span></td></tr>\n'
           '          </tfoot>\n        </table>\n      </div>\n    </div>\n'
-          % (fmt(R['PSB']), fmt(R['PSA']), fmt(R['PSM']), fx(R['PSD'], 1), fx(R['TY4'], 2)))
+          % (fmt(R['PSB']), fmt(R['PSA']), fmt(R['PSM']), fx(R['PSD'], 2), fx(R['TY4'], 2)))
     return h
 
 # ── 화면 전용 보조 스타일 — 시뮬레이션 규격은 build_app.py CSS 블록에서 그대로 잘라 온다 ──
@@ -322,7 +322,7 @@ def main():
     print('사이드바 8메뉴 동기화:', len(moved), '건')
     print('invest-sim.html / invest-sim--result.html 기록')
     print('W %s · Ty %s · 비중합 %s · 상환액=PSA+PSM %s'
-          % (fx(R['W'], 1), pct(R['TY'], 2), fx(R['SH'][0] + R['SH'][1], 1),
+          % (fx(R['W'], 2), pct(R['TY'], 2), fx(R['SH'][0] + R['SH'][1], 1),
              R['PSB'] == R['PSA'] + R['PSM']))
 
 if __name__ == '__main__':

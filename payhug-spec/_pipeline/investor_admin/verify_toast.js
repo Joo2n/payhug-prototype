@@ -38,6 +38,11 @@ async function evalJS(expr){
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const clearDL = () => fs.readdirSync(DL).forEach(f => { try{ fs.unlinkSync(path.join(DL, f)); }catch(e){} });
+/* 계약기록 1쪽 행수 — 로스터 곳수와 보기 갯수 기본값(10) 중 작은 쪽. 검증기에 적지 않는다. */
+const FACTS = JSON.parse(fs.readFileSync(path.join(__dirname, 'ledger_facts.json'), 'utf8'));
+/* 계약기록에서 문서 버튼이 붙는 행 = 서명이 끝난 계약. 서명 대기 큐에 남은 가맹점은 문서가 없다.
+   곳수는 화면이 세는 수를 받아 쓴다(아래 evalJS) — 여기 적어 두면 큐가 바뀔 때 낡는다. */
+let CT_ROWS = 0;
 /* 내려받기 폴더에 떨어진 것 중 `우리 자산`만 센다.
    헤드리스 크롬이 자기 부속 파일(downloads.html 등)을 같은 폴더에 쓸 때가 있어 그것까지 세면 판정이 흐려진다. */
 const ASSETS = new Set(['assets/docs', 'assets/xlsx']
@@ -105,38 +110,51 @@ async function main(){
      click:'[data-act="xls-get"][data-xls="assets-status"]',   want:['투자자산현황_2026-08-27_2026-08-27.xlsx']},
     {id:'xls-get assets-merchant', act:'location.hash="#xls-assets-merchant"; return 1;',
      click:'[data-act="xls-get"][data-xls="assets-merchant"]', want:['가맹점별투자자산_2026-08-27_2026-08-27.xlsx']},
-    {id:'xls-get profit-status',   act:'location.hash="#xls-profit-status"; return 1;',
+    {id:'xls-get profit-status',   act:['go("invest-profit","default"); return 1;', 'location.hash="#xls-profit-status"; return 1;'],
      click:'[data-act="xls-get"][data-xls="profit-status"]',   want:['투자수익현황_2026-08-21_2026-08-27.xlsx']},
-    {id:'xls-get profit-daily',    act:'location.hash="#xls-profit-daily"; return 1;',
+    {id:'xls-get profit-daily',    act:['go("invest-profit","default"); return 1;', 'location.hash="#xls-profit-daily"; return 1;'],
      click:'[data-act="xls-get"][data-xls="profit-daily"]',    want:['일별투자수익_2026-08-21_2026-08-27.xlsx']},
     /* 화면 버튼 → 중간 화면 없이 즉시 파일 (원본 ExcelDownloadButton 경로 대응) */
     {id:'xls-open 투자자산 현황 직행',   act:'go("invest-assets","default"); return 1;',
      click:'[data-act="xls-open"][data-xls="assets-status"]',   want:['투자자산현황_2026-08-27_2026-08-27.xlsx']},
     {id:'xls-open 가맹점별 투자자산 직행', act:'go("invest-assets","default"); return 1;',
      click:'[data-act="xls-open"][data-xls="assets-merchant"]', want:['가맹점별투자자산_2026-08-27_2026-08-27.xlsx']},
-    /* 현황 카드도 집계 단위마다 기간이 갈린다 — 카드가 4주를 말하면 4주 파일이 나가야 한다 */
-    {id:'xls-open 투자수익 현황 직행',   act:'go("invest-profit","default"); return 1;',
-     click:'[data-act="xls-open"][data-xls="profit-status"]',   want:['투자수익현황_2026-08-21_2026-08-27.xlsx']},
-    {id:'xls-open 주별 수익 현황 직행',  act:'go("invest-profit","weekly"); return 1;',
-     click:'[data-act="xls-open"][data-xls="profit-status"]',   want:['투자수익현황_2026-08-03_2026-08-30.xlsx']},
-    {id:'xls-open 월별 수익 현황 직행',  act:'go("invest-profit","monthly"); return 1;',
-     click:'[data-act="xls-open"][data-xls="profit-status"]',   want:['투자수익현황_2026-03-01_2026-08-31.xlsx']},
-    /* 표가 일별·주별·월별 3단이라 같은 버튼이 지금 보고 있는 표의 파일을 내려준다 */
-    {id:'xls-open 일별 투자수익 직행',   act:'go("invest-profit","default"); return 1;',
-     click:'[data-act="xls-open"][data-xls="profit-daily"]',    want:['일별투자수익_2026-08-21_2026-08-27.xlsx']},
-    {id:'xls-open 주별 투자수익 직행',   act:'go("invest-profit","weekly"); return 1;',
-     click:'[data-act="xls-open"][data-xls="profit-daily"]',    want:['주별투자수익_2026-08-03_2026-08-30.xlsx']},
-    {id:'xls-open 월별 투자수익 직행',   act:'go("invest-profit","monthly"); return 1;',
-     click:'[data-act="xls-open"][data-xls="profit-daily"]',    want:['월별투자수익_2026-03-01_2026-08-31.xlsx']},
     {id:'cert-pdf 증명서 PDF',      act:'location.hash="#certificate"; return 1;',
      click:'[data-act="cert-pdf"]', want:['투자자산증명서_20260827.pdf']},
     {id:'상태 진입 #invest-assets/download', act:'location.hash="#contracts"; return 1;',
      hash:'#invest-assets/download', want:['가맹점별투자자산_2026-08-27_2026-08-27.xlsx']}
   ];
 
+  /* 투자 수익은 프리셋 조합마다 자기 파일이다 — 화면이 가진 프리셋 표를 그대로 돌면서
+     `지금 화면이 말하는 파일명`이 그 프리셋의 시작일·종료일을 달고 있는지, 그 실물이 나오는지 본다.
+     기간을 검증기에 손으로 적으면 프리셋이 하나 늘 때마다 낡는다. */
+  const PRESETS = await evalJS(`
+    var out = [];
+    for(var k in PRESET_RANGE)
+      out.push({k:k, gran:PRESET_GRAN[k], label:PRESET_LABEL[k],
+                from:PRESET_RANGE[k][0], to:PRESET_RANGE[k][1]});
+    return out;`);
+  /* 사람이 누르는 순서 그대로 한 번에 하나씩 누른다 — 화면을 세우고, 탭을 누르고, 칩을 누른다.
+     한 틱에 몰아 누르면 해시 갱신이 겹쳐 마지막 해시가 상태를 다시 심는다(조작이 아니라 주소 복원). */
+  const steps = pr => ['go("invest-profit","default"); return 1;',
+                       `document.querySelector('[data-act=pf-gran][data-gran=${pr.gran}]').click(); return 1;`,
+                       `document.querySelector('[data-act=preset][data-preset=${pr.k}]').click(); return 1;`];
+  for(const pr of PRESETS){
+    const act = steps(pr);
+    for(const [key, kind] of [['profit-status', '수익 현황'], ['profit-daily', '투자수익 표']]){
+      for(const one of act){ await evalJS(one); await sleep(120); }
+      const want = await evalJS(`var k = xlsKey(${JSON.stringify(key)}); return k ? XLSX[k].file : null;`);
+      const tail = '_' + pr.from + '_' + pr.to + '.xlsx';
+      CASES.push({id:'xls-open ' + pr.label + ' ' + kind, act,
+                  click:'[data-act="xls-open"][data-xls="' + key + '"]',
+                  want:[want], periodOk: !!want && want.indexOf(tail) > 0});
+    }
+  }
+
   for(const c of CASES){
     clearDL();
-    await evalJS(c.act); await sleep(300);
+    for(const one of [].concat(c.act)){ await evalJS(one); await sleep(120); }
+    await sleep(300);
     let toast = null;
     if(c.hash){
       await evalJS('location.hash=' + JSON.stringify(c.hash) + '; return 1;');
@@ -151,7 +169,9 @@ async function main(){
     const files = landed(c.want);
     const claimsDone = /완료/.test(toast.text);
     R.cases.push({id:c.id, toast:toast.text, toastShown:!toast.hidden, claimsDone,
-      files, pass: !toast.hidden && claimsDone && files.every(f => f.ok)});
+      기간일치:c.periodOk === undefined ? '해당없음' : c.periodOk,
+      files, pass: !toast.hidden && claimsDone && files.every(f => f.ok)
+                   && (c.periodOk === undefined || c.periodOk)});
   }
 
   /* ── 2-b) 잠긴 내려받기 — 버튼이 disabled 이고 토스트도 파일도 나오지 않는다 (D-39)
@@ -159,8 +179,9 @@ async function main(){
         실물이 없는 자리에서 `완료` 토스트가 뜨면 그것이 곧 거짓말이므로 여기서 막는다. */
   {
     clearDL();
-    await evalJS('go("contracts","default"); document.querySelector("[data-mount=toast]").hidden=true; return 1;');
+    await evalJS('go("contracts","default"); hideToast(); return 1;');
     await sleep(250);
+    CT_ROWS = await evalJS('return Math.min(psz("ct-tbl"), ctSignedCount(CONTRACTS));');
     const lock = await evalJS(`
       var sec=document.querySelector('section.screen[data-screen=contracts]');
       var bulk=sec.querySelector('[data-act="ct-download"]');
@@ -176,7 +197,7 @@ async function main(){
     const f1 = assetLanded();
     R.cases.push({id:'계약기록 내려받기 잠금 — 토스트 0 · 파일 0', bulkDisabled:lock.bulkDisabled,
       rowBtns:lock.rowBtns, rowLive:lock.rowLive, docAnchors:lock.docAnchors, toast:t1.text, saved:f1,
-      pass: lock.bulkDisabled === true && lock.rowBtns === 10 && lock.rowLive === 0
+      pass: lock.bulkDisabled === true && lock.rowBtns === CT_ROWS && lock.rowLive === 0
             && lock.docAnchors === 0 && t1.hidden === true && f1.length === 0});
 
     /* 사라진 상태로 딥링크해도 완료를 말하지 않는다 — 주소를 붙여 넣고 새로 여는 경로 그대로 본다 */
@@ -216,8 +237,27 @@ async function main(){
   R.console = consoleErrors.slice();
   fs.writeFileSync(path.join(OUTDIR, 'verify_toast_result.json'), JSON.stringify(R, null, 1));
 
+  /* ── `완료` 주장 문구 판정 ──
+     1) 이 수집은 2026-08-30 이전까지 곳수만 찍고 통과·실패를 가르지 않았다.
+     근거 = request_register.md D-39 「실물 없는 `내려받기 완료` 토스트 금지」.
+     판정식 — 완료를 말하는 토스트는 무엇을 내려줬는지(파일명 표현식)를 반드시 함께 말해야 한다.
+     `showToast('내려받기 완료')` 처럼 인자 전체가 문자열 리터럴이면 대조할 실물이 없는 주장이라
+     아래 2) 의 바이트 대조로 확인할 방법 자체가 없다. 그것이 D-39 가 막은 자리다.
+     곳수(현재 4개)는 못 박지 않는다 — 내려받기 경로가 늘면 같이 늘 값이다.
+     다만 0 이면 토스트 배선이 끊겼거나 수집 정규식이 낡은 것이므로 그것만 본다. */
+  const bareClaims = R.claims.filter(c => {
+    const arg = c.replace(/^showToast\(/, '').split(/,(?![^(]*\))/)[0].trim().replace(/\)$/, '');
+    return /^(['"]).*\1$/.test(arg);                       /* 인자 전체가 문자열 리터럴 = 파일명을 안 댄다 */
+  });
+  const claimFails = [];
+  if(R.claims.length === 0) claimFails.push('`완료` 토스트 0개 — 배선이 끊겼거나 수집 정규식이 낡았다');
+  if(bareClaims.length) claimFails.push('파일명을 대지 않는 완료 주장 ' + bareClaims.length + '개 (D-39): ' + bareClaims.join(' | '));
+  R.cases.push({id:'`완료` 토스트는 전건 파일명을 댄다 (D-39)', 주장수:R.claims.length,
+    파일명없음:bareClaims, pass: claimFails.length === 0});
+
   console.log('== `완료` 주장 문구 ' + R.claims.length + '개 ==');
   R.claims.forEach(c => console.log('  ' + c.replace(/\s+/g, ' ')));
+  claimFails.forEach(f => console.log('  FAIL ' + f));
   console.log('== 실물 대조 ' + R.cases.length + '건 ==');
   R.cases.forEach(c => console.log('  ' + (c.pass ? 'PASS ' : 'FAIL ') + c.id + '  ' +
     JSON.stringify({toast:c.toast, files:(c.files || []).map(f => f.name + ':' + f.bytes + '/' + f.srcBytes), err:c.err})));

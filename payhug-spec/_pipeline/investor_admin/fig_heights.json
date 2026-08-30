@@ -1,0 +1,177 @@
+{
+ "invest-assets": {
+  "content": 1407,
+  "sidebar": 571,
+  "vh": 1407
+ },
+ "certificate": {
+  "content": 1168,
+  "sidebar": 571,
+  "vh": 1168
+ },
+ "invest-profit": {
+  "content": 1267,
+  "sidebar": 571,
+  "vh": 1267
+ },
+ "coocon": {
+  "content": 346,
+  "sidebar": 571,
+  "vh": 571
+ },
+ "merchants": {
+  "content": 862,
+  "sidebar": 571,
+  "vh": 862
+ },
+ "acquisition": {
+  "content": 653,
+  "sidebar": 571,
+  "vh": 653
+ },
+ "acquisition--doc": {
+  "content": 653,
+  "sidebar": 571,
+  "vh": 653
+ },
+ "contracts": {
+  "content": 788,
+  "sidebar": 571,
+  "vh": 788
+ },
+ "password": {
+  "content": 629,
+  "sidebar": 571,
+  "vh": 629
+ },
+ "invest-assets--page2": {
+  "content": 1227,
+  "sidebar": 571,
+  "vh": 1227
+ },
+ "invest-assets--download": {
+  "content": 1407,
+  "sidebar": 571,
+  "vh": 1407
+ },
+ "invest-assets--cert-confirm": {
+  "content": 1407,
+  "sidebar": 571,
+  "vh": 1407
+ },
+ "invest-assets--empty": {
+  "content": 1059,
+  "sidebar": 571,
+  "vh": 1059
+ },
+ "invest-profit--monthly": {
+  "content": 1222,
+  "sidebar": 571,
+  "vh": 1222
+ },
+ "invest-profit--empty": {
+  "content": 1044,
+  "sidebar": 571,
+  "vh": 1044
+ },
+ "merchants--filtered": {
+  "content": 557,
+  "sidebar": 571,
+  "vh": 571
+ },
+ "merchants--empty": {
+  "content": 471,
+  "sidebar": 571,
+  "vh": 571
+ },
+ "acquisition--confirm": {
+  "content": 653,
+  "sidebar": 571,
+  "vh": 653
+ },
+ "acquisition--signing": {
+  "content": 653,
+  "sidebar": 571,
+  "vh": 653
+ },
+ "acquisition--done": {
+  "content": 505,
+  "sidebar": 571,
+  "vh": 571
+ },
+ "contracts--all": {
+  "content": 788,
+  "sidebar": 571,
+  "vh": 788
+ },
+ "contracts--downloaded": {
+  "content": 788,
+  "sidebar": 571,
+  "vh": 788
+ },
+ "contracts--empty": {
+  "content": 386,
+  "sidebar": 571,
+  "vh": 571
+ },
+ "password--weak": {
+  "content": 637,
+  "sidebar": 571,
+  "vh": 637
+ },
+ "password--error": {
+  "content": 630,
+  "sidebar": 571,
+  "vh": 630
+ },
+ "password--done": {
+  "content": 630,
+  "sidebar": 571,
+  "vh": 630
+ },
+ "invest-profit--weekly": {
+  "content": 1132,
+  "sidebar": 571,
+  "vh": 1132
+ },
+ "invest-sim": {
+  "content": 1123,
+  "sidebar": 571,
+  "vh": 1123
+ },
+ "invest-sim--result": {
+  "content": 2541,
+  "sidebar": 571,
+  "vh": 2541
+ },
+ "index": {
+  "content": 1863,
+  "sidebar": 0,
+  "vh": 1863
+ },
+ "login": {
+  "content": 505,
+  "sidebar": 0,
+  "vh": 505
+ },
+ "xls-assets-status": {
+  "content": 613,
+  "sidebar": 571,
+  "vh": 613
+ },
+ "xls-assets-merchant": {
+  "content": 1005,
+  "sidebar": 571,
+  "vh": 1005
+ },
+ "xls-profit-status": {
+  "content": 669,
+  "sidebar": 571,
+  "vh": 669
+ },
+ "xls-profit-daily": {
+  "content": 753,
+  "sidebar": 571,
+  "vh": 753
+ }
+}

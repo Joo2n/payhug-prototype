@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PayHug 투자자 어드민 — 화면 설계(안)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<style>
+  /* 랜딩 갤러리 전용 — 색상은 base.css 변수만 사용 */
+  .wrap { max-width: 1024px; margin: 0 auto; padding: 56px 32px 64px; }
+  .hero { display: flex; align-items: center; gap: 16px; }
+  .hero img, .hero .logo-mark { display: block; width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0; }
+  .hero h1 { font-size: 26px; line-height: 34px; font-weight: 700; color: var(--gray-900); margin: 0; }
+  .hero h1 em { font-style: normal; color: var(--primary-600); }
+  .hero .sub { font-size: 14px; line-height: 20px; color: var(--secondary); margin: 4px 0 0; }
+  .hero-date {
+    margin-left: auto; align-self: flex-start;
+    font-size: 12px; line-height: 16px; color: var(--gray-400);
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    background: #fff; border: 1px solid var(--gray-200); border-radius: 6px; padding: 4px 10px;
+  }
+
+  /* 통합 프로토타입 진입 카드 */
+  a.app-card {
+    display: flex; align-items: center; gap: 20px; text-decoration: none;
+    margin-top: 32px; padding: 28px 32px; border-radius: 20px;
+    background: var(--sidebar-bg); color: #fff;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.15s var(--ease-default), transform 0.15s var(--ease-default);
+  }
+  a.app-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+  .app-card .app-icon {
+    width: 56px; height: 56px; border-radius: 16px; flex-shrink: 0;
+    background: rgba(127,225,65,0.16); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .app-card .app-icon svg { width: 26px; height: 26px; }
+  .app-card .app-name { font-size: 20px; line-height: 28px; font-weight: 700; }
+  .app-card .app-name em { font-style: normal; color: var(--primary); }
+  .app-card .app-desc { font-size: 13px; line-height: 20px; color: rgba(255,255,255,0.72); margin: 6px 0 0; }
+  .app-card .app-go {
+    margin-left: auto; flex-shrink: 0;
+    background: var(--primary); color: var(--gray-900);
+    font-size: 14px; line-height: 20px; font-weight: 700;
+    padding: 10px 20px; border-radius: 10px; white-space: nowrap;
+  }
+
+  /* 문서 링크 카드 */
+  .doc-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 16px; }
+  @media (min-width: 760px) { .doc-row { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1000px) { .doc-row { grid-template-columns: repeat(4, 1fr); } }
+  a.doc-card {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+    background: #fff; border: 1px solid var(--gray-100); border-radius: 16px;
+    padding: 16px 20px; box-shadow: var(--shadow-card);
+    transition: box-shadow 0.15s var(--ease-default), border-color 0.15s var(--ease-default), transform 0.15s var(--ease-default);
+  }
+  a.doc-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--primary-200); transform: translateY(-2px); }
+  .doc-card .doc-icon {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    background: var(--gray-100); color: var(--gray-500);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .doc-card .doc-icon svg { width: 18px; height: 18px; }
+  .doc-card .d-name { font-size: 15px; line-height: 22px; font-weight: 700; color: var(--gray-900); }
+.doc-card .d-desc { font-size: 12px; line-height: 16px; color: var(--gray-400); margin-top: 1px; }
+
+  /* 섹션 제목 */
+  .sec-head { display: flex; align-items: baseline; gap: 10px; margin: 40px 0 0; }
+  .sec-head h2 { font-size: 16px; line-height: 24px; font-weight: 700; color: var(--gray-900); margin: 0; }
+  .sec-head .sec-note { font-size: 12px; line-height: 16px; color: var(--gray-400); }
+
+  /* 화면 카드 */
+  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 16px; align-items: start; }
+  .shot-card {
+    background: #fff; border-radius: 16px;
+    box-shadow: var(--shadow-card); border: 1px solid var(--gray-100);
+    transition: box-shadow 0.15s var(--ease-default), border-color 0.15s var(--ease-default);
+    overflow: hidden;
+  }
+  .shot-card:hover { box-shadow: var(--shadow-card-hover); border-color: var(--primary-200); }
+  a.shot-link { display: block; text-decoration: none; padding: 20px 24px; }
+  .shot-top { display: flex; align-items: center; gap: 12px; }
+  .shot-icon {
+    width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+    background: var(--primary-50); color: var(--primary-600);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .shot-icon svg { width: 18px; height: 18px; }
+  .shot-id { min-width: 0; }
+  .shot-name { font-size: 16px; line-height: 22px; font-weight: 700; color: var(--gray-900); }
+  .shot-top .badge.sm { margin-left: auto; flex-shrink: 0; }
+  .shot-desc { font-size: 13px; line-height: 19px; color: var(--gray-500); margin: 12px 0 0; }
+
+  /* 상태 접기 목록 */
+  .state-fold { border-top: 1px solid var(--gray-100); background: var(--gray-50); }
+  .state-fold > summary {
+    list-style: none; cursor: pointer;
+    padding: 10px 24px; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--gray-500);
+  }
+  .state-fold > summary::-webkit-details-marker { display: none; }
+  .state-fold > summary::before { content: "▸ "; color: var(--gray-400); }
+  .state-fold[open] > summary::before { content: "▾ "; }
+  .state-fold > summary:hover { color: var(--gray-700); }
+  .state-list { list-style: none; margin: 0; padding: 0 12px 12px; }
+  .state-list a {
+    display: flex; align-items: baseline; gap: 8px; text-decoration: none;
+    padding: 7px 12px; border-radius: 8px;
+  }
+  .state-list a:hover { background: #fff; }
+  .state-list .s-name { font-size: 13px; line-height: 18px; font-weight: 500; color: var(--gray-700); }
+
+</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=block" rel="stylesheet">
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="logo-mark" role="img" aria-label="PayHug"></span>
+    <div>
+      <h1>PayHug <em>투자자 어드민</em> — 화면 설계(안)</h1>
+      <p class="sub">투자자용 어드민 UI 기획 · 기존 어드민 디자인시스템 기준</p>
+    </div>
+    <span class="hero-date">2026-08-27</span>
+  </div>
+
+  <a class="app-card" href="app.html">
+    <div class="app-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></div>
+    <div>
+      <div class="app-name"><em>통합</em> 프로토타입</div>
+      <p class="app-desc">사이드바 메뉴 8개 &mdash; 투자(투자 자산 &middot; 투자 수익 &middot; 투자 시뮬레이션) / 가맹점(가맹점 &middot; 정산채권 양수 &middot; 계약기록) / 관리(쿠콘 관리 현금 &middot; 비밀번호 변경). 아래 화면과 상태를 눌러서 오갈 수 있고 엑셀은 실제로 내려받는다.</p>
+    </div>
+    <span class="app-go">열기</span>
+  </a>
+
+  <div class="doc-row">
+    <a class="doc-card" href="glossary.html">
+      <div class="doc-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+      <div>
+        <div class="d-name">용어 해설</div>
+        <div class="d-desc">화면과 엑셀에 쓰인 계산식 용어 50건</div>
+      </div>
+    </a>
+    <a class="doc-card" href="capability.html">
+      <div class="doc-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+      <div>
+        <div class="d-name">기능·데이터 명세</div>
+        <div class="d-desc">투자자에게 노출되는 기능과 데이터 범위</div>
+      </div>
+    </a>
+    <a class="doc-card" href="feasibility.html">
+      <div class="doc-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+      <div>
+        <div class="d-name">구현 가능성</div>
+        <div class="d-desc">화면·데이터 항목별로 지금 만들 수 있는 범위</div>
+      </div>
+    </a>
+    <a class="doc-card" href="inquiry.html">
+      <div class="doc-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+      <div>
+        <div class="d-name">대표 확인 요청</div>
+        <div class="d-desc">계산식 문항 4건과 개발·백엔드 부록</div>
+      </div>
+    </a>
+    <a class="doc-card" href="review.html">
+      <div class="doc-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+      <div>
+        <div class="d-name">순차 확인</div>
+        <div class="d-desc">무엇을 어느 순서로 볼지 한 단계씩</div>
+      </div>
+    </a>
+    <a class="doc-card" href="archive.html">
+      <div class="doc-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 15h18M9 5v14M15 5v14M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+      <div>
+        <div class="d-name">작업물 아카이브</div>
+        <div class="d-desc">산출물 전체 목록 — 경로·설명·수정 시각</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="sec-head">
+    <h2>화면</h2>
+    <span class="sec-note">기본 화면 9 · 상태 20</span>
+  </div>
+  <div class="gallery">
+    <div class="shot-card">
+      <a class="shot-link" href="invest-assets.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">투자 자산</div>
+          </div>
+          <span class="badge sm badge-primary">투자</span>
+        </div>
+        <p class="shot-desc">현황·가맹점별 투자자산·산식·엑셀/증명서 다운로드</p>
+      </a>
+      <details class="state-fold">
+        <summary>상태 4개</summary>
+        <ul class="state-list">
+          <li><a href="invest-assets--page2.html"><span class="s-name">2페이지</span></a></li>
+          <li><a href="invest-assets--download.html"><span class="s-name">엑셀 다운로드 완료</span></a></li>
+          <li><a href="invest-assets--cert-confirm.html"><span class="s-name">증명서 발급 확인</span></a></li>
+          <li><a href="invest-assets--empty.html"><span class="s-name">데이터 없음</span></a></li>
+        </ul>
+      </details>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="certificate.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">투자자산 증명서</div>
+          </div>
+          <span class="badge sm badge-primary">투자</span>
+        </div>
+        <p class="shot-desc">전자문서 미리보기·서명 검증</p>
+      </a>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="invest-profit.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">투자 수익</div>
+          </div>
+          <span class="badge sm badge-primary">투자</span>
+        </div>
+        <p class="shot-desc">기간 검색·일별/주별/월별 투자수익·산식</p>
+      </a>
+      <details class="state-fold">
+        <summary>상태 3개</summary>
+        <ul class="state-list">
+          <li><a href="invest-profit--weekly.html"><span class="s-name">주별</span></a></li>
+          <li><a href="invest-profit--monthly.html"><span class="s-name">월별</span></a></li>
+          <li><a href="invest-profit--empty.html"><span class="s-name">결과 없음</span></a></li>
+        </ul>
+      </details>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="invest-sim.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm3.75-6.75A2.25 2.25 0 0119.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">투자 시뮬레이션</div>
+          </div>
+          <span class="badge sm badge-primary">투자</span>
+        </div>
+        <p class="shot-desc">기준 변수·채권 입력·투자 자산/수익 산출</p>
+      </a>
+      <details class="state-fold">
+        <summary>상태 1개</summary>
+        <ul class="state-list">
+          <li><a href="invest-sim--result.html"><span class="s-name">실행 결과</span></a></li>
+        </ul>
+      </details>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="coocon.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">쿠콘 관리 현금</div>
+          </div>
+          <span class="badge sm badge-gray">관리</span>
+        </div>
+        <p class="shot-desc">메뉴에서 We-bank 로 바로 이동</p>
+      </a>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="merchants.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">가맹점</div>
+          </div>
+          <span class="badge sm badge-blue">가맹점</span>
+        </div>
+        <p class="shot-desc">목록·필터 검색</p>
+      </a>
+      <details class="state-fold">
+        <summary>상태 2개</summary>
+        <ul class="state-list">
+          <li><a href="merchants--filtered.html"><span class="s-name">검색 적용</span></a></li>
+          <li><a href="merchants--empty.html"><span class="s-name">결과 없음</span></a></li>
+        </ul>
+      </details>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="acquisition.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">정산채권 양수</div>
+          </div>
+          <span class="badge sm badge-blue">가맹점</span>
+        </div>
+        <p class="shot-desc">계약서보기 · 양수도 계약서 전자서명</p>
+      </a>
+      <details class="state-fold">
+        <summary>상태 4개</summary>
+        <ul class="state-list">
+          <li><a href="acquisition--doc.html"><span class="s-name">계약서보기</span></a></li>
+          <li><a href="acquisition--confirm.html"><span class="s-name">서명 확인</span></a></li>
+          <li><a href="acquisition--signing.html"><span class="s-name">서명 진행</span></a></li>
+          <li><a href="acquisition--done.html"><span class="s-name">서명 완료</span></a></li>
+        </ul>
+      </details>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="contracts.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">계약기록</div>
+          </div>
+          <span class="badge sm badge-blue">가맹점</span>
+        </div>
+        <p class="shot-desc">전자서명 결과 일괄 다운로드</p>
+      </a>
+      <details class="state-fold">
+        <summary>상태 3개</summary>
+        <ul class="state-list">
+          <li><a href="contracts--all.html"><span class="s-name">전체 선택</span></a></li>
+          <li><a href="contracts--downloaded.html"><span class="s-name">다운로드 완료</span></a></li>
+          <li><a href="contracts--empty.html"><span class="s-name">문서 없음</span></a></li>
+        </ul>
+      </details>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="password.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">비밀번호 변경</div>
+          </div>
+          <span class="badge sm badge-gray">관리</span>
+        </div>
+        <p class="shot-desc">로그인 비밀번호 변경</p>
+      </a>
+      <details class="state-fold">
+        <summary>상태 3개</summary>
+        <ul class="state-list">
+          <li><a href="password--weak.html"><span class="s-name">규칙 미충족</span></a></li>
+          <li><a href="password--error.html"><span class="s-name">확인값 불일치</span></a></li>
+          <li><a href="password--done.html"><span class="s-name">변경 완료</span></a></li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <div class="sec-head">
+    <h2>하위 화면</h2>
+    <span class="sec-note">인증 1 · 엑셀 산출물 서식 4</span>
+  </div>
+  <div class="gallery">
+    <div class="shot-card">
+      <a class="shot-link" href="login.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">로그인</div>
+          </div>
+          <span class="badge sm badge-gray">인증</span>
+        </div>
+        <p class="shot-desc">사업자번호·휴대전화 로그인 폼</p>
+      </a>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="xls-assets-status.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 15h18M9 5v14M15 5v14M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">엑셀 산출물 서식 — 투자자산 현황</div>
+          </div>
+          <span class="badge sm badge-gray">Figma 전용</span>
+        </div>
+        <p class="shot-desc">투자 자산 &gt; 현황 표를 내려받았을 때의 엑셀 서식</p>
+      </a>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="xls-assets-merchant.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 15h18M9 5v14M15 5v14M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">엑셀 산출물 서식 — 가맹점별 투자자산</div>
+          </div>
+          <span class="badge sm badge-gray">Figma 전용</span>
+        </div>
+        <p class="shot-desc">투자 자산 &gt; 가맹점별 투자자산 표를 내려받았을 때의 엑셀 서식</p>
+      </a>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="xls-profit-status.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 15h18M9 5v14M15 5v14M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">엑셀 산출물 서식 — 투자수익 현황</div>
+          </div>
+          <span class="badge sm badge-gray">Figma 전용</span>
+        </div>
+        <p class="shot-desc">투자 수익 &gt; 수익 현황 표를 내려받았을 때의 엑셀 서식</p>
+      </a>
+    </div>
+    <div class="shot-card">
+      <a class="shot-link" href="xls-profit-daily.html">
+        <div class="shot-top">
+          <div class="shot-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M3 15h18M9 5v14M15 5v14M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+          <div class="shot-id">
+            <div class="shot-name">엑셀 산출물 서식 — 일별 투자수익</div>
+          </div>
+          <span class="badge sm badge-gray">Figma 전용</span>
+        </div>
+        <p class="shot-desc">투자 수익 &gt; 일별 투자수익 표를 내려받았을 때의 엑셀 서식</p>
+      </a>
+    </div>
+  </div>
+
+
+</div>
+</body>
+</html>

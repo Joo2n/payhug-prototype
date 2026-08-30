@@ -1,0 +1,100 @@
+{
+  "overflow": [
+    {
+      "width": 1440,
+      "docScrollW": 1434,
+      "clientW": 1434,
+      "bodyScrollW": 1434,
+      "pageOverflow": false,
+      "offenders": []
+    },
+    {
+      "width": 1180,
+      "docScrollW": 1174,
+      "clientW": 1174,
+      "bodyScrollW": 1174,
+      "pageOverflow": false,
+      "offenders": []
+    },
+    {
+      "width": 900,
+      "docScrollW": 894,
+      "clientW": 894,
+      "bodyScrollW": 894,
+      "pageOverflow": false,
+      "offenders": []
+    },
+    {
+      "width": 390,
+      "docScrollW": 390,
+      "clientW": 390,
+      "bodyScrollW": 390,
+      "pageOverflow": false,
+      "offenders": []
+    }
+  ],
+  "counts": {
+    "total": 124,
+    "by": {
+      "C": 37,
+      "B": 36,
+      "A": 38,
+      "U": 1,
+      "D": 11,
+      "N": 1
+    },
+    "per": {
+      "tb-term": 50,
+      "tb-screen": 15,
+      "tb-state": 18,
+      "tb-func": 35,
+      "tb-out": 6
+    },
+    "badge": "124 / 124건"
+  },
+  "filter": {
+    "before": 124,
+    "afterOffA": 86,
+    "afterOffAE": 86,
+    "restored": 124,
+    "aPressed": "true",
+    "badge": "124 / 124건"
+  },
+  "search": {
+    "coocon": 5,
+    "none": 0,
+    "emptyMsgShown": true,
+    "restored": 124
+  },
+  "copy": {
+    "questions": 32,
+    "unique": 32,
+    "groups": 9,
+    "first": "D-01",
+    "last": "D-32"
+  },
+  "svg": {
+    "found": true,
+    "w": 940,
+    "h": 548,
+    "rects": 20,
+    "texts": 46,
+    "arrows": 7
+  },
+  "tables": {
+    "tables": 7,
+    "notInScroll": 0
+  },
+  "console": [],
+  "copyClickLabel": "복사됨 · 32건",
+  "clipboard": {
+    "read": true,
+    "len": 3638,
+    "head": "PayHug 투자자 어드민 — 개발 확인 문항 32건",
+    "first": "D-01",
+    "last": "D-32",
+    "hasFirst": true,
+    "hasLast": true,
+    "lines": 53
+  }
+}

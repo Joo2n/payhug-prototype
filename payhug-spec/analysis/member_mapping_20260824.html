@@ -1,0 +1,307 @@
+<title>회원 귀속 계통도</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --bg:#F4F6F9; --surface:#FFFFFF; --surface2:#EDF0F5; --ink:#1A2330; --muted:#606D7E;
+    --line:#DBE1EA; --accent:#2B5BD7; --accent-soft:#E4EBFB;
+    --ok:#126B52; --ok-bg:#DFF0EA; --warn:#8A6100; --warn-bg:#F7EDD5; --risk:#AC3327; --risk-bg:#F9E3E0;
+    --auto:#2B5BD7; --auto-bg:#E4EBFB; --manual:#7A4BB8; --manual-bg:#EEE7F8; --derive:#0E7490; --derive-bg:#DCF0F4;
+    --mono-bg:#EBEFF5; --shadow:0 1px 2px rgba(20,30,45,.06),0 6px 18px rgba(20,30,45,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161C; --surface:#191F27; --surface2:#212934; --ink:#E4E9F0; --muted:#8E9BAC;
+      --line:#2C3540; --accent:#7CA0F0; --accent-soft:#1D2A44;
+      --ok:#6FC7A6; --ok-bg:#173229; --warn:#D6AB57; --warn-bg:#38301C; --risk:#E39288; --risk-bg:#3D2622;
+      --auto:#7CA0F0; --auto-bg:#1D2A44; --manual:#B79BE0; --manual-bg:#2C2440; --derive:#5FBDD0; --derive-bg:#14313A;
+      --mono-bg:#222A35; --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161C; --surface:#191F27; --surface2:#212934; --ink:#E4E9F0; --muted:#8E9BAC;
+    --line:#2C3540; --accent:#7CA0F0; --accent-soft:#1D2A44;
+    --ok:#6FC7A6; --ok-bg:#173229; --warn:#D6AB57; --warn-bg:#38301C; --risk:#E39288; --risk-bg:#3D2622;
+    --auto:#7CA0F0; --auto-bg:#1D2A44; --manual:#B79BE0; --manual-bg:#2C2440; --derive:#5FBDD0; --derive-bg:#14313A;
+    --mono-bg:#222A35; --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans KR","Apple SD Gothic Neo",sans-serif; font-size:15px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1000px; margin:0 auto; padding:38px 20px 80px}
+  h1{font-size:27px; font-weight:700; letter-spacing:-.015em; margin:0 0 6px; text-wrap:balance}
+  h2{font-size:19px; font-weight:700; letter-spacing:-.01em; margin:46px 0 6px}
+  h2 .h2sub{display:block; font-size:13.5px; font-weight:400; color:var(--muted); margin-top:3px; letter-spacing:0}
+  .meta{color:var(--muted); font-size:13.5px; margin:0 0 22px}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.87em; background:var(--mono-bg); border-radius:4px; padding:1px 5px}
+
+  .verdict{background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--derive);
+    border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin:0 0 10px}
+  .verdict h3{margin:0 0 8px; font-size:17px; font-weight:700}
+  .verdict p{margin:0 0 10px; max-width:70ch}
+  .verdict p:last-child{margin-bottom:0}
+  .kbd{display:inline-block; background:var(--surface2); border:1px solid var(--line); border-radius:6px;
+    padding:1px 8px; font-size:13px; font-weight:600}
+
+  .legend{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 0}
+  .tag{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600;
+    padding:3px 10px; border-radius:999px; white-space:nowrap}
+  .tag.auto{color:var(--auto); background:var(--auto-bg)}
+  .tag.manual{color:var(--manual); background:var(--manual-bg)}
+  .tag.derive{color:var(--derive); background:var(--derive-bg)}
+  .tag.none{color:var(--muted); background:var(--surface2)}
+  .tag.fixed{color:var(--ok); background:var(--ok-bg)}
+
+  .flow{display:flex; flex-direction:column; gap:0; margin:18px 0 0}
+  .stage{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow)}
+  .stage-head{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin-bottom:10px}
+  .stage-n{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600; color:#fff;
+    background:var(--accent); border-radius:5px; padding:1px 7px}
+  .stage-t{font-size:15.5px; font-weight:700; margin:0}
+  .stage-loc{font-size:12.5px; color:var(--muted)}
+  .rows{display:flex; flex-direction:column; gap:7px}
+  .row{display:grid; grid-template-columns:minmax(130px,1.1fr) auto minmax(150px,1.4fr); gap:10px;
+    align-items:center; background:var(--surface2); border-radius:8px; padding:8px 12px; font-size:13.5px}
+  .row .lbl{font-weight:600}
+  .row .arr{color:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:12px}
+  .row .dst{color:var(--muted)}
+  .row .dst b{color:var(--ink); font-weight:600}
+  .connector{display:flex; justify-content:center; align-items:center; gap:8px; padding:9px 0; color:var(--muted); font-size:12.5px}
+  .connector::before, .connector::after{content:""; width:34px; height:1px; background:var(--line)}
+
+  .tbl-wrap{overflow-x:auto; margin:14px 0 0; border:1px solid var(--line); border-radius:12px; background:var(--surface)}
+  table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:720px}
+  th,td{padding:10px 14px; text-align:left; vertical-align:top; border-top:1px solid var(--line)}
+  thead th{border-top:none; background:var(--surface2); color:var(--muted); font-size:12px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.04em}
+  tbody tr:first-child td{border-top:1px solid var(--line)}
+  td .mono{white-space:nowrap}
+  .yes{color:var(--ok); font-weight:700}
+  .no{color:var(--muted); font-weight:600}
+
+  .note{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 17px; margin:12px 0}
+  .note b{font-weight:700}
+  .note.warn{border-left:4px solid var(--warn)}
+  .note.risk{border-left:4px solid var(--risk)}
+  .note p{margin:0; max-width:74ch; font-size:14px}
+  .note p + p{margin-top:8px}
+
+  .chain{display:flex; flex-wrap:wrap; align-items:stretch; gap:0; margin:14px 0 0}
+  .chain .node{flex:1 1 170px; background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; min-width:0}
+  .chain .node .role{font-size:11.5px; font-weight:700; letter-spacing:.05em; color:var(--muted); text-transform:uppercase}
+  .chain .node .who{font-size:14.5px; font-weight:700; margin-top:3px}
+  .chain .node .from{font-size:12.5px; color:var(--muted); margin-top:4px}
+  .chain .sep{display:flex; align-items:center; padding:0 8px; color:var(--muted); font-size:16px}
+
+  ul{padding-left:19px; margin:10px 0 0}
+  li{margin:5px 0; max-width:74ch; font-size:14px}
+  footer{margin-top:50px; color:var(--muted); font-size:12px; border-top:1px solid var(--line); padding-top:14px}
+</style>
+
+<div class="wrap">
+  <h1>회원 귀속 계통도</h1>
+  <p class="meta">
+    가입링크 드롭다운 → 가맹점 관리 배정 → 계약서 당사자까지 회원이 어느 자리에 어떻게 앉는지의 대응 관계<br>
+    기준 코드 <span class="mono">payhug-admin-web</span> · <span class="mono">payhug-merchant-web</span> 각 <span class="mono">origin/develop</span> (2026-08-24)
+  </p>
+
+  <div class="verdict">
+    <h3>가맹점 상세 헤더의 회색 배지 = 담당자의 소속 조직</h3>
+    <p>
+      <span class="kbd">테스트_상위파트너</span> 위치에 뜨는 값은 <span class="mono">orgRootUserName</span>이고, 화면 라벨은 <b>"소속 조직"</b>이다.
+      소개 파트너도, 계약서 양수인도, 유동화기관도 아니다. <b>담당자가 속한 조직의 최상위 회원</b>을 서버가 역산해 내려주는 표시값이다.
+    </p>
+    <p>
+      판단 근거는 세 가지다. 첫째, 이 배지는 <span class="mono">orgRootUserId !== assignedUserId</span>일 때만 뜬다 — 담당자와 같으면 중복이라 숨긴다.
+      둘째, 담당자 변경 모달에서 이 값은 "소속 조직" 라벨로 "현재 담당" 바로 위에 놓인다. 셋째, 화면 캡처가 그대로 뒷받침한다 —
+      담당자가 <span class="kbd">테스트_영업</span>이고 배지가 <span class="kbd">테스트_상위파트너</span>로 같은 계열인 반면,
+      소개 파트너 <span class="kbd">상위박현서</span>는 투자자 <span class="kbd">투자자박현서</span>와 묶이는 별개 계열이다.
+    </p>
+    <p>
+      <b>저장되어 박혀 있는 값이 아니다.</b> 편집 UI가 없고 프론트 어디에서도 쓰기를 하지 않으며, 가맹점 웹에는 이 필드 자체가 존재하지 않는다.
+      담당자를 바꾸면 함께 바뀌고, <b>계약서에는 실리지 않는다.</b>
+    </p>
+  </div>
+
+  <div class="legend">
+    <span class="tag auto">자동 — 링크 코드에서</span>
+    <span class="tag manual">수동 — 어드민에서만</span>
+    <span class="tag derive">파생 — 서버 역산, 편집 불가</span>
+    <span class="tag fixed">고정값</span>
+    <span class="tag none">연결 없음</span>
+  </div>
+
+  <h2>1. 값이 흐르는 경로<span class="h2sub">링크를 만드는 순간부터 계약서에 인쇄될 때까지 네 단계를 거친다</span></h2>
+
+  <div class="flow">
+    <div class="stage">
+      <div class="stage-head"><span class="stage-n">단계 1</span><p class="stage-t">가입링크 생성</p>
+        <span class="stage-loc">어드민 · 회원 관리 하단</span></div>
+      <div class="rows">
+        <div class="row"><span class="lbl">파트너 드롭다운</span><span class="arr">──▶</span>
+          <span class="dst"><b>partnerCode</b> · 유형 PARTNER만</span></div>
+        <div class="row"><span class="lbl">제휴사 드롭다운</span><span class="arr">──▶</span>
+          <span class="dst"><b>affiliateCode</b> · 파트너와 동시 선택 불가</span></div>
+        <div class="row"><span class="lbl">영업 드롭다운</span><span class="arr">──▶</span>
+          <span class="dst"><b>salesCode</b> · 유형 SALES 또는 SALES_ORG</span></div>
+      </div>
+      <p class="stage-loc" style="margin:10px 0 0">담기는 값은 회원 id가 아니라 <b>추천코드 문자열</b>이다. 후보는 로그인 계정 스코프(자기와 하위) 중 활성 상태이면서 추천코드가 있는 회원으로 한정된다. 상위 조직은 2026-07-22에 선택지에서 제외됐다.</p>
+    </div>
+
+    <div class="connector">주소창 쿼리로 전달</div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-n">단계 2</span><p class="stage-t">가맹점 가입</p>
+        <span class="stage-loc">가맹점 웹 · 랜딩 및 회원가입</span></div>
+      <div class="rows">
+        <div class="row"><span class="lbl">URL 쿼리</span><span class="arr">──▶</span>
+          <span class="dst">브라우저 임시저장소</span></div>
+        <div class="row"><span class="lbl">임시저장소</span><span class="arr">──▶</span>
+          <span class="dst">회원가입 요청 · <b>값이 있을 때만</b> 첨부</span></div>
+      </div>
+      <p class="stage-loc" style="margin:10px 0 0">읽는 키는 partnerCode · investorCode · salesCode · affiliateCode · bizNbr · agencyCode 여섯이다. 랜딩은 주소에 코드가 없으면 저장된 코드를 <b>지운다</b>. 파트너 링크로 들어왔다가 홈을 한 번 더 거치면 소개 파트너가 사라진다.</p>
+    </div>
+
+    <div class="connector">서버가 코드를 회원에 매핑</div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-n">단계 3</span><p class="stage-t">가맹점 관리</p>
+        <span class="stage-loc">어드민 · 가맹점 상세 배정 영역</span></div>
+      <div class="rows">
+        <div class="row"><span class="lbl">소개 파트너</span><span class="arr">◀──</span>
+          <span class="dst"><b>partnerCode</b> 자동 + 어드민 재지정</span></div>
+        <div class="row"><span class="lbl">투자자</span><span class="arr">◀──</span>
+          <span class="dst"><b>investorCode</b> 자동 + 어드민 재지정</span></div>
+        <div class="row"><span class="lbl">담당자</span><span class="arr">◀──</span>
+          <span class="dst"><b>어드민 수동 배정만</b> · 링크와 무관</span></div>
+        <div class="row"><span class="lbl">소속 조직 (회색 배지)</span><span class="arr">◀──</span>
+          <span class="dst"><b>담당자</b>에서 서버가 역산</span></div>
+      </div>
+      <p class="stage-loc" style="margin:10px 0 0">영업 코드를 받아 앉히는 자리는 이 화면에 <b>없다</b>. 다우·제휴·대리점 채널 가맹점은 소개 파트너 지정 UI 자체가 사라진다.</p>
+    </div>
+
+    <div class="connector">계약 참여자 조회로 재구성</div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="stage-n">단계 4</span><p class="stage-t">계약서 생성</p>
+        <span class="stage-loc">가맹점 웹 · 약관 동의 후 PDF 조립</span></div>
+      <div class="rows">
+        <div class="row"><span class="lbl">양수인 정보</span><span class="arr">◀──</span>
+          <span class="dst">소개 <b>파트너</b> 또는 <b>제휴사</b></span></div>
+        <div class="row"><span class="lbl">파트너 체인</span><span class="arr">◀──</span>
+          <span class="dst">서버가 구성한 <b>partnerChain</b> 배열</span></div>
+        <div class="row"><span class="lbl">참여자 목록</span><span class="arr">◀──</span>
+          <span class="dst">파트너 · 제휴사 · <b>투자자</b> 3종</span></div>
+      </div>
+      <p class="stage-loc" style="margin:10px 0 0">계약 화면은 가입 때 쓰던 코드를 들고 오지 않는다. <b>서버에 참여자를 다시 물어</b> 그 응답만으로 계약서를 조립한다. 조회에 실패해도 경고만 남기고 그대로 진행한다.</p>
+    </div>
+  </div>
+
+  <h2>2. 자리별 대응표<span class="h2sub">화면에 보이는 이름이 실제로 어느 값이고 어디서 오는지</span></h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>화면에 보이는 이름</th><th>실제 필드</th><th>어디서 오나</th><th>어드민 수정</th><th>계약서 반영</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>소개 파트너</b><br><span class="stage-loc">가맹점 상세 배정</span></td>
+          <td><span class="mono">referredByPartnerId</span></td>
+          <td><span class="tag auto">자동</span> 링크의 파트너 코드<br><span class="tag manual">수동</span> 재지정 가능</td>
+          <td class="yes">가능</td>
+          <td class="yes">양수인 자리</td>
+        </tr>
+        <tr>
+          <td><b>담당자</b><br><span class="stage-loc">가맹점 상세 · 목록 담당 열</span></td>
+          <td><span class="mono">assignedUserId</span></td>
+          <td><span class="tag manual">수동</span> 어드민 배정 전용<br><span class="stage-loc">링크로 채워지는 경로 없음</span></td>
+          <td class="yes">가능</td>
+          <td class="no">안 들어감</td>
+        </tr>
+        <tr>
+          <td><b>소속 조직</b> (회색 배지)<br><span class="stage-loc">헤더 · 목록 담당 열 윗줄</span></td>
+          <td><span class="mono">orgRootUserName</span></td>
+          <td><span class="tag derive">파생</span> 담당자의 조직 최상위</td>
+          <td class="no">불가</td>
+          <td class="no">안 들어감</td>
+        </tr>
+        <tr>
+          <td><b>투자자</b><br><span class="stage-loc">가맹점 상세 배정</span></td>
+          <td><span class="mono">referredByInvestorId</span></td>
+          <td><span class="tag auto">자동</span> 링크의 투자자 코드<br><span class="tag manual">수동</span> 재지정 가능</td>
+          <td class="yes">가능</td>
+          <td class="yes">유동화기관 자리</td>
+        </tr>
+        <tr>
+          <td><span class="stage-loc">대응 화면 없음</span></td>
+          <td><span class="mono">salesCode</span></td>
+          <td><span class="tag auto">자동</span> 링크의 영업 코드</td>
+          <td class="no">화면 없음</td>
+          <td class="no">안 들어감</td>
+        </tr>
+        <tr>
+          <td><span class="stage-loc">대리점 배지 (하늘색)</span></td>
+          <td><span class="mono">agencyCode</span></td>
+          <td><span class="tag auto">자동</span> 다우 복호화 응답</td>
+          <td class="no">불가</td>
+          <td class="no">표시 전용</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <p><b>투자자 자리는 두 이름으로 불린다.</b> 어드민 배정 영역에서는 "투자자"이고, 계약 문서에서는 "유동화기관"이다. 캡처의 <span class="kbd">투자자박현서</span>가 계약서에서는 유동화기관 칸에 인쇄된다.</p>
+  </div>
+
+  <h2>3. 계약서 당사자 4단<span class="h2sub">정산금채권 양수도 계약서와 재양도 합의서의 서명란 구성</span></h2>
+
+  <div class="chain">
+    <div class="node"><div class="role">양도인</div><div class="who">가맹점</div><div class="from">계약 당사자 본인</div></div>
+    <div class="sep">▶</div>
+    <div class="node"><div class="role">양수인</div><div class="who">파트너 · 제휴사</div><div class="from">= 소개 파트너 <span class="tag auto">자동</span></div></div>
+    <div class="sep">▶</div>
+    <div class="node"><div class="role">재양수인</div><div class="who">페이허그</div><div class="from"><span class="tag fixed">고정</span> 회원 배정과 무관</div></div>
+    <div class="sep">▶</div>
+    <div class="node"><div class="role">유동화기관</div><div class="who">투자자</div><div class="from">= 배정된 투자자 <span class="tag auto">자동</span></div></div>
+  </div>
+
+  <div class="note">
+    <p><b>재양수인 자리에는 회원이 앉지 않는다.</b> 페이허그 고정이라 어떤 드롭다운과도 연결되지 않는다. 다우데이타 계약만 예외로 양수도 계약서를 노출하지 않고 <b>양수인 자리를 페이허그로</b> 처리한다.</p>
+    <p>따라서 헤더의 소속 조직 배지가 "양수인도 재재양수인도 아닌" 것은 자연스럽다. <b>계약 당사자 축과 운영 담당 축은 애초에 다른 축</b>이고, 소속 조직은 운영 담당 축에만 속한다.</p>
+  </div>
+
+  <h2>4. 서명 현황의 역할 이름<span class="h2sub">어드민 서명 현황 카드가 쓰는 라벨 6종</span></h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>서버 값</th><th>화면 표기</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">PARTNER_LEVEL_0</span></td><td>파트너</td><td>체인 시작점</td></tr>
+        <tr><td><span class="mono">PARTNER_LEVEL_1</span></td><td>상위 파트너</td><td>한 단 위</td></tr>
+        <tr><td><span class="mono">PARTNER_LEVEL_2</span></td><td>상위 파트너 (2차)</td><td>두 단 위</td></tr>
+        <tr><td><span class="mono">LOWER_PARTNER</span></td><td>하위 파트너</td><td>계약서 참여자 목록과 유일하게 겹치는 값</td></tr>
+        <tr><td><span class="mono">UPPER_PARTNER</span></td><td>상위 파트너</td><td>LEVEL_1과 표기 중복</td></tr>
+        <tr><td><span class="mono">INVESTOR</span></td><td>투자자</td><td>계약서에서는 유동화기관</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note risk">
+    <p><b>두 곳이 서로 다른 역할 이름표를 쓴다.</b> 가맹점 웹이 계약서로 보내는 참여자 역할은 하위 파트너 · 제휴사 · 투자자 세 가지인데, 어드민 서명 현황이 기대하는 이름은 위 여섯 가지다. 겹치는 것은 하위 파트너와 투자자 둘뿐이고 <b>제휴사에 대응하는 이름이 어드민 쪽에 없다.</b> 제휴사 계약의 서명 현황이 어떻게 표시되는지 확인이 필요하다.</p>
+  </div>
+
+  <h2>5. 끊겨 있는 연결<span class="h2sub">드롭다운은 있는데 받는 자리가 없거나, 자리는 있는데 채우는 경로가 없는 것들</span></h2>
+
+  <ul>
+    <li><b>영업 드롭다운은 계약서까지 닿지 않는다.</b> 영업 코드는 가입 요청 본문까지만 가고 그 뒤로는 어느 화면에도, 계약서 어느 칸에도 나타나지 않는다. 서버가 이 값으로 무엇을 세팅하는지는 백엔드 확인이 필요하다.</li>
+    <li><b>담당자는 링크로 자동 설정되지 않는다.</b> 개편 검토 항목 R3 "가맹점 관리의 파트너·담당자 선택 — 자동 설정 여부·로직 확인"이 정확히 이 지점이고 아직 검토 대기다.</li>
+    <li><b>소속 조직의 파생 기준이 미확인이다.</b> 담당자에서 거슬러 올라간다는 것은 화면 조건으로 확정되지만, 서버가 조직 트리를 쓰는지 상위 회원 포인터를 재귀로 타는지는 프론트만으로 알 수 없다.</li>
+    <li><b>투자자 코드를 만드는 화면이 없다.</b> 가맹점 웹은 투자자 코드를 읽을 준비가 되어 있는데 어드민 링크 생성기에는 투자자 드롭다운이 없다. 투자자는 어드민에서 수동 배정으로만 채워진다.</li>
+    <li><b>소개 파트너 이름은 데이터로 내려오지만 표시되지 않는다.</b> 이름 필드가 응답에 있는데 렌더링하는 코드가 없어, 드롭다운이 후보에서 그 회원을 찾지 못하면 배지는 "지정"인데 선택칸은 비어 보인다.</li>
+  </ul>
+
+  <footer>
+    확정 근거는 두 저장소의 origin/develop 소스이며, 서버 파생 로직과 코드→회원 매핑은 백엔드 미확인 구간이다 · 수수료율 관련 수치는 이 문서의 판단 범위 밖(C1 미확정)
+  </footer>
+</div>

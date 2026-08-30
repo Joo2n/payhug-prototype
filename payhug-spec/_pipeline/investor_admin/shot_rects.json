@@ -1,0 +1,2269 @@
+{
+ "screens": [
+  {
+   "file": "invest-assets.html",
+   "shot": "assets/shots/invest-assets.webp",
+   "docW": 1440,
+   "docH": 1406,
+   "imgW": 2880,
+   "imgH": 2812,
+   "scrollers": [],
+   "items": [
+    {
+     "sel": "div.nav-group:nth-of-type(1) > div.nav-group-label",
+     "text": "투자",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 80,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(1)",
+     "text": "투자 자산",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 104.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(2)",
+     "text": "투자 수익",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 142.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(3)",
+     "text": "투자 시뮬레이션",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 180.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > div.nav-group-label",
+     "text": "가맹점",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 232.5,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(1)",
+     "text": "가맹점",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 257,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(2)",
+     "text": "정산채권 양수",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 295,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(3)",
+     "text": "계약기록",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 333,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > div.nav-group-label",
+     "text": "관리",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 385,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(1)",
+     "text": "쿠콘 관리 현금",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 409.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(2)",
+     "text": "비밀번호 변경",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 447.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "h1.page-title",
+     "text": "투자 자산",
+     "tag": "h1",
+     "kind": "header",
+     "x": 272,
+     "y": 32,
+     "w": 95,
+     "h": 32
+    },
+    {
+     "sel": "div.base-date:nth-of-type(2)",
+     "text": "기준일 2026-08-27",
+     "tag": "div",
+     "kind": "header",
+     "x": 1253.1,
+     "y": 32,
+     "w": 154.9,
+     "h": 34
+    },
+    {
+     "sel": "span.mono",
+     "text": "2026-08-27",
+     "tag": "span",
+     "kind": "header",
+     "x": 1310.7,
+     "y": 39,
+     "w": 84.3,
+     "h": 20
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th:nth-of-type(1)",
+     "text": "자산 구분",
+     "tag": "th",
+     "kind": "th",
+     "x": 273,
+     "y": 296,
+     "w": 197.8,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(2)",
+     "text": "금액 (원)",
+     "tag": "th",
+     "kind": "th",
+     "x": 470.8,
+     "y": 296,
+     "w": 226.2,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(3)",
+     "text": "W금융일수",
+     "tag": "th",
+     "kind": "th",
+     "x": 697,
+     "y": 296,
+     "w": 139,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(4)",
+     "text": "S입금부족율",
+     "tag": "th",
+     "kind": "th",
+     "x": 836.1,
+     "y": 296,
+     "w": 151.1,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(5)",
+     "text": "TY수익율",
+     "tag": "th",
+     "kind": "th",
+     "x": 987.2,
+     "y": 296,
+     "w": 132,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(6)",
+     "text": "비중",
+     "tag": "th",
+     "kind": "th",
+     "x": 1119.2,
+     "y": 296,
+     "w": 132,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl th:nth-of-type(7)",
+     "text": "보관",
+     "tag": "th",
+     "kind": "th",
+     "x": 1251.1,
+     "y": 296,
+     "w": 155.9,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th:nth-of-type(1)",
+     "text": "가맹점",
+     "tag": "th",
+     "kind": "th",
+     "x": 273,
+     "y": 568,
+     "w": 261.8,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(2)",
+     "text": "투자금액 (원)",
+     "tag": "th",
+     "kind": "th",
+     "x": 534.8,
+     "y": 568,
+     "w": 234.9,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(3)",
+     "text": "W금융일수",
+     "tag": "th",
+     "kind": "th",
+     "x": 769.7,
+     "y": 568,
+     "w": 163.9,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(4)",
+     "text": "S입금부족율",
+     "tag": "th",
+     "kind": "th",
+     "x": 933.6,
+     "y": 568,
+     "w": 178.2,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(5)",
+     "text": "TY수익율",
+     "tag": "th",
+     "kind": "th",
+     "x": 1111.7,
+     "y": 568,
+     "w": 155.5,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(6)",
+     "text": "비중",
+     "tag": "th",
+     "kind": "th",
+     "x": 1267.3,
+     "y": 568,
+     "w": 139.7,
+     "h": 40.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > tbody > tr:nth-of-type(1) > td:nth-of-type(1)",
+     "text": "투자실행액",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 336.5,
+     "w": 197.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > tbody > tr:nth-of-type(2) > td:nth-of-type(1)",
+     "text": "순현금",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 381.5,
+     "w": 197.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl tr.total-row:nth-of-type(3) > td:nth-of-type(1)",
+     "text": "합계 (투자자산)",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 426.5,
+     "w": 197.8,
+     "h": 44.5
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > tbody > tr:nth-of-type(1) > td:nth-of-type(1)",
+     "text": "김성호떡볶이 본점",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 608.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > tbody > tr:nth-of-type(2) > td:nth-of-type(1)",
+     "text": "달빛곱창 홍대점",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 653.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > tbody > tr:nth-of-type(3) > td:nth-of-type(1)",
+     "text": "바다마루 횟집",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 698.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl tr:nth-of-type(4) > td:nth-of-type(1)",
+     "text": "청춘포차 신촌점",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 743.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl tr:nth-of-type(5) > td:nth-of-type(1)",
+     "text": "성호분식 2호점",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 788.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl tr:nth-of-type(6) > td:nth-of-type(1)",
+     "text": "한강커피 잠원점",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 833.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl tr:nth-of-type(7) > td:nth-of-type(1)",
+     "text": "골목냉면",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 878.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl tr:nth-of-type(8) > td:nth-of-type(1)",
+     "text": "왕십리곱창타운",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 923.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl tr:nth-of-type(9) > td:nth-of-type(1)",
+     "text": "대박국수 사당점",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 968.5,
+     "w": 261.8,
+     "h": 45
+    },
+    {
+     "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl tr:nth-of-type(10) > td:nth-of-type(1)",
+     "text": "착한고기 은평점",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 1013.5,
+     "w": 261.8,
+     "h": 44.5
+    },
+    {
+     "sel": "div.summary-grid:nth-of-type(2)",
+     "text": "투자자산 1,628,400,000원 투자실행액 + 순현금 투자실행액 1,523,100,000원 비중 93.5% · 보관 ㈜페이허그 순현금 10…",
+     "tag": "div",
+     "kind": "card",
+     "x": 272,
+     "y": 90,
+     "w": 1136,
+     "h": 116
+    },
+    {
+     "sel": "div.summary-card.highlight:nth-of-type(1) > div.summary-label:nth-of-type(1)",
+     "text": "투자자산",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 293,
+     "y": 111,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card.highlight:nth-of-type(1) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "원",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 451.5,
+     "y": 143,
+     "w": 12.1,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card.highlight:nth-of-type(1) > div.summary-sub:nth-of-type(3)",
+     "text": "투자실행액 + 순현금",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 293,
+     "y": 169,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2) > div.summary-label:nth-of-type(1)",
+     "text": "투자실행액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 581,
+     "y": 111,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "원",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 739.5,
+     "y": 143,
+     "w": 12.1,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2) > div.summary-sub:nth-of-type(3)",
+     "text": "비중 93.5% · 보관 ㈜페이허그",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 581,
+     "y": 169,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3) > div.summary-label:nth-of-type(1)",
+     "text": "순현금",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 869,
+     "y": 111,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "원",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1003.5,
+     "y": 143,
+     "w": 12.1,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3) > div.summary-sub:nth-of-type(3)",
+     "text": "비중 6.5% · 보관 ㈜쿠콘",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 869,
+     "y": 169,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4) > div.summary-label:nth-of-type(1)",
+     "text": "Ty수익율",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 1157,
+     "y": 111,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "%",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1219.2,
+     "y": 143,
+     "w": 8.4,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4) > div.summary-sub:nth-of-type(3)",
+     "text": "W금융일수 3.7일 기준",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 1157,
+     "y": 169,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card.highlight:nth-of-type(1)",
+     "text": "투자자산 1,628,400,000원 투자실행액 + 순현금",
+     "tag": "div",
+     "kind": "card",
+     "x": 272,
+     "y": 90,
+     "w": 272,
+     "h": 116
+    },
+    {
+     "sel": "div.summary-card.highlight:nth-of-type(1) > div.summary-value:nth-of-type(2)",
+     "text": "1,628,400,000원",
+     "tag": "div",
+     "kind": "card",
+     "x": 293,
+     "y": 135,
+     "w": 230,
+     "h": 30
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2)",
+     "text": "투자실행액 1,523,100,000원 비중 93.5% · 보관 ㈜페이허그",
+     "tag": "div",
+     "kind": "card",
+     "x": 560,
+     "y": 90,
+     "w": 272,
+     "h": 116
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2) > div.summary-value:nth-of-type(2)",
+     "text": "1,523,100,000원",
+     "tag": "div",
+     "kind": "card",
+     "x": 581,
+     "y": 135,
+     "w": 230,
+     "h": 30
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3)",
+     "text": "순현금 105,300,000원 비중 6.5% · 보관 ㈜쿠콘",
+     "tag": "div",
+     "kind": "card",
+     "x": 848,
+     "y": 90,
+     "w": 272,
+     "h": 116
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3) > div.summary-value:nth-of-type(2)",
+     "text": "105,300,000원",
+     "tag": "div",
+     "kind": "card",
+     "x": 869,
+     "y": 135,
+     "w": 230,
+     "h": 30
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4)",
+     "text": "Ty수익율 10.85% W금융일수 3.7일 기준",
+     "tag": "div",
+     "kind": "card",
+     "x": 1136,
+     "y": 90,
+     "w": 272,
+     "h": 116
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4) > div.summary-value:nth-of-type(2)",
+     "text": "10.85%",
+     "tag": "div",
+     "kind": "card",
+     "x": 1157,
+     "y": 135,
+     "w": 230,
+     "h": 30
+    },
+    {
+     "sel": "div.card:nth-of-type(5)",
+     "text": "수익 산정 기준 수수료 배분형 배분 대상 투자자 배분액 = 기준 금액 순지급액 × 할인율 0.11% VAT 면제 조달이자형 산정 결과 투자 수…",
+     "tag": "div",
+     "kind": "card",
+     "x": 272,
+     "y": 1144,
+     "w": 1136,
+     "h": 229.5
+    },
+    {
+     "sel": "h2.card-title",
+     "text": "수익 산정 기준",
+     "tag": "h2",
+     "kind": "card",
+     "x": 297,
+     "y": 1169,
+     "w": 1086,
+     "h": 21
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1)",
+     "text": "수수료 배분형 배분 대상 투자자 배분액 = 기준 금액 순지급액 × 할인율 0.11% VAT 면제",
+     "tag": "div",
+     "kind": "card",
+     "x": 297,
+     "y": 1206,
+     "w": 535,
+     "h": 142.5
+    },
+    {
+     "sel": "span.badge.badge-primary",
+     "text": "수수료 배분형",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 322,
+     "y": 1219,
+     "w": 89.6,
+     "h": 24
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.strong:nth-of-type(1) > div.t-label:nth-of-type(1)",
+     "text": "배분 대상",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 322,
+     "y": 1280.5,
+     "w": 92.8,
+     "h": 16.5
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.strong:nth-of-type(1) > div.t-value:nth-of-type(2)",
+     "text": "투자자 배분액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 322,
+     "y": 1299,
+     "w": 92.8,
+     "h": 24
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > span.formula-op:nth-of-type(1)",
+     "text": "=",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 426.8,
+     "y": 1287.8,
+     "w": 14,
+     "h": 28
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term:nth-of-type(2) > div.t-label:nth-of-type(1)",
+     "text": "기준 금액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 452.8,
+     "y": 1280.5,
+     "w": 58.9,
+     "h": 16.5
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term:nth-of-type(2) > div.t-value:nth-of-type(2)",
+     "text": "순지급액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 452.8,
+     "y": 1299,
+     "w": 58.9,
+     "h": 24
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > span.formula-op:nth-of-type(2)",
+     "text": "×",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 523.7,
+     "y": 1287.8,
+     "w": 22,
+     "h": 28
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.emerald.strong:nth-of-type(3) > div.t-label:nth-of-type(1)",
+     "text": "할인율",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 557.7,
+     "y": 1272,
+     "w": 48.9,
+     "h": 16.5
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.emerald.strong:nth-of-type(3) > div.t-value:nth-of-type(2)",
+     "text": "0.11%",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 557.7,
+     "y": 1290.5,
+     "w": 48.9,
+     "h": 24
+    },
+    {
+     "sel": "div.t-sub:nth-of-type(3)",
+     "text": "VAT 면제",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 557.7,
+     "y": 1316.5,
+     "w": 48.9,
+     "h": 15
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(2)",
+     "text": "조달이자형 산정 결과 투자 수익 = 기준 금액 투자실행금 × 조달 이자율 연 12% × 기간 사용일수 ÷ 연 환산 일수 365",
+     "tag": "div",
+     "kind": "card",
+     "x": 848,
+     "y": 1206,
+     "w": 535,
+     "h": 142.5
+    },
+    {
+     "sel": "label.pg-size",
+     "text": "보기 10개 20개 50개",
+     "tag": "label",
+     "kind": "label",
+     "x": 1154.3,
+     "y": 249,
+     "w": 109.1,
+     "h": 28
+    }
+   ]
+  },
+  {
+   "file": "invest-profit.html",
+   "shot": "assets/shots/invest-profit.webp",
+   "docW": 1440,
+   "docH": 1267,
+   "imgW": 2880,
+   "imgH": 2534,
+   "scrollers": [],
+   "items": [
+    {
+     "sel": "div.nav-group:nth-of-type(1) > div.nav-group-label",
+     "text": "투자",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 80,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(1)",
+     "text": "투자 자산",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 104.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(2)",
+     "text": "투자 수익",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 142.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(3)",
+     "text": "투자 시뮬레이션",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 180.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > div.nav-group-label",
+     "text": "가맹점",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 232.5,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(1)",
+     "text": "가맹점",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 257,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(2)",
+     "text": "정산채권 양수",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 295,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(3)",
+     "text": "계약기록",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 333,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > div.nav-group-label",
+     "text": "관리",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 385,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(1)",
+     "text": "쿠콘 관리 현금",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 409.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(2)",
+     "text": "비밀번호 변경",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 447.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "h1.page-title",
+     "text": "투자 수익",
+     "tag": "h1",
+     "kind": "header",
+     "x": 272,
+     "y": 32,
+     "w": 1136,
+     "h": 32
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(1)",
+     "text": "정산예정일",
+     "tag": "th",
+     "kind": "th",
+     "x": 273,
+     "y": 568,
+     "w": 194.8,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th.num:nth-of-type(2)",
+     "text": "상환액",
+     "tag": "th",
+     "kind": "th",
+     "x": 467.8,
+     "y": 568,
+     "w": 237.2,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th.num:nth-of-type(3)",
+     "text": "투자실행금",
+     "tag": "th",
+     "kind": "th",
+     "x": 705,
+     "y": 568,
+     "w": 237.2,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th.num:nth-of-type(4)",
+     "text": "투자 수익",
+     "tag": "th",
+     "kind": "th",
+     "x": 942.2,
+     "y": 568,
+     "w": 180.7,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th.num:nth-of-type(5)",
+     "text": "W금융일수",
+     "tag": "th",
+     "kind": "th",
+     "x": 1122.9,
+     "y": 568,
+     "w": 145.8,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th.num:nth-of-type(6)",
+     "text": "TY수익율",
+     "tag": "th",
+     "kind": "th",
+     "x": 1268.6,
+     "y": 568,
+     "w": 138.4,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(1) > td.mono:nth-of-type(1)",
+     "text": "2026-08-21",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 608.5,
+     "w": 194.8,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(2) > td.mono:nth-of-type(1)",
+     "text": "2026-08-22",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 653.5,
+     "w": 194.8,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(3) > td.mono:nth-of-type(1)",
+     "text": "2026-08-23",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 698.5,
+     "w": 194.8,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(4) > td.mono:nth-of-type(1)",
+     "text": "2026-08-24",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 743.5,
+     "w": 194.8,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(5) > td.mono:nth-of-type(1)",
+     "text": "2026-08-25",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 788.5,
+     "w": 194.8,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(6) > td.mono:nth-of-type(1)",
+     "text": "2026-08-26",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 833.5,
+     "w": 194.8,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(7) > td.mono:nth-of-type(1)",
+     "text": "2026-08-27",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 878.5,
+     "w": 194.8,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tfoot > tr > td:nth-of-type(1)",
+     "text": "합계",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 923.5,
+     "w": 194.8,
+     "h": 56.5
+    },
+    {
+     "sel": "div.card.mb-6:nth-of-type(3)",
+     "text": "수익 현황 엑셀 다운로드 검색대상기간 일주일 2026-08-21 ~ 2026-08-27 투자실행금 3,511,071,647원 투자수익 3,86…",
+     "tag": "div",
+     "kind": "card",
+     "x": 272,
+     "y": 304,
+     "w": 1136,
+     "h": 174
+    },
+    {
+     "sel": "div.card-head:nth-of-type(1)",
+     "text": "수익 현황 엑셀 다운로드",
+     "tag": "div",
+     "kind": "card",
+     "x": 297,
+     "y": 329,
+     "w": 1086,
+     "h": 32
+    },
+    {
+     "sel": "div.card-head:nth-of-type(1) > h2.card-title",
+     "text": "수익 현황",
+     "tag": "h2",
+     "kind": "card-text",
+     "x": 297,
+     "y": 334.5,
+     "w": 55.5,
+     "h": 21
+    },
+    {
+     "sel": "div.card-head:nth-of-type(1) > a.btn.btn-excel",
+     "text": "엑셀 다운로드",
+     "tag": "a",
+     "kind": "card-text",
+     "x": 1267.4,
+     "y": 329,
+     "w": 115.6,
+     "h": 32
+    },
+    {
+     "sel": "div.stat-grid:nth-of-type(2)",
+     "text": "검색대상기간 일주일 2026-08-21 ~ 2026-08-27 투자실행금 3,511,071,647원 투자수익 3,866,428원 Ty수익율 투…",
+     "tag": "div",
+     "kind": "card",
+     "x": 297,
+     "y": 381,
+     "w": 1086,
+     "h": 72
+    },
+    {
+     "sel": "div.stat:nth-of-type(1)",
+     "text": "검색대상기간 일주일 2026-08-21 ~ 2026-08-27",
+     "tag": "div",
+     "kind": "card",
+     "x": 297,
+     "y": 381,
+     "w": 241.3,
+     "h": 72
+    },
+    {
+     "sel": "div.stat:nth-of-type(1) > div.summary-label:nth-of-type(1)",
+     "text": "검색대상기간",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 297,
+     "y": 381,
+     "w": 217.3,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-sub.mono:nth-of-type(3)",
+     "text": "2026-08-21 ~ 2026-08-27",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 297,
+     "y": 437,
+     "w": 217.3,
+     "h": 16
+    },
+    {
+     "sel": "div.stat:nth-of-type(2)",
+     "text": "투자실행금 3,511,071,647원",
+     "tag": "div",
+     "kind": "card",
+     "x": 538.3,
+     "y": 381,
+     "w": 252.3,
+     "h": 72
+    },
+    {
+     "sel": "div.stat:nth-of-type(2) > div.summary-label:nth-of-type(1)",
+     "text": "투자실행금",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 563.3,
+     "y": 381,
+     "w": 203.3,
+     "h": 16
+    },
+    {
+     "sel": "div.stat:nth-of-type(2) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "원",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 721.9,
+     "y": 413,
+     "w": 12.1,
+     "h": 16
+    },
+    {
+     "sel": "div.stat:nth-of-type(2) > div.summary-value:nth-of-type(2)",
+     "text": "3,511,071,647원",
+     "tag": "div",
+     "kind": "card",
+     "x": 563.3,
+     "y": 405,
+     "w": 203.3,
+     "h": 30
+    },
+    {
+     "sel": "div.stat:nth-of-type(3)",
+     "text": "투자수익 3,866,428원",
+     "tag": "div",
+     "kind": "card",
+     "x": 790.6,
+     "y": 381,
+     "w": 219.4,
+     "h": 72
+    },
+    {
+     "sel": "div.stat:nth-of-type(3) > div.summary-label:nth-of-type(1)",
+     "text": "투자수익",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 815.6,
+     "y": 381,
+     "w": 170.4,
+     "h": 16
+    },
+    {
+     "sel": "div.stat:nth-of-type(3) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "원",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 926,
+     "y": 413,
+     "w": 12.1,
+     "h": 16
+    },
+    {
+     "sel": "div.stat:nth-of-type(3) > div.summary-value:nth-of-type(2)",
+     "text": "3,866,428원",
+     "tag": "div",
+     "kind": "card",
+     "x": 815.6,
+     "y": 405,
+     "w": 170.4,
+     "h": 30
+    },
+    {
+     "sel": "div.stat:nth-of-type(4)",
+     "text": "Ty수익율 투자실행금액 대비 12.97% 투자자산 대비 10.72%",
+     "tag": "div",
+     "kind": "card",
+     "x": 1010,
+     "y": 381,
+     "w": 373,
+     "h": 72
+    },
+    {
+     "sel": "div.stat:nth-of-type(4) > div.summary-label:nth-of-type(1)",
+     "text": "Ty수익율",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 1035,
+     "y": 381,
+     "w": 324,
+     "h": 16
+    },
+    {
+     "sel": "div:nth-of-type(1) > div.ty-label:nth-of-type(1) > span.tooltip.wide > span.tip-anchor:nth-of-type(1)",
+     "text": "투자실행금액 대비",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1035,
+     "y": 404,
+     "w": 84,
+     "h": 17
+    },
+    {
+     "sel": "div:nth-of-type(1) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "%",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1097.2,
+     "y": 430,
+     "w": 8.4,
+     "h": 16
+    },
+    {
+     "sel": "div:nth-of-type(2) > div.ty-label:nth-of-type(1) > span.tooltip.wide > span.tip-anchor:nth-of-type(1)",
+     "text": "투자자산 대비",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1160.1,
+     "y": 404,
+     "w": 63.8,
+     "h": 17
+    },
+    {
+     "sel": "div.ty-split:nth-of-type(2) > div:nth-of-type(2) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "%",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1222.3,
+     "y": 430,
+     "w": 8.4,
+     "h": 16
+    },
+    {
+     "sel": "div:nth-of-type(1) > div.summary-value:nth-of-type(2)",
+     "text": "12.97%",
+     "tag": "div",
+     "kind": "card",
+     "x": 1035,
+     "y": 422,
+     "w": 84,
+     "h": 30
+    },
+    {
+     "sel": "div.ty-split:nth-of-type(2) > div:nth-of-type(2) > div.summary-value:nth-of-type(2)",
+     "text": "10.72%",
+     "tag": "div",
+     "kind": "card",
+     "x": 1160.1,
+     "y": 422,
+     "w": 70.7,
+     "h": 30
+    },
+    {
+     "sel": "div.left > h2.card-title",
+     "text": "일별 투자수익",
+     "tag": "h2",
+     "kind": "card",
+     "x": 293,
+     "y": 524.5,
+     "w": 81.2,
+     "h": 21
+    },
+    {
+     "sel": "div.card:nth-of-type(5)",
+     "text": "수익 산정 기준 수수료 배분형 배분 대상 투자자 배분액 = 기준 금액 순지급액 × 할인율 0.11% VAT 면제 조달이자형 산정 결과 투자 수…",
+     "tag": "div",
+     "kind": "card",
+     "x": 272,
+     "y": 1005,
+     "w": 1136,
+     "h": 229.5
+    },
+    {
+     "sel": "div.card:nth-of-type(5) > h2.card-title",
+     "text": "수익 산정 기준",
+     "tag": "h2",
+     "kind": "card",
+     "x": 297,
+     "y": 1030,
+     "w": 1086,
+     "h": 21
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1)",
+     "text": "수수료 배분형 배분 대상 투자자 배분액 = 기준 금액 순지급액 × 할인율 0.11% VAT 면제",
+     "tag": "div",
+     "kind": "card",
+     "x": 297,
+     "y": 1067,
+     "w": 535,
+     "h": 142.5
+    },
+    {
+     "sel": "span.badge.badge-primary",
+     "text": "수수료 배분형",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 322,
+     "y": 1080,
+     "w": 89.6,
+     "h": 24
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.strong:nth-of-type(1) > div.t-label:nth-of-type(1)",
+     "text": "배분 대상",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 322,
+     "y": 1141.5,
+     "w": 92.8,
+     "h": 16.5
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.strong:nth-of-type(1) > div.t-value:nth-of-type(2)",
+     "text": "투자자 배분액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 322,
+     "y": 1160,
+     "w": 92.8,
+     "h": 24
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > span.formula-op:nth-of-type(1)",
+     "text": "=",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 426.8,
+     "y": 1148.8,
+     "w": 14,
+     "h": 28
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term:nth-of-type(2) > div.t-label:nth-of-type(1)",
+     "text": "기준 금액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 452.8,
+     "y": 1141.5,
+     "w": 58.9,
+     "h": 16.5
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term:nth-of-type(2) > div.t-value:nth-of-type(2)",
+     "text": "순지급액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 452.8,
+     "y": 1160,
+     "w": 58.9,
+     "h": 24
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > span.formula-op:nth-of-type(2)",
+     "text": "×",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 523.7,
+     "y": 1148.8,
+     "w": 22,
+     "h": 28
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.emerald.strong:nth-of-type(3) > div.t-label:nth-of-type(1)",
+     "text": "할인율",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 557.7,
+     "y": 1133,
+     "w": 48.9,
+     "h": 16.5
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(1) > div.formula-row:nth-of-type(2) > div.formula-term.emerald.strong:nth-of-type(3) > div.t-value:nth-of-type(2)",
+     "text": "0.11%",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 557.7,
+     "y": 1151.5,
+     "w": 48.9,
+     "h": 24
+    },
+    {
+     "sel": "div.t-sub:nth-of-type(3)",
+     "text": "VAT 면제",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 557.7,
+     "y": 1177.5,
+     "w": 48.9,
+     "h": 15
+    },
+    {
+     "sel": "div.formula-card:nth-of-type(2)",
+     "text": "조달이자형 산정 결과 투자 수익 = 기준 금액 투자실행금 × 조달 이자율 연 12% × 기간 사용일수 ÷ 연 환산 일수 365",
+     "tag": "div",
+     "kind": "card",
+     "x": 848,
+     "y": 1067,
+     "w": 535,
+     "h": 142.5
+    },
+    {
+     "sel": "div.filter-field:nth-of-type(1) > label",
+     "text": "시작일",
+     "tag": "label",
+     "kind": "label",
+     "x": 289,
+     "y": 143,
+     "w": 154,
+     "h": 16
+    },
+    {
+     "sel": "div.filter-field:nth-of-type(3) > label",
+     "text": "종료일",
+     "tag": "label",
+     "kind": "label",
+     "x": 475.9,
+     "y": 143,
+     "w": 154,
+     "h": 16
+    }
+   ]
+  },
+  {
+   "file": "merchants.html",
+   "shot": "assets/shots/merchants.webp",
+   "docW": 1440,
+   "docH": 1200,
+   "imgW": 2880,
+   "imgH": 2400,
+   "scrollers": [],
+   "items": [
+    {
+     "sel": "div.nav-group:nth-of-type(1) > div.nav-group-label",
+     "text": "투자",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 80,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(1)",
+     "text": "투자 자산",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 104.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(2)",
+     "text": "투자 수익",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 142.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(3)",
+     "text": "투자 시뮬레이션",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 180.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > div.nav-group-label",
+     "text": "가맹점",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 232.5,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(1)",
+     "text": "가맹점",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 257,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(2)",
+     "text": "정산채권 양수",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 295,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(3)",
+     "text": "계약기록",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 333,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > div.nav-group-label",
+     "text": "관리",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 385,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(1)",
+     "text": "쿠콘 관리 현금",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 409.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(2)",
+     "text": "비밀번호 변경",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 447.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "h1.page-title",
+     "text": "가맹점",
+     "tag": "h1",
+     "kind": "header",
+     "x": 272,
+     "y": 32,
+     "w": 1136,
+     "h": 32
+    },
+    {
+     "sel": "table.tbl th.no:nth-of-type(1)",
+     "text": "NO",
+     "tag": "th",
+     "kind": "th",
+     "x": 273,
+     "y": 268,
+     "w": 50,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(2)",
+     "text": "가맹점ID",
+     "tag": "th",
+     "kind": "th",
+     "x": 323,
+     "y": 268,
+     "w": 170,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(3)",
+     "text": "가맹점명",
+     "tag": "th",
+     "kind": "th",
+     "x": 493,
+     "y": 268,
+     "w": 203.1,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(4)",
+     "text": "사업자번호",
+     "tag": "th",
+     "kind": "th",
+     "x": 696.1,
+     "y": 268,
+     "w": 194.6,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(5)",
+     "text": "대표자",
+     "tag": "th",
+     "kind": "th",
+     "x": 890.7,
+     "y": 268,
+     "w": 103.2,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(6)",
+     "text": "업종",
+     "tag": "th",
+     "kind": "th",
+     "x": 994,
+     "y": 268,
+     "w": 122.1,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(7)",
+     "text": "종목",
+     "tag": "th",
+     "kind": "th",
+     "x": 1116,
+     "y": 268,
+     "w": 84.4,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(8)",
+     "text": "채권매입업체ID",
+     "tag": "th",
+     "kind": "th",
+     "x": 1200.5,
+     "y": 268,
+     "w": 206.5,
+     "h": 40.5
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(1) > td.no:nth-of-type(1)",
+     "text": "1",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 308.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(2) > td.no:nth-of-type(1)",
+     "text": "2",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 354.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(3) > td.no:nth-of-type(1)",
+     "text": "3",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 400.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(4) > td.no:nth-of-type(1)",
+     "text": "4",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 446.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(5) > td.no:nth-of-type(1)",
+     "text": "5",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 492.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(6) > td.no:nth-of-type(1)",
+     "text": "6",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 538.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(7) > td.no:nth-of-type(1)",
+     "text": "7",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 584.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(8) > td.no:nth-of-type(1)",
+     "text": "8",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 630.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(9) > td.no:nth-of-type(1)",
+     "text": "9",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 676.5,
+     "w": 50,
+     "h": 46
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(10) > td.no:nth-of-type(1)",
+     "text": "10",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
+     "y": 722.5,
+     "w": 50,
+     "h": 45.5
+    },
+    {
+     "sel": "span.card-title",
+     "text": "가맹점 목록",
+     "tag": "span",
+     "kind": "card",
+     "x": 297,
+     "y": 226.5,
+     "w": 68.3,
+     "h": 21
+    },
+    {
+     "sel": "div.filter-field:nth-of-type(1) > label",
+     "text": "업종",
+     "tag": "label",
+     "kind": "label",
+     "x": 289,
+     "y": 105,
+     "w": 140,
+     "h": 16
+    },
+    {
+     "sel": "div.filter-field:nth-of-type(2) > label",
+     "text": "채권매입업체",
+     "tag": "label",
+     "kind": "label",
+     "x": 441,
+     "y": 105,
+     "w": 180,
+     "h": 16
+    },
+    {
+     "sel": "div.filter-field:nth-of-type(3) > label",
+     "text": "검색어",
+     "tag": "label",
+     "kind": "label",
+     "x": 633,
+     "y": 107,
+     "w": 360,
+     "h": 16
+    },
+    {
+     "sel": "label.pg-size",
+     "text": "보기 10개 20개 50개",
+     "tag": "label",
+     "kind": "label",
+     "x": 1273.9,
+     "y": 223,
+     "w": 109.1,
+     "h": 28
+    }
+   ]
+  },
+  {
+   "file": "contracts.html",
+   "shot": "assets/shots/contracts.webp",
+   "docW": 1440,
+   "docH": 1200,
+   "imgW": 2880,
+   "imgH": 2400,
+   "scrollers": [],
+   "items": [
+    {
+     "sel": "div.nav-group:nth-of-type(1) > div.nav-group-label",
+     "text": "투자",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 80,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(1)",
+     "text": "투자 자산",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 104.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(2)",
+     "text": "투자 수익",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 142.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(3)",
+     "text": "투자 시뮬레이션",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 180.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > div.nav-group-label",
+     "text": "가맹점",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 232.5,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(1)",
+     "text": "가맹점",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 257,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(2)",
+     "text": "정산채권 양수",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 295,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(3)",
+     "text": "계약기록",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 333,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > div.nav-group-label",
+     "text": "관리",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 385,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(1)",
+     "text": "쿠콘 관리 현금",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 409.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(2)",
+     "text": "비밀번호 변경",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 447.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "h1.page-title",
+     "text": "계약기록",
+     "tag": "h1",
+     "kind": "header",
+     "x": 272,
+     "y": 32,
+     "w": 1136,
+     "h": 32
+    },
+    {
+     "sel": "table.tbl th.no:nth-of-type(2)",
+     "text": "NO",
+     "tag": "th",
+     "kind": "th",
+     "x": 328,
+     "y": 158,
+     "w": 50,
+     "h": 46.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(3)",
+     "text": "MID",
+     "tag": "th",
+     "kind": "th",
+     "x": 378,
+     "y": 158,
+     "w": 205.6,
+     "h": 46.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(4)",
+     "text": "가맹점",
+     "tag": "th",
+     "kind": "th",
+     "x": 583.6,
+     "y": 158,
+     "w": 245.7,
+     "h": 46.5
+    },
+    {
+     "sel": "table.tbl th:nth-of-type(5)",
+     "text": "전자서명 결과",
+     "tag": "th",
+     "kind": "th",
+     "x": 829.3,
+     "y": 158,
+     "w": 388.2,
+     "h": 46.5
+    },
+    {
+     "sel": "table.tbl th.center:nth-of-type(6)",
+     "text": "서명 수단",
+     "tag": "th",
+     "kind": "th",
+     "x": 1217.5,
+     "y": 158,
+     "w": 189.5,
+     "h": 46.5
+    },
+    {
+     "sel": "table.tbl tr.clickable.selected:nth-of-type(1) > td.no:nth-of-type(2)",
+     "text": "1",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 204.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable:nth-of-type(2) > td.no:nth-of-type(2)",
+     "text": "2",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 253.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable:nth-of-type(3) > td.no:nth-of-type(2)",
+     "text": "3",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 302.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable.selected:nth-of-type(4) > td.no:nth-of-type(2)",
+     "text": "4",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 351.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable:nth-of-type(5) > td.no:nth-of-type(2)",
+     "text": "5",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 400.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable.selected:nth-of-type(6) > td.no:nth-of-type(2)",
+     "text": "6",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 449.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable:nth-of-type(7) > td.no:nth-of-type(2)",
+     "text": "7",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 498.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable:nth-of-type(8) > td.no:nth-of-type(2)",
+     "text": "8",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 547.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable:nth-of-type(9) > td.no:nth-of-type(2)",
+     "text": "9",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 596.5,
+     "w": 50,
+     "h": 49
+    },
+    {
+     "sel": "table.tbl tr.clickable:nth-of-type(10) > td.no:nth-of-type(2)",
+     "text": "10",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 328,
+     "y": 645.5,
+     "w": 50,
+     "h": 48.5
+    },
+    {
+     "sel": "span.card-title:nth-of-type(1)",
+     "text": "재양도합의서 목록",
+     "tag": "span",
+     "kind": "card",
+     "x": 297,
+     "y": 114,
+     "w": 107,
+     "h": 20
+    },
+    {
+     "sel": "label.pg-size",
+     "text": "보기 10개 20개 50개",
+     "tag": "label",
+     "kind": "label",
+     "x": 1021.4,
+     "y": 109,
+     "w": 109.1,
+     "h": 28
+    }
+   ]
+  },
+  {
+   "file": "coocon.html",
+   "shot": "assets/shots/coocon.webp",
+   "docW": 1440,
+   "docH": 1200,
+   "imgW": 2880,
+   "imgH": 2400,
+   "scrollers": [],
+   "items": [
+    {
+     "sel": "div.nav-group:nth-of-type(1) > div.nav-group-label",
+     "text": "투자",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 80,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(1)",
+     "text": "투자 자산",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 104.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(2)",
+     "text": "투자 수익",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 142.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(1) > a.nav-item:nth-of-type(3)",
+     "text": "투자 시뮬레이션",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 180.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > div.nav-group-label",
+     "text": "가맹점",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 232.5,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(1)",
+     "text": "가맹점",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 257,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(2)",
+     "text": "정산채권 양수",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 295,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(2) > a.nav-item:nth-of-type(3)",
+     "text": "계약기록",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 333,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > div.nav-group-label",
+     "text": "관리",
+     "tag": "div",
+     "kind": "nav",
+     "x": 12,
+     "y": 385,
+     "w": 216,
+     "h": 20.5
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(1)",
+     "text": "쿠콘 관리 현금",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 409.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "div.nav-group:nth-of-type(3) > a.nav-item:nth-of-type(2)",
+     "text": "비밀번호 변경",
+     "tag": "a",
+     "kind": "nav",
+     "x": 12,
+     "y": 447.5,
+     "w": 216,
+     "h": 36
+    },
+    {
+     "sel": "h1.page-title",
+     "text": "쿠콘 관리 현금",
+     "tag": "h1",
+     "kind": "header",
+     "x": 272,
+     "y": 32,
+     "w": 1136,
+     "h": 32
+    },
+    {
+     "sel": "div.card.link-card",
+     "text": "We-bank 바로가기",
+     "tag": "div",
+     "kind": "card",
+     "x": 520,
+     "y": 104,
+     "w": 640,
+     "h": 210
+    },
+    {
+     "sel": "a.btn.btn-primary",
+     "text": "We-bank 바로가기",
+     "tag": "a",
+     "kind": "card-text",
+     "x": 751.4,
+     "y": 229,
+     "w": 177.1,
+     "h": 36
+    }
+   ]
+  }
+ ]
+}

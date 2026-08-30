@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
-"""투자자 어드민 엑셀 8종 생성기 — roster16_model 값 + 원본 어드민(lib/excel.ts) 헤더 서식.
+"""투자자 어드민 엑셀 14종 생성기 — roster16_model 값 + 원본 어드민(lib/excel.ts) 헤더 서식.
 
 값 원천 : roster16_model.py (이 스크립트는 숫자를 만들지 않고 받아 쓰기만 한다)
 서식 원천: /Users/semi/cursor/payhug-admin-web/lib/excel.ts `fillSheet`
 파일명   : {내용}_{시작일}_{종료일}.xlsx · 날짜 YYYY-MM-DD
            (원본 예: payhug-admin-web/app/settlement/overview/TransferRecordsTab.tsx:318)
 
-워크북 구성: 단일 시트 8파일.
+워크북 구성: 단일 시트 14파일.
   원본 excel.ts 는 downloadExcel(단일 시트)·downloadExcelSheets(다중 시트)를 모두 제공하되,
   실제 사용처인 `이체내역`·`차액정산`은 downloadExcel(단일 시트)로 낸다.
-  투자자 어드민은 다운로드 버튼 1개가 화면의 표 1개에 대응하므로 단일 시트 8파일이 원본 정합.
-  투자 수익은 집계 단위가 일별·주별·월별 3단이라 `수익 현황`·표가 각각 3벌이다 —
-  화면이 4주를 말하는데 파일이 일주일이면 두 산출물이 다른 기간을 말하게 된다.
+  투자자 어드민은 다운로드 버튼 1개가 화면의 표 1개에 대응하므로 단일 시트가 원본 정합.
   다중 시트로 묶으면 버튼 1개가 화면에 없는 표까지 싣게 되어 downloadExcelSheets 의 전제
   (한 화면의 여러 섹션을 한 번에 내림)와 어긋난다.
 
+투자 수익은 화면에서 도달 가능한 프리셋 조합마다 자기 파일을 낸다 — 6조합 x (표 · 수익 현황) = 12벌.
+  집계 단위만 보고 파일을 고르면 같은 단위 안에서 기간이 갈리는 두 조합(일별 일주일·금월)이
+  한 파일을 가리켜, 화면은 27행 금월인데 파일은 일주일치가 되는 자리가 생긴다.
+  파일을 고르는 열쇠는 집계 단위 + 시작일 + 종료일 셋이다 — 통합본 xlsKey() 와 같은 열쇠다.
+  프리셋 밖 기간(직접입력)은 실물을 찍지 않는다. 화면이 그 자리에서 다운로드를 잠근다.
+
 실행: python3 build_xlsx.py
-      → assets/xlsx 8파일 재생성 + 구 파일명 삭제 + 미리보기 4종 파일바(파일명·크기·생성일시) 동기화
+      → assets/xlsx 14파일 재생성 + 구 파일명 삭제 + 미리보기 4종 파일바(파일명·크기·생성일시) 동기화
 """
 import io, os, re, sys
 import datetime as _dt
@@ -58,7 +62,7 @@ THIN       = Side(style='thin', color='D0D7DE')
 BOX        = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 RIGHT      = Alignment(horizontal='right')
 
-FMT_AMT, FMT_DAY, FMT_PCT2, FMT_PCT1 = '#,##0', '0.0', '0.00%', '0.0%'
+FMT_AMT, FMT_DAY, FMT_PCT2, FMT_PCT1 = '#,##0', '0.00', '0.00%', '0.0%'
 
 # 2행은 제목·머리글 사이 여백으로 비워 둔다. 3행 이하 좌표가 움직이지 않는다.
 NOTICE_ROW = 2
@@ -149,40 +153,89 @@ def rollup(frm, to, keyf, labelf):
     return [bucket(group[k], labelf(group[k][0]['d'])) for k in order]
 
 
-def put_bucket_sheet(title, headline, colhead, rows, filename):
+# ── 화면에서 도달 가능한 조회 조합 ────────────────────────────────
+#   통합본 build_app.py 의 PRESET_RANGE · PRESET_GRAN · PRESET_LABEL 과 같은 값이다.
+#   종료일은 전부 기준일에서 끊는다 — 마지막 버킷이 기준일 뒤 빈 날짜를 이고 있으면
+#   같은 크기의 앞 버킷들과 나란히 놓였을 때 급락으로 읽힌다.
+BASE_DATE = '2026-08-27'
+INVESTOR  = '㈜테스트인베스트'
+
+
+def _add(d, n):
+    return (_dt.date(*map(int, d.split('-'))) + _dt.timedelta(days=n)).isoformat()
+
+
+def _m_first(d):
+    return d[:7] + '-01'
+
+
+def _m_shift(d, n):
+    x = _dt.date(*map(int, _m_first(d).split('-')))
+    y, m = x.year, x.month + n
+    while m < 1:
+        y, m = y - 1, m + 12
+    while m > 12:
+        y, m = y + 1, m - 12
+    return '%04d-%02d-01' % (y, m)
+
+
+def _week_label(to):
+    # 주 라벨 = 월요일 ~ 그 주 일요일. 조회 종료일에서 끊긴 주는 종료일까지만 적는다.
+    return lambda d: _mon_start(d) + ' ~ ' + min(_sun_end(d), to)[5:]
+
+
+# (프리셋 키, 집계 단위, 검색대상기간 라벨, 시작일, 종료일)
+PRESETS = [
+    ('week',  'daily',   '일주일', _add(BASE_DATE, -6),              BASE_DATE),
+    ('month', 'daily',   '금월',       _m_first(BASE_DATE),              BASE_DATE),
+    ('w4',    'weekly',  '4주',            _add(_mon_start(BASE_DATE), -21), BASE_DATE),
+    ('w12',   'weekly',  '12주',           _add(_mon_start(BASE_DATE), -77), BASE_DATE),
+    ('m3',    'monthly', '3개월',      _m_shift(BASE_DATE, -2),          BASE_DATE),
+    ('m6',    'monthly', '6개월',      _m_shift(BASE_DATE, -5),          BASE_DATE),
+]
+
+GRAN_NAME  = {'daily': '일별', 'weekly': '주별', 'monthly': '월별'}
+GRAN_COL   = {'daily': '정산예정일', 'weekly': '정산예정주',
+              'monthly': '정산예정월'}
+GRAN_WIDTH = {'daily': 13.5, 'weekly': 21.5, 'monthly': 21.5}
+
+
+def preset_rows(gran, frm, to):
+    # 그 조합의 표 본문 — 화면 pfRows() 와 같은 묶음.
+    if gran == 'weekly':
+        return rollup(frm, to, _mon_start, _week_label(to))
+    if gran == 'monthly':
+        return rollup(frm, to, lambda d: d[:7], lambda d: d[:7])
+    return [dict(d=r['d'], repay=r['repay'], exec=r['exec'], profit=r['profit'],
+                 w=D(str(r['w'])), ty=D(str(r['ty'])))
+            for r in daily_ledger.LEDGER if frm <= r['d'] <= to]
+
+
+def profit_file(gran, frm, to):
+    return '%s투자수익_%s_%s.xlsx' % (GRAN_NAME[gran], frm, to)
+
+
+def status_file(frm, to):
+    return '투자수익현황_%s_%s.xlsx' % (frm, to)
+
+
+def put_bucket_sheet(title, headline, colhead, rows, filename, w0=21.5):
     wb = openpyxl.Workbook()
-    ws = new_sheet(wb, title, headline, 6, [21.5, 16.5, 16.5, 12.5, 12.5, 11.5], 'A4')
+    ws = new_sheet(wb, title, headline, 6, [w0, 16.5, 16.5, 12.5, 12.5, 11.5], 'A4')
     put_notice(ws, 6)
     put_header(ws, [colhead, '상환액', '투자실행금', '투자 수익', 'W금융일수', 'Ty수익율'])
     r = 4
     for x in rows:
         put_row(ws, r, [(x['d'], None, None), (x['repay'], FMT_AMT, None), (x['exec'], FMT_AMT, None),
-                        (x['profit'], FMT_AMT, None), (float(r1(x['w'])), FMT_DAY, None),
+                        (x['profit'], FMT_AMT, None), (float(r2(x['w'])), FMT_DAY, None),
                         (pct(r2(x['ty'])), FMT_PCT2, None)])
         r += 1
     tot = bucket(rows, '합계')
     put_row(ws, r, [('합계', None, None), (tot['repay'], FMT_AMT, None), (tot['exec'], FMT_AMT, None),
-                    (tot['profit'], FMT_AMT, None), (float(r1(tot['w'])), FMT_DAY, None),
+                    (tot['profit'], FMT_AMT, None), (float(r2(tot['w'])), FMT_DAY, None),
                     (pct(r2(tot['ty'])), FMT_PCT2, None)], total=True)
     put_note(ws, r + 2, '')
     return save(wb, filename)
-
-
-# ── 5) 주별투자수익 — 화면 주별 표(4주 프리셋 2026-08-03 ~ 2026-08-30) ─
-def build_profit_weekly():
-    rows = rollup('2026-08-03', '2026-08-30', _mon_start,
-                  lambda d: _mon_start(d) + ' ~ ' + _sun_end(d)[5:])
-    return put_bucket_sheet('주별 투자수익',
-                            '주별 투자수익 — 2026-08-03 ~ 2026-08-30 / ㈜테스트인베스트',
-                            '정산예정주', rows, '주별투자수익_2026-08-03_2026-08-30.xlsx')
-
-
-# ── 6) 월별투자수익 — 화면 월별 표(6개월 프리셋 2026-03-01 ~ 2026-08-31) ─
-def build_profit_monthly():
-    rows = rollup('2026-03-01', '2026-08-31', lambda d: d[:7], lambda d: d[:7])
-    return put_bucket_sheet('월별 투자수익',
-                            '월별 투자수익 — 2026-03-01 ~ 2026-08-31 / ㈜테스트인베스트',
-                            '정산예정월', rows, '월별투자수익_2026-03-01_2026-08-31.xlsx')
 
 
 # ── 1) 투자자산현황 ───────────────────────────────────────────────
@@ -193,7 +246,7 @@ def build_assets_status():
     put_notice(ws, 7)
     put_header(ws, ['자산 구분', '금액 (원)', 'W금융일수', 'S입금부족율', 'Ty수익율', '비중', '보관'])
     put_row(ws, 4, [('투자실행액', None, None), (EXEC, FMT_AMT, None),
-                    (float(r1(W_W)), FMT_DAY, None), (pct(r2(S_W)), FMT_PCT2, None),
+                    (float(r2(W_W)), FMT_DAY, None), (pct(r2(S_W)), FMT_PCT2, None),
                     (pct(r2(TY_W)), FMT_PCT2, None), (pct(EXEC_SHARE), FMT_PCT1, None),
                     ('㈜페이허그', None, None)])
     put_row(ws, 5, [('순현금', None, None), (CASH, FMT_AMT, None), None, None, None,
@@ -243,50 +296,31 @@ def put_status_sheet(label, frm, to, ex, pf, ty4, ty5, filename):
 
 
 def _ec_days(frm, to):
-    """EC 합에 들어가는 날수 = 그 구간에 원장이 갖고 있는 일자 수(화면 ecDays 와 같다)."""
+    # EC 합에 들어가는 날수 = 그 구간에 원장이 갖고 있는 일자 수(화면 ecDays 와 같다).
     return len([r for r in daily_ledger.LEDGER if frm <= r['d'] <= to])
 
 
-def build_profit_status():
-    return put_status_sheet('일주일', '2026-08-21', '2026-08-27',
-                            DSUM['exec'], DSUM['profit'], DSUM['ty'], DSUM['tyAsset'],
-                            '투자수익현황_2026-08-21_2026-08-27.xlsx')
+# ── 3~6) 투자 수익 — 프리셋 조합마다 표 1벌 · 수익 현황 1벌 ────────
+#   집계 단위가 같아도 기간이 다르면 다른 파일이다. 화면이 27행 금월을 보이는데
+#   파일이 일주일치면 두 산출물이 다른 기간을 말한다 — 그 자리를 없앤다.
+def build_profit_preset(gran, label, frm, to):
+    rows = preset_rows(gran, frm, to)
+    tot = bucket(rows, '합계')
+    table = put_bucket_sheet(
+        '%s 투자수익' % GRAN_NAME[gran],
+        '%s 투자수익 — %s ~ %s / %s' % (GRAN_NAME[gran], frm, to, INVESTOR),
+        GRAN_COL[gran], rows, profit_file(gran, frm, to), GRAN_WIDTH[gran])
+    status = put_status_sheet(label, frm, to, tot['exec'], tot['profit'],
+                              r2(tot['ty']), ty_asset(tot['ty'], tot['exec'], _ec_days(frm, to)),
+                              status_file(frm, to))
+    return [table, status]
 
 
-def build_profit_status_weekly():
-    frm, to = '2026-08-03', '2026-08-30'
-    t = bucket(rollup(frm, to, _mon_start,
-                      lambda d: _mon_start(d) + ' ~ ' + _sun_end(d)[5:]), '합계')
-    return put_status_sheet('4주', frm, to, t['exec'], t['profit'],
-                            r2(t['ty']), ty_asset(t['ty'], t['exec'], _ec_days(frm, to)),
-                            '투자수익현황_%s_%s.xlsx' % (frm, to))
-
-
-def build_profit_status_monthly():
-    frm, to = '2026-03-01', '2026-08-31'
-    return put_status_sheet('6개월', frm, to, MSUM['exec'], MSUM['profit'],
-                            MSUM['ty'], MSUM['tyAsset'],
-                            '투자수익현황_%s_%s.xlsx' % (frm, to))
-
-# ── 4) 일별투자수익 ───────────────────────────────────────────────
-def build_profit_daily():
-    wb = openpyxl.Workbook()
-    ws = new_sheet(wb, '일별 투자수익', '일별 투자수익 — 2026-08-21 ~ 2026-08-27 / ㈜테스트인베스트',
-                   6, [13.5, 16.5, 16.5, 12.5, 12.5, 11.5], 'A4')
-    put_notice(ws, 6)
-    put_header(ws, ['정산예정일', '상환액', '투자실행금', '투자 수익', 'W금융일수', 'Ty수익율'])
-    r = 4
-    for x in DAILY:
-        put_row(ws, r, [(x['d'], None, None), (x['repay'], FMT_AMT, None), (x['exec'], FMT_AMT, None),
-                        (x['profit'], FMT_AMT, None), (float(x['w']), FMT_DAY, None),
-                        (pct(x['ty']), FMT_PCT2, None)])
-        r += 1
-    put_row(ws, r, [('합계', None, None), (DSUM['repay'], FMT_AMT, None), (DSUM['exec'], FMT_AMT, None),
-                    (DSUM['profit'], FMT_AMT, None), (float(DSUM['w']), FMT_DAY, None),
-                    (pct(DSUM['ty']), FMT_PCT2, None)], total=True)
-    put_note(ws, r + 2, '※ 합계행의 W금융일수·Ty수익율은 투자금액 가중평균(단순평균 아님) — %s일 / %s%%.'
-                        % (DSUM['w'], DSUM['ty']))
-    return save(wb, '일별투자수익_2026-08-21_2026-08-27.xlsx')
+def build_profit_all():
+    out = []
+    for _key, gran, label, frm, to in PRESETS:
+        out += build_profit_preset(gran, label, frm, to)
+    return out
 
 # ── 미리보기 파일바 동기화 ────────────────────────────────────────
 # 화면 : (미리보기 HTML, 엑셀 파일명)
@@ -297,6 +331,14 @@ PREVIEW = [('xls-assets-status.html',   '투자자산현황_2026-08-27_2026-08-2
 
 LEGACY = ['투자자산_현황_20260827.xlsx', '가맹점별_투자자산_20260827.xlsx',
           '투자수익_현황_20260827.xlsx', '일별_투자수익_20260827.xlsx']
+
+
+def wanted():
+    """이번 판이 내는 파일 이름 전량 — 여기 없는 .xlsx 는 옛 기간의 잔존물이라 지운다."""
+    names = ['투자자산현황_2026-08-27_2026-08-27.xlsx', '가맹점별투자자산_2026-08-27_2026-08-27.xlsx']
+    for _key, gran, _label, frm, to in PRESETS:
+        names += [profit_file(gran, frm, to), status_file(frm, to)]
+    return names
 
 def sync_preview(html, filename):
     import time
@@ -313,10 +355,12 @@ def sync_preview(html, filename):
     return size, made
 
 if __name__ == '__main__':
-    made = [build_assets_status(), build_assets_merchant(), build_profit_status(), build_profit_daily(),
-            build_profit_weekly(), build_profit_monthly(),
-            build_profit_status_weekly(), build_profit_status_monthly()]
-    for name in LEGACY:
+    made = [build_assets_status(), build_assets_merchant()] + build_profit_all()
+    keep = set(wanted())
+    assert len(keep) == len(made), '파일 이름이 겹친다 — %d ≠ %d' % (len(keep), len(made))
+    for name in sorted(set(LEGACY) | set(os.listdir(XDIR))):
+        if not name.endswith('.xlsx') or name in keep:
+            continue
         p = os.path.join(XDIR, name)
         if os.path.exists(p):
             os.remove(p)

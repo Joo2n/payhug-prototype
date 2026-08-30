@@ -1,0 +1,129 @@
+/* ============================================================
+   sheet.css — 엑셀 미리보기 화면 전용 컴포넌트
+   base.css 뒤에 로드한다. base.css는 수정하지 않는다.
+   색상은 base.css의 var(--*) 토큰 사용.
+   단, 스프레드시트 격자·머리글 회색은 base.css에 없는 값이라
+   .sheet-frame 스코프의 로컬 토큰으로만 정의한다(전역 오염 없음).
+   ============================================================ */
+
+/* ── 뒤로가기 링크 (certificate.html 관례 동일) ───────────── */
+.back-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 14px; line-height: 20px; font-weight: 500;
+  color: var(--gray-500); text-decoration: none; margin-bottom: 8px;
+  transition: color 0.15s var(--ease-default);
+}
+.back-link:hover { color: var(--gray-700); }
+.back-link svg { width: 14px; height: 14px; }
+
+/* ── 파일 정보 바 ────────────────────────────────────────── */
+.file-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: #fff; border: 1px solid var(--gray-100); border-radius: 16px;
+  box-shadow: var(--shadow-card); padding: 16px 20px; margin-bottom: 24px;
+}
+.file-bar .fb-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.file-bar .fb-icon {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px;
+  background: var(--emerald-50); color: var(--emerald-600);
+  display: flex; align-items: center; justify-content: center;
+}
+.file-bar .fb-icon svg { width: 20px; height: 20px; }
+.file-bar .fb-name {
+  font-family: var(--font-mono); font-size: 14px; line-height: 20px;
+  font-weight: 500; color: var(--gray-900);
+  white-space: nowrap; overflow: hidden;
+}
+.file-bar .fb-meta {
+  font-size: 12px; line-height: 16px; color: var(--gray-400); margin-top: 2px;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.file-bar .fb-meta .dot { color: var(--gray-300); }
+.file-bar .fb-meta .mono { color: var(--gray-500); }
+/* base.css는 .btn-excel svg 에만 크기를 주므로, btn-primary 아이콘 크기를 여기서 지정 */
+.file-bar .btn { flex-shrink: 0; text-decoration: none; white-space: nowrap; }
+.file-bar .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ── 스프레드시트 뷰 ─────────────────────────────────────── */
+.sheet-frame {
+  /* 로컬 토큰 — 엑셀 격자 재현용 (base.css 팔레트에 없는 값) */
+  --sheet-grid: #d0d7de;          /* 셀 격자선 */
+  --sheet-grid-strong: #b7bfc8;   /* 머리글 구분선 */
+  --sheet-headbg: #f0f2f5;        /* 열/행 머리글 배경 */
+  --sheet-headfg: #5a6673;        /* 열/행 머리글 글자 */
+  --sheet-cellhead: #6366f1;      /* 표 헤더 행 — 실물 xlsx 헤더 채우기(FF6366F1)와 동일 */
+
+  background: #fff; border: 1px solid var(--gray-100); border-radius: 16px;
+  box-shadow: var(--shadow-card); overflow: hidden;
+}
+
+/* 시트 탭 */
+.sheet-tabs {
+  display: flex; align-items: flex-end; gap: 2px;
+  padding: 10px 16px 0; background: var(--gray-50);
+  border-bottom: 1px solid var(--sheet-grid-strong);
+}
+.sheet-tab {
+  padding: 7px 16px; font-size: 12px; line-height: 16px; font-weight: 500;
+  color: var(--gray-500); background: transparent;
+  border: 1px solid transparent; border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+.sheet-tab.active {
+  background: #fff; color: var(--gray-900); font-weight: 600;
+  border-color: var(--sheet-grid-strong);
+  box-shadow: 0 -1px 0 0 var(--emerald-600) inset;
+  margin-bottom: -1px; padding-bottom: 8px;
+}
+
+/* 격자 */
+.sheet-scroll { overflow-x: auto; padding: 0 0 16px; background: #fff; }
+.sheet {
+  width: 100%;                    /* 마지막 열이 잔여폭 흡수 — 우측 격자선 클리핑 방지 */
+  border-collapse: collapse; table-layout: fixed;
+  font-size: 13px; line-height: 18px; color: var(--gray-700);
+  margin: 0;
+}
+.sheet th, .sheet td {
+  border: 1px solid var(--sheet-grid);
+  padding: 0 8px; height: 28px; vertical-align: middle;
+  overflow: hidden; white-space: nowrap;
+  font-weight: 400;
+}
+/* 열 머리글 A B C … */
+.sheet .col-head th {
+  background: var(--sheet-headbg); color: var(--sheet-headfg);
+  border-color: var(--sheet-grid-strong);
+  font-size: 11px; line-height: 14px; font-weight: 600;
+  text-align: center; height: 22px; letter-spacing: 0.02em;
+}
+/* 행 번호 */
+.sheet .row-head {
+  width: 44px; background: var(--sheet-headbg); color: var(--sheet-headfg);
+  border-color: var(--sheet-grid-strong);
+  font-size: 11px; line-height: 14px; font-weight: 600;
+  text-align: center; padding: 0;
+}
+.sheet .corner { width: 44px; background: var(--sheet-headbg); border-color: var(--sheet-grid-strong); }
+
+/* 셀 유형 */
+.sheet td.c-title { font-size: 13px; font-weight: 700; color: var(--gray-900); height: 30px; }
+/* 표 헤더 행 — 원본 어드민 lib/excel.ts `fillSheet` 규격(채우기 #6366F1 · 흰색 볼드 ·
+   가로 center) 그대로. 실물 xlsx 3행이 가운데 정렬이므로 .r(우정렬)도 가운데로 둔다. */
+.sheet td.c-head {
+  background: var(--sheet-cellhead); font-weight: 700; color: #fff; text-align: center;
+}
+.sheet td.c-head.r { text-align: center; }
+.sheet td.c-num {
+  text-align: right;
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+}
+.sheet tr.r-total td { background: var(--gray-50); font-weight: 700; color: var(--gray-900); }
+.sheet td.c-note { font-size: 11px; color: var(--gray-400); text-align: left; }
+.sheet td.c-empty { background: #fff; }
+
+/* 하단 안내 */
+.sheet-caption {
+  font-size: 12px; line-height: 18px; color: var(--gray-400);
+  margin: 12px 2px 0;
+}

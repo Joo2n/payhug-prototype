@@ -1,0 +1,897 @@
+{
+  "rate": 0.0011,
+  "rate_label": "0.11% (투자자 배분 요율, VAT 면제)",
+  "base": "투자실행금 = 정산채권DB 수익권자(투자자) 양수가액. figma_policy_db.md:79 실측 1건(49,446 × 0.11% → 배분액 54) 채택",
+  "base_caveat": "figma_policy_fee.md:121 의 지급예정액 / 매출액 / 원본 결제 대금 3갈래 상충은 미해소. 실측 1건은 양수가액 49,446 과 액면금액 49,500 을 판별하지 못한다(양쪽 다 54)",
+  "rounding": "floor",
+  "rounding_label": "원 단위 버림 — 확인필요",
+  "rounding_caveat": "실측 1건(54.3906→54)은 버림·반올림을 판별하지 못하고 올림만 배제한다. figma_policy_fee.md:15,380,422 / 03_SETTLEMENT §4 / figma_03_어드민.md:312 모두 규칙 미정의. payhug-admin-web 은 배분액을 백엔드 API 로 받아 프론트에 산식이 없음. Figma 3336:116-117 \"공급가액 소수점 절사\" 표현을 근거로 버림 채택",
+  "identities": [
+    "투자 수익 = 버림(투자실행금 × 0.0011)",
+    "상환액 = 투자실행금 + 투자 수익",
+    "Ty수익율 = 0.11% × (365 ÷ W금융일수), 소수 2자리 반올림",
+    "합계행 W·Ty = 투자금액 가중평균 (행 Ty 재유도 아님 — Jensen 격차 허용)",
+    "수익 현황 카드 = 표 합계와 동일",
+    "Ty(투자자산 대비) = Ty(가중) × 투자실행액 ÷ 투자자산"
+  ],
+  "how_to_apply": "locator 는 해당 파일에서 정확히 1회만 나타나는 문맥 문자열이며, kind=\"text\" 인 항목은 locator 문자열 전체를 corrected 문자열로 치환한다. current 는 검토용 요약값. kind=\"cell\" 은 xlsx 의 \"시트명!셀주소\" 이며 corrected 를 셀 값으로 넣는다. kind=\"formula\" 는 app.html 의 산식 라인 교체.",
+  "scope_note": "요율은 C1 미확정 유지. 화면의 \"예시\" 표기는 그대로 둔다. 정정은 표 안 산식 정합 회복이지 정책값 확정이 아니다.",
+  "unresolved": [
+    {
+      "id": "U1",
+      "file": "invest-assets--page2.html",
+      "issue": "정적 2페이지의 가맹점 8건(청춘포차 신촌점 외)이 다른 어떤 근거에도 없다. 1페이지 8건이 이미 투자실행액 1,284,500,000 = 비중 100.0% 를 소진하는데 2페이지도 같은 분모로 비중을 계산해 두어 합계가 118.6% 가 된다. app.html 은 MERCHANTS 8건 · PAGE_SIZE 5 라 2페이지가 6~8번 가맹점이며 구성 자체가 다르다.",
+      "blocked_on": "가맹점 로스터를 8건으로 볼지 16건으로 볼지 결정. 16건이면 투자실행액 1,523,100,000 · 투자자산 1,628,400,000 으로 바뀌고 비중·W·S·Ty·투자자산대비수익율 전건 재산출 대상.",
+      "note": "요율 배분과 무관한 데이터 설계 결정이라 값을 산출하지 않는다. 요율과 무관하게 성립하는 Ty 5건만 fixes 에 포함."
+    },
+    {
+      "id": "U2",
+      "file": "invest-profit.html · invest-assets.html",
+      "issue": "일평균 투자실행금 약 178,690,000 × W금융일수 11.29일 = 약 2,018,000,000 이 잔액이어야 하나 투자실행액은 1,284,500,000 (약 1.57배 차).",
+      "blocked_on": "예시 데이터 생성 규칙 자체의 개연성 문제.",
+      "note": "요율과 무관. 이번 라운드에서 손대지 않음."
+    },
+    {
+      "id": "U3",
+      "file": "invest-profit.html · invest-assets.html (문구)",
+      "issue": "합계행 주석이 정적 파일은 \"(평균)\", app.html 은 \"(가중평균)\". invest-profit.html 합계 Ty 에는 주석이 없고 --monthly 에는 있음. invest-assets 카드 부제 \"W금융일수 11.3일 기준\" 은 유도 관계를 시사하나 카드 Ty 3.58% 는 가중평균이라 11.3 에서 역산한 3.55% 와 0.03%p 어긋난다(Jensen 격차).",
+      "blocked_on": "문구 결정.",
+      "note": "숫자가 아니라 문구라 fixes 에서 제외."
+    }
+  ],
+  "no_change": [
+    "certificate.html",
+    "invest-assets--empty.html",
+    "invest-profit--empty.html",
+    "glossary.html",
+    "merchants*.html",
+    "acquisition*.html",
+    "contracts*.html",
+    "coocon*.html",
+    "index.html",
+    "xls-assets-merchant.html",
+    "assets/xlsx/가맹점별_투자자산_20260827.xlsx"
+  ],
+  "fixes": [
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08-21</td>\n              <td class=\"num\">182,300,000</td>\n              <td class=\"num\">178,900,000</td>\n              <td class=\"num\"><span class=\"strong\">601,000</span></td>\n              <td class=\"num\">11.4</td>\n              <td class=\"num\">3.55%</td>",
+      "current": "상환액 182,300,000 · 투자 수익 601,000 · Ty 3.55%",
+      "corrected": "              <td class=\"mono\">2026-08-21</td>\n              <td class=\"num\">179,096,790</td>\n              <td class=\"num\">178,900,000</td>\n              <td class=\"num\"><span class=\"strong\">196,790</span></td>\n              <td class=\"num\">11.4</td>\n              <td class=\"num\">3.52%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08-22</td>\n              <td class=\"num\">175,800,000</td>\n              <td class=\"num\">172,600,000</td>\n              <td class=\"num\"><span class=\"strong\">578,000</span></td>\n              <td class=\"num\">11.1</td>\n              <td class=\"num\">3.61%</td>",
+      "current": "상환액 175,800,000 · 투자 수익 578,000 · Ty 3.61%",
+      "corrected": "              <td class=\"mono\">2026-08-22</td>\n              <td class=\"num\">172,789,860</td>\n              <td class=\"num\">172,600,000</td>\n              <td class=\"num\"><span class=\"strong\">189,860</span></td>\n              <td class=\"num\">11.1</td>\n              <td class=\"num\">3.62%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08-23</td>\n              <td class=\"num\">168,400,000</td>\n              <td class=\"num\">165,300,000</td>\n              <td class=\"num\"><span class=\"strong\">552,000</span></td>\n              <td class=\"num\">10.9</td>\n              <td class=\"num\">3.58%</td>",
+      "current": "상환액 168,400,000 · 투자 수익 552,000 · Ty 3.58%",
+      "corrected": "              <td class=\"mono\">2026-08-23</td>\n              <td class=\"num\">165,481,830</td>\n              <td class=\"num\">165,300,000</td>\n              <td class=\"num\"><span class=\"strong\">181,830</span></td>\n              <td class=\"num\">10.9</td>\n              <td class=\"num\">3.68%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08-24</td>\n              <td class=\"num\">191,200,000</td>\n              <td class=\"num\">187,700,000</td>\n              <td class=\"num\"><span class=\"strong\">634,000</span></td>\n              <td class=\"num\">11.6</td>\n              <td class=\"num\">3.52%</td>",
+      "current": "상환액 191,200,000 · 투자 수익 634,000 · Ty 3.52%",
+      "corrected": "              <td class=\"mono\">2026-08-24</td>\n              <td class=\"num\">187,906,470</td>\n              <td class=\"num\">187,700,000</td>\n              <td class=\"num\"><span class=\"strong\">206,470</span></td>\n              <td class=\"num\">11.6</td>\n              <td class=\"num\">3.46%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08-25</td>\n              <td class=\"num\">186,500,000</td>\n              <td class=\"num\">183,100,000</td>\n              <td class=\"num\"><span class=\"strong\">617,000</span></td>\n              <td class=\"num\">11.3</td>\n              <td class=\"num\">3.57%</td>",
+      "current": "상환액 186,500,000 · 투자 수익 617,000 · Ty 3.57%",
+      "corrected": "              <td class=\"mono\">2026-08-25</td>\n              <td class=\"num\">183,301,410</td>\n              <td class=\"num\">183,100,000</td>\n              <td class=\"num\"><span class=\"strong\">201,410</span></td>\n              <td class=\"num\">11.3</td>\n              <td class=\"num\">3.55%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08-26</td>\n              <td class=\"num\">179,900,000</td>\n              <td class=\"num\">176,600,000</td>\n              <td class=\"num\"><span class=\"strong\">596,000</span></td>\n              <td class=\"num\">11.2</td>\n              <td class=\"num\">3.59%</td>",
+      "current": "상환액 179,900,000 · 투자 수익 596,000 · Ty 3.59%",
+      "corrected": "              <td class=\"mono\">2026-08-26</td>\n              <td class=\"num\">176,794,260</td>\n              <td class=\"num\">176,600,000</td>\n              <td class=\"num\"><span class=\"strong\">194,260</span></td>\n              <td class=\"num\">11.2</td>\n              <td class=\"num\">3.58%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08-27</td>\n              <td class=\"num\">190,100,000</td>\n              <td class=\"num\">186,600,000</td>\n              <td class=\"num\"><span class=\"strong\">632,000</span></td>\n              <td class=\"num\">11.5</td>\n              <td class=\"num\">3.54%</td>",
+      "current": "상환액 190,100,000 · 투자 수익 632,000 · Ty 3.54%",
+      "corrected": "              <td class=\"mono\">2026-08-27</td>\n              <td class=\"num\">186,805,260</td>\n              <td class=\"num\">186,600,000</td>\n              <td class=\"num\"><span class=\"strong\">205,260</span></td>\n              <td class=\"num\">11.5</td>\n              <td class=\"num\">3.49%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-03</td>\n              <td class=\"num\">5,124,600,000</td>\n              <td class=\"num\">5,031,200,000</td>\n              <td class=\"num\"><span class=\"strong\">16,980,000</span></td>\n              <td class=\"num\">11.4</td>\n              <td class=\"num\">3.51%</td>",
+      "current": "상환액 5,124,600,000 · 투자 수익 16,980,000 · Ty 3.51%",
+      "corrected": "              <td class=\"mono\">2026-03</td>\n              <td class=\"num\">5,036,734,320</td>\n              <td class=\"num\">5,031,200,000</td>\n              <td class=\"num\"><span class=\"strong\">5,534,320</span></td>\n              <td class=\"num\">11.4</td>\n              <td class=\"num\">3.52%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-04</td>\n              <td class=\"num\">5,387,900,000</td>\n              <td class=\"num\">5,289,400,000</td>\n              <td class=\"num\"><span class=\"strong\">17,920,000</span></td>\n              <td class=\"num\">11.2</td>\n              <td class=\"num\">3.56%</td>",
+      "current": "상환액 5,387,900,000 · 투자 수익 17,920,000 · Ty 3.56%",
+      "corrected": "              <td class=\"mono\">2026-04</td>\n              <td class=\"num\">5,295,218,340</td>\n              <td class=\"num\">5,289,400,000</td>\n              <td class=\"num\"><span class=\"strong\">5,818,340</span></td>\n              <td class=\"num\">11.2</td>\n              <td class=\"num\">3.58%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-05</td>\n              <td class=\"num\">5,642,300,000</td>\n              <td class=\"num\">5,538,700,000</td>\n              <td class=\"num\"><span class=\"strong\">18,730,000</span></td>\n              <td class=\"num\">11.0</td>\n              <td class=\"num\">3.62%</td>",
+      "current": "상환액 5,642,300,000 · 투자 수익 18,730,000 · Ty 3.62%",
+      "corrected": "              <td class=\"mono\">2026-05</td>\n              <td class=\"num\">5,544,792,570</td>\n              <td class=\"num\">5,538,700,000</td>\n              <td class=\"num\"><span class=\"strong\">6,092,570</span></td>\n              <td class=\"num\">11.0</td>\n              <td class=\"num\">3.65%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-06</td>\n              <td class=\"num\">5,478,100,000</td>\n              <td class=\"num\">5,376,500,000</td>\n              <td class=\"num\"><span class=\"strong\">18,140,000</span></td>\n              <td class=\"num\">11.6</td>\n              <td class=\"num\">3.48%</td>",
+      "current": "상환액 5,478,100,000 · 투자 수익 18,140,000 · Ty 3.48%",
+      "corrected": "              <td class=\"mono\">2026-06</td>\n              <td class=\"num\">5,382,414,150</td>\n              <td class=\"num\">5,376,500,000</td>\n              <td class=\"num\"><span class=\"strong\">5,914,150</span></td>\n              <td class=\"num\">11.6</td>\n              <td class=\"num\">3.46%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-07</td>\n              <td class=\"num\">5,861,400,000</td>\n              <td class=\"num\">5,752,800,000</td>\n              <td class=\"num\"><span class=\"strong\">19,480,000</span></td>\n              <td class=\"num\">11.3</td>\n              <td class=\"num\">3.60%</td>",
+      "current": "상환액 5,861,400,000 · 투자 수익 19,480,000 · Ty 3.60%",
+      "corrected": "              <td class=\"mono\">2026-07</td>\n              <td class=\"num\">5,759,128,080</td>\n              <td class=\"num\">5,752,800,000</td>\n              <td class=\"num\"><span class=\"strong\">6,328,080</span></td>\n              <td class=\"num\">11.3</td>\n              <td class=\"num\">3.55%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "              <td class=\"mono\">2026-08</td>\n              <td class=\"num\">5,203,700,000</td>\n              <td class=\"num\">5,108,900,000</td>\n              <td class=\"num\"><span class=\"strong\">17,260,000</span></td>\n              <td class=\"num\">11.5</td>\n              <td class=\"num\">3.55%</td>",
+      "current": "상환액 5,203,700,000 · 투자 수익 17,260,000 · Ty 3.55%",
+      "corrected": "              <td class=\"mono\">2026-08</td>\n              <td class=\"num\">5,114,519,790</td>\n              <td class=\"num\">5,108,900,000</td>\n              <td class=\"num\"><span class=\"strong\">5,619,790</span></td>\n              <td class=\"num\">11.5</td>\n              <td class=\"num\">3.49%</td>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "              <td>합계</td>\n              <td class=\"num\">1,274,200,000</td>\n              <td class=\"num\">1,250,800,000</td>\n              <td class=\"num\">4,210,000</td>\n              <td class=\"num\">11.3<span class=\"avg-note\">(평균)</span></td>\n              <td class=\"num\">3.58%</td>",
+      "current": "합계 상환액 1,274,200,000 · 수익 4,210,000 · Ty 3.58%",
+      "corrected": "              <td>합계</td>\n              <td class=\"num\">1,252,175,880</td>\n              <td class=\"num\">1,250,800,000</td>\n              <td class=\"num\">1,375,880</td>\n              <td class=\"num\">11.3<span class=\"avg-note\">(평균)</span></td>\n              <td class=\"num\">3.55%</td>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg()) / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "              <td>합계</td>\n              <td class=\"num\">32,698,000,000</td>\n              <td class=\"num\">32,097,500,000</td>\n              <td class=\"num\">108,510,000</td>\n              <td class=\"num\">11.3<span class=\"avg-note\">(평균)</span></td>\n              <td class=\"num\">3.55%<span class=\"avg-note\">(평균)</span></td>",
+      "current": "합계 상환액 32,698,000,000 · 수익 108,510,000 · Ty 3.55%",
+      "corrected": "              <td>합계</td>\n              <td class=\"num\">32,132,807,250</td>\n              <td class=\"num\">32,097,500,000</td>\n              <td class=\"num\">35,307,250</td>\n              <td class=\"num\">11.3<span class=\"avg-note\">(평균)</span></td>\n              <td class=\"num\">3.54%<span class=\"avg-note\">(평균)</span></td>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg()) / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">1,284,500,000<span class=\"unit\">원</span></div>",
+      "current": "1,284,500,000",
+      "corrected": "<div class=\"summary-value\">1,250,800,000<span class=\"unit\">원</span></div>",
+      "basis": "요약 카드 = 표 합계와 동일 (app.html RENDER[invest-profit] sum(rows,...)) — 표 합계 1,250,800,000 과 불일치(투자자산 투자실행액을 잘못 옮겨 적음)"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">4,210,000<span class=\"unit\">원</span></div>",
+      "current": "4,210,000",
+      "corrected": "<div class=\"summary-value\">1,375,880<span class=\"unit\">원</span></div>",
+      "basis": "요약 카드 = 표 합계와 동일 (app.html RENDER[invest-profit] sum(rows,...)) / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": ">3.58<span class=\"unit\">%</span></div>",
+      "current": "3.58%",
+      "corrected": ">3.55<span class=\"unit\">%</span></div>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg()) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit.html",
+      "kind": "text",
+      "locator": ">3.31<span class=\"unit\">%</span></div>",
+      "current": "3.31%",
+      "corrected": ">3.29<span class=\"unit\">%</span></div>",
+      "basis": "Ty(투자자산 대비) = Ty(가중) × 투자실행액 1,284,500,000 ÷ 투자자산 1,389,800,000 (무수익 순현금 가중)"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">1,284,500,000<span class=\"unit\">원</span></div>",
+      "current": "1,284,500,000",
+      "corrected": "<div class=\"summary-value\">5,108,900,000<span class=\"unit\">원</span></div>",
+      "basis": "요약 카드 = 표 합계와 동일 (app.html RENDER[invest-profit] sum(rows,...)) — 이번달 필터 결과는 2026-08 1건, 실행금 5,108,900,000"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">17,260,000<span class=\"unit\">원</span></div>",
+      "current": "17,260,000",
+      "corrected": "<div class=\"summary-value\">5,619,790<span class=\"unit\">원</span></div>",
+      "basis": "요약 카드 = 표 합계와 동일 (app.html RENDER[invest-profit] sum(rows,...)) / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": ">3.55<span class=\"unit\">%</span></div>",
+      "current": "3.55%",
+      "corrected": ">3.49<span class=\"unit\">%</span></div>",
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-profit--monthly.html",
+      "kind": "text",
+      "locator": ">3.28<span class=\"unit\">%</span></div>",
+      "current": "3.28%",
+      "corrected": ">3.23<span class=\"unit\">%</span></div>",
+      "basis": "Ty(투자자산 대비) = Ty(가중) × 투자실행액 1,284,500,000 ÷ 투자자산 1,389,800,000 (무수익 순현금 가중)"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">4</th><td class=\"mono\">2026-08-21</td><td class=\"c-num\">182,300,000</td><td class=\"c-num\">178,900,000</td><td class=\"c-num\">601,000</td><td class=\"c-num\">11.4</td><td class=\"c-num\">3.55%</td><td class=\"c-empty\"></td></tr>",
+      "current": "상환액 182,300,000 · 수익 601,000 · Ty 3.55%",
+      "corrected": "<tr><th class=\"row-head\">4</th><td class=\"mono\">2026-08-21</td><td class=\"c-num\">179,096,790</td><td class=\"c-num\">178,900,000</td><td class=\"c-num\">196,790</td><td class=\"c-num\">11.4</td><td class=\"c-num\">3.52%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">5</th><td class=\"mono\">2026-08-22</td><td class=\"c-num\">175,800,000</td><td class=\"c-num\">172,600,000</td><td class=\"c-num\">578,000</td><td class=\"c-num\">11.1</td><td class=\"c-num\">3.61%</td><td class=\"c-empty\"></td></tr>",
+      "current": "상환액 175,800,000 · 수익 578,000 · Ty 3.61%",
+      "corrected": "<tr><th class=\"row-head\">5</th><td class=\"mono\">2026-08-22</td><td class=\"c-num\">172,789,860</td><td class=\"c-num\">172,600,000</td><td class=\"c-num\">189,860</td><td class=\"c-num\">11.1</td><td class=\"c-num\">3.62%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">6</th><td class=\"mono\">2026-08-23</td><td class=\"c-num\">168,400,000</td><td class=\"c-num\">165,300,000</td><td class=\"c-num\">552,000</td><td class=\"c-num\">10.9</td><td class=\"c-num\">3.58%</td><td class=\"c-empty\"></td></tr>",
+      "current": "상환액 168,400,000 · 수익 552,000 · Ty 3.58%",
+      "corrected": "<tr><th class=\"row-head\">6</th><td class=\"mono\">2026-08-23</td><td class=\"c-num\">165,481,830</td><td class=\"c-num\">165,300,000</td><td class=\"c-num\">181,830</td><td class=\"c-num\">10.9</td><td class=\"c-num\">3.68%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">7</th><td class=\"mono\">2026-08-24</td><td class=\"c-num\">191,200,000</td><td class=\"c-num\">187,700,000</td><td class=\"c-num\">634,000</td><td class=\"c-num\">11.6</td><td class=\"c-num\">3.52%</td><td class=\"c-empty\"></td></tr>",
+      "current": "상환액 191,200,000 · 수익 634,000 · Ty 3.52%",
+      "corrected": "<tr><th class=\"row-head\">7</th><td class=\"mono\">2026-08-24</td><td class=\"c-num\">187,906,470</td><td class=\"c-num\">187,700,000</td><td class=\"c-num\">206,470</td><td class=\"c-num\">11.6</td><td class=\"c-num\">3.46%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">8</th><td class=\"mono\">2026-08-25</td><td class=\"c-num\">186,500,000</td><td class=\"c-num\">183,100,000</td><td class=\"c-num\">617,000</td><td class=\"c-num\">11.3</td><td class=\"c-num\">3.57%</td><td class=\"c-empty\"></td></tr>",
+      "current": "상환액 186,500,000 · 수익 617,000 · Ty 3.57%",
+      "corrected": "<tr><th class=\"row-head\">8</th><td class=\"mono\">2026-08-25</td><td class=\"c-num\">183,301,410</td><td class=\"c-num\">183,100,000</td><td class=\"c-num\">201,410</td><td class=\"c-num\">11.3</td><td class=\"c-num\">3.55%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">9</th><td class=\"mono\">2026-08-26</td><td class=\"c-num\">179,900,000</td><td class=\"c-num\">176,600,000</td><td class=\"c-num\">596,000</td><td class=\"c-num\">11.2</td><td class=\"c-num\">3.59%</td><td class=\"c-empty\"></td></tr>",
+      "current": "상환액 179,900,000 · 수익 596,000 · Ty 3.59%",
+      "corrected": "<tr><th class=\"row-head\">9</th><td class=\"mono\">2026-08-26</td><td class=\"c-num\">176,794,260</td><td class=\"c-num\">176,600,000</td><td class=\"c-num\">194,260</td><td class=\"c-num\">11.2</td><td class=\"c-num\">3.58%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">10</th><td class=\"mono\">2026-08-27</td><td class=\"c-num\">190,100,000</td><td class=\"c-num\">186,600,000</td><td class=\"c-num\">632,000</td><td class=\"c-num\">11.5</td><td class=\"c-num\">3.54%</td><td class=\"c-empty\"></td></tr>",
+      "current": "상환액 190,100,000 · 수익 632,000 · Ty 3.54%",
+      "corrected": "<tr><th class=\"row-head\">10</th><td class=\"mono\">2026-08-27</td><td class=\"c-num\">186,805,260</td><td class=\"c-num\">186,600,000</td><td class=\"c-num\">205,260</td><td class=\"c-num\">11.5</td><td class=\"c-num\">3.49%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "<tr class=\"r-total\"><th class=\"row-head\">11</th><td>합계</td><td class=\"c-num\">1,274,200,000</td><td class=\"c-num\">1,250,800,000</td><td class=\"c-num\">4,210,000</td><td class=\"c-num\">11.3</td><td class=\"c-num\">3.58%</td><td class=\"c-empty\"></td></tr>",
+      "current": "합계 상환액 1,274,200,000 · 수익 4,210,000 · Ty 3.58%",
+      "corrected": "<tr class=\"r-total\"><th class=\"row-head\">11</th><td>합계</td><td class=\"c-num\">1,252,175,880</td><td class=\"c-num\">1,250,800,000</td><td class=\"c-num\">1,375,880</td><td class=\"c-num\">11.3</td><td class=\"c-num\">3.55%</td><td class=\"c-empty\"></td></tr>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "xls-profit-daily.html",
+      "kind": "text",
+      "locator": "가중평균(단순평균 아님) — 11.3일 / 3.58%.",
+      "current": "11.3일 / 3.58%",
+      "corrected": "가중평균(단순평균 아님) — 11.3일 / 3.55%.",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "xls-profit-status.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">5</th><td>투자실행금</td><td class=\"c-num\">1,284,500,000</td>",
+      "current": "1,284,500,000",
+      "corrected": "<tr><th class=\"row-head\">5</th><td>투자실행금</td><td class=\"c-num\">1,250,800,000</td>",
+      "basis": "요약 카드 = 표 합계와 동일 (app.html RENDER[invest-profit] sum(rows,...))"
+    },
+    {
+      "file": "xls-profit-status.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">6</th><td>투자수익</td><td class=\"c-num\">4,210,000</td>",
+      "current": "4,210,000",
+      "corrected": "<tr><th class=\"row-head\">6</th><td>투자수익</td><td class=\"c-num\">1,375,880</td>",
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "xls-profit-status.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">7</th><td>Ty수익율 (투자실행금액 대비)</td><td class=\"c-num\">3.58%</td>",
+      "current": "3.58%",
+      "corrected": "<tr><th class=\"row-head\">7</th><td>Ty수익율 (투자실행금액 대비)</td><td class=\"c-num\">3.55%</td>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "xls-profit-status.html",
+      "kind": "text",
+      "locator": "<tr><th class=\"row-head\">8</th><td>Ty수익율 (투자자산 대비)</td><td class=\"c-num\">3.31%</td>",
+      "current": "3.31%",
+      "corrected": "<tr><th class=\"row-head\">8</th><td>Ty수익율 (투자자산 대비)</td><td class=\"c-num\">3.29%</td>",
+      "basis": "Ty(투자자산 대비) = Ty(가중) × 투자실행액 1,284,500,000 ÷ 투자자산 1,389,800,000 (무수익 순현금 가중)"
+    },
+    {
+      "file": "invest-assets.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">11.2일</td>",
+      "current": "11.2일",
+      "corrected": "<td class=\"num\">11.3일</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "invest-assets.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">3.59%</td>",
+      "current": "3.59%",
+      "corrected": "<td class=\"num\">3.58%</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3 / 합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">3.59<span class=\"unit\">%</span></div>",
+      "current": "3.59%",
+      "corrected": "<div class=\"summary-value\">3.58<span class=\"unit\">%</span></div>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-sub\">W금융일수 11.2일 기준</div>",
+      "current": "W금융일수 11.2일 기준",
+      "corrected": "<div class=\"summary-sub\">W금융일수 11.3일 기준</div>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">11.2일</td>",
+      "current": "11.2일",
+      "corrected": "<td class=\"num\">11.3일</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">3.59%</td>",
+      "current": "3.59%",
+      "corrected": "<td class=\"num\">3.58%</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3 / 합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">3.59<span class=\"unit\">%</span></div>",
+      "current": "3.59%",
+      "corrected": "<div class=\"summary-value\">3.58<span class=\"unit\">%</span></div>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-sub\">W금융일수 11.2일 기준</div>",
+      "current": "W금융일수 11.2일 기준",
+      "corrected": "<div class=\"summary-sub\">W금융일수 11.3일 기준</div>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "invest-assets--download.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">11.2일</td>",
+      "current": "11.2일",
+      "corrected": "<td class=\"num\">11.3일</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "invest-assets--download.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">3.59%</td>",
+      "current": "3.59%",
+      "corrected": "<td class=\"num\">3.58%</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3 / 합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets--download.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">3.59<span class=\"unit\">%</span></div>",
+      "current": "3.59%",
+      "corrected": "<div class=\"summary-value\">3.58<span class=\"unit\">%</span></div>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets--download.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-sub\">W금융일수 11.2일 기준</div>",
+      "current": "W금융일수 11.2일 기준",
+      "corrected": "<div class=\"summary-sub\">W금융일수 11.3일 기준</div>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "invest-assets--cert-confirm.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">11.2일</td>",
+      "current": "11.2일",
+      "corrected": "<td class=\"num\">11.3일</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "invest-assets--cert-confirm.html",
+      "kind": "text",
+      "locator": "<td class=\"num\">3.59%</td>",
+      "current": "3.59%",
+      "corrected": "<td class=\"num\">3.58%</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3 / 합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets--cert-confirm.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-value\">3.59<span class=\"unit\">%</span></div>",
+      "current": "3.59%",
+      "corrected": "<div class=\"summary-value\">3.58<span class=\"unit\">%</span></div>",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets--cert-confirm.html",
+      "kind": "text",
+      "locator": "<div class=\"summary-sub\">W금융일수 11.2일 기준</div>",
+      "current": "W금융일수 11.2일 기준",
+      "corrected": "<div class=\"summary-sub\">W금융일수 11.3일 기준</div>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "xls-assets-status.html",
+      "kind": "text",
+      "locator": "<td class=\"c-num\">11.2</td><td class=\"c-num\">0.42%</td><td class=\"c-num\">3.59%</td>",
+      "current": "W 11.2 · Ty 3.59%",
+      "corrected": "<td class=\"c-num\">11.3</td><td class=\"c-num\">0.42%</td><td class=\"c-num\">3.58%</td>",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3 / 합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "              <td><span class=\"name\">청춘포차 신촌점</span></td>\n              <td class=\"num\"><span class=\"strong\">48,900,000</span></td>\n              <td class=\"num\">11.3일</td>\n              <td class=\"num\">0.44%</td>\n              <td class=\"num\">3.51%</td>",
+      "current": "Ty 3.51%",
+      "corrected": "              <td><span class=\"name\">청춘포차 신촌점</span></td>\n              <td class=\"num\"><span class=\"strong\">48,900,000</span></td>\n              <td class=\"num\">11.3일</td>\n              <td class=\"num\">0.44%</td>\n              <td class=\"num\">3.55%</td>",
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "              <td><span class=\"name\">왕십리곱창타운</span></td>\n              <td class=\"num\"><span class=\"strong\">42,300,000</span></td>\n              <td class=\"num\">10.6일</td>\n              <td class=\"num\">0.26%</td>\n              <td class=\"num\">3.78%</td>",
+      "current": "Ty 3.78%",
+      "corrected": "              <td><span class=\"name\">왕십리곱창타운</span></td>\n              <td class=\"num\"><span class=\"strong\">42,300,000</span></td>\n              <td class=\"num\">10.6일</td>\n              <td class=\"num\">0.26%</td>\n              <td class=\"num\">3.79%</td>",
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "              <td><span class=\"name\">대박국수 사당점</span></td>\n              <td class=\"num\"><span class=\"strong\">31,400,000</span></td>\n              <td class=\"num\">11.7일</td>\n              <td class=\"num\">0.33%</td>\n              <td class=\"num\">3.42%</td>",
+      "current": "Ty 3.42%",
+      "corrected": "              <td><span class=\"name\">대박국수 사당점</span></td>\n              <td class=\"num\"><span class=\"strong\">31,400,000</span></td>\n              <td class=\"num\">11.7일</td>\n              <td class=\"num\">0.33%</td>\n              <td class=\"num\">3.43%</td>",
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "              <td><span class=\"name\">착한고기 은평점</span></td>\n              <td class=\"num\"><span class=\"strong\">21,500,000</span></td>\n              <td class=\"num\">12.6일</td>\n              <td class=\"num\">0.67%</td>\n              <td class=\"num\">3.21%</td>",
+      "current": "Ty 3.21%",
+      "corrected": "              <td><span class=\"name\">착한고기 은평점</span></td>\n              <td class=\"num\"><span class=\"strong\">21,500,000</span></td>\n              <td class=\"num\">12.6일</td>\n              <td class=\"num\">0.67%</td>\n              <td class=\"num\">3.19%</td>",
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "invest-assets--page2.html",
+      "kind": "text",
+      "locator": "              <td><span class=\"name\">커피한잔 마포점</span></td>\n              <td class=\"num\"><span class=\"strong\">17,200,000</span></td>\n              <td class=\"num\">11.1일</td>\n              <td class=\"num\">0.22%</td>\n              <td class=\"num\">3.74%</td>",
+      "current": "Ty 3.74%",
+      "corrected": "              <td><span class=\"name\">커피한잔 마포점</span></td>\n              <td class=\"num\"><span class=\"strong\">17,200,000</span></td>\n              <td class=\"num\">11.1일</td>\n              <td class=\"num\">0.22%</td>\n              <td class=\"num\">3.62%</td>",
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "{name:'투자실행액', amount:1284500000, w:11.2,  s:0.42, ty:3.59, keeper:'㈜페이허그'},",
+      "current": "w:11.2 · ty:3.59",
+      "corrected": "{name:'투자실행액', amount:1284500000, w:11.3,  s:0.42, ty:3.58, keeper:'㈜페이허그'},",
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08-21', repay:182300000, exec:178900000, profit:601000, w:11.4, ty:3.55}",
+      "current": "repay:182300000 · profit:601000 · ty:3.55",
+      "corrected": "  {d:'2026-08-21', repay:179096790, exec:178900000, profit:196790, w:11.4, ty:3.52}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08-22', repay:175800000, exec:172600000, profit:578000, w:11.1, ty:3.61}",
+      "current": "repay:175800000 · profit:578000 · ty:3.61",
+      "corrected": "  {d:'2026-08-22', repay:172789860, exec:172600000, profit:189860, w:11.1, ty:3.62}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08-23', repay:168400000, exec:165300000, profit:552000, w:10.9, ty:3.58}",
+      "current": "repay:168400000 · profit:552000 · ty:3.58",
+      "corrected": "  {d:'2026-08-23', repay:165481830, exec:165300000, profit:181830, w:10.9, ty:3.68}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08-24', repay:191200000, exec:187700000, profit:634000, w:11.6, ty:3.52}",
+      "current": "repay:191200000 · profit:634000 · ty:3.52",
+      "corrected": "  {d:'2026-08-24', repay:187906470, exec:187700000, profit:206470, w:11.6, ty:3.46}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08-25', repay:186500000, exec:183100000, profit:617000, w:11.3, ty:3.57}",
+      "current": "repay:186500000 · profit:617000 · ty:3.57",
+      "corrected": "  {d:'2026-08-25', repay:183301410, exec:183100000, profit:201410, w:11.3, ty:3.55}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08-26', repay:179900000, exec:176600000, profit:596000, w:11.2, ty:3.59}",
+      "current": "repay:179900000 · profit:596000 · ty:3.59",
+      "corrected": "  {d:'2026-08-26', repay:176794260, exec:176600000, profit:194260, w:11.2, ty:3.58}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08-27', repay:190100000, exec:186600000, profit:632000, w:11.5, ty:3.54}",
+      "current": "repay:190100000 · profit:632000 · ty:3.54",
+      "corrected": "  {d:'2026-08-27', repay:186805260, exec:186600000, profit:205260, w:11.5, ty:3.49}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-03', repay:5124600000, exec:5031200000, profit:16980000, w:11.4, ty:3.51}",
+      "current": "repay:5124600000 · profit:16980000 · ty:3.51",
+      "corrected": "  {d:'2026-03', repay:5036734320, exec:5031200000, profit:5534320, w:11.4, ty:3.52}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-04', repay:5387900000, exec:5289400000, profit:17920000, w:11.2, ty:3.56}",
+      "current": "repay:5387900000 · profit:17920000 · ty:3.56",
+      "corrected": "  {d:'2026-04', repay:5295218340, exec:5289400000, profit:5818340, w:11.2, ty:3.58}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-05', repay:5642300000, exec:5538700000, profit:18730000, w:11.0, ty:3.62}",
+      "current": "repay:5642300000 · profit:18730000 · ty:3.62",
+      "corrected": "  {d:'2026-05', repay:5544792570, exec:5538700000, profit:6092570, w:11.0, ty:3.65}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-06', repay:5478100000, exec:5376500000, profit:18140000, w:11.6, ty:3.48}",
+      "current": "repay:5478100000 · profit:18140000 · ty:3.48",
+      "corrected": "  {d:'2026-06', repay:5382414150, exec:5376500000, profit:5914150, w:11.6, ty:3.46}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-07', repay:5861400000, exec:5752800000, profit:19480000, w:11.3, ty:3.60}",
+      "current": "repay:5861400000 · profit:19480000 · ty:3.60",
+      "corrected": "  {d:'2026-07', repay:5759128080, exec:5752800000, profit:6328080, w:11.3, ty:3.55}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "text",
+      "locator": "  {d:'2026-08', repay:5203700000, exec:5108900000, profit:17260000, w:11.5, ty:3.55}",
+      "current": "repay:5203700000 · profit:17260000 · ty:3.55",
+      "corrected": "  {d:'2026-08', repay:5114519790, exec:5108900000, profit:5619790, w:11.5, ty:3.49}",
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80 / 투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54) / Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "app.html",
+      "kind": "formula",
+      "locator": "var tyAsset = (rows.length && assetTotal()) ? tyExec * exec / assetTotal() : 0;",
+      "current": "tyExec * exec / assetTotal()",
+      "corrected": "var tyAsset = (rows.length && assetTotal()) ? tyExec * ASSET_ROWS[0].amount / assetTotal() : 0;",
+      "basis": "Ty(투자자산 대비) = Ty(가중) × 투자실행액 1,284,500,000 ÷ 투자자산 1,389,800,000 (무수익 순현금 가중) — 현행은 조회기간 실행금을 분자로 써 기간에 따라 값이 요동(주간 3.20% · 월별 12.83%)"
+    },
+    {
+      "file": "app.html",
+      "kind": "formula",
+      "locator": "var tyA = (rw.length && total) ? tyE * pexec / total : 0;",
+      "current": "tyE * pexec / total",
+      "corrected": "var tyA = (rw.length && total) ? tyE * ASSET_ROWS[0].amount / total : 0;",
+      "basis": "Ty(투자자산 대비) = Ty(가중) × 투자실행액 1,284,500,000 ÷ 투자자산 1,389,800,000 (무수익 순현금 가중) — 엑셀 미리보기 쪽 동일 결함"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B4",
+      "current": 182300000,
+      "corrected": 179096790,
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D4",
+      "current": 601000,
+      "corrected": 196790,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F4",
+      "current": 0.0355,
+      "corrected": 0.0352,
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B5",
+      "current": 175800000,
+      "corrected": 172789860,
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D5",
+      "current": 578000,
+      "corrected": 189860,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F5",
+      "current": 0.0361,
+      "corrected": 0.0362,
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B6",
+      "current": 168400000,
+      "corrected": 165481830,
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D6",
+      "current": 552000,
+      "corrected": 181830,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F6",
+      "current": 0.0358,
+      "corrected": 0.0368,
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B7",
+      "current": 191200000,
+      "corrected": 187906470,
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D7",
+      "current": 634000,
+      "corrected": 206470,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F7",
+      "current": 0.0352,
+      "corrected": 0.0346,
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B8",
+      "current": 186500000,
+      "corrected": 183301410,
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D8",
+      "current": 617000,
+      "corrected": 201410,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F8",
+      "current": 0.0357,
+      "corrected": 0.0355,
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B9",
+      "current": 179900000,
+      "corrected": 176794260,
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D9",
+      "current": 596000,
+      "corrected": 194260,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F9",
+      "current": 0.0359,
+      "corrected": 0.0358,
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B10",
+      "current": 190100000,
+      "corrected": 186805260,
+      "basis": "상환액 = 투자실행금 + 투자 수익. 정산채권DB 금액체인(양수가액+분배액=입금액), figma_policy_db.md:77~80"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D10",
+      "current": 632000,
+      "corrected": 205260,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F10",
+      "current": 0.0354,
+      "corrected": 0.0349,
+      "basis": "Ty수익율 = 할인율 0.11% × (365 ÷ W금융일수). 스토리보드_Admin_투자자 슬라이드3~9 정의문"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!B11",
+      "current": 1274200000,
+      "corrected": 1252175880,
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!D11",
+      "current": 4210000,
+      "corrected": 1375880,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!F11",
+      "current": 0.0358,
+      "corrected": 0.0355,
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "assets/xlsx/일별_투자수익_20260827.xlsx",
+      "kind": "cell",
+      "locator": "일별 투자수익!A13",
+      "current": "※ 합계행의 W금융일수·Ty수익율은 투자금액 가중평균(단순평균 아님) — 11.3일 / 3.58%.",
+      "corrected": "※ 합계행의 W금융일수·Ty수익율은 투자금액 가중평균(단순평균 아님) — 11.3일 / 3.55%.",
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "assets/xlsx/투자수익_현황_20260827.xlsx",
+      "kind": "cell",
+      "locator": "투자수익 현황!B5",
+      "current": 1284500000,
+      "corrected": 1250800000,
+      "basis": "요약 카드 = 표 합계와 동일 (app.html RENDER[invest-profit] sum(rows,...))"
+    },
+    {
+      "file": "assets/xlsx/투자수익_현황_20260827.xlsx",
+      "kind": "cell",
+      "locator": "투자수익 현황!B6",
+      "current": 4210000,
+      "corrected": 1375880,
+      "basis": "투자 수익 = 투자실행금(양수가액) × 0.11% 버림. figma_policy_db.md:79 (49,446×0.11%=54.3906→54)"
+    },
+    {
+      "file": "assets/xlsx/투자수익_현황_20260827.xlsx",
+      "kind": "cell",
+      "locator": "투자수익 현황!B7",
+      "current": 0.0358,
+      "corrected": 0.0355,
+      "basis": "합계행 = 투자금액 가중평균 (화면 주석 \"투자금액 가중평균(단순평균 아님)\" · app.html wavg())"
+    },
+    {
+      "file": "assets/xlsx/투자수익_현황_20260827.xlsx",
+      "kind": "cell",
+      "locator": "투자수익 현황!B8",
+      "current": 0.0331,
+      "corrected": 0.0329,
+      "basis": "Ty(투자자산 대비) = Ty(가중) × 투자실행액 1,284,500,000 ÷ 투자자산 1,389,800,000 (무수익 순현금 가중)"
+    },
+    {
+      "file": "assets/xlsx/투자자산_현황_20260827.xlsx",
+      "kind": "cell",
+      "locator": "투자자산 현황!C4",
+      "current": 11.2,
+      "corrected": 11.3,
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    },
+    {
+      "file": "assets/xlsx/투자자산_현황_20260827.xlsx",
+      "kind": "cell",
+      "locator": "투자자산 현황!E4",
+      "current": 0.0359,
+      "corrected": 0.0358,
+      "basis": "투자실행액 행 = 가맹점 8행의 투자금액 가중평균. 같은 행 S입금부족율 0.42%가 이미 가중평균값(0.4217)과 일치해 규칙이 입증됨. 가중 W = 11.2600 → 11.3"
+    }
+  ]
+}

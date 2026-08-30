@@ -26,11 +26,11 @@
   ]
  ],
  "screens": 15,
- "states": 19,
- "appStates": 19,
- "xlsx": 8,
+ "states": 18,
+ "appStates": 18,
+ "xlsx": 14,
  "xlsPreview": 4,
  "assetParts": 1,
  "screenFiles": 14,
- "kitHtml": 34
+ "kitHtml": 33
 }

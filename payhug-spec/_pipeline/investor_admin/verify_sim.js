@@ -1,7 +1,7 @@
 /* 투자 시뮬레이션 헤드리스 검증 — 창을 띄우지 않는다(--headless=new).
    실제 입력·클릭으로 몬다. 값을 코드에서 읽어 오는 것이 아니라 화면에 찍힌 글자를 읽는다.
 
-     1) 기본값 실행 — W 3.7 · Ty 10.85% · 비중 합 100.0% · 상환액 = PSA + PSM
+     1) 기본값 실행 — W · Ty · 비중 합 100.0% · 상환액 = PSA + PSM
      2) 입력을 바꾸면 결과가 따라 바뀐다 — 할인율 · 순현금 · 미지급률 · 기간 · 플랫폼
      3) S입금부족율 > 할인율 → 투자수익 음수를 그대로 보인다 (설계 L-3)
      4) 기간 밖 행은 회색 이탤릭 · 집계 제외
@@ -19,6 +19,18 @@ const { spawn } = require('child_process');
 
 const REPO   = '/Users/semi/cursor/payhug-investor-admin';
 const OUTDIR = '/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin';
+/* 기대값을 검증기에 손으로 적지 않는다.
+   시뮬레이션 쪽 — sim_facts.py 가 build_app.py 의 씨앗 8행(simSeedRows)·기본 변수(SIM_DEFAULT)·
+   플랫폼 만기(SIM_DUR)를 읽어 산출한 것. 씨앗 한 곳만 고치면 기대값이 따라온다.
+   원장 불변식 쪽 — daily_ledger.py 가 내는 ledger_facts.json (verify_identity.js:13 과 같은 원천). */
+/* 파일을 읽지 않고 산출기를 그 자리에서 돌려 받는다 — sim_facts.json 이 낡아 있어도
+   검증기가 옛 기대값을 지키는 일이 없다. 산출기가 죽으면 검증기도 그대로 죽는다(FAIL). */
+const SF    = JSON.parse(require('child_process')
+  .execFileSync('python3', [path.join(OUTDIR, 'sim_facts.py'), '--json'],
+                {maxBuffer: 1 << 24}).toString('utf8'));
+const FACTS = JSON.parse(fs.readFileSync(path.join(OUTDIR, 'ledger_facts.json'), 'utf8'));
+const B = SF.base;                       /* 기본값 실행 결과 */
+const ROSTER = FACTS.merchants.length;   /* 가맹점 로스터 곳수 = 계약기록 건수 */
 const PORT = 8830 + (process.pid % 60), DPORT = 9530 + (process.pid % 60);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const MIME = {'.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8', '.js':'text/javascript',
@@ -177,6 +189,11 @@ async function main(){
   await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/app.html'});
   await sleep(1800);
   R.viewport = await evalJS('return {w:innerWidth, h:innerHeight};');
+  /* 재 놓고 판정에 안 넣던 자리(2026-08-30 이전). 기준은 이 파일 13행이 스스로 적어 둔 것이다 —
+     「--window-size=1440,H 는 실제 뷰포트 1440x(H-87). 1287 로 줘야 1200 이 잡힌다」.
+     보정이 풀리면 실제 폭·높이가 달라져 아래 레이아웃·표 판정이 조용히 다른 조건에서 돈다. */
+  P('뷰포트 1440x1200 (창 1440x1287 · macOS 87px 보정)',
+    R.viewport.w === 1440 && R.viewport.h === 1200, R.viewport);
   await evalJS(HELPERS);
 
   /* ── 0) 메뉴 ── */
@@ -216,11 +233,11 @@ async function main(){
   await evalJS("go('invest-sim','default'); return 1;");
   const s0 = await snap();
   P('결과 게이트 — 실행 전에는 결과가 없다', s0.outLen === 0 && s0.state === 'default' && s0.badge === '', s0);
-  P('기본 입력 8행 · 합계 한 줄',
-    s0.rows === 8 && s0.total === '총 8건, 합계 1,500,000,000원', s0);
+  P('기본 입력 ' + SF.seedRows + '행 · 합계 한 줄',
+    s0.rows === SF.seedRows && s0.total === SF.seedTotalText, s0);
   P('실행 버튼 라벨 · 활성', s0.btnLabel === '시뮬레이션 실행' && s0.btnDisabled === false, s0);
-  const days0 = await evalJS('var o=[],i; for(i=0;i<8;i++) o.push(window.__S.rowDays(i)); return o;');
-  P('금융일수 파생 표시', JSON.stringify(days0) === JSON.stringify(['2일','3일','5일','6일','2일','3일','5일','6일']), days0);
+  const days0 = await evalJS('var o=[],i; for(i=0;i<' + SF.seedRows + ';i++) o.push(window.__S.rowDays(i)); return o;');
+  P('금융일수 파생 표시', JSON.stringify(days0) === JSON.stringify(SF.seedDays), days0);
 
   /* ── 2) 기본값 실행 ── */
   console.log('\n[2] 기본값 실행');
@@ -242,122 +259,135 @@ async function main(){
       tyStat:window.__S.stat('Ty수익율')};`);
   R.baseline = base;
   const st = base.status;
-  P('현황 · 투자실행액 행', st[0][0] === '투자실행액' && st[0][1] === '998,900,000'
-    && st[0][2] === '3.7일' && st[0][3] === '0.07%' && st[0][4] === '10.85%'
-    && st[0][5] === '90.5%' && st[0][6] === '㈜페이허그', st[0]);
-  P('현황 · 순현금 행', st[1][0] === '순현금' && st[1][1] === '105,300,000'
-    && st[1][5] === '9.5%' && st[1][6] === '㈜쿠콘', st[1]);
-  P('현황 · 합계 = 투자자산 · 비중 합 100.0%',
-    st[2][1] === '1,104,200,000' && st[2][5] === '100.0%', st[2]);
-  P('W 3.7 — 투자 자산 화면과 같은 자리', st[0][2] === '3.7일', st[0][2]);
-  P('Ty 10.85% — 투자 자산 화면과 같은 자리', st[0][4] === '10.85%', st[0][4]);
-  P('요약 카드 4장', base.summary.자산.value === '1,104,200,000원'
-    && base.summary.실행.value === '998,900,000원' && base.summary.현금.value === '105,300,000원'
-    && base.summary.ty.value === '10.85%' && base.summary.ty.sub === 'W금융일수 3.7일 기준',
+  P('현황 · 투자실행액 행', st[0][0] === '투자실행액' && st[0][1] === B.exec
+    && st[0][2] === B.w && st[0][3] === B.s && st[0][4] === B.ty
+    && st[0][5] === B.share0 && st[0][6] === '㈜페이허그', st[0]);
+  P('현황 · 순현금 행', st[1][0] === '순현금' && st[1][1] === B.cash
+    && st[1][5] === B.share1 && st[1][6] === '㈜쿠콘', st[1]);
+  P('현황 · 합계 = 투자자산 · 비중 합 ' + B.shareSum,
+    st[2][1] === B.total && st[2][5] === B.shareSum, st[2]);
+  P('W ' + B.w + ' — 투자 자산 화면과 같은 자리', st[0][2] === B.w, st[0][2]);
+  P('Ty ' + B.ty + ' — 투자 자산 화면과 같은 자리', st[0][4] === B.ty, st[0][4]);
+  P('요약 카드 4장', base.summary.자산.value === B.cardTotal
+    && base.summary.실행.value === B.cardExec && base.summary.현금.value === B.cardCash
+    && base.summary.ty.value === B.cardTy && base.summary.ty.sub === B.cardTySub,
     Object.keys(base.summary).map(k => base.summary[k].value));
 
   const foot = base.foot;
   const n = t => Number(String(t).replace(/[^0-9.-]/g, ''));
   P('검산 상환액 = PSA + PSM (일별 합계행)',
-    n(foot[1]) === n(foot[2]) + n(foot[3]) && n(foot[1]) === 499650000, foot);
-  P('일별 합계 PSD 3.1 · ④ 4.71%', foot[4].indexOf('3.1') === 0 && foot[5].indexOf('4.71%') === 0, foot);
-  P('일별 행 4건 (만기 채권의 서로 다른 정산예정일)',
-    base.daily.length === 4 && base.daily[0][0] === '2026-08-24' && base.daily[3][0] === '2026-08-27',
+    n(foot[1]) === n(foot[2]) + n(foot[3]) && n(foot[1]) === B.psb, foot);
+  P('일별 합계 PSD ' + B.psd + ' · ④ ' + B.ty4pct,
+    foot[4].indexOf(B.psd) === 0 && foot[5].indexOf(B.ty4pct) === 0, foot);
+  P('일별 행 ' + B.dailyDates.length + '건 (만기 채권의 서로 다른 정산예정일)',
+    JSON.stringify(base.daily.map(r => r[0])) === JSON.stringify(B.dailyDates),
     base.daily.map(r => r[0]));
   P('수익 현황 — 투자실행금 · 투자수익 · 기간',
-    base.실행금.indexOf('499,450,000') >= 0 && base.수익.indexOf('200,000') >= 0
-    && base.기간.indexOf('7일') >= 0 && base.기간.indexOf('2026-08-21 ~ 2026-08-27') >= 0,
+    base.실행금.indexOf(B.psa) >= 0 && base.수익.indexOf(B.psm) >= 0
+    && base.기간.indexOf(B.ecd) >= 0 && base.기간.indexOf(SF.period) >= 0,
     [base.실행금, base.수익, base.기간]);
-  P('Ty 2분할 — ④ 4.71% · ⑤ 1.90%',
-    base.tyStat.indexOf('4.71') >= 0 && base.tyStat.indexOf('1.90') >= 0, base.tyStat);
-  P('채권별 산출 8행 · 구분 미회수 4 · 만기 4',
-    base.bonds.length === 8 && base.bonds.filter(b => b[1] === '미회수').length === 4
-    && base.bonds.filter(b => b[1] === '만기').length === 4, base.bonds.map(b => b[1]));
+  P('Ty 2분할 — ④ ' + B.ty4 + '% · ⑤ ' + B.ty5 + '%',
+    base.tyStat.indexOf(B.ty4) >= 0 && base.tyStat.indexOf(B.ty5) >= 0, base.tyStat);
+  P('채권별 산출 ' + B.bondKinds.length + '행 · 구분 '
+    + B.bondKinds.filter(k => k === '미회수').length + ' 미회수 · '
+    + B.bondKinds.filter(k => k === '만기').length + ' 만기',
+    JSON.stringify(base.bonds.map(b => b[1])) === JSON.stringify(B.bondKinds), base.bonds.map(b => b[1]));
   P('채권 1행 = 설계 검산표',
-    JSON.stringify(base.bonds[0]) === JSON.stringify(
-      ['1','미회수','카드사','300,000,000','2','299,670,000','330,000','210,000','120,000','299,790,000']),
-    base.bonds[0]);
+    JSON.stringify(base.bonds[0]) === JSON.stringify(B.bond0), base.bonds[0]);
 
   /* ── 3) 입력을 바꾸면 결과가 바뀐다 ── */
   console.log('\n[3] 입력 변동');
   async function reset(){ await evalJS("go('invest-sim','default'); return 1;"); }
+  /* 시나리오 입력도 산출기(sim_facts.py SCENARIOS)에서 받는다 — 검증기가 넣는 값과
+     기대값이 갈릴 자리를 없앤다. 기준 변수 칸이면 setVar, 채권 행 칸이면 setRow 다. */
+  async function apply(k){
+    const sc = SF.scenarios[k];
+    return sc.var !== undefined
+      ? evalJS("window.__S.setVar('" + sc.var + "', '" + sc.value + "'); return 1;")
+      : evalJS("window.__S.setRow(" + sc.row + ", '" + sc.field + "', '" + sc.value + "'); return 1;");
+  }
 
   await reset();
-  await evalJS("window.__S.setVar('r', '0.22'); return 1;"); await run();
+  await apply('rate022'); await run();
   const r22 = await evalJS("var s=window.__S.statusRows(); return {ty:s[0][4], exec:s[0][1], S:s[0][3], fee:window.__S.bondRows()[0].cells[6]};");
-  P('할인율 0.11 → 0.22 : Ty · 투자실행액 · 수수료가 함께 움직인다',
-    r22.ty !== '10.85%' && r22.exec !== '998,900,000' && r22.fee === '660,000', r22);
+  P('할인율 ' + SF.defaults.rate + ' → ' + SF.scenarios.rate022.value + ' : Ty · 투자실행액 · 수수료가 함께 움직인다',
+    r22.ty !== B.ty && r22.exec !== B.exec
+    && r22.ty === SF.rate022.ty && r22.exec === SF.rate022.exec
+    && r22.fee === SF.rate022.bond0fee, r22);
 
   await reset();
-  await evalJS("window.__S.setVar('cash', '200000000'); return 1;"); await run();
+  await apply('cash200m'); await run();
   const c2 = await evalJS("var s=window.__S.statusRows(); return {cash:s[1][1], tot:s[2][1], sh:[s[0][5],s[1][5],s[2][5]], ty5:window.__S.stat('Ty수익율')};");
-  P('순현금 1.053억 → 2억 : 순현금 · 투자자산 · 비중 · ⑤ 가 함께 움직인다',
-    c2.cash === '200,000,000' && c2.tot === '1,198,900,000'
-    && c2.sh[2] === '100.0%' && c2.sh[0] !== '90.5%', c2);
+  P('순현금 ' + B.cash + ' → ' + SF.cash200m.cash + ' : 순현금 · 투자자산 · 비중 · ⑤ 가 함께 움직인다',
+    c2.cash === SF.cash200m.cash && c2.tot === SF.cash200m.total
+    && c2.sh[2] === SF.cash200m.shareSum
+    && c2.sh[0] === SF.cash200m.share0 && c2.sh[0] !== B.share0, c2);
 
   await reset();
-  await evalJS("window.__S.setVar('unpaid', '0.05'); return 1;"); await run();
+  await apply('unpaid005'); await run();
   const u5 = await evalJS("var s=window.__S.statusRows(); return {S:s[0][3], ded:window.__S.bondRows()[0].cells[7], M:window.__S.bondRows()[0].cells[8], profit:window.__S.stat('투자수익')};");
-  P('미지급률 0.08 → 0.05 : S · 차감 · 투자수익이 함께 움직인다',
-    u5.S === '0.04%' && u5.ded === '120,000' && u5.M === '210,000' && u5.profit.indexOf('350,000') >= 0, u5);
+  P('미지급률 ' + SF.defaults.unpaid + ' → ' + SF.scenarios.unpaid005.value + ' : S · 차감 · 투자수익이 함께 움직인다',
+    u5.S === SF.unpaid005.s && u5.ded === SF.unpaid005.bond0ded && u5.M === SF.unpaid005.bond0M
+    && u5.profit.indexOf(SF.unpaid005.psm) >= 0 && u5.S !== B.s, u5);
 
   await reset();
-  await evalJS("window.__S.setVar('to', '2026-08-31'); return 1;"); await run();
+  await apply('to0831'); await run();
   const t31 = await evalJS(`
     var b = window.__S.bondRows();
     return {kinds:b.map(function(x){ return x.cells[1]; }), daily:window.__S.dailyRows().length,
             기간:window.__S.stat('검색대상기간'), exec:window.__S.statusRows()[0][1]};`);
-  P('종료일 08-27 → 08-31 : 만기/미회수 경계가 옮겨간다 (09-01 요기요 1건만 미회수로 남는다)',
-    t31.kinds.filter(k => k === '만기').length === 7
-    && t31.kinds.filter(k => k === '미회수').length === 1 && t31.kinds[3] === '미회수'
-    && t31.daily === 7 && t31.기간.indexOf('11일') >= 0 && t31.exec === '199,780,000', t31);
+  P('종료일 ' + SF.defaults.to + ' → ' + SF.scenarios.to0831.value + ' : 만기/미회수 경계가 옮겨간다',
+    JSON.stringify(t31.kinds) === JSON.stringify(SF.to0831.bondKinds)
+    && t31.daily === SF.to0831.dailyDates.length
+    && t31.기간.indexOf(SF.to0831.ecd) >= 0 && t31.exec === SF.to0831.exec, t31);
 
   await reset();
   const plat = await evalJS(`
     var before = {due:window.__S.rowVal(0,'dd'), days:window.__S.rowDays(0)};
     window.__S.setRow(0, 'plat', 'yo');
     return {before:before, after:{due:window.__S.rowVal(0,'dd'), days:window.__S.rowDays(0)}};`);
-  P('플랫폼 카드사 → 요기요 : 정산예정일이 선정산일 + 6 으로 다시 채워진다',
-    plat.before.due === '2026-08-28' && plat.before.days === '2일'
-    && plat.after.due === '2026-09-01' && plat.after.days === '6일', plat);
+  P('플랫폼 카드사 → 요기요 : 정산예정일이 선정산일 + ' + SF.platDur.yo + ' 으로 다시 채워진다',
+    plat.before.due === SF.platDue.card && plat.before.days === SF.platDur.card + '일'
+    && plat.after.due === SF.platDue.yo && plat.after.days === SF.platDur.yo + '일', plat);
   const platAll = await evalJS(`
-    var out = [], m = {card:'2026-08-28', bm:'2026-08-29', cpe:'2026-08-31', yo:'2026-09-01'};
+    var out = [], m = ${JSON.stringify(SF.platDue)};
     ['card','bm','cpe','yo'].forEach(function(k){
       window.__S.setRow(0, 'plat', k);
       out.push({k:k, due:window.__S.rowVal(0,'dd'), days:window.__S.rowDays(0), want:m[k]});
     });
     return out;`);
-  P('플랫폼 4종 만기 2·3·5·6',
+  P('플랫폼 4종 만기 ' + SF.platDays.map(d => parseInt(d, 10)).join('·'),
     platAll.every(x => x.due === x.want) &&
-    JSON.stringify(platAll.map(x => x.days)) === JSON.stringify(['2일','3일','5일','6일']), platAll);
+    JSON.stringify(platAll.map(x => x.days)) === JSON.stringify(SF.platDays), platAll);
 
   await reset();
-  await evalJS("window.__S.setRow(0,'amt','800000000'); return 1;"); await run();
+  await apply('amt800m'); await run();
   const amt = await evalJS("return {total:document.querySelector('[data-mount=\"sim-total\"]').textContent.trim(), exec:window.__S.statusRows()[0][1], A:window.__S.bondRows()[0].cells[5]};");
-  P('순지급액 3억 → 8억 : 합계 줄 · 투자실행액 · Ai 가 함께 움직인다',
-    amt.total === '총 8건, 합계 2,000,000,000원' && amt.A === '799,120,000'
-    && amt.exec === '1,498,350,000', amt);
+  P('순지급액 ' + B.bond0[3] + ' → ' + SF.amt800m.bond0[3] + ' : 합계 줄 · 투자실행액 · Ai 가 함께 움직인다',
+    amt.total === SF.amt800m.rowsTotalText && amt.A === SF.amt800m.bond0A
+    && amt.exec === SF.amt800m.exec, amt);
 
   /* ── 4) 음수 투자수익 (L-3) ── */
   console.log('\n[4] 음수 투자수익');
   await reset();
-  await evalJS("window.__S.setVar('unpaid', '0.20'); return 1;"); await run();
+  await apply('unpaid020'); await run();
   const neg = await evalJS(`
     var b = window.__S.bondRows(), f = window.__S.dailyFoot();
     return {S:window.__S.statusRows()[0][3], M:b[0].cells[8], profit:window.__S.stat('투자수익'),
             foot:f, ty:window.__S.stat('Ty수익율'),
             negCls:!!window.__S.out().querySelector('.summary-value.neg')};`);
-  P('S 0.19% > 할인율 0.11% → 채권 투자수익 음수',
-    neg.S === '0.19%' && n(neg.M) < 0, {S:neg.S, M:neg.M});
+  P('S ' + SF.unpaid020.s + ' > 할인율 ' + SF.defaults.rate + '% → 채권 투자수익 음수',
+    neg.S === SF.unpaid020.s && neg.M === SF.unpaid020.bond0M && n(neg.M) < 0, {S:neg.S, M:neg.M});
   P('수익 현황 투자수익 음수를 그대로 보인다',
-    n(neg.profit.replace('투자수익','')) < 0 && neg.negCls === true, neg.profit);
+    neg.profit.indexOf(SF.unpaid020.psm) >= 0
+    && n(neg.profit.replace('투자수익','')) < 0 && neg.negCls === true, neg.profit);
   P('음수여도 상환액 = PSA + PSM 항등식 유지',
     n(neg.foot[1]) === n(neg.foot[2]) + n(neg.foot[3]), neg.foot);
 
   /* ── 5) 기간 밖 행 ── */
   console.log('\n[5] 기간 밖');
   await reset();
-  await evalJS("window.__S.setVar('from', '2026-08-25'); return 1;"); await run();
+  await apply('from0825'); await run();
   const skip = await evalJS(`
     var b = window.__S.bondRows();
     return {kinds:b.map(function(x){ return x.cells[1]; }),
@@ -365,12 +395,13 @@ async function main(){
             italic:b.filter(function(x){ return x.skip; }).map(function(x){ return x.style; }),
             daily:window.__S.dailyRows().map(function(r){ return r[0]; }),
             PSA:window.__S.stat('투자실행금'), foot:window.__S.dailyFoot()};`);
-  P('시작일 08-25 : 08-24 만기 행이 기간 밖으로 빠진다',
-    skip.kinds[4] === '기간 밖' && skip.skipFlags[4] === true, skip.kinds);
+  P('시작일 ' + SF.scenarios.from0825.value + ' : ' + B.dailyDates[0] + ' 만기 행이 기간 밖으로 빠진다',
+    JSON.stringify(skip.kinds) === JSON.stringify(SF.from0825.bondKinds)
+    && skip.skipFlags[SF.from0825.bondKinds.indexOf('기간 밖')] === true, skip.kinds);
   P('기간 밖 행은 회색 이탤릭', skip.italic.length > 0 && skip.italic.every(v => v === 'italic'), skip.italic);
   P('기간 밖 행은 일별 표·집계에서 빠진다',
-    skip.daily.indexOf('2026-08-24') < 0 && skip.daily.length === 3
-    && skip.PSA.indexOf('299,670,000') >= 0, {daily:skip.daily, PSA:skip.PSA});
+    JSON.stringify(skip.daily) === JSON.stringify(SF.from0825.dailyDates)
+    && skip.PSA.indexOf(SF.from0825.psa) >= 0, {daily:skip.daily, PSA:skip.PSA});
   P('기간 밖 제외 후에도 상환액 = PSA + PSM',
     n(skip.foot[1]) === n(skip.foot[2]) + n(skip.foot[3]), skip.foot);
 
@@ -381,16 +412,18 @@ async function main(){
     var before = window.__S.snap();
     document.querySelector('[data-act="sim-add"]').click();
     var after = window.__S.snap();
-    var last = 8;
+    var last = ${SF.seedRows};
     return {before:before.total, beforeRows:before.rows, after:after.total, afterRows:after.rows,
             newRow:{plat:window.__S.rowVal(last,'plat'), amt:window.__S.rowVal(last,'amt'),
                     sd:window.__S.rowVal(last,'sd'), dd:window.__S.rowVal(last,'dd'),
                     days:window.__S.rowDays(last)}};`);
   P('+ 채권 추가 — 행이 늘고 합계 줄이 따라온다',
-    add.beforeRows === 8 && add.afterRows === 9 && add.after === '총 9건, 합계 1,600,000,000원', add);
-  P('새 행 기본값 = 카드사 / 100,000,000 / 종료일-2 / 종료일',
-    add.newRow.plat === 'card' && add.newRow.amt === '100000000'
-    && add.newRow.sd === '2026-08-25' && add.newRow.dd === '2026-08-27' && add.newRow.days === '2일', add.newRow);
+    add.beforeRows === SF.seedRows && add.afterRows === SF.addRow.rows
+    && add.after === SF.addRow.totalText, add);
+  P('새 행 기본값 = 카드사 / ' + SF.addRow.amt + ' / 종료일-' + SF.platDur.card + ' / 종료일',
+    add.newRow.plat === SF.addRow.plat && add.newRow.amt === SF.addRow.amt
+    && add.newRow.sd === SF.addRow.sd && add.newRow.dd === SF.addRow.dd
+    && add.newRow.days === SF.addRow.days, add.newRow);
   await run();
   const add2 = await evalJS('return {bonds:window.__S.bondRows().length, exec:window.__S.statusRows()[0][1]};');
   P('추가한 행이 결과에 들어온다', add2.bonds === 9, add2);
@@ -398,15 +431,15 @@ async function main(){
   const del = await evalJS(`
     var btns = document.querySelectorAll('[data-act="sim-del"]');
     var nBtn = btns.length;
-    btns[8].click();
+    btns[${SF.seedRows}].click();
     var a = window.__S.snap();
     return {nBtn:nBtn, rows:a.rows, total:a.total};`);
   P('삭제 — 행이 줄고 합계 줄이 따라온다',
-    del.nBtn === 9 && del.rows === 8 && del.total === '총 8건, 합계 1,500,000,000원', del);
+    del.nBtn === SF.addRow.rows && del.rows === SF.seedRows && del.total === SF.seedTotalText, del);
 
   const one = await evalJS(`
     var i;
-    for(i = 0; i < 7; i++) document.querySelector('[data-act="sim-del"]').click();
+    for(i = 0; i < ${SF.seedRows - 1}; i++) document.querySelector('[data-act="sim-del"]').click();
     var s = window.__S.snap();
     return {rows:s.rows, delBtns:document.querySelectorAll('[data-act="sim-del"]').length, total:s.total};`);
   P('1건만 남으면 삭제 버튼이 사라진다 (page.tsx:288 과 같은 조건)',
@@ -416,19 +449,19 @@ async function main(){
   console.log('\n[7] 필수 미충족');
   await reset();
   const bad1 = await evalJS(`
-    window.__S.setVar('from', '2026-09-10');
+    window.__S.setVar('from', '${SF.badFrom}');
     var s = window.__S.snap();
     var w = document.querySelector('[data-mount="sim-warn"]');
     return {disabled:s.btnDisabled, warn:s.warn, text:w.textContent.trim()};`);
   P('시작일 > 종료일 → 버튼 비활성 · 안내 한 줄',
     bad1.disabled === true && bad1.warn === true
     && bad1.text === '시작일은 종료일보다 이후일 수 없습니다.', bad1);
-  const back = await evalJS("window.__S.setVar('from', '2026-08-21'); return window.__S.snap();");
+  const back = await evalJS("window.__S.setVar('from', '" + SF.defaults.from + "'); return window.__S.snap();");
   P('되돌리면 다시 활성', back.btnDisabled === false && back.warn === false, back);
 
   await reset();
   const bad2 = await evalJS(`
-    window.__S.setRow(0, 'dd', '2026-08-20');
+    window.__S.setRow(0, 'dd', '${SF.badDue}');
     return {days:window.__S.rowDays(0), disabled:window.__S.snap().btnDisabled};`);
   P('선정산일 > 정산예정일 행 → 금융일수 - · 버튼 비활성',
     bad2.days === '-' && bad2.disabled === true, bad2);
@@ -439,13 +472,13 @@ async function main(){
     var a = window.__S.snap().btnDisabled;
     window.__S.setVar('r', '100');
     var b = window.__S.snap().btnDisabled;
-    window.__S.setVar('r', '0.11');
+    window.__S.setVar('r', '${SF.defaults.rate}');
     return {zero:a, hundred:b, back:window.__S.snap().btnDisabled};`);
   P('할인율 0 · 100 → 버튼 비활성', bad3.zero === true && bad3.hundred === true && bad3.back === false, bad3);
 
   const bad4 = await evalJS(`
     var i;
-    for(i = 0; i < 7; i++) document.querySelector('[data-act="sim-del"]').click();
+    for(i = 0; i < ${SF.seedRows - 1}; i++) document.querySelector('[data-act="sim-del"]').click();
     var one = window.__S.snap().btnDisabled;
     window.__S.setRow(0, 'sd', '');
     return {one:one, emptyDate:window.__S.snap().btnDisabled};`);
@@ -479,11 +512,15 @@ async function main(){
     return 1;`);
   await sleep(500);
   const keep = await evalJS('return window.__selfcheck();');
-  P('시뮬레이션을 굴려도 투자실행액 1,523,100,000 불변', keep.assetExecRow === 1523100000, keep.assetExecRow);
-  P('투자자산 1,628,400,000 · 순현금 105,300,000 불변',
-    keep.assetTotal === 1628400000 && keep.assetTotal - keep.assetExecRow === 105300000, keep.assetTotal);
-  P('비중 합 100.0% · 로스터 16건 불변', keep.ratioSum === 100 && keep.contracts === 16, keep);
-  P('SIM 이 원장을 건드리지 않는다', keep.rollupMatchesLedger === true && keep.ledgerDays === 180, keep.ledgerDays);
+  P('시뮬레이션을 굴려도 투자실행액 ' + FACTS.exec.toLocaleString('en-US') + ' 불변',
+    keep.assetExecRow === FACTS.exec, keep.assetExecRow);
+  P('투자자산 ' + FACTS.total.toLocaleString('en-US') + ' · 순현금 '
+    + FACTS.cash.toLocaleString('en-US') + ' 불변',
+    keep.assetTotal === FACTS.total && keep.assetTotal - keep.assetExecRow === FACTS.cash, keep.assetTotal);
+  P('비중 합 100.0% · 로스터 ' + ROSTER + '건 불변',
+    keep.ratioSum === 100 && keep.contracts === ROSTER, keep);
+  P('SIM 이 원장을 건드리지 않는다',
+    keep.rollupMatchesLedger === true && keep.ledgerDays === FACTS.ledgerDays, keep.ledgerDays);
   R.selfcheck = keep;
 
   /* ── 10) 정적 낱장 ── */
@@ -498,9 +535,9 @@ async function main(){
             total:document.querySelector('.sim-total').textContent.trim(),
             tables:document.querySelectorAll('.tbl').length,
             btn:document.querySelector('.sim-run').textContent.trim()};`);
-  P('invest-sim 낱장 — 8메뉴 · 8행 · 결과 없음',
-    leaf1.nav === 8 && leaf1.active === 'invest-sim' && leaf1.rows === 8
-    && leaf1.total === '총 8건, 합계 1,500,000,000원' && leaf1.tables === 0
+  P('invest-sim 낱장 — 8메뉴 · ' + SF.seedRows + '행 · 결과 없음',
+    leaf1.nav === 8 && leaf1.active === 'invest-sim' && leaf1.rows === SF.seedRows
+    && leaf1.total === SF.seedTotalText && leaf1.tables === 0
     && leaf1.btn === '시뮬레이션 실행', leaf1);
 
   await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/invest-sim--result.html'});
@@ -519,7 +556,8 @@ async function main(){
   const b = R.baseline;
   P('invest-sim--result 낱장 — 배지 · 표 3 · 카드 4',
     leaf2.nav === 8 && leaf2.badge === '실행 결과' && leaf2.tables === 3
-    && leaf2.bonds === 8 && leaf2.daily === 4 && leaf2.cards === 4, leaf2);
+    && leaf2.bonds === SF.seedRows && leaf2.daily === B.dailyDates.length
+    && leaf2.cards === 4, leaf2);
   P('낱장 현황 표 = 통합본 현황 표',
     JSON.stringify(leaf2.status) === JSON.stringify(b.status), {낱장:leaf2.status[0], 통합본:b.status[0]});
   P('낱장 일별 합계행 = 통합본 합계행',

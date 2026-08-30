@@ -31,6 +31,7 @@ async function ev(x){
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+const BASE = '2026-08-27';        /* 기준일 — 프리셋 종료일은 여섯 묶음 전부 이 날짜다 */
 const R = {snap:[], link:[], alive:[], reset:[], invariant:[], picker:[], console:cons};
 function P(a, t, d){ d.t = t; d.pass = !!d.pass; a.push(d); }
 
@@ -157,29 +158,36 @@ async function main(){
            && d.rows === 4 && d.exec !== c.exec,
      기간:d.from + '~' + d.to, 프리셋:d.presets, 라벨:d.label, 행:c.rows + ' → ' + d.rows, 합계:c.exec + ' → ' + d.exec});
 
-  /* ══ 4) 스냅 — 집계 단위가 곧 피커의 단위 ══ */
+  /* ══ 4) 스냅 — 집계 단위가 곧 피커의 단위 ══
+     프리셋을 보고 있을 때 단위를 바꾸면 새 단위의 같은 자리 프리셋으로 넘어간다(짧은 쪽 ↔ 짧은 쪽).
+     탭을 눌렀다고 직접입력으로 떨어지지 않고, 종료일이 기준일보다 뒤로 나가지도 않는다. */
   await home(); await gran('weekly');
   let w = await S();
-  P(R.snap, '일별 08-21~08-27 → 주별 전환 시 08-17~08-30 (걸친 두 주를 덮음)',
-    {pass: w.from === '2026-08-17' && w.to === '2026-08-30' && w.gran[1] === '주별*'
-           && w.rows === 2 && w.title === '주별 투자수익' && w.col === '정산예정주',
-     기간:w.from + '~' + w.to, 행:w.rows, 표제목:w.title, 열:w.col, 첫행:w.first, 끝행:w.last, 합계:w.exec});
-  P(R.snap, '주 라벨 = 월요일 ~ 일요일',
-    {pass: w.first === '2026-08-17 ~ 08-23' && w.last === '2026-08-24 ~ 08-30', 첫행:w.first, 끝행:w.last});
+  P(R.snap, '일별 일주일 → 주별 전환 시 4주 프리셋 08-03~08-27 (종료일이 기준일에서 끊긴다)',
+    {pass: w.from === '2026-08-03' && w.to === BASE && w.gran[1] === '주별*'
+           && w.rows === 4 && w.title === '주별 투자수익' && w.col === '정산예정주'
+           && w.presets.join('·') === '4주*·12주' && w.label === '4주',
+     기간:w.from + '~' + w.to, 행:w.rows, 표제목:w.title, 열:w.col, 첫행:w.first, 끝행:w.last,
+     프리셋:w.presets, 합계:w.exec});
+  P(R.snap, '주 라벨 = 월요일 ~ 일요일 · 기준일에서 끊긴 마지막 주는 기준일까지',
+    {pass: w.first === '2026-08-03 ~ 08-09' && w.last === '2026-08-24 ~ 08-27',
+     첫행:w.first, 끝행:w.last});
 
   await setDate('to', '2026-08-25'); let w2 = await S();
-  P(R.snap, '주별 종료일에 2026-08-25(화) → 그 주 일요일 2026-08-30 으로 스냅',
-    {pass: w2.to === '2026-08-30', 넣은값:'2026-08-25', 결과:w2.to, 기간:w2.from + '~' + w2.to, 행:w2.rows});
+  P(R.snap, '주별 종료일에 2026-08-25(화) → 그 주 일요일(08-30)이 아니라 기준일 08-27 로 스냅',
+    {pass: w2.to === BASE, 넣은값:'2026-08-25', 결과:w2.to, 기간:w2.from + '~' + w2.to, 행:w2.rows});
   await setDate('from', '2026-08-25'); let w3 = await S();
   P(R.snap, '주별 시작일에 2026-08-25(화) → 그 주 월요일 2026-08-24 로 스냅 · 한 주 1행',
-    {pass: w3.from === '2026-08-24' && w3.rows === 1,
-     넣은값:'2026-08-25', 결과:w3.from, 기간:w3.from + '~' + w3.to, 행:w3.rows, 합계:w3.exec});
+    {pass: w3.from === '2026-08-24' && w3.rows === 1 && w3.last === '2026-08-24 ~ 08-27',
+     넣은값:'2026-08-25', 결과:w3.from, 기간:w3.from + '~' + w3.to, 행:w3.rows, 끝행:w3.last, 합계:w3.exec});
 
   await home(); await gran('monthly'); let m = await S();
-  P(R.snap, '일별 08-21~08-27 → 월별 전환 시 08-01~08-31 (그 달 전체) · 1행',
-    {pass: m.from === '2026-08-01' && m.to === '2026-08-31' && m.rows === 1
-           && m.title === '월별 투자수익' && m.col === '정산예정월' && m.first === '2026-08',
-     기간:m.from + '~' + m.to, 행:m.rows, 첫행:m.first, 표제목:m.title, 열:m.col, 합계:m.exec});
+  P(R.snap, '일별 일주일 → 월별 전환 시 3개월 프리셋 06-01~08-27 · 3행',
+    {pass: m.from === '2026-06-01' && m.to === BASE && m.rows === 3
+           && m.title === '월별 투자수익' && m.col === '정산예정월' && m.first === '2026-06'
+           && m.presets.join('·') === '3개월*·6개월',
+     기간:m.from + '~' + m.to, 행:m.rows, 첫행:m.first, 표제목:m.title, 열:m.col,
+     프리셋:m.presets, 합계:m.exec});
   await setDate('from', '2026-08-14'); let m2 = await S();
   P(R.snap, '월별 시작일에 2026-08-14 → 그 달 1일 2026-08-01 로 스냅',
     {pass: m2.from === '2026-08-01', 넣은값:'2026-08-14', 결과:m2.from, 기간:m2.from + '~' + m2.to, 행:m2.rows});
@@ -188,56 +196,73 @@ async function main(){
     {pass: m3.from === '2026-06-01' && m3.rows === 3 && m3.first === '2026-06' && m3.last === '2026-08',
      기간:m3.from + '~' + m3.to, 행:m3.rows, 첫행:m3.first, 끝행:m3.last, 합계:m3.exec});
 
-  /* ══ 5) 집계 단위를 바꿔도 기간이 살아 있고 합계가 같다 ══ */
+  /* ══ 5) 프리셋을 보고 있으면 단위를 바꿔도 프리셋 자리가 이어진다 ══
+     금월은 일별 묶음의 긴 쪽이라 월별에서는 6개월, 주별에서는 12주가 켜진다.
+     되돌아오면 처음 그 프리셋으로 돌아온다 — 08-31 같은 기준일 뒤 날짜가 남지 않는다. */
   await home(); await preset('month'); const dm = await S();
   await gran('monthly'); const mm = await S();
   await gran('daily');   const back = await S();
-  P(R.link, '금월(08-01~08-27) → 월별 전환 시 08-01~08-31 로 넓어질 뿐 기간이 지워지지 않음',
-    {pass: mm.from === '2026-08-01' && mm.to === '2026-08-31' && mm.rows === 1 && mm.exec === dm.exec,
+  P(R.link, '금월 → 월별 전환 시 같은 자리(긴 쪽) 프리셋 6개월 03-01~08-27',
+    {pass: mm.from === '2026-03-01' && mm.to === BASE && mm.rows === FACTS.monthExec.length
+           && mm.label === '6개월' && mm.presets.join('·') === '3개월·6개월*',
      일별:dm.from + '~' + dm.to + ' ' + dm.rows + '행 ' + dm.exec,
-     월별:mm.from + '~' + mm.to + ' ' + mm.rows + '행 ' + mm.exec});
-  P(R.link, '월별 → 일별 복귀 시 기간 유지(08-01~08-31) · 27행 · 합계 동일',
-    {pass: back.from === '2026-08-01' && back.to === '2026-08-31' && back.rows === 27 && back.exec === mm.exec,
-     기간:back.from + '~' + back.to, 행:back.rows, 합계:back.exec});
+     월별:mm.from + '~' + mm.to + ' ' + mm.rows + '행 ' + mm.exec, 프리셋:mm.presets});
+  P(R.link, '월별 → 일별 복귀 시 금월 프리셋으로 되돌아온다(08-31 이 남지 않는다)',
+    {pass: back.from === '2026-08-01' && back.to === BASE && back.rows === 27
+           && back.exec === dm.exec && back.label === '금월',
+     기간:back.from + '~' + back.to, 행:back.rows, 합계:back.exec, 라벨:back.label});
 
-  /* 같은 기간이면 일별·주별·월별 합계가 어긋나지 않는다 */
-  await home(); await preset('week'); await gran('monthly'); await preset('m6');
-  const g6m = await S();
-  await gran('weekly'); const g6w = await S();
-  await gran('daily');  const g6d = await S();
-  P(R.link, '6개월 기간에서 단위만 바꿔 보면 합계가 셋 다 같다',
-    {pass: g6m.exec === g6w.exec && g6w.exec === g6d.exec && g6m.rows === FACTS.monthExec.length
-           && g6d.rows === FACTS.ledgerDays
+  /* 직접 고른 기간은 단위를 바꿔도 지워지지 않는다 — 두 축이 서로를 지우지 않는 자리.
+     2026-06-01 은 월요일이자 그 달 1일이라 세 단위의 스냅을 모두 통과해 기간이 그대로 남는다. */
+  await home();
+  await setDate('from', '2026-06-01'); await setDate('to', BASE);
+  const gcd = await S();
+  await gran('weekly');  const gcw = await S();
+  await gran('monthly'); const gcm = await S();
+  P(R.link, '직접 고른 06-01~08-27 은 단위를 바꿔도 그대로 · 합계가 셋 다 같다',
+    {pass: gcd.exec === gcw.exec && gcw.exec === gcm.exec
+           && gcd.from === '2026-06-01' && gcw.from === '2026-06-01' && gcm.from === '2026-06-01'
+           && gcd.to === BASE && gcw.to === BASE && gcm.to === BASE
+           && gcd.label === '직접입력' && gcw.label === '직접입력' && gcm.label === '3개월'
+           && gcm.rows === 3,
+     일별:gcd.from + '~' + gcd.to + ' ' + gcd.rows + '행 ' + gcd.exec,
+     주별:gcw.from + '~' + gcw.to + ' ' + gcw.rows + '행 ' + gcw.exec,
+     월별:gcm.from + '~' + gcm.to + ' ' + gcm.rows + '행 ' + gcm.exec});
+
+  /* 6개월 프리셋은 원장 전체를 덮는다 */
+  await home(); await gran('monthly'); await preset('m6'); const g6m = await S();
+  P(R.link, '6개월 프리셋 = 원장 전체 ' + FACTS.monthExec.length + '행',
+    {pass: g6m.rows === FACTS.monthExec.length
            && g6m.exec === FACTS.monthExec.reduce((a, x) => a + x[1], 0).toLocaleString('en-US'),
-     월별:g6m.rows + '행 ' + g6m.exec, 주별:g6w.rows + '행 ' + g6w.exec, 일별:g6d.rows + '행 ' + g6d.exec});
+     월별:g6m.rows + '행 ' + g6m.exec});
 
   /* ══ 6) 프리셋 묶음이 단위를 따라 갈린다 ══ */
   await home(); const pd = await S();
   await gran('weekly');  const pw = await S();
   await gran('monthly'); const pm = await S();
   P(R.link, '프리셋 묶음 — 일별 일주일·금월 / 주별 4주·12주 / 월별 3개월·6개월',
-    {pass: pd.presets.join('·') === '일주일*·금월' && pw.presets.join('·') === '4주·12주'
-           && pm.presets.join('·') === '3개월·6개월',
+    {pass: pd.presets.join('·') === '일주일*·금월' && pw.presets.join('·') === '4주*·12주'
+           && pm.presets.join('·') === '3개월*·6개월',
      일별:pd.presets, 주별:pw.presets, 월별:pm.presets});
   await home(); await gran('weekly'); await preset('w4'); const pw4 = await S();
-  P(R.link, '주별 4주 프리셋 → 08-03~08-30 · 4행 · 그 버튼만 활성',
-    {pass: pw4.from === '2026-08-03' && pw4.to === '2026-08-30' && pw4.rows === 4
+  P(R.link, '주별 4주 프리셋 → 08-03~08-27 · 4행 · 그 버튼만 활성',
+    {pass: pw4.from === '2026-08-03' && pw4.to === BASE && pw4.rows === 4
            && pw4.presets.join('·') === '4주*·12주' && pw4.label === '4주',
      기간:pw4.from + '~' + pw4.to, 행:pw4.rows, 프리셋:pw4.presets, 합계:pw4.exec});
   await preset('w12'); const pw12 = await S();
-  P(R.link, '주별 12주 프리셋 → 06-08~08-30 · 12행',
-    {pass: pw12.from === '2026-06-08' && pw12.to === '2026-08-30' && pw12.rows === 12
+  P(R.link, '주별 12주 프리셋 → 06-08~08-27 · 12행',
+    {pass: pw12.from === '2026-06-08' && pw12.to === BASE && pw12.rows === 12
            && pw12.presets.join('·') === '4주·12주*',
      기간:pw12.from + '~' + pw12.to, 행:pw12.rows, 합계:pw12.exec});
   await home(); await gran('monthly'); await preset('m3'); const pm3 = await S();
-  P(R.link, '월별 3개월 프리셋 → 06-01~08-31 · 3행',
-    {pass: pm3.from === '2026-06-01' && pm3.to === '2026-08-31' && pm3.rows === 3
+  P(R.link, '월별 3개월 프리셋 → 06-01~08-27 · 3행',
+    {pass: pm3.from === '2026-06-01' && pm3.to === BASE && pm3.rows === 3
            && pm3.presets.join('·') === '3개월*·6개월',
      기간:pm3.from + '~' + pm3.to, 행:pm3.rows, 합계:pm3.exec});
-  /* 기간을 그대로 둔 채 단위만 바꾸면, 새 묶음 중 지금 기간과 일치하는 것만 켜진다 */
-  await home(); await preset('week'); await gran('weekly'); const keep = await S();
-  P(R.link, '단위를 바꿔 묶음이 갈려도 기간은 유지 · 일치하는 프리셋이 없으면 직접입력',
-    {pass: keep.from === '2026-08-17' && keep.to === '2026-08-30'
+  /* 직접 고른 기간에서 단위를 바꾸면 새 묶음 중 일치하는 것이 없어 직접입력으로 남는다 */
+  await home(); await setDate('from', '2026-08-10'); await gran('weekly'); const keep = await S();
+  P(R.link, '직접 고른 기간에서 단위를 바꾸면 기간 유지 · 일치하는 프리셋이 없으면 직접입력',
+    {pass: keep.from === '2026-08-10' && keep.to === BASE
            && keep.presets.join('·') === '4주·12주' && keep.label === '직접입력',
      기간:keep.from + '~' + keep.to, 프리셋:keep.presets, 라벨:keep.label});
 
@@ -319,10 +344,10 @@ async function main(){
   const XW = ['assets/xlsx/투자수익현황_2026-08-21_2026-08-27.xlsx', 'assets/xlsx/일별투자수익_2026-08-21_2026-08-27.xlsx'];
   const STATIC = [
     ['invest-profit.html',             '일주일*·금월', D3, '2026-08-21', '2026-08-27', 7, '일별 투자수익', '정산예정일', XW],
-    ['invest-profit--weekly.html',     '4주*·12주',    W3, '2026-08-03', '2026-08-30', 4, '주별 투자수익', '정산예정주',
-     ['assets/xlsx/투자수익현황_2026-08-03_2026-08-30.xlsx', 'assets/xlsx/주별투자수익_2026-08-03_2026-08-30.xlsx']],
-    ['invest-profit--monthly.html',    '3개월·6개월*', M3, '2026-03-01', '2026-08-31', 6, '월별 투자수익', '정산예정월',
-     ['assets/xlsx/투자수익현황_2026-03-01_2026-08-31.xlsx', 'assets/xlsx/월별투자수익_2026-03-01_2026-08-31.xlsx']],
+    ['invest-profit--weekly.html',     '4주*·12주',    W3, '2026-08-03', BASE, 4, '주별 투자수익', '정산예정주',
+     ['assets/xlsx/투자수익현황_2026-08-03_2026-08-27.xlsx', 'assets/xlsx/주별투자수익_2026-08-03_2026-08-27.xlsx']],
+    ['invest-profit--monthly.html',    '3개월·6개월*', M3, '2026-03-01', BASE, 6, '월별 투자수익', '정산예정월',
+     ['assets/xlsx/투자수익현황_2026-03-01_2026-08-27.xlsx', 'assets/xlsx/월별투자수익_2026-03-01_2026-08-27.xlsx']],
     ['invest-profit--empty.html',      '일주일·금월',  D3, '2026-02-01', '2026-02-07', 0, '일별 투자수익', '정산예정일', []]
   ];
   for(const [f, pre, gr, frm, to, rows, title, col, xls] of STATIC){
@@ -360,10 +385,10 @@ async function main(){
   const PREV = [
     ['daily',   'default', '투자수익현황_2026-08-21_2026-08-27.xlsx', '일별투자수익_2026-08-21_2026-08-27.xlsx',
      '일주일 (2026-08-21 ~ 2026-08-27)', '일별 투자수익'],
-    ['weekly',  'weekly',  '투자수익현황_2026-08-03_2026-08-30.xlsx', '주별투자수익_2026-08-03_2026-08-30.xlsx',
-     '4주 (2026-08-03 ~ 2026-08-30)', '주별 투자수익'],
-    ['monthly', 'monthly', '투자수익현황_2026-03-01_2026-08-31.xlsx', '월별투자수익_2026-03-01_2026-08-31.xlsx',
-     '6개월 (2026-03-01 ~ 2026-08-31)', '월별 투자수익']
+    ['weekly',  'weekly',  '투자수익현황_2026-08-03_2026-08-27.xlsx', '주별투자수익_2026-08-03_2026-08-27.xlsx',
+     '4주 (2026-08-03 ~ 2026-08-27)', '주별 투자수익'],
+    ['monthly', 'monthly', '투자수익현황_2026-03-01_2026-08-27.xlsx', '월별투자수익_2026-03-01_2026-08-27.xlsx',
+     '6개월 (2026-03-01 ~ 2026-08-27)', '월별 투자수익']
   ];
   for(const [g, state, fs_, fd, period, dtitle] of PREV){
     const pv = await ev(`
@@ -388,6 +413,44 @@ async function main(){
        표:pv.daily.name, 표제목:pv.daily.title});
   }
 
+  /* ══ 9-3) 프리셋 밖 기간 — 실물이 없으므로 잠근다 ══
+     프리셋 6조합에만 실물 파일이 있다. 직접입력 기간에서 버튼이 살아 있으면 화면이 없는 파일을 말하게 된다.
+     잠금 규격은 원본 어드민 그대로 disabled 속성 + 회색 + cursor:not-allowed 다. */
+  {
+    const off = await ev(`
+      go('invest-profit','default');
+      var sec = document.querySelector('section[data-screen="invest-profit"]');
+      var ti = sec.querySelector('[data-mount="pf-to"]');
+      ti.value = '2026-08-25'; ti.dispatchEvent(new Event('change', {bubbles:true}));
+      var x1 = sec.querySelector('[data-mount="pf-xls1"]'), x2 = sec.querySelector('[data-mount="pf-xls2"]');
+      var cs = getComputedStyle(x1);
+      function prev(scr){
+        go(scr, 'default');
+        var p = document.querySelector('section.screen[data-screen="' + scr + '"]');
+        var b = p.querySelector('.file-bar .btn');
+        return {name: p.querySelector('.fb-name').textContent,
+                off: p.querySelector('.file-bar').classList.contains('is-off'),
+                tag: b.tagName, disabled: !!b.disabled,
+                links: p.querySelectorAll('.file-bar a[download]').length,
+                tab: p.querySelector('.sheet-tab').textContent};
+      }
+      return {label:(sec.querySelector('.stat-period') || {}).textContent,
+              keys:[xlsKey('profit-status'), xlsKey('profit-daily')],
+              lock:[!!x1.disabled, !!x2.disabled], cursor:cs.cursor,
+              status:prev('xls-profit-status'), daily:prev('xls-profit-daily')};`);
+    P(R.link, '직접입력 기간 — 엑셀 두 버튼 잠금 · 미리보기 파일바 회색 · 내려받기 링크 0',
+      {pass: off.label === '직접입력' && off.keys[0] === null && off.keys[1] === null
+             && off.lock[0] && off.lock[1] && off.cursor === 'not-allowed'
+             && off.status.off && off.daily.off
+             && off.status.name === '-' && off.daily.name === '-'
+             && off.status.tag === 'BUTTON' && off.daily.tag === 'BUTTON'
+             && off.status.disabled && off.daily.disabled
+             && off.status.links === 0 && off.daily.links === 0
+             && off.daily.tab === '일별 투자수익',
+       라벨:off.label, 열쇠:off.keys, 잠금:off.lock, cursor:off.cursor,
+       현황파일바:off.status, 표파일바:off.daily});
+  }
+
   /* ══ 출력 ══ */
   const lines = [];
   const dump = (n, arr) => { lines.push('== ' + n + ' =='); arr.forEach(x =>
@@ -396,13 +459,21 @@ async function main(){
   dump('피커 생존', R.alive); dump('달력 열림', R.picker); dump('초기화·정적 대조', R.reset);
   const all = R.invariant.concat(R.snap, R.link, R.alive, R.picker, R.reset);
   const fail = all.filter(x => !x.pass);
-  lines.push('== 뷰포트 == ' + vp.join('x') + ' (창 1440x' + WIN_H + ')');
+  /* 뷰포트를 재 놓고 판정에 안 넣던 자리(2026-08-30 이전).
+     이 파일 17행이 스스로 VIEW_H = 1200 · WIN_H = VIEW_H + 87 로 macOS 함정 보정을 선언한다 —
+     보정이 풀리면 실제 뷰포트가 1113 이 되고, 기간 피커·달력의 높이 판정이 조용히 다른 조건에서 돈다.
+     기준은 이 파일이 이미 적어 둔 값이다. 새로 정하지 않는다. */
+  R.viewport = {want: [1440, VIEW_H], got: vp,
+                pass: vp[0] === 1440 && vp[1] === VIEW_H};
+  lines.push('== 뷰포트 == ' + (R.viewport.pass ? 'PASS ' : 'FAIL ') + vp.join('x') +
+             ' (창 1440x' + WIN_H + ' · 기대 1440x' + VIEW_H + ')');
   lines.push('== 콘솔 에러 == ' + cons.length); cons.slice(0, 10).forEach(c => lines.push('  - ' + c));
   lines.push('== 합계 == ' + all.length + '건 · PASS ' + (all.length - fail.length) + ' · FAIL ' + fail.length);
   console.log(lines.join('\n'));
   fs.writeFileSync(OUT, JSON.stringify(R, null, 1));
+  /* 콘솔 에러·뷰포트를 종료코드에 넣는다 — 형제 검증기(verify_rows.js:213 · verify_toast.js:229)와 같은 방식. */
   ws.close(); ch.kill(); server.close();
-  process.exit(fail.length ? 1 : 0);
+  process.exit(fail.length || cons.length || !R.viewport.pass ? 1 : 0);
 }
 function GRAN_LABEL(g){ return g === 'daily' ? '일별' : (g === 'weekly' ? '주별' : '월별'); }
 main().catch(e => { console.error('VERIFY ERROR', e); process.exit(1); });

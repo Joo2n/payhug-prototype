@@ -29,7 +29,7 @@ PORT = 8903
 IMPORT = [
     'invest-assets', 'certificate', 'invest-profit', 'coocon', 'merchants',
     'acquisition', 'acquisition--doc', 'contracts', 'password',
-    'invest-assets--page2', 'invest-assets--download', 'invest-assets--cert-confirm',
+    'invest-assets--download', 'invest-assets--cert-confirm',
     'invest-assets--empty', 'invest-profit--monthly', 'invest-profit--empty',
     'merchants--filtered', 'merchants--empty',
     'acquisition--confirm', 'acquisition--signing', 'acquisition--done',

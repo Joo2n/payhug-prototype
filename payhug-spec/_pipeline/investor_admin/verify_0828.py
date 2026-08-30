@@ -28,15 +28,25 @@ def _reg_table(head):
     return out
 
 
+MISSING = []          # rd() 가 못 찾은 파일 — 아래 chk(32) 가 판정한다
+
+
 def rd(n):
+    """없는 파일을 '' 로 돌려주면 「금칙어 0건」류 검사가 저절로 통과한다.
+    못 찾은 것을 남겨 두고 chk(32) 에서 실패로 세운다(2026-08-30)."""
     p = os.path.join(R, n)
-    return open(p, encoding='utf-8').read() if os.path.exists(p) else ''
+    if not os.path.exists(p):
+        MISSING.append(n)
+        return ''
+    return open(p, encoding='utf-8').read()
 
 APP  = rd('app.html')
 IDX  = rd('index.html')
 GLO  = rd('glossary.html')
 MER  = rd('merchants.html') + rd('merchants--filtered.html') + rd('merchants--empty.html')
-COO  = rd('coocon.html') + rd('coocon--confirm.html')
+# coocon 은 app.html STATE_META 에 'default' 하나뿐이라 confirm 낱장이 없다.
+# rd('coocon--confirm.html') 은 늘 '' 를 더하던 낡은 참조라 뗀다(검사 범위 변화 0자).
+COO  = rd('coocon.html')
 CON  = rd('contracts.html') + rd('contracts--all.html') + rd('contracts--empty.html')
 ACQ  = (rd('acquisition.html') + rd('acquisition--confirm.html')
         + rd('acquisition--signing.html') + rd('acquisition--done.html'))
@@ -396,6 +406,11 @@ miss = [v for k, (f, v) in STATIC.items() if k not in rd(f)]
 chk(24, '숫자 불변식 — 정적 화면', not miss, '누락 ' + (','.join(miss) or '없음'))
 seed = [s_ for s_ in (str(FACTS['exec']), str(FACTS['cash'])) if s_ not in APP]
 chk(25, '숫자 불변식 — 통합본 시드값', not seed, '누락 ' + (','.join(seed) or '없음'))
+
+# rd() 가 없는 파일을 '' 로 돌려주면 「없어야 할 문구 0건」류가 전부 저절로 통과한다.
+# 파일이 사라진 것을 화면 결함이 아니라 검사 공백으로 보고 실패로 세운다.
+chk(32, '검사 대상 파일 전건 존재 (rd 가 빈 문자열로 삼킨 것 0)',
+    not MISSING, '없는 파일 ' + (', '.join(sorted(set(MISSING))) or '없음'))
 
 # ── 출력 ───────────────────────────────────────────────────────
 w = max(len(x[1]) for x in C)

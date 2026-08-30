@@ -5,55 +5,58 @@
 
     채권 한 건 = (가맹점, 순지급액, 선정산일, 정산예정일)
       Ai = 순지급액 x (1 - 할인율 0.11%)
-      Di = 정산예정일 - 선정산일            (한편넣기 · 정수 · 2~7일)
+      Di = 정산예정일 - 선정산일            (한편넣기 · 정수 · 1~13일)
 
-    미회수 채권 = 정산예정일 > 기준일. 잔액 계통 세 값은 전부 이 모집단이다.
-    투자실행액       = 미회수 Σ Ai
-    가맹점별 투자금액 = 그 가맹점 미회수 채권의 Σ Ai
-    w금융일수        = 미회수 Σ (Ai x Di) / 미회수 Σ Ai
+    미회수 채권 = 정산예정일 > 기준일.
+    투자실행액       = 미회수 Sum Ai
+    가맹점별 투자금액 = 그 가맹점 미회수 채권의 Sum Ai
+    w금융일수        = 대상정산금채권 Sum (Ai x Di) / Sum Ai
     ty수익율         = 할인율 x 365 / w금융일수
-    하루 투자실행금   = 정산예정일이 그날인 채권의 Σ Ai   (유량 계통 · 모집단이 다르다)
+    하루 투자실행금   = 정산예정일이 그날인 채권의 Sum Ai   (유량 계통)
 
-    투자수익(채권매입수수료)은 순지급액이 앵커다 — D-31 확정.
-      하루 투자수익  = floor(그날 Σ 순지급액 x 할인율)
+    투자수익(채권매입수수료)은 순지급액이 앵커다 — D-31 확정. 여기서 부족액을 뺀다.
+      MD-1i = 채권매입수수료 - max(0, 미지급금 - 과지급금)
+      BD-1i = 순지급액       - max(0, 미지급금 - 과지급금)
+      하루 투자수익  = Sum MD-1i,   하루 상환액 = Sum BD-1i
       하루 ty수익율  = (투자수익 / 투자실행금 x 100) x 365 / w금융일수
     투자실행금 x 할인율로 잡으면 앵커가 (1 - 할인율)배만큼 작아져 투자 시뮬레이션과 갈린다.
-    S입금부족율      = Σ SLi / Σ SAi   (표본 = 선정산일 D-20 ~ D-11)
+    S입금부족율      = Sum SLi / Sum SAi   (표본 = 선정산일 D-20 ~ D-11)
       SLi = 미지급액 - 과지급액 ,  SAi = 순지급액 x (1 - 할인율)
 
 이 파일이 손으로 적는 것은 아래 셋뿐이다. 나머지는 전부 위 산식으로 나온다.
 
-    ① 규모   BOOK = 1,523,100,000  (투자실행액 · 불변식)
-    ② 구성비 가맹점 16건의 일일 선정산 규모 · 플랫폼 구성비 (BOOKROWS)
-    ③ 패턴   요일·주차에 따른 규모 계수와 배달 비중 틸트 (날짜에서 결정 · 무작위 아님)
+    ① 규모   BOOK = 80,000,000  (투자실행액 · 불변식)
+    ② 구성비 가맹점 9건의 일일 선정산 규모와 배달 의존도 b (BOOKROWS)
+    ③ 패턴   요일·주차에 따른 규모 계수와 배달 의존도 틸트 (날짜에서 결정 · 무작위 아님)
 
-w금융일수의 모집단 — 미회수 채권만
-    대표 정의서가 `투자 실행액`을 '회수되지 않은 순지급액 합계'로 못 박았고, w금융일수는
-    같은 표 같은 행의 옆 칸이다. `투자 자산` 화면의 W금융일수는 지금 깔려 있는 돈이
-    평균 며칠짜리냐를 보는 자리라 이미 회수된 채권은 그 평균에 들어가지 않는다.
-    가맹점별 W도 같다 — 옆 칸 `투자금액`이 미회수 기준이므로 W도 미회수 기준이다.
-    회수분까지 세는 모집단은 잔액 계통이 아니라 유량 계통(SD(D-1) · PSD)이 쓴다.
-    이 셋은 이름만 같고 세는 묶음이 다르다.
+w금융일수의 모집단 — 대상정산금채권 전체
+    대표 정의서에서 '회수되지 않은' 이라는 한정은 투자 실행액 줄에만 붙어 있다.
+    w금융일수의 재료인 대상정산금채권은 '선정산일자가 합의서 효력기간에 해당하는 정산금채권'
+    이라 회수 여부 조건이 없다. 대표가 낸 `정산주기.xlsx` H41 의 2.7504068548610725 도
+    2025년 365일 발생분 전수의 가중평균이다. 그래서 발생 기준으로 센다.
+    가맹점별 W 도 같다. 옆 칸 투자금액(미회수 Sum Ai)은 하루 선정산액 x (1 - 할인율) x 그
+    가맹점의 평균만기라 W 와 같은 만기를 쓴다 — 두 칸이 어긋나지 않는다.
 
-가맹점 규모 구간 — 기준은 일일 선정산 규모다.
-    고액  일 5,000만원 이상      4건   카드 매출 비중 높음 → 만기 짧고 부족율 낮음
-    평범  일 1,500만 ~ 5,000만원 6건
-    소액  일 1,500만원 미만      6건   배달앱 의존 높음 → 만기 길고 부족율 높음
+가맹점 규모 구간 — 기준은 일일 선정산 규모다. 대표 밴드 100만~1,000만을 3등분한 경계다.
+    고액  일 500만원 이상       2건   카드 매출 비중 높음 → 만기 짧고 부족율 낮음
+    평범  일 200만 ~ 500만원    4건
+    소액  일 200만원 미만       3건   배달앱 의존 높음 → 만기 길고 부족율 높음
 """
 import io, json, math, os, sys
 from datetime import date, timedelta
 from decimal import Decimal as D, ROUND_HALF_UP, ROUND_FLOOR
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from platform_duration import (DURATION, ORDER, LABEL, FLOOR, CEIL, BUCKET, DI_MIN, DI_MAX,
-                               UNPAID, OVERPAID, duration, w_of)
+from platform_duration import (DURATION, ORDER, LABEL, FLOOR, CEIL, BUCKET, OBS_DAYS,
+                               DI_MIN, DI_MAX, UNPAID, OVERPAID, BOOK_MIX,
+                               duration, mix_of, w_of)
 
 # ══ 상수 ① 규모 · 요율 · 기간 ═══════════════════════════════════
 RATE = D('0.0011')                 # 유동화투자자의 할인율
 RPCT = D('0.11')
 DAYS = D('365')
-BOOK = 1523100000                  # 투자실행액 — 규모 기준(불변식)
-CASH = 105300000                   # 순현금 — 쿠콘 가상계좌 현금잔액. 채권과 무관한 별개 스톡이라
+BOOK = 80000000                    # 투자실행액 — 규모 기준(불변식)
+CASH = 20000000                    # 순현금 — 쿠콘 가상계좌 현금잔액. 채권과 무관한 별개 스톡이라
                                    #          원장이 만들지 않고 그대로 받는 입력이다(불변식).
 
 ASOF      = date(2026, 8, 27)      # 기준일 D
@@ -62,65 +65,55 @@ FIRST_ADV = FIRST_DUE - timedelta(days=DI_MAX)     # 첫 행을 채우는 가장
 SAMPLE    = (ASOF - timedelta(days=20), ASOF - timedelta(days=11))   # S 표본집합 구간
 
 TIER_NAME = {'H': '고액', 'M': '평범', 'L': '소액'}
-TIER_CUT  = (50000000, 15000000)   # 고액 / 평범 경계 — 일일 선정산 규모
+TIER_CUT  = (5000000, 2000000)     # 고액 / 평범 경계 — 일일 선정산 규모
 
-# ══ 상수 ② 가맹점 16건 구성비 ══════════════════════════════════
+# ══ 상수 ② 가맹점 9건 구성비 ═══════════════════════════════════
 #   flow  일일 선정산 규모(원) — 구간을 가르는 기준값이자 채권 발생량의 가중치.
 #         원장은 이 값을 상대 가중치로만 쓰고, 미회수 합이 BOOK 이 되도록 배율을 되푼다.
-#   mix   플랫폼 구성비 (카드, 배민, 쿠팡이츠, 요기요) — 만기와 부족율이 여기서 나온다.
-#         M2026-0001 은 Figma 2782:5879 실측 구성비다(`확정`). 나머지 15건은 업태별
-#         배달 의존도를 달리 잡은 예시다(`가설`).
+#   b     배달 의존도 — 플랫폼 구성비를 여기 하나에서 파생시킨다(platform_duration.mix_of).
+#         카드 = 1 - b, 배달 3사는 b 를 전국 MAU 비중 725 : 348 : 162 으로 가른다.
+#         가맹점별로 배달 3사 내부 배분을 다르게 잡을 실측 근거가 없어 전국 비중을 그대로 쓴다.
+#         8곳은 업태로 정한 예시값(`가설`)이고, 김성호떡볶이 본점 한 곳은 금액가중 카드 65%
+#         제약에서 역산했다 — b = 2,775,000 / 6,400,000 = 111/256 (유한소수).
 #   s     열은 없다 — S입금부족율은 채권의 미지급액·과지급액에서 계산된다.
 #
-#   (mid, 상호, 사업자번호, 대표자, 업종, 품목, 계약일, 구간, 일일 선정산 규모, 플랫폼 구성비)
+#   (mid, 상호, 사업자번호, 대표자, 업종, 품목, 계약일, 구간, 일일 선정산 규모, 배달 의존도)
 BOOKROWS = [
- ('M2026-0001', '김성호떡볶이 본점', '123-45-67890', '김성호', '음식점업', '분식', '2026-07-14',
-  'H', 87800000, ('0.428', '0.431', '0.096', '0.045')),
- ('M2026-0002', '달빛곱창 홍대점',   '234-56-78901', '이달빛', '음식점업', '곱창', '2026-07-18',
-  'H', 84400000, ('0.62', '0.26', '0.08', '0.04')),
- ('M2026-0004', '바다마루 횟집',     '456-78-90123', '조해민', '음식점업', '일식', '2026-07-25',
-  'H', 74000000, ('0.66', '0.24', '0.07', '0.03')),
- ('M2026-0009', '청춘포차 신촌점',   '901-23-45678', '오지훈', '음식점업', '포차', '2026-07-31',
-  'H', 58600000, ('0.58', '0.29', '0.09', '0.04')),
- ('M2026-0003', '성호분식 2호점',    '345-67-89012', '박성호', '음식점업', '분식', '2026-08-05',
-  'M', 34200000, ('0.30', '0.44', '0.17', '0.09')),
- ('M2026-0005', '한강커피 잠원점',   '567-89-01234', '정한강', '음식점업', '카페', '2026-08-12',
-  'M', 31900000, ('0.36', '0.42', '0.15', '0.07')),
- ('M2026-0008', '골목냉면',          '890-12-34567', '백미순', '음식점업', '냉면', '2026-08-19',
-  'M', 27200000, ('0.30', '0.42', '0.18', '0.10')),
- ('M2026-0010', '왕십리곱창타운',    '112-34-56789', '한상철', '음식점업', '곱창', '2026-08-24',
-  'M', 25600000, ('0.34', '0.40', '0.17', '0.09')),
- ('M2026-0012', '대박국수 사당점',   '334-56-78902', '서동혁', '음식점업', '국수', '2026-08-25',
-  'M', 22300000, ('0.26', '0.44', '0.19', '0.11')),
- ('M2026-0014', '착한고기 은평점',   '556-78-90124', '강민호', '음식점업', '고기', '2026-08-25',
-  'M', 20600000, ('0.32', '0.41', '0.17', '0.10')),
- ('M2026-0006', '김밥나라',          '678-90-12345', '김나라', '음식점업', '김밥', '2026-08-26',
-  'L', 6000000,  ('0.18', '0.40', '0.22', '0.20')),
- ('M2026-0007', '초록치킨 서초점',   '789-01-23456', '최초록', '음식점업', '치킨', '2026-08-26',
-  'L', 5100000,  ('0.12', '0.42', '0.26', '0.20')),
- ('M2026-0011', '소소한밥상',        '223-45-67891', '문소연', '음식점업', '한식', '2026-08-26',
-  'L', 4200000,  ('0.10', '0.26', '0.24', '0.40')),
- ('M2026-0013', '정든수산',          '445-67-89013', '정해수', '음식점업', '수산', '2026-08-27',
-  'L', 3700000,  ('0.16', '0.31', '0.26', '0.27')),
- ('M2026-0015', '커피한잔 마포점',   '667-89-01235', '윤지원', '음식점업', '카페', '2026-08-27',
-  'L', 3600000,  ('0.20', '0.38', '0.24', '0.18')),
- ('M2026-0016', '우리동네반찬',      '778-90-12346', '임보경', '음식점업', '반찬', '2026-08-27',
-  'L', 2600000,  ('0.08', '0.20', '0.20', '0.52')),
+ ('M2026-0001', '김성호떡볶이 본점', '123-45-67890', '김성호', '음식점업', '분식', '2026-01-05',
+  'H', 6400000, '0.43359375'),
+ ('M2026-0002', '달빛곱창 홍대점',   '234-56-78901', '이달빛', '음식점업', '곱창', '2026-01-09',
+  'M', 4300000, '0.26'),
+ ('M2026-0004', '바다마루 횟집',     '456-78-90123', '조해민', '음식점업', '일식', '2026-01-16',
+  'H', 5600000, '0.12'),
+ ('M2026-0009', '청춘포차 신촌점',   '901-23-45678', '오지훈', '음식점업', '포차', '2026-01-22',
+  'M', 2700000, '0.20'),
+ ('M2026-0003', '성호분식 2호점',    '345-67-89012', '박성호', '음식점업', '분식', '2026-01-27',
+  'M', 3300000, '0.58'),
+ ('M2026-0005', '한강커피 잠원점',   '567-89-01234', '정한강', '음식점업', '카페', '2026-02-02',
+  'L', 1400000, '0.14'),
+ ('M2026-0008', '골목냉면',          '890-12-34567', '백미순', '음식점업', '냉면', '2026-02-06',
+  'L', 1600000, '0.36'),
+ ('M2026-0006', '김밥나라',          '678-90-12345', '김나라', '음식점업', '김밥', '2026-02-10',
+  'L', 1200000, '0.52'),
+ ('M2026-0007', '초록치킨 서초점',   '789-01-23456', '최초록', '음식점업', '치킨', '2026-02-13',
+  'M', 2000000, '0.78'),
 ]
 
 # ══ 상수 ③ 날짜에서 결정되는 패턴 (무작위 아님) ═══════════════════
 #   SIZE  그날 선정산 규모의 증감. 주말 주문분이 몰리는 요일과 카드 매입분이 몰리는 요일이
 #         갈려 하루치가 평균에서 ±7% 안쪽으로 흔들린다.
-#   TILT  그날 채권 묶음의 배달 비중 틸트. + 면 카드 비중을 그만큼 덜어 배달앱 쪽으로 옮긴다.
-#         주기를 7일이 아닌 13·29일로 잡은 것은, 만기 2~7일이 섞이면 7일 주기가 상쇄돼
+#   TILT  그날 채권 묶음의 배달 의존도 틸트. + 면 그날 b 가 그만큼 커진다(b x (1 + t)).
+#         주기를 7일이 아닌 13·29일로 잡은 것은, 만기 1~13일이 섞이면 7일 주기가 상쇄돼
 #         정산예정일 기준 묶음에서 만기 차이가 드러나지 않기 때문이다.
+#         진폭은 카드 비중이 26.4%에서 65%로 오른 만큼 되줄였다(x 0.63) — 같은 진폭이면
+#         하루치 만기가 현행의 2.5배로 흔들리고, 카드 88% 가맹점의 b 가 1 을 넘는다.
 #   위상(_PH)은 고정 예시값이다. 규모가중 평균 0 정규화(DAYTILT)를 거치므로 위상을 바꿔도
 #   전체 W금융일수는 흔들리지 않고, 달별·일자별 W가 어느 자리에서 흔들리는지만 달라진다.
 SIZE_WD = {0: 0.021, 1: 0.006, 2: -0.004, 3: -0.028, 4: -0.033, 5: 0.017, 6: 0.021}
 SIZE_A, SIZE_P, SIZE_PH = 0.030, 11.0, 6
-TILT = ((0.190, 13.0, 10),      # 주 단위 배달 쏠림
-        (0.090, 29.0, 0),       # 달 단위 정산주기 밀림
-        (0.070, 101.0, 20))     # 계절 흐름 — 달별 W금융일수 차이를 만든다
+TILT = ((0.120, 13.0, 10),      # 주 단위 배달 쏠림
+        (0.057, 29.0, 0),       # 달 단위 정산주기 밀림
+        (0.044, 101.0, 20))     # 계절 흐름 — 달별 W금융일수 차이를 만든다
 
 UNIT = D(1)
 
@@ -159,14 +152,10 @@ DAYTILT = [D(str(t)) - _zt for t in _tilt_raw]               # 규모가중 평�
 #     하루치 묶음만 틸트만큼 만기가 길거나 짧아진다.
 
 
-def tilted(mix, t):
-    """플랫폼 구성비에 배달 틸트를 먹인다 — 카드에서 t 비율만큼 덜어 배달앱에 비례 배분."""
-    c = D(mix[0]); rest = D(1) - c
-    move = c * t
-    out = [c - move]
-    for v in mix[1:]:
-        out.append(D(v) + move * D(v) / rest)
-    return out
+def tilted(b, t):
+    """그날의 배달 의존도 = b x (1 + t). 구성비는 거기서 파생된다.
+    구성비가 b 에 대해 1차식이고 t 의 규모가중 평균이 0 이라, 책 전체 구성비는 흔들리지 않는다."""
+    return mix_of(D(str(b)) * (D(1) + t))
 
 
 # ══ 채권 생성 ═══════════════════════════════════════════════════
@@ -177,11 +166,12 @@ def _cells():
     for i, d in enumerate(ADV_DAYS):
         size, t = SIZE[i], DAYTILT[i]
         for m in BOOKROWS:
-            mid, flow, mix = m[0], D(m[8]), m[9]
-            tm = tilted(mix, t)
+            mid, flow, b = m[0], D(m[8]), m[9]
+            tm = tilted(b, t)
             for p, share in zip(ORDER, tm):
-                for di, bs in BUCKET[p]:
-                    out.append((mid, p, di, d, d + timedelta(days=di), flow * size * share * bs))
+                for di, n in BUCKET[p]:
+                    out.append((mid, p, di, d, d + timedelta(days=di),
+                                flow * size * share * D(n) / D(OBS_DAYS)))
     return out
 
 
@@ -220,8 +210,9 @@ def _build():
         if ai <= 0:
             continue
         net = ri(D(ai) / (D(1) - RATE))          # 순지급액
+        up, ov = ri(D(net) * UNPAID[p]), ri(D(net) * OVERPAID[p])
         rows.append(dict(mid=mid, plat=p, di=di, adv=adv, due=due, ai=ai, net=net,
-                         unpaid=ri(D(net) * UNPAID[p]), over=ri(D(net) * OVERPAID[p])))
+                         unpaid=up, over=ov, ded=max(0, up - ov)))
     return rows
 
 
@@ -237,10 +228,10 @@ def wavg(rows):
     return (sum(D(r['ai']) * r['di'] for r in rows) / D(a)) if a else D(0)
 
 
-W_RAW = wavg(OPEN)                               # w금융일수 — 미회수 채권만 (모집단은 투자실행액과 같다)
-W_BOOK = r1(W_RAW)
-# ty수익율은 화면 표기 W(소수 1자리)에서 낸다. 가맹점별 행도 같은 규칙이라
-# (ty_of(x['w'])) 잔액 계통 전 행이 화면 값에서 되짚어지는 한 산식으로 선다.
+W_RAW = wavg(RECEIVABLES)                        # w금융일수 — 대상정산금채권 전체 (발생 기준)
+W_BOOK = r2(W_RAW)
+# ty수익율은 화면 표기 W(소수 2자리)에서 낸다. 40.15 / 2.75 = 14.60 이라 화면 두 칸(W·할인율)
+# 으로 정확히 되짚어진다. 가맹점별 행도 같은 규칙이다(ty_of(x['w'])).
 TY_BOOK = ty_of(W_BOOK)
 assert FLOOR <= W_RAW <= CEIL, 'w금융일수가 현실 범위 밖이다: %s' % W_RAW
 
@@ -259,12 +250,13 @@ MERCHANTS = []
 for m in BOOKROWS:
     mid = m[0]
     mine = [r for r in RECEIVABLES if r['mid'] == mid]
-    myopen = [r for r in mine if r['due'] > ASOF]      # 투자금액·W금융일수의 모집단
+    myopen = [r for r in mine if r['due'] > ASOF]      # 투자금액의 모집단(미회수)
     MERCHANTS.append(dict(
         mid=mid, name=m[1], biz=m[2], ceo=m[3], sector=m[4], item=m[5], signed=m[6],
-        tier=m[7], tierName=TIER_NAME[m[7]], flow=m[8], mix=m[9],
+        tier=m[7], tierName=TIER_NAME[m[7]], flow=m[8], b=m[9],
+        mix=tuple(str(v.quantize(D('0.000001'))) for v in mix_of(m[9])),
         amount=sum(r['ai'] for r in myopen),
-        wraw=wavg(myopen), w=r1(wavg(myopen)),
+        wraw=wavg(mine), w=r2(wavg(mine)),
         sraw=shortfall([r for r in _SAMPLE if r['mid'] == mid]),
         dayflow=sum(r['ai'] for r in mine) // len(ADV_DAYS)))
 MERCHANTS.sort(key=lambda x: -x['amount'])
@@ -272,7 +264,7 @@ for x in MERCHANTS:
     x['ty'] = ty_of(x['w'])
     x['s'] = r2(x['sraw'])
 assert sum(x['amount'] for x in MERCHANTS) == BOOK
-assert len(MERCHANTS) == 16
+assert len(MERCHANTS) == len(BOOKROWS)
 
 # 구간은 일일 선정산 규모가 가른다 — 원장에서 나온 규모가 경계를 넘지 않는지 본다.
 for x in MERCHANTS:
@@ -289,15 +281,19 @@ def _daily():
     for r in RECEIVABLES:
         if not (FIRST_DUE <= r['due'] <= ASOF):
             continue
-        g = agg.setdefault(r['due'], dict(ai=0, net=0, wx=0))
+        g = agg.setdefault(r['due'], dict(ai=0, net=0, wx=0, ded=0))
         g['ai'] += r['ai']; g['net'] += r['net']; g['wx'] += r['ai'] * r['di']
+        g['ded'] += r['ded']
     out = []
     for d in sorted(agg):
         g = agg[d]
-        w = r1(D(g['wx']) / D(g['ai']))
-        p = fl(D(g['net']) * RATE)          # 채권매입수수료 = 순지급액 x 할인율 (D-31 앵커)
+        w = r2(D(g['wx']) / D(g['ai']))
+        fee = fl(D(g['net']) * RATE)        # 채권매입수수료 = 순지급액 x 할인율 (D-31 앵커)
+        # MD-1i = 채권매입수수료 - max(0, 미지급금 - 과지급금)  (대표 정의서 [2번 이미지])
+        # BD-1i = 순지급액       - max(0, 미지급금 - 과지급금)  = Ai + MD-1i
+        p = fee - g['ded']
         out.append(dict(d=ymd(d), repay=g['ai'] + p, exec=g['ai'], profit=p, w=w,
-                        ty=day_ty(p, g['ai'], w)))
+                        fee=fee, ded=g['ded'], ty=day_ty(p, g['ai'], w)))
     return out
 
 
@@ -347,7 +343,7 @@ def month_rollup(rows):
         # 통합본 build_app.py 의 rollupBy·엑셀 build_xlsx.bucket 과 같은 규칙이다.
         ty = r2((D(g['profit']) / D(g['exec']) * D(100)) * DAYS / raw)
         out.append(dict(d=k, repay=g['repay'], exec=g['exec'], profit=g['profit'],
-                        w=r1(raw), wraw=raw, ty=ty, n=g['n']))
+                        w=r2(raw), wraw=raw, ty=ty, n=g['n']))
     return out
 
 
@@ -365,18 +361,22 @@ def facts():
     wk_psc = D(CASH) * D(len(wk))
     wk_ty5 = wk_ty * D(wk_ex) / (D(wk_ex) + wk_psc)
     # 월별 화면(기본 6개월 = 원장 전 구간)의 같은 집계. 일별 표와 달리 달 행의 W 는 달 안에서
-    # 다시 가중평균한 값이라 tyByW 와 짝이 맞지 않는다 — 달 행은 month_rollup 값으로 대조한다.
+    # 다시 가중평균한 값이라 일별 행과 짝이 맞지 않는다 — 달 행은 month_rollup 값으로 대조한다.
     fu_ex = sum(r['exec'] for r in LEDGER)
     fu_pf = sum(r['profit'] for r in LEDGER)
     fu_wraw = sum(r['w'] * D(r['exec']) for r in LEDGER) / D(fu_ex)
     fu_ty = (D(fu_pf) / D(fu_ex) * D(100)) * DAYS / fu_wraw
     fu_psc = D(CASH) * D(len(LEDGER))
     fu_ty5 = fu_ty * D(fu_ex) / (D(fu_ex) + fu_psc)
-    # 일별 표의 W금융일수 -> Ty수익율 대응. 원장 전체에서 1:1 이라 검증기가 행 단위로 대조할 수 있다.
-    ty_by_w = {}
+    # 일별 표의 날짜 -> [W금융일수, Ty수익율, 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감].
+    #   W 하나에 Ty 하나로 접을 수 없다 — 투자수익에서 부족액(max(0, 미지급-과지급))을 빼면
+    #   Ty 가 W 만의 함수가 아니게 된다(대표 정의서 [2번 이미지] MD-1i). 날짜로 잡는다.
+    #   같은 이유로 수익을 순지급액에서 되짚을 수도 없다. 원장이 낸 값을 그대로 실어 검증기가
+    #   행 단위로 맞춰 보게 한다.
+    ty_by_date = dict((r['d'], [str(r['w']), str(r['ty']), r['exec'], r['profit'],
+                                r['repay'], r['fee'], r['ded']]) for r in LEDGER)
     for r in LEDGER:
-        ty_by_w.setdefault(str(r['w']), set()).add(str(r['ty']))
-    assert all(len(v) == 1 for v in ty_by_w.values()), 'W 하나에 Ty 가 둘 이상 — 대조 불가'
+        assert r['ty'] == day_ty(r['profit'], r['exec'], r['w']), r['d']
     return dict(
         exec=EXEC, cash=CASH, total=EXEC + CASH,
         wRaw=str(W_RAW.quantize(D('0.000001'))), w=str(W_BOOK), ty=str(TY_BOOK),
@@ -384,14 +384,21 @@ def facts():
         rate=str(RPCT), dayAvg=DAY_AVG, ledgerDays=len(LEDGER),
         ledgerSpan=[LEDGER[0]['d'], LEDGER[-1]['d']],
         receivables=len(RECEIVABLES), openReceivables=len(OPEN),
+        # W 와 S 는 같은 행에 나란히 서지만 모집단이 다르다 — 화면 툴팁이 이 두 값을 그대로 읽는다.
+        #   W = 대상정산금채권 전체(발생 기준)  ·  S = 선정산일 D-20 ~ D-11 표본
+        sampleReceivables=len(_SAMPLE), sampleSpan=[ymd(SAMPLE[0]), ymd(SAMPLE[1])],
         diRange=[min(r['di'] for r in RECEIVABLES), max(r['di'] for r in RECEIVABLES)],
         wRange=[str(min(r['w'] for r in LEDGER)), str(max(r['w'] for r in LEDGER))],
+        # 범위 가드의 상·하한 — 원장이 실제로 낸 값(diRange·wRange)이 아니라 허용 경계다.
+        # 출처는 platform_duration.py 하나뿐이다(FLOOR/CEIL = 플랫폼별 평균만기 실측 2.0~6.2일,
+        # DI_MIN/DI_MAX = 그 평균을 쪼갠 정수 만기 버킷 2~7일). 검증기가 이 숫자를 손으로 적지 않게 한다.
+        wBound=[str(FLOOR), str(CEIL)], diBound=[DI_MIN, DI_MAX],
         weekExec=sum(r['exec'] for r in wk), weekProfit=sum(r['profit'] for r in wk),
         weekRepay=sum(r['repay'] for r in wk), weekDays=len(wk),
-        weekW=str(r1(wk_wraw)), weekWRaw=str(wk_wraw.quantize(D('0.000001'))),
+        weekW=str(r2(wk_wraw)), weekWRaw=str(wk_wraw.quantize(D('0.000001'))),
         weekTy=str(r2(wk_ty)), weekPsc=int(wk_psc), weekTyAsset=str(r2(wk_ty5)),
-        tyByW=dict((k, sorted(v)[0]) for k, v in sorted(ty_by_w.items())),
-        fullExec=fu_ex, fullProfit=fu_pf, fullW=str(r1(fu_wraw)),
+        tyByDate=ty_by_date,
+        fullExec=fu_ex, fullProfit=fu_pf, fullW=str(r2(fu_wraw)),
         fullTy=str(r2(fu_ty)), fullPsc=int(fu_psc), fullTyAsset=str(r2(fu_ty5)),
         monthTy=[[g['d'], str(g['w']), str(g['ty'])] for g in month_rollup(LEDGER)],
         monthExec=[[g['d'], g['exec']] for g in month_rollup(LEDGER)],
@@ -426,9 +433,13 @@ if __name__ == '__main__':
         print('  %s  %2d일  실행 %15s  수익 %11s  상환 %16s  W %s  Ty %s%%'
               % (g['d'], g['n'], f(g['exec']), f(g['profit']), f(g['repay']), g['w'], g['ty']))
     print('  합계 실행 %s · 하루 평균 %s' % (f(sum(r['exec'] for r in LEDGER)), f(DAY_AVG)))
-    print('  모집단 대조 — 미회수 %s건 W %s / 전체 %s건 W %s (전체 기준은 화면에 쓰지 않는다)'
-          % (f(len(OPEN)), W_RAW.quantize(D('0.0001')),
-             f(len(RECEIVABLES)), wavg(RECEIVABLES).quantize(D('0.0001'))))
+    print('  모집단 대조 — 전체 %s건 W %s / 미회수 %s건 W %s (화면은 전체 기준)'
+          % (f(len(RECEIVABLES)), W_RAW.quantize(D('0.0001')),
+             f(len(OPEN)), wavg(OPEN).quantize(D('0.0001'))))
+    print('  채권매입수수료 %s · 부족액 차감 %s (%s%%) · 투자수익 %s'
+          % (f(sum(r['fee'] for r in LEDGER)), f(sum(r['ded'] for r in LEDGER)),
+             (D(sum(r['ded'] for r in LEDGER)) / D(sum(r['fee'] for r in LEDGER)) * 100).quantize(D('0.01')),
+             f(sum(r['profit'] for r in LEDGER))))
     wk = [r for r in LEDGER if '2026-08-21' <= r['d'] <= '2026-08-27']
     print('  기본 일주일 실행 %s · 수익 %s · %d건'
           % (f(sum(x['exec'] for x in wk)), f(sum(x['profit'] for x in wk)), len(wk)))

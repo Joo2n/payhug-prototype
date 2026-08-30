@@ -1,0 +1,82 @@
+== 메뉴 7 ==
+  PASS 투자 자산 → invest-assets (rgb(127, 225, 65))
+  PASS 투자 수익 → invest-profit (rgb(127, 225, 65))
+  PASS 가맹점 → merchants (rgba(127, 225, 65, 0.97))
+  PASS 정산채권 양수 → acquisition-list (rgba(127, 225, 65, 0.97))
+  PASS 계약기록 → contracts (rgba(127, 225, 65, 0.992))
+  PASS 쿠콘 관리 현금 → coocon (rgba(127, 225, 65, 0.97))
+  PASS 비밀번호 변경 → password (rgba(127, 225, 65, 0.992))
+== 상태 20 ==
+  PASS invest-assets/page2  got=page2
+  PASS invest-assets/download  got=download
+  PASS invest-assets/cert-confirm  got=cert-confirm
+  PASS invest-assets/empty  got=empty
+  PASS invest-profit/monthly  got=monthly
+  PASS invest-profit/empty  got=empty
+  PASS merchants/filtered  got=filtered
+  PASS merchants/empty  got=empty
+  PASS acquisition-list/confirm  got=confirm
+  PASS acquisition-list/signing  got=signing
+  PASS acquisition-list/done  got=done
+  PASS contracts/all  got=all
+  PASS contracts/downloaded  got=downloaded
+  PASS contracts/empty  got=empty
+  PASS coocon/confirm  got=confirm
+  PASS password/weak  got=weak
+  PASS password/error  got=error
+  PASS password/done  got=done
+== 다운로드 4 ==
+  PASS assets-status → 투자자산현황_2026-08-27_2026-08-27.xlsx 5824B
+  PASS assets-merchant → 가맹점별투자자산_2026-08-27_2026-08-27.xlsx 6615B
+  PASS profit-status → 투자수익현황_2026-08-21_2026-08-27.xlsx 5586B
+  PASS profit-daily → 일별투자수익_2026-08-21_2026-08-27.xlsx 5958B
+== 값 변화 ==
+  PASS 가맹점별 투자금액 정렬 {"case":"가맹점별 투자금액 정렬","base":"우리동네반찬","asc":"우리동네반찬","desc":"김성호떡볶이 본점","rows":8,"pass":true}
+  PASS 가맹점 검색어 필터 {"case":"가맹점 검색어 필터","rowsBefore":8,"rowsAfter":2,"countBefore":"총16건·표시1–812","countAfter":"총2건1","pass":true}
+  PASS 기간·granularity 변경 시 합계 재계산 {"case":"기간·granularity 변경 시 합계 재계산","weekRows":7,"weekSum":"1,375,880","ydayRows":1,"ydaySum":"194,260","monthRows":6,"monthSum":"35,307,250","pass":true}
+  PASS 업종 필터 — 네이티브 select·데이터 파생 옵션·조건 적용 {"case":"업종 필터 — 네이티브 select·데이터 파생 옵션·조건 적용","tag":"SELECT","opts":["전체","음식점업"],"dataSectors":["음식점업"],"customLeft":0,"picked":"음식점업","chips":"적용된조건업종:음식점업조건초기화","pass":true}
+  PASS 날짜 입력이 조회 조건을 움직인다 {"case":"날짜 입력이 조회 조건을 움직인다","rowsBefore":7,"rowsAfter":3,"valueKept":"2026-08-25","period":"2026-08-25 ~ 2026-08-27","pass":true}
+  PASS 역전 범위 방어 — 상호 제한·안내문·버튼 비활성 {"case":"역전 범위 방어 — 상호 제한·안내문·버튼 비활성","max":"2026-08-27","min":"2026-08-21","warnShown":true,"searchDisabled":true,"pass":true}
+  PASS 검색창 Enter → 조회 실행 {"case":"검색창 Enter → 조회 실행","rows":2,"pass":true}
+  PASS 모달 배경 클릭 닫기 — 진행 오버레이만 예외 {"case":"모달 배경 클릭 닫기 — 진행 오버레이만 예외","closed":["invest-assets/cert-confirm","acquisition-list/confirm","acquisition-list/done","coocon/confirm"],"kept":[],"signingKept":true,"pass":true}
+  PASS 메뉴 그룹 접힘 {"case":"메뉴 그룹 접힘","tag":"BUTTON","before":false,"after":true,"aria":"false","pass":true}
+  PASS 계약기록 전체 선택 {"case":"계약기록 전체 선택","before":"3건 선택","after":"16건 선택","button":"선택 문서 다운로드 (16)","pass":true}
+  PASS 데이터 없음 상태 지표 0 치환 {"case":"데이터 없음 상태 지표 0 치환","hasAmount":true,"zeroed":true,"pass":true}
+== 레이아웃 30조합 ==
+  PASS invest-assets/default h=1510
+  PASS invest-assets/page2 h=1510
+  PASS invest-assets/download h=1510
+  PASS invest-assets/cert-confirm h=1510 모달=invest-assets-cert-confirm
+  PASS invest-assets/empty h=1312 빈마운트=ia-merch-page
+  PASS invest-profit/default h=1407 빈마운트=pf-from,pf-to
+  PASS invest-profit/monthly h=1362 빈마운트=pf-from,pf-to
+  PASS invest-profit/empty h=1256 빈마운트=pf-from,pf-to
+  PASS merchants/default h=713 빈마운트=mc-kw,mc-chips
+  PASS merchants/filtered h=479 빈마운트=mc-kw
+  PASS merchants/empty h=696 빈마운트=mc-kw
+  PASS acquisition-list/default h=426
+  PASS acquisition-list/confirm h=426 모달=acquisition-confirm
+  PASS acquisition-list/signing h=426 모달=acquisition-signing
+  PASS acquisition-list/done h=426 모달=acquisition-done
+  PASS contracts/default h=689
+  PASS contracts/all h=689
+  PASS contracts/downloaded h=689
+  PASS contracts/empty h=527 빈마운트=ct-page
+  PASS coocon/default h=625
+  PASS coocon/confirm h=625 모달=coocon-confirm
+  PASS password/default h=495 빈마운트=pw-cur,pw-new,pw-cfm
+  PASS password/weak h=573 빈마운트=pw-cur,pw-new,pw-cfm
+  PASS password/error h=517 빈마운트=pw-cur,pw-new,pw-cfm
+  PASS password/done h=372 빈마운트=pw-cur,pw-new,pw-cfm
+  PASS certificate/default h=1160
+  PASS xls-assets-status/default h=603
+  PASS xls-assets-merchant/default h=939
+  PASS xls-profit-status/default h=659
+  PASS xls-profit-daily/default h=491
+  PASS index/default h=1203
+  PASS login/default h=1113
+== 죽은 컨트롤 == 0 / 검사 134 건
+== 새 창 링크(실물은 verify_links.py) == 21
+== 키보드·보조기술 미도달 컨트롤 == 0
+== 콘솔 에러 == 0
+== selfcheck == {"merchantSum":1523100000,"assetExecRow":1523100000,"execMatch":true,"assetTotal":1628400000,"ratioSum":100,"dailyProfitSum":1375880,"monthlyProfitSum":35307250,"contracts":16,"signQueue":3,"screens":14,"states":18}

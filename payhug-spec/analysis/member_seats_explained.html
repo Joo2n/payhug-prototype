@@ -1,0 +1,304 @@
+<title>회원이 앉는 자리</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --bg:#FAF8F4; --surface:#FFFFFF; --surface2:#F2EFE8; --ink:#252220; --muted:#6D665E;
+    --line:#E3DFD5; --seal:#B33A2B; --seal-bg:#F7E7E3; --axis:#3B4C80; --axis-bg:#E5E9F4;
+    --ok:#2A6B4A; --ok-bg:#E2F0E7; --warn:#8A6212; --warn-bg:#F7EEDA;
+    --mono-bg:#EFECE4; --shadow:0 1px 2px rgba(40,34,28,.05),0 6px 20px rgba(40,34,28,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17161A; --surface:#1E1D22; --surface2:#26252B; --ink:#E9E6E1; --muted:#9C958C;
+      --line:#312F36; --seal:#E47964; --seal-bg:#3A2622; --axis:#93A5DC; --axis-bg:#232941;
+      --ok:#77C29B; --ok-bg:#1D3529; --warn:#D7AC5D; --warn-bg:#38301D;
+      --mono-bg:#28272E; --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 20px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17161A; --surface:#1E1D22; --surface2:#26252B; --ink:#E9E6E1; --muted:#9C958C;
+    --line:#312F36; --seal:#E47964; --seal-bg:#3A2622; --axis:#93A5DC; --axis-bg:#232941;
+    --ok:#77C29B; --ok-bg:#1D3529; --warn:#D7AC5D; --warn-bg:#38301D;
+    --mono-bg:#28272E; --shadow:0 1px 2px rgba(0,0,0,.35),0 6px 20px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans KR","Apple SD Gothic Neo",sans-serif; font-size:15.5px; line-height:1.75;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:820px; margin:0 auto; padding:40px 20px 90px}
+  h1{font-size:28px; font-weight:700; letter-spacing:-.02em; margin:0 0 8px; text-wrap:balance}
+  .sub{color:var(--muted); font-size:14px; margin:0 0 30px}
+  h2{font-size:20px; font-weight:700; letter-spacing:-.015em; margin:52px 0 12px; text-wrap:balance}
+  h3{font-size:16px; font-weight:700; margin:26px 0 8px}
+  p{margin:0 0 14px; max-width:64ch}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.86em; background:var(--mono-bg); border-radius:4px; padding:1px 5px}
+  strong{font-weight:700}
+
+  .lead{background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--seal);
+    border-radius:12px; padding:20px 24px; box-shadow:var(--shadow); margin:0 0 8px}
+  .lead p{font-size:16.5px; margin-bottom:10px}
+  .lead p:last-child{margin-bottom:0}
+
+  .box{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:18px 0}
+  .box.tint{background:var(--surface2)}
+  .box.axis{border-left:4px solid var(--axis)}
+  .box.warn{border-left:4px solid var(--warn)}
+  .box h3{margin-top:0}
+  .box p:last-child{margin-bottom:0}
+  .boxlabel{font-size:11.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin:0 0 8px}
+
+  .tree{font-family:"IBM Plex Mono",monospace; font-size:13.5px; line-height:1.9; background:var(--surface2);
+    border-radius:10px; padding:16px 18px; margin:14px 0; overflow-x:auto; white-space:pre}
+  .tree .hi{color:var(--seal); font-weight:600}
+  .tree .dim{color:var(--muted)}
+
+  .tbl-wrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:12px; background:var(--surface)}
+  table{border-collapse:collapse; width:100%; font-size:14px; min-width:640px}
+  th,td{padding:11px 15px; text-align:left; vertical-align:top; border-top:1px solid var(--line)}
+  thead th{border-top:none; background:var(--surface2); color:var(--muted); font-size:12px; font-weight:600;
+    letter-spacing:.04em}
+  .pill{display:inline-block; font-size:11.5px; font-weight:700; padding:2px 9px; border-radius:999px; white-space:nowrap}
+  .pill.auto{color:var(--axis); background:var(--axis-bg)}
+  .pill.hand{color:var(--seal); background:var(--seal-bg)}
+  .pill.calc{color:var(--muted); background:var(--surface2)}
+  .pill.yes{color:var(--ok); background:var(--ok-bg)}
+  .pill.no{color:var(--muted); background:var(--surface2)}
+
+  .seats{margin:18px 0}
+  .seat{display:grid; grid-template-columns:118px 1fr; gap:14px; align-items:start;
+    padding:13px 0; border-top:1px solid var(--line)}
+  .seat:first-child{border-top:none}
+  .seat .nm{font-weight:700; font-size:14.5px; color:var(--seal)}
+  .seat .nm span{display:block; font-weight:400; font-size:12px; color:var(--muted); margin-top:1px}
+  .seat .dc{font-size:14px}
+  .seat .dc p{margin:0; max-width:56ch}
+
+  ul{padding-left:20px; margin:12px 0}
+  li{margin:7px 0; max-width:62ch}
+  .qa{border-left:3px solid var(--line); padding-left:16px; margin:16px 0}
+  .qa .q{font-weight:700; margin-bottom:6px}
+  .qa .q::before{content:"“"; color:var(--muted)}
+  .qa .q::after{content:"”"; color:var(--muted)}
+
+  footer{margin-top:56px; color:var(--muted); font-size:12.5px; border-top:1px solid var(--line); padding-top:16px}
+  footer p{max-width:70ch; margin:0 0 6px}
+</style>
+
+<div class="wrap">
+  <h1>회원이 앉는 자리</h1>
+  <p class="sub">가맹점 화면에 뜨는 이름들이 각각 어디서 온 값인지, 그리고 계약서에는 누가 찍히는지</p>
+
+  <div class="lead">
+    <p><strong>먼저 제일 헷갈리는 것부터.</strong> 가맹점 상세 맨 위에 붙은 배지 2개와, 가맹점 목록 담당 칸에 2줄로 보이는 값은 <strong>완전히 같은 값</strong>입니다. 화면만 다를 뿐 같은 데이터를 두 군데서 보여주고 있어요.</p>
+    <p>그리고 이 두 값은 <strong>담당자 쪽 정보</strong>지, 소개 파트너나 계약서와는 아무 상관이 없습니다. 그래서 소개 파트너를 아무리 바꾸고 재서명해도 저 배지는 안 바뀝니다.</p>
+  </div>
+
+  <h2>배지 2개가 각각 뭐냐면</h2>
+
+  <div class="box">
+    <p class="boxlabel">왼쪽 회색 배지 · 목록에선 윗줄 작은 글씨</p>
+    <p><strong>담당자가 속한 조직의 꼭대기 회원</strong>입니다. 화면 어딘가에 라벨이 안 붙어 있어서 정체를 알기 어려운데, 담당자 변경 모달을 열어보면 이 값에 <strong>"소속 조직"</strong>이라는 라벨이 붙어 있습니다. 거기가 유일하게 이름이 적혀 있는 곳이에요.</p>
+  </div>
+
+  <div class="box">
+    <p class="boxlabel">오른쪽 초록 배지 · 목록에선 아랫줄</p>
+    <p><strong>담당자 본인</strong>입니다. 가맹점 상세에서 담당자로 배정한 그 회원이 그대로 나옵니다.</p>
+  </div>
+
+  <p>둘이 같은 사람이면 회색 배지는 아예 안 뜹니다. 목록에서 어바웃피자나 처갓집처럼 <strong>한 줄만 있는 가맹점</strong>은 담당자가 곧 자기 조직 꼭대기라서 위에 겹쳐 쓸 게 없는 경우예요.</p>
+
+  <h2>커피집으로 직접 맞춰보면 딱 떨어집니다</h2>
+
+  <p>회원 관리 목록에서 상위 회원 칸을 따라가 보면 테스트 계정들이 이렇게 엮여 있습니다.</p>
+
+  <div class="tree"><span class="hi">테스트_상위파트너</span>   <span class="dim">(파트너 · 맨 위, 상위 없음)</span>
+└ 테스트_하위파트너   <span class="dim">(파트너)</span>
+   └ 테스트_영업조직   <span class="dim">(영업조직)</span>
+      └ <span class="hi">테스트_영업</span>   <span class="dim">(영업 · 커피집 담당자)</span></div>
+
+  <p>커피집 담당자가 <strong>테스트_영업</strong>이고, 거기서 윗선을 계속 타고 올라가면 꼭대기가 <strong>테스트_상위파트너</strong>입니다. 배지에 뜬 값이랑 정확히 같죠.</p>
+
+  <div class="box tint">
+    <p class="boxlabel">박현서 매니저님 질문에 대한 답</p>
+    <p>"하위파트너를 골랐는데 왜 상위파트너가 뜨냐"고 하셨는데, <strong>저 배지는 링크에서 고른 파트너를 보여주는 게 아닙니다.</strong> 담당자(테스트_영업)의 윗선 꼭대기를 보여주는 자리예요. 그래서 하위파트너를 고르셨어도 꼭대기인 상위파트너가 뜬 게 맞는 동작입니다.</p>
+  </div>
+
+  <p>반대로 소개 파트너(상위박현서)로는 이 배지가 설명이 안 됩니다. 상위박현서는 자기가 맨 위라서, 소개 파트너 기준이었다면 배지에도 상위박현서가 떠야 하거든요. 그런데 안 그렇죠. 그러니까 <strong>담당자 기준이 맞습니다.</strong></p>
+
+  <div class="box warn">
+    <p class="boxlabel">잇잇 보실 때 주의</p>
+    <p>잇잇 배지에 "제휴사_테스트"가 떠 있어서 <strong>제휴사로 가입한 것처럼 보이는데, 아닙니다.</strong> 제휴사 코드로 가입한 가맹점은 소개 파트너 드롭다운이 아예 사라지고 안내 문구만 남거든요. 잇잇은 드롭다운이 멀쩡히 보이니까 제휴사 채널이 아니에요.</p>
+    <p>저건 그냥 담당자(박길동)의 윗선이 제휴사_테스트로 잡혀 있어서 나온 값입니다. 배지에 제휴사 이름이 뜬다고 제휴사 가입으로 읽으면 안 됩니다.</p>
+  </div>
+
+  <h2>자리가 4개 있는데, 채우는 사람이 다 다릅니다</h2>
+
+  <div class="seats">
+    <div class="seat">
+      <div class="nm">소개 파트너<span>계약서로 감</span></div>
+      <div class="dc"><p>가입 링크에 실린 파트너 코드로 처음 채워지고, 그다음엔 어드민에서 바꿀 수 있습니다. <strong>계약서 양수인 자리에 찍히는 게 이 값</strong>이에요.</p></div>
+    </div>
+    <div class="seat">
+      <div class="nm">담당자<span>계약서엔 안 감</span></div>
+      <div class="dc"><p>어드민에서 직접 배정합니다. 화면 코드만 보면 가입 링크로 자동으로 채워지는 경로가 없는데, 실제 데이터에는 값이 들어가 있어요. <strong>서버가 영업 코드로 채워주는 것으로 보이지만 확인이 필요합니다.</strong></p></div>
+    </div>
+    <div class="seat">
+      <div class="nm">소속 조직<span>표시 전용</span></div>
+      <div class="dc"><p>담당자에서 자동으로 계산돼서 내려오는 값입니다. 저장돼 있는 게 아니라 매번 서버가 계산해서 보내줘요. 고칠 수 있는 화면이 없고, <strong>담당자를 바꾸면 따라 바뀝니다.</strong></p></div>
+    </div>
+    <div class="seat">
+      <div class="nm">투자자<span>계약서로 감</span></div>
+      <div class="dc"><p>어드민 가맹점 상세에서 매칭합니다. 회원 관리에서는 투자자 회원을 <strong>등록만</strong> 하고, 어느 가맹점에 붙일지는 가맹점 상세에서 정해요. <strong>승인하려면 투자자 매칭이 먼저 끝나 있어야 합니다.</strong></p></div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>자리</th><th>처음 채워지는 방식</th><th>나중에 수정</th><th>계약서 반영</th></tr></thead>
+      <tbody>
+        <tr><td><strong>소개 파트너</strong></td><td><span class="pill auto">링크 파트너 코드</span></td><td><span class="pill yes">가능</span></td><td><span class="pill yes">양수인</span></td></tr>
+        <tr><td><strong>담당자</strong></td><td><span class="pill hand">어드민 배정 (서버 자동 의심)</span></td><td><span class="pill yes">가능</span></td><td><span class="pill no">안 감</span></td></tr>
+        <tr><td><strong>소속 조직</strong></td><td><span class="pill calc">담당자에서 계산</span></td><td><span class="pill no">불가</span></td><td><span class="pill no">안 감</span></td></tr>
+        <tr><td><strong>투자자</strong></td><td><span class="pill hand">어드민 매칭</span></td><td><span class="pill yes">가능</span></td><td><span class="pill yes">유동화기관</span></td></tr>
+        <tr><td>영업 코드</td><td><span class="pill auto">링크 영업 드롭다운</span></td><td><span class="pill no">화면 없음</span></td><td><span class="pill no">안 감</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>계약서에는 누가 찍히나</h2>
+
+  <p>말씀하신 구조가 <strong>대체로 맞습니다.</strong> 회의에서 확정된 배분 구조 문서에 이렇게 적혀 있어요.</p>
+
+  <div class="tree">가맹점
+└ 영업사원        <span class="dim">← 기록용</span>
+   └ 영업조직      <span class="dim">← 기록용</span>
+      └ <span class="hi">파트너(하위)</span>   <span class="dim">← 채권 양수인</span>
+         └ 파트너(상위)   <span class="dim">← 최상위</span>
+            └ <span class="hi">페이허그</span>   <span class="dim">← 재양수</span></div>
+
+  <p>원문 표현이 <strong>"채권 양수인은 맨 아래 파트너, 페이허그는 그 위에서 재양수한다"</strong>입니다. 그러니까 링크에서 고른 파트너가 양수인이 되고, 그 위 상위 파트너들이 차례로 올라가고, 맨 위에 페이허그가 붙고, 투자자는 따로 유동화기관 자리에 앉습니다.</p>
+
+  <p>실제로 계약서 만들 때 서버가 <strong>파트너 체인 배열</strong>을 통째로 넘겨주는데, 그 배열 안에 <strong>페이허그도 한 칸으로 같이 들어 있습니다.</strong> 페이허그 노드에는 표시가 따로 붙어 있어서 구분할 수 있게 돼 있어요. 투자자만 이 배열이 아니라 별도 참여자 목록으로 갑니다.</p>
+
+  <div class="box axis">
+    <p class="boxlabel">영업은 왜 계약서에 안 나오나</p>
+    <p>같은 문서에 답이 있습니다. <strong>"영업사원·영업조직은 기록용 — 실제 돈이 오가는 상대는 파트너뿐이다."</strong> 영업은 누가 데려왔는지 남기는 용도고, 채권을 주고받는 당사자가 아니라서 계약서에 자리가 없습니다.</p>
+  </div>
+
+  <h3>다우 같은 직계약은 구조가 아예 다릅니다</h3>
+  <p>다우처럼 총판을 안 거치는 계약은 <strong>페이허그가 곧 양수인</strong>이고, 다우와 투자자에게 각각 나눠주는 방식입니다. 순서대로 내려가는 게 아니라 페이허그가 전액 받아서 각자에게 배분해요. 이 경우엔 양수도 계약서 자체를 안 보여줍니다. 문서에도 <strong>이 트랙에서는 '파트너'나 '최상위'라는 말을 쓰지 말라고</strong> 적혀 있습니다.</p>
+
+  <h2>유동화기관이랑 투자자, 뭐가 다르냐면</h2>
+
+  <p><strong>같은 사람입니다.</strong> 부르는 자리가 달라서 이름이 두 개예요.</p>
+
+  <ul>
+    <li><strong>계약서에 인쇄될 때</strong>는 유동화기관</li>
+    <li><strong>어드민 화면이나 우리끼리 말할 때</strong>는 투자자</li>
+  </ul>
+
+  <p>계약서마다 다르게 보이신 이유는 <strong>문서마다 서명란 구성이 다르기 때문</strong>입니다. 여기서 먼저 정리할 게 하나 있어요.</p>
+
+  <div class="box axis">
+    <p class="boxlabel">계약서는 여러 개가 아니라 한 개입니다</p>
+    <p>가맹점이 서명하면 <strong>PDF 파일 하나가 만들어지고, 계약 기록도 하나만 남습니다.</strong> 그 PDF가 7페이지짜리인데 그 안에 문서 5개가 들어 있는 거예요. 양수도 계약서도 재양도 합의서도 <strong>별도 계약이 아니라 그 PDF 안의 페이지</strong>입니다.</p>
+    <p>그래서 파트너랑 투자자가 도장을 찍을 때도 각자 다른 계약서에 찍는 게 아니라, <strong>같은 PDF의 서로 다른 페이지 서명란</strong>에 찍습니다. 파트너는 양수도 계약서 페이지에, 투자자는 재양도 합의서 페이지에요.</p>
+    <p>어드민에서 "투자자 없음"을 체크하면 계약이 하나 빠지는 게 아니라 <strong>그 PDF 안의 재양도 합의서 페이지가 다른 버전으로 바뀝니다.</strong></p>
+  </div>
+
+  <p>이제 서명란을 보면, "유동화기관"이라는 라벨이 실제로 인쇄되는 건 <strong>재양도 합의서 페이지 딱 하나</strong>고 나머지 페이지는 이렇게 생겼습니다.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>PDF 안의 페이지</th><th>서명란에 적히는 이름</th><th>누가 도장</th></tr></thead>
+      <tbody>
+        <tr><td>서비스 이용 계약서 <span class="mono">2p</span></td><td>가맹점 / 서비스제공자</td><td>가맹점 · 페이허그</td></tr>
+        <tr><td>정산금채권 양수도 계약서 <span class="mono">2p</span></td><td>양도인 / 양수인</td><td>가맹점 · <strong>파트너</strong></td></tr>
+        <tr><td>개인정보 동의서 <span class="mono">부칙1</span></td><td>신청인</td><td>가맹점</td></tr>
+        <tr><td>자동 출금 이체 동의서 <span class="mono">부칙2</span></td><td>신청인</td><td>가맹점</td></tr>
+        <tr><td><strong>정산금채권 재양도 합의서</strong> <span class="mono">부칙3</span></td><td>양도인 / 양수인 / 재양수인 / <strong>유동화기관</strong></td><td>가맹점 · 파트너 · 페이허그 · <strong>투자자</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>여기에 한 겹이 더 있습니다. 재양도 합의서가 <strong>판이 두 개</strong>예요. 총판을 거치는 계약은 4칸짜리(양도인·양수인·재양수인·유동화기관)를 쓰고, 직계약은 3칸짜리를 쓰는데 <strong>3칸짜리에는 "유동화기관"이라는 라벨 자체가 없고</strong> 투자자가 재양수인 칸에 앉습니다. 같은 투자자인데 계약서에 따라 다른 이름 아래 있는 게 이것 때문입니다.</p>
+
+  <div class="box warn">
+    <p class="boxlabel">"재재양수인"은 계약서 용어가 아닙니다</p>
+    <p>계약서 서명란은 최대 4칸에서 끝나고, <strong>재재양수인이라는 칸은 없습니다.</strong> 이 말은 정산채권 DB 컬럼 이름이거나, 세무에서 면세 판정할 때 "양수인 → 재양수인 → 재재양수인 사슬"이라고 말할 때 쓰는 용어예요.</p>
+    <p>참고로 DB의 재재양수인 컬럼은 <strong>전 행이 0.00%에 -0</strong>이라 실제로 쓰이는지도 확인이 안 된 상태입니다.</p>
+  </div>
+
+  <h2>서명 순서가 이렇게 됩니다</h2>
+
+  <p>이게 왜 중요하냐면, <strong>계약서 PDF는 가맹점이 서명하는 순간 만들어지고</strong> 그때 있던 참여자 정보로 내용이 굳어버리기 때문입니다.</p>
+
+  <div class="tree">1. 가맹점이 약관 동의   <span class="dim">← 이때 참여자를 서버에 물어봄</span>
+2. 가맹점이 서명       <span class="dim">← PDF 완성 · 계약 기록 생성</span>
+3. 파트너·투자자 도장   <span class="dim">← 만들어진 PDF에 찍는 것</span>
+4. 페이허그 승인       <span class="dim">← 투자자 매칭 또는 '투자자 없음' 체크</span>
+5. 정산 상품 배정
+6. <span class="hi">정산 실행 토글 ON</span>   <span class="dim">← 여기가 실제 선정산 시작</span></div>
+
+  <p>순서가 이렇다 보니 <strong>투자자는 계약서가 다 만들어진 뒤에 붙는 게 기본</strong>입니다. 가입 링크에 투자자 코드가 안 실려 있었으면 <strong>PDF 안에는 투자자 자리가 비어 있는 채로 굳습니다.</strong></p>
+
+  <div class="box axis">
+    <p class="boxlabel">선정산 시작에 투자자는 조건이 아닙니다</p>
+    <p>승인할 때 투자자를 보긴 하는데, <strong>"투자자 없음"에 체크하면 그냥 통과합니다.</strong> 투자자 없이 승인하는 게 정식 경로예요.</p>
+    <p>실제로 선정산이 도는 건 <strong>정산 실행 토글</strong>이고, 이 토글이 보는 건 <strong>승인 완료 + 정산 상품 배정</strong> 둘뿐입니다. <strong>투자자는 아예 조건에 없습니다.</strong> 상품이 안 배정돼 있으면 "정산 상품 배정 필요" 안내가 뜨는 게 유일한 막힘이고요.</p>
+    <p>그리고 <strong>투자자를 매칭해도 재서명 요청이 뜨지 않습니다.</strong> 재서명 안내는 <strong>소개 파트너를 바꿨을 때만</strong> 나옵니다. 그러니까 "투자자 붙이고 → 재서명하고 → 선정산 시작"이 아니라, 셋은 서로 독립입니다.</p>
+  </div>
+
+  <h2>커피집이 왜 뒤죽박죽으로 보였나</h2>
+
+  <p>커피집 데이터를 보면 <strong>담당자는 테스트 계열, 소개 파트너는 박현서 계열</strong>로 서로 다른 조직입니다. 이서준님이 추측하신 순서가 맞아 보여요.</p>
+
+  <ul>
+    <li>가입할 때는 테스트 계열 링크로 들어왔고 → 담당자가 테스트_영업으로 잡힘 → 배지가 테스트_상위파트너</li>
+    <li>계약서는 <strong>그 시점 정보로 이미 만들어짐</strong></li>
+    <li>나중에 소개 파트너를 상위박현서로 바꿈 → 그런데 배지는 담당자 축이라 그대로</li>
+    <li>그다음 투자자를 매칭 → 이것도 계약서 만든 뒤라 이미 늦음</li>
+  </ul>
+
+  <p>그래서 <strong>이전 서명에도 없고 계약서에도 안 보이는 게 맞습니다.</strong> 소개 파트너를 바꾸면 어드민에 이런 안내가 뜨거든요.</p>
+
+  <div class="box tint">
+    <p style="font-size:14.5px"><strong>"이미 승인된 가맹점입니다. 변경된 파트너를 계약서에 반영하려면 재서명 요청이 필요합니다. (기존 계약서는 자동으로 갱신되지 않습니다)"</strong></p>
+  </div>
+
+  <p>정리하면 <strong>계약서는 서명한 순간의 스냅샷</strong>이고, 나중에 배정을 바꿔도 저절로 안 따라옵니다. 재서명을 요청해서 새로 받아야 바뀌고, 그때 이전 계약서는 대체됨 처리돼서 "이전 계약서" 목록으로 내려갑니다.</p>
+
+  <div class="box warn">
+    <p class="boxlabel">그런데 이것부터 먼저 보셔야 합니다 — 커피집 계약서 서명일</p>
+    <p>계약서에 상위 파트너를 넣는 기능 자체가 <strong>2026년 5월 5일에 처음 들어갔습니다.</strong> 투자자는 4월 17일, 참여자 조회는 4월 15일이고요.</p>
+    <p>그러니까 <strong>커피집 계약서 서명일이 5월 5일보다 앞이면</strong>, 소개 파트너를 언제 바꿨든 상관없이 상위 파트너가 안 나오는 게 당연합니다. 기능이 없던 때에 만들어진 계약서니까요. 배정 순서 문제가 아니라 그냥 옛날 계약서인 겁니다.</p>
+    <p>가맹점 상세 계약서 목록에 서명일이 찍혀 있으니 <strong>그거 먼저 확인해 보시면 원인이 바로 갈립니다.</strong></p>
+  </div>
+
+  <h3>배정을 먼저 했는데도 안 나왔다면, 조용한 사고일 수 있습니다</h3>
+  <p>계약서 만들 때 참여자 정보를 서버에서 가져오는데, <strong>이게 실패해도 아무 경고 없이 그냥 넘어갑니다.</strong> 파트너도 투자자도 없는 계약서가 그대로 만들어지고 서명까지 되는데, 가맹점도 우리도 모릅니다.</p>
+  <p>게다가 참여자를 가져올 때는 <strong>사업자 단위가 아니라 유저 단위</strong>로 물어봅니다. 그런데 어드민에서 소개 파트너·투자자를 배정할 때는 사업자 단위로 하거든요. <strong>사업자를 2개 이상 가진 가맹점이면 엉뚱한 사업자 기준 참여자가 실릴 수 있습니다.</strong></p>
+  <p>하나 더 — 상위 파트너가 계약서에 들어가는 통로는 <strong>파트너 체인 배열 하나뿐</strong>입니다. 서버가 이 배열을 안 내려주면 대체할 다른 경로가 없어서 그냥 빠집니다.</p>
+
+  <h2>이건 개발에 물어봐야 합니다</h2>
+
+  <ul>
+    <li><strong>담당자를 서버가 영업 코드로 자동 세팅하나요?</strong> 화면 코드에는 자동으로 채우는 경로가 없는데 데이터에는 값이 있습니다. 이게 가입 시 자동인지 누가 수동으로 넣은 건지 확인이 필요합니다.</li>
+    <li><strong>소속 조직은 무엇을 기준으로 꼭대기를 잡나요?</strong> 담당자에서 올라간다는 건 확실한데, 상위 회원을 재귀로 타는지 별도 조직 정보를 보는지는 서버만 압니다.</li>
+    <li><strong>파트너가 여러 단이면 계약서 어느 칸에 인쇄되나요?</strong> 설계 문서상 양수도 계약서 양수인 칸은 하나인데, 코드는 여러 단짜리 체인을 넘기고 서명 역할에도 상위 파트너 2차까지 있습니다. 이게 어떻게 맞물리는지 정한 문서가 없습니다.</li>
+    <li><strong>투자자 없음으로 체크한 계약서는 실물이 어떻게 생겼나요?</strong> 화면 안내는 "재양도 합의서가 투자자 없음 버전으로 작성된다"인데, 그 버전의 조항 근거가 확인되지 않았습니다.</li>
+    <li><strong>참여자 조회가 실패했을 때 계약서 생성을 막아야 하지 않나요?</strong> 지금은 실패해도 경고 없이 진행돼서, 파트너·투자자 빠진 계약서가 조용히 만들어집니다.</li>
+    <li><strong>사업자를 2개 이상 가진 가맹점은 참여자가 제대로 붙나요?</strong> 배정은 사업자 단위인데 조회는 유저 단위라 어긋날 소지가 있습니다.</li>
+  </ul>
+
+  <div class="box tint">
+    <p class="boxlabel">덧붙여 — 용어 정리가 필요한 지점</p>
+    <p>계약 종류 상수에 <span class="mono">선정산 서비스 이용계약서</span>가 있는데 이걸 만드는 경로가 화면 어디에도 없습니다. 그런데 <strong>같은 이름이 약관 코드로도 쓰이고 있어요.</strong> 계약 종류인지 약관 이름인지 헷갈리게 돼 있어서, 어느 쪽으로 정리할지 정해야 합니다.</p>
+    <p>그리고 설계 문서에는 "서명은 가입할 때 등록한 사인을 5종에 자동으로 재사용한다"고 적혀 있는데, <strong>실제로는 계약 단계에서 그 자리에 직접 그립니다.</strong> 문서를 고쳐야 합니다.</p>
+  </div>
+
+  <footer>
+    <p>여기 적힌 화면 동작과 필드는 어드민·가맹점 웹 최신 소스로 확인한 내용이고, 계약 당사자 구성은 설계 문서와 회의 확정 사항 기준입니다.</p>
+    <p>계약서를 실제로 그려내는 서버는 이 자료에 포함되지 않아, "어느 칸에 인쇄되는가"는 화면이 넘겨주는 값까지만 확인된 상태입니다.</p>
+  </footer>
+</div>

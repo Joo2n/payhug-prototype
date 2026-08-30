@@ -1,0 +1,1344 @@
+{
+ "menus": [
+  {
+   "menu": "(사이드바 구성)",
+   "screen": "-",
+   "label": "선언된 메뉴 전건이 사이드바에 하나씩",
+   "선언": [
+    "contracts",
+    "invest-assets",
+    "invest-returns",
+    "invest-sim",
+    "kcoon",
+    "merchants",
+    "password",
+    "receivables"
+   ],
+   "그려진것": [
+    "contracts",
+    "invest-assets",
+    "invest-returns",
+    "invest-sim",
+    "kcoon",
+    "merchants",
+    "password",
+    "receivables"
+   ],
+   "곳수": 8,
+   "pass": true
+  },
+  {
+   "menu": "kcoon",
+   "screen": "(외부)",
+   "label": "쿠콘 관리 현금",
+   "href": "https://www.we-bank.co.kr/main_00100.act",
+   "target": "_blank",
+   "rel": "noopener",
+   "pass": true
+  },
+  {
+   "menu": "invest-assets",
+   "screen": "invest-assets",
+   "label": "투자 자산",
+   "active": "invest-assets",
+   "visible": true,
+   "state": "default",
+   "hash": "#invest-assets",
+   "bg": "rgb(127, 225, 65)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "invest-returns",
+   "screen": "invest-profit",
+   "label": "투자 수익",
+   "active": "invest-returns",
+   "visible": true,
+   "state": "default",
+   "hash": "#invest-profit",
+   "bg": "rgb(127, 225, 65)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "invest-sim",
+   "screen": "invest-sim",
+   "label": "투자 시뮬레이션",
+   "active": "invest-sim",
+   "visible": true,
+   "state": "default",
+   "hash": "#invest-sim",
+   "bg": "rgba(127, 225, 65, 0.97)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "merchants",
+   "screen": "merchants",
+   "label": "가맹점",
+   "active": "merchants",
+   "visible": true,
+   "state": "default",
+   "hash": "#merchants",
+   "bg": "rgba(127, 225, 65, 0.97)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "receivables",
+   "screen": "acquisition-list",
+   "label": "정산채권 양수",
+   "active": "receivables",
+   "visible": true,
+   "state": "default",
+   "hash": "#acquisition-list",
+   "bg": "rgba(127, 225, 65, 0.97)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "contracts",
+   "screen": "contracts",
+   "label": "계약기록",
+   "active": "contracts",
+   "visible": true,
+   "state": "default",
+   "hash": "#contracts",
+   "bg": "rgba(127, 225, 65, 0.97)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  },
+  {
+   "menu": "password",
+   "screen": "password",
+   "label": "비밀번호 변경",
+   "active": "password",
+   "visible": true,
+   "state": "default",
+   "hash": "#password",
+   "bg": "rgba(127, 225, 65, 0.97)",
+   "groupLabel": "rgb(127, 225, 65)",
+   "pageShown": true,
+   "green": true,
+   "labelOn": true,
+   "pass": true
+  }
+ ],
+ "states": [
+  {
+   "screen": "invest-assets",
+   "state": "download",
+   "visible": true,
+   "hash": "#invest-assets/download",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-assets\"] → click [data-mount=\"ia-xls-merchant\"] → wait 600ms",
+   "pass": true
+  },
+  {
+   "screen": "invest-assets",
+   "state": "cert-confirm",
+   "visible": true,
+   "hash": "#invest-assets/cert-confirm",
+   "modal": "invest-assets-cert-confirm",
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-assets\"] → click [data-act=\"cert-open\"]",
+   "pass": true
+  },
+  {
+   "screen": "invest-assets",
+   "state": "empty",
+   "visible": true,
+   "hash": "#invest-assets/empty",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "hash #invest-assets/empty",
+   "pass": true
+  },
+  {
+   "screen": "invest-profit",
+   "state": "weekly",
+   "visible": true,
+   "hash": "#invest-profit/weekly",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-returns\"] → click [data-act=\"pf-gran\"][data-gran=\"weekly\"] → click [data-act=\"preset\"][data-preset=\"w4\"]",
+   "pass": true
+  },
+  {
+   "screen": "invest-profit",
+   "state": "monthly",
+   "visible": true,
+   "hash": "#invest-profit/monthly",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-returns\"] → click [data-act=\"pf-gran\"][data-gran=\"monthly\"] → click [data-act=\"preset\"][data-preset=\"m6\"]",
+   "pass": true
+  },
+  {
+   "screen": "invest-profit",
+   "state": "empty",
+   "visible": true,
+   "hash": "#invest-profit/empty",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-returns\"] → change [data-mount=\"pf-from\"] = 2026-02-01 → change [data-mount=\"pf-to\"] = 2026-02-07",
+   "pass": true
+  },
+  {
+   "screen": "merchants",
+   "state": "filtered",
+   "visible": true,
+   "hash": "#merchants/filtered",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"merchants\"] → change [data-mount=\"mc-sector\"] = 음식점업 → type [data-mount=\"mc-kw\"] = 곱창 → click [data-act=\"mc-search\"]",
+   "pass": true
+  },
+  {
+   "screen": "merchants",
+   "state": "empty",
+   "visible": true,
+   "hash": "#merchants/empty",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"merchants\"] → type [data-mount=\"mc-kw\"] = 라멘 → click [data-act=\"mc-search\"]",
+   "pass": true
+  },
+  {
+   "screen": "acquisition-list",
+   "state": "doc",
+   "visible": true,
+   "hash": "#acquisition-list/doc",
+   "modal": "acquisition-doc",
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"receivables\"] → click [data-act=\"aq-view\"][data-i=\"0\"]",
+   "pass": true
+  },
+  {
+   "screen": "acquisition-list",
+   "state": "confirm",
+   "visible": true,
+   "hash": "#acquisition-list/confirm",
+   "modal": "acquisition-confirm",
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"receivables\"] → click [data-act=\"aq-chk\"][data-i=\"0\"] → click [data-act=\"aq-chk\"][data-i=\"1\"] → click [data-act=\"aq-sign\"]",
+   "pass": true
+  },
+  {
+   "screen": "acquisition-list",
+   "state": "signing",
+   "visible": true,
+   "hash": "#acquisition-list/signing",
+   "modal": "acquisition-signing",
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"receivables\"] → click [data-act=\"aq-chk\"][data-i=\"0\"] → click [data-act=\"aq-chk\"][data-i=\"1\"] → click [data-act=\"aq-sign\"] → click [data-act=\"aq-sign-go\"]",
+   "pass": true
+  },
+  {
+   "screen": "acquisition-list",
+   "state": "done",
+   "visible": true,
+   "hash": "#acquisition-list/done",
+   "modal": "acquisition-done",
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"receivables\"] → click [data-act=\"aq-chk\"][data-i=\"0\"] → click [data-act=\"aq-chk\"][data-i=\"1\"] → click [data-act=\"aq-sign\"] → click [data-act=\"aq-sign-go\"] → wait 1800ms",
+   "pass": true
+  },
+  {
+   "screen": "invest-sim",
+   "state": "result",
+   "visible": true,
+   "hash": "#invest-sim/result",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"invest-sim\"] → click [data-mount=\"sim-go\"] → wait 500ms",
+   "pass": true
+  },
+  {
+   "screen": "contracts",
+   "state": "all",
+   "visible": true,
+   "hash": "#contracts/all",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"contracts\"] → click [data-act=\"ct-all\"]",
+   "pass": true
+  },
+  {
+   "screen": "contracts",
+   "state": "empty",
+   "visible": true,
+   "hash": "#contracts/empty",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "hash #contracts/empty",
+   "pass": true
+  },
+  {
+   "screen": "password",
+   "state": "weak",
+   "visible": true,
+   "hash": "#password/weak",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"password\"] → type [data-mount=\"pw-new\"] = 12345678",
+   "pass": true
+  },
+  {
+   "screen": "password",
+   "state": "error",
+   "visible": true,
+   "hash": "#password/error",
+   "modal": null,
+   "toast": false,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"password\"] → type [data-mount=\"pw-new\"] = payhug!2026 → type [data-mount=\"pw-cfm\"] = payhug!2025",
+   "pass": true
+  },
+  {
+   "screen": "password",
+   "state": "done",
+   "visible": true,
+   "hash": "#password/done",
+   "modal": null,
+   "toast": true,
+   "err": null,
+   "steps": "nav .nav-item[data-menu=\"password\"] → type [data-mount=\"pw-cur\"] = payhug!2025 → type [data-mount=\"pw-new\"] = payhug!2026 → type [data-mount=\"pw-cfm\"] = payhug!2026 → click [data-act=\"pw-submit\"]",
+   "pass": true
+  }
+ ],
+ "downloads": [
+  {
+   "key": "assets-status/default",
+   "expect": "투자자산현황_2026-08-27_2026-08-27.xlsx",
+   "기간": "기준일",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-assets",
+   "noPreviewScreen": true,
+   "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
+   "bytes": 5714,
+   "srcBytes": 5714,
+   "pass": true
+  },
+  {
+   "key": "assets-merchant/default",
+   "expect": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
+   "기간": "기준일",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-assets",
+   "noPreviewScreen": true,
+   "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
+   "bytes": 6138,
+   "srcBytes": 6138,
+   "pass": true
+  },
+  {
+   "key": "profit-status/일주일",
+   "expect": "투자수익현황_2026-08-21_2026-08-27.xlsx",
+   "기간": "2026-08-21~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-08-21_2026-08-27.xlsx",
+   "bytes": 5468,
+   "srcBytes": 5468,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/일주일",
+   "expect": "일별투자수익_2026-08-21_2026-08-27.xlsx",
+   "기간": "2026-08-21~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
+   "bytes": 5864,
+   "srcBytes": 5864,
+   "pass": true
+  },
+  {
+   "key": "profit-status/금월",
+   "expect": "투자수익현황_2026-08-01_2026-08-27.xlsx",
+   "기간": "2026-08-01~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-08-01_2026-08-27.xlsx",
+   "bytes": 5465,
+   "srcBytes": 5465,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/금월",
+   "expect": "일별투자수익_2026-08-01_2026-08-27.xlsx",
+   "기간": "2026-08-01~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "일별투자수익_2026-08-01_2026-08-27.xlsx",
+   "bytes": 6734,
+   "srcBytes": 6734,
+   "pass": true
+  },
+  {
+   "key": "profit-status/4주",
+   "expect": "투자수익현황_2026-08-03_2026-08-27.xlsx",
+   "기간": "2026-08-03~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-08-03_2026-08-27.xlsx",
+   "bytes": 5463,
+   "srcBytes": 5463,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/4주",
+   "expect": "주별투자수익_2026-08-03_2026-08-27.xlsx",
+   "기간": "2026-08-03~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "주별투자수익_2026-08-03_2026-08-27.xlsx",
+   "bytes": 5751,
+   "srcBytes": 5751,
+   "pass": true
+  },
+  {
+   "key": "profit-status/12주",
+   "expect": "투자수익현황_2026-06-08_2026-08-27.xlsx",
+   "기간": "2026-06-08~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-06-08_2026-08-27.xlsx",
+   "bytes": 5465,
+   "srcBytes": 5465,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/12주",
+   "expect": "주별투자수익_2026-06-08_2026-08-27.xlsx",
+   "기간": "2026-06-08~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "주별투자수익_2026-06-08_2026-08-27.xlsx",
+   "bytes": 6156,
+   "srcBytes": 6156,
+   "pass": true
+  },
+  {
+   "key": "profit-status/3개월",
+   "expect": "투자수익현황_2026-06-01_2026-08-27.xlsx",
+   "기간": "2026-06-01~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-06-01_2026-08-27.xlsx",
+   "bytes": 5469,
+   "srcBytes": 5469,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/3개월",
+   "expect": "월별투자수익_2026-06-01_2026-08-27.xlsx",
+   "기간": "2026-06-01~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "월별투자수익_2026-06-01_2026-08-27.xlsx",
+   "bytes": 5703,
+   "srcBytes": 5703,
+   "pass": true
+  },
+  {
+   "key": "profit-status/6개월",
+   "expect": "투자수익현황_2026-03-01_2026-08-27.xlsx",
+   "기간": "2026-03-01~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "투자수익현황_2026-03-01_2026-08-27.xlsx",
+   "bytes": 5469,
+   "srcBytes": 5469,
+   "pass": true
+  },
+  {
+   "key": "profit-daily/6개월",
+   "expect": "월별투자수익_2026-03-01_2026-08-27.xlsx",
+   "기간": "2026-03-01~2026-08-27",
+   "기간일치": true,
+   "click": "ok",
+   "viewAfter": "invest-profit",
+   "noPreviewScreen": true,
+   "file": "월별투자수익_2026-03-01_2026-08-27.xlsx",
+   "bytes": 5843,
+   "srcBytes": 5843,
+   "pass": true
+  },
+  {
+   "key": "profit/직접입력 — 실물 없는 기간",
+   "expect": "없음",
+   "기간": "2026-08-21~2026-08-25",
+   "라벨": "직접입력",
+   "잠금": [
+    true,
+    true
+   ],
+   "cursor": "not-allowed",
+   "토스트숨김": true,
+   "떨어진파일": [],
+   "keys": [
+    null,
+    null
+   ],
+   "pass": true
+  }
+ ],
+ "dead": [],
+ "data": [
+  {
+   "case": "보기 갯수 10/20/50 — 고르면 즉시 다시 그린다",
+   "표": [
+    {
+     "tbl": "ia-merch",
+     "opts": [
+      "10",
+      "20",
+      "50"
+     ],
+     "n10": 9,
+     "n20": 9,
+     "n50": 9,
+     "pagesAt20": 0,
+     "ok": true
+    },
+    {
+     "tbl": "mc-tbl",
+     "opts": [
+      "10",
+      "20",
+      "50"
+     ],
+     "n10": 9,
+     "n20": 9,
+     "n50": 9,
+     "pagesAt20": 0,
+     "ok": true
+    },
+    {
+     "tbl": "ct-tbl",
+     "opts": [
+      "10",
+      "20",
+      "50"
+     ],
+     "n10": 9,
+     "n20": 9,
+     "n50": 9,
+     "pagesAt20": 0,
+     "ok": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "case": "서명 완료 — 대기 목록에서 빠지고 메뉴를 오가도 남는다",
+   "전": 3,
+   "서명후": 2,
+   "메뉴왕복후": 2,
+   "상태리셋후": 3,
+   "저장소항목": 0,
+   "저장소오류": "",
+   "서명직후선택건수": "0",
+   "pass": true
+  },
+  {
+   "case": "서명 완료 — 선택 건수는 남은 행만 센다",
+   "남은행": 1,
+   "선택건수": "0",
+   "서명하기비활성": true,
+   "pass": true
+  },
+  {
+   "case": "가맹점 검색어 필터",
+   "rowsBefore": 9,
+   "rowsAfter": 1,
+   "countBefore": "총9건",
+   "countAfter": "총1건",
+   "pass": true
+  },
+  {
+   "case": "기간·granularity 변경 시 합계 재계산",
+   "weekRows": 7,
+   "weekSum": "106,120",
+   "ydayRows": 1,
+   "ydaySum": "14,741",
+   "monthRows": 1,
+   "monthSum": "434,306",
+   "monthRange": "2026-08-01~2026-08-27",
+   "m6Rows": 6,
+   "m6Sum": "2,891,022",
+   "pass": true
+  },
+  {
+   "case": "업종 필터 — 네이티브 select·데이터 파생 옵션·조건 적용",
+   "tag": "SELECT",
+   "opts": [
+    "전체",
+    "음식점업"
+   ],
+   "dataSectors": [
+    "음식점업"
+   ],
+   "customLeft": 0,
+   "picked": "음식점업",
+   "chips": "적용된조건업종:음식점업조건초기화",
+   "pass": true
+  },
+  {
+   "case": "날짜 입력이 조회 조건을 움직인다",
+   "rowsBefore": 7,
+   "rowsAfter": 3,
+   "valueKept": "2026-08-25",
+   "period": "2026-08-25 ~ 2026-08-27",
+   "pass": true
+  },
+  {
+   "case": "역전 범위 방어 — 안내문·버튼 비활성 · 달력은 잠그지 않음",
+   "clamp": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "warnShown": true,
+   "searchDisabled": true,
+   "pass": true
+  },
+  {
+   "case": "검색창 Enter → 조회 실행",
+   "rows": 1,
+   "pass": true
+  },
+  {
+   "case": "모달 배경 클릭으로 닫히지 않는다",
+   "closed": [],
+   "kept": [
+    "invest-assets/cert-confirm",
+    "acquisition-list/doc",
+    "acquisition-list/confirm",
+    "acquisition-list/signing",
+    "acquisition-list/done"
+   ],
+   "pass": true
+  },
+  {
+   "case": "메뉴 그룹 접힘",
+   "tag": "BUTTON",
+   "before": false,
+   "after": true,
+   "aria": "false",
+   "pass": true
+  },
+  {
+   "case": "계약기록 전체 선택 — 서명 완료 행만",
+   "before": "3건 선택",
+   "after": "8건 선택",
+   "button": "선택 문서 다운로드 (8)",
+   "고를수있는행": 8,
+   "잠긴체크박스": 1,
+   "총행": 9,
+   "pass": true
+  },
+  {
+   "case": "계약기록 선택 해제",
+   "after": null,
+   "머리에없음": true,
+   "downloadDisabled": true,
+   "pass": true
+  },
+  {
+   "case": "계약기록 내려받기 잠금",
+   "전체선택시": true,
+   "살아있는행버튼": 0,
+   "문서링크": 0,
+   "pass": true
+  },
+  {
+   "case": "계약기록 행 클릭 선택 — 행 내려받기 버튼과 상쇄되지 않음",
+   "afterRow": "1건 선택",
+   "afterBtn": "1건 선택",
+   "rowBtnDisabled": true,
+   "role": null,
+   "tabindex": null,
+   "pass": true
+  },
+  {
+   "case": "서명 대기 목록 전체 선택·선택 해제",
+   "cleared": "0",
+   "clearedBtnDisabled": true,
+   "all": "3",
+   "allBtnDisabled": false,
+   "pass": true
+  },
+  {
+   "case": "행 클릭 선택 — 체크박스와 상쇄되지 않음",
+   "before": "0",
+   "afterRowClick": "1",
+   "afterChkClick": "0",
+   "role": null,
+   "tabindex": null,
+   "aria": null,
+   "pass": true
+  },
+  {
+   "case": "데이터 없음 상태 지표 0 치환",
+   "hasAmount": true,
+   "zeroed": true,
+   "pass": true
+  },
+  {
+   "case": "딥링크 #acquisition-list/signing — 닫는 버튼 0 · 1.5초 뒤 서명 완료로 넘어간다",
+   "들어왔을때": {
+    "state": "signing",
+    "modal": "acquisition-signing",
+    "closers": 0
+   },
+   "기다린뒤": {
+    "state": "done",
+    "modal": "acquisition-done",
+    "hash": "#acquisition-list/done"
+   },
+   "pass": true
+  }
+ ],
+ "selfcheck": {
+  "merchantSum": 80000000,
+  "assetExecRow": 80000000,
+  "execMatch": true,
+  "assetTotal": 100000000,
+  "ratioSum": 100,
+  "ledgerDays": 180,
+  "ledgerProfitSum": 2891022,
+  "monthRollupSum": 2891022,
+  "rollupMatchesLedger": true,
+  "contracts": 9,
+  "signQueue": 3,
+  "screens": 15,
+  "states": 18
+ },
+ "console": [],
+ "menuCount": 8,
+ "menuDeclared": {
+  "want": [
+   "contracts",
+   "invest-assets",
+   "invest-returns",
+   "invest-sim",
+   "kcoon",
+   "merchants",
+   "password",
+   "receivables"
+  ],
+  "got": [
+   "contracts",
+   "invest-assets",
+   "invest-returns",
+   "invest-sim",
+   "kcoon",
+   "merchants",
+   "password",
+   "receivables"
+  ],
+  "dup": false
+ },
+ "scanned": 115,
+ "a11y": [],
+ "newtab": [
+  {
+   "where": "acquisition-list/doc",
+   "label": "계약서 원문 열기",
+   "href": "assets/docs/%EC%A0%95%EC%82%B0%EA%B8%88%EC%B1%84%EA%B6%8C_%EC%9E%AC%EC%96%91%EB%8F%84_%ED%95%A9%EC%9D%98%EC%84%9C.txt"
+  },
+  {
+   "where": "coocon/default",
+   "label": "We-bank 바로가기",
+   "href": "https://www.we-bank.co.kr/main_00100.act"
+  }
+ ],
+ "layout": [
+  {
+   "at": "invest-assets/default",
+   "h": 1273,
+   "empties": [
+    "ia-merch-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/download",
+   "h": 1273,
+   "empties": [
+    "ia-merch-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/cert-confirm",
+   "h": 1273,
+   "empties": [
+    "ia-merch-page"
+   ],
+   "modals": [
+    "invest-assets-cert-confirm"
+   ],
+   "wantModal": "invest-assets-cert-confirm",
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-assets/empty",
+   "h": 994,
+   "empties": [
+    "ia-size",
+    "ia-merch-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/default",
+   "h": 1240,
+   "empties": [
+    "pf-from",
+    "pf-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/weekly",
+   "h": 1105,
+   "empties": [
+    "pf-from",
+    "pf-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/monthly",
+   "h": 1195,
+   "empties": [
+    "pf-from",
+    "pf-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-profit/empty",
+   "h": 980,
+   "empties": [
+    "pf-from",
+    "pf-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-sim/default",
+   "h": 1035,
+   "empties": [
+    "sim-r",
+    "sim-cash",
+    "sim-unpaid",
+    "sim-over",
+    "sim-from",
+    "sim-to",
+    "sim-out"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "invest-sim/result",
+   "h": 2451,
+   "empties": [
+    "sim-r",
+    "sim-cash",
+    "sim-unpaid",
+    "sim-over",
+    "sim-from",
+    "sim-to"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "merchants/default",
+   "h": 739,
+   "empties": [
+    "mc-kw",
+    "mc-chips"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "merchants/filtered",
+   "h": 413,
+   "empties": [
+    "mc-kw"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "merchants/empty",
+   "h": 461,
+   "empties": [
+    "mc-kw",
+    "mc-size",
+    "mc-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/default",
+   "h": 503,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/doc",
+   "h": 503,
+   "empties": [],
+   "modals": [
+    "acquisition-doc"
+   ],
+   "wantModal": "acquisition-doc",
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/confirm",
+   "h": 503,
+   "empties": [],
+   "modals": [
+    "acquisition-confirm"
+   ],
+   "wantModal": "acquisition-confirm",
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/signing",
+   "h": 503,
+   "empties": [],
+   "modals": [
+    "acquisition-signing"
+   ],
+   "wantModal": "acquisition-signing",
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "acquisition-list/done",
+   "h": 353,
+   "empties": [],
+   "modals": [
+    "acquisition-done"
+   ],
+   "wantModal": "acquisition-done",
+   "barShown": true,
+   "pass": true
+  },
+  {
+   "at": "contracts/default",
+   "h": 731,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "contracts/all",
+   "h": 731,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "contracts/empty",
+   "h": 322,
+   "empties": [
+    "ct-size",
+    "ct-page"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "coocon/default",
+   "h": 282,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/default",
+   "h": 565,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/weak",
+   "h": 572,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/error",
+   "h": 565,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "password/done",
+   "h": 565,
+   "empties": [
+    "pw-cur",
+    "pw-new",
+    "pw-cfm"
+   ],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "certificate/default",
+   "h": 1104,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-assets-status/default",
+   "h": 549,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-assets-merchant/default",
+   "h": 689,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-profit-status/default",
+   "h": 605,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "xls-profit-daily/default",
+   "h": 437,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "index/default",
+   "h": 1137,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  },
+  {
+   "at": "login/default",
+   "h": 1113,
+   "empties": [],
+   "modals": [],
+   "wantModal": null,
+   "barShown": false,
+   "pass": true
+  }
+ ],
+ "modals": [
+  {
+   "modal": "invest-assets-cert-confirm",
+   "at": "invest-assets/cert-confirm",
+   "overlayHit": "modal-backdrop",
+   "afterOverlayClick": true,
+   "afterBodyClick": true,
+   "innerTag": "p",
+   "afterInnerClick": true,
+   "afterEsc": true,
+   "controls": 3,
+   "live": 3,
+   "closers": [
+    {
+     "label": "닫기",
+     "tag": "button",
+     "act": "modal-close",
+     "x": true,
+     "footer": false
+    },
+    {
+     "label": "취소",
+     "tag": "button",
+     "act": "modal-close",
+     "x": false,
+     "footer": true
+    },
+    {
+     "label": "발급",
+     "tag": "button",
+     "act": "cert-issue",
+     "x": false,
+     "footer": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "modal": "acquisition-confirm",
+   "at": "acquisition-list/confirm",
+   "overlayHit": "modal-backdrop",
+   "afterOverlayClick": true,
+   "afterBodyClick": true,
+   "innerTag": "p",
+   "afterInnerClick": true,
+   "afterEsc": true,
+   "controls": 3,
+   "live": 3,
+   "closers": [
+    {
+     "label": "닫기",
+     "tag": "button",
+     "act": "modal-close",
+     "x": true,
+     "footer": false
+    },
+    {
+     "label": "취소",
+     "tag": "button",
+     "act": "modal-close",
+     "x": false,
+     "footer": true
+    },
+    {
+     "label": "서명 진행",
+     "tag": "button",
+     "act": "aq-sign-go",
+     "x": false,
+     "footer": true
+    }
+   ],
+   "pass": true
+  },
+  {
+   "modal": "acquisition-doc",
+   "at": "acquisition-list/doc",
+   "overlayHit": "modal-backdrop",
+   "afterOverlayClick": true,
+   "afterBodyClick": true,
+   "innerTag": "p",
+   "afterInnerClick": true,
+   "afterEsc": true,
+   "controls": 3,
+   "live": 3,
+   "closers": [
+    {
+     "label": "닫기",
+     "tag": "button",
+     "act": "modal-close",
+     "x": true,
+     "footer": false
+    },
+    {
+     "label": "닫기",
+     "tag": "button",
+     "act": "modal-close",
+     "x": false,
+     "footer": true
+    }
+   ],
+   "scroll": {
+    "overflow": true,
+    "moved": true,
+    "select": true,
+    "pointer": true
+   },
+   "pass": true
+  },
+  {
+   "modal": "acquisition-signing",
+   "at": "acquisition-list/signing",
+   "overlayHit": "modal-backdrop",
+   "afterOverlayClick": true,
+   "afterBodyClick": true,
+   "innerTag": "div",
+   "afterInnerClick": true,
+   "afterEsc": true,
+   "controls": 1,
+   "live": 0,
+   "closers": [],
+   "pass": true
+  },
+  {
+   "modal": "acquisition-done",
+   "at": "acquisition-list/done",
+   "overlayHit": "modal-backdrop",
+   "afterOverlayClick": true,
+   "afterBodyClick": true,
+   "innerTag": "div",
+   "afterInnerClick": true,
+   "afterEsc": true,
+   "controls": 2,
+   "live": 2,
+   "closers": [
+    {
+     "label": "계약기록 보기",
+     "tag": "button",
+     "act": "aq-to-contracts",
+     "x": false,
+     "footer": true
+    },
+    {
+     "label": "확인",
+     "tag": "button",
+     "act": "aq-done-ok",
+     "x": false,
+     "footer": true
+    }
+   ],
+   "pass": true
+  }
+ ]
+}

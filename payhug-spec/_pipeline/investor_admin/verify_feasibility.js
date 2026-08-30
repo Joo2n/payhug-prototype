@@ -168,10 +168,14 @@ async function main() {
   await evalJS('document.getElementById("copyAll").click(); return 1;');
   await sleep(900);
   R.copyClickLabel = await evalJS('return document.getElementById("copyLabel").textContent;');
+  /* 첫·끝 문항 번호를 검증기가 들고 있지 않는다 — 위 6) 이 화면에서 읽은 R.copy.first/last 를 쓴다.
+     (2026-08-30 이전에는 "D-01"·"D-32" 를 박아 두었고, 그마저 판정에 쓰이지 않았다) */
   R.clipboard = await evalJS(
+    'var A=' + JSON.stringify(R.copy.first || '') + ', Z=' + JSON.stringify(R.copy.last || '') + ';' +
     'if(!navigator.clipboard || !navigator.clipboard.readText) return {read:false};' +
     'return navigator.clipboard.readText().then(function(t){' +
-    '  return {read:true, len:t.length, head:t.split("\\n")[0], hasD01:t.indexOf("D-01")!==-1, hasD32:t.indexOf("D-32")!==-1,' +
+    '  return {read:true, len:t.length, head:t.split("\\n")[0], first:A, last:Z,' +
+    '          hasFirst:t.indexOf(A)!==-1, hasLast:t.indexOf(Z)!==-1,' +
     '          lines:t.split("\\n").length};' +
     '})["catch"](function(e){ return {read:false, err:String(e).slice(0,80)}; });');
 
@@ -205,6 +209,20 @@ async function main() {
   if (R.search.restored !== R.counts.total) fails.push('검색 복원 실패');
   if (R.copy.questions !== 32 || R.copy.unique !== 32) fails.push('개발 문의 ' + R.copy.questions + '건(고유 ' + R.copy.unique + ') ≠ 32');
   if (!R.svg.found || R.svg.rects < 15) fails.push('순서도 SVG 이상');
+  /* 8) 복사 버튼 — 2026-08-30 이전까지 클립보드를 실제로 읽어 놓고 그 값을 아무도 판정하지 않았다.
+     기준은 새로 정하지 않는다. 이 블록 주석이 스스로 적어 둔 목적("실제로 써 본다")과,
+     같은 파일이 이미 판정하는 R.copy.questions·first·last 를 그대로 맞춰 본다.
+     글자 수(3,637자)·줄 수(53줄)는 못 박지 않는다 — 문항 본문이 바뀌면 같이 바뀔 값이다. */
+  if (!R.clipboard.read) fails.push('복사 버튼이 클립보드에 못 쓴다 — ' + JSON.stringify(R.clipboard));
+  else {
+    if (!R.clipboard.hasFirst) fails.push('복사본에 첫 문항 ' + R.clipboard.first + ' 없음');
+    if (!R.clipboard.hasLast) fails.push('복사본에 끝 문항 ' + R.clipboard.last + ' 없음');
+    if (!(R.clipboard.len > 0)) fails.push('복사본이 비었다');
+  }
+  /* 라벨이 말하는 건수 = 실제 문항 수. 라벨만 남고 내용이 줄어드는 것을 막는다. */
+  const lblN = (String(R.copyClickLabel).match(/(\d+)\s*건/) || [])[1];
+  if (String(lblN) !== String(R.copy.questions))
+    fails.push('복사 버튼 라벨 「' + R.copyClickLabel + '」 ≠ 문항 ' + R.copy.questions + '건');
   if (consoleErrors.length) fails.push('콘솔 ' + consoleErrors.length + '건: ' + consoleErrors.slice(0, 5).join(' | '));
 
   console.log('── feasibility.html 검증 ──');

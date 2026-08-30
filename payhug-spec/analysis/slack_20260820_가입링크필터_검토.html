@@ -1,0 +1,302 @@
+<title>회원관리 가입링크 필터 검토</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #FAFBF8;
+    --surface: #FFFFFF;
+    --surface-2: #F1F4EE;
+    --ink: #1C2420;
+    --muted: #5C6B61;
+    --line: #E2E8E0;
+    --accent: #2F9E44;
+    --accent-ink: #1E7A33;
+    --confirmed-bg: #E4F3E7; --confirmed-fg: #1E7A33;
+    --assumed-bg: #F8EDD6;  --assumed-fg: #8A5D06;
+    --defect-bg: #F9E5E1;   --defect-fg: #A33327;
+    --data-bg: #E7ECF6;     --data-fg: #3B5490;
+    --code-bg: #EFF3ED;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151A17;
+      --surface: #1C2320;
+      --surface-2: #222B26;
+      --ink: #E7EDE8;
+      --muted: #9BA89F;
+      --line: #2A332D;
+      --accent: #5BBF72;
+      --accent-ink: #7ACD8D;
+      --confirmed-bg: #1E3325; --confirmed-fg: #8FD9A1;
+      --assumed-bg: #38300F;   --assumed-fg: #E4B75A;
+      --defect-bg: #3B211D;    --defect-fg: #EA9A8C;
+      --data-bg: #1F2837;      --data-fg: #9FB4E0;
+      --code-bg: #232C27;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151A17;
+    --surface: #1C2320;
+    --surface-2: #222B26;
+    --ink: #E7EDE8;
+    --muted: #9BA89F;
+    --line: #2A332D;
+    --accent: #5BBF72;
+    --accent-ink: #7ACD8D;
+    --confirmed-bg: #1E3325; --confirmed-fg: #8FD9A1;
+    --assumed-bg: #38300F;   --assumed-fg: #E4B75A;
+    --defect-bg: #3B211D;    --defect-fg: #EA9A8C;
+    --data-bg: #1F2837;      --data-fg: #9FB4E0;
+    --code-bg: #232C27;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 15.5px;
+    line-height: 1.75;
+    margin: 0;
+    padding: 0 20px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  header.doc { padding: 64px 0 36px; border-bottom: 2px solid var(--ink); }
+  .kicker {
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-ink); font-weight: 700; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: "Noto Serif KR", serif; font-weight: 700;
+    font-size: clamp(28px, 4.5vw, 40px); line-height: 1.3;
+    margin: 0 0 14px; text-wrap: balance;
+  }
+  .lede { color: var(--muted); max-width: 62ch; margin: 0; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 20px; font-size: 13px; color: var(--muted); }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  h2 {
+    font-family: "Noto Serif KR", serif; font-weight: 700;
+    font-size: 23px; line-height: 1.4; margin: 64px 0 6px; text-wrap: balance;
+  }
+  h2 .sec {
+    color: var(--accent-ink); font-family: "IBM Plex Mono", monospace;
+    font-size: 15px; font-weight: 500; margin-right: 10px;
+  }
+  h3 { font-size: 16.5px; font-weight: 700; margin: 34px 0 8px; }
+  .h2sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+  p { max-width: 68ch; margin: 0 0 14px; }
+  ul, ol { max-width: 68ch; padding-left: 22px; margin: 0 0 14px; }
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--accent-ink); }
+  strong { font-weight: 700; }
+
+  code {
+    font-family: "IBM Plex Mono", monospace; font-size: .85em;
+    background: var(--code-bg); border-radius: 4px; padding: 1px 5px;
+    word-break: break-all;
+  }
+
+  .tldr {
+    background: var(--surface); border: 1px solid var(--line);
+    border-left: 4px solid var(--accent); border-radius: 6px;
+    padding: 22px 26px; margin: 36px 0 0;
+  }
+  .tldr h2 { margin: 0 0 12px; font-size: 18px; }
+  .tldr ul { margin: 0; }
+
+  .chip {
+    display: inline-block; font-size: 11.5px; font-weight: 700;
+    letter-spacing: .04em; border-radius: 999px; padding: 2px 10px;
+    white-space: nowrap; vertical-align: 1px;
+  }
+  .c-confirmed { background: var(--confirmed-bg); color: var(--confirmed-fg); }
+  .c-assumed   { background: var(--assumed-bg);   color: var(--assumed-fg); }
+  .c-defect    { background: var(--defect-bg);    color: var(--defect-fg); }
+  .c-data      { background: var(--data-bg);      color: var(--data-fg); }
+
+  .tablewrap { overflow-x: auto; margin: 20px 0 24px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+  th {
+    text-align: left; font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700; padding: 12px 16px;
+    border-bottom: 1px solid var(--line); background: var(--surface-2);
+    white-space: nowrap;
+  }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.6; }
+  tr:last-child td { border-bottom: none; }
+  td.empty { color: var(--muted); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .qa {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 20px 24px; margin: 18px 0;
+  }
+  .qa .q {
+    font-weight: 700; margin: 0 0 10px;
+  }
+  .qa .q .who { color: var(--accent-ink); font-size: 13px; font-weight: 700; margin-right: 8px; }
+  .qa .a { margin: 0; }
+
+  .timeline { list-style: none; padding: 0; margin: 24px 0; max-width: none; }
+  .timeline li {
+    display: grid; grid-template-columns: 96px 1fr; gap: 16px;
+    padding: 12px 0; border-bottom: 1px solid var(--line); margin: 0;
+  }
+  .timeline .t {
+    font-family: "IBM Plex Mono", monospace; font-size: 13px;
+    color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 2px;
+  }
+  .timeline .ch {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    color: var(--accent-ink); border: 1px solid var(--line); border-radius: 4px;
+    padding: 0 6px; margin-right: 8px; background: var(--surface); white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .timeline li { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  .callout {
+    border: 1px solid var(--line); border-left: 4px solid var(--assumed-fg);
+    background: var(--surface); border-radius: 6px; padding: 16px 22px; margin: 20px 0;
+  }
+  .callout.green { border-left-color: var(--accent); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .src { color: var(--muted); font-size: 13px; }
+  footer { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  footer p { margin: 0 0 6px; }
+</style>
+
+<div class="wrap">
+<header class="doc">
+  <div class="kicker">PayHug 서비스기획 검토 노트</div>
+  <h1>회원관리 가입링크 필터 검토</h1>
+  <p class="lede">2026-08-20 슬랙 4개 채널(#voc대응-정산 · #총판-관리운영방 · #운영 · #기획)에서 나온 회원관리 논의를 어드민 프론트 코드와 대조한 결과입니다. "탭그룹을 이동하면 가입링크 생성에 자동 필터가 걸린다"의 실체와, 엔케이페이먼츠 영업자 3명이 안 보이는 원인 후보를 정리했습니다.</p>
+  <div class="meta">
+    <span>기준일 <b>2026-08-20</b></span>
+    <span>코드 기준 <b>payhug-admin-web main(07-24) · develop(08-10 fetch)</b></span>
+    <span>핵심 화면 <b>/partners 회원 관리</b></span>
+  </div>
+</header>
+
+<div class="tldr">
+  <h2>세 줄 요약</h2>
+  <ul>
+    <li>"탭 이동 → 가입링크 자동 필터"는 <strong>실재하지만 설계된 기능이 아닙니다.</strong> 가입링크 생성기가 목록 테이블과 <strong>같은 회원 목록 데이터를 재사용</strong>해서 생기는 부수효과이고, 필드가 잠기거나 값이 고정되는 것은 아닙니다.</li>
+    <li>"엔케이 선택 → 하위 영업 안 보임"의 인과는 코드에 없습니다. 파트너를 골라도 영업 목록은 <strong>전혀 재계산되지 않으며</strong>, 3명이 빠진 원인은 조직 트리 연결(상위가 메타플레이) 또는 추천코드 미등록일 가능성이 높습니다.</li>
+    <li>근본 원인은 <strong>메타플레이·아르페이먼츠가 '영업(SALES)' 유형으로 등록</strong>된 데이터 문제와, 7/22 패치로 <strong>영업·영업조직 계정의 링크 생성 경로가 막힌 것</strong>이 겹친 상황입니다.</li>
+  </ul>
+</div>
+
+<h2><span class="sec">1</span>오늘 무슨 일이 있었나 — 시간순 재구성</h2>
+<p class="h2sub">회원관리 관련 발언만 추린 타임라인입니다. 하나의 사건이 채널 3곳을 오가며 진행됐습니다.</p>
+<ul class="timeline">
+  <li><span class="t">10:12~10:44</span><div><span class="ch">카카오톡</span>크랩(총판) 권병효 님이 "영업조직 어드민으로 들어가면 가입링크가 다르게 생성된다" 제보. 김동일 팀장님 회신: <strong>"최근 시스템 패치로 영업·영업조직의 URL 생성 오류가 발생해 작업 중, 완료 전까지 크랩에서 URL 생성 후 배포 부탁"</strong>.</div></li>
+  <li><span class="t">12:58~13:07</span><div><span class="ch">#총판-관리운영방</span>정산상품 배정 정보가 파트너·영업조직 화면에 노출되는 문제 제기(수수료 노출 소지). 박서희 팀장님이 당일 저녁 삭제 처리하기로.</div></li>
+  <li><span class="t">13:00~13:16</span><div><span class="ch">#voc대응-정산</span>박슬기 님 VOC 2건: ① 수수료 노출 ② <strong>메타플레이 로그인 후 회원관리에서 하위 영업자 정보 수정 불가</strong>. 에러 메시지 "SALES 유형은 SALES_ORG 유형의 회원을 생성/변경할 수 없습니다" 캡처 공유. 김진환 님 "어제 말씀 주신 <strong>영업조직 ↔ 영업이 서로 바뀌어 있다</strong>의 범위를 알아야" — 메타플레이·아르페이먼츠를 영업조직으로 바꾸는 방향 논의.</div></li>
+  <li><span class="t">13:56~14:01</span><div><span class="ch">#총판-관리운영방</span>김진환 님: 시스템상 영업·영업조직 역할은 맞게 적용된 것으로 보이는데, 어느 지점에서 반대라고 판단하셨는지 확인 요청(동일 팀장님 대상). 메타플레이·아르페이먼츠 둘 다 영업조직으로 변경하면 될 것으로 보인다는 의견.</div></li>
+  <li><span class="t">14:00~15:15</span><div><span class="ch">#기획</span>윤지애 님 PAYHUG-202(파트너 어드민 정산상품 배정 비노출) 발의 → 이서준 님이 기획 티켓 생성·개발 티켓 연결, PAYHUG-204(권한별 노출 변경) 등록.</div></li>
+  <li><span class="t">15:17~15:26</span><div><span class="ch">#voc대응-정산</span>가입링크 VOC 재점화. 이서준 님 "영업/영업조직에서 파트너 드롭다운 선택 안 됨 → 파트너단에서 생성하기로 했던 그 건" 확인. 박현서 님 "메타 하위가 이로움컴퍼니인데 <strong>둘 다 영업조직이라 이로움만 뜨고 상위인 엔케이는 안 뜬다</strong>".</div></li>
+  <li><span class="t">16:10~16:22</span><div><span class="ch">#운영 · #voc대응-정산</span>박서희 팀장님: "파트너&영업사원 체이닝 구조 링크 생성 VOC가 왜 해소가 안 될까요? AS-IS/TO-BE까지 티켓화된 걸로 아는데." 김진환 님: 링크 파라미터는 파트너코드·영업코드 2개, <strong>파트너코드가 필수라 엔케이 계정으로 URL을 생성해야 한다는 게 포인트</strong>. 박현서 님: 엔케이 계정에서 본인 코드가 선택 안 되면 버그.</div></li>
+  <li><span class="t">16:33</span><div><span class="ch">#voc대응-정산</span><strong>이서준 님 질문(이 검토의 발단):</strong> ① "상단을 전체로 설정한다는 게 뭘까요? 전체 탭?" ② "파트너 드롭다운에서 엔케이 선택하면 하위 영업 회원만 안 보이는 것도 이해가 안 가네요."</div></li>
+  <li><span class="t">16:37~16:42</span><div><span class="ch">#voc대응-정산</span>박현서 님 답: 탭을 누르면 해당 조직만 보이고 <strong>그 상태에서 링크 생성 드롭박스를 열면 필터가 적용된 채 나온다</strong>(영업 탭이면 파트너 콤보박스에 파트너가 안 보임). 3명(김창국·박수연·이성환)은 이로움컴퍼니 소속이라 상위가 메타플레이(영업조직)면 엔케이(파트너)에서 안 보일 수 있다.</div></li>
+</ul>
+
+<h2><span class="sec">2</span>질문 ① — "상단을 전체로 설정"의 실체</h2>
+<div class="qa">
+  <p class="q"><span class="who">Q</span>상단을 전체로 설정한다는 게 뭘까요? 2번 이미지처럼 전체 탭을 말하는 건가요?</p>
+  <p class="a"><span class="chip c-confirmed">코드로 확정</span>&nbsp; <strong>네, 그 탭이 맞습니다.</strong> 회원 관리(<code>/partners</code>) 상단의 <strong>전체 · 투자자 · 페이허그 · 파트너 · 제휴사 · 영업 · 영업조직 · 관리자</strong> 8개 버튼 탭그룹이고, 이 화면에서 '전체'로 설정할 수 있는 요소는 이것뿐입니다. 탭을 누르면 그 유형만 서버에서 다시 조회하고(<code>GET /admin/partners?userType=…</code>), '전체' 탭은 유형 조건 없이 로그인 계정의 조회 범위(자기+하위) 전체를 불러옵니다. 탭 상태는 URL에 남지 않아 새로고침하면 항상 '전체'로 돌아옵니다.</p>
+</div>
+
+<h2><span class="sec">3</span>"탭 이동 → 가입링크 자동 필터"는 어떻게 생기는 현상인가</h2>
+<p><span class="chip c-confirmed">코드로 확정</span>&nbsp; 가입링크 생성 카드는 자기만의 데이터를 따로 불러오지 않습니다. <strong>목록 테이블이 쓰는 회원 목록을 그대로 물려받아</strong>(<code>app/partners/page.tsx:1438</code>), 그 안에서 유형별로 드롭다운 후보를 골라냅니다.</p>
+<ul>
+  <li>공통 전제: <strong>활성(ACTIVE) 상태이고 추천코드가 등록된 회원만</strong> 후보가 됩니다 (<code>:696</code>).</li>
+  <li>파트너 드롭다운 = 그중 PARTNER 유형, 제휴사 = AFFILIATE, 영업 = SALES + SALES_ORG (<code>:697-699</code>).</li>
+</ul>
+<p>따라서 목록이 탭으로 좁혀져 있으면 드롭다운 후보도 같이 좁아집니다.</p>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>현재 탭</th><th>파트너 드롭다운</th><th>제휴사 드롭다운</th><th>영업 드롭다운</th></tr></thead>
+  <tbody>
+    <tr><td><strong>전체</strong></td><td>조회 범위 내 파트너 전부</td><td>제휴사 전부</td><td>영업 + 영업조직 전부</td></tr>
+    <tr><td>파트너</td><td>파트너만 표시</td><td class="empty">비어 있음 ("선택 안함"만)</td><td class="empty">비어 있음</td></tr>
+    <tr><td>영업</td><td class="empty">비어 있음</td><td class="empty">비어 있음</td><td>SALES만 (영업조직 제외)</td></tr>
+    <tr><td>영업조직</td><td class="empty">비어 있음</td><td class="empty">비어 있음</td><td>SALES_ORG만</td></tr>
+    <tr><td>투자자·관리자 등</td><td class="empty">비어 있음</td><td class="empty">비어 있음</td><td class="empty">비어 있음</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="qa">
+  <p class="q"><span class="who">Q</span>영업 탭이면 파트너 필드가 잠기고 영업 필터가 고정된다는 뜻인가?</p>
+  <p class="a"><strong>아닙니다.</strong> 탭 때문에 비활성화(disabled)되는 필드는 없고, 어떤 값도 자동으로 선택되지 않습니다. 실제로 일어나는 일은 <strong>"파트너 드롭다운을 열어도 목록이 비어 있는 것"</strong>입니다 — 잠긴 게 아니라 보여줄 후보가 없는 상태입니다. 필드가 진짜로 잠기는 경우는 딱 하나, <strong>파트너와 제휴사는 동시에 선택할 수 없어서</strong> 한쪽을 고르면 다른 쪽이 비활성화되는 상호배타 규칙뿐입니다 (<code>:701-709</code>). 박슬기 님의 "전체로 설정해서 볼 때만 선택이 됩니다"가 정확히 이 구조를 관찰한 것입니다 — 링크를 제대로 만들려면 사실상 '전체' 탭에서 해야 합니다.</p>
+</div>
+
+<div class="callout">
+  <p><span class="chip c-defect">결함 소지</span>&nbsp; <strong>탭을 옮겨도 이미 고른 선택값은 초기화되지 않습니다.</strong> 전체 탭에서 엔케이를 선택한 뒤 영업 탭으로 이동하면, 파트너 드롭다운은 빈 것처럼 보이지만 생성되는 URL에는 <code>partnerCode=엔케이코드</code>가 계속 들어갑니다. 화면과 실제 링크가 어긋날 수 있는 지점이라 별도 티켓화를 권합니다.</p>
+</div>
+
+<h2><span class="sec">4</span>질문 ② — 엔케이 선택 시 영업자 3명이 안 보이는 이유</h2>
+<div class="qa">
+  <p class="q"><span class="who">Q</span>파트너 드롭다운에서 엔케이페이먼츠를 선택하면 하위 영업 회원(김창국·박수연·이성환)만 안 보인다?</p>
+  <p class="a"><span class="chip c-confirmed">코드로 확정</span>&nbsp; <strong>"파트너를 선택하면 영업 목록이 그 파트너 하위로 좁혀진다"는 로직 자체가 현행 코드에 없습니다.</strong> 파트너를 골라도 영업 드롭다운 후보는 전혀 재계산되지 않고, 반대로 영업을 골라도 파트너가 자동 지정되지 않습니다. 즉 "엔케이를 선택했기 때문에" 누가 사라지는 인과는 성립하지 않고, 그 3명은 <strong>선택과 무관하게 애초에 목록에 없는 것</strong>입니다.</p>
+</div>
+<h3>3명이 목록에 없는 원인 후보 (가능성 순)</h3>
+<ol>
+  <li><span class="chip c-data">데이터 문제</span>&nbsp; <strong>조직 트리 연결.</strong> 서버는 로그인 계정의 "자기+하위"만 내려주는데, 3명은 이로움컴퍼니(영업조직) 소속이고 이로움컴퍼니의 상위가 <strong>엔케이가 아닌 메타플레이(현재 '영업' 유형)로 연결</strong>돼 있습니다. 체인이 엔케이 밑으로 이어지지 않으면 엔케이 계정 화면 어디에도 안 나옵니다. 박현서 님의 16:42 추정과 일치하며, 가장 유력합니다.</li>
+  <li><span class="chip c-confirmed">코드로 확정</span>&nbsp; <strong>추천코드 미등록 또는 비활성 상태.</strong> 드롭다운은 활성+추천코드 보유 회원만 보여주므로, 3명의 계정에 추천코드가 비어 있으면 전체 탭에서도 안 나옵니다. 추천코드는 등록 폼의 선택 입력이라 빈 계정이 실제로 존재할 수 있습니다.</li>
+  <li><span class="chip c-assumed">추정</span>&nbsp; 7/22 이전 버전(상위 조직 노출·최상위 자동 선택)이나 개편안 목업(상위 선택 → 하위 자동 판별)의 화면 경험과 혼동됐을 가능성. 현행 코드에는 둘 다 없습니다.</li>
+</ol>
+
+<h2><span class="sec">5</span>근본 원인 두 갈래 — 유형 뒤바뀜과 7/22 패치</h2>
+<h3>가. 메타플레이·아르페이먼츠가 '영업(SALES)' 유형으로 등록됨</h3>
+<p><span class="chip c-confirmed">코드로 확정</span>&nbsp; 어드민에는 <strong>"SALES 유형은 SALES_ORG 유형의 회원을 생성/변경할 수 없습니다"</strong>라는 계층 규칙이 있습니다. 메타플레이가 '영업'으로 등록돼 있으니, 하위인 이로움컴퍼니(영업조직) 소속 영업자를 수정하려는 순간 이 규칙에 걸립니다 — 박슬기 님 VOC "메타플레이 로그인 후 하위 영업자 정보 수정 불가"의 직접 원인입니다. 부수 증상으로, 가입링크의 영업 드롭다운은 SALES와 SALES_ORG를 합쳐 보여주기 때문에 "주식회사 메타플레이"라는 <strong>회사가 개인 영업처럼 영업 드롭다운에 노출</strong>되는 어색함도 여기서 나옵니다. 김진환 님이 두 회사를 영업조직으로 정정하는 방향과 그 영향 범위를 확인 중입니다.</p>
+<h3>나. 영업·영업조직 계정의 링크 생성이 막힌 경위</h3>
+<p><span class="chip c-assumed">추정 (커밋 근거 있음)</span>&nbsp; 2026-07-22 커밋 <code>3fbc230</code> "가입 링크 생성기에서 상위 조직 노출 제거"가 있습니다. 하위 계정으로 로그인하면 상위 파트너가 드롭다운에 노출되고 최상위가 기본 선택돼 <strong>본인이 계약 체인에서 누락된 링크가 만들어지는 사고</strong>를 막으려고, 자기+하위 목록만 보여주도록 바꾼 것입니다. 그 결과 영업·영업조직 계정은 조회 범위 안에 파트너가 없어 <strong>필수값인 파트너코드를 채울 수 없게</strong> 됐고 — 이것이 크랩 제보("영업조직으로 들어가면 다르게 생성된다"), 김동일 팀장님의 "패치로 URL 생성 오류" 회신, 그리고 "파트너(엔케이) 계정으로 생성하라"는 안내가 나온 배경으로 시기·증상이 맞물립니다. <strong>중요:</strong> 프리필·상위 노출은 한 번 넣었다가 수수료 체인 누락 사유로 걷어낸 이력이므로, 개편안에서 되살릴 때 같은 함정을 반드시 재검토해야 합니다.</p>
+
+<h2><span class="sec">6</span>슬랙의 인식 vs 코드의 현행 — 대조표</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>슬랙에서 나온 말</th><th>코드 현행</th><th>판정</th></tr></thead>
+  <tbody>
+    <tr><td>"탭을 누르면 링크 생성 드롭박스에 필터가 적용된 채 나온다"</td><td>목록 데이터 공유에 따른 부수효과로 사실. 전용 필터 기능은 아님</td><td><span class="chip c-confirmed">사실 (설계 아님)</span></td></tr>
+    <tr><td>"영업 탭이면 파트너 필드가 잠기고 영업으로 고정된다"</td><td>잠금·고정·프리필 없음. 후보 목록이 비어 보일 뿐</td><td><span class="chip c-defect">오해</span></td></tr>
+    <tr><td>"엔케이를 선택하면 하위 영업 3명만 안 보인다"</td><td>선택→필터 인과 없음. 조직 트리·추천코드 문제로 애초에 목록에 없는 것</td><td><span class="chip c-data">데이터 문제</span></td></tr>
+    <tr><td>"영업 ↔ 영업조직이 서로 바뀌어 있다"</td><td>SALES는 SALES_ORG를 관리 못 하는 규칙 존재 → 유형이 반대로 등록된 계정에서 증상 재현됨</td><td><span class="chip c-data">데이터 문제</span></td></tr>
+    <tr><td>"최근 패치로 영업·영업조직 URL 생성 오류"</td><td>7/22 상위 노출 제거 커밋과 시기·증상 부합. 오류라기보다 의도된 변경의 부작용</td><td><span class="chip c-assumed">추정</span></td></tr>
+    <tr><td>개편안: "상위 선택 → 하위 자동 판별" 계층 연동</td><td>현행 코드에 없음 — 신규 사양으로 기획·개발 필요</td><td><span class="chip c-assumed">신규 기획</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2><span class="sec">7</span>오늘 채널별 회원관리 관련 항목 정리</h2>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>채널</th><th>내용</th><th>상태 · 후속</th></tr></thead>
+  <tbody>
+    <tr><td>#voc대응-정산</td><td>메타플레이 하위 영업자 수정 불가 VOC / 가입링크 생성 VOC(엔케이·크랩) / 이서준 님 질문 2건과 박현서 님 답변</td><td>유형 정정 범위 확인 중(김진환) · 총판 통화 예정(이서준)</td></tr>
+    <tr><td>#총판-관리운영방</td><td>정산상품 배정 정보 노출 문제 / "영업 ↔ 영업조직 개념 불일치" 지점 확인 요청 / 메타플레이·아르페이먼츠 영업조직 전환 의견</td><td>동일 팀장님 답변 대기</td></tr>
+    <tr><td>#운영</td><td>박서희 팀장님 — 체이닝 링크 생성 VOC 병목 지적("AS-IS/TO-BE 티켓화까지 됐는데 왜 미해소") / 파트너 대응은 전원 대상</td><td>이 문서 §5-나가 병목 설명에 해당</td></tr>
+    <tr><td>#기획</td><td>PAYHUG-202 파트너 어드민 정산상품 배정 비노출(운영 발의) / PAYHUG-204 권한별 노출 변경(기획 티켓, 개발 연결됨)</td><td>박서희 팀장님 당일 삭제 처리 예정 · 티켓 진행 추적</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="src">회원관리 외 논의(선정산 입금 시각 안내 기준, 쿠팡이츠 스크래핑 장애, 회수 수동 처리 운영, 락계좌 1원 검증 기획)는 이 문서 범위에서 제외했습니다.</p>
+
+<h2><span class="sec">8</span>액션 아이템</h2>
+<ol>
+  <li><strong>데이터 정정:</strong> 메타플레이·아르페이먼츠 유형을 영업 → 영업조직으로 바꾸기 전, 정산·수수료 체인에 미치는 영향 범위 확인 (김진환 님 진행 중, 동일 팀장님 판단 근거 확인 필요).</li>
+  <li><strong>데이터 확인:</strong> 김창국·박수연·이성환 3인의 상위 체인이 엔케이까지 이어지는지, 추천코드가 등록돼 있는지 확인 — 이것만 맞으면 현행 코드로도 전체 탭에서 보입니다.</li>
+  <li><strong>결함 티켓:</strong> 가입링크 생성기 탭 이동 시 선택값 미초기화(화면-URL 불일치) 수정.</li>
+  <li><strong>기획 검토:</strong> 가입링크 생성기를 목록 필터와 분리(전용 데이터 소스)할지, 탭 연동 프리필을 정식 사양화할지 결정 — 7/22 제거 사유(계약 체인 누락)를 반드시 재검토.</li>
+  <li><strong>문서 현행화:</strong> <code>payhug-spec/spec/admin/06_회원관리.md</code>가 삭제된 상위 노출·최상위 자동 선택을 현행처럼 서술 중 — 갱신 필요.</li>
+  <li><strong>티켓 추적:</strong> PAYHUG-202 · PAYHUG-204 진행 확인.</li>
+</ol>
+
+<footer>
+  <p>근거: payhug-admin-web <code>app/partners/page.tsx</code>, <code>services/partnerService.ts</code>, 커밋 <code>3fbc230</code>(2026-07-22) · 슬랙 #voc대응-정산 16:33 스레드 첨부 이미지 4장 · VOC 시트 캡처.</p>
+  <p>주의: 로컬 코드는 2026-08-10 fetch 기준입니다. 이후 원격 develop 변경분은 반영돼 있지 않습니다.</p>
+</footer>
+</div>

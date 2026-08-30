@@ -38,6 +38,21 @@ SCREEN = {
 }
 FIELDS = ['term', 'var', 'calc', 'screen', 'rel']
 
+# 캡션 현행화 표 — 캡처 이미지(webp)와 shot_rects.json 좌표는 동결이고,
+# 앵커 text 는 촬영 시점 기록이라 손대지 않는다. 캡션은 이미지 밖 텍스트라
+# 현행 화면값으로 맞춘다. 치환은 이 표 한 곳에서만 하고
+# verify_shotmarks.py 가 같은 표를 불러 앵커 text 에도 똑같이 걸어 대조한다.
+CAP_FIX = (
+    ('Ty수익율 투자실행금액 대비 12.97% 투자자산 대비 10.72%',
+     'Ty수익율 투자실행금액 대비 6.91% 투자자산 대비 4.07%'),
+)
+
+
+def cap_text(t):
+    for a, b in CAP_FIX:
+        t = t.replace(a, b)
+    return t
+
 
 # ══════════════════════════════════════════════════════════════════
 #  마크다운 → HTML (이 문서가 쓰는 문법만)
@@ -175,7 +190,8 @@ def shot_html(shot, spec, kind, term):
     src = f"assets/shots/{shot}.webp"
     name = SCREEN.get(shot, shot)
     lab = '이 자리' if kind == 'direct' else '재료 — 이 자리 뒤에 숨는다'
-    cap = f"{name} · {it['text'][:40] or it['tag']}"
+    ctext = cap_text(it['text'])
+    cap = f"{name} · {ctext[:40] or it['tag']}"
     alt = f"{name} 화면 캡처 — {term} 이 표시되는 자리"
     mk = (f'<span class="mark {kind}" style="left:{L_:.3f}%;top:{T_:.3f}%;'
           f'width:{Wp:.3f}%;height:{Hp:.3f}%"><i>{H.escape(lab)}</i></span>')
@@ -188,7 +204,7 @@ def shot_html(shot, spec, kind, term):
   <span class="pan" data-yc="{yc:.5f}" style="transform:translateY(calc(130px - {yc*100:.3f}%))">{img}{mk}</span>
   <span class="zoom">확대</span>
 </button>
-<figcaption><b>{H.escape(name)}</b> · {H.escape(it['text'][:56] or it['tag'])}
+<figcaption><b>{H.escape(name)}</b> · {H.escape(ctext[:56] or it['tag'])}
 <span class="kd {kind}">{'화면에 뜬다' if kind == 'direct' else '화면에 안 뜬다 — 재료'}</span></figcaption>
 </figure>'''
 

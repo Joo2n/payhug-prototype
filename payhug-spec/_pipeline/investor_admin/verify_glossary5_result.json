@@ -1,0 +1,147 @@
+{
+ "cards": {
+  "n": 50,
+  "missing": [],
+  "ids": [
+   "t01",
+   "t02",
+   "t03",
+   "t04",
+   "t05",
+   "t06",
+   "t07",
+   "t08",
+   "t09",
+   "t10",
+   "t11",
+   "t12",
+   "t13",
+   "t14",
+   "t15",
+   "t16",
+   "t17",
+   "t18",
+   "t19",
+   "t20",
+   "t21",
+   "t22",
+   "t23",
+   "t24",
+   "t25",
+   "t26",
+   "t27",
+   "t28",
+   "t29",
+   "t30",
+   "t31",
+   "t32",
+   "t33",
+   "t34",
+   "t35",
+   "t36",
+   "t37",
+   "t38",
+   "t39",
+   "t40",
+   "t41",
+   "t42",
+   "t43",
+   "t44",
+   "t45",
+   "t46",
+   "t47",
+   "t48",
+   "t49",
+   "t50"
+  ]
+ },
+ "images": {
+  "n": 50,
+  "broken": []
+ },
+ "anchors": {
+  "n": 734,
+  "dead": []
+ },
+ "marks": {
+  "n": 50,
+  "offscreen": 0,
+  "zero": 0,
+  "sample": [
+   {
+    "shot": "invest-assets.webp",
+    "inView": true,
+    "declared": "18.611,40.043,18.875,3.592",
+    "w": 164.2,
+    "h": 30.5,
+    "panH": 849,
+    "ty": "translateY(-226.2px)"
+   },
+   {
+    "shot": "merchants.webp",
+    "inView": true,
+    "declared": "22.083,21.917,12.500,4.208",
+    "w": 108.8,
+    "h": 30.5,
+    "panH": 725,
+    "ty": "translateY(-45.2px)"
+   },
+   {
+    "shot": "invest-assets.webp",
+    "inView": true,
+    "declared": "18.611,40.043,18.875,3.592",
+    "w": 164.2,
+    "h": 30.5,
+    "panH": 849,
+    "ty": "translateY(-226.2px)"
+   }
+  ]
+ },
+ "lightbox": {
+  "opens": true,
+  "src": "assets/shots/invest-assets.webp",
+  "markLeft": "18.611%",
+  "escCloses": true,
+  "reopens": true,
+  "backdropCloses": true,
+  "closeLabel": "닫기 (Esc)",
+  "declaredSrc": "assets/shots/invest-assets.webp",
+  "declaredLeft": "18.611%"
+ },
+ "search": {
+  "filtered": 1,
+  "restored": 50
+ },
+ "overflow": {
+  "768": {
+   "scrollW": 768,
+   "clientW": 768,
+   "over": false,
+   "wide": []
+  },
+  "1024": {
+   "scrollW": 1024,
+   "clientW": 1024,
+   "over": false,
+   "wide": []
+  },
+  "1280": {
+   "scrollW": 1280,
+   "clientW": 1280,
+   "over": false,
+   "wide": []
+  },
+  "1440": {
+   "scrollW": 1440,
+   "clientW": 1440,
+   "over": false,
+   "wide": []
+  }
+ },
+ "legacyInRepo": false,
+ "legacyUnlinked": [],
+ "legacy": {
+  "inRepo": false
+ },
+ "console": []
+}

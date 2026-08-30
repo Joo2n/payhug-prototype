@@ -2,7 +2,7 @@
 """화면 간 정합 — 정적 HTML · app.html 데이터셋 · xlsx 실파일이 같은 숫자를 말하는지 대조."""
 import io, os, re, json, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from roster16_model import ROSTER, SHARES, EXEC, CASH, TOTAL, W_W, S_W, TY_W, EXEC_SHARE, CASH_SHARE, DAILY, MONTHLY, DSUM, AUG_CARD, r1, r2, ty, f
+from roster16_model import ROSTER, SHARES, EXEC, CASH, TOTAL, W_W, S_W, TY_W, EXEC_SHARE, CASH_SHARE, DAILY, MONTHLY, DSUM, AUG_CARD, r2, ty, f
 import openpyxl
 
 ROOT = '/Users/semi/cursor/payhug-investor-admin'
@@ -28,8 +28,7 @@ def html_merch(p):
     return [(a, n(b), c, d, e, g) for a, b, c, d, e, g in TR.findall(rd(p))]
 
 p1 = html_merch('invest-assets.html')
-p2 = html_merch('invest-assets--page2.html')
-chk('invest-assets 1p+2p 로스터', p1 + p2, WANT_MERCH)
+chk('invest-assets 로스터', p1, WANT_MERCH)
 chk('invest-assets--download 1p',  html_merch('invest-assets--download.html'), WANT_MERCH[:10])
 chk('invest-assets--cert-confirm 1p', html_merch('invest-assets--cert-confirm.html'), WANT_MERCH[:10])
 
@@ -51,18 +50,21 @@ chk('xls-assets-merchant 로스터',
 wb = openpyxl.load_workbook(os.path.join(ROOT, 'assets/xlsx/가맹점별투자자산_2026-08-27_2026-08-27.xlsx'))
 ws = wb['가맹점별 투자자산']
 xls = [(ws['A%d' % r].value, ws['B%d' % r].value,
-        ('%.1f' % ws['C%d' % r].value), ('%.2f' % (ws['D%d' % r].value * 100)),
+        ('%.2f' % ws['C%d' % r].value), ('%.2f' % (ws['D%d' % r].value * 100)),
         ('%.2f' % (ws['E%d' % r].value * 100)), ('%.1f' % (ws['F%d' % r].value * 100)))
        for r in range(4, 4 + len(ROSTER))]
 chk('가맹점별투자자산.xlsx 로스터', xls, WANT_MERCH)
-chk('가맹점별투자자산.xlsx 합계', (ws['B20'].value, round(ws['F20'].value, 4)), (EXEC, 1))
+# 합계 행 번호는 로스터 곳수에서 나온다 — 4행부터 시작해 로스터 행 다음 줄이다.
+_TOT = 4 + len(ROSTER)
+chk('가맹점별투자자산.xlsx 합계',
+    (ws['B%d' % _TOT].value, round(ws['F%d' % _TOT].value, 4)), (EXEC, 1))
 
 wb = openpyxl.load_workbook(os.path.join(ROOT, 'assets/xlsx/투자자산현황_2026-08-27_2026-08-27.xlsx'))
 ws = wb['투자자산 현황']
 chk('투자자산현황.xlsx 투자실행액 행',
-    (ws['B4'].value, '%.1f' % ws['C4'].value, '%.2f' % (ws['D4'].value * 100),
+    (ws['B4'].value, '%.2f' % ws['C4'].value, '%.2f' % (ws['D4'].value * 100),
      '%.2f' % (ws['E4'].value * 100), '%.1f' % (ws['F4'].value * 100)),
-    (EXEC, str(r1(W_W)), str(r2(S_W)), str(r2(TY_W)), str(EXEC_SHARE)))
+    (EXEC, str(r2(W_W)), str(r2(S_W)), str(r2(TY_W)), str(EXEC_SHARE)))
 chk('투자자산현황.xlsx 순현금·합계',
     (ws['B5'].value, '%.1f' % (ws['F5'].value * 100), ws['B6'].value),
     (CASH, str(CASH_SHARE), TOTAL))
@@ -71,10 +73,10 @@ wb = openpyxl.load_workbook(os.path.join(ROOT, 'assets/xlsx/일별투자수익_2
 ws = wb['일별 투자수익']
 chk('일별투자수익.xlsx 7행',
     [(ws['A%d' % r].value, ws['B%d' % r].value, ws['C%d' % r].value, ws['D%d' % r].value,
-      '%.1f' % ws['E%d' % r].value, '%.2f' % (ws['F%d' % r].value * 100)) for r in range(4, 11)],
+      '%.2f' % ws['E%d' % r].value, '%.2f' % (ws['F%d' % r].value * 100)) for r in range(4, 11)],
     [(x['d'], x['repay'], x['exec'], x['profit'], x['w'], str(x['ty'])) for x in DAILY])
 chk('일별투자수익.xlsx 합계',
-    (ws['B11'].value, ws['C11'].value, ws['D11'].value, '%.1f' % ws['E11'].value, '%.2f' % (ws['F11'].value * 100)),
+    (ws['B11'].value, ws['C11'].value, ws['D11'].value, '%.2f' % ws['E11'].value, '%.2f' % (ws['F11'].value * 100)),
     (DSUM['repay'], DSUM['exec'], DSUM['profit'], str(DSUM['w']), str(DSUM['ty'])))
 
 wb = openpyxl.load_workbook(os.path.join(ROOT, 'assets/xlsx/투자수익현황_2026-08-21_2026-08-27.xlsx'))
@@ -106,15 +108,15 @@ def html_bucket(p):
 def xls_bucket(fn, sheet, nrows):
     w = openpyxl.load_workbook(os.path.join(ROOT, 'assets/xlsx/' + fn))[sheet]
     return [(str(w['A%d' % r].value), w['B%d' % r].value, w['C%d' % r].value, w['D%d' % r].value,
-             '%.1f' % w['E%d' % r].value, '%.2f' % (w['F%d' % r].value * 100))
+             '%.2f' % w['E%d' % r].value, '%.2f' % (w['F%d' % r].value * 100))
             for r in range(4, 4 + nrows)]
 
 chk('invest-profit--weekly 낱장 = 주별투자수익.xlsx 4행',
     html_bucket('invest-profit--weekly.html'),
-    xls_bucket('주별투자수익_2026-08-03_2026-08-30.xlsx', '주별 투자수익', 4))
+    xls_bucket('주별투자수익_2026-08-03_2026-08-27.xlsx', '주별 투자수익', 4))
 chk('invest-profit--monthly 낱장 = 월별투자수익.xlsx 6행',
     html_bucket('invest-profit--monthly.html'),
-    xls_bucket('월별투자수익_2026-03-01_2026-08-31.xlsx', '월별 투자수익', 6))
+    xls_bucket('월별투자수익_2026-03-01_2026-08-27.xlsx', '월별 투자수익', 6))
 
 # ── 주별·월별 낱장의 `수익 현황` 카드 ↔ 같은 기간 현황 엑셀 ───────
 #   카드가 4주를 말하는데 링크·파일이 일주일이면 여기서 걸린다.
@@ -137,8 +139,8 @@ def xls_status(fn):
             '%.2f' % (w['B7'].value * 100), '%.2f' % (w['B8'].value * 100))
 
 for _f, _x in (('invest-profit.html',            '투자수익현황_2026-08-21_2026-08-27.xlsx'),
-               ('invest-profit--weekly.html',    '투자수익현황_2026-08-03_2026-08-30.xlsx'),
-               ('invest-profit--monthly.html',   '투자수익현황_2026-03-01_2026-08-31.xlsx')):
+               ('invest-profit--weekly.html',    '투자수익현황_2026-08-03_2026-08-27.xlsx'),
+               ('invest-profit--monthly.html',   '투자수익현황_2026-03-01_2026-08-27.xlsx')):
     chk('%s 현황 카드 = %s' % (_f.replace('.html', ''), _x), html_status(_f), xls_status(_x))
     _href = 'assets/xlsx/' + _x
     chk('%s 현황 카드 링크' % _f.replace('.html', ''), _href in rd(_f), True)
@@ -164,14 +166,14 @@ def jsarr(name):
     return app[a:b]
 mm = re.findall(r"name:'([^']+)'.*?amount:(\d+), w:([\d.]+), s:([\d.]+), ty:([\d.]+)", jsarr('MERCHANTS'))
 chk('app.html MERCHANTS',
-    [(a, int(b), ('%.1f' % float(c)), ('%.2f' % float(d)), ('%.2f' % float(e))) for a, b, c, d, e in mm],
+    [(a, int(b), ('%.2f' % float(c)), ('%.2f' % float(d)), ('%.2f' % float(e))) for a, b, c, d, e in mm],
     [(x[0], x[1], x[2], x[3], str(ty(x[2]))) for x in ROSTER])
 ar = re.search(r"\{name:'투자실행액', amount:(\d+), w:([\d.]+),\s+s:([\d.]+), ty:([\d.]+)", app)
 chk('app.html ASSET_ROWS 투자실행액',
-    (int(ar.group(1)), '%.1f' % float(ar.group(2)), '%.2f' % float(ar.group(3)), '%.2f' % float(ar.group(4))),
-    (EXEC, str(r1(W_W)), str(r2(S_W)), str(r2(TY_W))))
+    (int(ar.group(1)), '%.2f' % float(ar.group(2)), '%.2f' % float(ar.group(3)), '%.2f' % float(ar.group(4))),
+    (EXEC, str(r2(W_W)), str(r2(S_W)), str(r2(TY_W))))
 def jsrows(name):
-    return [(a, int(b), int(c), int(d), ('%.1f' % float(e)), ('%.2f' % float(g)))
+    return [(a, int(b), int(c), int(d), ('%.2f' % float(e)), ('%.2f' % float(g)))
             for a, b, c, d, e, g in re.findall(r"\{d:'([\d-]+)', repay:(\d+), exec:(\d+), profit:(\d+), w:([\d.]+), ty:([\d.]+)\}", jsarr(name))]
 # app.html 은 일별 원장 한 벌만 갖고, 월별 표는 그 원장을 달별로 합쳐 만든다.
 # 대조 1 — 원장 가운데 기본 조회 기간(일주일) 구간이 정적 화면·xlsx 와 같은 7행인가.
@@ -201,7 +203,7 @@ def month_rollup(rows):
         g = agg[k]
         wv = g['wx'] / _D(g['ex'])
         tv = (_D(g['pr']) / _D(g['ex']) * _D(100)) * _D(365) / wv
-        out.append((k, g['repay'], g['ex'], g['pr'], str(r1(wv)), str(r2(tv))))
+        out.append((k, g['repay'], g['ex'], g['pr'], str(r2(wv)), str(r2(tv))))
     return out
 chk('app.html 일별 원장 월 롤업 = 월별 6행', month_rollup(LEDGER), want_mon)
 chk('app.html PAGE_SIZE', re.search(r'var PAGE_SIZE = (\d+);', app).group(1), '10')
@@ -211,10 +213,10 @@ from platform_duration import FLOOR, CEIL
 from decimal import Decimal as _DD
 def in_range(vals):
     return sorted({str(v) for v in vals if not (_DD(str(FLOOR)) <= _DD(str(v)) <= _DD(str(CEIL)))})
-chk('로스터 16건 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range(x[2] for x in ROSTER), [])
-chk('일별 원장 180일 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range(r[4] for r in LEDGER), [])
-chk('낱장 가맹점 표 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range(x[2] for x in p1 + p2), [])
-chk('투자실행액 행 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range([r1(W_W)]), [])
+chk('로스터 %d건 W금융일수 ⊂ [%s, %s]' % (len(ROSTER), FLOOR, CEIL), in_range(x[2] for x in ROSTER), [])
+chk('일별 원장 %d일 W금융일수 ⊂ [%s, %s]' % (len(LEDGER), FLOOR, CEIL), in_range(r[4] for r in LEDGER), [])
+chk('낱장 가맹점 표 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range(x[2] for x in p1), [])
+chk('투자실행액 행 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range([r2(W_W)]), [])
 
 # ── Duration(가중평균만기) 등재 — 용어 문서에만, 화면에는 쓰지 않는다 ──
 gl = rd('glossary.html')
@@ -222,12 +224,42 @@ chk('용어 해설 · Duration 카드 3종', gl.count('금융 일반 용어로�
 chk('용어 해설 · 가중평균만기 표기', ('Duration' in gl) and ('가중평균만기' in gl), True)
 chk('용어 해설 · 플랫폼별 평균만기 실측 4건',
     all(v in gl for v in ('2.0일', '3.4일', '4.7일', '6.2일')), True)
-chk('용어 해설 · 출처 병기', '조현준 슬랙 2026-08-28' in gl, True)
-screens = [rd(x) for x in ('app.html', 'invest-assets.html', 'invest-assets--page2.html',
+chk('용어 해설 · 출처 병기', '정산주기.xlsx' in gl, True)
+screens = [rd(x) for x in ('app.html', 'invest-assets.html',
                            'invest-profit.html', 'invest-profit--weekly.html',
                            'invest-profit--monthly.html', 'certificate.html')]
 chk('화면에는 Duration 설명문 없음 (D-23)',
     sorted({w for w in ('Duration', '가중평균만기', '평균만기') for t in screens if w in t}), [])
+
+# ── 열머리 모집단 툴팁 — W·S 가 자기 모집단을 스스로 말한다 ────────
+#   현황표의 W·S·금액 세 칸은 모집단이 서로 달라, 가맹점별 표를 금액으로 가중평균해도
+#   현황표 값과 맞아떨어지지 않는다. 건수는 채권 원장 실측이라 화면에 손으로 적을 수 없다.
+import daily_ledger as _LG
+POP_W_N = f(len(_LG.RECEIVABLES))
+POP_S_N = f(_LG.facts()['sampleReceivables'])
+POP_TIP = re.compile(r'<span class="tip-anchor">(W금융일수|S입금부족율)</span>'
+                     r'<span class="tip-panel">([^<]+)'
+                     r'<span class="tip-row"><span>채권 건수</span>'
+                     r'<span class="tip-green">([\d,]+)건</span>')
+POP_WANT = [('W금융일수', '대상정산금채권 전체 (발생 기준)', POP_W_N),
+            ('S입금부족율', '선정산일 D-20 ~ D-11 표본', POP_S_N)]
+for _p in ('invest-assets.html', 'invest-assets--download.html',
+           'invest-assets--cert-confirm.html', 'invest-assets--empty.html'):
+    _got = POP_TIP.findall(rd(_p))
+    chk('%s 열머리 모집단 툴팁 (현황표·가맹점별 표)' % _p, _got, POP_WANT * 2)
+# 통합본은 popTh() 가 그리므로 마크업이 아니라 그 재료(POP_W · POP_S)를 대조한다.
+_app = rd('app.html')
+chk('app.html 열머리 모집단 재료',
+    re.findall(r"var (POP_[WS]) = \{of:'([^']+)',\s*n:'([\d,]+)건'\}", _app),
+    [('POP_W', '대상정산금채권 전체 (발생 기준)', POP_W_N),
+     ('POP_S', '선정산일 D-20 ~ D-11 표본', POP_S_N)])
+chk('app.html 두 표가 같은 popTh 를 쓴다', _app.count("popTh('W금융일수', POP_W)"), 2)
+chk('app.html 두 표가 같은 popTh 를 쓴다 (S)', _app.count("popTh('S입금부족율', POP_S)"), 2)
+# 모집단이 다르다는 사실 자체 — 두 건수가 같으면 툴팁을 달 이유가 없다
+chk('W·S 모집단 건수가 서로 다르다', POP_W_N != POP_S_N, True)
+# 미회수 채권 곳수와도 다르다(금액 칸의 모집단) — 세 칸이 각자 다른 집합이다
+chk('금액 칸 모집단(미회수)과도 다르다',
+    len({len(_LG.RECEIVABLES), _LG.facts()['sampleReceivables'], len(_LG.OPEN)}), 3)
 
 print('== 화면 간 정합 %d건 · 불일치 %d ==' % (len(rows_out), fails))
 for name, ok, got, want in rows_out:

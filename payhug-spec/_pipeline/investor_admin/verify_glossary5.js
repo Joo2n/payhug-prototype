@@ -76,17 +76,22 @@ R.marks = await ev(`
   return {n:out.length, offscreen:out.filter(function(o){return !o.inView;}).length,
     zero:out.filter(function(o){return o.w<2||o.h<2;}).length, sample:out.slice(0,3)};`);
 
+/* 기대값을 검증기가 들고 있지 않는다 — 누른 크롭이 선언한 좌표(declaredLeft)와 그 크롭이
+   가리키는 캡처(declaredSrc)를 화면에서 같이 읽어 와 아래 판정에서 라이트박스와 맞춰 본다. */
 R.lightbox = await ev(`
   var b=document.querySelector('.crop'); b.click();
   var lb=document.getElementById('lb');
   var on=lb.classList.contains('on');
   var img=document.getElementById('lb-img').getAttribute('src');
   var mk=document.getElementById('lb-mark').style.left;
+  var closeBtn=document.getElementById('lb-close');
   document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));
   var closed=!lb.classList.contains('on');
   b.click(); var on2=lb.classList.contains('on');
   document.body.click(); var closed2=!lb.classList.contains('on');
-  return {opens:on, src:img, markLeft:mk, escCloses:closed, reopens:on2, backdropCloses:closed2};`);
+  return {opens:on, src:img, markLeft:mk, escCloses:closed, reopens:on2, backdropCloses:closed2,
+          closeLabel: closeBtn ? closeBtn.textContent.trim() : null,
+          declaredSrc: b.dataset.shot, declaredLeft: b.dataset.mark.split(',')[0] + '%'};`);
 
 R.search = await ev(`
   var q=document.getElementById('q');
@@ -127,6 +132,52 @@ console.log(JSON.stringify({cards:R.cards.n, missingFields:R.cards.missing.lengt
   legacyInRepo:R.legacyInRepo, legacyStillLinked:R.legacyUnlinked,
   legacyVerdict:(R.legacyInRepo||R.legacyUnlinked.length)?'FAIL':'배포에서 빠짐 · 링크 0건',
   consoleErrors:errs.length},null,1));
+
+/* ── 판정 ──
+   2026-08-30 이전까지 이 파일은 process.exit(0) 무조건이었다. 자기 출력에 legacyVerdict:'FAIL'
+   을 찍으면서도 종료코드에 넣지 않았고, marks.offscreen · lightbox · overflow 는 이 파일도
+   gate_glossary.js 도 판정하지 않았다(게이트는 카드·필드·이미지·앵커·콘솔만 본다).
+   기준은 새로 발명하지 않는다 — 이 파일이 이미 재고 있는 값의 "결함이면 무엇인가"만 적는다.
+   곳수(카드 50 · 앵커 734 · 마커 50)는 박지 않는다. 내용이 늘면 같이 늘 값이다. */
+const fails = [];
+if(R.cards.n === 0) fails.push('용어 카드 0건 — 검사 대상이 사라졌다');
+if(R.cards.missing.length) fails.push('5필드 빠진 카드 ' + R.cards.missing.length + '건: ' + R.cards.missing.slice(0,5).join(', '));
+if(R.images.n === 0) fails.push('.crop 이미지 0건');
+if(R.images.broken.length) fails.push('깨진 이미지 ' + R.images.broken.length + '건: ' + R.images.broken.slice(0,4).join(', '));
+if(R.anchors.n === 0) fails.push('앵커 0건');
+if(R.anchors.dead.length) fails.push('죽은 앵커 ' + JSON.stringify(R.anchors.dead.slice(0,6)));
+/* 마커가 크롭 밖(offscreen)이면 캡처의 엉뚱한 자리를 가리키는 것이고, 크기 0이면 아예 안 보인다.
+   픽셀 대조는 verify_shotmarks.py 가 따로 하지만 그쪽은 glossary.html 을 브라우저로 띄우지 않는다. */
+if(R.marks.n === 0) fails.push('마커 0건');
+if(R.marks.offscreen) fails.push('크롭 밖 마커 ' + R.marks.offscreen + '건');
+if(R.marks.zero) fails.push('크기 0 마커 ' + R.marks.zero + '건');
+/* 라이트박스 — 열림·재열림은 기능 자체다. ESC 닫힘은 화면이 스스로 약속한 것이다:
+   glossary.html 의 닫기 버튼 라벨이 「닫기 (Esc)」다. 라벨이 바뀌면 이 판정도 같이 풀린다.
+   src·markLeft 는 누른 크롭이 선언한 값과 맞는지로 본다(검증기가 값을 들고 있지 않다).
+   backdropCloses 는 화면이 약속한 적 없는 동작이라 판정하지 않는다 — 아래에서 보고만 한다. */
+const LB = R.lightbox;
+if(!LB.opens) fails.push('라이트박스가 열리지 않는다');
+if(!LB.reopens) fails.push('라이트박스가 다시 열리지 않는다');
+if(LB.src !== LB.declaredSrc) fails.push('라이트박스 이미지 ' + LB.src + ' ≠ 크롭 선언 ' + LB.declaredSrc);
+if(LB.markLeft !== LB.declaredLeft) fails.push('라이트박스 마커 ' + LB.markLeft + ' ≠ 크롭 선언 ' + LB.declaredLeft);
+if(/Esc/i.test(LB.closeLabel || '') && !LB.escCloses)
+  fails.push('닫기 버튼이 「' + LB.closeLabel + '」 라고 적어 두고 ESC 로 안 닫힌다');
+if(!LB.closeLabel) fails.push('라이트박스 닫기 버튼(#lb-close) 이 없다');
+/* 검색 — 좁혀야 좁힌 것이고, 지우면 전건이 돌아와야 한다. 걸리는 곳수는 판정하지 않는다. */
+if(!(R.search.filtered > 0)) fails.push('검색 PSD 0건 — 검색이 죽었거나 그 기호가 사라졌다');
+if(!(R.search.filtered < R.search.restored)) fails.push('검색이 좁히지 않는다 ' + R.search.filtered + '/' + R.search.restored);
+if(R.search.restored !== R.cards.n) fails.push('검색 지운 뒤 ' + R.search.restored + ' ≠ 카드 ' + R.cards.n);
+Object.keys(R.overflow).forEach(w => { const o = R.overflow[w];
+  if(o.over) fails.push('가로 넘침 @' + w + 'px — ' + o.scrollW + '>' + o.clientW + ' ' + JSON.stringify(o.wide)); });
+/* 위 112-114행 주석이 근거 — 구버전은 뿌리부터 어긋난 동결본이라 배포에서 파일을 뺐다.
+   그 판정을 이미 문자열로 찍고 있었는데 종료코드에 안 넣던 자리다. */
+if(R.legacyInRepo) fails.push('구버전 glossary-legacy.html 이 배포 레포에 되살아났다');
+if(R.legacyUnlinked.length) fails.push('구버전 링크 잔존: ' + R.legacyUnlinked.join(', '));
+if(errs.length) fails.push('콘솔 에러 ' + errs.length + '건: ' + errs.slice(0,3).join(' | '));
+
+console.log('-- 판정하지 않고 보고만 -- 배경 클릭 닫힘=' + LB.backdropCloses +
+            ' (화면이 약속한 동작이 아니라 기준을 댈 수 없다)');
+console.log(fails.length ? '판정: FAIL ' + fails.length + '건\n - ' + fails.join('\n - ') : '판정: PASS');
 try{ch.kill('SIGKILL');}catch(e){} server.close(); fs.rmSync(prof,{recursive:true,force:true});
-process.exit(0);
+process.exit(fails.length ? 1 : 0);
 })().catch(e=>{ console.error('FAIL',e); process.exit(1); });

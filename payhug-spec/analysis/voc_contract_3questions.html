@@ -1,0 +1,298 @@
+<title>계약 문의 3건 답변 근거</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --bg:#FCFCFB; --surface:#FFFFFF; --surface2:#F3F4F2; --ink:#1E211F; --muted:#646B66;
+    --line:#E2E5E0; --line2:#EEF0EC; --accent:#1F5E4C; --accent-bg:#E3F0EB;
+    --ok:#1A6E45; --ok-bg:#E2F1E8; --warn:#8B6110; --warn-bg:#F7EEDB; --risk:#A93226; --risk-bg:#F9E6E3;
+    --quote:#3D4A63; --quote-bg:#EEF1F7;
+    --mono-bg:#EDEFEC; --shadow:0 1px 3px rgba(30,33,31,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141614; --surface:#1B1E1C; --surface2:#232725; --ink:#E6E9E5; --muted:#98A099;
+      --line:#2E322F; --line2:#252927; --accent:#63BFA2; --accent-bg:#173029;
+      --ok:#6CC395; --ok-bg:#16301F; --warn:#D5A957; --warn-bg:#35301C; --risk:#E08D80; --risk-bg:#3A2521;
+      --quote:#A3B2CC; --quote-bg:#212733;
+      --mono-bg:#242825; --shadow:0 1px 3px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141614; --surface:#1B1E1C; --surface2:#232725; --ink:#E6E9E5; --muted:#98A099;
+    --line:#2E322F; --line2:#252927; --accent:#63BFA2; --accent-bg:#173029;
+    --ok:#6CC395; --ok-bg:#16301F; --warn:#D5A957; --warn-bg:#35301C; --risk:#E08D80; --risk-bg:#3A2521;
+    --quote:#A3B2CC; --quote-bg:#212733;
+    --mono-bg:#242825; --shadow:0 1px 3px rgba(0,0,0,.3);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans KR","Apple SD Gothic Neo",sans-serif; font-size:15.5px; line-height:1.73;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:860px; margin:0 auto; padding:40px 20px 90px}
+  h1{font-size:27px; font-weight:700; letter-spacing:-.02em; margin:0 0 6px}
+  .sub{color:var(--muted); font-size:13.5px; margin:0 0 28px}
+  h2{font-size:20px; font-weight:700; letter-spacing:-.015em; margin:50px 0 12px; padding-bottom:9px; border-bottom:2px solid var(--line)}
+  h3{font-size:16px; font-weight:700; margin:26px 0 8px}
+  p{margin:0 0 13px; max-width:66ch}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.86em; background:var(--mono-bg); border-radius:4px; padding:1px 5px}
+
+  .ask{background:var(--surface2); border-radius:10px; padding:14px 18px; margin:0 0 18px; font-size:14.5px}
+  .ask .l{font-size:11.5px; font-weight:700; letter-spacing:.08em; color:var(--muted); margin:0 0 5px}
+  .ask p{margin:0; color:var(--ink)}
+
+  .verdict{display:inline-block; font-size:12.5px; font-weight:700; padding:3px 11px; border-radius:6px; margin:0 0 12px}
+  .verdict.ok{color:var(--ok); background:var(--ok-bg)}
+  .verdict.warn{color:var(--warn); background:var(--warn-bg)}
+  .verdict.risk{color:var(--risk); background:var(--risk-bg)}
+
+  blockquote{margin:14px 0; padding:14px 18px; background:var(--quote-bg); border-left:3px solid var(--quote);
+    border-radius:0 8px 8px 0; font-size:14.5px; line-height:1.7}
+  blockquote p{margin:0 0 9px; max-width:none} blockquote p:last-child{margin:0}
+  blockquote .src{display:block; margin-top:9px; font-size:12px; color:var(--muted); font-weight:600}
+  blockquote strong{background:rgba(255,220,0,.22); padding:0 2px; border-radius:2px}
+  :root[data-theme="dark"] blockquote strong, :root:not([data-theme="light"]) blockquote strong{background:rgba(255,220,0,.14)}
+
+  .draft{background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--accent);
+    border-radius:10px; padding:16px 20px; margin:18px 0; box-shadow:var(--shadow)}
+  .draft .l{font-size:11.5px; font-weight:700; letter-spacing:.08em; color:var(--accent); margin:0 0 8px}
+  .draft p{font-size:14.5px}
+  .draft p:last-child{margin-bottom:0}
+
+  .callout{border-radius:10px; padding:14px 18px; margin:16px 0}
+  .callout.warn{background:var(--warn-bg)} .callout.risk{background:var(--risk-bg)} .callout.info{background:var(--accent-bg)}
+  .callout .ct{font-size:12.5px; font-weight:700; margin:0 0 6px}
+  .callout.warn .ct{color:var(--warn)} .callout.risk .ct{color:var(--risk)} .callout.info .ct{color:var(--accent)}
+  .callout p{margin:0 0 8px; font-size:14.5px} .callout p:last-child{margin-bottom:0}
+
+  .tbl-wrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+  table{border-collapse:collapse; width:100%; font-size:14px; min-width:520px}
+  th,td{padding:10px 15px; text-align:left; vertical-align:top; border-top:1px solid var(--line2)}
+  thead th{border-top:none; background:var(--surface2); color:var(--muted); font-size:12px; font-weight:600}
+  tbody tr:first-child td{border-top:1px solid var(--line)}
+
+  ul,ol{padding-left:21px; margin:11px 0}
+  li{margin:6px 0; max-width:64ch}
+  footer{margin-top:56px; color:var(--muted); font-size:12.5px; border-top:1px solid var(--line); padding-top:16px}
+  footer p{max-width:70ch; margin:0 0 6px}
+</style>
+
+<div class="wrap">
+  <h1>계약 문의 3건 답변 근거</h1>
+  <p class="sub">계약서 원문(레포 동봉 7장 PDF)에서 해당 조항을 직접 확인한 결과</p>
+
+  <div class="callout info">
+    <p class="ct">먼저 — 근거 자료를 찾았습니다</p>
+    <p>가맹점이 실제로 서명하는 <strong>계약서 원본 PDF가 가맹점 웹 저장소에 들어 있습니다</strong>(7장짜리). 이용계약서 2장 + 양수도 계약서 2장 + 부칙 3장 구성이고, 아래 인용은 전부 그 원문입니다.</p>
+    <p>지금까지 사내 검토에서 <strong>"본문을 확보하지 못했다"고 남아 있던 조항 두 개</strong>(양수도 제15조, 위약금 조항 존부)가 이 원문으로 해소됐습니다.</p>
+  </div>
+
+  <div class="callout warn">
+    <p class="ct">다만 판본을 먼저 확인하셔야 합니다</p>
+    <p>이 PDF는 <strong>2026년 2월 2일에 만들어진 판본</strong>이고, 해지 조항이 <strong>제11조</strong>입니다. 그런데 사내 검토 기록에는 <strong>해지가 제12조인 다른 판본</strong>이 있고, 그 판본은 3영업일을 <strong>"미정산금을 전액 회수한 날부터"</strong> 세도록 되어 있습니다.</p>
+    <p>즉 <strong>처리 기간 기산점이 판본마다 다릅니다.</strong> 이 가맹점이 실제로 서명한 계약서가 어느 판본인지 확인하기 전에는 "접수일로부터 3영업일"이라고 단정해서 안내하지 마세요.</p>
+  </div>
+
+  <h2>문의 1 · 해지와 위약금</h2>
+
+  <div class="ask">
+    <p class="l">원문의</p>
+    <p>계약기간 1년인데 계약기간 중 가맹점이 양수인의 사전동의 없이 임의로 계약을 철회할 수 없다고 되어 있고, 회사 동의 및 계약상 해지 절차에 따라 처리된다는데 회사 사전 동의 어떤 식으로 가능한지? 위약금 조항은 없는지요?</p>
+  </div>
+
+  <span class="verdict ok">위약금 조항 없음 · 해지 경로 명확</span>
+
+  <h3>계약기간은 1년이고 자동으로 연장됩니다</h3>
+
+  <blockquote>
+    <p>계약기간은 계약일로부터 1년이며 "가맹점"에서 계약만료일 1개월 전까지 "서비스제공사"로 <strong>내용증명우편이나 전자적메시지</strong>를 이용해 계약해지 의사를 표시하지 않는 경우, <strong>1년씩 자동연장</strong> 하기로 한다.</p>
+    <span class="src">이용계약서 제3조 [계약기간과 적용범위] 1항</span>
+  </blockquote>
+
+  <h3>사전동의 없이도 철회할 수 있는 경우가 세 가지 있습니다</h3>
+
+  <p>가맹점이 인용하신 조항의 <strong>뒷부분에 예외가 붙어 있습니다.</strong></p>
+
+  <blockquote>
+    <p>1. "가맹점"은 계약기간 중 "서비스제공사"의 사전동의 없이 "페이허그서비스" 이용을 임의로 철회할 수 없다. <strong>다만 "서비스제공사"가 계약한 내용을 위반하거나, "페이허그서비스" 이용 개시 전 또는 "페이허그서비스" 이용이 제대로 이루어지지 않을 때에는 이용을 철회할 수 있다.</strong></p>
+    <p>2. 전항의 "페이허그서비스" 이용 개시 시점은, "가맹점"이 <strong>"전용계좌" 등록을 완료한 시점</strong>으로 본다.</p>
+    <span class="src">이용계약서 제11조 [서비스의 철회 및 해지 요청] · 양수도 계약서 제15조도 같은 구조</span>
+  </blockquote>
+
+  <p>즉 <strong>전용계좌(락계좌) 등록을 마치기 전이면 사전동의 없이도 철회됩니다.</strong> 서비스가 시작되기 전이니까요.</p>
+
+  <h3>서비스 시작 후에는 이 경로입니다</h3>
+
+  <blockquote>
+    <p>3. "양도인"은 "본 계약"에 따라 "양수인"이 양수한 "양도대상자산"을 구성하는 "정산금채권" <strong>총 잔액을 변제할 경우 "본 계약"의 해지를 요청할 수 있으며</strong>, 이 경우 "양수인"은 "본 계약"을 해지하고 상기 "정산금채권"이 "양도인"에게 반환되도록 <strong>협조해야 한다.</strong></p>
+    <span class="src">양수도 계약서 제5조 [효력발생] 3항</span>
+  </blockquote>
+
+  <p>이게 <strong>"회사 사전 동의를 어떻게 받나"에 대한 실질적인 답</strong>입니다. 아직 정산받은 선정산 대금이 남아 있으면 그걸 다 갚아야 하고, 갚으면 해지를 요청할 수 있으며 회사는 협조 의무가 있습니다.</p>
+
+  <h3>해지 신청 방법과 처리 기간</h3>
+
+  <blockquote>
+    <p>3. "가맹점"은 "페이허그서비스" 해지 요청을 <strong>전자적메시지</strong>를 이용해 하기로 하고, "서비스제공사"는 상기 해지요청이 접수되면 <strong>접수일로부터 3영업일 이내</strong>에 해지 처리를 완료하기로 한다.</p>
+    <span class="src">이용계약서 제11조 3항 · 양수도 제15조 3항도 동일(3영업일)</span>
+  </blockquote>
+
+  <h3>위약금 조항은 없습니다</h3>
+
+  <p>계약서 7장 전문을 검색한 결과 <strong>"위약"이라는 글자가 한 번도 나오지 않습니다.</strong> 위약금·해지수수료 조항이 존재하지 않습니다.</p>
+
+  <div class="callout warn">
+    <p class="ct">다만 손해배상 조항은 별개로 있습니다</p>
+    <p>위약금과는 성격이 다른 <strong>손해배상</strong> 조항이 양수도 계약서 제12조에 있습니다. 매출취소·수수료변동·광고비 증가·압류 등으로 넘긴 채권의 가치가 떨어지면 그만큼 반환하거나 지급해야 한다는 내용이고, <strong>청구받은 날로부터 2영업일 내 미이행 시 연 20% 지연손해금</strong>이 붙습니다.</p>
+    <p>"위약금은 없지만 정산에서 생긴 차액은 정산해야 한다"는 취지로 안내하시는 게 정확합니다.</p>
+  </div>
+
+  <div class="draft">
+    <p class="l">답변 문안</p>
+    <p>계약기간은 1년이며, 만료 1개월 전까지 해지 의사를 표시하지 않으시면 1년씩 자동연장됩니다.</p>
+    <p>말씀하신 조항에는 예외가 함께 규정되어 있습니다. <strong>선정산 전용계좌 등록을 완료하기 전(서비스 개시 전)이거나, 당사가 계약 내용을 위반한 경우, 서비스가 정상적으로 제공되지 않는 경우</strong>에는 사전동의 없이 철회하실 수 있습니다.</p>
+    <p>서비스 이용을 시작하신 뒤에는, <strong>기 지급된 선정산 대금(정산금채권 잔액)을 모두 상환하시면 해지를 요청하실 수 있고</strong> 당사는 해지 및 채권 반환에 협조하도록 되어 있습니다. 해지 요청은 전자적 방법으로 접수해 주시면 <strong>접수일로부터 3영업일 이내</strong>에 처리해 드립니다.</p>
+    <p><strong>위약금 조항은 계약서에 없습니다.</strong> 다만 매출취소·수수료 변동 등으로 이미 매입한 채권의 금액이 달라진 경우 그 차액을 정산하는 조항(손해배상)은 있습니다.</p>
+  </div>
+
+  <h2>문의 2 · 수수료 공란</h2>
+
+  <div class="ask">
+    <p class="l">원문의</p>
+    <p>전자 계약서에 수수료 ( )%로 공란입니다. 저희가 1% 적는 건가요?</p>
+  </div>
+
+  <span class="verdict risk">사내 확정 필요 — 요율을 임의로 안내하면 안 됨</span>
+
+  <h3>계약서 원문은 두 칸 다 공란입니다</h3>
+
+  <blockquote>
+    <p><strong>제 17조 [수수료]</strong></p>
+    <p>구분 / 수수료(VAT별도)<br>
+    채권매입수수료 / 정산금의 <strong>___%</strong><br>
+    이체수수료 / 정산금 <strong>건당 ___원</strong></p>
+    <span class="src">양수도 계약서 제17조 — 템플릿 원문 그대로</span>
+  </blockquote>
+
+  <p>템플릿에는 <strong>채권매입수수료와 이체수수료 둘 다 빈칸</strong>으로 되어 있습니다. 즉 계약 건마다 채워 넣는 값입니다.</p>
+
+  <div class="callout risk">
+    <p class="ct">"1% 적으면 되나요"에 즉답하면 안 되는 이유</p>
+    <p>대외 안내는 1%로 해왔지만, <strong>사내 문서에 채권매입 수수료율이 여러 값으로 병존</strong>하고 있어 아직 단일 요율표가 확정되지 않았습니다. 어느 값도 확정 표기 금지 상태입니다.</p>
+    <p>게다가 <strong>이 빈칸을 누가 채우는지도 정해져 있지 않습니다.</strong> 회의 자료는 "가맹점이 직접 입력", 화면 설계는 "관리자가 넣어주는 값"으로 서로 다르게 적혀 있습니다.</p>
+    <p>그래서 이 문의는 <strong>"가맹점이 알아서 1% 적으세요"로 답하면 안 되고</strong>, 해당 가맹점에 적용될 요율을 확인해서 알려드리는 방식이 맞습니다.</p>
+  </div>
+
+  <div class="draft">
+    <p class="l">답변 문안 (요율 확정 전)</p>
+    <p>계약서의 수수료란은 가맹점별 계약 조건에 따라 확정되는 항목이라 템플릿에는 비워져 있습니다. <strong>임의로 기재하지 마시고</strong>, 해당 가맹점에 적용될 요율을 확인해 안내드리겠습니다.</p>
+  </div>
+
+  <h2>문의 3 · 이체수수료 300원</h2>
+
+  <div class="ask">
+    <p class="l">원문의</p>
+    <p>별도로 이체수수료(VAT 별도) 정산금 일 300원이라고 명시돼 있는데, 매일 1회 이체수수료가 300원 발생하는지 확인 부탁드립니다.</p>
+  </div>
+
+  <span class="verdict warn">계약서 원문은 "일"이 아니라 "건당"입니다</span>
+
+  <h3>계약서에는 "정산금 건당"으로 되어 있습니다</h3>
+
+  <blockquote>
+    <p>이체수수료 / 정산금 <strong>건당</strong> ___원</p>
+    <span class="src">양수도 계약서 제17조 [수수료]</span>
+  </blockquote>
+
+  <p>가맹점이 보신 <strong>"일 300원"이라는 표현은 계약서 문구가 아닙니다.</strong> 사내 안내 자료(Q&amp;A)에 그렇게 적혀 있는데, <strong>계약서 원문과 단위가 다릅니다.</strong></p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>어디에</th><th>어떻게 적혀 있나</th></tr></thead>
+      <tbody>
+        <tr><td><strong>계약서 제17조</strong> (가맹점이 서명하는 문서)</td><td>정산금 <strong>건당</strong> ___원</td></tr>
+        <tr><td>사내 Q&amp;A 자료</td><td>이체수수료 <strong>일 300원</strong>, 가맹점 출금 시 차감</td></tr>
+        <tr><td>정산 로직 문서</td><td>가맹점당 <strong>하루 1회</strong></td></tr>
+        <tr><td><strong>실제 시스템 동작</strong></td><td><strong>지급 배치마다 1회</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>시스템은 "하루 1회"가 아니라 "지급할 때마다" 붙입니다</h3>
+
+  <p>코드를 확인해 보니 답이 나왔습니다. <strong>부과 단위가 "일"이 아니라 "지급 배치"</strong>입니다.</p>
+
+  <ul>
+    <li>가맹점 앱 코드에 <strong>"추가 선정산(18:00) 배치의 전산 수수료분"</strong>이라는 별도 항목이 있습니다.</li>
+    <li>어드민 세금계산서 화면은 이체수수료를 <strong>"300원 × N회"</strong> 형태로 <strong>부과 횟수를 그대로 출력</strong>합니다.</li>
+    <li>정산 시뮬레이션 화면의 항목 이름이 아예 <strong>"이체 수수료 - 배치당 1회"</strong>입니다.</li>
+  </ul>
+
+  <p>페이허그는 <strong>오전 11시 30분 정기 지급과 오후 6시 추가 선정산</strong> 두 번을 운영합니다. 그래서 <strong>추가 선정산이 발생한 날은 이체수수료가 두 번 붙습니다.</strong></p>
+
+  <p>가맹점 화면에서도 확인할 수 있습니다. 정산 상세의 <strong>"전산 수수료"</strong> 항목 옆에 괄호로 붙는 금액이 오후 6시 배치분입니다.</p>
+
+  <div class="callout info">
+    <p class="ct">거래 건마다 붙는 건 아닙니다</p>
+    <p>"건당"이라고 해서 매출 거래 100건에 100번 붙지는 않습니다. 설계 문서에도 <strong>거래 100건이 발생해도 마감해서 한 번</strong>으로 계산되어 있습니다. 이 부분은 안심하고 안내하셔도 됩니다.</p>
+  </div>
+
+  <h3>300원은 부가세 별도이고, 실부담이 300원이 아닐 수 있습니다</h3>
+
+  <p>계약서 표 머리글이 <strong>"수수료(VAT별도)"</strong>이고, 세금계산서 설계에도 <strong>"300원 · VAT 별도 +30원"</strong>으로 적혀 있습니다. 즉 <strong>공급가 300원 + 부가세 30원 = 330원</strong>이 실제로 빠지는 금액입니다.</p>
+
+  <div class="callout risk">
+    <p class="ct">그런데 가맹점 실부담이 300원이라고 단정하면 안 됩니다</p>
+    <p>수수료 설계 문서에는 <strong>가맹점 부담 500원</strong>으로 계산된 예시가 있습니다. 페이허그 몫 300원에 상위·하위 파트너가 각각 100원씩 얹는 구조예요. 즉 <strong>300원은 페이허그가 가져가는 금액이고, 가맹점이 내는 금액과 다를 수 있습니다.</strong></p>
+    <p>게다가 어드민에 <strong>파트너가 대신 내주는 설정</strong>이 있어서, 이 가맹점이 실제로 부담하는지도 계약별로 다릅니다. 면제 처리된 가맹점도 있고요.</p>
+  </div>
+
+  <div class="callout warn">
+    <p class="ct">"건당"의 '건'이 무엇인지는 정의가 없습니다</p>
+    <p>계약서는 "정산금 건당"이라고만 하고 그 <strong>'건'이 배치 1회인지, 카드사·배달앱 같은 정산처별 1건인지</strong> 어디에도 정의돼 있지 않습니다. 정산처가 여러 곳이면 하루에 여러 번으로 해석될 여지가 있습니다.</p>
+    <p>고객센터 안내도 현재 부과 단위를 <strong>"확정 예정"</strong>으로 비워둔 상태입니다. 즉 <strong>지금 공식적으로 확정된 안내 문구가 없습니다.</strong></p>
+  </div>
+
+  <div class="draft">
+    <p class="l">답변 문안</p>
+    <p>이체수수료는 <strong>날짜 기준이 아니라 지급 배치 기준</strong>으로 부과됩니다. 페이허그는 오전 11시 30분 정기 지급과 오후 6시 추가 선정산을 운영하고 있어, <strong>추가 선정산이 발생한 날에는 두 번 반영</strong>될 수 있습니다.</p>
+    <p>매출 거래 건수만큼 붙는 것은 아니며, 지급 시 마감하여 회차 단위로 부과됩니다. 부과 내역은 정산 상세 화면의 「전산 수수료」 항목과 월 세금계산서(단가 × 횟수 표기)에서 확인하실 수 있습니다.</p>
+    <p>금액은 부가세 별도 기준이며, <strong>사장님 계약의 적용 금액과 부담 조건은 확인 후 정확히 안내</strong>드리겠습니다.</p>
+  </div>
+
+  <h2>답변 전에 사내에서 정할 것</h2>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>#</th><th>확인 사항</th><th>누가</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>이 가맹점이 실제 서명한 <strong>계약서 판본</strong> — 해지가 제11조인지 제12조인지, 제17조에 "건당"인지 "일"인지 인쇄된 문구</td><td>운영</td></tr>
+        <tr><td>2</td><td>이 가맹점에 적용할 <strong>채권매입 수수료율</strong>과, 계약서 빈칸을 누가 채우는지</td><td>사업·기획</td></tr>
+        <tr><td>3</td><td>이 가맹점의 <strong>이체수수료 부담 주체</strong>(가맹점 / 파트너 대납) 와 적용 금액</td><td>정산·운영</td></tr>
+        <tr><td>4</td><td>최근 30일 <strong>실제 부과 횟수</strong> — 배치 기준 동작이 맞는지 데이터로 검증</td><td>정산·개발</td></tr>
+        <tr><td>5</td><td>계약서 문구("건당")와 안내 자료("일")를 <strong>어느 쪽으로 통일</strong>할지 + '건'의 정의</td><td>기획·법무</td></tr>
+        <tr><td>6</td><td>이 가맹점이 <strong>다우 트랙인지 일반 트랙인지</strong> — 이체수수료 부과 여부가 갈릴 수 있음</td><td>운영</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <p class="ct">문서 정비도 함께 필요합니다</p>
+    <p>해지·철회·위약금은 <strong>사내 미확정 질문 목록에 한 건도 등재돼 있지 않습니다.</strong> 이번 문의를 계기로 판본 확정과 사전동의 절차를 정식 항목으로 올리는 게 좋겠습니다.</p>
+    <p>참고로 <strong>고객센터 안내는 이미 계약서에 맞게 수정돼 있습니다.</strong> 예외 3가지와 "위약금 조항은 확인되지 않았다"는 표현까지 반영돼 있어서, 안내 문구는 그대로 인용하셔도 됩니다.</p>
+  </div>
+
+  <h3>같이 알아두면 좋은 것</h3>
+  <p>계약서를 읽다가 확인한 조항 중 문의로 이어질 만한 것들입니다.</p>
+
+  <ul>
+    <li><strong>선정산 일별 한도가 계약서에 명시돼 있습니다</strong> — 업력 6개월 이상 300만원, 6개월 미만 200만원. 프랜차이즈 등 내부 정책으로 상향 가능(제5조 2항).</li>
+    <li><strong>통보 없이 서비스를 중지할 수 있는 사유가 8가지 규정</strong>돼 있습니다 — 가맹점이 임의로 플랫폼 아이디·비밀번호를 바꾼 경우, 정산금이 비정상적으로 급증·급감한 경우 등(제7조). 급증·급감은 소명하면 예외입니다.</li>
+    <li><strong>넘긴 채권을 제3자에게 다시 양도하거나 담보로 제공할 수 없습니다</strong>(양수도 제11조 5항).</li>
+    <li><strong>관할 법원은 회사 본점 소재지</strong>입니다(제13조 / 양수도 제16조).</li>
+  </ul>
+
+  <footer>
+    <p>인용문은 가맹점 웹 저장소에 동봉된 계약서 원본 PDF 7장에서 직접 추출한 원문입니다.</p>
+    <p>수수료율과 이체수수료 단위는 사내 미확정 항목이라, 이 문서에서도 특정 값을 확정으로 적지 않았습니다.</p>
+  </footer>
+</div>

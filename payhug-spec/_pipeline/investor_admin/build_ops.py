@@ -12,7 +12,7 @@ H = json.load(open(os.path.join(BASE, 'fig_heights.json')))
 
 # 판정: replace 교체 · keep 그대로 · hold 보류 · retire 폐기 · new 신규
 VERDICT = {n: 'replace' for n in [
-    'invest-assets', 'invest-assets--page2', 'invest-assets--download',
+    'invest-assets', 'invest-assets--download',
     'invest-assets--cert-confirm', 'invest-assets--empty', 'certificate',
     'invest-profit', 'invest-profit--monthly', 'invest-profit--empty',
     'coocon', 'merchants', 'merchants--filtered', 'merchants--empty',

@@ -62,6 +62,12 @@ for f in html_files():
 
 print("로컬 링크 고유 %d개 / 참조 %d건" % (len(targets), sum(len(v) for v in targets.values())))
 
+# 검사 대상이 0건이면 아래 루프가 한 번도 안 돌아 fails=0 으로 통과한다 — 아무것도 안 보고 PASS.
+# HREF 정규식이 낡거나 REPO 경로가 틀리면 그렇게 된다. 곳수는 판정하지 않고 0 인지만 본다.
+# (sync_assets_static.py 가 "0건 치환이 성공으로 보이지 않는다" 로 쓰는 것과 같은 갈래)
+chk("검사 대상 링크 0건 아님", len(targets) > 0, "고유 %d개" % len(targets))
+chk("검사 대상 HTML 0건 아님", len(html_files()) > 0, "%d개" % len(html_files()))
+
 # G-7 — 배포본에서 죽는 주소 0건. 로컬 서버 주소는 링크가 될 수 없다.
 _local = []
 for f in sorted(os.listdir(REPO)):

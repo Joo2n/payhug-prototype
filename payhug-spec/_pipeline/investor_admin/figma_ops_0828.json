@@ -1,0 +1,413 @@
+{
+ "file_key": "Tcf69tIciGxmlqCIuRb0iI",
+ "page_node_id": "3066:328",
+ "capture": {
+  "server": "http://localhost:8903 (루트 = _fig)",
+  "script": "figcap_ia.sh <file> <captureId> <vh> [delay]",
+  "viewport_correction_px": 87,
+  "figmadelay_default": 2500
+ },
+ "replace": [
+  {
+   "file": "acquisition",
+   "frame_name": "06 정산채권 양수",
+   "old_node_id": "3259:2",
+   "x": 1600,
+   "y": 2613,
+   "old_h": 653,
+   "vh": 653,
+   "delta": 0
+  },
+  {
+   "file": "acquisition--confirm",
+   "frame_name": "06-a 정산채권 양수 — 서명 확인",
+   "old_node_id": "3273:2",
+   "x": 0,
+   "y": 13065,
+   "old_h": 653,
+   "vh": 653,
+   "delta": 0
+  },
+  {
+   "file": "acquisition--done",
+   "frame_name": "06-c 정산채권 양수 — 서명 완료",
+   "old_node_id": "3272:2",
+   "x": 3200,
+   "y": 13065,
+   "old_h": 571,
+   "vh": 571,
+   "delta": 0
+  },
+  {
+   "file": "acquisition--signing",
+   "frame_name": "06-b 정산채권 양수 — 서명 진행",
+   "old_node_id": "3274:2",
+   "x": 1600,
+   "y": 13065,
+   "old_h": 653,
+   "vh": 653,
+   "delta": 0
+  },
+  {
+   "file": "certificate",
+   "frame_name": "02 투자자산 증명서",
+   "old_node_id": "3303:2",
+   "x": 1600,
+   "y": 0,
+   "old_h": 1168,
+   "vh": 1168,
+   "delta": 0
+  },
+  {
+   "file": "contracts",
+   "frame_name": "07 계약기록",
+   "old_node_id": "3258:2",
+   "x": 3200,
+   "y": 2613,
+   "old_h": 788,
+   "vh": 788,
+   "delta": 0
+  },
+  {
+   "file": "contracts--all",
+   "frame_name": "07-a 계약기록 — 전체 선택",
+   "old_node_id": "3277:2",
+   "x": 0,
+   "y": 15678,
+   "old_h": 788,
+   "vh": 788,
+   "delta": 0
+  },
+  {
+   "file": "contracts--empty",
+   "frame_name": "07-c 계약기록 — 문서 없음",
+   "old_node_id": "3278:2",
+   "x": 3200,
+   "y": 15678,
+   "old_h": 571,
+   "vh": 571,
+   "delta": 0
+  },
+  {
+   "file": "coocon",
+   "frame_name": "04 쿠콘 관리 현금",
+   "old_node_id": "3257:2",
+   "x": 4800,
+   "y": 0,
+   "old_h": 571,
+   "vh": 571,
+   "delta": 0
+  },
+  {
+   "file": "index",
+   "frame_name": "09 화면 갤러리",
+   "old_node_id": "3309:2",
+   "x": 4800,
+   "y": 18291,
+   "old_h": 1863,
+   "vh": 1863,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets",
+   "frame_name": "01 투자 자산",
+   "old_node_id": "3304:2",
+   "x": 0,
+   "y": 0,
+   "old_h": 1407,
+   "vh": 1407,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets--cert-confirm",
+   "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
+   "old_node_id": "3307:2",
+   "x": 3200,
+   "y": 5226,
+   "old_h": 1407,
+   "vh": 1407,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets--download",
+   "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
+   "old_node_id": "3305:2",
+   "x": 1600,
+   "y": 5226,
+   "old_h": 1407,
+   "vh": 1407,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets--empty",
+   "frame_name": "01-d 투자 자산 — 데이터 없음",
+   "old_node_id": "3270:2",
+   "x": 4800,
+   "y": 5226,
+   "old_h": 1059,
+   "vh": 1059,
+   "delta": 0
+  },
+  {
+   "file": "invest-profit",
+   "frame_name": "03 투자 수익",
+   "old_node_id": "3254:2",
+   "x": 3200,
+   "y": 0,
+   "old_h": 1267,
+   "vh": 1267,
+   "delta": 0
+  },
+  {
+   "file": "invest-profit--empty",
+   "frame_name": "03-b 투자 수익 — 결과 없음",
+   "old_node_id": "3268:2",
+   "x": 1600,
+   "y": 7839,
+   "old_h": 1044,
+   "vh": 1044,
+   "delta": 0
+  },
+  {
+   "file": "invest-profit--monthly",
+   "frame_name": "03-a 투자 수익 — 월별",
+   "old_node_id": "3269:2",
+   "x": 0,
+   "y": 7839,
+   "old_h": 1222,
+   "vh": 1222,
+   "delta": 0
+  },
+  {
+   "file": "login",
+   "frame_name": "10 로그인",
+   "old_node_id": "3282:2",
+   "x": 0,
+   "y": 20904,
+   "old_h": 505,
+   "vh": 505,
+   "delta": 0
+  },
+  {
+   "file": "merchants",
+   "frame_name": "05 가맹점",
+   "old_node_id": "3260:2",
+   "x": 0,
+   "y": 2613,
+   "old_h": 862,
+   "vh": 862,
+   "delta": 0
+  },
+  {
+   "file": "merchants--empty",
+   "frame_name": "05-b 가맹점 — 결과 없음",
+   "old_node_id": "3275:2",
+   "x": 1600,
+   "y": 10452,
+   "old_h": 571,
+   "vh": 571,
+   "delta": 0
+  },
+  {
+   "file": "merchants--filtered",
+   "frame_name": "05-a 가맹점 — 검색 적용",
+   "old_node_id": "3267:2",
+   "x": 0,
+   "y": 10452,
+   "old_h": 571,
+   "vh": 571,
+   "delta": 0
+  },
+  {
+   "file": "password",
+   "frame_name": "08 비밀번호 변경",
+   "old_node_id": "3265:2",
+   "x": 4800,
+   "y": 2613,
+   "old_h": 629,
+   "vh": 629,
+   "delta": 0
+  },
+  {
+   "file": "password--done",
+   "frame_name": "08-c 비밀번호 변경 — 변경 완료",
+   "old_node_id": "3284:2",
+   "x": 3200,
+   "y": 18291,
+   "old_h": 630,
+   "vh": 630,
+   "delta": 0
+  },
+  {
+   "file": "password--error",
+   "frame_name": "08-b 비밀번호 변경 — 확인값 불일치",
+   "old_node_id": "3283:2",
+   "x": 1600,
+   "y": 18291,
+   "old_h": 630,
+   "vh": 630,
+   "delta": 0
+  },
+  {
+   "file": "password--weak",
+   "frame_name": "08-a 비밀번호 변경 — 규칙 미충족",
+   "old_node_id": "3280:2",
+   "x": 0,
+   "y": 18291,
+   "old_h": 637,
+   "vh": 637,
+   "delta": 0
+  },
+  {
+   "file": "xls-assets-merchant",
+   "frame_name": "12 엑셀 산출물 서식 — 가맹점별 투자자산",
+   "old_node_id": "3312:2",
+   "x": 3200,
+   "y": 20904,
+   "old_h": 1005,
+   "vh": 1005,
+   "delta": 0
+  },
+  {
+   "file": "xls-assets-status",
+   "frame_name": "11 엑셀 산출물 서식 — 투자자산 현황",
+   "old_node_id": "3311:2",
+   "x": 1600,
+   "y": 20904,
+   "old_h": 613,
+   "vh": 613,
+   "delta": 0
+  },
+  {
+   "file": "xls-profit-daily",
+   "frame_name": "14 엑셀 산출물 서식 — 일별 투자수익",
+   "old_node_id": "3313:2",
+   "x": 0,
+   "y": 23517,
+   "old_h": 753,
+   "vh": 753,
+   "delta": 0
+  },
+  {
+   "file": "xls-profit-status",
+   "frame_name": "13 엑셀 산출물 서식 — 투자수익 현황",
+   "old_node_id": "3314:2",
+   "x": 4800,
+   "y": 20904,
+   "old_h": 669,
+   "vh": 669,
+   "delta": 0
+  }
+ ],
+ "keep": [],
+ "hold": [],
+ "retire": [
+  {
+   "file": "coocon--confirm.html",
+   "frame_name": "04-a 쿠콘 관리 현금 — 이동 확인",
+   "old_node_id": "3216:2",
+   "done": true,
+   "reason": "원본 파일 삭제 — coocon.html 과 동일해져 상태 화면이 성립하지 않음"
+  },
+  {
+   "file": "invest-profit--datepicker.html",
+   "frame_name": "03-d 투자 수익 — 기간 선택",
+   "old_node_id": "3298:2",
+   "done": true,
+   "reason": "093a07b 에서 원본 파일 폐기 — 커스텀 달력 팝오버가 실물에 없는 컴포넌트로 판정"
+  }
+ ],
+ "new": [
+  {
+   "file": "invest-profit--weekly",
+   "frame_name": "03-c 투자 수익 — 주별",
+   "x": 3200,
+   "y": 7839,
+   "note": "04-a 폐기로 비는 자리. 투자 수익 계열 행에 붙는다",
+   "vh": 1132
+  },
+  {
+   "file": "acquisition--doc",
+   "frame_name": "06-d 정산채권 양수 — 계약서 내용",
+   "x": 4800,
+   "y": 13065,
+   "note": "양수 계열 행의 빈 슬롯",
+   "vh": 653
+  },
+  {
+   "file": "invest-sim",
+   "frame_name": "15 투자 시뮬레이션",
+   "x": 1600,
+   "y": 23517,
+   "note": "신규 메뉴. 기존 01~14 번호를 건드리지 않으려고 끝번으로 붙인다",
+   "vh": 1123
+  },
+  {
+   "file": "invest-sim--result",
+   "frame_name": "15-a 투자 시뮬레이션 — 실행 결과",
+   "x": 3200,
+   "y": 23517,
+   "note": "상동",
+   "vh": 2541
+  }
+ ],
+ "hold_new": [],
+ "delete_orphans": [
+  {
+   "node_id": "3189:14605",
+   "frame_name": "01 투자 자산",
+   "x": -6797,
+   "y": -4575,
+   "h": 1269
+  },
+  {
+   "node_id": "3189:15019",
+   "frame_name": "02 투자자산 증명서",
+   "x": -6797,
+   "y": -2392,
+   "h": 1306
+  },
+  {
+   "node_id": "3189:15380",
+   "frame_name": "03 투자 수익",
+   "x": -6797,
+   "y": -55,
+   "h": 1257
+  },
+  {
+   "node_id": "3189:15742",
+   "frame_name": "03-a 투자 수익 — 월별",
+   "x": -6797,
+   "y": 1966,
+   "h": 1212
+  },
+  {
+   "node_id": "3189:16095",
+   "frame_name": "05-a 가맹점 — 검색 적용",
+   "x": -6797,
+   "y": 3631,
+   "h": 533
+  },
+  {
+   "node_id": "3189:16281",
+   "frame_name": "06-a 정산채권 양수 — 서명 확인",
+   "x": -6797,
+   "y": 4649,
+   "h": 656
+  },
+  {
+   "node_id": "3189:16460",
+   "frame_name": "07-a 계약기록 — 전체 선택",
+   "x": -6797,
+   "y": 5632,
+   "h": 690
+  },
+  {
+   "node_id": "3189:16726",
+   "frame_name": "08-a 비밀번호 변경 — 규칙 미충족",
+   "x": -6797,
+   "y": 6589,
+   "h": 585
+  }
+ ]
+}

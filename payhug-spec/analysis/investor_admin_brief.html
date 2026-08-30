@@ -1,0 +1,699 @@
+<title>투자자 어드민 브리프</title>
+<style>
+:root{
+  --bg:#F5F7F5;
+  --surface:#FFFFFF;
+  --surface-alt:#EBF0EC;
+  --ink:#16241C;
+  --ink-soft:#48584D;
+  --ink-faint:#7C8A7F;
+  --border:#DCE3DD;
+  --border-strong:#C3CDC4;
+  --accent:#245C3B;
+  --accent-soft:#DFEEE3;
+  --accent-line:#3E7A56;
+  --confirm-fg:#26497B;
+  --confirm-bg:#E7EDF9;
+  --confirm-bd:#B9C9E8;
+  --hypo-fg:#8A5A00;
+  --hypo-bg:#FBF1DC;
+  --hypo-bd:#E9CE8E;
+  --check-fg:#A82F22;
+  --check-bg:#FBE8E5;
+  --check-bd:#EFB9AF;
+  --shadow:0 1px 2px rgba(20,30,22,.04), 0 8px 24px -12px rgba(20,30,22,.12);
+  --font-display:'Noto Serif KR', serif;
+  --font-body:'Noto Sans KR', sans-serif;
+  --font-mono:'IBM Plex Mono', 'Noto Sans KR', monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111A14;
+    --surface:#182219;
+    --surface-alt:#1E2A20;
+    --ink:#EAF1EB;
+    --ink-soft:#B4C2B7;
+    --ink-faint:#7E8F82;
+    --border:#2A3A2D;
+    --border-strong:#3A4D3E;
+    --accent:#6FCB8B;
+    --accent-soft:#1E3327;
+    --accent-line:#4FA06E;
+    --confirm-fg:#9DB8EE;
+    --confirm-bg:#1C2740;
+    --confirm-bd:#33447A;
+    --hypo-fg:#F0C56A;
+    --hypo-bg:#3A2E0E;
+    --hypo-bd:#6B531E;
+    --check-fg:#F0958A;
+    --check-bg:#3B1E1A;
+    --check-bd:#753A31;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111A14;
+  --surface:#182219;
+  --surface-alt:#1E2A20;
+  --ink:#EAF1EB;
+  --ink-soft:#B4C2B7;
+  --ink-faint:#7E8F82;
+  --border:#2A3A2D;
+  --border-strong:#3A4D3E;
+  --accent:#6FCB8B;
+  --accent-soft:#1E3327;
+  --accent-line:#4FA06E;
+  --confirm-fg:#9DB8EE;
+  --confirm-bg:#1C2740;
+  --confirm-bd:#33447A;
+  --hypo-fg:#F0C56A;
+  --hypo-bg:#3A2E0E;
+  --hypo-bd:#6B531E;
+  --check-fg:#F0958A;
+  --check-bg:#3B1E1A;
+  --check-bd:#753A31;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent-soft);}
+
+.shell{
+  display:grid;
+  grid-template-columns:260px minmax(0,1fr);
+  max-width:1180px;
+  margin:0 auto;
+  gap:0;
+}
+@media (max-width:920px){
+  .shell{grid-template-columns:1fr;}
+  .toc{position:static !important; height:auto !important; border-right:none !important; border-bottom:1px solid var(--border);}
+}
+
+/* ---- TOC ---- */
+.toc{
+  position:sticky; top:0; align-self:start; height:100vh;
+  overflow-y:auto;
+  padding:40px 20px 40px 28px;
+  border-right:1px solid var(--border);
+}
+.toc-brand{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.09em;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+  margin-bottom:22px;
+}
+.toc-brand strong{color:var(--accent); font-weight:600;}
+.toc nav{display:flex; flex-direction:column; gap:2px;}
+.toc a{
+  display:block;
+  padding:7px 10px;
+  border-radius:7px;
+  color:var(--ink-soft);
+  text-decoration:none;
+  font-size:13.5px;
+  line-height:1.4;
+}
+.toc a:hover{background:var(--surface-alt); color:var(--ink);}
+.toc .num{
+  font-family:var(--font-mono);
+  color:var(--ink-faint);
+  margin-right:6px;
+  font-size:12px;
+}
+.toc-sub{padding-left:22px; margin-top:1px; margin-bottom:6px;}
+.toc-sub a{font-size:12.5px; padding:4px 10px; color:var(--ink-faint);}
+
+/* ---- Main ---- */
+main{padding:56px 48px 120px; min-width:0;}
+@media (max-width:640px){ main{padding:36px 20px 90px;} }
+
+header.hero{margin-bottom:56px;}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:14px;
+}
+h1{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(28px,4vw,40px);
+  line-height:1.28;
+  margin:0 0 16px;
+  text-wrap:balance;
+  letter-spacing:-.01em;
+}
+.hero-desc{
+  font-size:16.5px;
+  color:var(--ink-soft);
+  max-width:62ch;
+  margin:0 0 24px;
+}
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:10px 26px;
+  font-size:13px; color:var(--ink-faint);
+  border-top:1px solid var(--border);
+  padding-top:18px;
+}
+.hero-meta b{color:var(--ink-soft); font-weight:600;}
+
+section{margin-bottom:64px; scroll-margin-top:24px;}
+section > .sec-head{margin-bottom:22px;}
+.sec-kicker{
+  font-family:var(--font-mono);
+  font-size:12px; color:var(--ink-faint); letter-spacing:.06em;
+  margin-bottom:6px;
+}
+h2{
+  font-family:var(--font-display);
+  font-size:26px; font-weight:700;
+  margin:0; letter-spacing:-.005em;
+  text-wrap:balance;
+}
+h3{
+  font-family:var(--font-display);
+  font-size:19px; font-weight:600;
+  margin:34px 0 12px;
+  color:var(--ink);
+}
+h4{
+  font-size:14.5px; font-weight:700;
+  margin:22px 0 8px;
+  color:var(--ink);
+}
+p{margin:0 0 14px; max-width:70ch;}
+.lead{font-size:16.5px; color:var(--ink-soft); max-width:66ch;}
+ul,ol{margin:0 0 14px; padding-left:22px; max-width:68ch;}
+li{margin-bottom:6px;}
+strong{font-weight:700;}
+code, .mono{font-family:var(--font-mono); font-size:.92em;}
+.path{
+  font-family:var(--font-mono); font-size:12.5px;
+  background:var(--surface-alt); border:1px solid var(--border);
+  padding:1px 6px; border-radius:5px; color:var(--ink-soft);
+  white-space:nowrap;
+}
+
+/* status chips: matches the payhug-spec 확정/가설/확인필요 taxonomy */
+.chip{
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:var(--font-mono); font-size:11px; font-weight:600;
+  letter-spacing:.02em;
+  padding:2px 8px; border-radius:999px;
+  border:1px solid; white-space:nowrap; line-height:1.7;
+}
+.chip.confirm{color:var(--confirm-fg); background:var(--confirm-bg); border-color:var(--confirm-bd);}
+.chip.hypo{color:var(--hypo-fg); background:var(--hypo-bg); border-color:var(--hypo-bd);}
+.chip.check{color:var(--check-fg); background:var(--check-bg); border-color:var(--check-bd);}
+
+/* summary banner */
+.banner{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:28px 30px; box-shadow:var(--shadow);
+}
+.finding-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:18px;}
+@media (max-width:680px){.finding-grid{grid-template-columns:1fr;}}
+.finding{
+  border:1px solid var(--border); border-radius:11px; padding:16px 18px;
+  background:var(--surface-alt);
+}
+.finding .f-num{font-family:var(--font-mono); font-size:12px; color:var(--accent); font-weight:700; margin-bottom:6px;}
+.finding p{margin:0; font-size:14px; color:var(--ink-soft);}
+.finding p strong{color:var(--ink); font-weight:600;}
+
+/* cards / callouts */
+.card{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:22px 24px; margin:18px 0;
+  box-shadow:var(--shadow);
+}
+.callout{
+  border-radius:12px; padding:20px 22px; margin:20px 0;
+  border:1px solid var(--border-strong); border-left-width:4px;
+  background:var(--surface);
+}
+.callout.risk{border-left-color:var(--check-fg); background:var(--check-bg);}
+.callout.risk h4{color:var(--check-fg); margin-top:0; display:flex; align-items:center; gap:8px;}
+.callout.note{border-left-color:var(--accent-line); background:var(--accent-soft);}
+.callout.note h4{color:var(--accent); margin-top:0;}
+.callout p:last-child{margin-bottom:0;}
+
+/* critical risk box (top priority) */
+.critical{
+  border-radius:14px; padding:26px 28px; margin:22px 0 26px;
+  background:var(--check-bg); border:1.5px solid var(--check-bd);
+}
+.critical .crit-label{
+  font-family:var(--font-mono); font-size:11.5px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--check-fg);
+  margin-bottom:10px; display:block;
+}
+.critical h3{margin:0 0 12px; color:var(--check-fg); font-size:20px;}
+.critical p{color:var(--ink);}
+.vs-row{
+  display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:stretch;
+  margin:18px 0;
+}
+@media (max-width:640px){.vs-row{grid-template-columns:1fr;}}
+.vs-item{
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:16px 18px;
+}
+.vs-item .vs-tag{font-family:var(--font-mono); font-size:11px; color:var(--ink-faint); margin-bottom:6px;}
+.vs-item .vs-formula{font-family:var(--font-mono); font-size:14.5px; color:var(--accent); font-weight:600; margin-bottom:8px;}
+.vs-item p{font-size:13.5px; color:var(--ink-soft); margin:0;}
+.vs-vs{
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-style:italic; color:var(--ink-faint); font-size:15px;
+}
+
+/* tables */
+.tbl-wrap{overflow-x:auto; margin:16px 0; border:1px solid var(--border); border-radius:10px;}
+table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:520px;}
+th,td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top;}
+thead th{
+  background:var(--surface-alt); font-weight:700; font-size:12px;
+  letter-spacing:.03em; color:var(--ink-soft); text-transform:uppercase;
+  font-family:var(--font-mono);
+}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:var(--surface-alt);}
+td.num, th.num{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+
+/* GNB pill list */
+.gnb-list{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 22px;}
+.gnb-pill{
+  font-size:13px; padding:6px 13px; border-radius:8px;
+  background:var(--surface-alt); border:1px solid var(--border); color:var(--ink);
+  font-weight:500;
+}
+.gnb-pill .idx{font-family:var(--font-mono); color:var(--accent); margin-right:5px; font-size:11.5px;}
+
+/* diagram */
+.diagram-wrap{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:20px; margin:20px 0; box-shadow:var(--shadow);
+}
+.diagram-wrap svg{width:100%; height:auto; display:block;}
+.diagram-caption{font-size:12.5px; color:var(--ink-faint); margin-top:10px; padding:0 4px;}
+
+/* issue list */
+.issue{
+  display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--border);
+}
+.issue:last-child{border-bottom:none;}
+.issue .i-mark{
+  flex:none; width:26px; height:26px; border-radius:7px;
+  background:var(--check-bg); color:var(--check-fg); border:1px solid var(--check-bd);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono); font-size:12px; font-weight:700;
+}
+.issue .i-body p{margin:0; font-size:14px; color:var(--ink-soft);}
+.issue .i-body p strong{color:var(--ink);}
+
+/* decision list (next actions) */
+.decision{
+  display:flex; gap:16px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid var(--border);
+}
+.decision:last-child{border-bottom:none;}
+.decision .d-num{
+  font-family:var(--font-display); font-weight:700; font-size:20px; color:var(--accent);
+  flex:none; width:34px;
+}
+.decision .d-body h4{margin:0 0 5px;}
+.decision .d-body p{margin:0; font-size:14px; color:var(--ink-soft);}
+
+footer{
+  margin-top:80px; padding-top:24px; border-top:1px solid var(--border);
+  font-size:12.5px; color:var(--ink-faint);
+}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+
+<div class="shell">
+  <aside class="toc">
+    <div class="toc-brand"><strong>PayHug</strong> · 투자자 어드민</div>
+    <nav>
+      <a href="#overview"><span class="num">00</span>한눈에 보기</a>
+      <a href="#storyboard"><span class="num">01</span>스토리보드 파악</a>
+      <a href="#flowchart"><span class="num">02</span>플로우차트 정합성</a>
+      <a href="#mapping"><span class="num">03</span>기존 어드민 매핑</a>
+      <a href="#risk"><span class="num">04</span>정책 리스크</a>
+      <a href="#next"><span class="num">05</span>다음 단계</a>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <div class="eyebrow">Research Brief · 2026-08-27</div>
+      <h1>투자자 어드민, 무엇을 만드는 건지부터 맞추기</h1>
+      <p class="hero-desc">
+        투자자용 어드민 UI를 제안서에 첨부할 수준으로 기획하기 전, 4개 에이전트를 병렬로 돌려
+        재료 3종 — 스토리보드 PPT, 플로우차트 PPT, 실제 어드민 코드, 정책서 — 를 각각 파악했다.
+        아래는 그 결과를 하나로 합친 것이다.
+      </p>
+      <div class="hero-meta">
+        <span><b>조사 대상</b> 스토리보드 17슬라이드 · 플로우차트 13슬라이드 · payhug-admin-web 코드 · payhug-spec 정책서</span>
+        <span><b>표기 원칙</b> <span class="chip confirm">확정</span> <span class="chip hypo">가설</span> <span class="chip check">확인필요</span></span>
+      </div>
+    </header>
+
+    <!-- 00 OVERVIEW -->
+    <section id="overview">
+      <div class="sec-head">
+        <div class="sec-kicker">00 / Summary</div>
+        <h2>한눈에 보기</h2>
+      </div>
+      <div class="banner">
+        <p class="lead" style="margin-bottom:0;">
+          결론부터: <strong>투자자 어드민은 화면·와이어프레임 차원에서 완전 신규 작업</strong>이다.
+          다만 로그인·권한 인프라는 이미 기존 어드민이 투자자(INVESTOR)를 참여자로 절반쯤 받아들이고 있어서,
+          <strong>별도 포털이 아니라 기존 어드민 안의 신규 role-view로 붙이는 쪽이 유리</strong>해 보인다.
+          단 하나, <strong>투자자에게 실제로 얼마를 어떻게 배분하는지(보상 산식) 자체가 문서마다 다르게 나온다</strong> —
+          이게 정해지지 않으면 "계산식 노출" 화면은 뭘 보여줄지부터 못 정한다.
+        </p>
+        <div class="finding-grid">
+          <div class="finding">
+            <div class="f-num">발견 1</div>
+            <p><strong>스토리보드 17장 = 16개 화면/기능</strong>, GNB 7메뉴(투자자산·투자수익·쿠콘 관리현금·가맹점·정산채권양수·계약기록·비밀번호변경) 고정 구조. 산식 자체보다 산식이 반영된 <strong>결과표+엑셀/증명서 다운로드</strong>가 핵심 요구.</p>
+          </div>
+          <div class="finding">
+            <div class="f-num">발견 2</div>
+            <p><strong>플로우차트는 사용자 우려대로 실제 문제가 있다</strong> — 분기 6곳 전부 "성공 시"만 있고 "실패 시" 경로가 하나도 없으며, 슬라이드 간 연결이 화살표가 아니라 텍스트 참조뿐이다.</p>
+          </div>
+          <div class="finding">
+            <div class="f-num">발견 3</div>
+            <p>기존 코드에 <strong>재사용 가능한 부품이 이미 많다</strong> — 엑셀 다운로드 공용 유틸, 참여자별 배분 원장 테이블, 계산식 문구 상수, 가로수식 컴포넌트까지.</p>
+          </div>
+          <div class="finding">
+            <div class="f-num">발견 4</div>
+            <p><strong>투자자 보상 산식이 정책서 안에서도 두 갈래</strong>다 — 매출 대비 0.11% 배분과, 원금 대비 연 12% 대출이자. 어느 쪽을 화면에 보여줄지는 서비스 정책 결정이 먼저 필요하다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 STORYBOARD -->
+    <section id="storyboard">
+      <div class="sec-head">
+        <div class="sec-kicker">01 / 스토리보드_Admin_투자자.pptx · 17슬라이드</div>
+        <h2>무엇을 만들려는 화면인가</h2>
+      </div>
+      <p>표지 1장 + 로그인 참고자료 1장을 빼면, 나머지 15장이 아래 <strong>고정 좌측 메뉴 7개</strong> 아래로 정확히 나뉜다. 메뉴 순서·명칭은 전 슬라이드에서 흔들림 없이 동일했다.</p>
+      <div class="gnb-list">
+        <span class="gnb-pill"><span class="idx">1</span>투자 자산</span>
+        <span class="gnb-pill"><span class="idx">2</span>투자 수익</span>
+        <span class="gnb-pill"><span class="idx">3</span>쿠콘 관리 현금</span>
+        <span class="gnb-pill"><span class="idx">4</span>가맹점</span>
+        <span class="gnb-pill"><span class="idx">5</span>정산채권 양수</span>
+        <span class="gnb-pill"><span class="idx">6</span>계약기록</span>
+        <span class="gnb-pill"><span class="idx">7</span>비밀번호 변경</span>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>메뉴</th><th>화면 / 기능</th><th>핵심 구성</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="4">투자 자산</td><td>메인 화면</td><td>"현황" 표(자산구분·금액·W금융일수·S입금부족율·ty수익율·비중·보관) + "가맹점별 투자자산" 표</td></tr>
+            <tr><td>현황표 엑셀 다운로드</td><td>버튼 1개</td></tr>
+            <tr><td>가맹점별표 엑셀 다운로드</td><td>버튼 1개</td></tr>
+            <tr><td>증명서(전자문서) 다운로드</td><td>문서명·작성일자·작성자("㈜페이허그") + 인증서 서명값·서명검증 회신전문 동봉</td></tr>
+            <tr><td rowspan="3">투자 수익</td><td>메인 화면</td><td>"현황" 표 + 기간검색(금월/일주일/직접, 일별·월별 토글) + "일별 투자수익" 표. <span class="chip confirm">확정</span> 기존 Admin "수익&gt;전체 수익" 화면 구조를 그대로 차용(캡처로 증빙됨)</td></tr>
+            <tr><td>현황표 엑셀 다운로드</td><td>버튼 1개</td></tr>
+            <tr><td>일별표 엑셀 다운로드</td><td>버튼 1개</td></tr>
+            <tr><td rowspan="4">쿠콘 관리 현금</td><td>진입 / 로그인</td><td>쿠콘 We-bank 전자금융서비스로 이동(ID·PW·기관코드·OTP)</td></tr>
+            <tr><td>가상계좌 입금내역조회</td><td>We-bank 화면 그대로 임베드/링크</td></tr>
+            <tr><td>가상계좌 송금내역조회</td><td>〃</td></tr>
+            <tr><td>펌뱅킹 제휴거래내역조회</td><td>〃</td></tr>
+            <tr><td>가맹점</td><td>목록 조회</td><td>업종·채권매입업체 필터, 가맹점ID·가맹점명·사업자번호·대표자·업종·종목·채권매매업체ID</td></tr>
+            <tr><td>정산채권 양수</td><td>양수도계약서 전자서명</td><td>가맹점별 목록 → 선택 → "서명하기"(하나인증서 연동)</td></tr>
+            <tr><td>계약기록</td><td>계약문서 다운로드</td><td>MID·가맹점·재양도합의서 표, 체크박스 선택 후 일괄 다운로드</td></tr>
+            <tr><td>비밀번호 변경</td><td>비밀번호 변경 모달</td><td>현재 비밀번호 + 새 비밀번호 2회 입력</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <h4>참고자료로만 존재 — 신규 목업 아님</h4>
+        <p>로그인 화면(슬라이드2)과 투자수익 화면(슬라이드7)에는 실제 목업 대신 <strong>기존 화면 스크린샷</strong>이 붙어 있다. 로그인은 기존 가맹점 앱 로그인 플로우 3장, 투자수익은 실제 PayHug Admin <span class="path">admin.payhug.co.kr/profit/list</span> "수익 &gt; 전체 수익" 화면 캡처다. 즉 작성자가 이미 <strong>"기존 화면을 베이스로 만든다"는 의도</strong>를 스토리보드 안에 스스로 남겨둔 셈 — 이번 재설계 방향과 정확히 일치한다.</p>
+      </div>
+
+      <h3>원본에서 그대로 넘어온 사소한 결함 4가지</h3>
+      <p style="font-size:14px; color:var(--ink-soft); margin-bottom:10px;">재설계 시 그대로 베끼지 않도록 표시해 둔다.</p>
+      <div class="card" style="padding:6px 24px;">
+        <div class="issue"><div class="i-mark">1</div><div class="i-body"><p><strong>기준일 불일치</strong> — 메인 화면의 "가맹점별 투자자산" 표는 기준일 2025.9.14, 같은 표의 다운로드 화면(슬라이드5)에서는 2025.9.15로 하루 어긋난다.</p></div></div>
+        <div class="issue"><div class="i-mark">2</div><div class="i-body"><p><strong>PPT 편집기 스크린샷 오삽입</strong> — 슬라이드14에 실제 UI가 아니라 PowerPoint 편집 화면 자체가 캡처되어 끼어 있다.</p></div></div>
+        <div class="issue"><div class="i-mark">3</div><div class="i-body"><p><strong>비밀번호 확인란 라벨 미분리</strong> — 슬라이드17에서 새 비밀번호 입력·재입력 필드 라벨이 둘 다 "새로 등록할 비밀번호"로 동일하다.</p></div></div>
+        <div class="issue"><div class="i-mark">4</div><div class="i-body"><p><strong>장식 이미지 반복 삽입</strong> — 여러 슬라이드 좌상단에 가맹점 앱 로그인 스크린샷 1장이 내용과 무관하게 반복 붙어 있다(작업 중 잔존물로 추정).</p></div></div>
+      </div>
+    </section>
+
+    <!-- 02 FLOWCHART -->
+    <section id="flowchart">
+      <div class="sec-head">
+        <div class="sec-kicker">02 / 플로우차트_투자자 UI_V1.3.pptx · 13슬라이드</div>
+        <h2>플로우가 정말 맞는지</h2>
+      </div>
+      <p>결론부터: <strong>"맞는지 확신이 없다"는 감이 맞았다.</strong> 이 파일은 화살표로 이어진 플로우차트라기보다, <strong>번호가 매겨진 처리단계를 세로로 나열한 스펙 목록</strong>에 스윔레인 흔적만 남은 형태다. Keynote로 이미지 렌더링을 시도했으나 타임아웃되어, 대신 도형·커넥터 XML을 전부 파싱해 실제 연결 관계를 그래프로 재구성했다 — 즉 아래 내용은 추측이 아니라 <strong>도형 데이터 그대로</strong>다.</p>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 920 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="플로우차트 허브-스포크 구조 재구성">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent-line)"/>
+            </marker>
+          </defs>
+          <style>
+            .node-box{fill:var(--surface); stroke:var(--border-strong); stroke-width:1.2;}
+            .node-hub{fill:var(--accent-soft); stroke:var(--accent-line); stroke-width:1.5;}
+            .node-text{font-family:'Noto Sans KR',sans-serif; font-size:12.5px; fill:var(--ink);}
+            .node-sub{font-family:'IBM Plex Mono',monospace; font-size:9.5px; fill:var(--ink-faint);}
+            .link-solid{stroke:var(--accent-line); stroke-width:1.6; fill:none; marker-end:url(#arrow);}
+            .link-dashed{stroke:var(--ink-faint); stroke-width:1.2; fill:none; stroke-dasharray:3 4;}
+            .cap{font-family:'IBM Plex Mono',monospace; font-size:10px; fill:var(--ink-faint);}
+          </style>
+
+          <!-- entry -->
+          <rect x="30" y="205" width="118" height="50" rx="9" class="node-box"/>
+          <text x="89" y="226" text-anchor="middle" class="node-text">① 로그인</text>
+          <text x="89" y="241" text-anchor="middle" class="node-sub">S.2 · 205~861</text>
+
+          <path d="M148,230 L228,230" class="link-solid"/>
+
+          <!-- hub -->
+          <rect x="230" y="195" width="150" height="70" rx="10" class="node-hub"/>
+          <text x="305" y="222" text-anchor="middle" class="node-text" font-weight="600">허브 (861)</text>
+          <text x="305" y="240" text-anchor="middle" class="node-sub">로그인 성공 시</text>
+          <text x="305" y="254" text-anchor="middle" class="node-sub">투자자산 메인 진입</text>
+
+          <!-- spokes: 8 items around hub, connected by dashed (text-ref only) except where noted -->
+          <!-- 2 투자자산 -->
+          <path d="M380,215 C440,190 460,140 520,100" class="link-dashed"/>
+          <rect x="522" y="70" width="150" height="44" rx="8" class="node-box"/>
+          <text x="597" y="88" text-anchor="middle" class="node-text">② 투자자산</text>
+          <text x="597" y="102" text-anchor="middle" class="node-sub">S.3-4 배치+출력</text>
+
+          <path d="M672,92 L740,92" class="link-dashed"/>
+          <rect x="742" y="70" width="150" height="44" rx="8" class="node-box"/>
+          <text x="817" y="88" text-anchor="middle" class="node-text">⑤ 엑셀·증명서</text>
+          <text x="817" y="102" text-anchor="middle" class="node-sub">S.5 다운로드</text>
+
+          <!-- 3 투자수익 -->
+          <path d="M380,222 C450,205 470,168 520,150" class="link-dashed"/>
+          <rect x="522" y="128" width="150" height="44" rx="8" class="node-box"/>
+          <text x="597" y="146" text-anchor="middle" class="node-text">③ 투자수익</text>
+          <text x="597" y="160" text-anchor="middle" class="node-sub">S.6-7 배치+출력</text>
+
+          <path d="M672,150 L740,150" class="link-dashed"/>
+          <rect x="742" y="128" width="150" height="44" rx="8" class="node-box"/>
+          <text x="817" y="146" text-anchor="middle" class="node-text">⑧ 엑셀 다운로드</text>
+          <text x="817" y="160" text-anchor="middle" class="node-sub">S.8</text>
+
+          <!-- 4 쿠콘 -->
+          <path d="M380,238 C440,238 460,220 520,204" class="link-dashed"/>
+          <rect x="522" y="182" width="150" height="44" rx="8" class="node-box"/>
+          <text x="597" y="200" text-anchor="middle" class="node-text">④ 쿠콘 관리현금</text>
+          <text x="597" y="214" text-anchor="middle" class="node-sub">S.9 · We-bank 이동</text>
+
+          <!-- 5 가맹점 -->
+          <path d="M380,248 C440,258 460,254 520,254" class="link-dashed"/>
+          <rect x="522" y="232" width="150" height="44" rx="8" class="node-box"/>
+          <text x="597" y="250" text-anchor="middle" class="node-text">⑤ 가맹점</text>
+          <text x="597" y="264" text-anchor="middle" class="node-sub">S.10</text>
+
+          <!-- 6 정산채권양수 -->
+          <path d="M380,258 C440,278 460,290 520,304" class="link-dashed"/>
+          <rect x="522" y="282" width="150" height="44" rx="8" class="node-box"/>
+          <text x="597" y="300" text-anchor="middle" class="node-text">⑥ 정산채권 양수</text>
+          <text x="597" y="314" text-anchor="middle" class="node-sub">S.11</text>
+
+          <!-- 7 계약기록 -->
+          <path d="M380,262 C440,300 460,330 520,354" class="link-dashed"/>
+          <rect x="522" y="332" width="150" height="44" rx="8" class="node-box"/>
+          <text x="597" y="350" text-anchor="middle" class="node-text">⑦ 계약기록</text>
+          <text x="597" y="364" text-anchor="middle" class="node-sub">S.12</text>
+
+          <!-- 8 비번변경 -->
+          <path d="M370,265 C420,320 460,380 520,404" class="link-dashed"/>
+          <rect x="522" y="382" width="150" height="44" rx="8" class="node-box"/>
+          <text x="597" y="400" text-anchor="middle" class="node-text">⑧ 비밀번호 변경</text>
+          <text x="597" y="414" text-anchor="middle" class="node-sub">S.13</text>
+
+          <!-- legend -->
+          <line x1="700" y1="440" x2="730" y2="440" class="link-solid" style="marker-end:none;"/>
+          <text x="736" y="444" class="cap">실제 화살표(드묾)</text>
+          <line x1="560" y1="440" x2="590" y2="440" class="link-dashed"/>
+          <text x="596" y="444" class="cap">텍스트 참조로만 연결</text>
+        </svg>
+        <p class="diagram-caption">13슬라이드는 하나로 이어진 플로우가 아니라 허브(로그인 성공 후 투자자산 메인)에서 8개 메뉴로 갈라지는 구조다. 이 연결선 대부분은 PPT 안에 실제로 그려진 화살표가 아니라, 본문 문구("861화면에서 11번 버튼 선택")로만 확인된다.</p>
+      </div>
+
+      <div class="callout risk">
+        <h4>⚠ 분기 6곳, "실패 시" 경로가 전부 없다</h4>
+        <p>로그인 일치 확인(×2), 증명서 서명검증 성공 여부, 정산채권 양수 서명 검증 여부, 비밀번호 변경 일치 확인(×2) — 6개 분기 다이아몬드 전부 <strong>"Yes"만 있고 "No"/실패 경로가 파일 전체에 단 하나도 없다.</strong> 같은 틀을 복사하면서 매번 실패 분기 연결을 빠뜨린 것으로 보인다. 재설계 시 이 6곳의 실패 처리(에러 메시지·재시도·잠금 등)는 새로 정의해야 한다.</p>
+      </div>
+
+      <h3>그 밖에 눈에 띄는 결함</h3>
+      <div class="card" style="padding:6px 24px;">
+        <div class="issue"><div class="i-mark">·</div><div class="i-body"><p><strong>슬라이드8 제목 오타</strong> — 내용은 투자수익(③) 엑셀 다운로드인데 제목엔 "②투자수익"으로 표기됨.</p></div></div>
+        <div class="issue"><div class="i-mark">·</div><div class="i-body"><p><strong>슬라이드7 단계번호 중복</strong> — 937·944·946·947·948번이 각 슬라이드 안에서 서로 다른 계산에 중복 사용되어, 계산 순서를 코드로 옮길 때 특히 주의가 필요.</p></div></div>
+        <div class="issue"><div class="i-mark">·</div><div class="i-body"><p><strong>정산채권 양수(슬라이드11) 흐름 단절</strong> — "가맹점명 리스트 출력" 다음 화살표가 정식 다음 단계가 아니라 번호 없는 메모("사전 구두합의와 상이한 점 검토")로 향해 있음. 이 메모가 실제 처리단계인지 주석인지 불명확.</p></div></div>
+      </div>
+    </section>
+
+    <!-- 03 MAPPING -->
+    <section id="mapping">
+      <div class="sec-head">
+        <div class="sec-kicker">03 / payhug-admin-web 코드 대조</div>
+        <h2>기존 어드민에 무엇이 이미 있는가</h2>
+      </div>
+      <p>레포 <span class="path">/Users/semi/cursor/payhug-admin-web</span>(HEAD f79997b, 8/25) 기준. 흥미롭게도 <strong>투자자(INVESTOR)는 이미 이 어드민에 로그인할 수 있는 계정 유형</strong>이다 — 다만 지금은 파트너·총판과 뭉뚱그려진 축소 메뉴 4개짜리 뷰만 보인다.</p>
+
+      <h3>메뉴 통합이냐 별도 포털이냐</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>현재 참여자용 메뉴 (4개)</th><th>스토리보드가 요구하는 메뉴 (7개)</th></tr></thead>
+          <tbody>
+            <tr><td>가맹점관리 · 매출조회</td><td>가맹점</td></tr>
+            <tr><td>정산현황</td><td>투자자산 · 투자수익 · 정산채권 양수</td></tr>
+            <tr><td>회원관리</td><td>계약기록</td></tr>
+            <tr><td>—</td><td>쿠콘 관리 현금 · 비밀번호 변경</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><span class="chip confirm">확정</span> 로그인·권한 판정(<span class="path">lib/permissions.ts</span>)이 이미 INVESTOR를 <code>isPartnerUser</code>로 받아들이고 있어, <strong>새 포털을 만들면 인증 체계를 중복 구축</strong>하게 된다. 반면 세분화된 role enum 분기는 없어서(전부 불리언 2종) <strong>투자자 전용 메뉴를 새로 넣으려면 최소 <code>isInvestorUser()</code> 헬퍼 하나는 신설</strong>해야 한다. 권한 가드가 메뉴·탭·필드 3층위로 이미 존재하는 컨벤션이라, 이 틀에 맞추는 편이 자연스럽다.</p>
+      <div class="callout note">
+        <h4>단, 프론트가 방어선이 될 수 없다</h4>
+        <p>서버사이드 <span class="path">middleware.ts</span>가 없고 라우트 보호가 전부 클라이언트 <code>useEffect</code> 기반이다. 원가·타 파트너 마진처럼 투자자에게 절대 보이면 안 되는 값이 있다면, 그 마스킹은 화면 조건부 렌더가 아니라 <strong>백엔드 API 응답 자체에서 제외</strong>되어야 한다.</p>
+      </div>
+
+      <h3>그대로 가져다 쓸 수 있는 부품</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>스토리보드 요구</th><th>기존 자산</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>엑셀 다운로드 전 화면</td><td><span class="path">lib/excel.ts</span> + <span class="path">ExcelDownloadButton.tsx</span></td><td>ExcelJS 공용 유틸. 데이터 없는 시트는 자동 생략 — 권한 스코프와 궁합이 좋음</td></tr>
+            <tr><td>투자수익 메인(현황+일별)</td><td><span class="path">app/settlement/simulation/page.tsx</span> "이해관계자 배분 요약"</td><td>참여자별 채권매입·시스템이용료·이체수수료·총배분액 테이블 — 투자자 화면의 원형에 가장 근접</td></tr>
+            <tr><td>계산식 노출</td><td><span class="path">PreSettlementTab.tsx</span> <code>PAYOUT_FORMULA_TEXT</code>, <span class="path">account-balance/page.tsx</span> 가로수식(<code>ReconTerm</code>)</td><td>산식을 상수 1곳에서만 정의해 위치별 재사용하는 패턴 + 데스크톱 가로/모바일 세로 반응형 수식 컴포넌트</td></tr>
+            <tr><td>산식 설명 툴팁</td><td><span class="path">HoverTooltip</span>(현재 파일 로컬 정의)</td><td>공용 컴포넌트로 승격하면 재사용성 ↑</td></tr>
+            <tr><td>투자자 참여자 개념</td><td><span class="path">app/settlement/policies/page.tsx:41-83</span></td><td>상품당 투자자 1명, <code>MARGIN</code>(채권매입) 요율만 보유 — 지금은 "정산 상품에 배정된 참여자"로만 존재, "투자자 본인이 보는 화면"은 없음</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:13.5px; color:var(--ink-faint);">디자인시스템: Tailwind v4 <code>@theme</code> 토큰(<code>primary #7FE141 / #4da119</code>, 사이드바 <code>#1B2537</code>), 폰트 Noto Sans KR, 차트는 <code>recharts</code>만 사용, 카드 공용 컴포넌트는 아직 없이 <code>bg-white rounded-2xl shadow-card</code> 클래스 조합 컨벤션.</p>
+    </section>
+
+    <!-- 04 RISK -->
+    <section id="risk">
+      <div class="sec-head">
+        <div class="sec-kicker">04 / payhug-spec 정책서 대조</div>
+        <h2>산식을 보여주기 전에 걸리는 것들</h2>
+      </div>
+      <p>"계산식 노출"이 이번 기획의 핵심 요구인데, 정작 <strong><span class="path">03_SETTLEMENT_LOGIC.md</span>(정책서 본체)에는 "투자자"라는 단어가 한 번도 나오지 않는다.</strong> 투자자 배분 구조는 전부 아카이브·Figma 역분석 쪽에서만 나온다.</p>
+
+      <div class="critical">
+        <span class="crit-label">최우선 · 확인 필요</span>
+        <h3>투자자에게 얼마를 어떻게 주는지가, 산식이 두 개다</h3>
+        <p>독립된 출처에서 서로 다른 두 가지 투자자 보상 모델이 나온다. 동시 적용인지 택일인지는 어디에도 명시돼 있지 않다.</p>
+        <div class="vs-row">
+          <div class="vs-item">
+            <div class="vs-tag">모델 A · 매출 배분형</div>
+            <div class="vs-formula">투자자 몫 = 채권매입수수료 × 0.11%</div>
+            <p>3개 독립 출처(총판등록수수료 시트·VAT계산방식 시트·Figma 요율표)에서 반복 확인. VAT 면제. <span class="chip hypo">가설</span> — "확정"은 아니고 "가장 자주 등장하는 값".</p>
+          </div>
+          <div class="vs-vs">vs</div>
+          <div class="vs-item">
+            <div class="vs-tag">모델 B · 대출 이자형</div>
+            <div class="vs-formula">투자자 차입 = 대출차입금 × 연12% × 사용일수/365</div>
+            <p>Figma "자금조달(대출) 이자 정산"(1442:8879)에 별도 산식·전용 어드민 기능(정산 버튼·인터넷뱅킹 자동발송)까지 설계되어 있음. <span class="chip check">확인필요</span></p>
+          </div>
+        </div>
+        <p style="margin-bottom:0;">계산식 노출 화면을 설계하려면 이 중 무엇을(혹은 둘 다를 어떻게 함께) 보여줄지부터 정해야 한다. 이건 서비스 정책 결정이라 이 리서치 단계에서 임의로 택하지 않았다.</p>
+      </div>
+
+      <h3>그 밖의 확인 필요 항목</h3>
+      <div class="card" style="padding:6px 24px;">
+        <div class="issue"><div class="i-mark"><span class="chip check" style="padding:1px 5px; font-size:9px;">?</span></div><div class="i-body"><p><strong>C1 수수료율 자체가 미확정</strong> — 최소 5개 버전이 병존한다. 0.11%는 그 중 한 세트 안의 값일 뿐이라, 상위 총요율이 안 정해진 채로는 "0.11%가 전체의 몇 %인지"조차 흔들린다.</p></div></div>
+        <div class="issue"><div class="i-mark"><span class="chip check" style="padding:1px 5px; font-size:9px;">?</span></div><div class="i-body"><p><strong>계산 모델 자체가 코드-정책서 간 충돌(V14)</strong> — 코드는 "정액합산+다자배분율", 정책서 03은 "단일요율 곱셈". 어느 쪽이 실제 채택안인지 미확정.</p></div></div>
+        <div class="issue"><div class="i-mark"><span class="chip check" style="padding:1px 5px; font-size:9px;">?</span></div><div class="i-body"><p><strong>"투자자 없음" 케이스</strong> — 모든 가맹점에 투자자가 매칭돼 있다고 가정하면 안 된다. 명시적으로 투자자 없이 승인되는 경로가 정책상 허용된다.</p></div></div>
+        <div class="issue"><div class="i-mark"><span class="chip confirm" style="padding:1px 5px; font-size:9px;">✓</span></div><div class="i-body"><p><strong>용어 이중화</strong> — 같은 실체가 어드민에서는 "투자자", 계약서에서는 "유동화기관"으로 불린다. 화면 문구 통일이 필요.</p></div></div>
+        <div class="issue"><div class="i-mark"><span class="chip confirm" style="padding:1px 5px; font-size:9px;">✓</span></div><div class="i-body"><p><strong>알려진 투자자 실례 = ㈜스페이스서비스 1개 법인.</strong> 이 상호는 "고객센터 노출 금지" 내부 전용 명단에 등재돼 있다 — 화면 문구 설계 시 참고.</p></div></div>
+        <div class="issue"><div class="i-mark"><span class="chip confirm" style="padding:1px 5px; font-size:9px;">✓</span></div><div class="i-body"><p><strong>정산 주기</strong> — 투자자 수익금은 월 1회 정산. 총판(20일)과 같은 날짜인지는 확인 필요.</p></div></div>
+      </div>
+
+      <div class="callout note">
+        <h4>쿠콘은 "투자자"와 다른 개념</h4>
+        <p>쿠콘은 이체(펌뱅킹·오픈뱅킹) 실행 벤더 — 락계좌↔모계좌 자금 이동을 처리하는 제3자 기술 파트너다. "투자자"(자금 공급자)와 문서상 교차되는 지점은 없었다. 스토리보드의 We-bank 링크는 이 쿠콘 관리자 콘솔로 그대로 이동시키면 된다는 뜻으로 읽힌다.</p>
+      </div>
+
+      <div class="callout note">
+        <h4>"투자자 어드민"이라는 이름 자체는 씨앗이 있었다</h4>
+        <p>2025.10 최초 기획 흐름도(Figma <span class="path">774:812</span>)에 이미 "실사용자: 관리자 어드민, 투자자 어드민"이라는 행위자 표기가 있다. 다만 와이어프레임·설계 실체는 전무 — 이번이 사실상 첫 착수다.</p>
+      </div>
+    </section>
+
+    <!-- 05 NEXT -->
+    <section id="next">
+      <div class="sec-head">
+        <div class="sec-kicker">05 / 제안</div>
+        <h2>다음 단계</h2>
+      </div>
+      <p>정리한 4개 조사를 종합하면, Figma 작업 자체는 바로 시작할 수 있는 상태다. 다만 아래 3가지는 화면 내용에 직접 영향을 주기 때문에, 착수 전에 정하고 가는 게 재작업을 줄인다.</p>
+      <div class="card" style="padding:8px 26px;">
+        <div class="decision">
+          <div class="d-num">1</div>
+          <div class="d-body"><h4>투자자 보상 산식 — 어느 모델을 보여줄까</h4><p>모델 A(0.11% 배분) / 모델 B(연12% 이자) / 둘 다 조건부 표시. 제안서용이라 "예시 값"으로 진행하고 실제 값은 이후 확정해도 되는지도 함께 판단 필요.</p></div>
+        </div>
+        <div class="decision">
+          <div class="d-num">2</div>
+          <div class="d-body"><h4>플로우차트 실패 경로 — 이번에 같이 설계할까</h4><p>6개 분기의 "실패 시" 처리(에러·재시도·잠금)가 원본에 없다. 제안서 수준에선 생략하고 성공 경로만 그려도 되는지, 아니면 이번에 최소한으로 채워 넣을지.</p></div>
+        </div>
+        <div class="decision">
+          <div class="d-num">3</div>
+          <div class="d-body"><h4>화면 구조 — 통합 role-view로 확정할까</h4><p>조사 결과는 "기존 어드민 안의 신규 role-view"를 가리키지만(로그인·권한·컴포넌트 재사용 최대화), 제안서 목적상 독립된 "투자자 전용 어드민"처럼 보이게 화면을 짜야 할 수도 있다 — 겉모습과 실제 구현 방식을 다르게 가도 되는지.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      조사: 스토리보드/플로우차트 추출 에이전트 2개 · payhug-admin-web 코드 에이전트 1개 · payhug-spec 정책 에이전트 1개 (병렬 실행, 2026-08-27) · 추출 이미지 <span class="path">scratchpad/investor_admin_research/</span>
+    </footer>
+  </main>
+</div>

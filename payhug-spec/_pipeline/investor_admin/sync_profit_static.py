@@ -5,9 +5,11 @@
 표 엑셀 링크를 그 상태 그대로 맞춘다.
 
   invest-profit.html              일별 · 일주일  2026-08-21 ~ 2026-08-27 · 7행
-  invest-profit--weekly.html      주별 · 4주     2026-08-03 ~ 2026-08-30 · 4행   (신설)
-  invest-profit--monthly.html     월별 · 6개월   2026-03-01 ~ 2026-08-31 · 6행
+  invest-profit--weekly.html      주별 · 4주     2026-08-03 ~ 2026-08-27 · 4행
+  invest-profit--monthly.html     월별 · 6개월   2026-03-01 ~ 2026-08-27 · 6행
   invest-profit--empty.html       일별 · 직접입력 2026-02-01 ~ 2026-02-07 · 0행
+
+프리셋 종료일은 여섯 묶음 전부 기준일 2026-08-27 이다 — 통합본 PRESET_RANGE 와 같은 값이다.
 
 주별 낱장은 월별 낱장을 본으로 삼아 만든다 — 두 화면이 버킷 표라는 점에서 구조가 같다.
 """
@@ -41,10 +43,10 @@ DATES = ('      <div class="filter-row">\n'
 GRAN = {
     'daily':   ('일별 투자수익', '정산예정일', '일별투자수익_2026-08-21_2026-08-27.xlsx',
                 '투자수익현황_2026-08-21_2026-08-27.xlsx'),
-    'weekly':  ('주별 투자수익', '정산예정주', '주별투자수익_2026-08-03_2026-08-30.xlsx',
-                '투자수익현황_2026-08-03_2026-08-30.xlsx'),
-    'monthly': ('월별 투자수익', '정산예정월', '월별투자수익_2026-03-01_2026-08-31.xlsx',
-                '투자수익현황_2026-03-01_2026-08-31.xlsx'),
+    'weekly':  ('주별 투자수익', '정산예정주', '주별투자수익_2026-08-03_2026-08-27.xlsx',
+                '투자수익현황_2026-08-03_2026-08-27.xlsx'),
+    'monthly': ('월별 투자수익', '정산예정월', '월별투자수익_2026-03-01_2026-08-27.xlsx',
+                '투자수익현황_2026-03-01_2026-08-27.xlsx'),
 }
 
 BLOCK = re.compile(r'    <div class="search-bar">.*?\n    </div>\n', re.S)
@@ -107,20 +109,20 @@ from decimal import Decimal as D                                  # noqa: E402
 import roster16_model as RM                                       # noqa: E402
 import build_xlsx as BX                                           # noqa: E402
 
-WEEK_RANGE = ('2026-08-03', '2026-08-30')
-_wk = BX.rollup(WEEK_RANGE[0], WEEK_RANGE[1], BX._mon_start,
-                lambda d: BX._mon_start(d) + ' ~ ' + BX._sun_end(d)[5:])
+WEEK_RANGE = ('2026-08-03', '2026-08-27')
+# 마지막 주는 기준일에서 끊긴 부분 주다 — 라벨도 종료일까지만 적는다(통합본 rollupWeeks 와 같다).
+_wk = BX.rollup(WEEK_RANGE[0], WEEK_RANGE[1], BX._mon_start, BX._week_label(WEEK_RANGE[1]))
 _wtot = BX.bucket(_wk, '합계')
 
 
 def _fmt(rows):
     return [(r['d'], f(r['repay']), f(r['exec']), f(r['profit']),
-             str(RM.r1(D(str(r['w'])))), str(RM.r2(D(str(r['ty'])))) + '%') for r in rows]
+             str(RM.r2(D(str(r['w'])))), str(RM.r2(D(str(r['ty'])))) + '%') for r in rows]
 
 
 def _foot(sm):
     return (f(sm['repay']), f(sm['exec']), f(sm['profit']),
-            str(RM.r1(D(str(sm['w'])))), str(RM.r2(D(str(sm['ty'])))) + '%')
+            str(RM.r2(D(str(sm['w'])))), str(RM.r2(D(str(sm['ty'])))) + '%')
 
 
 f = lambda n: format(n, ',')
@@ -133,7 +135,7 @@ VIEW = {
                 RM.DSUM['exec'], RM.DSUM['profit'], RM.DSUM['ty'], RM.DSUM['tyAsset']),
     'weekly':  ('4주', '%s ~ %s' % WEEK_RANGE, _fmt(_wk), _foot(_wtot),
                 _wtot['exec'], _wtot['profit'], RM.r2(_wtot['ty']), _wkasset),
-    'monthly': ('6개월', '2026-03-01 ~ 2026-08-31', _fmt(RM.MONTHLY), _foot(RM.MSUM),
+    'monthly': ('6개월', '2026-03-01 ~ 2026-08-27', _fmt(RM.MONTHLY), _foot(RM.MSUM),
                 RM.MSUM['exec'], RM.MSUM['profit'], RM.MSUM['ty'], RM.MSUM['tyAsset']),
 }
 
@@ -193,9 +195,9 @@ PLAN = [
     ('invest-profit.html',             DAILY_PRE(True),  '2026-08-21', '2026-08-27', 'daily'),
     ('invest-profit--empty.html',      DAILY_PRE(False), '2026-02-01', '2026-02-07', 'daily'),
     ('invest-profit--monthly.html',    [('3개월', False), ('6개월', True)],
-                                                         '2026-03-01', '2026-08-31', 'monthly'),
+                                                         '2026-03-01', '2026-08-27', 'monthly'),
     ('invest-profit--weekly.html',     [('4주', True), ('12주', False)],
-                                                         '2026-08-03', '2026-08-30', 'weekly'),
+                                                         '2026-08-03', '2026-08-27', 'weekly'),
 ]
 
 # 낱장별 상태 이름 — 문서 제목 · 제목줄 뱃지가 같은 값을 쓴다
