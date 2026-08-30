@@ -22,9 +22,9 @@ DESC = {
  "index.html":"랜딩 — 전 화면 목록 진입점","app.html":"통합 프로토타입 — 메뉴·버튼이 실제 동작하는 단일 HTML",
  "glossary.html":"계산식 용어 정의 — 화면 기준 매핑표 27행·용어 카드 50건(화면 용어 28·계산 재료 22)·정의 요청 26문항","capability.html":"투자자 뷰·기능 — 할 수 있는 것과 보여줄 수 있는 것",
  "archive.html":"이 페이지 — 작업물 추적","login.html":"로그인",
- "inquiry.html":"대표 확인 요청 — 계산식 문항 4건·문항별 평문 복사 + 개발·백엔드 부록",
+ "inquiry.html":"대표 확인 요청 — 문항 5건·문항별 평문 복사 + 개발·백엔드 부록",
  "ceo_definitions.md":"대표 정의 원문 — 계산식 용어","ceo_impact.md":"대표 정의 기준 산출물 영향 분석 — 27건",
- "ceo_inquiry.md":"대표 확인 요청 원고 — 문항 4건 + 개발·백엔드 부록","value_lineage.md":"값 계보 추적 — 용어별 소재·신설 목록·이름 충돌표",
+ "ceo_inquiry.md":"대표 확인 요청 원고 — 문항 5건 + 개발·백엔드 부록","value_lineage.md":"값 계보 추적 — 용어별 소재·신설 목록·이름 충돌표",
  "term_mapping.md":"화면 기준 용어 매핑 — 매핑표 27행·층위 28/22·개명 15건·대표 정의 전수 대조",
  "verify_glossary.js":"용어 문서 헤드리스 검증기 — 앵커·오버플로·층위 필터·기호 검색",
  "invest-assets.html":"투자 자산 — 현황·가맹점별 표·산식 카드","certificate.html":"투자자산 증명서 — 미리보기·서명 검증",
@@ -74,7 +74,7 @@ DESC = {
  "build_archive.py":"이 아카이브 생성기 — 실행 시점 파일 목록·작업 목록 갱신",
  "build_xlsx.py":"엑셀 %d종 생성기 — 화면 표와 같은 값·서식" % counts.C['xlsx'],
  "build_docs.py":"투자자산 증명서 PDF 생성기",
- "build_sigtext.py":"계약서 원문·전자서명 결과 텍스트 생성기",
+ "build_sigtext.py":"계약서 원문 텍스트 생성기",
  "contract_text.py":"계약서 원문 — 화면·다운로드 텍스트의 단일 원본",
  "wire_docs.py":"문서 링크 연결기 — 화면 버튼 ↔ assets/docs 실물",
  "wire_final.py":"화면 간 링크·진입점 최종 연결기",
@@ -171,9 +171,6 @@ def desc(fn):
     if fn.startswith("xls-"): return "엑셀 산출물 서식 — Figma 임포트 전용, 화면 흐름 진입점 아님"
     if fn.endswith(".xlsx"): return "엑셀 파일 — 다운로드 버튼 연결 대상"
     if fn.startswith("투자자산증명서_"): return "투자자산 증명서 견본 — certificate.html `PDF 다운로드` 대상"
-    if fn.startswith("전자서명결과_전체"): return "계약기록 `선택 문서 다운로드` — 전 행 선택 시 내려가는 묶음"
-    if fn.startswith("전자서명결과_선택"): return "계약기록 `선택 문서 다운로드` — 기본 선택 3건 묶음"
-    if fn.startswith("전자서명결과_"): return "계약기록 행 파일 — 전자서명 결과"
     if fn == "정산금채권_재양도_합의서.txt": return "계약서보기 `계약서 원문 열기` 대상"
     if fn.endswith("_result.json"): return "검증 결과 — " + fn[:-12].replace("verify_", "") + " 실행 산출"
     if fn.startswith("verify_") and fn.endswith((".js", ".py")): return "검증기 — " + fn[7:-3].replace("_", " ")

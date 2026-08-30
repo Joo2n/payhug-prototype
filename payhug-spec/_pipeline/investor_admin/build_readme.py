@@ -44,7 +44,7 @@ DOC_NAME = {
     'glossary.html': '용어 해설 — 용어 50건 · 화면 캡처 위치 표시',
     'capability.html': '산출물이 무엇을 말할 수 있나',
     'feasibility.html': '구현 가능성 — 개발 확인 문항',
-    'inquiry.html': '대표 확인 요청 — 계산식 문항 4건',
+    'inquiry.html': '대표 확인 요청 — 문항 5건',
     'review.html': '검토 이력',
     'archive.html': '파일 아카이브 — 산출물·파이프라인 전량 목록',
 }
@@ -74,7 +74,7 @@ def facts():
     assert len(screens) + 1 == counts.C['screens'], (len(screens), counts.C['screens'])
     assert len(states) == counts.C['states'], (len(states), counts.C['states'])
     d = lambda p: [f for f in fs if f.startswith(p)]
-    # 캡처는 정적 화면 전량을 찍어 두지만 용어 카드가 실제로 거는 것은 그중 일부다.
+    # 캡처는 용어 카드가 거는 화면만 둔다(부르는 문서가 없던 10장은 2026-08-29 에 걷어냈다).
     # 몇 장을 부르는지는 배포 HTML 을 훑어 센다 — 손으로 적으면 마커가 옮겨갈 때마다 낡는다.
     shots = [os.path.basename(f) for f in d('assets/shots/')]
     html_all = ''.join(io.open(os.path.join(REPO, f), encoding='utf-8').read() for f in root_html)
@@ -132,7 +132,7 @@ def build():
       % (F['assetCommon'], ' '.join('`%s`' % n for n in F['assetCommonNames'])))
     W('| 내려받기 실물 | %d | `assets/docs/` %d · `assets/xlsx/` %d |'
       % (F['assetDocs'] + F['assetXlsx'], F['assetDocs'], F['assetXlsx']))
-    W('| 화면 캡처 | %d | `assets/shots/` — 정적 화면 촬영본. 용어 해설이 카드에 거는 것은 %d장 |'
+    W('| 화면 캡처 | %d | `assets/shots/` — 용어 해설 카드가 거는 화면 촬영본 %d장 |'
       % (F['assetShots'], F['shotsUsed']))
     W('| 동기화 스크립트 | %d | `scripts/` — 시연본·용어 단독본 변환기 |' % F['scripts'])
     W('')
@@ -199,7 +199,7 @@ def build():
     W('    ├── docs/             # 내려받기 실물 %d (%s)'
       % (F['assetDocs'], ' · '.join(F['docExt'])))
     W('    ├── xlsx/             # 내려받기 실물 %d (XLSX)' % F['assetXlsx'])
-    W('    └── shots/            # 화면 캡처 %d — 용어 해설이 거는 것 %d'
+    W('    └── shots/            # 화면 캡처 %d — 용어 해설이 거는 화면만 (부르는 것 %d)'
       % (F['assetShots'], F['shotsUsed']))
     W('```')
     W('')
@@ -217,9 +217,8 @@ def build():
           % (scr, btn, ' · '.join('`assets/xlsx/%s`' % h for h in hit), fig))
     W('')
     _docs = os.listdir(os.path.join(REPO, 'assets/docs'))
-    W('계약기록의 `선택 문서 다운로드`는 고른 행의 전자서명 결과를 하나로 묶은 텍스트를 내려준다 — `assets/docs/전자서명결과_선택3건_20260827.txt` · `assets/docs/전자서명결과_전체16건_20260827.txt`. 같은 폴더에 행별 전자서명 결과 %d건과 계약서 원문이 텍스트로, 투자자산 증명서가 PDF %d건으로 있다.'
-      % (len([f for f in _docs if f.startswith('전자서명결과_M')]),
-         len([f for f in _docs if f.endswith('.pdf')])))
+    W('계약기록의 `선택 문서 다운로드`와 행별 문서 다운로드는 비활성이다 — 전자서명 결과물 파일 형식이 미결이라 실물을 만들지 않는다(`request_register.md` D-39). `assets/docs` 에는 `계약서보기`가 여는 계약서 원문 텍스트와 투자자산 증명서 PDF %d건만 둔다.'
+      % len([f for f in _docs if f.endswith('.pdf')]))
     W('')
     W('## 참고')
     W('')

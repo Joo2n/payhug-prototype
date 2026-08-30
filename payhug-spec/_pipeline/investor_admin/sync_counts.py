@@ -77,7 +77,11 @@ def cap_counts():
     a, d = tally(acts, lambda j: j[-1]), tally(rows, lambda j: j[0])
     b = {k: blocks.count(k) for k in K + ('na',)}
     dual = sum(1 for r in rows if len(re.findall(r'<span class="j j-\w+">', r)) > 1)
-    return dict(acts=len(acts), rows=len(rows), blocks=len(blocks), a=a, d=d, b=b, dual=dual)
+    # 경고 KPI 2종은 이 문서가 손으로 쥔 값이다 — 순차 확인 문서가 같은 값을 되풀이하지 않게 여기서 읽어 넘긴다
+    kpi = dict((k.strip(), int(v)) for k, v in re.findall(
+        r'<div class="kpi-label">([^<]+)</div>\s*<div class="kpi-value">(\d+)', s))
+    return dict(acts=len(acts), rows=len(rows), blocks=len(blocks), a=a, d=d, b=b, dual=dual,
+                expo=kpi['노출 불가·주의'], unimpl=kpi['미구현·선결'])
 
 
 C['xlsxNotes'] = xlsx_notes()
@@ -104,6 +108,8 @@ C['capProducts'] = _C['blocks'] - 1 - C['xlsPreview']          # 랜딩 1 · 엑
 C['capActs'] = _C['acts']
 C['capData'] = _C['rows']
 C['capDataDual'] = _C['dual']       # 한 행에 판정이 둘 적힌 항목
+C['capExpo'] = _C['expo']
+C['capUnimpl'] = _C['unimpl']
 for _k, _n in (('Fix', 'fix'), ('Hyp', 'hyp'), ('Chk', 'chk')):
     C['capAct' + _k] = _C['a'][_n]
     C['capData' + _k] = _C['d'][_n]
@@ -137,6 +143,10 @@ RULES = [
   r'const CNT = \{menus:\d+, screens:\d+, states:\d+, appStates:\d+, xlsx:\d+\};',
   'const CNT = {{menus:{menus}, screens:{screens}, states:{states}, '
   'appStates:{appStates}, xlsx:{xlsx}}};'),
+ (REPO + '/review.html',
+  r'v:"투자자 행위 \d+건 · 데이터 \d+항목 · 노출 불가 \d+건 · 미구현 \d+건\."',
+  'v:"투자자 행위 {capActs}건 · 데이터 {capData}항목 · '
+  '노출 불가 {capExpo}건 · 미구현 {capUnimpl}건."'),
 
  (REPO + '/capability.html',
   r'<td>엑셀 \d+종 \+ 투자자산 증명서\(전자서명값 표시\)',

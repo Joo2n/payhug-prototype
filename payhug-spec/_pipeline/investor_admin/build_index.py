@@ -42,9 +42,8 @@ MAIN = [
  ('acquisition.html','정산채권 양수','cards','badge-blue','가맹점','계약서보기 · 양수도 계약서 전자서명',
   [('계약서보기','acquisition--doc.html'),('서명 확인','acquisition--confirm.html'),
    ('서명 진행','acquisition--signing.html'),('서명 완료','acquisition--done.html')]),
- ('contracts.html','계약기록','doc','badge-blue','가맹점','전자서명 결과 일괄 다운로드',
-  [('전체 선택','contracts--all.html'),('다운로드 완료','contracts--downloaded.html'),
-   ('문서 없음','contracts--empty.html')]),
+ ('contracts.html','계약기록','doc','badge-blue','가맹점','전자서명 결과 목록 · 서명 수단',
+  [('전체 선택','contracts--all.html'),('문서 없음','contracts--empty.html')]),
  ('password.html','비밀번호 변경','lock','badge-gray','관리','로그인 비밀번호 변경',
   [('규칙 미충족','password--weak.html'),('확인값 불일치','password--error.html'),
    ('변경 완료','password--done.html')]),
@@ -248,7 +247,7 @@ o.append('''
       <div class="doc-icon">%s</div>
       <div>
         <div class="d-name">대표 확인 요청</div>
-        <div class="d-desc">계산식 문항 4건과 개발·백엔드 부록</div>
+        <div class="d-desc">확인 문항 5건과 개발·백엔드 부록</div>
       </div>
     </a>
     <a class="doc-card" href="review.html">
