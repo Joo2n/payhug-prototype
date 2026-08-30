@@ -6,16 +6,27 @@
 모든 셀은 엑셀 수식이다. 파이썬이 낸 값을 박아 넣는 자리는 셋뿐이다.
   ① 입력 시트의 가정값 (근거 자료에서 읽는다)
   ② 채권 시트의 금융일수 Di — 정산주기.xlsx N6:Q370 (2025년 365일 실측)의 40일 슬라이스
-  ③ 화면대조 시트의 화면 값 — rescale_decision.md 표에서 읽는다
+  ③ 화면대조 시트의 화면 값 — ledger_facts.json 에서 읽는다
 
-근거 자료
-  /Users/semi/Downloads/정산주기.xlsx        도수 · 평균만기 · 구성비 · MAU
-  rescale_decision.md                        로스터 9건 · 규모 · 화면 값
-  ceo_definitions.md                         산식 원문 · 할인율
-  platform_duration.py                       미지급률 · 과지급률
-  daily_ledger.py                            기준일 · 사업자번호 · 대표자
+화면 값의 출처 키 — 원장 재생성 뒤 갈아 끼우는 자리는 SEED 하나뿐이다.
+  SEED 딕셔너리가 '이 통합문서가 쓰는 숫자 = ledger_facts.json 의 어느 키' 를 1:1로 적는다.
+  W · Ty · 곳수 같은 값을 코드 본문에 손으로 적지 않는다.
+
+w금융일수의 가중치는 금액(Ai)이다 — 2026-08-31 사용자 결정.
+  대표 워드 `용어 정의.docx` [1번 이미지] 4~6번 문단이 Σ Ai x Di / Σ Ai 로 못 박았다.
+  그래서 플랫폼 구성비의 시드값이 금액 실측(Figma 2782:5879)이고, 대표 엑셀의 MAU 비중은
+  `가중치 대조` 시트에서 참고값으로만 나란히 둔다.
+
+근거 자료 (전부 읽기 전용)
+  ~/Downloads/정산주기.xlsx     금융일수 도수 · 플랫폼 평균만기 · MAU · 배달앱/전체 0.35
+  ~/Downloads/용어 정의.docx    산식 원문 (ceo_definitions.md 로 옮겨 적은 것)
+  ledger_facts.json            화면 값 전량 — 이 통합문서가 대조하는 유일한 기준
+  platform_duration.py         금액 실측 MEASURED · BOOK_MIX · 참고 MAU_MIX · 미지급/과지급률
+  daily_ledger.py              로스터 BOOKROWS · 규모 BOOK/CASH · 기준일 ASOF
+  roster16_model.py            비중 최대잉여법 규칙 · 서명 대기 큐 SIGN_PENDING
+  build_xlsx.py                엑셀 내려받기 프리셋 6종의 기간
 """
-import json, os, re, sys
+import json, os, re, shutil, sys
 from datetime import date, timedelta
 from decimal import Decimal as D, ROUND_HALF_UP, ROUND_FLOOR
 
@@ -28,10 +39,39 @@ from openpyxl.formatting.rule import CellIsRule
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 CYCLE_XLSX = os.path.expanduser('~/Downloads/정산주기.xlsx')
-OUT = os.path.join(BASE, '검산_투자자어드민_20260901.xlsx')
+FNAME = '검산_투자자어드민_20260901.xlsx'
+OUT = os.path.join(BASE, FNAME)                              # 정본
+OUT2 = os.path.expanduser('~/Downloads/payhug_검산엑셀/' + FNAME)   # 사용자가 여는 것
 ORDER = ('card', 'bm', 'cpe', 'yo')
 LABEL = {'card': '카드사', 'bm': '배달의민족', 'cpe': '쿠팡이츠', 'yo': '요기요'}
 WINDOW = 40                       # 선정산일 축 길이(일)
+
+# ── 화면 값 ↔ ledger_facts.json 키 대응 ─────────────────────────────
+#   왼쪽이 이 통합문서 안의 이름, 오른쪽이 ledger_facts.json 의 키다.
+#   원장을 다시 만들면 JSON 만 바뀌고 이 파일은 그대로 둔다.
+SEED = {
+    '투자실행액':        'exec',            '순현금':            'cash',
+    '투자자산':          'total',           'W금융일수 raw':     'wRaw',
+    'W금융일수 표기':    'w',               'Ty수익율':          'ty',
+    'S입금부족율 raw':   'sRaw',            'S입금부족율 표기':  's',
+    '할인율(%)':         'rate',            '하루 평균 투자실행금': 'dayAvg',
+    '원장 일수':         'ledgerDays',      '원장 구간':         'ledgerSpan',
+    '채권 건수':         'receivables',     '미회수 채권 건수':  'openReceivables',
+    '채권 Di 범위':      'diRange',         '일별 W 범위':       'wRange',
+    '주간 PSA':          'weekExec',        '주간 PSM':          'weekProfit',
+    '주간 상환액':       'weekRepay',       '주간 일수':         'weekDays',
+    '주간 PSD 표기':     'weekW',           '주간 PSD raw':      'weekWRaw',
+    '주간 ④':            'weekTy',          '주간 PSC':          'weekPsc',
+    '주간 ⑤':            'weekTyAsset',     '전 구간 PSA':       'fullExec',
+    '전 구간 PSM':       'fullProfit',      '전 구간 PSD 표기':  'fullW',
+    '전 구간 ④':         'fullTy',          '전 구간 PSC':       'fullPsc',
+    '전 구간 ⑤':         'fullTyAsset',     '가맹점별 값':       'merchants',
+    '일자별 값':         'tyByDate',
+}
+#   merchants 원소 = [상호, 투자금액, W, S, Ty, 규모구간, flow]
+MCOL = dict(name=0, amount=1, w=2, s=3, ty=4, tier=5, flow=6)
+#   tyByDate 원소 = [W, ty(%), 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감]
+DCOL = dict(w=0, ty=1, exec=2, profit=3, repay=4, fee=5, ded=6)
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -60,79 +100,41 @@ def read_cycle():
                 obs_days=365, raw=raw, src_xlsx=os.path.basename(CYCLE_XLSX))
 
 
-def _md():
-    return open(os.path.join(BASE, 'rescale_decision.md'), encoding='utf-8').read()
+def read_book():
+    """로스터 · 규모 · 기준일 — daily_ledger.py 의 상수 그대로 읽는다(읽기 전용)."""
+    sys.path.insert(0, BASE)
+    import daily_ledger as L
+    rows = [dict(mid=m[0], name=m[1], bizno=m[2], ceo=m[3], biz=m[4], item=m[5],
+                 contract=m[6], tier=m[7], flow=int(m[8]), b=m[9]) for m in L.BOOKROWS]
+    return rows, L.ASOF, int(L.BOOK), int(L.CASH)
 
 
-def read_roster():
-    txt = _md()
-    rx = re.compile(r'^\|\s*(고액|평범|소액)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|'
-                    r'\s*([\d,]+)\s*\|\s*([\d,]+)\s*\|\s*([\d.]+)\s*\|\s*([\d,]+)\s*\|'
-                    r'\s*([\d.]+)\s*\|\s*([\d.]+)%\s*\|\s*([\d.]+)%\s*\|\s*([\d.]+)%\s*\|')
-    rows = []
-    for ln in txt.splitlines():
-        m = rx.match(ln.strip())
-        if m:
-            rows.append(dict(tier=m.group(1), name=m.group(2), biz=m.group(3), item=m.group(4),
-                             flow=int(m.group(5).replace(',', '')),
-                             daily=int(m.group(6).replace(',', '')), b=m.group(7),
-                             invest=int(m.group(8).replace(',', '')), w=m.group(9),
-                             s=m.group(10), ty=m.group(11), share=m.group(12)))
-    assert len(rows) == 9, len(rows)
-    for ln in txt.splitlines():
-        m = re.match(r'^\|\s*(M2026-\d{4})\s*\|\s*([^|]+?)\s*\|\s*(\d{4}-\d{2}-\d{2})\s*\|'
-                     r'\s*(\d{4}-\d{2}-\d{2})\s*\|', ln.strip())
-        if m:
-            for r in rows:
-                if r['name'] == m.group(2):
-                    r['mid'], r['contract'] = m.group(1), m.group(4)
-    assert all('mid' in r for r in rows)
-    return rows
+def read_plat():
+    """플랫폼 상수 — platform_duration.py 가 유일한 출처(읽기 전용).
 
-
-def read_md_pairs(*sections):
-    """rescale_decision.md 의 지정 절에서 '항목 | 현행 | 새 값' 3열 표를 걷는다."""
-    out, cur = {}, None
-    for ln in _md().splitlines():
-        s = ln.strip()
-        if s.startswith('#'):
-            cur = s.lstrip('# ').strip()
-        if cur not in sections:
-            continue
-        m = re.match(r'^\|\s*([^|]+?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$', s)
-        if m and not m.group(1).startswith('---'):
-            out.setdefault(m.group(1), m.group(3).replace('**', '').strip())
-    return out
-
-
-def read_period_table():
-    """rescale_decision.md §5-B 조회기간 표 — PSA·PSM·PSC·④·⑤."""
-    for ln in _md().splitlines():
-        m = re.match(r'^\|\s*기본 일주일 7일\s*\|\s*([\d,]+)\s*\|\s*([\d,]+)\s*\|\s*([\d,]+)\s*\|'
-                     r'\s*([\d.]+)%\s*\|\s*\*\*([\d.]+)%\*\*\s*\|', ln.strip())
-        if m:
-            return dict(psa=int(m.group(1).replace(',', '')),
-                        psm=int(m.group(2).replace(',', '')),
-                        psc=int(m.group(3).replace(',', '')),
-                        p4=float(m.group(4)), p5=float(m.group(5)))
-    raise AssertionError('§5-B 표 없음')
-
-
-def read_rates():
+      MEASURED  금액 실측 하루치 순지급액 (Figma 2782:5879) — 로스터 구성비의 원천
+      BOOK_MIX  금액 실측 구성비        MEASURED_W  그 구성의 가중평균만기
+      MAU_MIX   대표 엑셀 MAU 구성비    MAU_W       참고값(엑셀 H41)
+    """
     sys.path.insert(0, BASE)
     import platform_duration as pd
-    return {k: (float(pd.UNPAID[k]), float(pd.OVERPAID[k])) for k in ORDER}
+    return dict(
+        measured={k: int(v) for k, v in pd.MEASURED.items()},
+        measured_src=pd.MEASURED_SRC,
+        measured_sum=int(pd.MEASURED_SUM),
+        deliv={k: int(v) for k, v in pd.DELIV.items()},
+        deliv_sum=int(pd.DELIV_SUM),
+        b_bar=float(pd.B_BAR),
+        book_mix=dict(zip(ORDER, [float(x) for x in pd.BOOK_MIX])),
+        mau_mix=dict(zip(ORDER, [float(x) for x in pd.MAU_MIX])),
+        mau={k: int(v) for k, v in pd.MAU.items()},
+        card_share=float(pd.CARD_SHARE),
+        measured_w=float(pd.MEASURED_W), mau_w=float(pd.MAU_W),
+        dur={k: float(v) for k, v in pd.DURATION.items()},
+        unpaid={k: float(v) for k, v in pd.UNPAID.items()},
+        overpaid={k: float(v) for k, v in pd.OVERPAID.items()},
+        di=(pd.DI_MIN, pd.DI_MAX))
 
-
-def read_meta():
-    src = open(os.path.join(BASE, 'daily_ledger.py'), encoding='utf-8').read()
-    m = re.search(r'ASOF\s*=\s*date\((\d+),\s*(\d+),\s*(\d+)\)', src)
-    asof = date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
-    blk = src.split('BOOKROWS = [', 1)[1].split('\n]', 1)[0]
-    meta = {}
-    for m in re.finditer(r"\('(M2026-\d{4})',\s*'([^']+)',\s*'([^']+)',\s*'([^']+)'", blk):
-        meta[m.group(2).strip()] = (m.group(1), m.group(3), m.group(4))
-    return asof, meta
 
 
 def read_rate_pct():
@@ -153,6 +155,78 @@ def read_definitions():
     return out
 
 
+def read_word_lines(n=(4, 5, 6)):
+    """용어 정의.docx [1번 이미지] 의 지정 문단 원문 — 가중치 논점의 인용 근거."""
+    txt = open(os.path.join(BASE, 'ceo_definitions.md'), encoding='utf-8').read()
+    blk = txt.split('## [1번 이미지]', 1)[1].split('## [2번 이미지]', 1)[0]
+    items = [s[2:].strip() for s in blk.splitlines() if s.strip().startswith('- ')]
+    return [(i, items[i - 1]) for i in n]
+
+
+# ── 화면 값 — ledger_facts.json 이 유일한 출처 ──────────────────────
+def read_facts():
+    """원장이 낸 사실값. 여기 없는 화면 숫자는 이 통합문서에 쓰지 않는다."""
+    p = os.path.join(BASE, 'ledger_facts.json')
+    f = json.load(open(p, encoding='utf-8'))
+    for key in SEED.values():
+        assert key in f, 'ledger_facts.json 에 %s 키가 없다' % key
+    return f
+
+
+def S(f, name):
+    """SEED 이름으로 화면 값을 꺼낸다 — 숫자를 손으로 적지 않게 하는 통로."""
+    return f[SEED[name]]
+
+
+def fsrc(name):
+    return 'ledger_facts.json %s' % SEED[name]
+
+
+def facts_rollup(f, frm, to):
+    """tyByDate 를 기간으로 접는다 — 주간·프리셋 화면 값의 재료."""
+    ks = sorted(k for k in S(f, '일자별 값') if frm <= k <= to)
+    g = S(f, '일자별 값')
+    ex = sum(g[k][DCOL['exec']] for k in ks)
+    wx = sum(float(g[k][DCOL['w']]) * g[k][DCOL['exec']] for k in ks)
+    return dict(days=len(ks), span=(ks[0], ks[-1]),
+                exec_=ex, profit=sum(g[k][DCOL['profit']] for k in ks),
+                repay=sum(g[k][DCOL['repay']] for k in ks),
+                fee=sum(g[k][DCOL['fee']] for k in ks),
+                ded=sum(g[k][DCOL['ded']] for k in ks),
+                wraw=(wx / ex if ex else 0.0))
+
+
+def ratios(amounts, base):
+    """비중 소수1자리 — 최대잉여법. roster16_model.ratios 와 같은 규칙(합 정확히 100.0)."""
+    n = len(amounts)
+    if not n or not base:
+        return [D(0)] * n
+    unit, frac = [], []
+    for i, a in enumerate(amounts):
+        raw = D(a) * 1000 / D(base)
+        fl = int(raw.to_integral_value(rounding=ROUND_FLOOR))
+        unit.append(fl)
+        frac.append((raw - fl, D(a), -i))
+    rest = 1000 - sum(unit)
+    for i in sorted(range(n), key=lambda i: frac[i], reverse=True)[:max(0, rest)]:
+        unit[i] += 1
+    return [D(u) / D(10) for u in unit]
+
+
+def read_sign_pending():
+    """서명 대기 큐 — roster16_model.SIGN_PENDING 원문."""
+    txt = open(os.path.join(BASE, 'roster16_model.py'), encoding='utf-8').read()
+    blk = txt.split('SIGN_PENDING = (', 1)[1].split(')\n', 1)[0]
+    return dict(re.findall(r"\('(M2026-\d{4})',\s*'(\d{4}-\d{2}-\d{2})'\)", blk))
+
+
+def read_presets():
+    """엑셀 내려받기 프리셋 6종 — build_xlsx.PRESETS 그대로."""
+    sys.path.insert(0, BASE)
+    import build_xlsx as bx
+    return [(k, bx.GRAN_NAME[g], lab, frm, to) for k, g, lab, frm, to in bx.PRESETS]
+
+
 # ══════════════════════════════════════════════════════════════════
 # 2. 채권 원장 배정 — 엑셀과 같은 산술로 파이썬에서 먼저 푼다
 # ══════════════════════════════════════════════════════════════════
@@ -164,12 +238,15 @@ def xrd(x, n=0):
     return float(D(repr(float(x))).quantize(D(1).scaleb(-n), rounding=ROUND_FLOOR))
 
 
-def base_model(cyc, roster, rates, rate):
+def base_model(cyc, roster, plat, rate):
+    """배달 3사 내부 배분은 금액 실측 순지급액 비다 — MAU 가 아니다.
+
+    대표 워드 4~6번 문단이 w금융일수의 가중치를 금액(Ai)으로 못 박았다(2026-08-31 결정).
+    platform_duration.DELIV = Figma 2782:5879 하루치 순지급액.
+    """
     dur = {p: sum(d * n for d, n in cyc['freq'][p].items()) / cyc['obs_days'] for p in ORDER}
     ed2 = {p: sum(d * d * n for d, n in cyc['freq'][p].items()) / cyc['obs_days'] for p in ORDER}
-    tot_mau = sum(v for _, v in cyc['mau'])
-    dsh = {'bm': cyc['mau'][0][1] / tot_mau, 'cpe': cyc['mau'][1][1] / tot_mau,
-           'yo': cyc['mau'][2][1] / tot_mau}
+    dsh = {k: plat['deliv'][k] / plat['deliv_sum'] for k in ('bm', 'cpe', 'yo')}
     M = len(roster)
     b = [float(r['b']) for r in roster]
     flow = [r['flow'] for r in roster]
@@ -462,22 +539,36 @@ def widths(ws, spec):
 # ══════════════════════════════════════════════════════════════════
 def build():
     cyc = read_cycle()
-    roster = read_roster()
-    rates = read_rates()
+    plat = read_plat()
+    roster, asof, book, cashv = read_book()
+    rates = {k: (plat['unpaid'][k], plat['overpaid'][k]) for k in ORDER}
     rate_pct = read_rate_pct()
     rate = rate_pct / 100
-    asof, meta = read_meta()
-    md = read_md_pairs('9-A. 불변식', '9-B. 원장이 다시 내는 값')
-    per = read_period_table()
     defs = read_definitions()
+    word = read_word_lines()
+    fx = read_facts()
+    sign = read_sign_pending()
+    presets = read_presets()
 
-    exec_target = int(md['투자실행액'].replace(',', ''))
-    cash = int(md['순현금'].replace(',', ''))
+    # 화면 값 — 전부 ledger_facts.json 에서 온다(SEED 대응표).
+    exec_target = S(fx, '투자실행액')
+    cash = S(fx, '순현금')
+    assert (exec_target, cash) == (book, cashv), '원장 상수와 화면 값이 어긋난다'
+    scr_m = S(fx, '가맹점별 값')
+    scr_share = ratios([m[MCOL['amount']] for m in scr_m], exec_target)
+    SCR = {m[MCOL['name']]: dict(amount=m[MCOL['amount']], w=m[MCOL['w']], s=m[MCOL['s']],
+                                 ty=m[MCOL['ty']], tier=m[MCOL['tier']],
+                                 flow=m[MCOL['flow']], share=float(scr_share[i]))
+           for i, m in enumerate(scr_m)}
+    assert set(SCR) == set(r['name'] for r in roster), '로스터 상호가 화면과 다르다'
+    _ord = {m[MCOL['name']]: i for i, m in enumerate(scr_m)}      # 화면 표 순서(금액 내림차순)
+    roster.sort(key=lambda r: _ord[r['name']])
+    week = facts_rollup(fx, '2026-08-21', '2026-08-27')
+    full = facts_rollup(fx, *S(fx, '원장 구간'))
     _n = len(roster)
-    avg_daily = int(re.search(r'\|\s*\**%d\**\s*\|\s*\**([\d,]+)\**\s*\|' % _n,
-                              _md()).group(1).replace(',', ''))
+    avg_daily = int(round(sum(r['flow'] for r in roster) / _n))
 
-    mo = base_model(cyc, roster, rates, rate)
+    mo = base_model(cyc, roster, plat, rate)
     mn = money(mo, exec_target, rate)
     seqs = assign(cyc, mo, mn, exec_target)
 
@@ -498,12 +589,13 @@ def build():
         ('요율', '유동화투자자의 할인율', rate, '비율', 'ceo_definitions.md [1번 이미지]'),
         ('요율', '할인율(%)', '=C2*100', '%', 'C2 x 100'),
         ('요율', '연일수', 365, '일', 'ceo_definitions.md ty수익율'),
-        ('규모', '투자실행액 목표', exec_target, '원', 'rescale_decision.md 9-A'),
-        ('규모', '순현금', cash, '원', 'rescale_decision.md 9-A'),
-        ('규모', '가맹점 평균 하루 선정산액', avg_daily, '원', 'rescale_decision.md 4-A'),
+        ('규모', '투자실행액 목표', exec_target, '원', fsrc('투자실행액')),
+        ('규모', '순현금', cash, '원', fsrc('순현금')),
+        ('규모', '가맹점 평균 하루 선정산액', avg_daily, '원',
+         'daily_ledger.py BOOKROWS — Σ flow / 곳수'),
         ('기간', '기준일 D', asof, '날짜', 'daily_ledger.py ASOF'),
         ('기간', '선정산일 축 시작', '=C8-%d' % (WINDOW - 1), '날짜', '축 %d일' % WINDOW),
-        ('기간', '일별 표 시작', asof - timedelta(days=26), '날짜', '전량 커버 구간 시작'),
+        ('기간', '일별 표 시작', '=C8-26', '날짜', '전량 커버 구간 시작'),
         ('기간', '일별 표 종료', '=C8', '날짜', '기준일'),
         ('기간', '조회기간 시작', '=C8-6', '날짜', 'ceo_definitions.md default 일주일'),
         ('기간', '조회기간 종료', '=C8', '날짜', '기준일'),
@@ -545,15 +637,18 @@ def build():
         ws.add_data_validation(dv)
         dv.add(ws[rng])
 
-    head(ws, 23, ['코드', '플랫폼', '구성비', '미지급률', '과지급률', '출처'], fill=SUB)
+    # ── 플랫폼 구성비 — 대표님이 그 자리에서 바꿀 입력 4칸 ────────
+    #   워드 4~6번 문단이 w금융일수의 가중치를 금액(Ai)으로 못 박았다(2026-08-31 결정).
+    #   그래서 시드값이 금액 실측(Figma 2782:5879)이다. MAU 기준은 가중치 대조 시트에서 대조만.
+    head(ws, 23, ['코드', '플랫폼', '구성비 (입력)', '미지급률', '과지급률', '출처'], fill=SUB)
     for i, p in enumerate(ORDER):
         r = 24 + i
         put(ws, r, 1, p)
         put(ws, r, 2, LABEL[p], bold=True)
-        put(ws, r, 3, cyc['mix'][p], D8, fill=CHK)
+        put(ws, r, 3, plat['book_mix'][p], D8, fill=CHK)
         put(ws, r, 4, rates[p][0], D6, fill=CHK)
         put(ws, r, 5, rates[p][1], D6, fill=CHK)
-        put(ws, r, 6, '%s 정산주기 I열 · platform_duration.py' % cyc['src_xlsx'])
+        put(ws, r, 6, 'platform_duration.py BOOK_MIX · UNPAID · OVERPAID')
     put(ws, 28, 2, '합계', bold=True)
     put(ws, 28, 3, '=SUM(C24:C27)', D8, bold=True, fill=CHK)
     name('플랫폼코드범위', '입력', '$A$24:$A$27')
@@ -562,22 +657,52 @@ def build():
     name('미지급률범위', '입력', '$D$24:$D$27')
     name('과지급률범위', '입력', '$E$24:$E$27')
 
-    head(ws, 30, ['배달앱', 'MAU', '배달 3사 내부 배분', '출처'], fill=SUB)
-    for i, (nm, v) in enumerate(cyc['mau']):
+    # ── 금액 실측 — 로스터 구성비의 원천(하루 1가맹점치 순지급액) ──
+    head(ws, 30, ['플랫폼', '하루 순지급액(원)', '구성비', '배달 3사 내부 배분', '출처'],
+         fill=SUB)
+    for i, p in enumerate(ORDER):
         r = 31 + i
+        put(ws, r, 1, LABEL[p], bold=True)
+        put(ws, r, 2, plat['measured'][p], M0, fill=CHK)
+        put(ws, r, 3, '=B%d/$B$35' % r, D8)
+        put(ws, r, 4, '' if p == 'card' else '=B%d/$B$36' % r, D8)
+        put(ws, r, 5, plat['measured_src'] if p == 'card' else '')
+    put(ws, 35, 1, '합계', bold=True)
+    put(ws, 35, 2, '=SUM(B31:B34)', M0, bold=True)
+    put(ws, 35, 3, '=SUM(C31:C34)', D8, bold=True)
+    put(ws, 36, 1, '배달 3사 합', bold=True)
+    put(ws, 36, 2, '=SUM(B32:B34)', M0, bold=True)
+    put(ws, 36, 3, '=B36/B35', D8, bold=True)
+    put(ws, 36, 4, '=SUM(D32:D34)', D8, bold=True)
+    put(ws, 36, 5, '배달앱/전체 (금액 실측)')
+    name('실측금액범위', '입력', '$B$31:$B$34')
+    name('배달배분범위', '입력', '$D$32:$D$34')
+    name('배달앱금액비중', '입력', '$C$36')
+
+    # ── 대표 엑셀 MAU — 데이터로 쓰지 않는 참고값(가중치 대조용) ──
+    head(ws, 38, ['배달앱', 'MAU', '배달 3사 내부 배분', '출처'], fill=SUB)
+    for i, (nm, v) in enumerate(cyc['mau']):
+        r = 39 + i
         put(ws, r, 1, nm, bold=True)
         put(ws, r, 2, v, M0, fill=CHK)
-        put(ws, r, 3, '=B%d/$B$34' % r, D8)
+        put(ws, r, 3, '=B%d/$B$42' % r, D8)
         put(ws, r, 4, '%s 비중 D4:F4' % cyc['src_xlsx'])
-    put(ws, 34, 1, '계', bold=True)
-    put(ws, 34, 2, '=SUM(B31:B33)', M0, bold=True)
-    put(ws, 34, 3, '=SUM(C31:C33)', D8, bold=True)
-    name('배달배분범위', '입력', '$C$31:$C$33')
+    put(ws, 42, 1, '계', bold=True)
+    put(ws, 42, 2, '=SUM(B39:B41)', M0, bold=True)
+    put(ws, 42, 3, '=SUM(C39:C41)', D8, bold=True)
+    name('MAU배분범위', '입력', '$C$39:$C$41')
+    put(ws, 43, 1, '배달앱/전체', bold=True)
+    put(ws, 43, 2, 1 - plat['card_share'], D8, fill=CHK)
+    put(ws, 43, 3, '=1-B43', D8)
+    put(ws, 43, 4, '%s 비중 H5 — 카드 = 1 - 이 값' % cyc['src_xlsx'])
+    name('배달앱비중', '입력', '$B$43')
 
-    head(ws, 36, ['순번', '사업자ID', '상호', '업종', '품목', '계약일', 'flow 상수',
-                  '배달 의존도 b', '하루 선정산액(방향 B)'], fill=SUB)
+    RT = 45                                   # 로스터 표 머리 행
+    head(ws, RT, ['순번', '사업자ID', '상호', '업종', '품목', '계약일', 'flow 상수',
+                  '배달 의존도 b', '하루 선정산액(방향 B)', '계약 상태', '계약 생성일'],
+         fill=SUB)
     for i, r0 in enumerate(roster):
-        r = 37 + i
+        r = RT + 1 + i
         put(ws, r, 1, i + 1)
         put(ws, r, 2, r0['mid'])
         put(ws, r, 3, r0['name'], bold=True)
@@ -586,16 +711,49 @@ def build():
         put(ws, r, 6, date(*[int(x) for x in r0['contract'].split('-')]), DT)
         put(ws, r, 7, r0['flow'], M0, fill=CHK)
         put(ws, r, 8, float(r0['b']), D8, fill=CHK)
-        put(ws, r, 9, r0['daily'], M0, fill=CHK)
-    R9 = 36 + len(roster)
+        put(ws, r, 9, r0['flow'], M0, fill=CHK)
+        put(ws, r, 10, '서명 대기' if r0['mid'] in sign else '서명 완료',
+            fill=CHK if r0['mid'] in sign else None)
+        put(ws, r, 11, date(*[int(x) for x in sign[r0['mid']].split('-')])
+            if r0['mid'] in sign else '', DT)
+    R9 = RT + len(roster)
     put(ws, R9 + 1, 3, '합계', bold=True)
-    put(ws, R9 + 1, 7, '=SUM(G37:G%d)' % R9, M0, bold=True)
-    put(ws, R9 + 1, 9, '=SUM(I37:I%d)' % R9, M0, bold=True)
-    name('순번범위', '입력', '$A$37:$A$%d' % R9)
-    name('상호범위', '입력', '$C$37:$C$%d' % R9)
-    name('flow범위', '입력', '$G$37:$G$%d' % R9)
-    name('b범위', '입력', '$H$37:$H$%d' % R9)
-    name('하루입력범위', '입력', '$I$37:$I$%d' % R9)
+    put(ws, R9 + 1, 7, '=SUM(G%d:G%d)' % (RT + 1, R9), M0, bold=True)
+    put(ws, R9 + 1, 9, '=SUM(I%d:I%d)' % (RT + 1, R9), M0, bold=True)
+    put(ws, R9 + 1, 10, '=COUNTIF(J%d:J%d,"서명 대기")&"건 대기"' % (RT + 1, R9), bold=True)
+    name('순번범위', '입력', '$A$%d:$A$%d' % (RT + 1, R9))
+    name('상호범위', '입력', '$C$%d:$C$%d' % (RT + 1, R9))
+    name('flow범위', '입력', '$G$%d:$G$%d' % (RT + 1, R9))
+    name('b범위', '입력', '$H$%d:$H$%d' % (RT + 1, R9))
+    name('하루입력범위', '입력', '$I$%d:$I$%d' % (RT + 1, R9))
+    name('계약상태범위', '입력', '$J$%d:$J$%d' % (RT + 1, R9))
+
+    # ── 엑셀 내려받기 프리셋 6종 — 종료일은 전부 기준일에서 끊긴다 ──
+    PR = R9 + 3
+    head(ws, PR, ['프리셋', '집계 단위', '검색대상기간', '시작(수식)', '종료(수식)', '일수',
+                  '화면 시작', '화면 종료', '차', '출처'], fill=SUB)
+    pfml = {'week': ('=기준일-6', '=기준일'),
+            'month': ('=DATE(YEAR(기준일),MONTH(기준일),1)', '=기준일'),
+            'w4': ('=기준일-WEEKDAY(기준일,3)-21', '=기준일'),
+            'w12': ('=기준일-WEEKDAY(기준일,3)-77', '=기준일'),
+            'm3': ('=DATE(YEAR(기준일),MONTH(기준일)-2,1)', '=기준일'),
+            'm6': ('=DATE(YEAR(기준일),MONTH(기준일)-5,1)', '=기준일')}
+    for i, (k, gran, lab, frm, to) in enumerate(presets):
+        r = PR + 1 + i
+        put(ws, r, 1, k)
+        put(ws, r, 2, gran)
+        put(ws, r, 3, lab, bold=True)
+        put(ws, r, 4, pfml[k][0], DT)
+        put(ws, r, 5, pfml[k][1], DT)
+        put(ws, r, 6, '=E%d-D%d+1' % (r, r), M0)
+        put(ws, r, 7, date(*[int(x) for x in frm.split('-')]), DT)
+        put(ws, r, 8, date(*[int(x) for x in to.split('-')]), DT)
+        put(ws, r, 9, '=(D%d-G%d)+(E%d-H%d)' % (r, r, r, r), M0, fill=CHK)
+        put(ws, r, 10, 'build_xlsx.py PRESETS')
+    PRL = PR + len(presets)
+    put(ws, PRL + 1, 3, '차 합계', bold=True)
+    put(ws, PRL + 1, 9, '=SUM(I%d:I%d)' % (PR + 1, PRL), M0, bold=True)
+    widths(ws, {'J': 14, 'K': 14})
 
     # ── 플랫폼 ──────────────────────────────────────────────────
     ws = wb.create_sheet('플랫폼')
@@ -659,15 +817,16 @@ def build():
     ws = wb.create_sheet('가맹점')
     cols = ['순번', '사업자ID', '상호', '업종', '품목', '계약일', '사용', 'flow 상수',
             '배달 의존도 b', '카드', '배민', '쿠팡이츠', '요기요', '구성비 합',
-            '가맹점 만기', '하루 선정산액', '하루 Ai', '투자금액', '비중', '표기 W',
+            '가맹점 만기', '하루 선정산액', '하루 Ai', '투자금액', '비중 raw', '표기 W',
             '가중 미지급률', '가중 과지급률', 'S입금부족율(%)', 'Ty수익율(%)', '구간',
-            '결정안 하루 선정산액', '차', '결정안 투자금액', '차']
+            '비중 내림(pp)', '잔차(pp)', '잔차 순위', '비중 표기(%)', '계약 상태']
     head(ws, 1, cols)
     n = len(roster)
     last = 2 + n                      # 가맹점 합계 행
     RATE_ROW = last + 5              # 산출 블록의 '배율 (방향 A)' 행
+    KROW = last + 1                  # 최대잉여법 — 나눠 줄 눈금 수 k
     for i, r0 in enumerate(roster):
-        r, src = 2 + i, 37 + i
+        r, src = 2 + i, RT + 1 + i
         put(ws, r, 1, '=입력!A%d' % src)
         put(ws, r, 2, '=입력!B%d' % src)
         put(ws, r, 3, '=입력!C%d' % src, bold=True)
@@ -699,10 +858,16 @@ def build():
         put(ws, r, 24, '=IF(G%d=0,"",할인율퍼센트*연일수/T%d)' % (r, r), P2)
         put(ws, r, 25, '=IF(G%d=0,"",IF(P%d>=5000000,"고액",IF(P%d>=2000000,"평범","소액")))'
             % (r, r, r))
-        put(ws, r, 26, r0['daily'], M0)
-        put(ws, r, 27, '=P%d-Z%d' % (r, r), M0, fill=CHK)
-        put(ws, r, 28, r0['invest'], M0)
-        put(ws, r, 29, '=R%d-AB%d' % (r, r), M0, fill=CHK)
+        # 비중 표기 — 최대잉여법(roster16_model.ratios 와 같은 규칙).
+        #   0.1pp 로 내린 뒤 남는 눈금 k 개를 잔차가 큰 행부터 하나씩 준다. 합이 정확히 100.0 이고
+        #   어느 행도 0.1pp 를 넘게 밀리지 않는다.
+        put(ws, r, 26, '=IF(G%d=0,"",ROUNDDOWN(S%d*1000,0)/10)' % (r, r), '0.0')
+        put(ws, r, 27, '=IF(G%d=0,"",S%d*100-Z%d)' % (r, r, r), D6)
+        put(ws, r, 28, '=IF(G%d=0,"",RANK(AA%d,$AA$2:$AA$%d,0)+COUNTIF($AA$2:AA%d,AA%d)-1)'
+            % (r, r, last - 1, r, r), M0)
+        put(ws, r, 29, '=IF(G%d=0,"",Z%d+IF(AB%d<=$B$%d,0.1,0))' % (r, r, r, KROW), '0.0',
+            fill=CHK)
+        put(ws, r, 30, '=입력!J%d' % src)
     for col, f in [(7, 'SUM'), (8, 'SUM'), (16, 'SUM'), (17, 'SUM'), (18, 'SUM'), (19, 'SUM')]:
         L = get_column_letter(col)
         put(ws, last, col, '=%s(%s2:%s%d)' % (f, L, L, last - 1),
@@ -711,6 +876,12 @@ def build():
     put(ws, last, 15, '=IF(P%d=0,0,SUMPRODUCT(P2:P%d,O2:O%d)/P%d)' % (last, last - 1, last - 1,
                                                                       last), D8, bold=True)
     put(ws, last, 20, '=ROUND(O%d,SW_자릿수)' % last, bold=True)
+    put(ws, last, 26, '=SUM(Z2:Z%d)' % (last - 1), '0.0', bold=True)
+    put(ws, last, 29, '=SUM(AC2:AC%d)' % (last - 1), '0.0', bold=True, fill=CHK)
+    put(ws, last, 30, '=COUNTIF(AD2:AD%d,"서명 대기")&"건 대기"' % (last - 1), bold=True)
+    put(ws, KROW, 1, '나눠 줄 눈금 수 k (0.1pp)', bold=True)
+    put(ws, KROW, 2, '=ROUND((100-Z%d)/0.1,0)' % last, M0, fill=CHK)
+    put(ws, KROW, 3, '(100 - Σ 비중 내림) / 0.1')
 
     b0 = last + 2
     head(ws, b0, ['항목', '값', '산식'], fill=SUB)
@@ -751,10 +922,11 @@ def build():
             % (last, last - 1, L, L, last - 1, last), D8)
         put(ws, r, 3, '=INDEX(구성비범위,%d)' % (i + 1), D8)
         put(ws, r, 4, '=B%d-C%d' % (r, r), '0.00E+00', fill=CHK)
+    MIXROW = c0 + 1                 # 로스터 금액가중 구성비 첫 행 — 가중치 대조 시트가 읽는다
     widths(ws, {'A': 20, 'B': 22, 'C': 20, 'D': 12, 'E': 10, 'F': 12, 'G': 7, 'H': 12,
                 'I': 12, 'J': 10, 'K': 10, 'L': 10, 'M': 10, 'N': 10, 'O': 12, 'P': 15,
-                'Q': 14, 'R': 14, 'S': 9, 'T': 9, 'U': 12, 'V': 12, 'W': 12, 'X': 12,
-                'Y': 8, 'Z': 18, 'AA': 10, 'AB': 16, 'AC': 10})
+                'Q': 14, 'R': 14, 'S': 10, 'T': 9, 'U': 12, 'V': 12, 'W': 12, 'X': 12,
+                'Y': 8, 'Z': 14, 'AA': 12, 'AB': 10, 'AC': 13, 'AD': 11})
 
     # ── 채권 ────────────────────────────────────────────────────
     ws = wb.create_sheet('채권')
@@ -769,14 +941,16 @@ def build():
             for i in range(4):
                 recs.append((j, m, i, seqs[(m, i)][j]))
     r = 1
+    NP = n * 4                       # 하루치 채권 수 = 가맹점 x 플랫폼
+    #   값 셀은 금융일수 Di(H열) 하나뿐이다. 번호·가맹점#·플랫폼#·선정산일은 번호에서 나온다.
     for (j, m, i, d) in recs:
         r += 1
-        put(ws, r, 1, r - 1)
+        put(ws, r, 1, '=ROW()-1', M0)
         put(ws, r, 2, '=INDEX(상호범위,D%d)' % r)
         put(ws, r, 3, '=INDEX(플랫폼명범위,E%d)' % r)
-        put(ws, r, 4, m + 1)
-        put(ws, r, 5, i + 1)
-        put(ws, r, 6, '=축시작+%d' % j, DT)
+        put(ws, r, 4, '=MOD(INT((A%d-1)/4),%d)+1' % (r, n), M0)
+        put(ws, r, 5, '=MOD(A%d-1,4)+1' % r, M0)
+        put(ws, r, 6, '=축시작+INT((A%d-1)/%d)' % (r, NP), DT)
         put(ws, r, 7, '=F%d+H%d' % (r, r), DT)
         put(ws, r, 8, d)
         put(ws, r, 9, '=ROUND(INDEX(가맹점!$P$2:$P$%d,D%d)*INDEX(가맹점!$J$2:$M$%d,D%d,E%d),0)'
@@ -804,9 +978,12 @@ def build():
 
     # ── 일별 ────────────────────────────────────────────────────
     ws = wb.create_sheet('일별')
-    head(ws, 1, ['정산예정일', '건수', 'SBD-1 상환액', 'SAD-1 투자실행금', 'SMD-1 투자수익',
-                 'SMD-1 투자수익(차감 제외)', 'SMRD-1 투자수익율', 'SDD-1 W금융일수',
-                 'ty수익율(%)', 'EC 순현금', 'Σ(Ai x Di)'])
+    #   E열이 화면 값이다 — MD-1i = 채권매입수수료 - max(0, 미지급금 - 과지급금).
+    #   F열(차감 제외)은 대조용으로만 둔다.
+    head(ws, 1, ['정산예정일', '건수', 'SBD-1 상환액', 'SAD-1 투자실행금',
+                 'SMD-1 투자수익 (화면 값)', 'SMD-1 투자수익(차감 제외 · 참고)',
+                 'SMRD-1 투자수익율', 'SDD-1 W금융일수', 'ty수익율(%)', 'EC 순현금',
+                 'Σ(Ai x Di)', '부족액 차감', '차감/수수료(%)'])
     NDAY = 27
     for k in range(NDAY):
         r = 2 + k
@@ -821,20 +998,32 @@ def build():
         put(ws, r, 9, '=IF(H%d=0,0,G%d*연일수/H%d*100)' % (r, r, r), P2)
         put(ws, r, 10, '=순현금', M0)
         put(ws, r, 11, '=SUMIFS(%s,%s,$A%d)' % (RNG['S'], RNG['G'], r), M0)
+        put(ws, r, 12, '=SUMIFS(%s,%s,$A%d)' % (RNG['N'], RNG['G'], r), M0)
+        put(ws, r, 13, '=IF(F%d=0,0,L%d/F%d*100)' % (r, r, r), P2)
     DL = 1 + NDAY
     put(ws, DL + 1, 1, '합계', bold=True)
-    for col in (2, 3, 4, 5, 6, 10, 11):
+    for col in (2, 3, 4, 5, 6, 10, 11, 12):
         L = get_column_letter(col)
         put(ws, DL + 1, col, '=SUM(%s2:%s%d)' % (L, L, DL), M0, bold=True)
+    put(ws, DL + 1, 13, '=IF(F%d=0,0,L%d/F%d*100)' % (DL + 1, DL + 1, DL + 1), P2, bold=True)
     ws.freeze_panes = 'A2'
-    widths(ws, {'A': 13, 'B': 8, 'C': 16, 'D': 17, 'E': 15, 'F': 20, 'G': 16, 'H': 16,
-                'I': 12, 'J': 14, 'K': 16})
-    DRG = {c: "일별!$%s$2:$%s$%d" % (c, c, DL) for c in 'ABCDEFGHIJK'}
+    widths(ws, {'A': 13, 'B': 8, 'C': 16, 'D': 17, 'E': 20, 'F': 24, 'G': 16, 'H': 16,
+                'I': 12, 'J': 14, 'K': 16, 'L': 13, 'M': 15})
+    DRG = {c: "일별!$%s$2:$%s$%d" % (c, c, DL) for c in 'ABCDEFGHIJKLM'}
 
     # ── 기간집계 ────────────────────────────────────────────────
     ws = wb.create_sheet('기간집계')
-    head(ws, 1, ['항목', '값', '산식', '출처'])
+    head(ws, 1, ['항목', '값', '산식', '출처', '화면 반영'])
     crit = '%s,">="&조회시작,%s,"<="&조회종료' % (DRG['A'], DRG['A'])
+    #   차감 반영이 정본이다 — 화면(일별 E열 · 수익 카드)이 이 값을 쓴다.
+    #   차감 제외 벌은 대조용으로만 남긴다.
+    MARK = {'PSM 투자수익 (정의 · 차감 반영)': '정본',
+            'PSM 투자수익 (차감 제외)': '참고',
+            'PSMR (정의)': '정본', 'PSMR (차감 제외)': '참고',
+            '④ 투자실행금액 대비 ty수익율 (정의)': '정본', '④ (차감 제외)': '참고',
+            '⑤ 투자자산 대비 ty수익율 (정의)': '정본', '⑤ (차감 제외)': '참고',
+            'PSA 투자실행금': '정본', 'PSD': '정본', 'PSC 순현금 합': '정본',
+            '② 상환액': '정본', '부족액 차감 합': '정본'}
     per_rows = [
         ('조회기간 시작', '=조회시작', '입력', DT, ''),
         ('조회기간 종료', '=조회종료', '입력', DT, ''),
@@ -864,6 +1053,11 @@ def build():
          '④ x PSA / (PSA + PSC)', P2, 'ceo_definitions.md [2번] 이미지의 ⑤'),
         ('⑤ (차감 제외)', '=IF(B5+B15=0,0,B14*B5/(B5+B15))', '④(차감 제외) x PSA / (PSA+PSC)',
          P2, ''),
+        ('부족액 차감 합', '=SUMIFS(%s,%s)' % (DRG['L'], crit),
+         'Σ max(0, 미지급금 - 과지급금)', M0, 'ceo_definitions.md [2번] MD-1i'),
+        ('차감 / 채권매입수수료(%)', '=IF(B7=0,0,B18/B7*100)', '부족액 차감 합 / Σ 수수료',
+         P2, ''),
+        ('검산 — 수수료 - 차감 - PSM(정의)', '=B7-B18-B6', '0 이면 정의대로다', M0, ''),
     ]
     for i, (lab, val, f, fmt, src) in enumerate(per_rows):
         r = 2 + i
@@ -871,6 +1065,8 @@ def build():
         put(ws, r, 2, val, fmt, fill=CHK)
         put(ws, r, 3, f)
         put(ws, r, 4, src)
+        put(ws, r, 5, MARK.get(lab, ''), bold=MARK.get(lab) == '정본',
+            fill=GOOD if MARK.get(lab) == '정본' else None)
     b1 = 2 + len(per_rows) + 1
     head(ws, b1, ['항목', '값', '산식', '출처'], fill=SUB)
     bal = [
@@ -906,6 +1102,15 @@ def build():
          'Σ SLi / Σ SAi', P2, 'ceo_definitions.md [1번] S입금부족율'),
         ('미회수 건수', '=SUM(%s)' % RNG['Q'], '', M0, ''),
         ('채권 건수', '=COUNT(%s)' % RNG['H'], '', M0, ''),
+        # 스위치 ① 를 돌리지 않고도 세 모집단의 Ty 를 나란히 본다.
+        ('Ty — 대상정산금채권 전체(%)', '=할인율퍼센트*연일수/ROUND(B%d,SW_자릿수)' % (b1 + 3),
+         '할인율 x 365 / ROUND(W전체)', P2, ''),
+        ('Ty — 만기 도래분만(%)',
+         '=IF(B%d=0,0,할인율퍼센트*연일수/ROUND(B%d,SW_자릿수))' % (b1 + 6, b1 + 6),
+         '할인율 x 365 / ROUND(W도래)', P2, ''),
+        ('Ty — 미회수 잔량만(%)',
+         '=IF(B%d=0,0,할인율퍼센트*연일수/ROUND(B%d,SW_자릿수))' % (b1 + 9, b1 + 9),
+         '할인율 x 365 / ROUND(W미회수)', P2, ''),
     ]
     for i, (lab, val, f, fmt, src) in enumerate(bal):
         r = b1 + 1 + i
@@ -915,7 +1120,144 @@ def build():
         put(ws, r, 4, src)
     AGG = {lab: b1 + 1 + i for i, (lab, *_) in enumerate(bal)}
     PER = {lab: 2 + i for i, (lab, *_) in enumerate(per_rows)}
-    widths(ws, {'A': 36, 'B': 22, 'C': 40, 'D': 40})
+    widths(ws, {'A': 38, 'B': 22, 'C': 42, 'D': 40, 'E': 11})
+
+    # ── 가중치 대조 ─────────────────────────────────────────────
+    #   이번 미팅의 논점. w금융일수의 가중치가 금액(Ai)이냐 이용자 수(MAU)냐.
+    ws = wb.create_sheet('가중치 대조')
+    widths(ws, {'A': 20, 'B': 34, 'C': 17, 'D': 17, 'E': 17, 'F': 17, 'G': 15, 'H': 46,
+                'I': 28})
+
+    head(ws, 1, ['기준', '항목', '값', '', '', '', '', '출처'])
+    wr = [
+        ('대표 워드', 'w금융일수 산식', word[0][1], '용어 정의.docx [1번 이미지] 4번 문단'),
+        ('대표 워드', 'Ai 정의', word[1][1], '용어 정의.docx [1번 이미지] 5번 문단'),
+        ('대표 워드', 'Di 정의', word[2][1], '용어 정의.docx [1번 이미지] 6번 문단'),
+        ('대표 워드', '가중치', '금액(Ai)', 'Σ Ai x Di / Σ Ai 의 분모가 금액이다'),
+        ('대표 엑셀', '플랫폼 비중 근거', 'MAU 기반 시장 점유율',
+         '%s 비중 시트' % cyc['src_xlsx']),
+        ('대표 엑셀', '가중치', '이용자 수', '%s 비중 D4:F4' % cyc['src_xlsx']),
+        ('대표 엑셀', 'MAU 배분', '배민 %s · 쿠팡이츠 %s · 요기요 %s → x 배달앱/전체, 카드 = 나머지'
+         % tuple(format(v, ',') for _, v in cyc['mau']),
+         '%s 비중 D4:H5' % cyc['src_xlsx']),
+        ('판정', '어느 쪽을 따르는가', '워드를 따른다 (2026-08-31 사용자 결정)',
+         '“그럼 워드가 맞아 워드 방식으로 다시 계산해”'),
+    ]
+    for i, (g, lab, val, s0) in enumerate(wr):
+        r = 2 + i
+        put(ws, r, 1, g, bold=True)
+        put(ws, r, 2, lab, bold=True)
+        c = put(ws, r, 3, val, fill=GOOD if g == '판정' else None)
+        c.alignment = Alignment(wrap_text=True, vertical='top')
+        ws.merge_cells(start_row=r, start_column=3, end_row=r, end_column=7)
+        put(ws, r, 8, s0)
+    ws.row_dimensions[2].height = 28
+
+    # 두 기준의 구성비 · W · Ty 를 나란히
+    T0 = 2 + len(wr) + 1
+    head(ws, T0, ['플랫폼', '평균 만기 E[d]', '(가) 금액 실측 (입력)', '(나) 엑셀 MAU',
+                  '(다) 로스터 금액가중', '(가) - (나)', '(다) - (가)', '출처'], fill=SUB)
+    for i, p in enumerate(ORDER):
+        r = T0 + 1 + i
+        put(ws, r, 1, LABEL[p], bold=True)
+        put(ws, r, 2, '=INDEX(만기범위,%d)' % (i + 1), D8)
+        put(ws, r, 3, '=INDEX(구성비범위,%d)' % (i + 1), D8, fill=CHK)
+        put(ws, r, 4, '=1-배달앱비중' if p == 'card'
+            else '=배달앱비중*INDEX(MAU배분범위,%d)' % i, D8)
+        put(ws, r, 5, '=가맹점!B%d' % (MIXROW + i), D8)
+        put(ws, r, 6, '=C%d-D%d' % (r, r), D8, fill=CHK)
+        put(ws, r, 7, '=E%d-C%d' % (r, r), '0.00E+00', fill=CHK)
+        put(ws, r, 8, '입력 C%d (입력 셀) · %s · 가맹점 B%d'
+            % (24 + i, '입력 B43 배달앱/전체' if p == 'card' else '입력 C%d' % (38 + i),
+               MIXROW + i))
+    TS = T0 + 5
+    put(ws, TS, 1, '합', bold=True)
+    for col in (3, 4, 5):
+        L = get_column_letter(col)
+        put(ws, TS, col, '=SUM(%s%d:%s%d)' % (L, T0 + 1, L, T0 + 4), D8, bold=True)
+    put(ws, TS + 1, 1, 'W금융일수', bold=True)
+    put(ws, TS + 1, 2, 'Σ 구성비 x 평균만기')
+    for col in (3, 4, 5):
+        L = get_column_letter(col)
+        put(ws, TS + 1, col, '=SUMPRODUCT(만기범위,%s%d:%s%d)' % (L, T0 + 1, L, T0 + 4),
+            D6, bold=True, fill=CHK)
+    put(ws, TS + 1, 6, '=C%d-D%d' % (TS + 1, TS + 1), D6, fill=CHK)
+    put(ws, TS + 1, 7, '=E%d-C%d' % (TS + 1, TS + 1), '0.00E+00', fill=CHK)
+    put(ws, TS + 2, 1, 'W금융일수 표기', bold=True)
+    put(ws, TS + 2, 2, 'ROUND(W, 스위치 ②)')
+    for col in (3, 4, 5):
+        L = get_column_letter(col)
+        put(ws, TS + 2, col, '=ROUND(%s%d,SW_자릿수)' % (L, TS + 1), '0.00', bold=True)
+    put(ws, TS + 3, 1, 'Ty수익율(%)', bold=True)
+    put(ws, TS + 3, 2, '할인율 x 365 / 표기 W')
+    for col in (3, 4, 5):
+        L = get_column_letter(col)
+        put(ws, TS + 3, col, '=할인율퍼센트*연일수/%s%d' % (L, TS + 2), P2, bold=True, fill=CHK)
+    put(ws, TS + 3, 6, '=C%d-D%d' % (TS + 3, TS + 3), P2, fill=CHK)
+    put(ws, TS + 3, 7, '=E%d-C%d' % (TS + 3, TS + 3), P2, fill=CHK)
+    put(ws, TS + 4, 1, '미회수 잔량 W', bold=True)
+    put(ws, TS + 4, 2, 'Σ 구성비 x E[d²] / W')
+    for col in (3, 4, 5):
+        L = get_column_letter(col)
+        put(ws, TS + 4, col, '=SUMPRODUCT(Ed2범위,%s%d:%s%d)/%s%d'
+            % (L, T0 + 1, L, T0 + 4, L, TS + 1), D6, bold=True)
+    put(ws, TS + 5, 1, '미회수 잔량 Ty(%)', bold=True)
+    put(ws, TS + 5, 2, '할인율 x 365 / ROUND(미회수 W)')
+    for col in (3, 4, 5):
+        L = get_column_letter(col)
+        put(ws, TS + 5, col, '=할인율퍼센트*연일수/ROUND(%s%d,SW_자릿수)' % (L, TS + 4),
+            P2, bold=True)
+    WROW = dict(mix=T0 + 1, sum=TS, w=TS + 1, wr=TS + 2, ty=TS + 3,
+                openw=TS + 4, openty=TS + 5)
+
+    N0 = TS + 7
+    head(ws, N0, ['확인', '내용', '', '', '', '', '', '출처'], fill=SUB)
+    notes = [
+        ('설계 사실', '로스터 8곳의 금액 구성비를 금액 실측(%s)과 같게 맞췄다. '
+                      '그래서 (다)와 (가)의 차가 0 이다.' % plat['measured_src'],
+         'platform_duration.py BOOK_MIX · daily_ledger.py BOOKROWS'),
+        ('확인 문항 1', '엑셀의 플랫폼 비중은 시장 평균 참고값인가, 화면 계산에 쓰는 값인가. '
+                        '워드는 금액으로 가중하라 하고 엑셀은 이용자 수로 가중돼 있어 둘이 다르다.',
+         '%s 비중 시트 · 용어 정의.docx [1번 이미지] 4~5번 문단' % cyc['src_xlsx']),
+        ('확인 문항 2', '배달앱/전체 = 0.35 와 카드 65% 는 매출액 기준인가 이용자 수 기준인가.',
+         '%s 비중 H5 · D4:F4' % cyc['src_xlsx']),
+    ]
+    for i, (k, t, s0) in enumerate(notes):
+        r = N0 + 1 + i
+        put(ws, r, 1, k, bold=True)
+        c = put(ws, r, 2, t)
+        c.alignment = Alignment(wrap_text=True, vertical='top')
+        ws.merge_cells(start_row=r, start_column=2, end_row=r, end_column=7)
+        put(ws, r, 8, s0)
+        ws.row_dimensions[r].height = 30
+
+    # 배달앱/전체 민감도 — (나) 엑셀 MAU 쪽 계산에 붙인다
+    V0 = N0 + len(notes) + 2
+    head(ws, V0, ['배달앱/전체', '카드', '배민', '쿠팡이츠', '요기요', 'W금융일수',
+                  'Ty수익율(%)', '기준선(0.35) 대비', '비고'], fill=SUB)
+    vrows = [(0.30, None), (0.35, None), (0.40, None), (None, '=배달앱비중'),
+             (None, '=배달앱금액비중')]
+    vlab = ['', '', '', '현재 입력 (입력 B43)', '금액 실측 배달앱/전체 (입력 C36)']
+    for i, (v, f) in enumerate(vrows):
+        r = V0 + 1 + i
+        put(ws, r, 1, v if f is None else f, D8, fill=CHK if f is None else None)
+        put(ws, r, 2, '=1-$A%d' % r, D8)
+        for j in range(3):
+            put(ws, r, 3 + j, '=$A%d*INDEX(MAU배분범위,%d)' % (r, j + 1), D8)
+        put(ws, r, 6, '=' + '+'.join('%s%d*INDEX(만기범위,%d)'
+                                     % (get_column_letter(2 + j), r, j + 1) for j in range(4)),
+            D6, bold=True)
+        put(ws, r, 7, '=할인율퍼센트*연일수/ROUND(F%d,SW_자릿수)' % r, P2, bold=True)
+        put(ws, r, 8, '=TEXT(F%d-$F$%d,"0.0000")&"일 · "&TEXT(G%d-$G$%d,"0.00")&"%%p"'
+            % (r, V0 + 2, r, V0 + 2))
+        put(ws, r, 9, vlab[i])
+    VEND = V0 + len(vrows)
+    put(ws, VEND + 1, 1, '배달 3사 내부 배분', bold=True)
+    put(ws, VEND + 1, 2, '=TEXT(INDEX(MAU배분범위,1),"0.0000")&" : "&'
+                         'TEXT(INDEX(MAU배분범위,2),"0.0000")&" : "&'
+                         'TEXT(INDEX(MAU배분범위,3),"0.0000")')
+    put(ws, VEND + 1, 8, '%s 비중 D5:F5 (MAU 비)' % cyc['src_xlsx'])
+    SENS = V0 + 1
 
     # ── 화면대조 ────────────────────────────────────────────────
     ws = wb.create_sheet('화면대조')
@@ -930,74 +1272,159 @@ def build():
     def G(k):
         return '가맹점!B%d' % MB[k]
 
-    def num(s):
-        return float(re.sub(r'[^\d.\-]', '', str(s)))
+    # ── 블록 0 — 화면 값 원본 (ledger_facts.json) ────────────────
+    r1_ = float(D(repr(exec_target / (exec_target + cash) * 100)).quantize(
+        D('0.1'), rounding=ROUND_HALF_UP))
+    r2_ = float(D(repr(cash / (exec_target + cash) * 100)).quantize(
+        D('0.1'), rounding=ROUND_HALF_UP))
+    ded_pct = float(D(repr(full['ded'] / full['fee'] * 100)).quantize(
+        D('0.01'), rounding=ROUND_HALF_UP))
+    sv_rows = [
+        ('투자실행액', exec_target, M0, fsrc('투자실행액')),
+        ('순현금', cash, M0, fsrc('순현금')),
+        ('투자자산', S(fx, '투자자산'), M0, fsrc('투자자산')),
+        ('투자실행액 비중(%)', r1_, '0.0', '%s ÷ %s (roster16_model EXEC_SHARE)'
+         % (SEED['투자실행액'], SEED['투자자산'])),
+        ('순현금 비중(%)', r2_, '0.0', '%s ÷ %s (roster16_model CASH_SHARE)'
+         % (SEED['순현금'], SEED['투자자산'])),
+        ('W금융일수 raw', float(S(fx, 'W금융일수 raw')), D6, fsrc('W금융일수 raw')),
+        ('W금융일수 표기', float(S(fx, 'W금융일수 표기')), '0.00', fsrc('W금융일수 표기')),
+        ('Ty수익율(%)', float(S(fx, 'Ty수익율')), P2, fsrc('Ty수익율')),
+        ('S입금부족율 raw(%)', float(S(fx, 'S입금부족율 raw')), D6, fsrc('S입금부족율 raw')),
+        ('S입금부족율 표기(%)', float(S(fx, 'S입금부족율 표기')), P2, fsrc('S입금부족율 표기')),
+        ('할인율(%)', float(S(fx, '할인율(%)')), P2, fsrc('할인율(%)')),
+        ('하루 평균 투자실행금', S(fx, '하루 평균 투자실행금'), M0, fsrc('하루 평균 투자실행금')),
+        ('원장 일수', S(fx, '원장 일수'), M0, fsrc('원장 일수')),
+        ('채권 건수', S(fx, '채권 건수'), M0, fsrc('채권 건수')),
+        ('미회수 채권 건수', S(fx, '미회수 채권 건수'), M0, fsrc('미회수 채권 건수')),
+        ('채권 Di 최소', S(fx, '채권 Di 범위')[0], M0, fsrc('채권 Di 범위') + '[0]'),
+        ('채권 Di 최대', S(fx, '채권 Di 범위')[1], M0, fsrc('채권 Di 범위') + '[1]'),
+        ('로스터 건수', len(scr_m), M0, fsrc('가맹점별 값') + ' 길이'),
+        ('서명 대기 건수', len(sign), M0, 'roster16_model.py SIGN_PENDING'),
+        ('주간 일수', S(fx, '주간 일수'), M0, fsrc('주간 일수')),
+        ('주간 PSA', S(fx, '주간 PSA'), M0, fsrc('주간 PSA')),
+        ('주간 PSM', S(fx, '주간 PSM'), M0, fsrc('주간 PSM')),
+        ('주간 상환액', S(fx, '주간 상환액'), M0, fsrc('주간 상환액')),
+        ('주간 채권매입수수료', week['fee'], M0, fsrc('일자별 값') + ' [5] 합'),
+        ('주간 부족액 차감', week['ded'], M0, fsrc('일자별 값') + ' [6] 합'),
+        ('주간 PSD raw', float(S(fx, '주간 PSD raw')), D6, fsrc('주간 PSD raw')),
+        ('주간 PSD 표기', float(S(fx, '주간 PSD 표기')), '0.00', fsrc('주간 PSD 표기')),
+        ('주간 PSC', S(fx, '주간 PSC'), M0, fsrc('주간 PSC')),
+        ('주간 ④(%)', float(S(fx, '주간 ④')), P2, fsrc('주간 ④')),
+        ('주간 ⑤(%)', float(S(fx, '주간 ⑤')), P2, fsrc('주간 ⑤')),
+        ('전 구간 PSA', S(fx, '전 구간 PSA'), M0, fsrc('전 구간 PSA')),
+        ('전 구간 PSM', S(fx, '전 구간 PSM'), M0, fsrc('전 구간 PSM')),
+        ('전 구간 채권매입수수료', full['fee'], M0, fsrc('일자별 값') + ' [5] 합'),
+        ('전 구간 부족액 차감', full['ded'], M0, fsrc('일자별 값') + ' [6] 합'),
+        ('전 구간 차감/수수료(%)', ded_pct, P2, fsrc('일자별 값') + ' [6] 합 ÷ [5] 합'),
+        ('전 구간 PSD raw', round(full['wraw'], 6), D6,
+         fsrc('일자별 값') + ' Σ([0] x [2]) ÷ Σ[2]'),
+        ('전 구간 PSD 표기', float(S(fx, '전 구간 PSD 표기')), '0.00', fsrc('전 구간 PSD 표기')),
+        ('전 구간 PSC', S(fx, '전 구간 PSC'), M0, fsrc('전 구간 PSC')),
+        ('전 구간 ④(%)', float(S(fx, '전 구간 ④')), P2, fsrc('전 구간 ④')),
+        ('전 구간 ⑤(%)', float(S(fx, '전 구간 ⑤')), P2, fsrc('전 구간 ⑤')),
+    ]
+    r = 1
+    SV, SVF = {}, {}
+    for (lab, val, fmt, s0) in sv_rows:
+        r += 1
+        put(ws, r, 1, '화면 값 원본')
+        put(ws, r, 2, lab, bold=True)
+        put(ws, r, 4, s0)
+        put(ws, r, 5, val, fmt, fill=CHK)
+        put(ws, r, 8, 'ledger_facts.json')
+        SV[lab] = r
+        SVF[lab] = '$E$%d' % r
+    for i, m in enumerate(scr_m):
+        for key, val, fmt in [('투자금액', m[MCOL['amount']], M0),
+                              ('W', float(m[MCOL['w']]), '0.00'),
+                              ('Ty수익율(%)', float(m[MCOL['ty']]), P2),
+                              ('S입금부족율(%)', float(m[MCOL['s']]), P2),
+                              ('비중(%)', float(scr_share[i]), '0.0')]:
+            r += 1
+            lab = '%s — %s' % (m[MCOL['name']], key)
+            put(ws, r, 1, '화면 값 원본')
+            put(ws, r, 2, lab, bold=True)
+            put(ws, r, 4, fsrc('가맹점별 값') + '[%d]' % i)
+            put(ws, r, 5, val, fmt, fill=CHK)
+            put(ws, r, 8, 'ledger_facts.json')
+            SV[lab] = r
+            SVF[lab] = '$E$%d' % r
 
+    def V(k):
+        return SVF[k]
+
+    # ── 블록 1 — 불변식 · 엑셀 모델이 구성으로 맞추는 자리 ────────
+    r += 1
+    head(ws, r, ['구분', '항목', '엑셀 값', '산출 경로', '화면 값', '차이', '판정', '출처'],
+         fill=SUB)
     cmp_rows = [
         ('항등식', '좌변 — 투자실행액 (채권 미회수 Σ Ai)', '=' + A('미회수 Σ Ai'),
          '기간집계 B%d' % AGG['미회수 Σ Ai'], '=' + G('투자실행액 (모집단 산식)'),
-         '우변 — 하루 선정산액 합계 x (1-r) x W', M0, 0.5),
-        ('잔액', '투자실행액', '=' + A('투자실행액'), '기간집계 B%d' % AGG['투자실행액'],
-         num(md['투자실행액']), 'rescale_decision.md 9-A', M0, 0.5),
-        ('잔액', '순현금', '=' + A('순현금'), '기간집계 B%d' % AGG['순현금'],
-         num(md['순현금']), 'rescale_decision.md 9-A', M0, 0.5),
-        ('잔액', '투자자산', '=' + A('투자자산'), '기간집계 B%d' % AGG['투자자산'],
-         num(md['투자자산']), 'rescale_decision.md 9-A', M0, 0.5),
-        ('잔액', '투자실행액 비중(%)', '=' + A('투자실행액 비중') + '*100',
-         '기간집계 B%d' % AGG['투자실행액 비중'], num(md['투자실행액 비중']),
-         'rescale_decision.md 9-A', P2, 0.005),
-        ('잔액', '순현금 비중(%)', '=' + A('순현금 비중') + '*100',
-         '기간집계 B%d' % AGG['순현금 비중'], num(md['순현금 비중']),
-         'rescale_decision.md 9-A', P2, 0.005),
-        ('잔액', 'W금융일수 (표기)', '=' + A('W금융일수 표기 (스위치 ② 적용)'),
-         '기간집계 B%d' % AGG['W금융일수 표기 (스위치 ② 적용)'], num(md['W금융일수']),
-         'rescale_decision.md 9-A', '0.00', 0.0005),
-        ('잔액', 'W금융일수 (raw)', '=' + A('W금융일수 raw (스위치 ① 적용)'),
-         '기간집계 B%d' % AGG['W금융일수 raw (스위치 ① 적용)'], cyc['wavg'],
-         '%s 정산주기 H41' % cyc['src_xlsx'], D8, 0.000001),
-        ('잔액', 'Ty수익율(%)', '=' + A('Ty수익율(%)'), '기간집계 B%d' % AGG['Ty수익율(%)'],
-         num(md['Ty수익율']), 'rescale_decision.md 9-A', P2, 0.005),
-        ('잔액', 'S입금부족율(%)', '=ROUND(' + A('S입금부족율(%)') + ',2)',
-         '기간집계 B%d' % AGG['S입금부족율(%)'], num(md['S입금부족율']),
-         'rescale_decision.md 9-A', P2, 0.0005),
-        ('잔액', '로스터 건수', '=' + G('가맹점 수 (적용)'),
-         '가맹점 B%d' % MB['가맹점 수 (적용)'], num(md['로스터 건수']),
-         'rescale_decision.md 9-A', M0, 0.5),
-        ('유량', '하루 평균 투자실행금', '=' + G('하루 선정산액 합계 (적용)') + '*(1-할인율)',
-         '가맹점 B%d x (1-r)' % MB['하루 선정산액 합계 (적용)'],
-         num(md['하루 평균 투자실행금']), 'rescale_decision.md 9-B', M0, 0.5),
-        ('유량', '하루 순지급액', '=' + G('하루 선정산액 합계 (적용)'),
-         '가맹점 B%d' % MB['하루 선정산액 합계 (적용)'], num(md['하루 순지급액']),
-         'rescale_decision.md 9-B', M0, 0.5),
-        ('유량', '채권 Di 범위 최소', '=MIN(%s)' % RNG['H'], '채권 H열', 1,
-         'rescale_decision.md 9-B', M0, 0.5),
-        ('유량', '채권 Di 범위 최대', '=MAX(%s)' % RNG['H'], '채권 H열', 13,
-         'rescale_decision.md 9-B', M0, 0.5),
-        ('유량', 'PSA (조회기간)', '=' + P('PSA 투자실행금'),
-         '기간집계 B%d' % PER['PSA 투자실행금'], per['psa'], 'rescale_decision.md 5-B', M0, 0.5),
-        ('유량', 'PSM (차감 제외)', '=' + P('PSM 투자수익 (차감 제외)'),
-         '기간집계 B%d' % PER['PSM 투자수익 (차감 제외)'], per['psm'],
-         'rescale_decision.md 5-B', M0, 0.5),
-        ('유량', 'PSM (정의 · 차감 반영)', '=' + P('PSM 투자수익 (정의 · 차감 반영)'),
-         '기간집계 B%d' % PER['PSM 투자수익 (정의 · 차감 반영)'], per['psm'],
-         'rescale_decision.md 5-B', M0, 0.5),
-        ('유량', 'PSD', '=' + P('PSD'), '기간집계 B%d' % PER['PSD'], cyc['wavg'],
-         '%s 정산주기 H41' % cyc['src_xlsx'], D6, 0.000001),
-        ('유량', 'PSC', '=' + P('PSC 순현금 합'), '기간집계 B%d' % PER['PSC 순현금 합'],
-         per['psc'], 'rescale_decision.md 5-B', M0, 0.5),
-        ('유량', '④ (차감 제외)', '=' + P('④ (차감 제외)'), '기간집계 B%d' % PER['④ (차감 제외)'],
-         per['p4'], 'rescale_decision.md 5-B', P2, 0.005),
-        ('유량', '④ (정의 · 차감 반영)', '=' + P('④ 투자실행금액 대비 ty수익율 (정의)'),
-         '기간집계 B%d' % PER['④ 투자실행금액 대비 ty수익율 (정의)'], per['p4'],
-         'rescale_decision.md 5-B', P2, 0.005),
-        ('유량', '⑤ (차감 제외)', '=' + P('⑤ (차감 제외)'), '기간집계 B%d' % PER['⑤ (차감 제외)'],
-         per['p5'], 'rescale_decision.md 5-B', P2, 0.005),
-        ('유량', '⑤ (정의 · 차감 반영)', '=' + P('⑤ 투자자산 대비 ty수익율 (정의)'),
-         '기간집계 B%d' % PER['⑤ 투자자산 대비 ty수익율 (정의)'], per['p5'],
-         'rescale_decision.md 5-B', P2, 0.005),
+         '우변 — 하루 선정산액 합계 x (1-r) x W. 채권 시트의 미회수 건수는 기본 조합에서 '
+         '푼 정수라 스위치 ③④를 바꾸면 좌변이 그만큼 어긋난다.', M0, 0.5),
+        ('불변식', '투자실행액', '=' + A('투자실행액'), '기간집계 B%d' % AGG['투자실행액'],
+         '=' + V('투자실행액'), '화면대조 E%d' % SV['투자실행액'], M0, 0.5),
+        ('불변식', '순현금', '=' + A('순현금'), '기간집계 B%d' % AGG['순현금'],
+         '=' + V('순현금'), '화면대조 E%d' % SV['순현금'], M0, 0.5),
+        ('불변식', '투자자산', '=' + A('투자자산'), '기간집계 B%d' % AGG['투자자산'],
+         '=' + V('투자자산'), '화면대조 E%d' % SV['투자자산'], M0, 0.5),
+        ('불변식', '투자실행액 비중(%)', '=ROUND(' + A('투자실행액 비중') + '*100,1)',
+         '기간집계 B%d' % AGG['투자실행액 비중'], '=' + V('투자실행액 비중(%)'),
+         '화면대조 E%d' % SV['투자실행액 비중(%)'], '0.0', 0.005),
+        ('불변식', '순현금 비중(%)', '=ROUND(' + A('순현금 비중') + '*100,1)',
+         '기간집계 B%d' % AGG['순현금 비중'], '=' + V('순현금 비중(%)'),
+         '화면대조 E%d' % SV['순현금 비중(%)'], '0.0', 0.005),
+        ('불변식', 'W금융일수 (표기)', '=' + A('W금융일수 표기 (스위치 ② 적용)'),
+         '기간집계 B%d' % AGG['W금융일수 표기 (스위치 ② 적용)'], '=' + V('W금융일수 표기'),
+         '화면대조 E%d' % SV['W금융일수 표기'], '0.00', 0.0005),
+        ('불변식', 'W금융일수 (raw · 소수 6자리)',
+         '=ROUND(' + A('W금융일수 raw (스위치 ① 적용)') + ',6)',
+         '기간집계 B%d' % AGG['W금융일수 raw (스위치 ① 적용)'], '=' + V('W금융일수 raw'),
+         '화면대조 E%d' % SV['W금융일수 raw'], D6, 0.0000005),
+        ('불변식', 'Ty수익율(%)', '=' + A('Ty수익율(%)'), '기간집계 B%d' % AGG['Ty수익율(%)'],
+         '=' + V('Ty수익율(%)'), '화면대조 E%d' % SV['Ty수익율(%)'], P2, 0.005),
+        ('불변식', '로스터 건수', '=' + G('가맹점 수 (적용)'),
+         '가맹점 B%d' % MB['가맹점 수 (적용)'], '=' + V('로스터 건수'),
+         '화면대조 E%d' % SV['로스터 건수'], M0, 0.5),
+        ('불변식', '서명 대기 건수', '=COUNTIF(계약상태범위,"서명 대기")',
+         '입력 J열', '=' + V('서명 대기 건수'), '화면대조 E%d' % SV['서명 대기 건수'], M0, 0.5),
+        ('불변식', '비중 합(%)', '=SUM(가맹점!AC2:AC%d)' % (last - 1),
+         '가맹점 AC열 (최대잉여법)', 100.0, '비중 합 100.0 불변', '0.0', 0.005),
+        ('불변식', '채권 Di 최소', '=MIN(%s)' % RNG['H'], '채권 H열', '=' + V('채권 Di 최소'),
+         '화면대조 E%d' % SV['채권 Di 최소'], M0, 0.5),
+        ('불변식', '채권 Di 최대', '=MAX(%s)' % RNG['H'], '채권 H열', '=' + V('채권 Di 최대'),
+         '화면대조 E%d' % SV['채권 Di 최대'], M0, 0.5),
+        ('불변식', '플랫폼 구성비 합', '=SUM(구성비범위)', '입력 C24:C27', 1.0,
+         '합 1 (구성상)', D8, 0.0000001),
+        ('교차', '미회수 잔량 W — 채권 vs 도수표',
+         '=' + A('W금융일수 — 미회수 잔량만'),
+         '기간집계 B%d' % AGG['W금융일수 — 미회수 잔량만'], '=플랫폼!B21',
+         '플랫폼 B21 = 가중 E[d²] / W', D6, 0.0005),
+        ('교차', '미회수 잔량 Ty(%)', '=' + A('Ty — 미회수 잔량만(%)'),
+         '기간집계 B%d' % AGG['Ty — 미회수 잔량만(%)'],
+         "='가중치 대조'!C%d" % WROW['openty'], '가중치 대조 C%d' % WROW['openty'], P2, 0.02),
+        ('교차', 'W금융일수 — 구성비 x 만기', '=플랫폼!B17', '플랫폼 B17',
+         '=' + V('W금융일수 raw'), '화면대조 E%d' % SV['W금융일수 raw'], D6, 0.0000005),
+        ('교차', '로스터 금액가중 구성비 — 카드', '=가맹점!B%d' % MIXROW,
+         '가맹점 B%d' % MIXROW, '=INDEX(구성비범위,1)', '입력 C24', D8, 0.0000001),
+        ('불변식', 'S입금부족율(%)', '=ROUND(' + A('S입금부족율(%)') + ',2)',
+         '기간집계 B%d' % AGG['S입금부족율(%)'], '=' + V('S입금부족율 표기(%)'),
+         '화면대조 E%d' % SV['S입금부족율 표기(%)'], P2, 0.005),
     ]
-    r = 1
-    for (g, lab, val, path, scr, src, fmt, tol) in cmp_rows:
+    #   가맹점 행의 W·S 는 구성비에서 바로 나온다 — 원장 틸트를 타지 않아 화면과 같은 값이다.
+    for i, m in enumerate(scr_m):
+        nm = m[MCOL['name']]
+        cmp_rows.append(('가맹점', '%s — W 표기' % nm, '=가맹점!T%d' % (2 + i),
+                         '가맹점 T%d' % (2 + i), '=' + V('%s — W' % nm),
+                         '화면대조 E%d' % SV['%s — W' % nm], '0.00', 0.0005))
+    for i, m in enumerate(scr_m):
+        nm = m[MCOL['name']]
+        cmp_rows.append(('가맹점', '%s — S입금부족율(%%)' % nm,
+                         '=ROUND(가맹점!W%d,2)' % (2 + i), '가맹점 W%d' % (2 + i),
+                         '=' + V('%s — S입금부족율(%%)' % nm),
+                         '화면대조 E%d' % SV['%s — S입금부족율(%%)' % nm], P2, 0.005))
+    for (g, lab, val, path, scr, s0, fmt, tol) in cmp_rows:
         r += 1
         put(ws, r, 1, g)
         put(ws, r, 2, lab, bold=True)
@@ -1006,43 +1433,170 @@ def build():
         put(ws, r, 5, scr, fmt)
         put(ws, r, 6, '=IFERROR(C%d-E%d,"")' % (r, r), fmt)
         put(ws, r, 7, '=IFERROR(IF(ABS(F%d)<=%s,"일치","차이"),"")' % (r, repr(tol)))
-        put(ws, r, 8, src)
-    # 가맹점별 9행
+        put(ws, r, 8, s0)
+
+    # ── 블록 2 — 화면 값 자체 정합 (화면 값끼리 산식으로 되짚는다) ─
     r += 1
-    head(ws, r, ['구분', '항목', '엑셀 값', '산출 경로', '화면 값', '차이', '판정', '출처'],
-         fill=SUB)
-    for i, r0 in enumerate(roster):
-        for key, col, scr, fmt, tol in [('투자금액', 'R', r0['invest'], M0, 2.5),
-                                        ('W', 'T', float(r0['w']), '0.00', 0.0005),
-                                        ('Ty수익율(%)', 'X', float(r0['ty']), P2, 0.005),
-                                        ('비중(%)', 'S', float(r0['share']), P2, 0.1)]:
-            r += 1
-            put(ws, r, 1, '가맹점')
-            put(ws, r, 2, '%s — %s' % (r0['name'], key), bold=True)
-            put(ws, r, 3, '=가맹점!%s%d%s' % (col, 2 + i, '*100' if key == '비중(%)' else ''),
-                fmt, fill=CHK)
-            put(ws, r, 4, '가맹점!%s%d' % (col, 2 + i))
-            put(ws, r, 5, scr, fmt)
-            put(ws, r, 6, '=IFERROR(C%d-E%d,"")' % (r, r), fmt)
-            put(ws, r, 7, '=IFERROR(IF(ABS(F%d)<=%s,"일치","차이"),"")' % (r, repr(tol)))
-            put(ws, r, 8, 'rescale_decision.md 4-D')
+    head(ws, r, ['구분', '항목', '산식으로 되짚은 값', '산식', '화면 값', '차이', '판정',
+                 '출처'], fill=SUB)
+    self_rows = [
+        ('투자자산', '=%s+%s' % (V('투자실행액'), V('순현금')), '투자실행액 + 순현금',
+         V('투자자산'), M0, 0.5, 'ceo_definitions.md [1번] 비중'),
+        ('투자실행액 비중(%)', '=ROUND(%s/(%s+%s)*100,1)'
+         % (V('투자실행액'), V('투자실행액'), V('순현금')),
+         '투자실행액 / (투자실행액 + 순현금)', V('투자실행액 비중(%)'), '0.0', 0.005,
+         'ceo_definitions.md [1번] 투자 실행액의 비중'),
+        ('순현금 비중(%)', '=ROUND(%s/(%s+%s)*100,1)'
+         % (V('순현금'), V('투자실행액'), V('순현금')), '순현금 / (투자실행액 + 순현금)',
+         V('순현금 비중(%)'), '0.0', 0.005, 'ceo_definitions.md [1번] 순현금의 비중'),
+        ('W금융일수 표기', '=ROUND(%s,2)' % V('W금융일수 raw'), 'ROUND(W raw, 2)',
+         V('W금융일수 표기'), '0.00', 0.0005, '9-C 표기 규칙'),
+        ('Ty수익율(%)', '=ROUND(%s*연일수/%s,2)' % (V('할인율(%)'), V('W금융일수 표기')),
+         '할인율 x 365 / 표기 W', V('Ty수익율(%)'), P2, 0.005,
+         'ceo_definitions.md [1번] ty수익율'),
+        ('S입금부족율 표기(%)', '=ROUND(%s,2)' % V('S입금부족율 raw(%)'), 'ROUND(S raw, 2)',
+         V('S입금부족율 표기(%)'), P2, 0.005, '9-C 표기 규칙'),
+        ('주간 PSM = 수수료 - 차감', '=%s-%s' % (V('주간 채권매입수수료'), V('주간 부족액 차감')),
+         'Σ 채권매입수수료 - Σ max(0, 미지급-과지급)', V('주간 PSM'), M0, 0.5,
+         'ceo_definitions.md [2번] MD-1i'),
+        ('주간 상환액 - PSM = PSA', '=%s-%s' % (V('주간 상환액'), V('주간 PSM')),
+         'Σ BD-1i - Σ MD-1i = Σ AD-1i', V('주간 PSA'), M0, 0.5,
+         'ceo_definitions.md [2번] BD-1i · MD-1i · AD-1i'),
+        ('주간 PSC', '=%s*%s' % (V('순현금'), V('주간 일수')), '순현금 x 조회 일수',
+         V('주간 PSC'), M0, 0.5, 'ceo_definitions.md [2번] PSC'),
+        ('주간 PSD 표기', '=ROUND(%s,2)' % V('주간 PSD raw'), 'ROUND(PSD raw, 2)',
+         V('주간 PSD 표기'), '0.00', 0.0005, '9-C 표기 규칙'),
+        ('주간 ④(%)', '=ROUND(%s/%s*100*연일수/%s,2)'
+         % (V('주간 PSM'), V('주간 PSA'), V('주간 PSD raw')), 'PSMR x 365 / PSD',
+         V('주간 ④(%)'), P2, 0.005, 'ceo_definitions.md [2번] 이미지의 ④'),
+        ('주간 ⑤(%)', '=ROUND(%s/%s*100*연일수/%s*%s/(%s+%s),2)'
+         % (V('주간 PSM'), V('주간 PSA'), V('주간 PSD raw'), V('주간 PSA'), V('주간 PSA'),
+            V('주간 PSC')), '④ x PSA / (PSA + PSC)', V('주간 ⑤(%)'), P2, 0.005,
+         'ceo_definitions.md [2번] 이미지의 ⑤'),
+        ('전 구간 PSM = 수수료 - 차감',
+         '=%s-%s' % (V('전 구간 채권매입수수료'), V('전 구간 부족액 차감')),
+         'Σ 채권매입수수료 - Σ 차감', V('전 구간 PSM'), M0, 0.5,
+         'ceo_definitions.md [2번] MD-1i'),
+        ('전 구간 차감/수수료(%)', '=ROUND(%s/%s*100,2)'
+         % (V('전 구간 부족액 차감'), V('전 구간 채권매입수수료')), 'Σ 차감 / Σ 수수료',
+         V('전 구간 차감/수수료(%)'), P2, 0.005, 'ceo_definitions.md [2번] MD-1i'),
+        ('전 구간 PSC', '=%s*%s' % (V('순현금'), V('원장 일수')), '순현금 x 원장 일수',
+         V('전 구간 PSC'), M0, 0.5, 'ceo_definitions.md [2번] PSC'),
+        ('전 구간 PSD 표기', '=ROUND(%s,2)' % V('전 구간 PSD raw'), 'ROUND(PSD raw, 2)',
+         V('전 구간 PSD 표기'), '0.00', 0.0005, '9-C 표기 규칙'),
+        ('전 구간 ④(%)', '=ROUND(%s/%s*100*연일수/%s,2)'
+         % (V('전 구간 PSM'), V('전 구간 PSA'), V('전 구간 PSD raw')), 'PSMR x 365 / PSD',
+         V('전 구간 ④(%)'), P2, 0.005, 'ceo_definitions.md [2번] 이미지의 ④'),
+        ('전 구간 ⑤(%)', '=ROUND(%s/%s*100*연일수/%s*%s/(%s+%s),2)'
+         % (V('전 구간 PSM'), V('전 구간 PSA'), V('전 구간 PSD raw'), V('전 구간 PSA'),
+            V('전 구간 PSA'), V('전 구간 PSC')), '④ x PSA / (PSA + PSC)',
+         V('전 구간 ⑤(%)'), P2, 0.005, 'ceo_definitions.md [2번] 이미지의 ⑤'),
+        ('하루 평균 투자실행금', '=ROUND(%s/%s,0)' % (V('전 구간 PSA'), V('원장 일수')),
+         '전 구간 PSA / 원장 일수', V('하루 평균 투자실행금'), M0, 0.5,
+         'roster16_model.py DAY_AVG'),
+        ('가맹점 투자금액 합', '=' + '+'.join(V('%s — 투자금액' % m[MCOL['name']])
+                                              for m in scr_m),
+         'Σ 가맹점별 투자금액', V('투자실행액'), M0, 0.5, 'roster16_model.py EXEC'),
+        ('가맹점 비중 합(%)', '=' + '+'.join(V('%s — 비중(%%)' % m[MCOL['name']])
+                                             for m in scr_m),
+         'Σ 가맹점별 비중 (최대잉여법)', 100.0, '0.0', 0.005, 'roster16_model.py ratios'),
+    ]
+    for i, m in enumerate(scr_m):
+        self_rows.append(
+            ('%s — Ty = 할인율 x 365 / W' % m[MCOL['name']],
+             '=ROUND(%s*연일수/%s,2)' % (V('할인율(%)'), V('%s — W' % m[MCOL['name']])),
+             '할인율 x 365 / 표기 W', V('%s — Ty수익율(%%)' % m[MCOL['name']]), P2, 0.005,
+             'ceo_definitions.md [1번] ty수익율'))
+    for (lab, val, f, ref, fmt, tol, s0) in self_rows:
+        r += 1
+        put(ws, r, 1, '화면 정합')
+        put(ws, r, 2, lab, bold=True)
+        put(ws, r, 3, val, fmt, fill=CHK)
+        put(ws, r, 4, f)
+        put(ws, r, 5, ('=' + ref) if isinstance(ref, str) else ref, fmt)
+        put(ws, r, 6, '=IFERROR(C%d-E%d,"")' % (r, r), fmt)
+        put(ws, r, 7, '=IFERROR(IF(ABS(F%d)<=%s,"일치","차이"),"")' % (r, repr(tol)))
+        put(ws, r, 8, s0)
     LASTC = r
+
+    # ── 블록 3 — 모델 재현 잔차 (0 이 아닌 자리와 그 이유) ────────
+    r += 2
+    head(ws, r, ['구분', '항목', '엑셀 값', '산출 경로', '화면 값', '차이', '잔차율(%)',
+                 '사유'], fill=SUB)
+    TILT = ('화면 원장은 요일·주차 규모 계수(SIZE)와 배달 의존도 틸트(TILT)로 하루치가 흔들리고, '
+            '미회수 앵커가 기준일에 걸린다. 이 통합문서는 하루치가 평평한 40일 창 모델이다.')
+    ROUNDUP = ('화면 원장은 채권을 만기 버킷까지 쪼개 건당 금액이 작다. 미지급·과지급을 원 단위로 '
+               '반올림하면 작은 건에서 차가 커진다. 이 통합문서는 (가맹점 x 플랫폼 x 선정산일) '
+               '한 건이라 반올림 영향이 거의 없다.')
+    SCOPE = ('모집단이 다르다. 이 통합문서는 선정산일 40일 x %d곳 x 4플랫폼 = %d건, '
+             '화면 원장은 193일 x %d곳 x 4플랫폼 x 만기 버킷 = %s건.'
+             % (n, n * 4 * WINDOW, n, format(S(fx, '채권 건수'), ',')))
+    res_rows = [
+        ('하루 평균 투자실행금', '=' + G('하루 선정산액 합계 (적용)') + '*(1-할인율)',
+         '가맹점 B%d x (1-r)' % MB['하루 선정산액 합계 (적용)'], V('하루 평균 투자실행금'),
+         M0, TILT),
+        ('조회기간 PSA', '=' + P('PSA 투자실행금'), '기간집계 B%d' % PER['PSA 투자실행금'],
+         V('주간 PSA'), M0, TILT),
+        ('조회기간 PSD', '=' + P('PSD'), '기간집계 B%d' % PER['PSD'], V('주간 PSD raw'),
+         D6, TILT),
+        ('조회기간 PSM (차감 반영)', '=' + P('PSM 투자수익 (정의 · 차감 반영)'),
+         '기간집계 B%d' % PER['PSM 투자수익 (정의 · 차감 반영)'], V('주간 PSM'), M0,
+         TILT + ' ' + ROUNDUP),
+        ('조회기간 ④(%)', '=' + P('④ 투자실행금액 대비 ty수익율 (정의)'),
+         '기간집계 B%d' % PER['④ 투자실행금액 대비 ty수익율 (정의)'], V('주간 ④(%)'), P2,
+         TILT + ' ' + ROUNDUP),
+        ('조회기간 ⑤(%)', '=' + P('⑤ 투자자산 대비 ty수익율 (정의)'),
+         '기간집계 B%d' % PER['⑤ 투자자산 대비 ty수익율 (정의)'], V('주간 ⑤(%)'), P2,
+         TILT + ' ' + ROUNDUP),
+        ('조회기간 PSC', '=' + P('PSC 순현금 합'), '기간집계 B%d' % PER['PSC 순현금 합'],
+         V('주간 PSC'), M0, '조회 일수가 같으면 차가 0 이다.'),
+        ('차감 / 수수료(%)', '=' + P('차감 / 채권매입수수료(%)'),
+         '기간집계 B%d' % PER['차감 / 채권매입수수료(%)'], V('전 구간 차감/수수료(%)'), P2,
+         ROUNDUP),
+        ('채권 건수', '=' + A('채권 건수'), '기간집계 B%d' % AGG['채권 건수'],
+         V('채권 건수'), M0, SCOPE),
+        ('미회수 건수', '=' + A('미회수 건수'), '기간집계 B%d' % AGG['미회수 건수'],
+         V('미회수 채권 건수'), M0, SCOPE),
+    ]
+    for i, m in enumerate(scr_m):
+        nm = m[MCOL['name']]
+        res_rows.append(('%s — 투자금액' % nm, '=가맹점!R%d' % (2 + i),
+                         '가맹점 R%d' % (2 + i), V('%s — 투자금액' % nm), M0, TILT))
+    for i, m in enumerate(scr_m):
+        nm = m[MCOL['name']]
+        res_rows.append(('%s — 비중 표기(%%)' % nm, '=가맹점!AC%d' % (2 + i),
+                         '가맹점 AC%d' % (2 + i), V('%s — 비중(%%)' % nm), '0.0', TILT))
+    RES0 = r + 1
+    for (lab, val, path, ref, fmt, why) in res_rows:
+        r += 1
+        put(ws, r, 1, '모델 잔차')
+        put(ws, r, 2, lab, bold=True)
+        put(ws, r, 3, val, fmt, fill=CHK)
+        put(ws, r, 4, path)
+        put(ws, r, 5, '=' + ref, fmt)
+        put(ws, r, 6, '=IFERROR(C%d-E%d,"")' % (r, r), fmt)
+        put(ws, r, 7, '=IFERROR(IF(E%d=0,"",F%d/E%d*100),"")' % (r, r, r), P2)
+        c = put(ws, r, 8, why)
+        c.alignment = Alignment(wrap_text=True, vertical='top')
+    RESL = r
+
     ws.conditional_formatting.add('G2:G%d' % LASTC,
                                   CellIsRule(operator='equal', formula=['"차이"'], fill=BAD))
     ws.conditional_formatting.add('G2:G%d' % LASTC,
                                   CellIsRule(operator='equal', formula=['"일치"'], fill=GOOD))
     ws.freeze_panes = 'A2'
-    widths(ws, {'A': 9, 'B': 34, 'C': 20, 'D': 26, 'E': 20, 'F': 16, 'G': 8, 'H': 34})
+    widths(ws, {'A': 12, 'B': 36, 'C': 20, 'D': 34, 'E': 20, 'F': 16, 'G': 10, 'H': 60})
 
     # ── 산식 ────────────────────────────────────────────────────
     ws = wb.create_sheet('산식')
     head(ws, 1, ['출처 절', '대표 정의서 원문', '이 통합문서의 셀'])
     MAPS = [
-        ('투자 실행액', '기간집계 B%d · 화면대조 3행' % AGG['투자실행액']),
+        ('투자 실행액', '기간집계 B%d · 화면대조 %d행' % (AGG['투자실행액'], SV['투자실행액'])),
         ('유동화투자자의 할인율', '입력 C2 · C3'),
         ('순현금', '입력 C6 · 기간집계 B%d' % AGG['순현금']),
-        ('w금융일수 =', '기간집계 B%d' % AGG['W금융일수 — 대상정산금채권 전체']),
-        ('Ai =', '채권 J열'),
+        ('w금융일수 =', '기간집계 B%d · 가중치 대조 C%d — 가중치는 금액(Ai)'
+         % (AGG['W금융일수 — 대상정산금채권 전체'], WROW['w'])),
+        ('Ai =', '채권 J열 — w금융일수의 가중치'),
         ('Di =', '채권 H열'),
         ('대상정산금채권:', '채권 시트 전 행 (선정산일 축 %d일)' % WINDOW),
         ('각 정산금채권의 ID', '채권 D·E·F열'),
@@ -1100,9 +1654,18 @@ def build():
     widths(ws, {'A': 16, 'B': 86, 'C': 40})
     ws.freeze_panes = 'A2'
 
+    # ── 저장 — 정본과 사용자 폴더에 바이트 동일하게 ───────────────
     wb.save(OUT)
-    return dict(out=OUT, nrec=NROW - 1, nday=NDAY, last=last, ncmp=LASTC - 1,
-                exec_target=exec_target, cash=cash, avg_daily=avg_daily)
+    os.makedirs(os.path.dirname(OUT2), exist_ok=True)
+    shutil.copyfile(OUT, OUT2)
+    assert open(OUT, 'rb').read() == open(OUT2, 'rb').read(), '두 파일이 다르다'
+    return dict(out=OUT, out2=OUT2, bytes=os.path.getsize(OUT),
+                sheets=wb.sheetnames, nrec=NROW - 1, nday=NDAY, last=last,
+                merchants=n, ncmp=LASTC - 1, nres=RESL - RES0 + 1,
+                exec_target=exec_target, cash=cash, avg_daily=avg_daily,
+                w_screen=S(fx, 'W금융일수 표기'), ty_screen=S(fx, 'Ty수익율'),
+                mix={LABEL[p]: plat['book_mix'][p] for p in ORDER},
+                measured_w=plat['measured_w'], mau_w=plat['mau_w'])
 
 
 if __name__ == '__main__':

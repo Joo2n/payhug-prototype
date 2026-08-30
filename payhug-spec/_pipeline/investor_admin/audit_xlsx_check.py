@@ -121,6 +121,16 @@ def xrounddown(x, n):
     return float(D(repr(float(x))).quantize(D(1).scaleb(-int(n)), rounding=ROUND_DOWN))
 
 
+def _asdate(v):
+    if isinstance(v, list):
+        v = flat(v)[0]
+    if isinstance(v, datetime):
+        return v.date()
+    if isinstance(v, date):
+        return v
+    return EPOCH + timedelta(days=int(numify(v)))
+
+
 def match_crit(val, crit):
     c = _txt(crit)
     m = re.match(r'^(<=|>=|<>|<|>|=)?(.*)$', c)
@@ -151,15 +161,18 @@ class Book:
         if key in self.stack:
             raise ValueError('순환 참조 %s!%s' % key)
         self.stack.add(key)
+        prev = getattr(self, 'currow', None)
         try:
             v = self.wb[sheet][coord].value
             if isinstance(v, str) and v.startswith('='):
                 self.nform += 1
+                self.currow = self.wb[sheet][coord].row
                 v = self.eval(v[1:], sheet)
             elif isinstance(v, datetime):
                 v = v.date()
         finally:
             self.stack.discard(key)
+            self.currow = prev
         self.cache[key] = v
         return v
 
@@ -254,6 +267,44 @@ class Book:
             return flat(arr)[(r - 1) if len(a) < 3 or c == 1 else (c - 1)]
         if fn == 'TRANSPOSE':
             return a[0]
+        if fn == 'MOD':
+            x, y = numify(a[0]), numify(a[1])
+            return float('nan') if y == 0 else x - y * math.floor(x / y)
+        if fn == 'INT':
+            return float(math.floor(numify(a[0])))
+        if fn == 'ROW':
+            return float(self.currow) if getattr(self, 'currow', None) else 0.0
+        if fn == 'COUNTIF':
+            rg, cr = flat(a[0]), a[1]
+            return float(sum(1 for x in rg if match_crit(x, cr)))
+        if fn == 'RANK':
+            x = numify(a[0])
+            rg = [numify(v) for v in flat(a[1]) if isinstance(v, (int, float))
+                  and not isinstance(v, bool)]
+            asc = len(a) > 2 and numify(a[2]) != 0
+            return float(1 + sum(1 for v in rg if ((v < x) if asc else (v > x))))
+        if fn == 'DATE':
+            return date(int(numify(a[0])), int(numify(a[1])), int(numify(a[2])))
+        if fn == 'YEAR':
+            return float(_asdate(a[0]).year)
+        if fn == 'MONTH':
+            return float(_asdate(a[0]).month)
+        if fn == 'DAY':
+            return float(_asdate(a[0]).day)
+        if fn == 'WEEKDAY':
+            d = _asdate(a[0])
+            t = int(numify(a[1])) if len(a) > 1 else 1
+            if t == 3:
+                return float(d.weekday())
+            if t == 2:
+                return float(d.weekday() + 1)
+            return float((d.weekday() + 1) % 7 + 1)
+        if fn == 'TEXT':
+            v, f = numify(a[0]), _txt(a[1])
+            nd = len(f.split('.')[1]) if '.' in f else 0
+            return ('%%.%df' % nd) % v
+        if fn == 'SUMPRODUCT_':
+            return None
         raise ValueError('미구현 함수 %s' % fn)
 
 
@@ -365,16 +416,23 @@ class Parser:
 
 
 # ── 검증 ──────────────────────────────────────────────────────────
-def main():
-    bk = Book(XLSX)
-    wb = bk.wb
-    rep = {'파일': XLSX, '시트': {}, '이름정의': len(bk.names)}
-    nf = nv = 0
+def rowmap(ws, col=1):
+    """라벨 -> 행 번호. 시트 구조가 바뀌어도 주소를 손으로 적지 않는다."""
+    m = {}
+    for r in range(1, ws.max_row + 1):
+        v = ws.cell(r, col).value
+        if isinstance(v, str) and v and not v.startswith('='):
+            m.setdefault(v, r)
+    return m
+
+
+def counts(wb):
+    out, nf, nv = {}, 0, 0
     for ws in wb.worksheets:
         f = v = 0
         for row in ws.iter_rows():
             for c in row:
-                if c.value is None:
+                if c.value is None or c.value == '':
                     continue
                 if isinstance(c.value, str) and c.value.startswith('='):
                     f += 1
@@ -382,106 +440,289 @@ def main():
                     v += 1
         nf += f
         nv += v
-        rep['시트'][ws.title] = {'행': ws.max_row, '열': ws.max_column, '수식셀': f, '값셀': v}
-    rep['수식셀 합계'] = nf
-    rep['값셀 합계'] = nv
+        out[ws.title] = {'행': ws.max_row, '열': ws.max_column, '수식셀': f, '값셀': v}
+    return out, nf, nv
 
-    # 전 시트 수식 평가
+
+def evaluate_all(bk):
     err = []
-    for ws in wb.worksheets:
+    for ws in bk.wb.worksheets:
         for row in ws.iter_rows():
             for c in row:
                 if isinstance(c.value, str) and c.value.startswith('='):
                     try:
                         bk.cell(ws.title, c.coordinate)
                     except Exception as e:
-                        err.append('%s!%s  %s  → %s' % (ws.title, c.coordinate, c.value, e))
-    rep['평가 실패'] = err[:12]
+                        err.append('%s!%s  %s  → %s' % (ws.title, c.coordinate,
+                                                        c.value[:80], e))
+    return err
+
+
+def facts():
+    return json.load(open(os.path.join(BASE, 'ledger_facts.json'), encoding='utf-8'))
+
+
+def main():
+    bk = Book(XLSX)
+    wb = bk.wb
+    fx = facts()
+    rep = {'파일': XLSX, '사본': os.path.expanduser(
+        '~/Downloads/payhug_검산엑셀/검산_투자자어드민_20260901.xlsx')}
+    rep['바이트 동일'] = (os.path.exists(rep['사본'])
+                          and open(XLSX, 'rb').read() == open(rep['사본'], 'rb').read())
+    rep['시트'], nf, nv = counts(wb)
+    rep['수식셀 합계'], rep['값셀 합계'] = nf, nv
+    rep['이름정의'] = len(bk.names)
+
+    err = evaluate_all(bk)
     rep['평가 실패 수'] = len(err)
+    rep['평가 실패'] = err[:12]
 
-    # 화면대조
+    # 값 셀이 허용된 자리에만 있는가 — 입력 가정값 · 채권 Di · 화면 값
+    vcells = {}
+    for ws in wb.worksheets:
+        n = 0
+        for row in ws.iter_rows():
+            for c in row:
+                v = c.value
+                if v is None or v == '' or isinstance(v, str):
+                    continue
+                if isinstance(v, bool):
+                    continue
+                n += 1
+        vcells[ws.title] = n
+    rep['숫자 값셀'] = vcells
+
+    # ── 화면대조 ────────────────────────────────────────────────
     ws = wb['화면대조']
-    diffs, bad = [], 0
+    blocks = {'항등식': [], '불변식': [], '교차': [], '화면 정합': [], '가맹점': [],
+              '모델 잔차': [], '화면 값 원본': []}
     for r in range(2, ws.max_row + 1):
+        g = ws.cell(r, 1).value
+        if g not in blocks:
+            continue
         lab = ws.cell(r, 2).value
-        if not lab or (isinstance(lab, str) and lab.startswith('=')):
+        if g == '화면 값 원본':
+            blocks[g].append([lab, bk.cell('화면대조', 'E%d' % r)])
             continue
-        if ws.cell(r, 1).value == '구분':
-            continue
-        try:
-            xv = bk.cell('화면대조', 'C%d' % r)
-            sv = bk.cell('화면대조', 'E%d' % r)
-            df = bk.cell('화면대조', 'F%d' % r)
-            jd = bk.cell('화면대조', 'G%d' % r)
-        except Exception as e:
-            diffs.append([lab, 'ERR', str(e)])
-            continue
-        if jd != '일치':
-            bad += 1
-        diffs.append([ws.cell(r, 1).value, lab, xv, sv, df, jd])
-    rep['화면대조 행'] = len(diffs)
-    rep['화면대조 차이'] = bad
-    rep['화면대조'] = diffs
+        row = [lab, bk.cell('화면대조', 'C%d' % r), bk.cell('화면대조', 'E%d' % r),
+               bk.cell('화면대조', 'F%d' % r), bk.cell('화면대조', 'G%d' % r)]
+        blocks[g].append(row)
+    judged = [x for k in ('항등식', '불변식', '교차', '화면 정합', '가맹점')
+              for x in blocks[k]]
+    rep['화면대조 판정 행'] = len(judged)
+    rep['화면대조 차이'] = sum(1 for x in judged if x[4] != '일치')
+    rep['화면대조 차이 목록'] = [x for x in judged if x[4] != '일치']
+    rep['모델 잔차 행'] = len(blocks['모델 잔차'])
+    rep['모델 잔차'] = [[x[0], x[1], x[2], x[3]] for x in blocks['모델 잔차']]
+    rep['화면 값 원본 행'] = len(blocks['화면 값 원본'])
 
-    # 주요 값
-    key = {}
-    for sh, addr, lab in [('플랫폼', 'B17', 'W(구성비x만기)'), ('플랫폼', 'B19', '대표 H41 차'),
-                          ('플랫폼', 'B21', '미회수 이론 W')]:
-        key[lab] = bk.cell(sh, addr)
-    ws = wb['기간집계']
+    # 모델 잔차 행에 사유가 비어 있으면 안 된다
+    nowhy = []
     for r in range(2, ws.max_row + 1):
-        lab = ws.cell(r, 1).value
-        if lab and not str(lab).startswith('='):
-            key[str(lab)] = bk.cell('기간집계', 'B%d' % r)
-    ws = wb['가맹점']
-    for r in range(12, ws.max_row + 1):
-        lab = ws.cell(r, 1).value
-        if lab and lab != '항목' and lab != '플랫폼':
-            key['가맹점/' + str(lab)] = bk.cell('가맹점', 'B%d' % r)
-    rep['주요값'] = key
+        if ws.cell(r, 1).value == '모델 잔차' and not ws.cell(r, 8).value:
+            nowhy.append(ws.cell(r, 2).value)
+    rep['사유 빠진 잔차 행'] = nowhy
 
-    # 항등식
-    lhs = bk.cell('화면대조', 'C2')
-    rhs = bk.cell('화면대조', 'E2')
-    rep['항등식'] = {'좌변': lhs, '우변': rhs, '차': lhs - rhs}
+    # ── 화면 값이 ledger_facts.json 과 같은가 ────────────────────
+    sv = dict(blocks['화면 값 원본'])
+    chk = [('투자실행액', fx['exec']), ('순현금', fx['cash']), ('투자자산', fx['total']),
+           ('W금융일수 raw', float(fx['wRaw'])), ('W금융일수 표기', float(fx['w'])),
+           ('Ty수익율(%)', float(fx['ty'])), ('S입금부족율 raw(%)', float(fx['sRaw'])),
+           ('S입금부족율 표기(%)', float(fx['s'])), ('할인율(%)', float(fx['rate'])),
+           ('하루 평균 투자실행금', fx['dayAvg']), ('채권 건수', fx['receivables']),
+           ('미회수 채권 건수', fx['openReceivables']),
+           ('채권 Di 최소', fx['diRange'][0]), ('채권 Di 최대', fx['diRange'][1]),
+           ('로스터 건수', len(fx['merchants'])),
+           ('주간 PSA', fx['weekExec']), ('주간 PSM', fx['weekProfit']),
+           ('주간 PSD raw', float(fx['weekWRaw'])), ('주간 PSC', fx['weekPsc']),
+           ('주간 ④(%)', float(fx['weekTy'])), ('주간 ⑤(%)', float(fx['weekTyAsset'])),
+           ('전 구간 PSA', fx['fullExec']), ('전 구간 PSM', fx['fullProfit']),
+           ('전 구간 PSC', fx['fullPsc']), ('전 구간 ④(%)', float(fx['fullTy'])),
+           ('전 구간 ⑤(%)', float(fx['fullTyAsset']))]
+    bad = [[k, sv.get(k), v] for k, v in chk if abs(numify(sv.get(k)) - v) > 1e-9]
+    rep['화면 값 ↔ ledger_facts 불일치'] = bad
+
+    # ── 가중치 대조 ─────────────────────────────────────────────
+    ws = wb['가중치 대조']
+    wm = rowmap(ws)
+    g = lambda a: bk.cell('가중치 대조', a)
+    W = {}
+    for lab, key in [('W금융일수', 'W'), ('W금융일수 표기', 'W표기'), ('Ty수익율(%)', 'Ty'),
+                     ('미회수 잔량 W', '미회수W'), ('미회수 잔량 Ty(%)', '미회수Ty')]:
+        r = wm[lab]
+        W[key] = {'(가) 금액 실측': g('C%d' % r), '(나) 엑셀 MAU': g('D%d' % r),
+                  '(다) 로스터 금액가중': g('E%d' % r), '(가)-(나)': g('F%d' % r),
+                  '(다)-(가)': g('E%d' % r) - g('C%d' % r)}
+    rep['가중치 대조'] = W
+    wm2 = rowmap(ws, 2)
+    rep['가중치 판정'] = ws.cell(wm['판정'], 3).value
+    rep['워드 인용'] = [ws.cell(wm2[k], 3).value for k in
+                        ('w금융일수 산식', 'Ai 정의', 'Di 정의')]
+    rep['확인 문항'] = [ws.cell(wm[k], 2).value for k in ('확인 문항 1', '확인 문항 2')]
+    v0 = wm['배달앱/전체']
+    sens = []
+    for r in range(v0 + 1, v0 + 6):
+        sens.append([g('A%d' % r), g('F%d' % r), g('G%d' % r), g('H%d' % r),
+                     ws.cell(r, 9).value])
+    rep['0.35 민감도'] = sens
+
+    # ── 기간집계 · 플랫폼 주요값 ────────────────────────────────
+    pm = rowmap(wb['기간집계'])
+    rep['기간집계'] = {k: bk.cell('기간집계', 'B%d' % r) for k, r in pm.items()
+                       if k not in ('항목',)}
+    rep['플랫폼'] = {wb['플랫폼'].cell(r, 1).value: bk.cell('플랫폼', 'B%d' % r)
+                     for r in range(16, 23) if wb['플랫폼'].cell(r, 1).value}
+
+    # ── 항등식 ──────────────────────────────────────────────────
+    ws = wb['화면대조']
+    for r in range(2, ws.max_row + 1):
+        if ws.cell(r, 1).value == '항등식':
+            rep['항등식'] = {'좌변': bk.cell('화면대조', 'C%d' % r),
+                             '우변': bk.cell('화면대조', 'E%d' % r),
+                             '차': bk.cell('화면대조', 'F%d' % r)}
+            break
+
+    # ── 프리셋 · 비중 최대잉여법 · 계약 상태 ─────────────────────
+    ws = wb['입력']
+    im = rowmap(ws)
+    pr = im['프리셋']
+    rep['프리셋'] = [[ws.cell(r, 3).value, bk.cell('입력', 'D%d' % r),
+                      bk.cell('입력', 'E%d' % r), bk.cell('입력', 'F%d' % r),
+                      bk.cell('입력', 'I%d' % r)] for r in range(pr + 1, pr + 7)]
+    rep['프리셋 차 합계'] = sum(x[4] for x in rep['프리셋'])
+    gm = wb['가맹점']
+    n = 0
+    while gm.cell(2 + n, 3).value and bk.cell('가맹점', 'C%d' % (2 + n)) != '합계':
+        n += 1
+    rep['비중 최대잉여법'] = [[bk.cell('가맹점', 'C%d' % (2 + i)),
+                               bk.cell('가맹점', 'S%d' % (2 + i)) * 100,
+                               bk.cell('가맹점', 'Z%d' % (2 + i)),
+                               bk.cell('가맹점', 'AB%d' % (2 + i)),
+                               bk.cell('가맹점', 'AC%d' % (2 + i))] for i in range(n)]
+    rep['비중 합'] = sum(x[4] for x in rep['비중 최대잉여법'])
+    rep['비중 잔차 최대(pp)'] = max(abs(x[4] - x[1]) for x in rep['비중 최대잉여법'])
+    rep['서명 대기'] = [bk.cell('가맹점', 'C%d' % (2 + i)) for i in range(n)
+                        if bk.cell('가맹점', 'AD%d' % (2 + i)) == '서명 대기']
+
     print(json.dumps(rep, ensure_ascii=False, indent=1, default=str))
     return rep
 
 
-def switch_test():
-    """스위치 4개를 바꿔 넣고 화면 값이 따라 움직이는지 본다."""
-    cases = [
-        ('기본', {}),
-        ('① 만기 도래분만', {'B18': '만기 도래분만'}),
-        ('① 미회수 잔량만', {'B18': '미회수 잔량만'}),
-        ('② 표기 1자리', {'B19': 1}),
-        ('③ 가맹점 8곳', {'B20': 8}),
-        ('③ 가맹점 5곳', {'B20': 5}),
-        ('④ 방향 B', {'B21': 'B'}),
-        ('④ 방향 B + 8곳', {'B21': 'B', 'B20': 8}),
-    ]
-    hdr = ['W raw', 'W 표기', 'Ty(%)', '투자실행액', '투자자산', '실행액비중(%)',
-           '가맹점수', '하루선정산액합계', 'S(%)', '항등식 차']
-    print('%-18s' % '' + ''.join('%16s' % h for h in hdr))
+SWCELL = {'①': 'B18', '②': 'B19', '③': 'B20', '④': 'B21'}
+
+
+def switch_test(quiet=False):
+    """스위치 4개를 바꿔 넣고 값이 실제로 움직이는지 본다."""
+    base = Book(XLSX)
+    pm = rowmap(base.wb['기간집계'])
+    gm = rowmap(base.wb['가맹점'])
+    pick = [('W raw', '기간집계', 'B%d' % pm['W금융일수 raw (스위치 ① 적용)']),
+            ('W 표기', '기간집계', 'B%d' % pm['W금융일수 표기 (스위치 ② 적용)']),
+            ('Ty(%)', '기간집계', 'B%d' % pm['Ty수익율(%)']),
+            ('투자실행액', '기간집계', 'B%d' % pm['투자실행액']),
+            ('투자자산', '기간집계', 'B%d' % pm['투자자산']),
+            ('S(%)', '기간집계', 'B%d' % pm['S입금부족율(%)']),
+            ('가맹점수', '가맹점', 'B%d' % gm['가맹점 수 (적용)']),
+            ('하루선정산액합계', '가맹점', 'B%d' % gm['하루 선정산액 합계 (적용)'])]
+    cases = [('기본', {}),
+             ('① 만기 도래분만', {'B18': '만기 도래분만'}),
+             ('① 미회수 잔량만', {'B18': '미회수 잔량만'}),
+             ('② 표기 1자리', {'B19': 1}),
+             ('③ 가맹점 4곳', {'B20': 4}),
+             ('③ 가맹점 1곳', {'B20': 1}),
+             ('④ 방향 B', {'B21': 'B'}),
+             ('④ 방향 B + 4곳', {'B21': 'B', 'B20': 4})]
     out = []
-    for name, ov in cases:
+    for nm, ov in cases:
         bk = Book(XLSX)
         for k, v in ov.items():
             bk.wb['입력'][k] = v
-        g = lambda a: bk.cell('기간집계', a)
-        row = [g('B29'), g('B30'), g('B31'), g('B32'), g('B34'), g('B35') * 100,
-               bk.cell('가맹점', 'B20'), bk.cell('가맹점', 'B17'), g('B39'),
-               bk.cell('화면대조', 'C2') - bk.cell('화면대조', 'E2')]
-        out.append((name, row))
-        print('%-18s' % name + ''.join(
-            '%18s' % (('%.6f' % x) if isinstance(x, float) and abs(x) < 1000
-                      else ('{:,.1f}'.format(x) if isinstance(x, float) else x))
-            for x in row))
-    return out
+        row = {'케이스': nm}
+        for lab, sh, ad in pick:
+            row[lab] = bk.cell(sh, ad)
+        # 항등식은 어느 스위치에서도 성립해야 한다
+        ws = bk.wb['화면대조']
+        for r in range(2, ws.max_row + 1):
+            if ws.cell(r, 1).value == '항등식':
+                row['항등식 차'] = bk.cell('화면대조', 'F%d' % r)
+                break
+        out.append(row)
+    moved = {}
+    b = out[0]
+    for lab in ('W raw', 'W 표기', '가맹점수', '하루선정산액합계'):
+        moved[lab] = sorted({round(x[lab], 8) if isinstance(x[lab], float) else x[lab]
+                             for x in out})
+    rep = {'케이스': out, '스위치가 실제로 움직인 값': moved,
+           '항등식 차 (기본 조합)': out[0]['항등식 차'],
+           '항등식 차 (스위치 ①②)': [out[i]['항등식 차'] for i in (1, 2, 3)],
+           '항등식 차 (스위치 ③④)': [out[i]['항등식 차'] for i in (4, 5, 6, 7)],
+           '항등식 주석': '채권 시트의 미회수 건수는 기본 조합에서 푼 정수다. '
+                          '스위치 ③④로 가맹점 구성이 바뀌면 좌변이 그만큼 어긋난다.'}
+    ok = {'① 모집단': len({round(out[i]['W raw'], 8) for i in (0, 1, 2)}) == 3,
+          '② 자릿수': out[0]['W 표기'] != out[3]['W 표기'],
+          '③ 가맹점 수': len({out[i]['가맹점수'] for i in (0, 4, 5)}) == 3,
+          '④ 방향': abs(out[0]['하루선정산액합계'] - out[6]['하루선정산액합계']) > 1,
+          '항등식 기본 0': abs(out[0]['항등식 차']) < 0.5}
+    rep['스위치 동작'] = ok
+    rep['스위치 4개 모두 동작'] = all(ok.values())
+    if not quiet:
+        print(json.dumps(rep, ensure_ascii=False, indent=1, default=str))
+    return rep
+
+
+def sens_test(quiet=False):
+    """배달앱/전체 입력을 0.30 · 0.40 으로 바꿔 (나) W·Ty 가 움직이는지 본다."""
+    out = []
+    for v in (0.30, 0.35, 0.40):
+        bk = Book(XLSX)
+        bk.wb['입력']['B43'] = v
+        wm = rowmap(bk.wb['가중치 대조'])
+        out.append({'배달앱/전체': v,
+                    '(나) W': bk.cell('가중치 대조', 'D%d' % wm['W금융일수']),
+                    '(나) Ty(%)': bk.cell('가중치 대조', 'D%d' % wm['Ty수익율(%)'])})
+    rep = {'민감도': out, '움직임': len({round(x['(나) W'], 8) for x in out}) == 3}
+    if not quiet:
+        print(json.dumps(rep, ensure_ascii=False, indent=1, default=str))
+    return rep
+
+
+def mix_test(quiet=False):
+    """구성비 4칸을 MAU 값으로 바꿔 넣으면 (가) 가 (나) 와 같아지는가."""
+    bk = Book(XLSX)
+    wm = rowmap(bk.wb['가중치 대조'])
+    mau = [bk.cell('가중치 대조', 'D%d' % (wm['카드사'] + i)) for i in range(4)]
+    bk2 = Book(XLSX)
+    for i, v in enumerate(mau):
+        bk2.wb['입력']['C%d' % (24 + i)] = v
+    rep = {'MAU 로 바꾼 뒤 (가) W': bk2.cell('가중치 대조', 'C%d' % wm['W금융일수']),
+           '(나) W': bk2.cell('가중치 대조', 'D%d' % wm['W금융일수'])}
+    rep['일치'] = abs(rep['MAU 로 바꾼 뒤 (가) W'] - rep['(나) W']) < 1e-9
+    if not quiet:
+        print(json.dumps(rep, ensure_ascii=False, indent=1, default=str))
+    return rep
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] == 'switch':
+    arg = sys.argv[1] if len(sys.argv) > 1 else ''
+    if arg == 'switch':
         switch_test()
+    elif arg == 'sens':
+        sens_test()
+    elif arg == 'mix':
+        mix_test()
+    elif arg == 'all':
+        r = main()
+        s1 = switch_test(True)
+        s2 = sens_test(True)
+        s3 = mix_test(True)
+        print(json.dumps({'스위치': s1, '배달앱비중 민감도': s2, '구성비 입력 반응': s3},
+                         ensure_ascii=False, indent=1, default=str))
+        ok = (r['평가 실패 수'] == 0 and r['화면대조 차이'] == 0
+              and not r['화면 값 ↔ ledger_facts 불일치'] and r['바이트 동일']
+              and s1['스위치 4개 모두 동작'] and s2['움직임'] and s3['일치']
+              and not r['사유 빠진 잔차 행'] and abs(r['비중 합'] - 100.0) < 1e-9)
+        print(json.dumps({'전체 통과': ok}, ensure_ascii=False))
+        sys.exit(0 if ok else 1)
     else:
         main()
