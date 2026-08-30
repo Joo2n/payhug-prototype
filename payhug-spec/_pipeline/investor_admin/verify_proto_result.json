@@ -58,7 +58,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -73,7 +73,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-sim",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -88,7 +88,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgb(127, 225, 65)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -103,7 +103,7 @@
    "visible": true,
    "state": "default",
    "hash": "#acquisition-list",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgb(127, 225, 65)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -118,7 +118,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -133,7 +133,7 @@
    "visible": true,
    "state": "default",
    "hash": "#password",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -380,8 +380,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5714,
-   "srcBytes": 5714,
+   "bytes": 5711,
+   "srcBytes": 5711,
    "pass": true
   },
   {
@@ -393,8 +393,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
-   "bytes": 6138,
-   "srcBytes": 6138,
+   "bytes": 6090,
+   "srcBytes": 6090,
    "pass": true
   },
   {
@@ -406,8 +406,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5468,
-   "srcBytes": 5468,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -419,8 +419,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5864,
-   "srcBytes": 5864,
+   "bytes": 5855,
+   "srcBytes": 5855,
    "pass": true
   },
   {
@@ -432,8 +432,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-01_2026-08-27.xlsx",
-   "bytes": 5465,
-   "srcBytes": 5465,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -445,8 +445,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-01_2026-08-27.xlsx",
-   "bytes": 6734,
-   "srcBytes": 6734,
+   "bytes": 6728,
+   "srcBytes": 6728,
    "pass": true
   },
   {
@@ -497,8 +497,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-06-08_2026-08-27.xlsx",
-   "bytes": 6156,
-   "srcBytes": 6156,
+   "bytes": 6150,
+   "srcBytes": 6150,
    "pass": true
   },
   {
@@ -510,8 +510,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5469,
-   "srcBytes": 5469,
+   "bytes": 5468,
+   "srcBytes": 5468,
    "pass": true
   },
   {
@@ -523,8 +523,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5703,
-   "srcBytes": 5703,
+   "bytes": 5695,
+   "srcBytes": 5695,
    "pass": true
   },
   {
@@ -536,8 +536,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5469,
-   "srcBytes": 5469,
+   "bytes": 5470,
+   "srcBytes": 5470,
    "pass": true
   },
   {
@@ -549,8 +549,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5843,
-   "srcBytes": 5843,
+   "bytes": 5832,
+   "srcBytes": 5832,
    "pass": true
   },
   {
@@ -584,9 +584,9 @@
       "20",
       "50"
      ],
-     "n10": 9,
-     "n20": 9,
-     "n50": 9,
+     "n10": 8,
+     "n20": 8,
+     "n50": 8,
      "pagesAt20": 0,
      "ok": true
     },
@@ -597,9 +597,9 @@
       "20",
       "50"
      ],
-     "n10": 9,
-     "n20": 9,
-     "n50": 9,
+     "n10": 8,
+     "n20": 8,
+     "n50": 8,
      "pagesAt20": 0,
      "ok": true
     },
@@ -610,9 +610,9 @@
       "20",
       "50"
      ],
-     "n10": 9,
-     "n20": 9,
-     "n50": 9,
+     "n10": 8,
+     "n20": 8,
+     "n50": 8,
      "pagesAt20": 0,
      "ok": true
     }
@@ -621,9 +621,9 @@
   },
   {
    "case": "가맹점 검색어 필터",
-   "rowsBefore": 9,
+   "rowsBefore": 8,
    "rowsAfter": 1,
-   "countBefore": "총9건",
+   "countBefore": "총8건",
    "countAfter": "총1건",
    "pass": true
   },
@@ -632,29 +632,29 @@
    "weekRows": 7,
    "weekFoot": [
     "합계",
-    "200,459,646",
-    "200,353,526",
-    "106,120",
-    "2.80가중평균",
-    "6.91%가중평균"
+    "180,032,094",
+    "179,970,919",
+    "61,175",
+    "3.11가중평균",
+    "3.99%가중평균"
    ],
    "monthPresetRows": 27,
    "monthPresetFoot": [
     "합계",
-    "781,086,860",
-    "780,652,554",
-    "434,306",
-    "2.74가중평균",
-    "7.40%가중평균"
+    "702,981,435",
+    "702,712,201",
+    "269,234",
+    "3.03가중평균",
+    "4.62%가중평균"
    ],
    "monthlyRows": 6,
    "monthlyFoot": [
     "합계",
-    "5,223,077,772",
-    "5,220,186,750",
-    "2,891,022",
-    "2.75가중평균",
-    "7.36%가중평균"
+    "4,702,290,720",
+    "4,700,503,303",
+    "1,787,417",
+    "3.03가중평균",
+    "4.57%가중평균"
    ],
    "monthlyLabel": "6개월",
    "keepRows": [
@@ -662,8 +662,8 @@
     3
    ],
    "keepFoot": [
-    "1,415,511",
-    "1,415,511"
+    "875,417",
+    "875,417"
    ],
    "pass": true
   },
@@ -732,15 +732,15 @@
   {
    "case": "계약기록 전체 선택 — 서명 완료 행만",
    "before": "선택 문서 다운로드 (3)",
-   "after": "선택 문서 다운로드 (6)",
-   "count": "총9건",
+   "after": "선택 문서 다운로드 (5)",
+   "count": "총8건",
    "headChecked": [
     false,
     true
    ],
-   "고를수있는행": 6,
+   "고를수있는행": 5,
    "잠긴체크박스": 3,
-   "총행": 9,
+   "총행": 8,
    "pass": true
   },
   {
@@ -757,16 +757,16 @@
   "assetTotal": 100000000,
   "ratioSum": 100,
   "ledgerDays": 180,
-  "ledgerProfitSum": 2891022,
-  "monthRollupSum": 2891022,
+  "ledgerProfitSum": 1787417,
+  "monthRollupSum": 1787417,
   "rollupMatchesLedger": true,
-  "contracts": 9,
+  "contracts": 8,
   "signQueue": 3,
   "screens": 14,
   "states": 18
  },
  "console": [],
- "scanned": 90,
+ "scanned": 88,
  "a11y": [
   {
    "where": "acquisition-list/default",
@@ -826,49 +826,42 @@
   },
   {
    "where": "contracts/default",
-   "label": "3M2026-0002달빛곱창 홍대점 문서 다",
+   "label": "2M2026-0007초록치킨 서초점 문서 다",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "3M2026-0006김밥나라 문서 다운로드하",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "4M2026-0008골목냉면 문서 다운로드하",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/default",
+   "label": "5M2026-0002달빛곱창 홍대점 문서 다",
    "tag": "tr",
    "cls": "clickable",
-   "act": "ct-row"
-  },
-  {
-   "where": "contracts/default",
-   "label": "4M2026-0003성호분식 2호점 문서 다",
-   "tag": "tr",
-   "cls": "clickable selected",
-   "act": "ct-row"
-  },
-  {
-   "where": "contracts/default",
-   "label": "5M2026-0007초록치킨 서초점 문서 다",
-   "tag": "tr",
-   "cls": "clickable selected",
    "act": "ct-row"
   },
   {
    "where": "contracts/default",
    "label": "6M2026-0009청춘포차 신촌점 문서 다",
    "tag": "tr",
-   "cls": "clickable selected",
-   "act": "ct-row"
-  },
-  {
-   "where": "contracts/default",
-   "label": "7M2026-0008골목냉면 문서 다운로드하",
-   "tag": "tr",
    "cls": "clickable",
    "act": "ct-row"
   },
   {
    "where": "contracts/default",
-   "label": "8M2026-0006김밥나라 문서 다운로드하",
-   "tag": "tr",
-   "cls": "clickable",
-   "act": "ct-row"
-  },
-  {
-   "where": "contracts/default",
-   "label": "9M2026-0005한강커피 잠원점 문서 다",
+   "label": "8M2026-0005한강커피 잠원점 문서 다",
    "tag": "tr",
    "cls": "clickable",
    "act": "ct-row"
@@ -882,21 +875,28 @@
   },
   {
    "where": "contracts/all",
-   "label": "3M2026-0002달빛곱창 홍대점 문서 다",
+   "label": "2M2026-0007초록치킨 서초점 문서 다",
    "tag": "tr",
    "cls": "clickable selected",
    "act": "ct-row"
   },
   {
    "where": "contracts/all",
-   "label": "4M2026-0003성호분식 2호점 문서 다",
+   "label": "3M2026-0006김밥나라 문서 다운로드하",
    "tag": "tr",
    "cls": "clickable selected",
    "act": "ct-row"
   },
   {
    "where": "contracts/all",
-   "label": "5M2026-0007초록치킨 서초점 문서 다",
+   "label": "4M2026-0008골목냉면 문서 다운로드하",
+   "tag": "tr",
+   "cls": "clickable selected",
+   "act": "ct-row"
+  },
+  {
+   "where": "contracts/all",
+   "label": "5M2026-0002달빛곱창 홍대점 문서 다",
    "tag": "tr",
    "cls": "clickable selected",
    "act": "ct-row"
@@ -910,21 +910,7 @@
   },
   {
    "where": "contracts/all",
-   "label": "7M2026-0008골목냉면 문서 다운로드하",
-   "tag": "tr",
-   "cls": "clickable selected",
-   "act": "ct-row"
-  },
-  {
-   "where": "contracts/all",
-   "label": "8M2026-0006김밥나라 문서 다운로드하",
-   "tag": "tr",
-   "cls": "clickable selected",
-   "act": "ct-row"
-  },
-  {
-   "where": "contracts/all",
-   "label": "9M2026-0005한강커피 잠원점 문서 다",
+   "label": "8M2026-0005한강커피 잠원점 문서 다",
    "tag": "tr",
    "cls": "clickable selected",
    "act": "ct-row"
@@ -940,7 +926,7 @@
  "layout": [
   {
    "at": "invest-assets/default",
-   "h": 1273,
+   "h": 1232,
    "empties": [
     "ia-merch-page"
    ],
@@ -951,7 +937,7 @@
   },
   {
    "at": "invest-assets/download",
-   "h": 1273,
+   "h": 1232,
    "empties": [
     "ia-merch-page"
    ],
@@ -962,7 +948,7 @@
   },
   {
    "at": "invest-assets/cert-confirm",
-   "h": 1273,
+   "h": 1232,
    "empties": [
     "ia-merch-page"
    ],
@@ -975,7 +961,7 @@
   },
   {
    "at": "invest-assets/empty",
-   "h": 994,
+   "h": 998,
    "empties": [
     "ia-size",
     "ia-merch-page"
@@ -1056,7 +1042,7 @@
   },
   {
    "at": "merchants/default",
-   "h": 739,
+   "h": 693,
    "empties": [
     "mc-kw",
     "mc-chips"
@@ -1134,7 +1120,7 @@
   },
   {
    "at": "contracts/default",
-   "h": 731,
+   "h": 674,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -1143,7 +1129,7 @@
   },
   {
    "at": "contracts/all",
-   "h": 731,
+   "h": 674,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -1243,7 +1229,7 @@
   },
   {
    "at": "xls-assets-merchant/default",
-   "h": 689,
+   "h": 661,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -1602,38 +1588,38 @@
   "items": [
    {
     "name": "투자자산 카드 Ty",
-    "want": "14.60%",
-    "got": "14.60%",
+    "want": "13.21%",
+    "got": "13.21%",
     "pass": true
    },
    {
     "name": "자산표 투자실행액 W",
-    "want": "2.75일",
-    "got": "2.75일",
+    "want": "3.04일",
+    "got": "3.04일",
     "pass": true
    },
    {
     "name": "자산표 투자실행액 Ty",
-    "want": "14.60%",
-    "got": "14.60%",
+    "want": "13.21%",
+    "got": "13.21%",
     "pass": true
    },
    {
     "name": "기본 기간 ④ 투자실행금액 대비",
-    "want": "6.91%",
-    "got": "6.91%",
+    "want": "3.99%",
+    "got": "3.99%",
     "pass": true
    },
    {
     "name": "기본 기간 ⑤ 투자자산 대비",
-    "want": "4.07%",
-    "got": "4.07%",
+    "want": "2.24%",
+    "got": "2.24%",
     "pass": true
    },
    {
     "name": "기본 기간 PSA",
-    "want": "PSA200,353,526원",
-    "got": "PSA200,353,526원",
+    "want": "PSA179,970,919원",
+    "got": "PSA179,970,919원",
     "pass": true
    },
    {
@@ -1644,14 +1630,14 @@
    },
    {
     "name": "일별 표 합계 W",
-    "want": "2.80",
-    "got": "2.80",
+    "want": "3.11",
+    "got": "3.11",
     "pass": true
    },
    {
     "name": "일별 표 합계 Ty",
-    "want": "6.91%",
-    "got": "6.91%",
+    "want": "3.99%",
+    "got": "3.99%",
     "pass": true
    },
    {
@@ -1662,32 +1648,32 @@
    },
    {
     "name": "월별 ④ 투자실행금액 대비",
-    "want": "7.36%",
-    "got": "7.36%",
+    "want": "4.57%",
+    "got": "4.57%",
     "pass": true
    },
    {
     "name": "월별 ⑤ 투자자산 대비",
-    "want": "4.36%",
-    "got": "4.36%",
+    "want": "2.59%",
+    "got": "2.59%",
     "pass": true
    },
    {
     "name": "월별 표 합계 W",
-    "want": "2.75",
-    "got": "2.75",
+    "want": "3.03",
+    "got": "3.03",
     "pass": true
    },
    {
     "name": "월별 표 합계 Ty",
-    "want": "7.36%",
-    "got": "7.36%",
+    "want": "4.57%",
+    "got": "4.57%",
     "pass": true
    },
    {
     "name": "월별 표 6행 W·Ty",
-    "want": "2026-03|2.76|7.27% , 2026-04|2.73|7.59% , 2026-05|2.76|7.19% , 2026-06|2.76|7.19% , 2026-07|2.73|7.54% , 2026-08|2.74|7.40%",
-    "got": "2026-03|2.76|7.27% , 2026-04|2.73|7.59% , 2026-05|2.76|7.19% , 2026-06|2.76|7.19% , 2026-07|2.73|7.54% , 2026-08|2.74|7.40%",
+    "want": "2026-03|3.05|4.49% , 2026-04|3.01|4.83% , 2026-05|3.05|4.38% , 2026-06|3.06|4.39% , 2026-07|3.01|4.76% , 2026-08|3.03|4.62%",
+    "got": "2026-03|3.05|4.49% , 2026-04|3.01|4.83% , 2026-05|3.05|4.38% , 2026-06|3.06|4.39% , 2026-07|3.01|4.76% , 2026-08|3.03|4.62%",
     "pass": true
    },
    {
@@ -1698,26 +1684,26 @@
    },
    {
     "name": "엑셀 투자수익현황 ④",
-    "want": "6.91%",
-    "got": "6.91%",
+    "want": "3.99%",
+    "got": "3.99%",
     "pass": true
    },
    {
     "name": "엑셀 투자수익현황 ⑤",
-    "want": "4.07%",
-    "got": "4.07%",
+    "want": "2.24%",
+    "got": "2.24%",
     "pass": true
    },
    {
     "name": "엑셀 투자자산현황 W",
-    "want": "2.75",
-    "got": "2.75",
+    "want": "3.04",
+    "got": "3.04",
     "pass": true
    },
    {
     "name": "엑셀 투자자산현황 Ty",
-    "want": "14.60%",
-    "got": "14.60%",
+    "want": "13.21%",
+    "got": "13.21%",
     "pass": true
    },
    {
@@ -1735,8 +1721,8 @@
    "label": "증명서 PDF",
    "name": "투자자산증명서_20260827.pdf",
    "saved": "투자자산증명서_20260827.pdf",
-   "bytes": 244211,
-   "srcBytes": 244211,
+   "bytes": 241111,
+   "srcBytes": 241111,
    "pass": true
   }
  ],

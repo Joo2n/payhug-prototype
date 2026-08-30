@@ -4,13 +4,13 @@
    "name": "시연 루트",
    "url": "https://payhug-investor-prototype.vercel.app/",
    "code": 200,
-   "bytes": 212774,
+   "bytes": 212908,
    "need": {
     "주별": 7,
     "계약서보기": 3,
     "하나인증서": 1,
     "12주": 2,
-    "2.80": 8
+    "3.11": 6
    },
    "ban": {
     "예시값": 0,
@@ -60,13 +60,13 @@
    "name": "전체 통합본",
    "url": "https://payhug-investor-demo.vercel.app/app.html",
    "code": 200,
-   "bytes": 218039,
+   "bytes": 218173,
    "need": {
     "주별": 8,
     "계약서보기": 4,
     "하나인증서": 1,
     "12주": 2,
-    "2.80": 8
+    "3.11": 6
    },
    "ban": {
     "예시값": 0,
@@ -91,9 +91,9 @@
    "name": "전체 계약기록",
    "url": "https://payhug-investor-demo.vercel.app/contracts.html",
    "code": 200,
-   "bytes": 16123,
+   "bytes": 15391,
    "need": {
-    "하나인증서": 6
+    "하나인증서": 5
    },
    "ban": {
     "예시값": 0,
@@ -118,7 +118,7 @@
    "name": "전체 주별",
    "url": "https://payhug-investor-demo.vercel.app/invest-profit--weekly.html",
    "code": 200,
-   "bytes": 16958,
+   "bytes": 16955,
    "need": {
     "주별": 4,
     "12주": 1
@@ -146,7 +146,7 @@
    "name": "용어 루트",
    "url": "https://payhug-investor-glossary.vercel.app/",
    "code": 200,
-   "bytes": 380929,
+   "bytes": 380947,
    "need": {
     "가중평균만기": 3,
     "케이뱅크": 6

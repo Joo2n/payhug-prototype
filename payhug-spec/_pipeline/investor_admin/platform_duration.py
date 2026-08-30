@@ -18,16 +18,14 @@ W금융일수는 금융 일반 용어로 `Duration`(가중평균만기)이다. �
     카드 2.0일은 `analysis/figma_policy_db.md` §1의 정산채권DB 실측(지급예상일 = 거래일 + 2영업일,
     23행 전수 검증)과 같은 규칙을 연평균으로 환산한 값이다.
 
-근거 2 — 플랫폼 구성비 (조현준 `정산주기.xlsx` `비중` D4:H6 · `정산주기` I16·I24·I32·I40)
-    카드 0.65 고정, 배달앱 3종은 2025/4 MAU 비중 2,175 : 1,044 : 486 으로 나머지 0.35 를 가른다.
+근거 2 — 로스터 구성비의 원천은 금액 실측이다 (Figma node 2782:5879 · 하루 1가맹점치)
+    w금융일수의 가중치는 금액 Ai 다 — 대표 워드 `용어 정의.docx` 4~6번 문단.
 
-      카드 13/20 = 0.65                배달의 민족  203/988   = 0.205465587044534…
-      쿠팡이츠   609/6175 = 0.098623481781377…   요기요      567/12350 = 0.045910931174089…
+        w금융일수 = Sum(Ai x Di) / Sum Ai
+        Ai = ID가 i인 대상정산금채권의 순지급액 x (1 - 유동화투자자의 할인율)
 
-    이 구성으로 낸 가중평균만기 = 2.750406854861073일 (엑셀 H41). 범위 2.0 ~ 6.2 안에 든다.
-
-근거 2-b — 참고 기록으로만 남기는 Figma 실측 (node 2782:5879 · 하루 1가맹점치)
-    `미리 받는 돈 상세` 화면이 하루치 순지급액을 플랫폼별로 쪼갠 값이다
+    가중치가 금액이므로 구성비도 금액으로 잰 것을 쓴다. 우리가 가진 금액 실측은
+    `미리 받는 돈 상세` 화면 하나뿐이다 — 하루치 순지급액을 플랫폼별로 쪼갠 값
     (`analysis/figma_02_가맹점화면.md` §3-2).
 
       카드 9사 합계  253,935원      배달의 민족  255,514원
@@ -35,8 +33,18 @@ W금융일수는 금융 일반 용어로 `Duration`(가중평균만기)이다. �
       ─────────────────────────────────────────────────
       합계           592,829원 →  카드 42.83% · 배민 43.10% · 쿠팡이츠 9.55% · 요기요 4.51%
 
-    하루 순지급액 592,829원짜리 1가맹점 1일치라 책 전체 구성비와 층위가 다르다.
-    로스터 집계의 근거로는 쓰지 않고 `MEASURED` 로 기록만 남긴다.
+    이 구성으로 낸 가중평균만기 = 3.039607397240…일. 범위 2.0 ~ 6.2 안에 든다.
+    배달 3사 내부 배분(753,964 : 167,096 : 78,939 / 100만)도 이 금액에서 그대로 나온다.
+
+근거 2-b — 참고값으로만 남기는 대표 엑셀 비중 (조현준 `정산주기.xlsx` `비중` D4:H6)
+    카드 0.65 고정, 배달앱 3종은 2025/4 MAU 비중 2,175 : 1,044 : 486 으로 나머지 0.35 를 가른다.
+
+      카드 13/20 = 0.65                배달의 민족  203/988   = 0.205465587044534…
+      쿠팡이츠   609/6175 = 0.098623481781377…   요기요      567/12350 = 0.045910931174089…
+
+    MAU 는 월간 이용자 수다 — 금액이 아니다. w금융일수의 가중치(Ai)와 층위가 달라
+    로스터 구성비의 원천으로 쓰지 않는다. 이 구성으로 낸 가중평균만기 2.750406854861073일
+    (엑셀 H41)은 시장 평균 참고값으로 `MAU_MIX` · `MAU_W` 에 남긴다 — 미팅에서 대조한다.
 
 근거 3 — 가맹점 한 곳이 실제로 무는 플랫폼 집합
     `01_payhug-admin-web-main/lib/devMockData.ts:5866-5970`
@@ -45,9 +53,9 @@ W금융일수는 금융 일반 용어로 `Duration`(가중평균만기)이다. �
     로스터 1번 가맹점이 카드 2사 + 배달 3사를 무는 구성으로 잡힌 근거다.
 
 확정 / 가설 구분
-    `확정`  금융일수 도수분포 · 플랫폼 구성비 (근거 1·2, 대표 실측)
-    `가설`  로스터 9건 각각의 배달 의존도 `b` — 업태별로 달리 잡은 예시다. 다만 9건을
-            금액으로 가중평균한 구성비가 근거 2의 대표 비중과 정확히 같도록 맞췄다.
+    `확정`  금융일수 도수분포 (근거 1, 대표 실측) · 금액 구성비 (근거 2, Figma 실측)
+    `가설`  로스터 8건 각각의 배달 의존도 `b` — 업태별로 달리 잡은 예시다. 다만 8건을
+            금액으로 가중평균한 구성비가 근거 2의 금액 실측과 정확히 같도록 맞췄다.
 """
 from decimal import Decimal as D, ROUND_HALF_UP
 
@@ -80,27 +88,40 @@ for _k, _b in BUCKET.items():
     assert len(set(d for d, _ in _b)) == len(_b), _k
     assert all(n > 0 for _, n in _b), _k
 
-# ── 근거 2 — 대표 비중 (카드 고정분 + 배달앱 MAU 배분) ─────────────
-#   카드 0.65, 나머지 0.35 를 배민:쿠팡이츠:요기요 = 2,175 : 1,044 : 486 (2025/4 MAU) 로 가른다.
-#   약분하면 725 : 348 : 162 (합 1,235) 이라 배달 3종 합이 정확히 0.35 가 된다.
-CARD_SHARE = D('0.65')
-MAU = {'bm': D(725), 'cpe': D(348), 'yo': D(162)}
-MAU_SUM = sum(MAU.values())                                  # 1,235
-BOOK_MIX = ((CARD_SHARE,) +
-            tuple((D(1) - CARD_SHARE) * MAU[k] / MAU_SUM for k in ('bm', 'cpe', 'yo')))
+# ── 근거 2 — 금액 실측 1일치 순지급액 (원) · 로스터 구성비의 원천 ────
+MEASURED = {'card': 253935, 'bm': 255514, 'cpe': 56628, 'yo': 26752}
+MEASURED_SRC = 'Figma 2782:5879 · 미리 받는 돈 상세 (analysis/figma_02_가맹점화면.md §3-2)'
+MEASURED_SUM = D(sum(MEASURED.values()))                     # 592,829
+#   배달 3사 내부 배분도 같은 금액에서 나온다 — MAU 가 아니라 순지급액 비다.
+DELIV = dict((k, D(MEASURED[k])) for k in ('bm', 'cpe', 'yo'))
+DELIV_SUM = sum(DELIV.values())                              # 338,894
+#   금액가중 배달 의존도 = 배달 3사 합 / 전체. 로스터 8건의 규모가중 평균 b 가 이 값이다.
+B_BAR = DELIV_SUM / MEASURED_SUM                             # 338,894 / 592,829
 
 
 def mix_of(b):
     """배달 의존도 b 하나에서 플랫폼 구성비 4개를 파생시킨다 — 합은 구성상 정확히 1."""
     b = D(str(b))
     assert 0 <= b <= 1, '배달 의존도가 [0, 1] 밖이다: %s' % b
-    rest = tuple(b * MAU[k] / MAU_SUM for k in ('bm', 'cpe', 'yo'))
+    rest = tuple(b * DELIV[k] / DELIV_SUM for k in ('bm', 'cpe', 'yo'))
     return (D(1) - sum(rest),) + rest
 
 
-# ── 근거 2-b — 참고 기록 · 실측 1일치 순지급액 (원) ─────────────────
-MEASURED = {'card': 253935, 'bm': 255514, 'cpe': 56628, 'yo': 26752}
-MEASURED_SRC = 'Figma 2782:5879 · 미리 받는 돈 상세 (analysis/figma_02_가맹점화면.md §3-2)'
+def measured_mix():
+    return tuple(D(MEASURED[k]) / MEASURED_SUM for k in ORDER)
+
+
+BOOK_MIX = measured_mix()          # 로스터가 맞춰야 하는 구성비
+
+# ── 근거 2-b — 참고값 · 대표 엑셀의 MAU 기반 시장 평균 비중 ──────────
+#   카드 0.65, 나머지 0.35 를 배민:쿠팡이츠:요기요 = 2,175 : 1,044 : 486 (2025/4 MAU) 로 가른다.
+#   약분하면 725 : 348 : 162 (합 1,235) 이라 배달 3종 합이 정확히 0.35 가 된다.
+#   MAU 는 이용자 수라 금액이 아니다 — 데이터로 쓰지 않고 미팅 대조용으로 남긴다.
+CARD_SHARE = D('0.65')
+MAU = {'bm': D(725), 'cpe': D(348), 'yo': D(162)}
+MAU_SUM = sum(MAU.values())                                  # 1,235
+MAU_MIX = ((CARD_SHARE,) +
+           tuple((D(1) - CARD_SHARE) * MAU[k] / MAU_SUM for k in ('bm', 'cpe', 'yo')))
 
 # ── 근거 4 — 플랫폼별 미지급·과지급 발생률 (순지급액 대비) ─────────
 #   S입금부족율의 재료다. 대표 정의서는 산식만 주었고 값은 예시로 우리가 넣는다.
@@ -137,12 +158,9 @@ def w_of(mix):
     return w
 
 
-def measured_mix():
-    t = D(sum(MEASURED.values()))
-    return tuple(D(MEASURED[k]) / t for k in ORDER)
-
-
-MEASURED_W = duration(measured_mix())          # 참고값 — 데이터로 쓰지 않는다
+MEASURED_W = duration(BOOK_MIX)                # 금액 실측 구성의 가중평균만기 — 데이터의 기준값
+MAU_W = sum(v * DURATION[k] for v, k in zip(MAU_MIX, ORDER))   # 참고값
+assert r2(MEASURED_W) == D('3.04'), MEASURED_W
 
 
 if __name__ == '__main__':
@@ -152,8 +170,10 @@ if __name__ == '__main__':
         print('  %-10s %10s원  %6s%%  평균만기 %s일'
               % (LABEL[k], format(MEASURED[k], ','),
                  (D(MEASURED[k]) / D(t) * 100).quantize(D('0.01')), DURATION[k]))
-    print('실측 구성의 가중평균만기 = %s일 → 표기 %s일 (참고 기록 · 데이터로 쓰지 않는다)'
+    print('금액 실측 구성의 가중평균만기 = %s일 → 표기 %s일 (로스터가 맞추는 값)'
           % (MEASURED_W.quantize(D('0.000001')), r2(MEASURED_W)))
+    print('금액가중 배달 의존도 B_BAR = %s / %s = %s'
+          % (DELIV_SUM, MEASURED_SUM, B_BAR.quantize(D('0.00000000000000000001'))))
     print('현실 범위 %s ~ %s일 (배달앱 미사용 ~ 요기요 전용)' % (FLOOR, CEIL))
     print('금융일수 도수 — 채권 한 건의 금융일수는 %d ~ %d일 · 관측 %d일' % (DI_MIN, DI_MAX, OBS_DAYS))
     for k in ORDER:
@@ -161,11 +181,11 @@ if __name__ == '__main__':
               % (LABEL[k], ' '.join('%d일x%d' % (d, n) for d, n in BUCKET[k]),
                  sum(d * n for d, n in BUCKET[k]), OBS_DAYS,
                  DURATION[k].quantize(D('0.000000000000001'))))
-    print('대표 비중 — %s' % ' · '.join('%s %s' % (LABEL[k], v.quantize(D('0.0000000000000001')))
-                                        for k, v in zip(ORDER, BOOK_MIX)))
-    print('대표 비중의 가중평균 금융일수 = %s일 → 표기 %s일'
-          % (sum(v * DURATION[k] for v, k in zip(BOOK_MIX, ORDER)).quantize(D('0.0000000000000001')),
-             r2(sum(v * DURATION[k] for v, k in zip(BOOK_MIX, ORDER)))))
+    print('참고값 · 대표 엑셀 MAU 비중 — %s'
+          % ' · '.join('%s %s' % (LABEL[k], v.quantize(D('0.0000000000000001')))
+                       for k, v in zip(ORDER, MAU_MIX)))
+    print('참고값 · MAU 비중의 가중평균 금융일수 = %s일 → 표기 %s일 (미팅 대조용)'
+          % (MAU_W.quantize(D('0.0000000000000001')), r2(MAU_W)))
     print('미지급·과지급 발생률 (순지급액 대비)')
     for k in ORDER:
         print('  %-10s 미지급 %s%%  과지급 %s%%  순 %s%%'

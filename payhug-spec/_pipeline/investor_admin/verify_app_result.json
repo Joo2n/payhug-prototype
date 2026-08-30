@@ -59,7 +59,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -89,7 +89,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -134,7 +134,7 @@
    "visible": true,
    "state": "default",
    "hash": "#password",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -352,8 +352,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5714,
-   "srcBytes": 5714,
+   "bytes": 5711,
+   "srcBytes": 5711,
    "pass": true
   },
   {
@@ -365,8 +365,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
-   "bytes": 6138,
-   "srcBytes": 6138,
+   "bytes": 6090,
+   "srcBytes": 6090,
    "pass": true
   },
   {
@@ -378,8 +378,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5468,
-   "srcBytes": 5468,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -391,8 +391,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5864,
-   "srcBytes": 5864,
+   "bytes": 5855,
+   "srcBytes": 5855,
    "pass": true
   },
   {
@@ -404,8 +404,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-01_2026-08-27.xlsx",
-   "bytes": 5465,
-   "srcBytes": 5465,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -417,8 +417,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-01_2026-08-27.xlsx",
-   "bytes": 6734,
-   "srcBytes": 6734,
+   "bytes": 6728,
+   "srcBytes": 6728,
    "pass": true
   },
   {
@@ -469,8 +469,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-06-08_2026-08-27.xlsx",
-   "bytes": 6156,
-   "srcBytes": 6156,
+   "bytes": 6150,
+   "srcBytes": 6150,
    "pass": true
   },
   {
@@ -482,8 +482,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5469,
-   "srcBytes": 5469,
+   "bytes": 5468,
+   "srcBytes": 5468,
    "pass": true
   },
   {
@@ -495,8 +495,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5703,
-   "srcBytes": 5703,
+   "bytes": 5695,
+   "srcBytes": 5695,
    "pass": true
   },
   {
@@ -508,8 +508,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5469,
-   "srcBytes": 5469,
+   "bytes": 5470,
+   "srcBytes": 5470,
    "pass": true
   },
   {
@@ -521,8 +521,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5843,
-   "srcBytes": 5843,
+   "bytes": 5832,
+   "srcBytes": 5832,
    "pass": true
   },
   {
@@ -556,9 +556,9 @@
       "20",
       "50"
      ],
-     "n10": 9,
-     "n20": 9,
-     "n50": 9,
+     "n10": 8,
+     "n20": 8,
+     "n50": 8,
      "pagesAt20": 0,
      "ok": true
     },
@@ -569,9 +569,9 @@
       "20",
       "50"
      ],
-     "n10": 9,
-     "n20": 9,
-     "n50": 9,
+     "n10": 8,
+     "n20": 8,
+     "n50": 8,
      "pagesAt20": 0,
      "ok": true
     },
@@ -582,9 +582,9 @@
       "20",
       "50"
      ],
-     "n10": 9,
-     "n20": 9,
-     "n50": 9,
+     "n10": 8,
+     "n20": 8,
+     "n50": 8,
      "pagesAt20": 0,
      "ok": true
     }
@@ -611,23 +611,23 @@
   },
   {
    "case": "가맹점 검색어 필터",
-   "rowsBefore": 9,
+   "rowsBefore": 8,
    "rowsAfter": 1,
-   "countBefore": "총9건",
+   "countBefore": "총8건",
    "countAfter": "총1건",
    "pass": true
   },
   {
    "case": "기간·granularity 변경 시 합계 재계산",
    "weekRows": 7,
-   "weekSum": "106,120",
+   "weekSum": "61,175",
    "ydayRows": 1,
-   "ydaySum": "14,741",
+   "ydaySum": "8,339",
    "monthRows": 1,
-   "monthSum": "434,306",
+   "monthSum": "269,234",
    "monthRange": "2026-08-01~2026-08-27",
    "m6Rows": 6,
-   "m6Sum": "2,891,022",
+   "m6Sum": "1,787,417",
    "pass": true
   },
   {
@@ -693,11 +693,11 @@
   {
    "case": "계약기록 전체 선택 — 서명 완료 행만",
    "before": "3건 선택",
-   "after": "8건 선택",
-   "button": "선택 문서 다운로드 (8)",
-   "고를수있는행": 8,
+   "after": "7건 선택",
+   "button": "선택 문서 다운로드 (7)",
+   "고를수있는행": 7,
    "잠긴체크박스": 1,
-   "총행": 9,
+   "총행": 8,
    "pass": true
   },
   {
@@ -769,10 +769,10 @@
   "assetTotal": 100000000,
   "ratioSum": 100,
   "ledgerDays": 180,
-  "ledgerProfitSum": 2891022,
-  "monthRollupSum": 2891022,
+  "ledgerProfitSum": 1787417,
+  "monthRollupSum": 1787417,
   "rollupMatchesLedger": true,
-  "contracts": 9,
+  "contracts": 8,
   "signQueue": 3,
   "screens": 15,
   "states": 18
@@ -802,7 +802,7 @@
   ],
   "dup": false
  },
- "scanned": 115,
+ "scanned": 113,
  "a11y": [],
  "newtab": [
   {
@@ -819,7 +819,7 @@
  "layout": [
   {
    "at": "invest-assets/default",
-   "h": 1273,
+   "h": 1228,
    "empties": [
     "ia-merch-page"
    ],
@@ -830,7 +830,7 @@
   },
   {
    "at": "invest-assets/download",
-   "h": 1273,
+   "h": 1228,
    "empties": [
     "ia-merch-page"
    ],
@@ -841,7 +841,7 @@
   },
   {
    "at": "invest-assets/cert-confirm",
-   "h": 1273,
+   "h": 1228,
    "empties": [
     "ia-merch-page"
    ],
@@ -947,7 +947,7 @@
   },
   {
    "at": "merchants/default",
-   "h": 739,
+   "h": 693,
    "empties": [
     "mc-kw",
     "mc-chips"
@@ -1036,7 +1036,7 @@
   },
   {
    "at": "contracts/default",
-   "h": 731,
+   "h": 674,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -1045,7 +1045,7 @@
   },
   {
    "at": "contracts/all",
-   "h": 731,
+   "h": 674,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -1145,7 +1145,7 @@
   },
   {
    "at": "xls-assets-merchant/default",
-   "h": 689,
+   "h": 661,
    "empties": [],
    "modals": [],
    "wantModal": null,
