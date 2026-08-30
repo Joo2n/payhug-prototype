@@ -178,10 +178,6 @@ async function main(){
     ['contracts','all', [
       ['nav','.nav-item[data-menu="contracts"]'],
       ['click','[data-act="ct-all"]']]],
-    ['contracts','downloaded', [
-      ['nav','.nav-item[data-menu="contracts"]'],
-      ['click','[data-act="ct-all"]'],
-      ['click','[data-act="ct-download"]']]],
     ['contracts','empty', [
       ['hash','#contracts/empty']]],
     ['password','weak', [
@@ -611,7 +607,7 @@ async function main(){
       ['invest-sim','default'],['invest-sim','result'],
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
       ['acquisition-list','default'],['acquisition-list','confirm'],['acquisition-list','signing'],['acquisition-list','done'],
-      ['contracts','default'],['contracts','all'],['contracts','downloaded'],['contracts','empty'],
+      ['contracts','default'],['contracts','all'],['contracts','empty'],
       ['coocon','default'],['password','default'],['password','weak'],['password','error'],['password','done'],
       ['certificate','default'],['xls-assets-status','default'],['xls-assets-merchant','default'],
       ['xls-profit-status','default'],['xls-profit-daily','default'],['login','default']];
@@ -648,7 +644,7 @@ async function main(){
       ['invest-sim','default'],['invest-sim','result'],
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
       ['acquisition-list','default'],['acquisition-list','confirm'],['acquisition-list','signing'],['acquisition-list','done'],
-      ['contracts','default'],['contracts','all'],['contracts','downloaded'],['contracts','empty'],
+      ['contracts','default'],['contracts','all'],['contracts','empty'],
       ['coocon','default'],['password','default'],['password','weak'],['password','error'],['password','done'],
       ['certificate','default'],['xls-assets-status','default'],['xls-assets-merchant','default'],
       ['xls-profit-status','default'],['xls-profit-daily','default'],['login','default']];
@@ -807,15 +803,13 @@ async function main(){
     return {items: out, ratioSum: sumRatio, fail: out.filter(function(o){ return !o.pass; }).length};
   `);
 
-  /* ── 10) PDF·전자서명 텍스트 실물 수신 (D-12·D-27 로 zip 묶음 폐기) ── */
+  /* ── 10) 문서 실물 수신 (D-39 로 계약기록 내려받기 잠금) ── */
   {
-    /* D-12 「계약기록 다운로드 결과물 = 전자서명 결과(텍스트)」 · D-27 「전자서명 결과는 PDF 가 아니다」로
-       재양도합의서 zip 묶음이 없어지고 전자서명 결과 텍스트 1건으로 바뀌었다.
-       실물은 build_sigtext.py 가 만들고 app 은 ctBundle() 로 전건 선택 시 CT_SIG_ALL 을 내보낸다.
-       기대 파일명만 새 동작으로 바꾼다 — 판정은 그대로 "실물 바이트가 원본과 같은가". */
+    /* D-39 「계약서 다운로드 차단 — 전자서명 형식이 정해질 때까지 비활성」으로
+       전자서명 결과 텍스트가 사라졌다. 남는 실물 내려받기는 증명서 PDF 한 건이다.
+       계약기록 쪽은 아래 잠금 검사에서 "버튼이 꺼져 있고 아무 파일도 나가지 않는가"로 본다. */
     const DOCS = [
-      ['증명서 PDF', '투자자산증명서_20260827.pdf', 'go("certificate","default"); document.querySelector(\'[data-act="cert-pdf"]\').click(); return 1;'],
-      ['전체 16건 전자서명 결과', '전자서명결과_전체16건_20260827.txt', 'go("contracts","default"); document.querySelector(\'[data-act="ct-all"]\').click(); document.querySelector(\'[data-act="ct-download"]\').click(); return 1;']
+      ['증명서 PDF', '투자자산증명서_20260827.pdf', 'go("certificate","default"); document.querySelector(\'[data-act="cert-pdf"]\').click(); return 1;']
     ];
     R.docs = [];
     for(const [label, name, script] of DOCS){

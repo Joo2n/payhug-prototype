@@ -37,7 +37,7 @@ IDX  = rd('index.html')
 GLO  = rd('glossary.html')
 MER  = rd('merchants.html') + rd('merchants--filtered.html') + rd('merchants--empty.html')
 COO  = rd('coocon.html') + rd('coocon--confirm.html')
-CON  = rd('contracts.html') + rd('contracts--all.html') + rd('contracts--downloaded.html') + rd('contracts--empty.html')
+CON  = rd('contracts.html') + rd('contracts--all.html') + rd('contracts--empty.html')
 ACQ  = (rd('acquisition.html') + rd('acquisition--confirm.html')
         + rd('acquisition--signing.html') + rd('acquisition--done.html'))
 # 검사 범위 = 배포에 실려 나가는 루트 HTML 전량.

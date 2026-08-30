@@ -38,6 +38,13 @@ async function evalJS(expr){
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const clearDL = () => fs.readdirSync(DL).forEach(f => { try{ fs.unlinkSync(path.join(DL, f)); }catch(e){} });
+/* 내려받기 폴더에 떨어진 것 중 `우리 자산`만 센다.
+   헤드리스 크롬이 자기 부속 파일(downloads.html 등)을 같은 폴더에 쓸 때가 있어 그것까지 세면 판정이 흐려진다. */
+const ASSETS = new Set(['assets/docs', 'assets/xlsx']
+  .flatMap(d => fs.readdirSync(path.join(REPO, d)).map(f => f.normalize('NFC'))));
+const assetLanded = () => fs.readdirSync(DL)
+  .filter(f => !f.endsWith('.crdownload'))
+  .filter(f => ASSETS.has(f.normalize('NFC').replace(/ \(\d+\)(?=\.[^.]+$)/, '')));
 
 /* 토스트가 이름을 대는 파일이 assets 아래 실물로 있고, 받은 바이트가 그 크기와 같아야 한다 */
 function landed(names){
@@ -123,15 +130,6 @@ async function main(){
      click:'[data-act="xls-open"][data-xls="profit-daily"]',    want:['월별투자수익_2026-03-01_2026-08-31.xlsx']},
     {id:'cert-pdf 증명서 PDF',      act:'location.hash="#certificate"; return 1;',
      click:'[data-act="cert-pdf"]', want:['투자자산증명서_20260827.pdf']},
-    {id:'ct-download 기본 3건 선택', act:'go("contracts","default"); return 1;',
-     click:'[data-act="ct-download"]', want:['전자서명결과_선택3건_20260827.txt']},
-    {id:'ct-download 전체 16건 선택', act:'go("contracts","all"); return 1;',
-     click:'[data-act="ct-download"]', want:['전자서명결과_전체16건_20260827.txt']},
-    {id:'ct-download 임의 2건 선택',  act:'go("contracts","default"); CT.sel={"M2026-0002":1,"M2026-0005":1}; refresh("contracts"); return 1;',
-     click:'[data-act="ct-download"]',
-     want:['전자서명결과_M2026-0002.txt', '전자서명결과_M2026-0005.txt']},
-    {id:'상태 진입 #contracts/downloaded', act:'location.hash="#invest-assets"; return 1;',
-     hash:'#contracts/downloaded', want:['전자서명결과_전체16건_20260827.txt']},
     {id:'상태 진입 #invest-assets/download', act:'location.hash="#contracts"; return 1;',
      hash:'#invest-assets/download', want:['가맹점별투자자산_2026-08-27_2026-08-27.xlsx']}
   ];
@@ -154,6 +152,43 @@ async function main(){
     const claimsDone = /완료/.test(toast.text);
     R.cases.push({id:c.id, toast:toast.text, toastShown:!toast.hidden, claimsDone,
       files, pass: !toast.hidden && claimsDone && files.every(f => f.ok)});
+  }
+
+  /* ── 2-b) 잠긴 내려받기 — 버튼이 disabled 이고 토스트도 파일도 나오지 않는다 (D-39)
+        전자서명 결과 파일 형식이 미결이라(meeting_20260828.md 확인필요 ②) 실물이 없다.
+        실물이 없는 자리에서 `완료` 토스트가 뜨면 그것이 곧 거짓말이므로 여기서 막는다. */
+  {
+    clearDL();
+    await evalJS('go("contracts","default"); document.querySelector("[data-mount=toast]").hidden=true; return 1;');
+    await sleep(250);
+    const lock = await evalJS(`
+      var sec=document.querySelector('section.screen[data-screen=contracts]');
+      var bulk=sec.querySelector('[data-act="ct-download"]');
+      var rows=sec.querySelectorAll('tbody tr.clickable [data-act="ct-doc"]');
+      var live=[].filter.call(rows, function(b){ return !b.disabled; }).length;
+      bulk.click();
+      [].forEach.call(rows, function(b){ b.click(); });
+      return {bulkDisabled: !!bulk.disabled, rowBtns: rows.length, rowLive: live,
+              docAnchors: sec.querySelectorAll('tbody a[href*="assets/docs"]').length};
+    `);
+    await sleep(1200);
+    const t1 = await evalJS('var t=document.querySelector("[data-mount=toast]"); return {hidden:t.hidden, text:(t.textContent||"").trim()};');
+    const f1 = assetLanded();
+    R.cases.push({id:'계약기록 내려받기 잠금 — 토스트 0 · 파일 0', bulkDisabled:lock.bulkDisabled,
+      rowBtns:lock.rowBtns, rowLive:lock.rowLive, docAnchors:lock.docAnchors, toast:t1.text, saved:f1,
+      pass: lock.bulkDisabled === true && lock.rowBtns === 10 && lock.rowLive === 0
+            && lock.docAnchors === 0 && t1.hidden === true && f1.length === 0});
+
+    /* 사라진 상태로 딥링크해도 완료를 말하지 않는다 — 주소를 붙여 넣고 새로 여는 경로 그대로 본다 */
+    clearDL();
+    await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/app.html#contracts/downloaded'});
+    await sleep(1800);
+    await send('Browser.setDownloadBehavior', {behavior:'allow', downloadPath: DL});
+    await sleep(600);
+    const t2 = await evalJS('var t=document.querySelector("[data-mount=toast]"); return {hidden:t.hidden, text:(t.textContent||"").trim(), view:document.body.dataset.view};');
+    const f2 = assetLanded();
+    R.cases.push({id:'#contracts/downloaded 딥링크 — 완료 주장 없음', toast:t2.text, view:t2.view, saved:f2,
+      pass: t2.hidden === true && t2.view === 'contracts' && f2.length === 0});
   }
 
   /* ── 3) 소멸·닫기 — 원본 Toast.tsx:18(기본 3000ms) · :45-51(duration 0 이면 X 버튼) ── */

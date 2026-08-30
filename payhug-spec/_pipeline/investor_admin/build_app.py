@@ -139,11 +139,6 @@ CSS = r'''
   /* ── 안내 배너 초록 (L-4) ─────────────────────────────────── */
   .notice-green { background: var(--primary-50); border-color: var(--primary-200); color: var(--primary-700); }
 
-  /* ── 파일 링크 ────────────────────────────────────────────── */
-  .file-link { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: var(--primary-600); text-decoration: none; cursor: pointer; }
-  .file-link:hover { text-decoration: underline; }
-  .file-link svg { width: 16px; height: 16px; flex-shrink: 0; }
-
   /* ── 투자 수익 지표 블록 ──────────────────────────────────── */
   .card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
   .card-head .card-title { margin: 0; }
@@ -214,7 +209,7 @@ CSS = r'''
   .doc-scroll h5 { margin: 16px 0 4px; font-size: 13px; font-weight: 700; color: var(--gray-900); }
   .doc-scroll p { margin: 0 0 4px; font-size: 13px; line-height: 20px; color: var(--gray-700); }
   .doc-scroll .ct-date { margin: 20px 0 16px; text-align: center; }
-  .doc-scroll .ct-sign { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; margin-top: 8px; }
+  .doc-scroll .ct-sign { display: flex; flex-direction: column; gap: 20px; margin-top: 8px; }
   .doc-scroll .ct-party { flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--gray-700); }
   .doc-scroll .ct-party .r { font-weight: 700; color: var(--gray-900); }
   .doc-scroll .ct-party .f { border-bottom: 1px solid var(--gray-300); padding-bottom: 3px; }
@@ -287,7 +282,6 @@ CSS = r'''
   .toast .t-sub { margin: 2px 0 0; font-size: 13px; line-height: 18px; font-weight: 400; opacity: 0.85; }
   .btn-excel.is-done { background: var(--emerald-700); }
   .btn-excel.is-done:hover { background: var(--emerald-700); }
-  .btn-excel.armed { box-shadow: 0 0 0 3px var(--emerald-100), var(--shadow-card); font-weight: 600; }
 '''
 
 CSS += r'''
@@ -849,7 +843,7 @@ SCREENS_HTML += '''
             <div class="list-tools">
               <span data-mount="ct-size"></span>
               <button class="btn btn-ghost" data-act="ct-clear" data-mount="ct-clear">선택 해제</button>
-              <button class="btn btn-excel" data-act="ct-download" data-mount="ct-dl">{EX2}</button>
+              <button class="btn btn-excel" data-act="ct-download" data-mount="ct-dl" disabled>{EX2}</button>
             </div>
           </div>
           <div data-mount="ct-tbl"></div>
@@ -959,7 +953,7 @@ STANDALONE_HTML = '''
 
 # ── 모달 5종 ───────────────────────────────────────────────────
 MODALS_HTML = '''
-<div class="modal-backdrop" data-modal="invest-assets-cert-confirm" data-act="backdrop" hidden>
+<div class="modal-backdrop" data-modal="invest-assets-cert-confirm" hidden>
   <div class="modal md">
     <div class="modal-header">
       <h3>투자자산 증명서 발급</h3>
@@ -981,7 +975,7 @@ MODALS_HTML = '''
   </div>
 </div>
 
-<div class="modal-backdrop" data-modal="acquisition-confirm" data-act="backdrop" hidden>
+<div class="modal-backdrop" data-modal="acquisition-confirm" hidden>
   <div class="modal md">
     <div class="modal-header">
       <h3>정산금채권 양수도 계약서 서명</h3>
@@ -998,7 +992,7 @@ MODALS_HTML = '''
   </div>
 </div>
 
-<div class="modal-backdrop" data-modal="acquisition-doc" data-act="backdrop" hidden>
+<div class="modal-backdrop" data-modal="acquisition-doc" hidden>
   <div class="modal lg">
     <div class="modal-header">
       <h3>계약서보기</h3>
@@ -1053,7 +1047,7 @@ MODALS_HTML = '''
   </div>
 </div>
 
-<div class="modal-backdrop" data-modal="acquisition-done" data-act="backdrop" hidden>
+<div class="modal-backdrop" data-modal="acquisition-done" hidden>
   <div class="modal md">
     <div class="modal-body" style="padding-top:32px">
       <div class="done-head">
@@ -1194,9 +1188,8 @@ var STATE_META = {
   },
   'contracts': {
     'default':null,
-    'all':        {label:'전체 선택',     cls:'badge-primary'},
-    'downloaded': {label:'다운로드 완료', cls:'badge-green'},
-    'empty':      {label:'문서 없음',     cls:'badge-gray'}
+    'all':        {label:'전체 선택', cls:'badge-primary'},
+    'empty':      {label:'문서 없음', cls:'badge-gray'}
   },
   'invest-sim': {
     'default':null,
@@ -1240,8 +1233,7 @@ var STATEFILE = {
   'merchants--filtered.html':'merchants/filtered', 'merchants--empty.html':'merchants/empty',
   'acquisition--confirm.html':'acquisition-list/confirm', 'acquisition--signing.html':'acquisition-list/signing',
   'acquisition--done.html':'acquisition-list/done', 'acquisition--doc.html':'acquisition-list/doc',
-  'contracts--all.html':'contracts/all',
-  'contracts--downloaded.html':'contracts/downloaded', 'contracts--empty.html':'contracts/empty',
+  'contracts--all.html':'contracts/all', 'contracts--empty.html':'contracts/empty',
   'password--weak.html':'password/weak',
   'password--error.html':'password/error', 'password--done.html':'password/done'
 };
@@ -1354,7 +1346,7 @@ function activePreset(){
 var RATE_PCT = 0.11;                 /* 할인율 — 이 산출물의 고정 입력값(D-21). 요율을 정하는 곳은 이 화면이 아니다 */
 var MC = {sector:'전체', buyer:'전체', kw:'', page:1, applied:null};
 var AQ = {sel:[false,false,false], signed:[false,false,false], phase:'list', doc:null};
-var CT = {sel:{'M2026-0001':1, 'M2026-0004':1, 'M2026-0006':1}, page:1, downloaded:false, empty:false};
+var CT = {sel:{'M2026-0001':1, 'M2026-0004':1, 'M2026-0006':1}, page:1, empty:false};
 /* 비밀번호 — 원본 훅(usePasswordInputValue·usePasswordPolicyField·useConfirmPasswordField)의 상태를 그대로 옮긴다.
    blurred = 새 비밀번호 칸에서 한 번이라도 포커스가 빠졌는가(규칙 오류 문구를 그때부터 보인다)
    spaceNew·spaceCfm = 공백을 눌렀을 때 2200ms 동안만 켜지는 일시 오류
@@ -1437,7 +1429,6 @@ var DERIVE = {
   },
   'contracts': function(){
     if(CT.empty) return 'empty';
-    if(CT.downloaded) return 'downloaded';
     if(ctSelCount() === CONTRACTS.length) return 'all';
     return 'default';
   },
@@ -1478,8 +1469,8 @@ var SEED = {
     else { AQ.sel = [true, true, false]; AQ.signed = [false, false, false]; AQ.phase = s; }
   },
   'contracts': function(s){
-    CT.empty = (s === 'empty'); CT.downloaded = (s === 'downloaded'); CT.page = 1;
-    if(s === 'all' || s === 'downloaded'){ CT.sel = {}; for(var i = 0; i < CONTRACTS.length; i++) CT.sel[CONTRACTS[i].mid] = 1; }
+    CT.empty = (s === 'empty'); CT.page = 1;
+    if(s === 'all'){ CT.sel = {}; for(var i = 0; i < CONTRACTS.length; i++) CT.sel[CONTRACTS[i].mid] = 1; }
     else if(s === 'empty'){ CT.sel = {}; }
     else { CT.sel = {'M2026-0001':1, 'M2026-0004':1, 'M2026-0006':1}; }
   },
@@ -1596,14 +1587,9 @@ function hideToast(){
 /* ── 실물 전달 ────────────────────────────────────────────────────
    화면이 `내려받기 완료`라고 말하면 그 순간 실제 파일이 나가야 한다.
    assets/ 에 실재하는 파일만 건다. 정적 묶음이 없는 조합은 개별 PDF로 내려준다. */
-/* 계약기록이 내려주는 것은 전자서명 결과 텍스트다. 실물은 build_sigtext.py 가 만든다. */
+/* 계약기록의 내려받기는 잠겨 있다 — 전자서명 결과 파일 형식이 미결이라 실물이 없다 (D-39). */
 var CERT_PDF     = '투자자산증명서_20260827.pdf';
 var CONTRACT_TXT  = '정산금채권_재양도_합의서.txt';
-var CT_SIG_PREFIX = '전자서명결과_';
-var CT_SIG_EXT    = '.txt';
-var CT_SIG_ALL   = '전자서명결과_전체16건_20260827.txt';
-var CT_SIG_SEL3  = '전자서명결과_선택3건_20260827.txt';
-var CT_SEL3     = 'M2026-0001,M2026-0004,M2026-0006';
 var toastServed = null;
 
 function pullFile(dir, name, delay){
@@ -1614,34 +1600,11 @@ function pullFile(dir, name, delay){
     document.body.appendChild(a); a.click(); a.parentNode.removeChild(a);
   }, delay || 0);
 }
-function ctSelMids(){
-  var out = [], i;
-  for(i = 0; i < CONTRACTS.length; i++) if(CT.sel[CONTRACTS[i].mid]) out.push(CONTRACTS[i].mid);
-  return out;
-}
-function ctBundle(){
-  var mids = ctSelMids(), sig = mids.join(','), f = [], i;
-  if(mids.length === CONTRACTS.length && mids.length > 0)
-    return {kind:'bundle', files:[CT_SIG_ALL], n:mids.length, sig:sig};
-  if(sig === CT_SEL3) return {kind:'bundle', files:[CT_SIG_SEL3], n:mids.length, sig:sig};
-  for(i = 0; i < mids.length; i++) f.push(CT_SIG_PREFIX + mids[i] + CT_SIG_EXT);
-  return {kind:'each', files:f, n:mids.length, sig:sig};
-}
-function ctDeliver(b){ for(var i = 0; i < b.files.length; i++) pullFile('assets/docs/', b.files[i], i * 250); }
-
 function syncToast(id, st){
   if(id === 'invest-assets' && st === 'download'){
     var xf = XLSX['assets-merchant'].file, xk = 'invest-assets/download:' + xf;
     if(toastServed !== xk){ pullFile('assets/xlsx/', xf, 0); toastServed = xk; }
     showToast(xf + ' 내려받기 완료'); return;   /* 기본 3,000ms — 원본 Toast.tsx:18 */
-  }
-  if(id === 'contracts' && st === 'downloaded'){
-    var b = ctBundle(), ck = 'contracts/downloaded:' + b.sig;
-    if(toastServed !== ck){ ctDeliver(b); toastServed = ck; }
-    showToast(b.kind === 'bundle' ? b.files[0] + ' 내려받기 완료'
-                                  : '전자서명 결과 ' + b.n + '건 내려받기 완료',
-              (b.kind === 'bundle' ? '전자서명 결과 ' + b.n + '건 묶음.' : '개별 파일 ' + b.n + '개.'));
-    return;
   }
   toastServed = null;
   if(!toastTimer) M('toast').hidden = true;
@@ -2350,9 +2313,8 @@ RENDER['acquisition-list'] = function(){
   bd.className = 'badge ' + (dsigned ? 'badge-green' : 'badge-amber');
   bd.textContent = dsigned ? '서명 완료' : '서명 대기';
   var fl = M('aqv-file');
-  fl.textContent = dsigned ? '전자서명 결과 열기' : '계약서 원문 열기';
-  fl.setAttribute('href', 'assets/docs/' + encodeURIComponent(
-    dsigned ? CT_SIG_PREFIX + ds.mid + CT_SIG_EXT : CONTRACT_TXT));
+  fl.textContent = '계약서 원문 열기';
+  fl.setAttribute('href', 'assets/docs/' + encodeURIComponent(CONTRACT_TXT));
 };
 
 /* ───────── 계약기록 ───────── */
@@ -2368,8 +2330,7 @@ RENDER['contracts'] = function(){
 
   M('ct-count', 'contracts').innerHTML = '총 <b class="mono">' + rows.length + '</b>건';
   var dl = M('ct-dl', 'contracts');
-  dl.disabled = (n === 0);
-  dl.classList.toggle('armed', n > 0 && n === rows.length && rows.length > 0);
+  dl.disabled = true;                       /* D-39 — 전자서명 결과 파일 형식 미결. 실물이 없으므로 잠근다 */
   M('ct-dl-label', 'contracts').textContent = '선택 문서 다운로드' + (n ? ' (' + n + ')' : '');
   M('ct-clear', 'contracts').disabled = (n === 0);
 
@@ -2398,7 +2359,7 @@ RENDER['contracts'] = function(){
       '<td><input type="checkbox" class="chk" data-act="ct-chk" data-mid="' + c.mid + '"' + (on ? ' checked' : '') + '></td>' +
       '<td class="no">' + ((CT.page - 1) * ctSize + i + 1) + '</td>' +
       '<td class="mono">' + c.mid + '</td><td><span class="name">' + c.name + '</span></td>' +
-      '<td><a class="file-link" data-act="ct-doc" href="assets/docs/' + encodeURIComponent(CT_SIG_PREFIX + c.mid + CT_SIG_EXT) + '" target="_blank" rel="noopener">' + CT_SIG_PREFIX + c.mid + CT_SIG_EXT + '</a></td>' +
+      '<td><button type="button" class="btn btn-excel" data-act="ct-doc" disabled>' + svg('excel') + ' 문서 다운로드</button></td>' +
       '<td class="center"><span class="badge badge-green">하나인증서</span></td></tr>';
   }
   box.innerHTML = t + '</tbody></table></div>';
@@ -2889,7 +2850,6 @@ ACT['aq-to-contracts'] = function(){
   if(mids.length){                        /* 방금 서명한 건이 골라진 채로 열린다 */
     CT.sel = {};
     for(i = 0; i < mids.length; i++) CT.sel[mids[i]] = 1;
-    CT.downloaded = false;
     refresh('contracts');
   }
 };
@@ -2899,22 +2859,17 @@ ACT['aq-done-ok'] = function(){ AQ.phase = 'list'; for(var i = 0; i < AQ.sel.len
 ACT['ct-all'] = function(el){
   CT.sel = {};
   if(el.checked) for(var i = 0; i < CONTRACTS.length; i++) CT.sel[CONTRACTS[i].mid] = 1;
-  CT.downloaded = false;
   refresh('contracts');
 };
 ACT['ct-chk'] = function(el){
   if(el.checked) CT.sel[el.dataset.mid] = 1; else delete CT.sel[el.dataset.mid];
-  CT.downloaded = false;
   refresh('contracts');
 };
-ACT['ct-download'] = function(){
-  if(ctSelCount() === 0) return;
-  CT.downloaded = true;
-  refresh('contracts');
-};
+/* 묶음·행 내려받기는 잠겨 있다 — 버튼은 disabled 라 눌리지 않고, 눌러도 내보낼 실물이 없다 (D-39) */
+ACT['ct-download'] = function(){};
 ACT['ct-page'] = function(el){ var p = parseInt(el.dataset.page, 10); if(p < 1) return; CT.page = p; refresh('contracts'); };
 ACT['ct-row']  = function(el){ var m = el.dataset.mid; CT.sel[m] = !CT.sel[m]; refresh('contracts'); };
-ACT['ct-doc']  = function(){};   /* 링크는 기본 동작(새 창)으로 흘린다 — 행 토글과 겹치지 않게 */
+ACT['ct-doc']  = function(){};   /* 행 내려받기 — 비활성 (D-39) */
 
 /* 비밀번호 */
 /* 현재 비밀번호는 원본도 걸러내지 않는다(page.tsx:113 — setCurrentPassword(e.target.value)).
@@ -2999,13 +2954,9 @@ document.addEventListener('click', function(e){
   var t = e.target;
   if(!t || !t.closest) return;
   var a = t.closest('[data-act]');
-  /* 모달 배경 클릭으로 닫기 — 패널 안쪽 클릭은 배경으로 새지 않는다.
-     원본 ConfirmDialog.tsx:54-55 (백드롭 onClick + 패널 stopPropagation) 대응.
-     진행 중 오버레이(acquisition-signing)만 예외 — 원본도 submitting·ocrProcessing 오버레이는 닫히지 않는다. */
-  if(a && a.dataset.act === 'backdrop'){
-    if(t !== a) a = t.closest('[data-act]:not([data-act="backdrop"])') || a;
-    if(a.dataset.act === 'backdrop'){ e.preventDefault(); ACT['modal-close'](); return; }
-  }
+  /* 모달은 닫기 버튼·X 로만 닫힌다 (D-40).
+     오버레이 클릭도, 패널 안쪽 클릭도 닫지 않는다 — 배경에 액션을 걸지 않는다.
+     본문 클릭에 preventDefault 를 걸지 않으므로 스크롤·텍스트 선택은 그대로다. */
   if(a && ACT[a.dataset.act]){
     if(KEEP_DEFAULT.indexOf(a.dataset.act) < 0) e.preventDefault();
     ACT[a.dataset.act](a, e);

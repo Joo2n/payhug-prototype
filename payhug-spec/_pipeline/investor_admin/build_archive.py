@@ -99,6 +99,7 @@ DESC = {
  "ui_fidelity.md":"UI 실측 대조 — 토큰·간격·타이포",
  "ui_fix_result.md":"UI 정정 결과",
  "fabrication_audit.md":"근거 없는 서술 감사 — 지어낸 값·단정 적발",
+ "modal_audit.md":"모달 닫힘 경로 조사 — 오버레이·본문 클릭·ESC 실측과 원본 대조",
  "fabrication_fix.md":"근거 없는 서술 교정 결과",
  "artifact_gap.md":"산출물 공백 목록 — 요청 대비 미제작분",
  "vercel_deploy.md":"Vercel 프리뷰 경로·MIME 점검",

@@ -183,10 +183,6 @@ async function main(){
     ['contracts','all', [
       ['nav','.nav-item[data-menu="contracts"]'],
       ['click','[data-act="ct-all"]']]],
-    ['contracts','downloaded', [
-      ['nav','.nav-item[data-menu="contracts"]'],
-      ['click','[data-act="ct-all"]'],
-      ['click','[data-act="ct-download"]']]],
     ['contracts','empty', [
       ['hash','#contracts/empty']]],
     ['password','weak', [
@@ -536,24 +532,20 @@ async function main(){
     out.push({case:'검색창 Enter → 조회 실행', rows:eRows, pass: eRows===2});
     go('merchants','default');
 
-    /* 모달 배경 클릭 — 진행 중 오버레이만 예외 */
+    /* 모달 배경 클릭으로는 닫히지 않는다 (D-40) — 여는 자리는 MODAL_OF 로 역산한다 */
     var bdClose=[], bdKeep=[];
-    [['invest-assets','cert-confirm'],['acquisition-list','doc'],['acquisition-list','confirm'],['acquisition-list','done']]
-      .forEach(function(t){
-        go(t[0],t[1]);
-        var bd=document.querySelector('[data-modal]:not([hidden])');
-        if(!bd){ bdClose.push(t.join('/')+':없음'); return; }
-        bd.click();
-        if(document.querySelector('[data-modal]:not([hidden])')) bdKeep.push(t.join('/'));
-        else bdClose.push(t.join('/'));
-      });
-    go('acquisition-list','signing');
-    var sg=document.querySelector('[data-modal]:not([hidden])');
-    if(sg) sg.click();
-    var sgStill=!!document.querySelector('[data-modal="acquisition-signing"]:not([hidden])');
+    Object.keys(MODAL_OF).forEach(function(k){
+      var t=k.split('/');
+      go(t[0],t[1]);
+      var bd=document.querySelector('[data-modal]:not([hidden])');
+      if(!bd){ bdClose.push(k+':없음'); return; }
+      bd.click();
+      if(document.querySelector('[data-modal]:not([hidden])')) bdKeep.push(k);
+      else bdClose.push(k);
+    });
     go('invest-assets','default');
-    out.push({case:'모달 배경 클릭 닫기 — 진행 오버레이만 예외', closed:bdClose, kept:bdKeep, signingKept:sgStill,
-      pass: bdClose.length===4 && bdKeep.length===0 && sgStill===true});
+    out.push({case:'모달 배경 클릭으로 닫히지 않는다', closed:bdClose, kept:bdKeep,
+      pass: bdClose.length===0 && bdKeep.length===Object.keys(MODAL_OF).length});
 
     /* 메뉴 그룹 접힘 — 셰브론이 실제로 그룹을 접는지 */
     var gh=document.querySelector('[data-act=nav-group]');
@@ -583,14 +575,26 @@ async function main(){
     out.push({case:'계약기록 선택 해제', after:c2, 머리에없음:c2h, downloadDisabled:c2d,
       pass: c2===null && c2h===true && c2d===true});
 
-    /* 계약기록도 행을 눌러 고른다 — 문서 링크는 새 창으로 흘러 행 토글과 겹치지 않는다 */
+    /* 내려받기는 선택 건수와 무관하게 잠겨 있다 — 전자서명 결과 파일 형식 미결 (D-39) */
+    document.querySelector('[data-act=ct-all]').click();
+    var c3d=document.querySelector('[data-act=ct-download]').disabled;
+    var c3n=document.querySelectorAll('section[data-screen=contracts] tbody [data-act=ct-doc]:not([disabled])').length;
+    var c3a=document.querySelectorAll('section[data-screen=contracts] tbody a[href*="assets/docs"]').length;
+    out.push({case:'계약기록 내려받기 잠금', 전체선택시:c3d, 살아있는행버튼:c3n, 문서링크:c3a,
+      pass: c3d===true && c3n===0 && c3a===0});
+    document.querySelector('[data-act=ct-clear]').click();
+
+    /* 계약기록도 행을 눌러 고른다 — 행 안의 내려받기 버튼은 잠겨 있어 행 토글과 겹치지 않는다 (D-39) */
     var ctr=document.querySelector('section[data-screen=contracts] tbody tr.clickable');
     ctr.click(); var r1=ctSel();
-    document.querySelector('section[data-screen=contracts] tbody tr.clickable .file-link').click();
+    var ctb=document.querySelector('section[data-screen=contracts] tbody tr.clickable [data-act=ct-doc]');
+    ctb.click();
     var r2=ctSel();
-    out.push({case:'계약기록 행 클릭 선택 — 문서 링크와 상쇄되지 않음', afterRow:r1, afterLink:r2,
+    out.push({case:'계약기록 행 클릭 선택 — 행 내려받기 버튼과 상쇄되지 않음', afterRow:r1, afterBtn:r2,
+      rowBtnDisabled:!!ctb.disabled,
       role:ctr.getAttribute('role'), tabindex:ctr.getAttribute('tabindex'),
-      pass: r1==='1건 선택' && r2==='1건 선택' && ctr.getAttribute('role')===null && ctr.getAttribute('tabindex')===null});
+      pass: r1==='1건 선택' && r2==='1건 선택' && ctb.disabled===true
+            && ctr.getAttribute('role')===null && ctr.getAttribute('tabindex')===null});
     document.querySelector('[data-act=ct-clear]').click();
 
     go('acquisition-list','default');
@@ -633,7 +637,7 @@ async function main(){
       ['invest-sim','default'],['invest-sim','result'],
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
       ['acquisition-list','default'],['acquisition-list','doc'],['acquisition-list','confirm'],['acquisition-list','signing'],['acquisition-list','done'],
-      ['contracts','default'],['contracts','all'],['contracts','downloaded'],['contracts','empty'],
+      ['contracts','default'],['contracts','all'],['contracts','empty'],
       ['coocon','default'],['password','default'],['password','weak'],['password','error'],['password','done'],
       ['certificate','default'],['xls-assets-status','default'],['xls-assets-merchant','default'],
       ['xls-profit-status','default'],['xls-profit-daily','default'],['index','default'],['login','default']];
@@ -659,6 +663,98 @@ async function main(){
     go('invest-assets','default');
     return out;
   `);
+  /* ── 7) 모달 닫힘 경로 — 닫기 버튼·X 로만 닫힌다 (D-40) ──
+     모달 이름을 박지 않는다. 오버레이 요소 `[data-modal]` 를 전수로 훑고,
+     그것을 여는 화면·상태는 앱이 들고 있는 MODAL_OF 로 역산한다. 새 모달이 생겨도 저절로 들어온다. */
+  R.modals = await evalJS(`
+    var OPEN={};
+    for(var k in MODAL_OF){ var p=k.split('/'); OPEN[MODAL_OF[k]]=[p[0], p[1]]; }
+    function el(name){ return document.querySelector('[data-modal="'+name+'"]'); }
+    function shown(name){ var m=el(name); return !!(m && !m.hidden); }
+    function esc(node){
+      ['keydown','keyup'].forEach(function(t){
+        node.dispatchEvent(new KeyboardEvent(t, {key:'Escape', code:'Escape', keyCode:27, bubbles:true, cancelable:true}));
+      });
+    }
+    var out=[];
+    Array.prototype.forEach.call(document.querySelectorAll('[data-modal]'), function(m0){
+      var name=m0.dataset.modal, o=OPEN[name], rec={modal:name};
+      if(!o){ rec.err='여는 화면·상태 없음'; rec.pass=false; out.push(rec); return; }
+      rec.at=o[0]+'/'+o[1];
+
+      /* (1) 오버레이 여백 클릭 — 패널 바깥의 실제 좌표를 짚는다 */
+      go(o[0],o[1]);
+      var m=el(name), panel=m.querySelector('.modal');
+      var pr=panel.getBoundingClientRect();
+      var hitEl=document.elementFromPoint(Math.max(3, pr.left/2), Math.max(3, pr.top/2));
+      rec.overlayHit = hitEl ? (hitEl.className||hitEl.tagName) : null;
+      if(hitEl) hitEl.click();
+      rec.afterOverlayClick = shown(name);
+
+      /* (2) 패널 안쪽 클릭 — 본문 자체와 본문 안 첫 비컨트롤 요소 */
+      go(o[0],o[1]); m=el(name);
+      var body=m.querySelector('.modal-body') || m.querySelector('.modal');
+      body.click();
+      rec.afterBodyClick = shown(name);
+      go(o[0],o[1]); m=el(name);
+      var inner=Array.prototype.filter.call(m.querySelectorAll('.modal-body *'), function(e){
+        return !e.closest('[data-act]') && !e.querySelector('[data-act]')
+               && (e.textContent||'').trim().length > 0;
+      })[0];
+      rec.innerTag = inner ? inner.tagName.toLowerCase() : null;
+      if(inner) inner.click();
+      rec.afterInnerClick = shown(name);
+
+      /* (3) ESC */
+      go(o[0],o[1]); m=el(name);
+      esc(document); esc(m); esc(m.querySelector('.modal'));
+      rec.afterEsc = shown(name);
+
+      /* (4) 닫히게 하는 컨트롤 전수 — 무엇이 닫는지 실측 */
+      go(o[0],o[1]); m=el(name);
+      var ctls=Array.prototype.slice.call(m.querySelectorAll('button, a[href], [role=button]'));
+      rec.controls = ctls.length;
+      rec.live = ctls.filter(function(c){ return !c.disabled; }).length;
+      var closers=[];
+      for(var i=0;i<ctls.length;i++){
+        go(o[0],o[1]);
+        var mm=el(name);
+        var c=mm.querySelectorAll('button, a[href], [role=button]')[i];
+        if(!c || c.disabled) continue;
+        if(c.getAttribute('target')==='_blank') continue;   /* 새 창 열기 — 닫기 경로가 아니다 */
+        c.click();
+        if(!shown(name)) closers.push({
+          label:(c.textContent||'').trim().slice(0,12) || c.getAttribute('aria-label') || '',
+          tag:c.tagName.toLowerCase(), act:c.dataset.act||'',
+          x: c.classList.contains('close'),
+          footer: !!c.closest('.modal-footer')});
+      }
+      rec.closers = closers;
+
+      /* (5) 본문 스크롤·선택이 살아 있는가 — 클릭 무시가 읽기를 막지 않는다 */
+      go(o[0],o[1]); m=el(name);
+      var ds=m.querySelector('.doc-scroll');
+      if(ds){
+        var cs=getComputedStyle(ds);
+        ds.scrollTop=60;
+        rec.scroll={ overflow: ds.scrollHeight>ds.clientHeight, moved: ds.scrollTop>0,
+                     select: cs.userSelect!=='none' && cs.webkitUserSelect!=='none',
+                     pointer: cs.pointerEvents!=='none' };
+        ds.scrollTop=0;
+      }
+
+      var noStray = (rec.afterOverlayClick===true && rec.afterBodyClick===true
+                     && rec.afterInnerClick===true && rec.afterEsc===true);
+      var byButton = closers.every(function(c){ return c.tag==='button' && (c.x || c.footer); });
+      var reachable = (rec.live===0) || closers.length>0;    /* 살아 있는 컨트롤이 없으면 진행 오버레이 */
+      var readable = !ds || (rec.scroll.select && rec.scroll.pointer && (!rec.scroll.overflow || rec.scroll.moved));
+      rec.pass = noStray && byButton && reachable && readable;
+      out.push(rec);
+    });
+    go('invest-assets','default');
+    return out;
+  `);
+
   R.console = consoleErrors.slice();
   fs.writeFileSync(path.join(OUTDIR, 'verify_app_result.json'), JSON.stringify(R, null, 1));
 
@@ -677,6 +773,11 @@ async function main(){
   R.a11y.slice(0, 20).forEach(d => console.log('  -', JSON.stringify(d)));
   console.log('== 콘솔 에러 ==', R.console.length);
   R.console.slice(0, 20).forEach(c => console.log('  -', c));
+  console.log('== 모달 닫힘 경로 ' + R.modals.length + ' ==');
+  R.modals.forEach(m => console.log(' ', line(m.modal + '  오버레이=' + m.afterOverlayClick + ' 본문=' + m.afterBodyClick +
+    ' 내부=' + m.afterInnerClick + ' ESC=' + m.afterEsc +
+    ' 닫는것=[' + (m.closers||[]).map(c => c.label + (c.x ? '(X)' : '')).join(', ') + ']' +
+    (m.scroll ? ' 스크롤=' + JSON.stringify(m.scroll) : '') + (m.err ? ' ' + m.err : ''), m.pass)));
   console.log('== selfcheck ==', JSON.stringify(R.selfcheck));
 
   ws.close(); chrome.kill(); server.close();

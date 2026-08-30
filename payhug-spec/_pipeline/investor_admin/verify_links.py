@@ -97,15 +97,19 @@ print("  assets/xlsx 고유 %d개 · 참조 %d건" % (len(xls_refs), sum(len(tar
 
 # app.html 이 코드로 만들어 내려주는 파일명도 실물 대조
 APP = io.open(os.path.join(REPO, "app.html"), encoding="utf-8").read()
-for var in ["CERT_PDF", "CT_SIG_ALL", "CT_SIG_SEL3"]:
+for var in ["CERT_PDF"]:
     m = re.search(r"var %s\s*=\s*'([^']+)'" % var, APP)
     name = m.group(1) if m else None
     p = os.path.join(REPO, "assets/docs", name) if name else None
     chk("app.html %s → %s" % (var, name), bool(name) and os.path.exists(p))
-# 계약기록 행이 거는 것은 전자서명 결과 텍스트다(대표 미팅 2026-08-28 M-2). 실물 = build_sigtext.py
-for i in range(1, 17):
-    mid = "M2026-%04d" % i
-    chk("app.html ct-file %s" % mid, os.path.exists(os.path.join(REPO, "assets/docs", "전자서명결과_%s.txt" % mid)))
+# 계약기록 내려받기는 잠겨 있다(D-39) — 전자서명 결과 파일은 만들지도 걸지도 않는다.
+# 실물 없는 자리에 링크가 남으면 죽은 주소가 되므로, 파일과 참조가 둘 다 0인지 본다.
+_sig_files = [f for f in os.listdir(os.path.join(REPO, "assets/docs")) if f.startswith("전자서명결과_")]
+chk("전자서명 결과 파일 0건", not _sig_files, ", ".join(_sig_files[:3]) or "없음")
+_sig_refs = [h for h in targets if "전자서명결과_" in urllib.parse.unquote(h)]
+chk("전자서명 결과 링크 0건", not _sig_refs, ", ".join(_sig_refs[:3]) or "없음")
+_sig_app = re.findall(r"전자서명결과_[^'\"]*", APP)
+chk("app.html 전자서명 결과 파일명 0건", not _sig_app, ", ".join(_sig_app[:3]) or "없음")
 # 계약서보기가 여는 원문은 가맹점과 무관한 한 벌이다(당사자 공란)
 m = re.search(r"var CONTRACT_TXT\s*=\s*'([^']+)'", APP)
 chk("app.html CONTRACT_TXT → %s" % (m.group(1) if m else None),

@@ -33,7 +33,7 @@ IMPORT = [
     'invest-assets--empty', 'invest-profit--monthly', 'invest-profit--empty',
     'merchants--filtered', 'merchants--empty',
     'acquisition--confirm', 'acquisition--signing', 'acquisition--done',
-    'contracts--all', 'contracts--downloaded', 'contracts--empty',
+    'contracts--all', 'contracts--empty',
     'password--weak', 'password--error', 'password--done',
     'invest-profit--weekly', 'invest-sim', 'invest-sim--result',
     'index', 'login',
