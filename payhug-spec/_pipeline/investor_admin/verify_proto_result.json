@@ -58,7 +58,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgba(127, 225, 65, 1)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -73,7 +73,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-sim",
-   "bg": "rgba(127, 225, 65, 1)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -88,7 +88,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -103,7 +103,7 @@
    "visible": true,
    "state": "default",
    "hash": "#acquisition-list",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -118,7 +118,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -926,7 +926,7 @@
  "layout": [
   {
    "at": "invest-assets/default",
-   "h": 1232,
+   "h": 1228,
    "empties": [
     "ia-merch-page"
    ],
@@ -937,7 +937,7 @@
   },
   {
    "at": "invest-assets/download",
-   "h": 1232,
+   "h": 1228,
    "empties": [
     "ia-merch-page"
    ],
@@ -948,7 +948,7 @@
   },
   {
    "at": "invest-assets/cert-confirm",
-   "h": 1232,
+   "h": 1228,
    "empties": [
     "ia-merch-page"
    ],
@@ -961,7 +961,7 @@
   },
   {
    "at": "invest-assets/empty",
-   "h": 998,
+   "h": 994,
    "empties": [
     "ia-size",
     "ia-merch-page"

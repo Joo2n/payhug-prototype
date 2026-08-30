@@ -1,43 +1,43 @@
 {
- "finishedAt": "2026-08-30T19:07:11.590Z",
+ "finishedAt": "2026-08-30T19:14:43.027Z",
  "rounds": [
   {
    "round": 1,
-   "at": "2026-08-30T19:06:41.182Z",
+   "at": "2026-08-30T19:14:12.457Z",
    "http": {
     "proto": {
-     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788116801182",
+     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788117252457",
      "status": 200,
      "bytes": 212908,
-     "ms": 163,
+     "ms": 422,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "15",
+     "age": "467",
      "cache": "HIT",
      "md5": "5642da5de5368e7677649e87f21f34c1"
     },
     "gloss": {
-     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788116801347",
+     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788117252880",
      "status": 200,
      "bytes": 380947,
-     "ms": 277,
+     "ms": 119,
      "mitigated": "",
      "challenge": false,
      "title": "용어 해설 — 투자자 어드민",
-     "age": "15",
+     "age": "466",
      "cache": "HIT",
      "md5": "eccbfce095bf4ba57bc1e7e695c40610"
     },
     "demo": {
-     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788116801626",
+     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788117253001",
      "status": 200,
      "bytes": 23958,
-     "ms": 289,
+     "ms": 73,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug 투자자 어드민 — 화면 설계(안)",
-     "age": "9",
+     "age": "460",
      "cache": "HIT",
      "md5": "c6dcaab7ff02954e3e88725d78e67530"
     },
@@ -45,11 +45,11 @@
      "url": "https://payhug-investor-demo.vercel.app/app.html",
      "status": 200,
      "bytes": 218173,
-     "ms": 29,
+     "ms": 31,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "16",
+     "age": "468",
      "cache": "HIT",
      "md5": "11cba02fd44ae34472acc150012de17c"
     },
@@ -57,12 +57,12 @@
      "url": "https://payhug-investor-demo.vercel.app/glossary.html",
      "status": 200,
      "bytes": 380865,
-     "ms": 438,
+     "ms": 29,
      "mitigated": "",
      "challenge": false,
      "title": "투자자 어드민 용어 해설",
-     "age": "0",
-     "cache": "MISS",
+     "age": "450",
+     "cache": "HIT",
      "md5": "323c50b26e3cfc5607010ad61d984bf9"
     }
    },
@@ -70,17 +70,17 @@
     {
      "name": "A proto 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=212908 age=15s cache=HIT"
+     "detail": "code=200 bytes=212908 age=467s cache=HIT"
     },
     {
      "name": "A gloss 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=380947 age=15s cache=HIT"
+     "detail": "code=200 bytes=380947 age=466s cache=HIT"
     },
     {
      "name": "A demo 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=23958 age=9s cache=HIT"
+     "detail": "code=200 bytes=23958 age=460s cache=HIT"
     },
     {
      "name": "A demo/app.html",
