@@ -38,14 +38,17 @@ SCREEN = {
 }
 FIELDS = ['term', 'var', 'calc', 'screen', 'rel']
 
-# 캡션 현행화 표 — 캡처 이미지(webp)와 shot_rects.json 좌표는 동결이고,
-# 앵커 text 는 촬영 시점 기록이라 손대지 않는다. 캡션은 이미지 밖 텍스트라
-# 현행 화면값으로 맞춘다. 치환은 이 표 한 곳에서만 하고
+# 캡션 현행화 표 — 캡처가 옛 화면에 묶여 있을 때, 이미지 밖 텍스트인 캡션만
+# 현행 화면값으로 맞추는 자리. 치환은 이 표 한 곳에서만 하고
 # verify_shotmarks.py 가 같은 표를 불러 앵커 text 에도 똑같이 걸어 대조한다.
-CAP_FIX = (
-    ('Ty수익율 투자실행금액 대비 12.97% 투자자산 대비 10.72%',
-     'Ty수익율 투자실행금액 대비 3.99% 투자자산 대비 2.24%'),
-)
+#
+# 2026-08-31 — 지금은 0건이다. 캡처 5장을 현행 화면으로 다시 찍어(capture_shots.js)
+# 앵커 text 자체가 현행값이 됐다. 옛 규칙
+#   'Ty수익율 투자실행금액 대비 12.97% 투자자산 대비 10.72%' → '3.99% / 2.24%'
+# 은 대상 문자열이 shot_rects.json 에서 사라져 어느 자리에도 걸리지 않는다.
+# 규칙을 지운 것이지 검사를 끈 것이 아니다 — cap_text 와 verify_shotmarks 의 짝은 그대로고,
+# 캡처가 현행인지는 verify_shots.js 의 B2(원본 HTML sha256)·C1(재현 바이트)이 판정한다.
+CAP_FIX = ()
 
 
 def cap_text(t):
@@ -58,6 +61,51 @@ def cap_text(t):
 #  마크다운 → HTML (이 문서가 쓰는 문법만)
 # ══════════════════════════════════════════════════════════════════
 RAWA = re.compile(r'<a id="([a-zA-Z0-9\-]+)"></a>')
+
+# ── 아래첨자 조판 ──
+#  원고는 마크다운 규약 A_i · A_{D-1,i} · SA_{D-1} 로 쓰고, 화면에는 <sub> 로 낸다.
+#  하이픈은 빼기표 −(U+2212), 쉼표 뒤에는 가는 공백을 넣는다.
+#  대표 원문을 그대로 옮긴 자리는 원고가 평문(AD-1i · SAD-1)이라 이 정규식에 걸리지 않는다.
+SUBRE = re.compile(r'(?<![A-Za-z0-9_])(SMR|SB|SA|SM|SD|SL|A|B|M|D)_(?:\{(D-1,i|D-1|p,i)\}|(i))(?![A-Za-z0-9_])')
+
+
+def subs(t):
+    def one(m):
+        body = (m.group(2) or m.group(3)).replace('-', '\u2212').replace(',', ',&thinsp;')
+        return f'{m.group(1)}<sub>{body}</sub>'
+    return SUBRE.sub(one, t)
+
+
+def flat(t):
+    """alt·검색키처럼 태그를 못 넣는 자리 — 아래첨자 표시만 걷어 낸다."""
+    return SUBRE.sub(lambda m: m.group(1) + (m.group(2) or m.group(3)).replace(',', ''), t)
+
+
+# ── 원문 인용 블록 ──
+#  라벨이 「원문…:」인 코드펜스는 대표 정의서를 그대로 옮긴 자리다. 아래첨자로 바꾸지 않고,
+#  글자가 원문과 어긋나면 여기서 빌드를 세운다.
+CEO = open(os.path.join(PIPE, 'ceo_definitions.md'), encoding='utf-8').read()
+CEOT = re.sub(r'\s+', '', CEO)
+QUOTE_LAB = {'원문이 화면 수정 지시도 함께 달아 두었다.'}
+QNOTE = re.compile(r'←.*$')
+
+
+def is_quote(label):
+    l = label.strip()
+    return l.startswith('원문') and (l.endswith(':') or l in QUOTE_LAB)
+
+
+def check_quote(body):
+    """인용 블록 각 줄이 원문에 글자 그대로 있는가. 없으면 그 줄을 돌려준다."""
+    bad = []
+    for ln in body.split('\n'):
+        s = QNOTE.sub('', ln)
+        for frag in s.split('…'):
+            f = re.sub(r'\s+', '', frag)
+            if len(f) >= 8 and f not in CEOT:
+                bad.append(ln.strip())
+                break
+    return bad
 
 def inline(t, xref=None, self_id=None):
     keep = []
@@ -78,7 +126,7 @@ def inline(t, xref=None, self_id=None):
             return f'<a class="xref" href="#{tid}">{m.group(0)}</a>'
         t = re.sub(r'<code>([^<]+)</code>', link, t)
     t = re.sub(r'\x00(\d+)\x00', lambda m: keep[int(m.group(1))], t)
-    return t
+    return subs(t)
 
 
 def _visible_backticks(out):
@@ -105,7 +153,16 @@ def blocks(md, xref=None, self_id=None):
             j = i + 1
             while j < len(L) and not L[j].startswith('```'):
                 j += 1
-            o.append('<pre class="calc">' + H.escape('\n'.join(L[i+1:j])) + '</pre>')
+            body = '\n'.join(L[i+1:j])
+            lab = next((L[k] for k in range(i - 1, -1, -1) if L[k].strip()), '')
+            if is_quote(lab):
+                bad = check_quote(body)
+                if bad:
+                    raise SystemExit('!! 원문 인용 블록이 원문과 다르다 %d줄\n   %s'
+                                     % (len(bad), '\n   '.join(bad[:3])))
+                o.append('<pre class="calc quote">' + H.escape(body) + '</pre>')
+            else:
+                o.append('<pre class="calc">' + subs(H.escape(body)) + '</pre>')
             i = j + 1; continue
         if ln.startswith('|'):
             j = i
@@ -192,7 +249,7 @@ def shot_html(shot, spec, kind, term):
     lab = '이 자리' if kind == 'direct' else '재료 — 이 자리 뒤에 숨는다'
     ctext = cap_text(it['text'])
     cap = f"{name} · {ctext[:40] or it['tag']}"
-    alt = f"{name} 화면 캡처 — {term} 이 표시되는 자리"
+    alt = f"{name} 화면 캡처 — {flat(term)} 이 표시되는 자리"
     mk = (f'<span class="mark {kind}" style="left:{L_:.3f}%;top:{T_:.3f}%;'
           f'width:{Wp:.3f}%;height:{Hp:.3f}%"><i>{H.escape(lab)}</i></span>')
     img = (f'<img src="{src}" alt="{H.escape(alt)}" loading="lazy" decoding="async" '
@@ -308,6 +365,7 @@ a.xref:hover { background: var(--primary-50); border-bottom-color: var(--primary
 a.xref code { background: var(--primary-50); color: var(--primary-800); }
 pre.calc { font-family: var(--font-mono); font-size: 12.5px; line-height: 21px; background: var(--gray-900);
   color: #e8f6dd; border-radius: 12px; padding: 16px 18px; margin: 14px 0 0; overflow-x: auto; }
+pre.calc.quote { border-left: 4px solid var(--brand-500, #7bc043); }
 .t-card { background: #fff; border: 1px solid var(--gray-100); border-radius: 14px;
   box-shadow: var(--shadow-card); overflow: hidden; margin-top: 14px; }
 .t-scroll { overflow-x: auto; }
@@ -567,8 +625,8 @@ def main():
         return None if soft else k
 
     O = [HEAD % {'title': doc['title'], 'css': CSS,
-                 # 상단 우측 통로는 전체 목록 하나뿐이다. 구버전 판은 만기 10~13일·ty 3.57% 로
-                 # 짜여 대표 정의(만기 2.0~6.2일)와 뿌리부터 어긋나고 생성기도 없어,
+                 # 상단 우측 통로는 전체 목록 하나뿐이다. 구버전 판은 금융일수 10~13일·ty 3.57% 로
+                 # 짜여 대표 정의(금융일수 2.0~6.2일)와 뿌리부터 어긋나고 생성기도 없어,
                  # 링크가 아니라 파일 자체가 배포에서 빠져 있다(보관처는 파이프라인).
                  'alt': '<a href="index.html">전체 목록</a>'}]
     W = O.append
@@ -583,10 +641,10 @@ def main():
             sy = ''
             m = re.match(r'\[`([^`]+)`\]', (f.get('변수') or '').strip())
             if m:
-                sy = f'<span class="sy">{H.escape(m.group(1))}</span>'
-            key = (term + ' ' + (f.get('변수') or '')[:80]).lower()
+                sy = f'<span class="sy">{subs(H.escape(m.group(1)))}</span>'
+            key = (term + ' ' + flat(term) + ' ' + (f.get('변수') or '')[:80]).lower()
             W(f'<a href="#{ids[term]}" data-t="1" data-k="{H.escape(key, quote=True)}">'
-              f'{H.escape(term)}{sy}</a>')
+              f'{subs(H.escape(term))}{sy}</a>')
     W('<div class="toc-h">부록</div>')
     for i, a in enumerate(doc['apx']):
         W(f'<a href="#apx{i}">{H.escape(a["t"])}</a>')
@@ -608,11 +666,12 @@ def main():
             lv = re.search(r'\*\*층위\*\*\s*`([^`]+)`', meta)
             lab = re.search(r'\*\*화면 표기\*\*\s*`([^`]+)`', meta)
             no = int(tid[1:])
-            key = ' '.join([term, lede[:120], (f.get('변수') or '')[:160], (f.get('화면') or '')[:120]]).lower()
+            key = ' '.join([term, flat(term), lede[:120], (f.get('변수') or '')[:160],
+                            (f.get('화면') or '')[:120]]).lower()
             W(f'<article class="term" id="{tid}" data-k="{H.escape(key, quote=True)}">')
             W('<div class="term-head">'
               f'<span class="term-no">{no:02d}</span>'
-              f'<h3 data-field="term">{H.escape(term)}</h3>'
+              f'<h3 data-field="term">{subs(H.escape(term))}</h3>'
               + (f'<span class="chip screenlab">화면 표기 {H.escape(lab.group(1))}</span>' if lab else '')
               + (f'<span class="chip lv{" ui" if lv and lv.group(1) == "화면 용어" else ""}">'
                  f'{H.escape(lv.group(1))}</span>' if lv else '')

@@ -6,7 +6,10 @@
 
    사용: node gate_glossary.js [--url=https://...]      (url 생략 시 로컬 파일 서버)   */
 const http = require('http'), fs = require('fs'), path = require('path'), os = require('os');
-const { spawn } = require('child_process');
+const crypto = require('crypto');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
+const { spawn, spawnSync } = require('child_process');
 
 const REPO = process.env.DST_REPO || '/Users/semi/cursor/payhug-investor-glossary';
 const argUrl = (process.argv.find(a => a.startsWith('--url=')) || '').slice(6);
@@ -40,6 +43,12 @@ async function ev(x){
   if(r.exceptionDetails) throw new Error(JSON.stringify(r.exceptionDetails.exception || r.exceptionDetails.text));
   return r.result.value;
 }
+/* 프로미스를 돌려주는 페이지 코드용 — 이미지 바이트를 받아 해시할 때 쓴다 */
+async function evA(x){
+  const r = await send('Runtime.evaluate', {expression:'(function(){' + x + '})()', returnByValue:true, awaitPromise:true});
+  if(r.exceptionDetails) throw new Error(JSON.stringify(r.exceptionDetails.exception || r.exceptionDetails.text));
+  return r.result.value;
+}
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 function check(name, pass, detail){
   console.log((pass ? '  PASS ' : '  FAIL ') + name + (detail === undefined || detail === '' ? '' : '  ' + detail));
@@ -65,6 +74,34 @@ async function main(){
   const shots = [...new Set((raw.match(/assets\/shots\/[A-Za-z0-9._%-]+\.webp/g) || []))];
   const missing = shots.filter(s => !fs.existsSync(path.join(REPO, s)));
   check('[문자열] 캡처 참조 실물 존재 (' + shots.length + '종)', shots.length > 0 && missing.length === 0, missing.join(', '));
+
+  /* ── 캡처 내용 판정 (2026-08-31 신설) ─────────────────────────────────
+     여기까지는 「몇 장인가 · 파일이 있는가」만 봤다. 그래서 15억·10곳 시절 그림이
+     1억·8곳 본문 옆에 붙어 있어도 게이트를 통과했다. 개수 검사는 위에 그대로 두고,
+     그림 안 내용을 보는 판정을 더한다.
+       S1 — 배포본 webp 바이트가 shot_rects.json 촬영 봉인의 sha256 과 같은가
+       S2 — verify_shots.js 전건(재현 대조 포함) 통과인가
+       S3 — 화면이 실제로 물고 있는 이미지 바이트가 그 봉인과 같은가 (DOM 단계) */
+  const shaHex = b => crypto.createHash('sha256').update(b).digest('hex');
+  const RECT = path.join(__dirname, 'shot_rects.json');
+  let SEAL = {};
+  try {
+    const cap = JSON.parse(fs.readFileSync(RECT, 'utf8')).capture;
+    for(const k of Object.keys((cap && cap.files) || {}))
+      SEAL[path.basename(cap.files[k].shot)] = cap.files[k].imgSha256;
+  } catch(e){ SEAL = {}; }
+  check('[캡처] shot_rects.json 촬영 봉인 존재', Object.keys(SEAL).length > 0,
+        Object.keys(SEAL).length + '종');
+  const sealBad = shots.map(s => path.basename(s)).filter(n =>
+    !SEAL[n] || !fs.existsSync(path.join(REPO, 'assets/shots', n)) ||
+    shaHex(fs.readFileSync(path.join(REPO, 'assets/shots', n))) !== SEAL[n]);
+  check('[캡처] 배포본 webp = 촬영 봉인 sha256 (' + shots.length + '종)',
+        shots.length > 0 && sealBad.length === 0, sealBad.join(', '));
+
+  const vs = spawnSync('node', [path.join(__dirname, 'verify_shots.js')],
+                       {encoding: 'utf8', env: Object.assign({}, process.env, {DST_REPO: REPO})});
+  const vsTail = String(vs.stdout || '').split('\n').filter(l => /FAIL|판정 /.test(l)).slice(-4).join(' | ');
+  check('[캡처] verify_shots.js 전건 통과', vs.status === 0, 'exit ' + vs.status + '  ' + vsTail);
   /* D-20 — 산출물 표면에 .html 영어 파일명 노출 금지. 화면 이름으로 부른다 */
   const codeNames = (raw.match(/<code>[A-Za-z0-9._-]+\.html<\/code>/g) || []).length;
   check('[문자열] 화면 파일명 노출 0건 (D-20)', codeNames === 0, codeNames + '건');
@@ -75,7 +112,7 @@ async function main(){
   console.log('게이트 대상:', TARGET);
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'gg-'));
   const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT,
-    '--user-data-dir=' + profile, '--no-first-run', '--no-default-browser-check',
+    CHROME_DL.args(PH_DL, profile)[0] /* '--user-data-dir=' + profile */, '--no-first-run', '--no-default-browser-check',
     '--disable-gpu', '--hide-scrollbars', '--window-size=1440,1287', 'about:blank'], {stdio:'ignore'});
 
   let targets = null;
@@ -132,6 +169,26 @@ async function main(){
       .map(function(i){return i.getAttribute('src');})};`);
   check('이미지 전건 로드 (' + images.n + '개)', images.n >= CARDS && images.broken.length === 0,
         images.broken.slice(0, 4).join(', '));
+
+  /* S3 — 화면이 실제로 물고 있는 그림의 바이트를 받아 촬영 봉인과 맞춘다.
+     파일이 제자리에 있어도 페이지가 다른 것을 부르면 여기서 갈린다.
+     --url 로 배포본을 볼 때도 같은 판정이 돈다(그때는 서버가 준 실물 바이트다). */
+  const live = await evA(`
+    var s=[].slice.call(document.querySelectorAll('img[src*="assets/shots/"],[data-shot]'))
+      .map(function(e){return e.getAttribute('src')||e.getAttribute('data-shot');})
+      .filter(function(v){return v && v.indexOf('assets/shots/')>=0;});
+    s=s.filter(function(v,i,a){return a.indexOf(v)===i;});
+    return Promise.all(s.map(function(u){
+      return fetch(u).then(function(r){return r.arrayBuffer();})
+        .then(function(b){return crypto.subtle.digest('SHA-256', b);})
+        .then(function(h){ return {u:u, sha:Array.prototype.map.call(new Uint8Array(h),
+          function(x){return ('0'+x.toString(16)).slice(-2);}).join('')}; })
+        .catch(function(e){ return {u:u, sha:'ERR:'+e}; });
+    }));`);
+  const liveBad = live.filter(x => SEAL[x.u.split('/').pop()] !== x.sha)
+                      .map(x => x.u.split('/').pop() + ' ' + String(x.sha).slice(0, 12));
+  check('[캡처] 화면이 부른 이미지 바이트 = 촬영 봉인 (' + live.length + '종)',
+        live.length > 0 && liveBad.length === 0, liveBad.join(', '));
 
   const anchors = await ev(`
     var a=[].slice.call(document.querySelectorAll('a[href^="#"]'));

@@ -4,7 +4,10 @@
    - 좌표: _pipeline/investor_admin/shot_rects.json
    CDP 배선 패턴은 verify_app.js 와 동일(수제 WebSocket + Runtime.evaluate). */
 const http = require('http');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const fs   = require('fs');
+const crypto = require('crypto');
 const path = require('path');
 const os   = require('os');
 const { spawn, execFileSync } = require('child_process');
@@ -309,7 +312,7 @@ async function main(){
   await new Promise(r => server.listen(PORT, r));
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'phcap-'));
   const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT,
-    '--user-data-dir=' + profile, '--no-first-run', '--no-default-browser-check',
+    CHROME_DL.args(PH_DL, profile)[0] /* '--user-data-dir=' + profile */, '--no-first-run', '--no-default-browser-check',
     '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
     '--window-size=' + VIEW_W + ',1200', 'about:blank'], {stdio: 'ignore'});
 
@@ -352,7 +355,37 @@ async function main(){
     console.log('  예산 초과 -> 다음 설정으로 재촬영');
   }
 
-  fs.writeFileSync(OUTJSON, JSON.stringify({screens: screens.map(s => ({
+  /* ══════════ 촬영 봉인 — verify_shots.js 가 읽는 재현 조건 ══════════
+     이미지가 통째로 옛것인데 검사가 전건 통과하던 자리를 막는다(2026-08-31).
+     개수만 세면 15억·10곳 시절 그림이 1억·8곳 본문 옆에 그대로 붙어 있어도 안 걸린다.
+     그래서 「무엇을 · 어떤 설정으로 찍었는가」를 여기 적어 두고, 검증기가 그 설정으로
+     다시 찍어 바이트를 맞춰 본다. dsf·quality 를 안 적으면 검증기가 4가지 설정을
+     차례로 시도해 「하나만 맞으면 통과」로 느슨해진다 — 그래서 실제로 쓴 값을 적는다. */
+  const sha = b => crypto.createHash('sha256').update(b).digest('hex');
+  let chromeVer = '';
+  try { chromeVer = execFileSync(CHROME, ['--version'], {encoding:'utf8'}).trim(); } catch(e){ chromeVer = ''; }
+  const seal = {};
+  for(const s of screens){
+    const img = path.join(REPO, s.shot);
+    const src = path.join(REPO, s.file);
+    seal[s.file] = {
+      shot: s.shot,
+      imgSha256: sha(fs.readFileSync(img)),
+      imgBytes: fs.statSync(img).size,
+      imgMtime: Math.floor(fs.statSync(img).mtimeMs),
+      srcSha256: sha(fs.readFileSync(src)),
+      srcBytes: fs.statSync(src).size,
+      srcMtime: Math.floor(fs.statSync(src).mtimeMs)
+    };
+  }
+  const CAPTURE = {
+    repo: REPO, viewW: VIEW_W, viewH: 1200,
+    dsf: used.dsf, quality: used.q, format: 'webp',
+    chrome: chromeVer, capturedAt: new Date().toISOString(),
+    files: seal
+  };
+
+  fs.writeFileSync(OUTJSON, JSON.stringify({capture: CAPTURE, screens: screens.map(s => ({
     file: s.file, shot: s.shot, docW: s.docW, docH: s.docH, imgW: s.imgW, imgH: s.imgH,
     scrollers: s.scrollers, items: s.items
   }))}, null, 1));
@@ -386,6 +419,11 @@ async function main(){
   console.log('JSON: ' + OUTJSON);
 
   ws.close(); chrome.kill(); server.close();
-  process.exit(0);
+  /* 「실패 화면 N건」을 찍고도 종료코드 0 으로 끝나던 자리(2026-08-31 교정).
+     장수·예산까지 종료코드에 넣는다 — 촬영이 반쪽으로 끝났는데 다음 단계가 이어지면
+     그 반쪽 이미지가 그대로 배포로 간다. */
+  if(screens.length !== FILES.length){ console.log('실패 — 장수 ' + screens.length + ' != ' + FILES.length); fail++; }
+  if(total > BUDGET){ console.log('실패 — 예산 초과'); fail++; }
+  process.exit(fail ? 1 : 0);
 }
 main().catch(e => { console.error('ERR', e); try{ ws && ws.close(); }catch(_){} process.exit(1); });
