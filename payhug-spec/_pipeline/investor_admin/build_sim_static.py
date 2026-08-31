@@ -110,7 +110,7 @@ def run():
     for k in keys:
         g = day[k]
         g['W'] = (g['wx'] / float(g['A'])) if g['A'] else 0
-        g['TY'] = LG.ty_row(g['M'], float(g['A']), g['W'], days=365)   # ⑥ — ty_asset() 을 거친다
+        g['TY'] = LG.ty_row(g['M'], float(g['A']), g['W'])   # ⑥ — ty_asset() 을 거친다
         drows.append(g)
     return dict(bonds=bonds, EXEC=EXEC, W=W, TY=TY, S=S, TOT=TOT, SH=SH, PSA=PSA, PSM=PSM,
                 PSB=PSB, PSD=PSD, PSMR=PSMR, TY4=TY4, TY5=TY5, ECD=ECD, PSC=PSC, rows=drows)

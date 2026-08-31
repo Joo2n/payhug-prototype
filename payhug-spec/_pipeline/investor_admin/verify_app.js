@@ -851,6 +851,61 @@ async function main(){
     return out;
   `);
 
+  /* ── ⑤ 단일 원천 · ⑥ 배선 ────────────────────────────────────
+     대표가 ⑤ 산식을 새로 주면 daily_ledger.ty_asset 한 곳만 고치면 되어야 한다.
+     투자 수익 화면은 ⑤ 를 카드에서, ⑥ 을 일별·주별·월별 표 열에서 쓴다.
+     문자열 대조만으로는 배선이 끊긴 것을 못 잡으므로 ty5 를 인공 값으로 갈아 끼워 행동으로 본다. */
+  R.tyWire = await (async () => {
+    const SRC = fs.readFileSync(path.join(REPO, 'app.html'), 'utf8');
+    const cnt = re => (SRC.match(re) || []).length;
+    const bodyOf = name => {
+      const m = SRC.match(new RegExp('function ' + name + '\\([^)]*\\)\\{([\\s\\S]*?)\\n?\\}'));
+      return m ? m[1] : '';
+    };
+    const src = {
+      case: '[문자열] ⑤ 정의 1곳 · 하드코딩 0건 · ⑥ 이 ty5()·ty3() 을 거친다',
+      ty3def: cnt(/function ty3\(/g), ty5def: cnt(/function ty5\(/g), ty6def: cnt(/function ty6\(/g),
+      ty5body: cnt(/ty4 \* psa \/ tot/g),
+      hard5: cnt(/TY4 \* PSA \/ \(PSA \+ PSC\)/g) + cnt(/ty4 \* psa \/ \(psa \+ psc\)/g)
+             + cnt(/psa \+ psc\) \? ty4/g),
+      hard6: cnt(/\* 100\) \* 365 \/ g\.[wW]/g),
+      ty6call: cnt(/= ty6\(/g),
+      ty6usesTy5: bodyOf('ty6').indexOf('ty5(') >= 0,
+      ty6usesTy3: bodyOf('ty6').indexOf('ty3(') >= 0,
+      tyAssetUsesTy5: bodyOf('tyAssetOf').indexOf('ty5(') >= 0
+    };
+    src.pass = src.ty3def === 1 && src.ty5def === 1 && src.ty6def === 1 && src.ty5body === 1
+      && src.hard5 === 0 && src.hard6 === 0 && src.ty6call === 2
+      && src.ty6usesTy5 && src.ty6usesTy3 && src.tyAssetUsesTy5;
+
+    const CAP = `
+      go('invest-profit','default');
+      document.querySelector('[data-act=pf-gran][data-gran=monthly]').click();
+      var sec = document.querySelector('section[data-screen="invest-profit"]');
+      var six = Array.prototype.map.call(sec.querySelectorAll('[data-mount=pf-tbl] tbody tr'),
+        function(tr){ return tr.children[tr.children.length - 1].textContent.trim(); });
+      var sp = sec.querySelectorAll('[data-mount=pf-stat] .ty-split > div');
+      return {ty4: sp[0].querySelector('.summary-value').textContent.trim(),
+              ty5: sp[1].querySelector('.summary-value').textContent.trim(), six: six};`;
+    const base = await evalJS(CAP);
+    await evalJS("window.__ty5_orig = ty5; window.ty5 = function(a, b, c){ return 7.77; }; return 1;");
+    const sw = await evalJS(CAP);
+    await evalJS("window.ty5 = window.__ty5_orig; return 1;");
+    const back = await evalJS(CAP);
+    const n = t => Number(String(t).replace(/[^0-9.-]/g, ''));
+    const bad = [];
+    if(!base.six.length) bad.push('월별 행 0건 — 대상이 없으면 통과시키지 않는다');
+    if(n(sw.ty5) !== 7.77) bad.push('⑤ 가 인공 값을 안 따라왔다 ' + sw.ty5);
+    if(sw.six.some(v => n(v) !== 7.77)) bad.push('⑥ 가 안 따라왔다 ' + JSON.stringify(sw.six));
+    if(sw.ty4 !== base.ty4) bad.push('④ 가 흔들렸다 ' + base.ty4 + ' -> ' + sw.ty4);
+    if(JSON.stringify(back) !== JSON.stringify(base)) bad.push('되돌려도 원래 값이 아니다');
+    await evalJS("go('invest-profit','default'); return 1;");
+    return [src, {case:'[행동] ty5 를 갈면 ⑤·⑥ 이 함께 움직이고 되돌리면 복귀',
+                  bad: bad, base: base.six.slice(0, 3), swapped: sw.six.slice(0, 3),
+                  ty5: {base: base.ty5, swapped: sw.ty5, back: back.ty5},
+                  pass: bad.length === 0}];
+  })();
+
   R.console = consoleErrors.slice();
   fs.writeFileSync(path.join(OUTDIR, 'verify_app_result.json'), JSON.stringify(R, null, 1));
 

@@ -7,31 +7,31 @@
   "quality": 70,
   "format": "webp",
   "chrome": "Google Chrome 152.0.7977.65",
-  "capturedAt": "2026-08-31T12:18:34.558Z",
+  "capturedAt": "2026-08-31T13:12:08.757Z",
   "files": {
    "invest-assets.html": {
     "shot": "assets/shots/invest-assets.webp",
-    "imgSha256": "e82424c0d9eefac8f575ca34d19c8fb0bbd5a5c36b3c07ae97c0f149b7148c67",
-    "imgBytes": 123864,
-    "imgMtime": 1788178709504,
-    "srcSha256": "93b8f0b5b4d302596e31963d5c95917997b7fc516e1dbac867e7de16d0bf96f4",
-    "srcBytes": 19915,
-    "srcMtime": 1788176954403
+    "imgSha256": "c6d693c1df767dffaf136e6b3ee6856a09b4a95b5dbaaa183b718a6995c8f1a4",
+    "imgBytes": 124752,
+    "imgMtime": 1788181923766,
+    "srcSha256": "08354836a84d10925b07c5643ef57bf33692b08e6cca85d82453ec1ee13c2ed9",
+    "srcBytes": 20345,
+    "srcMtime": 1788181258218
    },
    "invest-profit.html": {
     "shot": "assets/shots/invest-profit.webp",
-    "imgSha256": "3bcb2cf02f131a062cf5fc6b445949829ee55b29209cf64b40b698d2f87d32b7",
-    "imgBytes": 109342,
-    "imgMtime": 1788178710735,
-    "srcSha256": "b54247e3ad9ffd8128168c693fc0cf0557ac9904f0a1f900848ccde2736ceb3f",
-    "srcBytes": 18146,
-    "srcMtime": 1788176853991
+    "imgSha256": "09da71dc369bcdd846981d1e111f3d552e8d7166049f4a6c9f4fe602d53c30d4",
+    "imgBytes": 109632,
+    "imgMtime": 1788181924984,
+    "srcSha256": "c71794287c2a4f68ecb0e1e514eca84b44789d906cf2105cc5af5f8df1b02331",
+    "srcBytes": 19046,
+    "srcMtime": 1788181258218
    },
    "merchants.html": {
     "shot": "assets/shots/merchants.webp",
     "imgSha256": "ab4012afae2b13fab77919d22ba6c14a1ca376b5f1b5e8552a0d8a1512ded587",
     "imgBytes": 93050,
-    "imgMtime": 1788178711954,
+    "imgMtime": 1788181926181,
     "srcSha256": "83665c485b07273c3167aaa8af4aeb4cc6757155b4c0b9aba3704558b9c185c1",
     "srcBytes": 13062,
     "srcMtime": 1788115003379
@@ -40,7 +40,7 @@
     "shot": "assets/shots/contracts.webp",
     "imgSha256": "9f1ea1ee9122c06ccce0718838f35d46efa874ffdad064c47ee6ca5a0734b430",
     "imgBytes": 67140,
-    "imgMtime": 1788178713146,
+    "imgMtime": 1788181927384,
     "srcSha256": "afd3f0aa87b2fc03fb6dc5a302f86da3f959d4b2a6f3ecb026bfc5f39682b08f",
     "srcBytes": 15391,
     "srcMtime": 1788114997269
@@ -49,7 +49,7 @@
     "shot": "assets/shots/coocon.webp",
     "imgSha256": "ce2628e721966d93a55f4ad67eb4750475791798c825c5a465d38ca0c9e217e0",
     "imgBytes": 30842,
-    "imgMtime": 1788178714332,
+    "imgMtime": 1788181928563,
     "srcSha256": "61b93c614a67dcb782884da279ac53b3f685b3553f729b0e8994b9d2d63a6a4a",
     "srcBytes": 7680,
     "srcMtime": 1787916536739
@@ -61,9 +61,9 @@
    "file": "invest-assets.html",
    "shot": "assets/shots/invest-assets.webp",
    "docW": 1440,
-   "docH": 1316,
+   "docH": 1320,
    "imgW": 2880,
-   "imgH": 2632,
+   "imgH": 2640,
    "scrollers": [],
    "items": [
     {
@@ -213,68 +213,68 @@
      "kind": "th",
      "x": 273,
      "y": 296,
-     "w": 202.6,
-     "h": 40.5
+     "w": 190.8,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(2)",
      "text": "금액 (원)",
      "tag": "th",
      "kind": "th",
-     "x": 475.6,
+     "x": 463.8,
      "y": 296,
-     "w": 204.1,
-     "h": 40.5
+     "w": 192.2,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(3)",
      "text": "W금융일수",
      "tag": "th",
      "kind": "th",
-     "x": 679.8,
+     "x": 656,
      "y": 296,
-     "w": 142.4,
-     "h": 40.5
+     "w": 134.1,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(4)",
-     "text": "S입금부족율",
+     "text": "S입금부족율 미확정",
      "tag": "th",
      "kind": "th",
-     "x": 822.2,
+     "x": 790.1,
      "y": 296,
-     "w": 154.8,
-     "h": 40.5
+     "w": 212,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(5)",
      "text": "TY수익율",
      "tag": "th",
      "kind": "th",
-     "x": 977,
+     "x": 1002.1,
      "y": 296,
-     "w": 135.2,
-     "h": 40.5
+     "w": 127.3,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(6)",
      "text": "비중",
      "tag": "th",
      "kind": "th",
-     "x": 1112.2,
+     "x": 1129.4,
      "y": 296,
-     "w": 135.2,
-     "h": 40.5
+     "w": 127.3,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl th:nth-of-type(7)",
      "text": "보관",
      "tag": "th",
      "kind": "th",
-     "x": 1247.3,
+     "x": 1256.6,
      "y": 296,
-     "w": 159.7,
-     "h": 40.5
+     "w": 150.4,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th:nth-of-type(1)",
@@ -282,59 +282,59 @@
      "tag": "th",
      "kind": "th",
      "x": 273,
-     "y": 568,
-     "w": 265.5,
-     "h": 40.5
+     "y": 570,
+     "w": 247.5,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(2)",
      "text": "투자금액 (원)",
      "tag": "th",
      "kind": "th",
-     "x": 538.5,
-     "y": 568,
-     "w": 222.2,
-     "h": 40.5
+     "x": 520.5,
+     "y": 570,
+     "w": 207.2,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(3)",
      "text": "W금융일수",
      "tag": "th",
      "kind": "th",
-     "x": 760.6,
-     "y": 568,
-     "w": 166.2,
-     "h": 40.5
+     "x": 727.7,
+     "y": 570,
+     "w": 155,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(4)",
-     "text": "S입금부족율",
+     "text": "S입금부족율 미확정",
      "tag": "th",
      "kind": "th",
-     "x": 926.8,
-     "y": 568,
-     "w": 180.7,
-     "h": 40.5
+     "x": 882.7,
+     "y": 570,
+     "w": 245.1,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(5)",
      "text": "TY수익율",
      "tag": "th",
      "kind": "th",
-     "x": 1107.5,
-     "y": 568,
-     "w": 157.8,
-     "h": 40.5
+     "x": 1127.8,
+     "y": 570,
+     "w": 147.1,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(6)",
      "text": "비중",
      "tag": "th",
      "kind": "th",
-     "x": 1265.3,
-     "y": 568,
-     "w": 141.7,
-     "h": 40.5
+     "x": 1274.9,
+     "y": 570,
+     "w": 132.1,
+     "h": 42.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > tbody > tr:nth-of-type(1) > td:nth-of-type(1)",
@@ -342,8 +342,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 336.5,
-     "w": 202.6,
+     "y": 338.5,
+     "w": 190.8,
      "h": 45
     },
     {
@@ -352,8 +352,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 381.5,
-     "w": 202.6,
+     "y": 383.5,
+     "w": 190.8,
      "h": 45
     },
     {
@@ -362,8 +362,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 426.5,
-     "w": 202.6,
+     "y": 428.5,
+     "w": 190.8,
      "h": 44.5
     },
     {
@@ -372,8 +372,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 608.5,
-     "w": 265.5,
+     "y": 612.5,
+     "w": 247.5,
      "h": 45
     },
     {
@@ -382,8 +382,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 653.5,
-     "w": 265.5,
+     "y": 657.5,
+     "w": 247.5,
      "h": 45
     },
     {
@@ -392,8 +392,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 698.5,
-     "w": 265.5,
+     "y": 702.5,
+     "w": 247.5,
      "h": 45
     },
     {
@@ -402,8 +402,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 743.5,
-     "w": 265.5,
+     "y": 747.5,
+     "w": 247.5,
      "h": 45
     },
     {
@@ -412,8 +412,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 788.5,
-     "w": 265.5,
+     "y": 792.5,
+     "w": 247.5,
      "h": 45
     },
     {
@@ -422,8 +422,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 833.5,
-     "w": 265.5,
+     "y": 837.5,
+     "w": 247.5,
      "h": 45
     },
     {
@@ -432,8 +432,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 878.5,
-     "w": 265.5,
+     "y": 882.5,
+     "w": 247.5,
      "h": 45
     },
     {
@@ -442,8 +442,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 923.5,
-     "w": 265.5,
+     "y": 927.5,
+     "w": 247.5,
      "h": 44.5
     },
     {
@@ -662,7 +662,7 @@
      "tag": "div",
      "kind": "card",
      "x": 272,
-     "y": 1054,
+     "y": 1058,
      "w": 1136,
      "h": 229.5
     },
@@ -672,7 +672,7 @@
      "tag": "h2",
      "kind": "card",
      "x": 297,
-     "y": 1079,
+     "y": 1083,
      "w": 1086,
      "h": 21
     },
@@ -682,7 +682,7 @@
      "tag": "div",
      "kind": "card",
      "x": 297,
-     "y": 1116,
+     "y": 1120,
      "w": 535,
      "h": 142.5
     },
@@ -692,7 +692,7 @@
      "tag": "span",
      "kind": "card-text",
      "x": 322,
-     "y": 1129,
+     "y": 1133,
      "w": 89.6,
      "h": 24
     },
@@ -702,7 +702,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 322,
-     "y": 1190.5,
+     "y": 1194.5,
      "w": 92.8,
      "h": 16.5
     },
@@ -712,7 +712,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 322,
-     "y": 1209,
+     "y": 1213,
      "w": 92.8,
      "h": 24
     },
@@ -722,7 +722,7 @@
      "tag": "span",
      "kind": "card-text",
      "x": 426.8,
-     "y": 1197.8,
+     "y": 1201.8,
      "w": 14,
      "h": 28
     },
@@ -732,7 +732,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 452.8,
-     "y": 1190.5,
+     "y": 1194.5,
      "w": 58.9,
      "h": 16.5
     },
@@ -742,7 +742,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 452.8,
-     "y": 1209,
+     "y": 1213,
      "w": 58.9,
      "h": 24
     },
@@ -752,7 +752,7 @@
      "tag": "span",
      "kind": "card-text",
      "x": 523.7,
-     "y": 1197.8,
+     "y": 1201.8,
      "w": 22,
      "h": 28
     },
@@ -762,7 +762,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 557.7,
-     "y": 1182,
+     "y": 1186,
      "w": 48.9,
      "h": 16.5
     },
@@ -772,7 +772,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 557.7,
-     "y": 1200.5,
+     "y": 1204.5,
      "w": 48.9,
      "h": 24
     },
@@ -782,7 +782,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 557.7,
-     "y": 1226.5,
+     "y": 1230.5,
      "w": 48.9,
      "h": 15
     },
@@ -792,7 +792,7 @@
      "tag": "div",
      "kind": "card",
      "x": 848,
-     "y": 1116,
+     "y": 1120,
      "w": 535,
      "h": 142.5
     },
@@ -802,7 +802,7 @@
      "tag": "label",
      "kind": "label",
      "x": 994.2,
-     "y": 518,
+     "y": 520,
      "w": 109.1,
      "h": 28
     }
@@ -944,7 +944,7 @@
      "kind": "th",
      "x": 273,
      "y": 570,
-     "w": 200.6,
+     "w": 199,
      "h": 42.5
     },
     {
@@ -952,19 +952,19 @@
      "text": "상환액",
      "tag": "th",
      "kind": "th",
-     "x": 473.6,
+     "x": 472,
      "y": 570,
-     "w": 215.1,
+     "w": 213.4,
      "h": 42.5
     },
     {
      "sel": "table.tbl th.num:nth-of-type(3)",
-     "text": "투자실행금",
+     "text": "투자실행금 미확정",
      "tag": "th",
      "kind": "th",
-     "x": 688.8,
+     "x": 685.3,
      "y": 570,
-     "w": 215.1,
+     "w": 222.7,
      "h": 42.5
     },
     {
@@ -972,9 +972,9 @@
      "text": "투자 수익",
      "tag": "th",
      "kind": "th",
-     "x": 903.9,
+     "x": 908,
      "y": 570,
-     "w": 142.4,
+     "w": 141.3,
      "h": 42.5
     },
     {
@@ -982,9 +982,9 @@
      "text": "W금융일수",
      "tag": "th",
      "kind": "th",
-     "x": 1046.3,
+     "x": 1049.3,
      "y": 570,
-     "w": 150.1,
+     "w": 148.9,
      "h": 42.5
     },
     {
@@ -992,9 +992,9 @@
      "text": "TY수익율 미확정",
      "tag": "th",
      "kind": "th",
-     "x": 1196.4,
+     "x": 1198.2,
      "y": 570,
-     "w": 210.6,
+     "w": 208.8,
      "h": 42.5
     },
     {
@@ -1004,7 +1004,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 612.5,
-     "w": 200.6,
+     "w": 199,
      "h": 45
     },
     {
@@ -1014,7 +1014,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 657.5,
-     "w": 200.6,
+     "w": 199,
      "h": 45
     },
     {
@@ -1024,7 +1024,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 702.5,
-     "w": 200.6,
+     "w": 199,
      "h": 45
     },
     {
@@ -1034,7 +1034,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 747.5,
-     "w": 200.6,
+     "w": 199,
      "h": 45
     },
     {
@@ -1044,7 +1044,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 792.5,
-     "w": 200.6,
+     "w": 199,
      "h": 45
     },
     {
@@ -1054,7 +1054,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 837.5,
-     "w": 200.6,
+     "w": 199,
      "h": 45
     },
     {
@@ -1064,7 +1064,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 882.5,
-     "w": 200.6,
+     "w": 199,
      "h": 45
     },
     {
@@ -1074,7 +1074,7 @@
      "kind": "row-head",
      "x": 273,
      "y": 927.5,
-     "w": 200.6,
+     "w": 199,
      "h": 56.5
     },
     {

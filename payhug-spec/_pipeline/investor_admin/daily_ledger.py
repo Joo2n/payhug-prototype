@@ -153,9 +153,13 @@ TY_PENDING = '미확정'          # 화면 배지에 쓰는 낱말. 새 문구�
 #   미확정 · 대표 재전달 대기. 2026-08-31 회의에서 ⑤ 는 「수식 오류, 새로 작성해 전달」로 닫혔다
 #   (meeting_0831/ceo_definitions_20260831.txt). 아래 식은 대표 정의서 [2번 이미지] 원문 그대로다 —
 #     「투자자산 대비 ty수익율 (이미지의 ⑤) = (이미지의 ④ x PSA) / (PSA + PSC)」
-#   새 수식이 오면 고칠 자리는 ty_asset() 본문 한 줄과 그 짝인 TY5_JS 한 줄뿐이다.
+#   새 수식이 오면 고칠 자리는 아래 TY5_EXPR 한 줄이다. 파이썬(ty_asset)과 화면(TY5_JS)이
+#   그 한 줄을 같이 쓴다 — 두 벌로 갈릴 자리를 없애려고 식을 문자열로 둔다.
+#   식은 파이썬·자바스크립트 양쪽에서 같은 뜻으로 읽히는 꼴만 쓴다.
 TY5_STATUS = TY_PENDING
 TY5_SOURCE = 'ceo_definitions.md [2번 이미지] · 대표 재전달 대기'
+
+TY5_EXPR = 'ty4 * psa / tot'      # ⑤ — 대표 재전달 대기. 새 산식이 오면 이 한 줄만 고친다.
 
 
 def ty_asset(ty4, psa, psc):
@@ -167,7 +171,7 @@ def ty_asset(ty4, psa, psc):
     # ④ 가 마지막 자리를 잃지 않고 그대로 나오게 한다(float 는 이 설정과 무관).
     with localcontext() as ctx:
         ctx.prec = 60
-        return ty4 * psa / tot
+        return eval(TY5_EXPR)     # noqa: S307 — 화면과 같은 한 줄을 쓰려고 식을 문자열로 둔다
 
 
 # ── ③ ⑥ 의 분모 ─────────────────────────────────────────────────
@@ -178,9 +182,12 @@ TY3_STATUS = TY_PENDING
 TY3_SOURCE = '대표 2026-08-31 회의 00:59:21 「상단 현황의 기간 전체 숫자」 · 칸 미지목'
 
 
+TY3_EXPR = 'execu'                # ③ — 읽기 미확정. 칸이 정해지면 이 한 줄만 고친다.
+
+
 def ty_third(execu):
     """③ — ⑥ 의 분모. 일별 표 열 `투자실행금` 으로 읽는다(미확정)."""
-    return execu
+    return eval(TY3_EXPR)         # noqa: S307 — 화면(TY3_JS)과 같은 한 줄을 쓴다
 
 
 # ── ⑥ 행 Ty수익율 ────────────────────────────────────────────────
@@ -189,15 +196,19 @@ def ty_third(execu):
 #   나온 값은 ⑤ 함수 ty_asset() 을 거친다. 일별 EC 원장이 없어 TY6_PSC 가 0 이고,
 #   0 인 동안 ⑥ 은 ④ 와 같은 값이다. ty_asset() 을 고치면 ⑥ 이 따라 움직인다.
 TY6_PSC = 0
+TY6_EXPR = 'ty5((profit / third * 100) * 365 / w, third, TY6_PSC)'   # ⑥ — 이 한 줄만 고친다
+
+# 식 한 줄이 파이썬·자바스크립트 양쪽에서 같은 뜻으로 읽히게 이름을 맞춘다.
+ty3 = ty_third
+ty5 = ty_asset
 
 
-def ty_row(profit, execu, w, days=None, psc=None):
-    """⑥ = (④ ÷ ③) x 365 ÷ ⑤ — 한 행."""
-    third = ty_third(execu)
+def ty_row(profit, execu, w):
+    """⑥ = (④ ÷ ③) x 365 ÷ ⑤ — 한 행. ⑤ 함수를 거치므로 ⑤ 를 고치면 여기도 따라 움직인다."""
+    third = ty3(execu)
     if not (third and w):
         return 0
-    four = (profit / third * 100) * (DAYS if days is None else days) / w
-    return ty_asset(four, third, TY6_PSC if psc is None else psc)
+    return eval(TY6_EXPR)         # noqa: S307 — 화면(TY6_JS)과 같은 한 줄을 쓴다
 
 
 def day_ty_raw(profit, execu, w):
@@ -208,11 +219,12 @@ def day_ty(profit, execu, w): return r2(day_ty_raw(profit, execu, w))
 
 # ── 화면(자바스크립트)이 심는 같은 식 ─────────────────────────────
 #   build_app.py 가 @@TY3JS@@ · @@TY5JS@@ · @@TY6JS@@ 로 받아 app.html 에 그대로 넣는다.
-TY3_JS = 'return execu;'
-TY5_JS = 'var tot = psa + psc;\n  return tot ? ty4 * psa / tot : 0;'
+#   식 본문은 위 TY3_EXPR · TY5_EXPR · TY6_EXPR 그대로다 — 여기 두 번째 산식이 없다.
+TY3_JS = 'return ' + TY3_EXPR + ';'
+TY5_JS = 'var tot = psa + psc;\n  return tot ? ' + TY5_EXPR + ' : 0;'
 TY6_JS = ('var third = ty3(execu);\n'
           '  if(!(third && w)) return 0;\n'
-          '  return ty5((profit / third * 100) * 365 / w, third, TY6_PSC);')
+          '  return ' + TY6_EXPR + ';')
 
 
 def _size(k, wd):
