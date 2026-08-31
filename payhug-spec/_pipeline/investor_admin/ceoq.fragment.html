@@ -1,0 +1,266 @@
+<title>대표님 확인 20문</title>
+<style>@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root{
+  --bg:#FAF9F7; --surface:#FFFFFF; --sunk:#F4F2ED;
+  --ink:#1B1A17; --mute:#6B6862; --faint:#9490879e;
+  --rule:#E5E1D9; --rule-hard:#CFC9BD;
+  --accent:#2C4470; --accent-soft:#2C447014;
+  --stop:#8A3143; --stop-soft:#8A314314;
+  --ask:#9C6212; --ask-soft:#9C621214;
+  --ok:#2F6046;
+  --shadow:0 1px 2px #1b1a1710, 0 10px 26px #1b1a170a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#16161A; --surface:#1D1E23; --sunk:#22242A;
+  --ink:#ECEAE5; --mute:#9B978E; --faint:#77736b9e;
+  --rule:#2E3038; --rule-hard:#3D4048;
+  --accent:#93AEE0; --accent-soft:#93AEE01F;
+  --stop:#E08594; --stop-soft:#E0859420;
+  --ask:#E0A64A; --ask-soft:#E0A64A20;
+  --ok:#6FBF95;
+  --shadow:0 1px 2px #00000040, 0 10px 26px #00000030;
+}}
+:root[data-theme="dark"]{
+  --bg:#16161A; --surface:#1D1E23; --sunk:#22242A;
+  --ink:#ECEAE5; --mute:#9B978E; --faint:#77736b9e;
+  --rule:#2E3038; --rule-hard:#3D4048;
+  --accent:#93AEE0; --accent-soft:#93AEE01F;
+  --stop:#E08594; --stop-soft:#E0859420;
+  --ask:#E0A64A; --ask-soft:#E0A64A20;
+  --ok:#6FBF95;
+  --shadow:0 1px 2px #00000040, 0 10px 26px #00000030;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+  font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--rule);
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px)}
+.bar h1{margin:0;font-family:"Noto Serif KR",serif;font-size:16px;font-weight:700;white-space:nowrap}
+.bar .sp{flex:1}
+.btn{font:inherit;font-size:13px;line-height:1;cursor:pointer;padding:8px 12px;
+  border-radius:7px;border:1px solid var(--rule-hard);background:var(--surface);color:var(--ink)}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.btn.pri:hover{filter:brightness(1.12);color:var(--bg)}
+.btn[disabled]{opacity:.45;cursor:default}
+.st{font-size:12px;color:var(--mute);white-space:nowrap}
+.st.on{color:var(--ask)} .st.ok{color:var(--ok)} .st.bad{color:var(--stop)}
+
+.wrap{max-width:880px;margin:0 auto;padding:26px 20px 110px}
+header h1{margin:0 0 4px;font-family:"Noto Serif KR",serif;font-size:31px;
+  font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+header .when{color:var(--mute);font-size:13.5px;margin:0 0 18px}
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.tally div{background:var(--surface);padding:12px 14px}
+.tally dt{font-size:11px;letter-spacing:.06em;color:var(--mute);margin:0 0 3px}
+.tally dd{margin:0;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.tally dd small{font-size:12px;font-weight:400;color:var(--mute);margin-left:3px}
+.tally .s dd{color:var(--stop)} .tally .d dd{color:var(--ok)}
+.memo{margin-top:14px}
+.memo label{display:block;font-size:11px;letter-spacing:.06em;color:var(--mute);margin-bottom:4px}
+
+h2.grp{margin:36px 0 2px;padding-top:20px;border-top:2px solid var(--rule-hard);
+  font-family:"Noto Serif KR",serif;font-size:21px;font-weight:700}
+p.why{margin:2px 0 12px;color:var(--mute);font-size:13.5px}
+
+.q{background:var(--surface);border:1px solid var(--rule);border-radius:11px;
+  margin:12px 0;box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:64px}
+.q.stop{border-left:4px solid var(--stop)}
+.q.ask{border-left:4px solid var(--ask)}
+.q.done{opacity:.62}
+.q .hd{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:13px 16px 0}
+.q .id{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;font-weight:600;
+  color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:5px}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;
+  border-radius:20px;border:1px solid currentColor}
+.tag.stop{color:var(--stop);background:var(--stop-soft)}
+.tag.ask{color:var(--ask);background:var(--ask-soft)}
+.q .topic{font-size:13px;color:var(--mute)}
+.q .chk{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:11.5px;
+  color:var(--mute);cursor:pointer;user-select:none}
+.q .chk input{accent-color:var(--accent);width:15px;height:15px;cursor:pointer}
+.say{margin:9px 16px 0;padding:12px 15px;background:var(--sunk);
+  border-left:3px solid var(--rule-hard);border-radius:0 8px 8px 0;
+  font-family:"Noto Serif KR",serif;font-size:15px;line-height:1.75}
+.body{padding:11px 16px 15px}
+.rows{display:grid;grid-template-columns:64px minmax(0,1fr);gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:11px}
+.rows .k{background:var(--sunk);padding:8px 11px;font-size:11.5px;font-weight:700;color:var(--mute)}
+.rows .v{background:var(--surface);padding:8px 12px;font-size:13.5px;min-width:0}
+label.al{display:block;font-size:11px;letter-spacing:.06em;color:var(--mute);margin-bottom:4px}
+textarea{width:100%;min-height:56px;resize:vertical;font:inherit;font-size:13.5px;
+  padding:9px 11px;border-radius:8px;border:1px dashed var(--rule-hard);
+  background:var(--bg);color:var(--ink);line-height:1.6}
+textarea:focus{outline:none;border-style:solid;border-color:var(--accent)}
+textarea::placeholder{color:var(--faint)}
+textarea.filled{border-style:solid;border-color:var(--ok)}
+
+@media print{.bar{display:none}.q{break-inside:avoid;box-shadow:none}
+  textarea{border-style:solid;min-height:46px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="bar">
+  <h1>대표님 확인 20문</h1>
+  <span class="sp"></span>
+  <span class="st" id="st"></span>
+  <button class="btn pri" id="save">저장</button>
+</div>
+
+<div class="wrap"><main id="doc"></main></div>
+
+<script type="application/json" id="seed">{"title":"대표님 확인 20문","when":"4차 미팅 2026-09-01 화 16:00","basis":"근거는 2차 미팅(8/30)·3차 미팅(8/31)·용어 정의 원문·8/31 DM","note":"","items":[{"grp":1,"grp_name":"1. 규모","grp_why":"답이 오면 로스터·엑셀·화면이 한 번에 정해진다. 지금 예시는 1억 한 벌이고 가맹점 8곳이다.","id":"Q12","prio":"stop","topic":"가맹점 수","say":"가맹점 하루 선정산액을 5곳 샘플 평균 100만 원이라 하셨는데, 저희 예시 8곳은 1곳 평균 328만 원입니다. 1억을 채우려면 대표님 수치로는 23~26곳이 됩니다. 가맹점 수를 몇 곳으로 잡을까요.","rows":[["우리","8곳 · 1곳 평균 3,287,500원 · 범위 160만~641만"],["대표님","1곳 평균 1,000,000원 (5곳 샘플 실측, 00:38:51)"],["안 물으면","가맹점 표가 대표님 감각과 3배 벌어진 채로 제안서에 나갑니다"]],"answer":"","done":false},{"grp":1,"grp_name":"1. 규모","grp_why":"답이 오면 로스터·엑셀·화면이 한 번에 정해진다. 지금 예시는 1억 한 벌이고 가맹점 8곳이다.","id":"Q13","prio":"stop","topic":"100만~1,000만이 무엇의 범위인가","say":"100만~1,000만 원이 가맹점의 하루 선정산액인가요, 아니면 묶여 있는 투자 금액인가요. 「합치면 1억」이라 하신 문맥은 후자로 읽히는데, 지라 티켓에는 일 매출액으로 적혀 있습니다.","rows":[["축 셋","매출액 · 하루 선정산액 · 묶인 잔액 — 셋은 같은 값을 담을 수 없습니다"],["근거","회의록에 「매출액」 0건. 00:40:30 「이렇게 합치면 1억」"],["안 물으면","로스터 사다리를 어느 축에 맞출지 못 정해 8곳 값 전체가 흔들립니다"]],"answer":"","done":false},{"grp":1,"grp_name":"1. 규모","grp_why":"답이 오면 로스터·엑셀·화면이 한 번에 정해진다. 지금 예시는 1억 한 벌이고 가맹점 8곳이다.","id":"Q19","prio":"stop","topic":"유치 타겟 5억","say":"5억을 유치 타겟으로 말씀하셨습니다. 제안서·시뮬레이션에 1억 벌 하나만 둘까요, 5억 벌을 같이 만들까요.","rows":[["근거","00:37:53 「타겟은 한 5억만 투자해 보세요」 「5억 혹은 1억. 근데 5억을 1억부터 시작해 보시죠」"],["우리","산출물 전건에 5억 0건. 1억 한 벌뿐"],["안 물으면","제안 자리에서 1억짜리 자료로 5억을 설명하게 됩니다"]],"answer":"","done":false},{"grp":2,"grp_name":"2. 용어","grp_why":"미지급금·과지급금을 계약서 낱말로 바꾸기로 2차 미팅에서 합의했는데, 어느 낱말인지가 아직 안 나왔다.","id":"Q17","prio":"stop","topic":"어느 계약서인가","say":"기준으로 삼으신 계약서가 어느 계약서인지 짚어 주십시오. 저희가 읽은 가맹점 서비스 이용계약 제3조의 낱말은 과정산금·미정산금이고 과지급액·미지급액이 아닙니다. 투자자 축 계약서(정산금채권 재양도 합의서)는 본문을 받은 적이 없습니다.","rows":[["근거","대표님이 계약서를 세 번 인용하시면서 문서명을 안 대셨습니다. 방향은 같고 낱말이 다릅니다"],["안 물으면","어느 낱말로 바꿀지 정할 근거 자체가 없습니다"]],"answer":"","done":false},{"grp":2,"grp_name":"2. 용어","grp_why":"미지급금·과지급금을 계약서 낱말로 바꾸기로 2차 미팅에서 합의했는데, 어느 낱말인지가 아직 안 나왔다.","id":"Q16","prio":"stop","topic":"고칠 범위","say":"미지급금·과지급금을 내부 용어 쪽에서 고친다고 하셨는데, 투자자 어드민 화면에도 두 낱말이 94곳 있습니다. 계약서 뜻으로 쓰고 있어 지금은 맞지만, 계약 용어가 바뀌면 이 94곳이 함께 움직입니다. 작업 범위를 내부 용어로 한정할까요, 화면까지 포함할까요.","rows":[["전제","00:33:57 「UI에 나와 있는게 아니니까」 — 이 전제가 깨집니다"],["실측","배포본 12개 파일 94건"]],"answer":"","done":false},{"grp":2,"grp_name":"2. 용어","grp_why":"미지급금·과지급금을 계약서 낱말로 바꾸기로 2차 미팅에서 합의했는데, 어느 낱말인지가 아직 안 나왔다.","id":"Q18","prio":"ask","topic":"가맹점 단위인가 플랫폼 단위인가","say":"미지급·과지급을 가맹점 단위로 본다고 하셨는데, 이용계약 제3조는 정산주체(플랫폼)별로 산정한다고 돼 있습니다. 계약서를 정본으로 삼는다면 단위도 계약서를 따르나요.","rows":[["왜","같은 회의에서 계약서 정본 선언과 다른 단위 진술이 함께 나왔습니다"]],"answer":"","done":false},{"grp":2,"grp_name":"2. 용어","grp_why":"미지급금·과지급금을 계약서 낱말로 바꾸기로 2차 미팅에서 합의했는데, 어느 낱말인지가 아직 안 나왔다.","id":"Q7","prio":"ask","topic":"바꿀 낱말 확정","say":"미지급금·과지급금을 계약 용어로 바꾸기로 한 2차 미팅 합의를, 어느 낱말로 확정할까요.","rows":[["주의","저희 운영 6개념(미지급금·선정산 제외금액·바로이체·과지급·미회수금·환급)과 계약 2개념(과정산금·미정산금)의 매핑이 미확정이라, 저희가 임의로 붙이지 않았습니다"]],"answer":"","done":false},{"grp":2,"grp_name":"2. 용어","grp_why":"미지급금·과지급금을 계약서 낱말로 바꾸기로 2차 미팅에서 합의했는데, 어느 낱말인지가 아직 안 나왔다.","id":"Q3","prio":"ask","topic":"기호 L","say":"L이 「미지급금 − 환급금」인가요, 「미지급금 − 과지급금」인가요.","rows":[["DM","8/31 15:15 「입금부족액, (미지급금 - 환급금)」"],["원문","정의서 SLi · 회의록 「미지급액 − 과지급액」. 같은 날 세 번 중 두 번이 과지급금"]],"answer":"","done":false},{"grp":3,"grp_name":"3. 산식","grp_why":"⑤ 산식이 들어갈 자리는 원고·엑셀·화면 각각 한 곳으로 모아 뒀다. 받는 즉시 반영된다.","id":"Q1","prio":"stop","topic":"⑤ 투자자산 대비 ty수익율","say":"⑤ 산식을 다시 써서 주시기로 하셨는데, 언제 주실 수 있을까요. 지금은 정의서 원문 산식이 그대로 들어가 2.53%를 내고 있고 「미확정」 표시를 붙여 뒀습니다.","rows":[["고칠 자리","원고 1곳 · 엑셀 입력!C19 1칸 · 화면 1곳 — 세 곳 다 한 줄"],["딸린 것","⑥ = (④ ÷ ③) × 365 ÷ ⑤ 라 ⑤가 바뀌면 ⑥이 자동으로 따라옵니다"]],"answer":"","done":false},{"grp":3,"grp_name":"3. 산식","grp_why":"⑤ 산식이 들어갈 자리는 원고·엑셀·화면 각각 한 곳으로 모아 뒀다. 받는 즉시 반영된다.","id":"Q2","prio":"stop","topic":"③ 이 어느 칸인가","say":"③이 「상단 현황의 기간 전체 숫자」라고 하셨는데, 정확히 어느 칸인지 짚어 주십시오. ⑥이 ③을 나누는 값으로 쓰고 있어 이게 정해져야 ⑥이 숫자를 냅니다.","rows":[["지금","입력!C18 이 빈 칸이고 ⑥은 「미확정」을 냅니다"]],"answer":"","done":false},{"grp":3,"grp_name":"3. 산식","grp_why":"⑤ 산식이 들어갈 자리는 원고·엑셀·화면 각각 한 곳으로 모아 뒀다. 받는 즉시 반영된다.","id":"Q11","prio":"ask","topic":"투자수익율 항등식","say":"「투자수익률 = 할인율 − max(0, 미지급금−과지급금) ÷ 투자실행액」이라 하셨는데, 원식으로 풀면 분모가 순지급액이라 값이 조금 갈립니다. 근사식으로 두고 갈까요, 정확식을 정본으로 삼을까요.","rows":[["실측","근사 0.110000% ↔ 정확 0.110121% · 갈림 배수 1.001101"]],"answer":"","done":false},{"grp":3,"grp_name":"3. 산식","grp_why":"⑤ 산식이 들어갈 자리는 원고·엑셀·화면 각각 한 곳으로 모아 뒀다. 받는 즉시 반영된다.","id":"Q10","prio":"ask","topic":"ty수익률 일 환산","say":"ty수익률에 연 환산과 일 환산 두 갈래가 있다고 적으셨는데, 일 환산의 산식과 화면에 놓을 자리를 정해 주십시오. 지금은 저희 산출물 전건에 없습니다.","rows":[],"answer":"","done":false},{"grp":3,"grp_name":"3. 산식","grp_why":"⑤ 산식이 들어갈 자리는 원고·엑셀·화면 각각 한 곳으로 모아 뒀다. 받는 즉시 반영된다.","id":"Q4","prio":"ask","topic":"투자실행액 = SAi","say":"DM에 「투자실행액 : SAi」라고 적으셨는데, 정의서 원문에서 SAi는 표본집합 것입니다. 어느 쪽으로 읽을까요.","rows":[["어긋남","모집단(미회수 전체 ↔ 표본 10일)과 단위(합계 ↔ 1건)가 둘 다 다릅니다"]],"answer":"","done":false},{"grp":4,"grp_name":"4. 표기","grp_why":"기호를 이미 갈아 뒀다. 방향이 대표님 지시와 반대라 확인이 필요하다.","id":"Q8","prio":"stop","topic":"D와 d 중 어느 쪽을 바꾸나","say":"「금융일수 D 말고 다른 용어 써야 함」이라 하셔서 금융일수 쪽을 바꾸라는 뜻으로 읽혔는데, 같은 DM에서 SD(d-1)처럼 날짜 쪽에 소문자를 쓰고 계셨습니다. 저희는 D를 금융일수로 두고 d를 오늘 날짜로 내렸습니다. 이 방향이 맞을까요.","rows":[["지금","D = 금융일수 · d = 오늘 · d-1 = 정산예정일이 어제인 채권 집합"],["뒤집히면","고칠 자리는 규칙 문서 한 곳입니다"]],"answer":"","done":false},{"grp":4,"grp_name":"4. 표기","grp_why":"기호를 이미 갈아 뒀다. 방향이 대표님 지시와 반대라 확인이 필요하다.","id":"Q9","prio":"ask","topic":"표본 합의 표기","say":"「표본의 합은 S가 빠지고 Σ i부터 S까지로 통계식으로 된다」고 하셨는데, 저희는 Σ SLi ÷ Σ SAi로 쓰고 있습니다. 어느 표기로 갈까요.","rows":[["따라가면","기호 2개가 사라지고 2개가 바뀝니다"]],"answer":"","done":false},{"grp":5,"grp_name":"5. 숫자와 기준","grp_why":"화면 대표 숫자가 직접 걸려 있다.","id":"Q14","prio":"ask","topic":"S 표본 구간","say":"S입금부족률 표본을 「최근 10일치」라 하셨는데, 정의서에는 선정산일이 d-20부터 d-11입니다. 11일 버퍼는 정산예정일이 지나기를 기다리는 장치인가요.","rows":[["어긋남","폭 10일은 같은데 자리가 10일 다릅니다"]],"answer":"","done":false},{"grp":5,"grp_name":"5. 숫자와 기준","grp_why":"화면 대표 숫자가 직접 걸려 있다.","id":"Q5","prio":"ask","topic":"표본을 자르는 날짜","say":"그 표본을 자르는 날짜가 선정산일인가요, 정산예정일인가요.","rows":[["값이 갈림","선정산일 0.074428% ↔ 정산예정일 0.071879%"]],"answer":"","done":false},{"grp":5,"grp_name":"5. 숫자와 기준","grp_why":"화면 대표 숫자가 직접 걸려 있다.","id":"Q15","prio":"ask","topic":"플랫폼 금융일수","say":"배민 평균 금융일수를 3.41일, 요기요를 6.21일로 말씀하셨는데 정산주기 엑셀 셀은 3.350685·6.164384입니다. 어느 쪽으로 갈까요.","rows":[["셀 값","W 3.04일 · ty 13.21% (지금 화면)"],["말씀 값","W 3.06일 · ty 13.12%"]],"answer":"","done":false},{"grp":5,"grp_name":"5. 숫자와 기준","grp_why":"화면 대표 숫자가 직접 걸려 있다.","id":"Q6","prio":"ask","topic":"채권매입수수료의 몫","say":"채권매입수수료가 투자자 몫만인가요, 페이허그·파트너까지 나눠 갖는 통 전체인가요. 수익률 ④·⑤·⑥이 전부 여기 걸립니다.","rows":[],"answer":"","done":false},{"grp":5,"grp_name":"5. 숫자와 기준","grp_why":"화면 대표 숫자가 직접 걸려 있다.","id":"Q20","prio":"ask","topic":"자료 요청","say":"8/30에 주신 W금융일수 피드백 자료를 다시 보내 주실 수 있을까요. 「정산 예정일이 매출일 + 2영업일」이라 적히고 「평균 만기 2.01」이 있던 그 자료입니다.","rows":[["왜","저희가 가진 원본은 용어 정의 워드와 정산주기 엑셀 둘뿐이라 2.01의 출처를 못 찾습니다"]],"answer":"","done":false}]}</script>
+<script type="application/json" id="src">"PHRpdGxlPuuMgO2RnOuLmCDtmZXsnbggMjDrrLg8L3RpdGxlPgo8c3R5bGU+QGltcG9ydCB1cmwoImh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzMj9mYW1pbHk9Tm90bytTYW5zK0tSOndnaHRANDAwOzUwMDs3MDAmZmFtaWx5PU5vdG8rU2VyaWYrS1I6d2dodEA0MDA7NzAwJmZhbWlseT1JQk0rUGxleCtNb25vOndnaHRANDAwOzUwMCZkaXNwbGF5PXN3YXAiKTsKCjpyb290ewogIC0tYmc6I0ZBRjlGNzsgLS1zdXJmYWNlOiNGRkZGRkY7IC0tc3VuazojRjRGMkVEOwogIC0taW5rOiMxQjFBMTc7IC0tbXV0ZTojNkI2ODYyOyAtLWZhaW50OiM5NDkwODc5ZTsKICAtLXJ1bGU6I0U1RTFEOTsgLS1ydWxlLWhhcmQ6I0NGQzlCRDsKICAtLWFjY2VudDojMkM0NDcwOyAtLWFjY2VudC1zb2Z0OiMyQzQ0NzAxNDsKICAtLXN0b3A6IzhBMzE0MzsgLS1zdG9wLXNvZnQ6IzhBMzE0MzE0OwogIC0tYXNrOiM5QzYyMTI7IC0tYXNrLXNvZnQ6IzlDNjIxMjE0OwogIC0tb2s6IzJGNjA0NjsKICAtLXNoYWRvdzowIDFweCAycHggIzFiMWExNzEwLCAwIDEwcHggMjZweCAjMWIxYTE3MGE7Cn0KQG1lZGlhIChwcmVmZXJzLWNvbG9yLXNjaGVtZTpkYXJrKXs6cm9vdDpub3QoW2RhdGEtdGhlbWU9ImxpZ2h0Il0pewogIC0tYmc6IzE2MTYxQTsgLS1zdXJmYWNlOiMxRDFFMjM7IC0tc3VuazojMjIyNDJBOwogIC0taW5rOiNFQ0VBRTU7IC0tbXV0ZTojOUI5NzhFOyAtLWZhaW50OiM3NzczNmI5ZTsKICAtLXJ1bGU6IzJFMzAzODsgLS1ydWxlLWhhcmQ6IzNENDA0ODsKICAtLWFjY2VudDojOTNBRUUwOyAtLWFjY2VudC1zb2Z0OiM5M0FFRTAxRjsKICAtLXN0b3A6I0UwODU5NDsgLS1zdG9wLXNvZnQ6I0UwODU5NDIwOwogIC0tYXNrOiNFMEE2NEE7IC0tYXNrLXNvZnQ6I0UwQTY0QTIwOwogIC0tb2s6IzZGQkY5NTsKICAtLXNoYWRvdzowIDFweCAycHggIzAwMDAwMDQwLCAwIDEwcHggMjZweCAjMDAwMDAwMzA7Cn19Cjpyb290W2RhdGEtdGhlbWU9ImRhcmsiXXsKICAtLWJnOiMxNjE2MUE7IC0tc3VyZmFjZTojMUQxRTIzOyAtLXN1bms6IzIyMjQyQTsKICAtLWluazojRUNFQUU1OyAtLW11dGU6IzlCOTc4RTsgLS1mYWludDojNzc3MzZiOWU7CiAgLS1ydWxlOiMyRTMwMzg7IC0tcnVsZS1oYXJkOiMzRDQwNDg7CiAgLS1hY2NlbnQ6IzkzQUVFMDsgLS1hY2NlbnQtc29mdDojOTNBRUUwMUY7CiAgLS1zdG9wOiNFMDg1OTQ7IC0tc3RvcC1zb2Z0OiNFMDg1OTQyMDsKICAtLWFzazojRTBBNjRBOyAtLWFzay1zb2Z0OiNFMEE2NEEyMDsKICAtLW9rOiM2RkJGOTU7CiAgLS1zaGFkb3c6MCAxcHggMnB4ICMwMDAwMDA0MCwgMCAxMHB4IDI2cHggIzAwMDAwMDMwOwp9Cip7Ym94LXNpemluZzpib3JkZXItYm94fQpib2R5e21hcmdpbjowO2JhY2tncm91bmQ6dmFyKC0tYmcpO2NvbG9yOnZhcigtLWluayk7CiAgZm9udC1mYW1pbHk6Ik5vdG8gU2FucyBLUiIsLWFwcGxlLXN5c3RlbSxCbGlua01hY1N5c3RlbUZvbnQsIkFwcGxlIFNEIEdvdGhpYyBOZW8iLHNhbnMtc2VyaWY7CiAgZm9udC1zaXplOjE1cHg7bGluZS1oZWlnaHQ6MS43NTstd2Via2l0LWZvbnQtc21vb3RoaW5nOmFudGlhbGlhc2VkfQo6Zm9jdXMtdmlzaWJsZXtvdXRsaW5lOjJweCBzb2xpZCB2YXIoLS1hY2NlbnQpO291dGxpbmUtb2Zmc2V0OjJweDtib3JkZXItcmFkaXVzOjRweH0KCi5iYXJ7cG9zaXRpb246c3RpY2t5O3RvcDowO3otaW5kZXg6MzA7ZGlzcGxheTpmbGV4O2FsaWduLWl0ZW1zOmNlbnRlcjtnYXA6MTBweDsKICBmbGV4LXdyYXA6d3JhcDtwYWRkaW5nOjEwcHggMjBweDtib3JkZXItYm90dG9tOjFweCBzb2xpZCB2YXIoLS1ydWxlKTsKICBiYWNrZ3JvdW5kOmNvbG9yLW1peChpbiBzcmdiLHZhcigtLWJnKSA4OCUsdHJhbnNwYXJlbnQpO2JhY2tkcm9wLWZpbHRlcjpibHVyKDEwcHgpfQouYmFyIGgxe21hcmdpbjowO2ZvbnQtZmFtaWx5OiJOb3RvIFNlcmlmIEtSIixzZXJpZjtmb250LXNpemU6MTZweDtmb250LXdlaWdodDo3MDA7d2hpdGUtc3BhY2U6bm93cmFwfQouYmFyIC5zcHtmbGV4OjF9Ci5idG57Zm9udDppbmhlcml0O2ZvbnQtc2l6ZToxM3B4O2xpbmUtaGVpZ2h0OjE7Y3Vyc29yOnBvaW50ZXI7cGFkZGluZzo4cHggMTJweDsKICBib3JkZXItcmFkaXVzOjdweDtib3JkZXI6MXB4IHNvbGlkIHZhcigtLXJ1bGUtaGFyZCk7YmFja2dyb3VuZDp2YXIoLS1zdXJmYWNlKTtjb2xvcjp2YXIoLS1pbmspfQouYnRuOmhvdmVye2JvcmRlci1jb2xvcjp2YXIoLS1hY2NlbnQpO2NvbG9yOnZhcigtLWFjY2VudCl9Ci5idG4ucHJpe2JhY2tncm91bmQ6dmFyKC0tYWNjZW50KTtib3JkZXItY29sb3I6dmFyKC0tYWNjZW50KTtjb2xvcjp2YXIoLS1iZyk7Zm9udC13ZWlnaHQ6NjAwfQouYnRuLnByaTpob3ZlcntmaWx0ZXI6YnJpZ2h0bmVzcygxLjEyKTtjb2xvcjp2YXIoLS1iZyl9Ci5idG5bZGlzYWJsZWRde29wYWNpdHk6LjQ1O2N1cnNvcjpkZWZhdWx0fQouc3R7Zm9udC1zaXplOjEycHg7Y29sb3I6dmFyKC0tbXV0ZSk7d2hpdGUtc3BhY2U6bm93cmFwfQouc3Qub257Y29sb3I6dmFyKC0tYXNrKX0gLnN0Lm9re2NvbG9yOnZhcigtLW9rKX0gLnN0LmJhZHtjb2xvcjp2YXIoLS1zdG9wKX0KCi53cmFwe21heC13aWR0aDo4ODBweDttYXJnaW46MCBhdXRvO3BhZGRpbmc6MjZweCAyMHB4IDExMHB4fQpoZWFkZXIgaDF7bWFyZ2luOjAgMCA0cHg7Zm9udC1mYW1pbHk6Ik5vdG8gU2VyaWYgS1IiLHNlcmlmO2ZvbnQtc2l6ZTozMXB4OwogIGZvbnQtd2VpZ2h0OjcwMDtsZXR0ZXItc3BhY2luZzotLjAyZW07dGV4dC13cmFwOmJhbGFuY2V9CmhlYWRlciAud2hlbntjb2xvcjp2YXIoLS1tdXRlKTtmb250LXNpemU6MTMuNXB4O21hcmdpbjowIDAgMThweH0KLnRhbGx5e2Rpc3BsYXk6Z3JpZDtncmlkLXRlbXBsYXRlLWNvbHVtbnM6cmVwZWF0KGF1dG8tZml0LG1pbm1heCgxMjBweCwxZnIpKTtnYXA6MXB4OwogIGJhY2tncm91bmQ6dmFyKC0tcnVsZSk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1ydWxlKTtib3JkZXItcmFkaXVzOjEwcHg7b3ZlcmZsb3c6aGlkZGVufQoudGFsbHkgZGl2e2JhY2tncm91bmQ6dmFyKC0tc3VyZmFjZSk7cGFkZGluZzoxMnB4IDE0cHh9Ci50YWxseSBkdHtmb250LXNpemU6MTFweDtsZXR0ZXItc3BhY2luZzouMDZlbTtjb2xvcjp2YXIoLS1tdXRlKTttYXJnaW46MCAwIDNweH0KLnRhbGx5IGRke21hcmdpbjowO2ZvbnQtc2l6ZToxOXB4O2ZvbnQtd2VpZ2h0OjcwMDtmb250LXZhcmlhbnQtbnVtZXJpYzp0YWJ1bGFyLW51bXN9Ci50YWxseSBkZCBzbWFsbHtmb250LXNpemU6MTJweDtmb250LXdlaWdodDo0MDA7Y29sb3I6dmFyKC0tbXV0ZSk7bWFyZ2luLWxlZnQ6M3B4fQoudGFsbHkgLnMgZGR7Y29sb3I6dmFyKC0tc3RvcCl9IC50YWxseSAuZCBkZHtjb2xvcjp2YXIoLS1vayl9Ci5tZW1ve21hcmdpbi10b3A6MTRweH0KLm1lbW8gbGFiZWx7ZGlzcGxheTpibG9jaztmb250LXNpemU6MTFweDtsZXR0ZXItc3BhY2luZzouMDZlbTtjb2xvcjp2YXIoLS1tdXRlKTttYXJnaW4tYm90dG9tOjRweH0KCmgyLmdycHttYXJnaW46MzZweCAwIDJweDtwYWRkaW5nLXRvcDoyMHB4O2JvcmRlci10b3A6MnB4IHNvbGlkIHZhcigtLXJ1bGUtaGFyZCk7CiAgZm9udC1mYW1pbHk6Ik5vdG8gU2VyaWYgS1IiLHNlcmlmO2ZvbnQtc2l6ZToyMXB4O2ZvbnQtd2VpZ2h0OjcwMH0KcC53aHl7bWFyZ2luOjJweCAwIDEycHg7Y29sb3I6dmFyKC0tbXV0ZSk7Zm9udC1zaXplOjEzLjVweH0KCi5xe2JhY2tncm91bmQ6dmFyKC0tc3VyZmFjZSk7Ym9yZGVyOjFweCBzb2xpZCB2YXIoLS1ydWxlKTtib3JkZXItcmFkaXVzOjExcHg7CiAgbWFyZ2luOjEycHggMDtib3gtc2hhZG93OnZhcigtLXNoYWRvdyk7b3ZlcmZsb3c6aGlkZGVuO3Njcm9sbC1tYXJnaW4tdG9wOjY0cHh9Ci5xLnN0b3B7Ym9yZGVyLWxlZnQ6NHB4IHNvbGlkIHZhcigtLXN0b3ApfQoucS5hc2t7Ym9yZGVyLWxlZnQ6NHB4IHNvbGlkIHZhcigtLWFzayl9Ci5xLmRvbmV7b3BhY2l0eTouNjJ9Ci5xIC5oZHtkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6Y2VudGVyO2dhcDo5cHg7ZmxleC13cmFwOndyYXA7cGFkZGluZzoxM3B4IDE2cHggMH0KLnEgLmlke2ZvbnQtZmFtaWx5OiJJQk0gUGxleCBNb25vIix1aS1tb25vc3BhY2UsbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtd2VpZ2h0OjYwMDsKICBjb2xvcjp2YXIoLS1hY2NlbnQpO2JhY2tncm91bmQ6dmFyKC0tYWNjZW50LXNvZnQpO3BhZGRpbmc6MnB4IDhweDtib3JkZXItcmFkaXVzOjVweH0KLnRhZ3tmb250LXNpemU6MTAuNXB4O2ZvbnQtd2VpZ2h0OjcwMDtsZXR0ZXItc3BhY2luZzouMDZlbTtwYWRkaW5nOjNweCA4cHg7CiAgYm9yZGVyLXJhZGl1czoyMHB4O2JvcmRlcjoxcHggc29saWQgY3VycmVudENvbG9yfQoudGFnLnN0b3B7Y29sb3I6dmFyKC0tc3RvcCk7YmFja2dyb3VuZDp2YXIoLS1zdG9wLXNvZnQpfQoudGFnLmFza3tjb2xvcjp2YXIoLS1hc2spO2JhY2tncm91bmQ6dmFyKC0tYXNrLXNvZnQpfQoucSAudG9waWN7Zm9udC1zaXplOjEzcHg7Y29sb3I6dmFyKC0tbXV0ZSl9Ci5xIC5jaGt7bWFyZ2luLWxlZnQ6YXV0bztkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6Y2VudGVyO2dhcDo1cHg7Zm9udC1zaXplOjExLjVweDsKICBjb2xvcjp2YXIoLS1tdXRlKTtjdXJzb3I6cG9pbnRlcjt1c2VyLXNlbGVjdDpub25lfQoucSAuY2hrIGlucHV0e2FjY2VudC1jb2xvcjp2YXIoLS1hY2NlbnQpO3dpZHRoOjE1cHg7aGVpZ2h0OjE1cHg7Y3Vyc29yOnBvaW50ZXJ9Ci5zYXl7bWFyZ2luOjlweCAxNnB4IDA7cGFkZGluZzoxMnB4IDE1cHg7YmFja2dyb3VuZDp2YXIoLS1zdW5rKTsKICBib3JkZXItbGVmdDozcHggc29saWQgdmFyKC0tcnVsZS1oYXJkKTtib3JkZXItcmFkaXVzOjAgOHB4IDhweCAwOwogIGZvbnQtZmFtaWx5OiJOb3RvIFNlcmlmIEtSIixzZXJpZjtmb250LXNpemU6MTVweDtsaW5lLWhlaWdodDoxLjc1fQouYm9keXtwYWRkaW5nOjExcHggMTZweCAxNXB4fQoucm93c3tkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOjY0cHggbWlubWF4KDAsMWZyKTtnYXA6MXB4O2JhY2tncm91bmQ6dmFyKC0tcnVsZSk7CiAgYm9yZGVyOjFweCBzb2xpZCB2YXIoLS1ydWxlKTtib3JkZXItcmFkaXVzOjhweDtvdmVyZmxvdzpoaWRkZW47bWFyZ2luLWJvdHRvbToxMXB4fQoucm93cyAua3tiYWNrZ3JvdW5kOnZhcigtLXN1bmspO3BhZGRpbmc6OHB4IDExcHg7Zm9udC1zaXplOjExLjVweDtmb250LXdlaWdodDo3MDA7Y29sb3I6dmFyKC0tbXV0ZSl9Ci5yb3dzIC52e2JhY2tncm91bmQ6dmFyKC0tc3VyZmFjZSk7cGFkZGluZzo4cHggMTJweDtmb250LXNpemU6MTMuNXB4O21pbi13aWR0aDowfQpsYWJlbC5hbHtkaXNwbGF5OmJsb2NrO2ZvbnQtc2l6ZToxMXB4O2xldHRlci1zcGFjaW5nOi4wNmVtO2NvbG9yOnZhcigtLW11dGUpO21hcmdpbi1ib3R0b206NHB4fQp0ZXh0YXJlYXt3aWR0aDoxMDAlO21pbi1oZWlnaHQ6NTZweDtyZXNpemU6dmVydGljYWw7Zm9udDppbmhlcml0O2ZvbnQtc2l6ZToxMy41cHg7CiAgcGFkZGluZzo5cHggMTFweDtib3JkZXItcmFkaXVzOjhweDtib3JkZXI6MXB4IGRhc2hlZCB2YXIoLS1ydWxlLWhhcmQpOwogIGJhY2tncm91bmQ6dmFyKC0tYmcpO2NvbG9yOnZhcigtLWluayk7bGluZS1oZWlnaHQ6MS42fQp0ZXh0YXJlYTpmb2N1c3tvdXRsaW5lOm5vbmU7Ym9yZGVyLXN0eWxlOnNvbGlkO2JvcmRlci1jb2xvcjp2YXIoLS1hY2NlbnQpfQp0ZXh0YXJlYTo6cGxhY2Vob2xkZXJ7Y29sb3I6dmFyKC0tZmFpbnQpfQp0ZXh0YXJlYS5maWxsZWR7Ym9yZGVyLXN0eWxlOnNvbGlkO2JvcmRlci1jb2xvcjp2YXIoLS1vayl9CgpAbWVkaWEgcHJpbnR7LmJhcntkaXNwbGF5Om5vbmV9LnF7YnJlYWstaW5zaWRlOmF2b2lkO2JveC1zaGFkb3c6bm9uZX0KICB0ZXh0YXJlYXtib3JkZXItc3R5bGU6c29saWQ7bWluLWhlaWdodDo0NnB4fX0KQG1lZGlhIChwcmVmZXJzLXJlZHVjZWQtbW90aW9uOnJlZHVjZSl7Knt0cmFuc2l0aW9uOm5vbmUhaW1wb3J0YW50fX0KPC9zdHlsZT4KCjxkaXYgY2xhc3M9ImJhciI+CiAgPGgxPuuMgO2RnOuLmCDtmZXsnbggMjDrrLg8L2gxPgogIDxzcGFuIGNsYXNzPSJzcCI+PC9zcGFuPgogIDxzcGFuIGNsYXNzPSJzdCIgaWQ9InN0Ij48L3NwYW4+CiAgPGJ1dHRvbiBjbGFzcz0iYnRuIHByaSIgaWQ9InNhdmUiPuyggOyepTwvYnV0dG9uPgo8L2Rpdj4KCjxkaXYgY2xhc3M9IndyYXAiPjxtYWluIGlkPSJkb2MiPjwvbWFpbj48L2Rpdj4KCjxzY3JpcHQgdHlwZT0iYXBwbGljYXRpb24vanNvbiIgaWQ9InNlZWQiPiUlU0VFRCUlPC9zY3JpcHQ+CjxzY3JpcHQgdHlwZT0iYXBwbGljYXRpb24vanNvbiIgaWQ9InNyYyI+IiUlU1JDJSUiPC9zY3JpcHQ+CjxzY3JpcHQ+CihmdW5jdGlvbigpewoidXNlIHN0cmljdCI7CnZhciBTRUVEID0gSlNPTi5wYXJzZShkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgic2VlZCIpLnRleHRDb250ZW50KTsKdmFyIFNSQyA9IG51bGwsIGRpcnR5ID0gZmFsc2UsIHB1YiA9IG51bGw7CnZhciAkID0gZnVuY3Rpb24ocyl7cmV0dXJuIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3Iocyl9Owp2YXIgZXNjID0gZnVuY3Rpb24ocyl7cmV0dXJuIFN0cmluZyhzPT1udWxsPyIiOnMpCiAgLnJlcGxhY2UoLyYvZywiJmFtcDsiKS5yZXBsYWNlKC88L2csIiZsdDsiKS5yZXBsYWNlKC8+L2csIiZndDsiKX07CgpmdW5jdGlvbiBiNjRkZWMocyl7CiAgdmFyIGJpbiA9IGF0b2IocyksIGIgPSBuZXcgVWludDhBcnJheShiaW4ubGVuZ3RoKTsKICBmb3IgKHZhciBpPTA7aTxiaW4ubGVuZ3RoO2krKykgYltpXSA9IGJpbi5jaGFyQ29kZUF0KGkpOwogIHJldHVybiBuZXcgVGV4dERlY29kZXIoKS5kZWNvZGUoYik7Cn0KLyogI3NyYyDripQgSlNPTiDrrLjsnpDsl7Qg7ZWY64KY64ukLiDrlLDsmLTtkZzsp7gg64SY6riw66m0IOq3uCDsnpDrpqzsl5DshJwg6rmo7KeE64ukLiAqLwp0cnkgeyBTUkMgPSBiNjRkZWMoSlNPTi5wYXJzZShkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgic3JjIikudGV4dENvbnRlbnQpKTsgfQpjYXRjaChlKXsgU1JDID0gbnVsbDsgfQoKdmFyIFRLID0gZnVuY3Rpb24obil7IHJldHVybiAiJSIrIiUiICsgbiArICIlIisiJSIgfTsKCmZ1bmN0aW9uIHdyYXBGdWxsKGZyYWcpewogIHZhciBtID0gL15ccyo8dGl0bGU+KFtcc1xTXSo/KTxcL3RpdGxlPlxzKi8uZXhlYyhmcmFnKTsKICB2YXIgdCA9IG0gPyBtWzFdIDogIu2ZleyduCDrrLjtla0iOwogIHZhciBib2R5ID0gbSA/IGZyYWcuc2xpY2UobVswXS5sZW5ndGgpIDogZnJhZzsKICByZXR1cm4gJzwhZG9jdHlwZSBodG1sPlxuPGh0bWwgbGFuZz0ia28iPlxuPGhlYWQ+XG48bWV0YSBjaGFyc2V0PSJ1dGYtOCI+XG4nCiAgICAgICArICc8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEiPlxuJwogICAgICAgKyAnPHRpdGxlPicgKyB0ICsgJzwvdGl0bGU+XG48L2hlYWQ+XG48Ym9keT5cbicgKyBib2R5ICsgJ1xuPC9ib2R5PlxuPC9odG1sPlxuJzsKfQpmdW5jdGlvbiByZW5kZXJEb2MoKXsKICBpZiAoIVNSQykgcmV0dXJuIG51bGw7CiAgdmFyIGN1dCA9IFNSQy5pbmRleE9mKFRLKCJTUkMiKSk7CiAgaWYgKGN1dCA8IDApIHJldHVybiBudWxsOwogIHZhciBiZWZvcmUgPSBTUkMuc2xpY2UoMCwgY3V0KSwgYWZ0ZXIgPSBTUkMuc2xpY2UoY3V0ICsgVEsoIlNSQyIpLmxlbmd0aCk7CiAgdmFyIGZpbGwgPSBmdW5jdGlvbihzKXsgcmV0dXJuIHMuc3BsaXQoVEsoIlNFRUQiKSkuam9pbigKICAgIEpTT04uc3RyaW5naWZ5KFNFRUQpLnNwbGl0KCI8LyIpLmpvaW4oIjxcXC8iKSkgfTsKICB2YXIgYiA9IG5ldyBUZXh0RW5jb2RlcigpLmVuY29kZShTUkMpLCByYXcgPSAiIiwgQ0ggPSAweDgwMDA7CiAgZm9yICh2YXIgaT0wO2k8Yi5sZW5ndGg7aSs9Q0gpIHJhdyArPSBTdHJpbmcuZnJvbUNoYXJDb2RlLmFwcGx5KG51bGwsIGIuc3ViYXJyYXkoaSxpK0NIKSk7CiAgcmV0dXJuIHdyYXBGdWxsKGZpbGwoYmVmb3JlKSArIGJ0b2EocmF3KSArIGZpbGwoYWZ0ZXIpKTsKfQoKZnVuY3Rpb24gcmVuZGVyKCl7CiAgdmFyIGggPSAnPGhlYWRlcj48aDE+JyArIGVzYyhTRUVELnRpdGxlKSArICc8L2gxPicKICAgICAgICArICc8cCBjbGFzcz0id2hlbiI+JyArIGVzYyhTRUVELndoZW4pICsgJyDCtyAnICsgZXNjKFNFRUQuYmFzaXMpICsgJzwvcD4nOwogIHZhciBzdCA9IFNFRUQuaXRlbXMuZmlsdGVyKGZ1bmN0aW9uKHgpe3JldHVybiB4LnByaW89PT0ic3RvcCJ9KS5sZW5ndGg7CiAgdmFyIGRuID0gU0VFRC5pdGVtcy5maWx0ZXIoZnVuY3Rpb24oeCl7cmV0dXJuICh4LmFuc3dlcnx8IiIpLnRyaW0oKX0pLmxlbmd0aDsKICBoICs9ICc8ZGwgY2xhc3M9InRhbGx5Ij4nCiAgICAgKyAnPGRpdiBjbGFzcz0icyI+PGR0PuuovOyggCDri7Ug7JeG7Jy866m0IOuquyDqsJA8L2R0PjxkZD4nK3N0Kyc8c21hbGw+66y4PC9zbWFsbD48L2RkPjwvZGl2PicKICAgICArICc8ZGl2PjxkdD7tmZXsnbjrp4wg67Cb7Jy866m0IOuQqDwvZHQ+PGRkPicrKFNFRUQuaXRlbXMubGVuZ3RoLXN0KSsnPHNtYWxsPuusuDwvc21hbGw+PC9kZD48L2Rpdj4nCiAgICAgKyAnPGRpdiBjbGFzcz0iZCI+PGR0PuuLtSDrsJvsnYw8L2R0PjxkZCBpZD0iZG4iPicrZG4rJzxzbWFsbD4gLyAnK1NFRUQuaXRlbXMubGVuZ3RoKyc8L3NtYWxsPjwvZGQ+PC9kaXY+JwogICAgICsgJzxkaXY+PGR0PuustuydjDwvZHQ+PGRkPjU8c21hbGw+642p7Ja066asPC9zbWFsbD48L2RkPjwvZGl2PjwvZGw+JzsKICBoICs9ICc8ZGl2IGNsYXNzPSJtZW1vIj48bGFiZWw+66+47YyFIOuplOuqqDwvbGFiZWw+JwogICAgICsgJzx0ZXh0YXJlYSBkYXRhLW1lbW8gcGxhY2Vob2xkZXI9Iu2ajOydmCDspJEg64Ko6ri4IOqygyI+Jytlc2MoU0VFRC5ub3RlKSsnPC90ZXh0YXJlYT48L2Rpdj4nOwogIGggKz0gJzwvaGVhZGVyPic7CgogIHZhciBzZWVuID0ge307CiAgU0VFRC5pdGVtcy5mb3JFYWNoKGZ1bmN0aW9uKGl0LCBpKXsKICAgIGlmICghc2VlbltpdC5ncnBdKXsKICAgICAgc2VlbltpdC5ncnBdID0gMTsKICAgICAgaCArPSAnPGgyIGNsYXNzPSJncnAiPicrZXNjKGl0LmdycF9uYW1lKSsnPC9oMj48cCBjbGFzcz0id2h5Ij4nK2VzYyhpdC5ncnBfd2h5KSsnPC9wPic7CiAgICB9CiAgICB2YXIgZmlsbGVkID0gKGl0LmFuc3dlcnx8IiIpLnRyaW0oKSA/ICIgZG9uZSIgOiAiIjsKICAgIGggKz0gJzxhcnRpY2xlIGNsYXNzPSJxICcraXQucHJpbysoaXQuZG9uZT8iIGRvbmUiOiIiKSsnIiBpZD0iJytpdC5pZCsnIiBkYXRhLWk9IicraSsnIj4nCiAgICAgICArICc8ZGl2IGNsYXNzPSJoZCI+PHNwYW4gY2xhc3M9ImlkIj4nK2VzYyhpdC5pZCkrJzwvc3Bhbj4nCiAgICAgICArICc8c3BhbiBjbGFzcz0idGFnICcraXQucHJpbysnIj4nKyhpdC5wcmlvPT09InN0b3AiPyLrqLzsoIAg64u1IO2VhOyalCI6Iu2ZleyduCIpKyc8L3NwYW4+JwogICAgICAgKyAnPHNwYW4gY2xhc3M9InRvcGljIj4nK2VzYyhpdC50b3BpYykrJzwvc3Bhbj4nCiAgICAgICArICc8bGFiZWwgY2xhc3M9ImNoayI+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBkYXRhLWRvbmUnKyhpdC5kb25lPyIgY2hlY2tlZCI6IiIpKyc+66y87JeI7J2MPC9sYWJlbD4nCiAgICAgICArICc8L2Rpdj48cCBjbGFzcz0ic2F5Ij4nK2VzYyhpdC5zYXkpKyc8L3A+PGRpdiBjbGFzcz0iYm9keSI+JzsKICAgIGlmIChpdC5yb3dzICYmIGl0LnJvd3MubGVuZ3RoKXsKICAgICAgaCArPSAnPGRpdiBjbGFzcz0icm93cyI+JzsKICAgICAgaXQucm93cy5mb3JFYWNoKGZ1bmN0aW9uKHIpewogICAgICAgIGggKz0gJzxkaXYgY2xhc3M9ImsiPicrZXNjKHJbMF0pKyc8L2Rpdj48ZGl2IGNsYXNzPSJ2Ij4nK2VzYyhyWzFdKSsnPC9kaXY+JzsKICAgICAgfSk7CiAgICAgIGggKz0gJzwvZGl2Pic7CiAgICB9CiAgICBoICs9ICc8bGFiZWwgY2xhc3M9ImFsIj7rjIDtkZzri5gg64u1PC9sYWJlbD4nCiAgICAgICArICc8dGV4dGFyZWEgZGF0YS1hbnMgY2xhc3M9IicrKChpdC5hbnN3ZXJ8fCIiKS50cmltKCk/ImZpbGxlZCI6IiIpCiAgICAgICArICciIHBsYWNlaG9sZGVyPSLsl6zquLDsl5Ag7KCB6rOgIOyggOyepeydhCDriITrpbTrqbQgQ2xhdWRlIOqwgCDqt7jrjIDroZwg7J297Ja0IOqwkeuLiOuLpCI+JwogICAgICAgKyBlc2MoaXQuYW5zd2VyKSArICc8L3RleHRhcmVhPjwvZGl2PjwvYXJ0aWNsZT4nOwogIH0pOwogICQoIiNkb2MiKS5pbm5lckhUTUwgPSBoOwp9CgpmdW5jdGlvbiBtYXJrKCl7IGlmIChkaXJ0eSkgcmV0dXJuOyBkaXJ0eSA9IHRydWU7IHNheSgi7KCB7J2AIOqygyDsnojsnYwiLCJvbiIpOyAkKCIjc2F2ZSIpLmRpc2FibGVkID0gIXB1YjsgfQpmdW5jdGlvbiBzYXkodCwgYyl7IHZhciBzID0gJCgiI3N0Iik7IHMudGV4dENvbnRlbnQgPSB0OyBzLmNsYXNzTmFtZSA9ICJzdCAiICsgKGN8fCIiKTsgfQoKZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiaW5wdXQiLCBmdW5jdGlvbihlKXsKICB2YXIgdCA9IGUudGFyZ2V0OwogIGlmICh0Lmhhc0F0dHJpYnV0ZSAmJiB0Lmhhc0F0dHJpYnV0ZSgiZGF0YS1tZW1vIikpeyBTRUVELm5vdGUgPSB0LnZhbHVlOyBtYXJrKCk7IHJldHVybiB9CiAgaWYgKHQuaGFzQXR0cmlidXRlICYmIHQuaGFzQXR0cmlidXRlKCJkYXRhLWFucyIpKXsKICAgIHZhciBjID0gdC5jbG9zZXN0KCIucSIpOwogICAgU0VFRC5pdGVtc1srYy5kYXRhc2V0LmldLmFuc3dlciA9IHQudmFsdWU7CiAgICB0LmNsYXNzTGlzdC50b2dnbGUoImZpbGxlZCIsICEhdC52YWx1ZS50cmltKCkpOwogICAgdmFyIG4gPSBTRUVELml0ZW1zLmZpbHRlcihmdW5jdGlvbih4KXtyZXR1cm4gKHguYW5zd2VyfHwiIikudHJpbSgpfSkubGVuZ3RoOwogICAgdmFyIGQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiZG4iKTsKICAgIGlmIChkKSBkLmlubmVySFRNTCA9IG4gKyAnPHNtYWxsPiAvICcgKyBTRUVELml0ZW1zLmxlbmd0aCArICc8L3NtYWxsPic7CiAgICBtYXJrKCk7CiAgfQp9KTsKZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiY2hhbmdlIiwgZnVuY3Rpb24oZSl7CiAgaWYgKCFlLnRhcmdldC5oYXNBdHRyaWJ1dGUgfHwgIWUudGFyZ2V0Lmhhc0F0dHJpYnV0ZSgiZGF0YS1kb25lIikpIHJldHVybjsKICB2YXIgYyA9IGUudGFyZ2V0LmNsb3Nlc3QoIi5xIik7CiAgU0VFRC5pdGVtc1srYy5kYXRhc2V0LmldLmRvbmUgPSBlLnRhcmdldC5jaGVja2VkOwogIGMuY2xhc3NMaXN0LnRvZ2dsZSgiZG9uZSIsIGUudGFyZ2V0LmNoZWNrZWQpOwogIG1hcmsoKTsKfSk7CmRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoInBhc3RlIiwgZnVuY3Rpb24oZSl7CiAgaWYgKGUudGFyZ2V0LnRhZ05hbWUgIT09ICJURVhUQVJFQSIpIHJldHVybjsKICBlLnByZXZlbnREZWZhdWx0KCk7CiAgZG9jdW1lbnQuZXhlY0NvbW1hbmQoImluc2VydFRleHQiLCBmYWxzZSwKICAgIChlLmNsaXBib2FyZERhdGEgfHwgd2luZG93LmNsaXBib2FyZERhdGEpLmdldERhdGEoInRleHQvcGxhaW4iKSk7Cn0pOwoKJCgiI3NhdmUiKS5hZGRFdmVudExpc3RlbmVyKCJjbGljayIsIGFzeW5jIGZ1bmN0aW9uKCl7CiAgdmFyIGRvYyA9IHJlbmRlckRvYygpOwogIGlmICghZG9jKXsgc2F5KCLsm5Drs7gg7ZqM7IiYIOyLpO2MqCDCtyDsoIDsnqUg67aI6rCAIiwiYmFkIik7IHJldHVybiB9CiAgaWYgKCFwdWIpeyBzYXkoIuydtCDsgqzrs7jsl5DshJzripQg7KCA7J6lIOu2iOqwgCIsImJhZCIpOyByZXR1cm4gfQogICQoIiNzYXZlIikuZGlzYWJsZWQgPSB0cnVlOwogIHNheSgi7KCA7J6l7ZWY64qUIOykkSIsIm9uIik7CiAgdHJ5IHsKICAgIGF3YWl0IHB1Yi5wdWJsaXNoKGRvYyk7CiAgICBkaXJ0eSA9IGZhbHNlOyBzYXkoIuyggOyepeuQqCDCtyBDbGF1ZGUg6rCAIOydveyWtCDqsIgg7IiYIOyeiOydjCIsIm9rIik7CiAgfSBjYXRjaChlcnIpewogICAgdmFyIGMgPSBlcnIgJiYgZXJyLmNvZGU7CiAgICBpZiAoYyA9PT0gImNvbmZsaWN0Iil7IHNheSgi64uk66W4IO2MkOydtCDrqLzsoIAg7KCA7J6l65CoIMK3IOy1nOyLoCDtjJDsnLzroZwg64uk7IucIOyXtiIsIm9uIik7IHJldHVybiB9CiAgICBpZiAoYyA9PT0gIm5vdF93cml0ZXIiIHx8IGMgPT09ICJub3RfZ3JhbnRlZCIgfHwgYyA9PT0gIm5vdF9kZWNsYXJlZCIpewogICAgICBwdWIgPSBudWxsOyBzYXkoIuydveq4sCDsoITsmqkgwrcg7J20IOyjvOyGjOyXkOuKlCDsoIDsnqUg67aI6rCAIiwiYmFkIik7CiAgICB9IGVsc2UgeyBzYXkoIuyggOyepSDsi6TtjKggwrcgIisoY3x8Iuq5jOuLrSDrqqjrpoQiKSwiYmFkIikgfQogICAgJCgiI3NhdmUiKS5kaXNhYmxlZCA9IGZhbHNlOwogIH0KfSk7CndpbmRvdy5hZGRFdmVudExpc3RlbmVyKCJiZWZvcmV1bmxvYWQiLCBmdW5jdGlvbihlKXsgaWYgKGRpcnR5KXsgZS5wcmV2ZW50RGVmYXVsdCgpOyBlLnJldHVyblZhbHVlID0gIiIgfSB9KTsKCndpbmRvdy5fX3JlbmRlckRvYyA9IHJlbmRlckRvYzsKd2luZG93Ll9fc2VlZCA9IFNFRUQ7CgpyZW5kZXIoKTsKJCgiI3NhdmUiKS5kaXNhYmxlZCA9IHRydWU7CnNheShTUkMgPyAiIiA6ICLsm5Drs7gg7ZqM7IiYIOyLpO2MqCDCtyDsoIDsnqUg67aI6rCAIiwgU1JDID8gIiIgOiAiYmFkIik7CmlmICh3aW5kb3cuY2xhdWRlICYmIHdpbmRvdy5jbGF1ZGUudXNlKXsKICBjbGF1ZGUudXNlKCJhcnRpZmFjdCIpLnRoZW4oZnVuY3Rpb24oYSl7CiAgICBwdWIgPSBhOwogICAgaWYgKGEpIHsgJCgiI3NhdmUiKS5kaXNhYmxlZCA9ICFkaXJ0eTsgc2F5KGRpcnR5ID8gIuyggeydgCDqsoMg7J6I7J2MIiA6ICLsoIDsnqUg6rCA64qlIiwgZGlydHkgPyAib24iIDogIiIpOyB9CiAgICBlbHNlIHNheSgi7J20IOyCrOuzuOyXkOyEnOuKlCDsoIDsnqUg67aI6rCAIiwiYmFkIik7CiAgfSkuY2F0Y2goZnVuY3Rpb24oKXt9KTsKfQp9KSgpOwo8L3NjcmlwdD4K"</script>
+<script>
+(function(){
+"use strict";
+var SEED = JSON.parse(document.getElementById("seed").textContent);
+var SRC = null, dirty = false, pub = null;
+var $ = function(s){return document.querySelector(s)};
+var esc = function(s){return String(s==null?"":s)
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")};
+
+function b64dec(s){
+  var bin = atob(s), b = new Uint8Array(bin.length);
+  for (var i=0;i<bin.length;i++) b[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(b);
+}
+/* #src 는 JSON 문자열 하나다. 따옴표째 넘기면 그 자리에서 깨진다. */
+try { SRC = b64dec(JSON.parse(document.getElementById("src").textContent)); }
+catch(e){ SRC = null; }
+
+var TK = function(n){ return "%"+"%" + n + "%"+"%" };
+
+function wrapFull(frag){
+  var m = /^\s*<title>([\s\S]*?)<\/title>\s*/.exec(frag);
+  var t = m ? m[1] : "확인 문항";
+  var body = m ? frag.slice(m[0].length) : frag;
+  return '<!doctype html>\n<html lang="ko">\n<head>\n<meta charset="utf-8">\n'
+       + '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+       + '<title>' + t + '</title>\n</head>\n<body>\n' + body + '\n</body>\n</html>\n';
+}
+function renderDoc(){
+  if (!SRC) return null;
+  var cut = SRC.indexOf(TK("SRC"));
+  if (cut < 0) return null;
+  var before = SRC.slice(0, cut), after = SRC.slice(cut + TK("SRC").length);
+  var fill = function(s){ return s.split(TK("SEED")).join(
+    JSON.stringify(SEED).split("</").join("<\\/")) };
+  var b = new TextEncoder().encode(SRC), raw = "", CH = 0x8000;
+  for (var i=0;i<b.length;i+=CH) raw += String.fromCharCode.apply(null, b.subarray(i,i+CH));
+  return wrapFull(fill(before) + btoa(raw) + fill(after));
+}
+
+function render(){
+  var h = '<header><h1>' + esc(SEED.title) + '</h1>'
+        + '<p class="when">' + esc(SEED.when) + ' · ' + esc(SEED.basis) + '</p>';
+  var st = SEED.items.filter(function(x){return x.prio==="stop"}).length;
+  var dn = SEED.items.filter(function(x){return (x.answer||"").trim()}).length;
+  h += '<dl class="tally">'
+     + '<div class="s"><dt>먼저 답 없으면 못 감</dt><dd>'+st+'<small>문</small></dd></div>'
+     + '<div><dt>확인만 받으면 됨</dt><dd>'+(SEED.items.length-st)+'<small>문</small></dd></div>'
+     + '<div class="d"><dt>답 받음</dt><dd id="dn">'+dn+'<small> / '+SEED.items.length+'</small></dd></div>'
+     + '<div><dt>묶음</dt><dd>5<small>덩어리</small></dd></div></dl>';
+  h += '<div class="memo"><label>미팅 메모</label>'
+     + '<textarea data-memo placeholder="회의 중 남길 것">'+esc(SEED.note)+'</textarea></div>';
+  h += '</header>';
+
+  var seen = {};
+  SEED.items.forEach(function(it, i){
+    if (!seen[it.grp]){
+      seen[it.grp] = 1;
+      h += '<h2 class="grp">'+esc(it.grp_name)+'</h2><p class="why">'+esc(it.grp_why)+'</p>';
+    }
+    var filled = (it.answer||"").trim() ? " done" : "";
+    h += '<article class="q '+it.prio+(it.done?" done":"")+'" id="'+it.id+'" data-i="'+i+'">'
+       + '<div class="hd"><span class="id">'+esc(it.id)+'</span>'
+       + '<span class="tag '+it.prio+'">'+(it.prio==="stop"?"먼저 답 필요":"확인")+'</span>'
+       + '<span class="topic">'+esc(it.topic)+'</span>'
+       + '<label class="chk"><input type="checkbox" data-done'+(it.done?" checked":"")+'>물었음</label>'
+       + '</div><p class="say">'+esc(it.say)+'</p><div class="body">';
+    if (it.rows && it.rows.length){
+      h += '<div class="rows">';
+      it.rows.forEach(function(r){
+        h += '<div class="k">'+esc(r[0])+'</div><div class="v">'+esc(r[1])+'</div>';
+      });
+      h += '</div>';
+    }
+    h += '<label class="al">대표님 답</label>'
+       + '<textarea data-ans class="'+((it.answer||"").trim()?"filled":"")
+       + '" placeholder="여기에 적고 저장을 누르면 Claude 가 그대로 읽어 갑니다">'
+       + esc(it.answer) + '</textarea></div></article>';
+  });
+  $("#doc").innerHTML = h;
+}
+
+function mark(){ if (dirty) return; dirty = true; say("적은 것 있음","on"); $("#save").disabled = !pub; }
+function say(t, c){ var s = $("#st"); s.textContent = t; s.className = "st " + (c||""); }
+
+document.addEventListener("input", function(e){
+  var t = e.target;
+  if (t.hasAttribute && t.hasAttribute("data-memo")){ SEED.note = t.value; mark(); return }
+  if (t.hasAttribute && t.hasAttribute("data-ans")){
+    var c = t.closest(".q");
+    SEED.items[+c.dataset.i].answer = t.value;
+    t.classList.toggle("filled", !!t.value.trim());
+    var n = SEED.items.filter(function(x){return (x.answer||"").trim()}).length;
+    var d = document.getElementById("dn");
+    if (d) d.innerHTML = n + '<small> / ' + SEED.items.length + '</small>';
+    mark();
+  }
+});
+document.addEventListener("change", function(e){
+  if (!e.target.hasAttribute || !e.target.hasAttribute("data-done")) return;
+  var c = e.target.closest(".q");
+  SEED.items[+c.dataset.i].done = e.target.checked;
+  c.classList.toggle("done", e.target.checked);
+  mark();
+});
+document.addEventListener("paste", function(e){
+  if (e.target.tagName !== "TEXTAREA") return;
+  e.preventDefault();
+  document.execCommand("insertText", false,
+    (e.clipboardData || window.clipboardData).getData("text/plain"));
+});
+
+$("#save").addEventListener("click", async function(){
+  var doc = renderDoc();
+  if (!doc){ say("원본 회수 실패 · 저장 불가","bad"); return }
+  if (!pub){ say("이 사본에서는 저장 불가","bad"); return }
+  $("#save").disabled = true;
+  say("저장하는 중","on");
+  try {
+    await pub.publish(doc);
+    dirty = false; say("저장됨 · Claude 가 읽어 갈 수 있음","ok");
+  } catch(err){
+    var c = err && err.code;
+    if (c === "conflict"){ say("다른 판이 먼저 저장됨 · 최신 판으로 다시 엶","on"); return }
+    if (c === "not_writer" || c === "not_granted" || c === "not_declared"){
+      pub = null; say("읽기 전용 · 이 주소에는 저장 불가","bad");
+    } else { say("저장 실패 · "+(c||"까닭 모름"),"bad") }
+    $("#save").disabled = false;
+  }
+});
+window.addEventListener("beforeunload", function(e){ if (dirty){ e.preventDefault(); e.returnValue = "" } });
+
+window.__renderDoc = renderDoc;
+window.__seed = SEED;
+
+render();
+$("#save").disabled = true;
+say(SRC ? "" : "원본 회수 실패 · 저장 불가", SRC ? "" : "bad");
+if (window.claude && window.claude.use){
+  claude.use("artifact").then(function(a){
+    pub = a;
+    if (a) { $("#save").disabled = !dirty; say(dirty ? "적은 것 있음" : "저장 가능", dirty ? "on" : ""); }
+    else say("이 사본에서는 저장 불가","bad");
+  }).catch(function(){});
+}
+})();
+</script>
