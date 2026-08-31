@@ -7,13 +7,13 @@
   "quality": 70,
   "format": "webp",
   "chrome": "Google Chrome 152.0.7977.65",
-  "capturedAt": "2026-08-31T13:12:08.757Z",
+  "capturedAt": "2026-08-31T13:24:02.269Z",
   "files": {
    "invest-assets.html": {
     "shot": "assets/shots/invest-assets.webp",
     "imgSha256": "c6d693c1df767dffaf136e6b3ee6856a09b4a95b5dbaaa183b718a6995c8f1a4",
     "imgBytes": 124752,
-    "imgMtime": 1788181923766,
+    "imgMtime": 1788182637490,
     "srcSha256": "08354836a84d10925b07c5643ef57bf33692b08e6cca85d82453ec1ee13c2ed9",
     "srcBytes": 20345,
     "srcMtime": 1788181258218
@@ -22,16 +22,16 @@
     "shot": "assets/shots/invest-profit.webp",
     "imgSha256": "09da71dc369bcdd846981d1e111f3d552e8d7166049f4a6c9f4fe602d53c30d4",
     "imgBytes": 109632,
-    "imgMtime": 1788181924984,
+    "imgMtime": 1788182638668,
     "srcSha256": "c71794287c2a4f68ecb0e1e514eca84b44789d906cf2105cc5af5f8df1b02331",
     "srcBytes": 19046,
-    "srcMtime": 1788181258218
+    "srcMtime": 1788182469197
    },
    "merchants.html": {
     "shot": "assets/shots/merchants.webp",
     "imgSha256": "ab4012afae2b13fab77919d22ba6c14a1ca376b5f1b5e8552a0d8a1512ded587",
     "imgBytes": 93050,
-    "imgMtime": 1788181926181,
+    "imgMtime": 1788182639831,
     "srcSha256": "83665c485b07273c3167aaa8af4aeb4cc6757155b4c0b9aba3704558b9c185c1",
     "srcBytes": 13062,
     "srcMtime": 1788115003379
@@ -40,7 +40,7 @@
     "shot": "assets/shots/contracts.webp",
     "imgSha256": "9f1ea1ee9122c06ccce0718838f35d46efa874ffdad064c47ee6ca5a0734b430",
     "imgBytes": 67140,
-    "imgMtime": 1788181927384,
+    "imgMtime": 1788182641038,
     "srcSha256": "afd3f0aa87b2fc03fb6dc5a302f86da3f959d4b2a6f3ecb026bfc5f39682b08f",
     "srcBytes": 15391,
     "srcMtime": 1788114997269
@@ -49,7 +49,7 @@
     "shot": "assets/shots/coocon.webp",
     "imgSha256": "ce2628e721966d93a55f4ad67eb4750475791798c825c5a465d38ca0c9e217e0",
     "imgBytes": 30842,
-    "imgMtime": 1788181928563,
+    "imgMtime": 1788182642221,
     "srcSha256": "61b93c614a67dcb782884da279ac53b3f685b3553f729b0e8994b9d2d63a6a4a",
     "srcBytes": 7680,
     "srcMtime": 1787916536739
