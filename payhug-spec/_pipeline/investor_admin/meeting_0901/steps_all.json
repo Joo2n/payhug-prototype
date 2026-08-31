@@ -1,0 +1,6483 @@
+{
+ "meta": {
+  "기준일": "2026-08-27",
+  "조회기간": "2026-08-21 ~ 2026-08-27",
+  "화면": [
+   "invest-assets.html",
+   "invest-profit.html"
+  ],
+  "값출처": [
+   "daily_ledger.py",
+   "ledger_facts.json",
+   "sim_facts.json",
+   "배포 화면 HTML",
+   "검산_투자자어드민_20260901.xlsx (읽기만)"
+  ],
+  "기호정본": "dm_0831/symbol_rule_0831.md — D=금융일수 · d=오늘 · d−1=정산예정일이 어제인 채권 집합",
+  "개명대기": "WAD · PSEC · 낱개 접두사 제거 — 미확정. rename_pending 이 true 인 칸이 대상",
+  "마커": "일별 표 ①~⑥ 은 열 번호 (근거 = 대표 정의서 「상환액 (이미지의 ②)」). 수익 현황 ④·⑤ 는 대표 정의서 표기. 투자 자산 화면은 스토리보드 S3 에 마커 ①~⑨ 가 있으나 어느 칸을 가리키는지 대는 근거가 없어 null 로 둔다",
+  "불변식": "exec · cash · total · w · ty · s · merchants 길이는 ledger_facts.json 에서 읽는다. 비중 합 100.0% 고정"
+ },
+ "counts": {
+  "칸": 138,
+  "단계": 614,
+  "화면에_안뜨는_단계": 476,
+  "화면에_뜨는_단계": 138,
+  "개명대기_칸": 53,
+  "엑셀자리_없는_칸": 11
+ },
+ "cells": [
+  {
+   "screen": "invest-assets",
+   "table": "요약 카드",
+   "label": "기준일",
+   "term": "D = 현재일자",
+   "symbol": "d",
+   "formula": "원장이 고정한 조회 기준 일자",
+   "value": "2026-08-27",
+   "steps": [
+    {
+     "n": 1,
+     "what": "원장의 기준일 상수를 읽는다",
+     "detail": "daily_ledger.py ASOF = date(2026, 8, 27)",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "`YYYY-MM-DD` 로 적는다",
+     "detail": "2026-08-27",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "ASOF 상수 자체",
+    "선정산일 축 시작일 2026-02-16 (= d − 192일)"
+   ],
+   "xlsx": "입력!C10",
+   "source": "ceo_definitions.md [1번 이미지] D = 현재일자 · daily_ledger.py:68",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "요약 카드",
+   "label": "투자자산",
+   "term": "투자실행액 + 순현금",
+   "symbol": "ΣAᵢ + EC",
+   "formula": "투자실행액 + 순현금",
+   "value": "100,000,000원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "투자실행액을 가져온다",
+     "detail": "80,000,000원 — 현황 표 같은 칸",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "순현금을 가져온다",
+     "detail": "20,000,000원 — 현황 표 같은 칸",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "80,000,000 + 20,000,000 = 100,000,000원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "두 항의 산출 과정 전부"
+   ],
+   "xlsx": "기간집계!B46",
+   "source": "ceo_definitions.md [1번 이미지] 비중 산식의 분모 (투자실행액 + 순현금)",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "요약 카드",
+   "label": "투자실행액",
+   "term": "투자 실행액",
+   "symbol": "Σ Aᵢ",
+   "formula": "회수되지 않은 대상정산금채권의 Σ Aᵢ",
+   "value": "80,000,000원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "현황 표 같은 칸을 다시 쓴다",
+     "detail": "80,000,000원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "현황 표 투자실행액 칸의 6단계 전부"
+   ],
+   "xlsx": "기간집계!B44",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "요약 카드",
+   "label": "순현금",
+   "term": "순현금",
+   "symbol": "EC",
+   "formula": "조회시점 쿠콘 가상계좌 현금잔액",
+   "value": "20,000,000원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "현황 표 같은 칸을 다시 쓴다",
+     "detail": "20,000,000원",
+     "visible": true
+    }
+   ],
+   "xlsx": "입력!C8 · 기간집계!B45",
+   "source": "ceo_definitions.md [1번 이미지] 순현금",
+   "marker": null,
+   "hidden": [],
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "요약 카드",
+   "label": "Ty수익율",
+   "term": "ty수익율",
+   "symbol": "ty",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "13.21%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "현황 표 같은 칸을 다시 쓴다",
+     "detail": "13.21%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "365 ÷ 3.04 = 120.065789 회전"
+   ],
+   "xlsx": "기간집계!B43",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "투자실행액",
+   "term": "투자 실행액",
+   "symbol": "자산 구분 라벨",
+   "formula": "—",
+   "value": "투자실행액",
+   "steps": [
+    {
+     "n": 1,
+     "what": "대표 정의서의 자산 갈래 둘 중 첫째를 적는다",
+     "detail": "정의서는 `투자 실행액`(띄어쓰기 있음), 화면은 `투자실행액`",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "정의서 표기와 화면 표기의 띄어쓰기 차이"
+   ],
+   "xlsx": "기간집계!A44",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · storyboard_coverage.md S3 표 1 행",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "금액 (원) — 투자실행액 행",
+   "term": "투자 실행액",
+   "symbol": "Σ Aᵢ",
+   "formula": "‘재양도 합의서 체결 가맹점의 순지급액 중 회수되지 않은 것’ × (1 − 할인율) 의 합",
+   "value": "80,000,000원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점만 고른다",
+     "detail": "로스터 8곳 (M2026-0001 … M2026-0009)",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "선정산일자가 합의서 효력기간에 드는 정산금채권만 남긴다 = 대상정산금채권",
+     "detail": "61,760건 (선정산일 2026-02-16 ~ 2026-08-27)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "그중 정산예정일이 기준일보다 뒤인 것만 남긴다 = 회수되지 않은 것",
+     "detail": "61,760건 → 2,240건",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 순지급액을 잡는다",
+     "detail": "Σ 순지급액(미회수) = 80,088,111원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꾸고 원 단위로 반올림한다",
+     "detail": "건별 Aᵢ 2,240개 — 화면에 뜨지 않는다",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "전부 더한다",
+     "detail": "Σ Aᵢ = 80,000,000원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "대상정산금채권 61,760건",
+    "미회수 걸러내기 2,240건",
+    "Σ 순지급액 80,088,111원",
+    "건별 Aᵢ",
+    "할인율 몫 88,111원"
+   ],
+   "xlsx": "채권!J열 × 채권!Q열 · 기간집계!B38 · 기간집계!B44",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · Aᵢ",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "W금융일수 — 투자실행액 행",
+   "term": "w금융일수",
+   "symbol": "w = Σ AᵢDᵢ ÷ Σ Aᵢ",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ",
+   "value": "3.04일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "모집단을 대상정산금채권 전체로 잡는다 — 회수 여부 조건이 붙지 않은 정의다",
+     "detail": "61,760건 (미회수 2,240건이 아니다)",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 Dᵢ = 정산예정일 − 선정산일 (한편넣기)",
+     "detail": "Dᵢ 는 정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 Aᵢ 를 가중치로 쓴다 — MAU·건수가 아니라 금액이다",
+     "detail": "Σ Aᵢ = 5,037,808,421원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 15,312,959,752",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "나눈다",
+     "detail": "15,312,959,752 ÷ 5,037,808,421 = 3.039607일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.039607 → 3.04일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "모집단이 미회수가 아니라 전체라는 것",
+    "건별 Dᵢ",
+    "건별 Aᵢ",
+    "Σ Aᵢ 5,037,808,421원",
+    "Σ AᵢDᵢ 15,312,959,752",
+    "raw 3.039607일 (표기는 3.04)"
+   ],
+   "xlsx": "채권!S열 · 기간집계!B33 · B32 · B34 · B41 · B42",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · Aᵢ · Dᵢ",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "S입금부족율 — 투자실행액 행",
+   "term": "S입금부족율",
+   "symbol": "S = Σ SLᵢ ÷ Σ SAᵢ",
+   "formula": "Σ (미지급액 − 과지급액) ÷ Σ Aᵢ — 표본집합에서만",
+   "value": "0.07%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본집합을 잡는다 — 선정산일이 d−20 ~ d−11 인 대상정산금채권",
+     "detail": "2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "표본 건수를 센다",
+     "detail": "3,200건 (전체 61,760건 중)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액을 더한다",
+     "detail": "Σ 미지급액 = 280,616원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 과지급액을 더한다 — 미지급금과 다른 계정이라 합치지 않는다",
+     "detail": "Σ 과지급액 = 86,446원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "SLᵢ = 미지급액 − 과지급액 을 더한다",
+     "detail": "Σ SLᵢ = 280,616 − 86,446 = 194,170원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "SAᵢ = 순지급액 × (1 − 할인율) 을 더한다",
+     "detail": "Σ SAᵢ = 260,881,264원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "나눠 백분율로 만든다",
+     "detail": "194,170 ÷ 260,881,264 × 100 = 0.074428%",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.074428% → 0.07%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 구간 2026-08-07 ~ 2026-08-16",
+    "표본 3,200건",
+    "Σ 미지급액 280,616원",
+    "Σ 과지급액 86,446원",
+    "Σ SLᵢ 194,170원",
+    "Σ SAᵢ 260,881,264원",
+    "raw 0.074428%"
+   ],
+   "xlsx": "채권!L열 · M열 · T열 · 기간집계!B49 · B50 · B51",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · 표본집합",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "Ty수익율 — 투자실행액 행",
+   "term": "ty수익율",
+   "symbol": "ty = r × (365 ÷ w)",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "13.21%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다 — 투자자 어드민은 정하지 않고 받아 쓴다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "연 환산 일수를 잡는다",
+     "detail": "365일",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "W금융일수는 raw 가 아니라 화면 표기값을 쓴다",
+     "detail": "3.04일 (raw 3.039607)",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "1년에 몇 번 굴리는지 낸다",
+     "detail": "365 ÷ 3.04 = 120.065789… 회",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 120.065789… = 13.207236…%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "13.207236…% → 13.21%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 120.065789…회",
+    "표기 W 를 쓴다는 규칙 (raw 를 쓰면 13.21 이 안 나온다)",
+    "중간값 13.207236…%"
+   ],
+   "xlsx": "기간집계!B43 · B57 (회전수)",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:27 「365를 w금융일수로 나누면 1년동안 몇 번 굴릴 수 있는가」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "비중 — 투자실행액 행",
+   "term": "투자 실행액의 비중",
+   "symbol": "Σ Aᵢ ÷ (Σ Aᵢ + EC)",
+   "formula": "투자실행액 ÷ (투자실행액 + 순현금)",
+   "value": "80.0%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 투자실행액을 놓는다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액 + 순현금을 놓는다",
+     "detail": "80,000,000 + 20,000,000 = 100,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눈다",
+     "detail": "0.8",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "백분율 소수 1자리로 적는다",
+     "detail": "80.0%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "분모 100,000,000원"
+   ],
+   "xlsx": "기간집계!B47",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액의 비중",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "보관 — 투자실행액 행",
+   "term": "—",
+   "symbol": "—",
+   "formula": "—",
+   "value": "㈜페이허그",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서의 재양수인을 본다",
+     "detail": "4당사자 중 재양수인 = ㈜페이허그",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 이름을 적는다",
+     "detail": "㈜페이허그",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "재양도 합의서 당사자 구조 (양도인·양수인·재양수인·유동화기관)"
+   ],
+   "xlsx": null,
+   "source": "storyboard_coverage.md S3 표 1 행 `투자실행액`(보관 `㈜페이허그`) · D-30 재양도 합의서",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "순현금",
+   "term": "순현금",
+   "symbol": "자산 구분 라벨",
+   "formula": "—",
+   "value": "순현금",
+   "steps": [
+    {
+     "n": 1,
+     "what": "대표 정의서의 자산 갈래 둘 중 둘째를 적는다",
+     "detail": "순현금",
+     "visible": true
+    }
+   ],
+   "xlsx": "기간집계!A45",
+   "source": "ceo_definitions.md [1번 이미지] 순현금 · storyboard_coverage.md S3 표 1 행",
+   "marker": null,
+   "hidden": [],
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "금액 (원) — 순현금 행",
+   "term": "순현금",
+   "symbol": "EC",
+   "formula": "조회시점 유동화투자자 할당 쿠콘 가상계좌의 현금잔액",
+   "value": "20,000,000원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "유동화투자자에게 할당된 쿠콘 제공 가상계좌를 지목한다",
+     "detail": "법적으로는 페이허그용으로 개설된 쿠콘 명의 케이뱅크 계좌 (D-18b)",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "조회시점 잔액을 읽는다 — 채권에서 나오는 값이 아니라 밖에서 받는 입력이다",
+     "detail": "daily_ledger.py CASH = 20000000 (불변식)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "그대로 적는다",
+     "detail": "20,000,000원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "이 값만 원장이 만들지 않고 밖에서 받는다는 것",
+    "투자자별 계좌 1개씩 제공 `예정` — 현재는 오프라인 수동"
+   ],
+   "xlsx": "입력!C8 · 기간집계!B45",
+   "source": "ceo_definitions.md [1번 이미지] 순현금 · D-18b",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "W금융일수 — 순현금 행",
+   "term": "w금융일수",
+   "symbol": "w",
+   "formula": "—",
+   "value": "-",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순현금이 대상정산금채권인지 본다",
+     "detail": "아니다 — 쿠콘 가상계좌 잔액이다",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "W금융일수 의 재료(Aᵢ·Dᵢ·미지급액·과지급액)가 있는지 본다",
+     "detail": "없다",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "빈 칸 대신 `-` 를 찍는다",
+     "detail": "-",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "`-` 가 «0» 이 아니라 «해당 없음» 이라는 것"
+   ],
+   "xlsx": null,
+   "source": "ceo_definitions.md [1번 이미지] 순현금 정의에 채권 항목이 없음",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "S입금부족율 — 순현금 행",
+   "term": "S입금부족율",
+   "symbol": "S",
+   "formula": "—",
+   "value": "-",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순현금이 대상정산금채권인지 본다",
+     "detail": "아니다 — 쿠콘 가상계좌 잔액이다",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "S입금부족율 의 재료(Aᵢ·Dᵢ·미지급액·과지급액)가 있는지 본다",
+     "detail": "없다",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "빈 칸 대신 `-` 를 찍는다",
+     "detail": "-",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "`-` 가 «0» 이 아니라 «해당 없음» 이라는 것"
+   ],
+   "xlsx": null,
+   "source": "ceo_definitions.md [1번 이미지] 순현금 정의에 채권 항목이 없음",
+   "rename_pending": false,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "Ty수익율 — 순현금 행",
+   "term": "ty수익율",
+   "symbol": "ty",
+   "formula": "—",
+   "value": "-",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순현금이 대상정산금채권인지 본다",
+     "detail": "아니다 — 쿠콘 가상계좌 잔액이다",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "Ty수익율 의 재료(Aᵢ·Dᵢ·미지급액·과지급액)가 있는지 본다",
+     "detail": "없다",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "빈 칸 대신 `-` 를 찍는다",
+     "detail": "-",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "`-` 가 «0» 이 아니라 «해당 없음» 이라는 것"
+   ],
+   "xlsx": null,
+   "source": "ceo_definitions.md [1번 이미지] 순현금 정의에 채권 항목이 없음",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "비중 — 순현금 행",
+   "term": "순현금의 비중",
+   "symbol": "EC ÷ (Σ Aᵢ + EC)",
+   "formula": "순현금 ÷ (투자실행액 + 순현금)",
+   "value": "20.0%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 순현금을 놓는다",
+     "detail": "20,000,000원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액 + 순현금을 놓는다",
+     "detail": "100,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눈다",
+     "detail": "0.2",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "백분율 소수 1자리로 적는다",
+     "detail": "20.0%",
+     "visible": true
+    }
+   ],
+   "xlsx": "기간집계!B48",
+   "source": "ceo_definitions.md [1번 이미지] 순현금의 비중",
+   "marker": null,
+   "hidden": [],
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "보관 — 순현금 행",
+   "term": "쿠콘제공 가상계좌",
+   "symbol": "—",
+   "formula": "—",
+   "value": "㈜쿠콘",
+   "steps": [
+    {
+     "n": 1,
+     "what": "가상계좌를 제공하는 곳을 본다",
+     "detail": "쿠콘",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 이름을 적는다",
+     "detail": "㈜쿠콘",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "계좌 명의는 쿠콘이고 실물 은행은 케이뱅크라는 것 (D-18b)"
+   ],
+   "xlsx": null,
+   "source": "storyboard_coverage.md S3 표 1 행 `순현금`(보관 `㈜쿠콘`) · ceo_definitions.md [1번 이미지]",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "합계 (투자자산)",
+   "term": "투자실행액 + 순현금",
+   "symbol": "—",
+   "formula": "—",
+   "value": "합계 (투자자산)",
+   "steps": [
+    {
+     "n": 1,
+     "what": "합계 행의 이름을 적는다",
+     "detail": "합계 (투자자산)",
+     "visible": true
+    }
+   ],
+   "xlsx": null,
+   "source": "storyboard_coverage.md S3 표 1 행 `합계`",
+   "marker": null,
+   "hidden": [],
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "금액 (원) — 합계 행",
+   "term": "투자실행액 + 순현금",
+   "symbol": "Σ Aᵢ + EC",
+   "formula": "투자실행액 + 순현금",
+   "value": "100,000,000원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "위 두 행의 금액을 더한다",
+     "detail": "80,000,000 + 20,000,000",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "적는다",
+     "detail": "100,000,000원",
+     "visible": true
+    }
+   ],
+   "xlsx": "기간집계!B46",
+   "source": "ceo_definitions.md [1번 이미지] 비중 산식의 분모",
+   "marker": null,
+   "hidden": [],
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "W금융일수 — 합계 행",
+   "term": "w금융일수",
+   "symbol": "w",
+   "formula": "—",
+   "value": "-",
+   "steps": [
+    {
+     "n": 1,
+     "what": "두 행 중 순현금 쪽에 값이 없다",
+     "detail": "순현금 행이 `-`",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "한쪽만으로 합계 가중평균을 낼 근거가 정의서에 없다",
+     "detail": "정의서에 합계 행 산식 없음",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "`-` 를 찍는다",
+     "detail": "-",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "투자실행액 행 값(3.04 / 0.07% / 13.21%)을 그대로 올리지 않는 판단"
+   ],
+   "xlsx": null,
+   "source": "ceo_definitions.md [1번 이미지] — 합계 행 산식 없음",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "S입금부족율 — 합계 행",
+   "term": "S입금부족율",
+   "symbol": "S",
+   "formula": "—",
+   "value": "-",
+   "steps": [
+    {
+     "n": 1,
+     "what": "두 행 중 순현금 쪽에 값이 없다",
+     "detail": "순현금 행이 `-`",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "한쪽만으로 합계 가중평균을 낼 근거가 정의서에 없다",
+     "detail": "정의서에 합계 행 산식 없음",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "`-` 를 찍는다",
+     "detail": "-",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "투자실행액 행 값(3.04 / 0.07% / 13.21%)을 그대로 올리지 않는 판단"
+   ],
+   "xlsx": null,
+   "source": "ceo_definitions.md [1번 이미지] — 합계 행 산식 없음",
+   "rename_pending": false,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "Ty수익율 — 합계 행",
+   "term": "ty수익율",
+   "symbol": "ty",
+   "formula": "—",
+   "value": "-",
+   "steps": [
+    {
+     "n": 1,
+     "what": "두 행 중 순현금 쪽에 값이 없다",
+     "detail": "순현금 행이 `-`",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "한쪽만으로 합계 가중평균을 낼 근거가 정의서에 없다",
+     "detail": "정의서에 합계 행 산식 없음",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "`-` 를 찍는다",
+     "detail": "-",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "투자실행액 행 값(3.04 / 0.07% / 13.21%)을 그대로 올리지 않는 판단"
+   ],
+   "xlsx": null,
+   "source": "ceo_definitions.md [1번 이미지] — 합계 행 산식 없음",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "비중 — 합계 행",
+   "term": "비중",
+   "symbol": "—",
+   "formula": "투자실행액 비중 + 순현금 비중",
+   "value": "100.0%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "두 비중을 더한다",
+     "detail": "80.0 + 20.0",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "적는다 — 이 값은 고정이다",
+     "detail": "100.0%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "비중 합 100.0% 는 불변식이라 반올림 잔차를 여기 몰지 않는다"
+   ],
+   "xlsx": "화면대조 94행",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · 불변식",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황",
+   "label": "보관 — 합계 행",
+   "term": "—",
+   "symbol": "—",
+   "formula": "—",
+   "value": "-",
+   "steps": [
+    {
+     "n": 1,
+     "what": "두 보관처가 다르므로 합칠 이름이 없다",
+     "detail": "-",
+     "visible": true
+    }
+   ],
+   "xlsx": null,
+   "source": "storyboard_coverage.md S3 표 1",
+   "marker": null,
+   "hidden": [],
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황 · 열머리 툴팁",
+   "label": "W금융일수 › 채권 건수",
+   "term": "대상정산금채권",
+   "symbol": "|대상정산금채권|",
+   "formula": "대상정산금채권 전체 건수",
+   "value": "61,760건",
+   "steps": [
+    {
+     "n": 1,
+     "what": "가맹점 8곳 × 플랫폼 4종을 잡는다",
+     "detail": "32칸",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "플랫폼별 금융일수 버킷 수를 곱한다",
+     "detail": "카드 10 · 배민 10 · 쿠팡이츠 10 · 요기요 10 → 곳당 40칸",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "선정산일 축 일수를 곱한다",
+     "detail": "2026-02-16 ~ 2026-08-27 = 193일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Aᵢ 가 0원으로 떨어진 칸을 뺀다",
+     "detail": "8 × 40 × 193 = 61,760 (0원 탈락 없음)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "61,760건",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "선정산일 축 193일",
+    "가맹점 × 플랫폼 × 금융일수 버킷 = 곳당 40칸"
+   ],
+   "xlsx": "기간집계!B53 (엑셀은 40일 축 1,280건 · 모집단이 다르다)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · daily_ledger.py _cells()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황 · 열머리 툴팁",
+   "label": "S입금부족율 › 채권 건수",
+   "term": "표본집합",
+   "symbol": "|표본|",
+   "formula": "선정산일 d−20 ~ d−11 인 대상정산금채권 건수",
+   "value": "3,200건",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 낸다",
+     "detail": "d−20 = 2026-08-07 · d−11 = 2026-08-16 → 10일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "하루치 칸 수를 곱한다",
+     "detail": "8곳 × 40칸 = 320건/일",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱한다",
+     "detail": "320 × 10 = 3,200건",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "구간 10일",
+    "하루 320건"
+   ],
+   "xlsx": "채권!T열 · 입력!C16:C17",
+   "source": "ceo_definitions.md [1번 이미지] 표본집합",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "현황 · 열머리 툴팁",
+   "label": "S입금부족율 › 표기 d",
+   "term": "D = 현재일자",
+   "symbol": "d",
+   "formula": "—",
+   "value": "미확정",
+   "steps": [
+    {
+     "n": 1,
+     "what": "대표 정의서는 표본 구간을 `D-20부터 D-11` 로 적었다",
+     "detail": "대문자 D",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "같은 문서가 금융일수도 `D` 로 쓴다",
+     "detail": "겹침",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "대표가 「금융일수 D 말고 다른 용어 써야 함」이라고 했다",
+     "detail": "DM 2026-08-31 15:15:49",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "잠정으로 날짜 쪽을 소문자 d 로 내렸다",
+     "detail": "dm_0831/symbol_rule_0831.md — 4차 미팅 확인 대상",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "화면에 `미확정` 으로 적는다",
+     "detail": "미확정",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "겹침의 실체 (D 가 금융일수이자 현재일자)",
+    "잠정 규칙의 근거 두 갈래"
+   ],
+   "xlsx": "산식!15행",
+   "source": "dm_0831/symbol_rule_0831.md · 대표 DM 2026-08-31 15:15:49",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 1행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "김성호떡볶이 본점",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "1번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0001)는 뜨지 않는다",
+     "detail": "김성호떡볶이 본점",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0001",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C2 (ID 는 B2)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 김성호떡볶이 본점",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "19,334,743원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 19,356,031원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "19,356,031 − 19,334,743 = 21,288원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "19,334,743원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 19,356,031원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R2",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 김성호떡볶이 본점",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "3.02일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 43.93% · 배달의민족 42.28% · 쿠팡이츠 9.37% · 요기요 4.43%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 3,702,329,636",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "3,702,329,636 ÷ 1,225,930,543 = 3.020016일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.020016 → 3.02일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 43.93% · 배달의민족 42.28% · 쿠팡이츠 9.37% · 요기요 4.43%",
+    "배달 의존도 b = 0.5607",
+    "Σ Aᵢ 1,225,930,543원",
+    "Σ AᵢDᵢ 3,702,329,636",
+    "raw 3.020016일"
+   ],
+   "xlsx": "가맹점!J2:M2 (구성비) · O2 (raw) · T2 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 김성호떡볶이 본점",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.07%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "67,279원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 20,754원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "67,279 − 20,754 = 46,525원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "63,484,420원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "46,525 ÷ 63,484,420 × 100 = 0.073286%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.073286% → 0.07%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 67,279원",
+    "Σ 과지급액 20,754원",
+    "Σ SLᵢ 46,525원",
+    "Σ SAᵢ 63,484,420원",
+    "raw 0.073286%"
+   ],
+   "xlsx": "가맹점!U2 (가중 미지급률) · V2 (가중 과지급률) · W2",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 김성호떡볶이 본점",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "13.29%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "3.02일 (raw 3.020016)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 3.02 = 120.860927회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 120.860927 = 13.294702%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "13.294702% → 13.29%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 120.860927회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 13.294702%"
+   ],
+   "xlsx": "가맹점!X2",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 김성호떡볶이 본점",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "24.2%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "19,334,743원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "19,334,743 ÷ 80,000,000 × 1000 = 241.684288 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "241 눈금 (소수부 0.684288)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "24.2%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 241.684288",
+    "내림 241 눈금",
+    "소수부 0.684288",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S2 (raw) · Z2 (내림) · AA2 (잔차) · AB2 (순위) · AC2 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 2행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "초록치킨 서초점",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "2번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0007)는 뜨지 않는다",
+     "detail": "초록치킨 서초점",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0007",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C3 (ID 는 B3)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 초록치킨 서초점",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "18,070,801원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 18,090,700원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "18,090,700 − 18,070,801 = 19,899원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "18,070,801원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 18,090,700원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R3",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 초록치킨 서초점",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "3.45일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 20.00% · 배달의민족 60.32% · 쿠팡이츠 13.37% · 요기요 6.32%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 3,434,749,656",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "3,434,749,656 ÷ 996,068,620 = 3.448306일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.448306 → 3.45일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 20.00% · 배달의민족 60.32% · 쿠팡이츠 13.37% · 요기요 6.32%",
+    "배달 의존도 b = 0.8000",
+    "Σ Aᵢ 996,068,620원",
+    "Σ AᵢDᵢ 3,434,749,656",
+    "raw 3.448306일"
+   ],
+   "xlsx": "가맹점!J3:M3 (구성비) · O3 (raw) · T3 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 초록치킨 서초점",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.10%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "72,487원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 21,853원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "72,487 − 21,853 = 50,634원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "51,581,088원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "50,634 ÷ 51,581,088 × 100 = 0.098164%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.098164% → 0.10%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 72,487원",
+    "Σ 과지급액 21,853원",
+    "Σ SLᵢ 50,634원",
+    "Σ SAᵢ 51,581,088원",
+    "raw 0.098164%"
+   ],
+   "xlsx": "가맹점!U3 (가중 미지급률) · V3 (가중 과지급률) · W3",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 초록치킨 서초점",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "11.64%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "3.45일 (raw 3.448306)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 3.45 = 105.797101회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 105.797101 = 11.637681%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "11.637681% → 11.64%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 105.797101회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 11.637681%"
+   ],
+   "xlsx": "가맹점!X3",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 초록치킨 서초점",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "22.6%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "18,070,801원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "18,070,801 ÷ 80,000,000 × 1000 = 225.885012 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "225 눈금 (소수부 0.885012)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "22.6%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 225.885012",
+    "내림 225 눈금",
+    "소수부 0.885012",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S3 (raw) · Z3 (내림) · AA3 (잔차) · AB3 (순위) · AC3 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 3행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "김밥나라",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "3번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0006)는 뜨지 않는다",
+     "detail": "김밥나라",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0006",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C4 (ID 는 B4)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 김밥나라",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "11,827,388원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 11,840,410원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "11,840,410 − 11,827,388 = 13,022원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "11,827,388원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 11,840,410원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R4",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 김밥나라",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "3.27일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 30.00% · 배달의민족 52.78% · 쿠팡이츠 11.70% · 요기요 5.53%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 2,254,478,710",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "2,254,478,710 ÷ 689,585,899 = 3.269323일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.269323 → 3.27일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 30.00% · 배달의민족 52.78% · 쿠팡이츠 11.70% · 요기요 5.53%",
+    "배달 의존도 b = 0.7000",
+    "Σ Aᵢ 689,585,899원",
+    "Σ AᵢDᵢ 2,254,478,710",
+    "raw 3.269323일"
+   ],
+   "xlsx": "가맹점!J4:M4 (구성비) · O4 (raw) · T4 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 김밥나라",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.09%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "45,023원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 13,691원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "45,023 − 13,691 = 31,332원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "35,709,988원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "31,332 ÷ 35,709,988 × 100 = 0.087740%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.087740% → 0.09%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 45,023원",
+    "Σ 과지급액 13,691원",
+    "Σ SLᵢ 31,332원",
+    "Σ SAᵢ 35,709,988원",
+    "raw 0.087740%"
+   ],
+   "xlsx": "가맹점!U4 (가중 미지급률) · V4 (가중 과지급률) · W4",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 김밥나라",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "12.28%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "3.27일 (raw 3.269323)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 3.27 = 111.620795회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 111.620795 = 12.278287%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "12.278287% → 12.28%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 111.620795회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 12.278287%"
+   ],
+   "xlsx": "가맹점!X4",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 김밥나라",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "14.8%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "11,827,388원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "11,827,388 ÷ 80,000,000 × 1000 = 147.842350 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "147 눈금 (소수부 0.842350)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "14.8%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 147.842350",
+    "내림 147 눈금",
+    "소수부 0.842350",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S4 (raw) · Z4 (내림) · AA4 (잔차) · AB4 (순위) · AC4 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 4행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "골목냉면",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "4번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0008)는 뜨지 않는다",
+     "detail": "골목냉면",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0008",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C5 (ID 는 B5)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 골목냉면",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "9,286,833원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 9,297,055원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "9,297,055 − 9,286,833 = 10,222원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "9,286,833원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 9,297,055원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R5",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 골목냉면",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "3.09일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 40.00% · 배달의민족 45.24% · 쿠팡이츠 10.03% · 요기요 4.74%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 1,775,878,923",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "1,775,878,923 ÷ 574,654,950 = 3.090340일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.090340 → 3.09일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 40.00% · 배달의민족 45.24% · 쿠팡이츠 10.03% · 요기요 4.74%",
+    "배달 의존도 b = 0.6000",
+    "Σ Aᵢ 574,654,950원",
+    "Σ AᵢDᵢ 1,775,878,923",
+    "raw 3.090340일"
+   ],
+   "xlsx": "가맹점!J5:M5 (구성비) · O5 (raw) · T5 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 골목냉면",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.08%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "33,239원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 10,213원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "33,239 − 10,213 = 23,026원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "29,758,314원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "23,026 ÷ 29,758,314 × 100 = 0.077377%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.077377% → 0.08%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 33,239원",
+    "Σ 과지급액 10,213원",
+    "Σ SLᵢ 23,026원",
+    "Σ SAᵢ 29,758,314원",
+    "raw 0.077377%"
+   ],
+   "xlsx": "가맹점!U5 (가중 미지급률) · V5 (가중 과지급률) · W5",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 골목냉면",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "12.99%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "3.09일 (raw 3.090340)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 3.09 = 118.122977회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 118.122977 = 12.993528%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "12.993528% → 12.99%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 118.122977회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 12.993528%"
+   ],
+   "xlsx": "가맹점!X5",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 골목냉면",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "11.6%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "9,286,833원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "9,286,833 ÷ 80,000,000 × 1000 = 116.085412 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "116 눈금 (소수부 0.085412)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "11.6%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 116.085412",
+    "내림 116 눈금",
+    "소수부 0.085412",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S5 (raw) · Z5 (내림) · AA5 (잔차) · AB5 (순위) · AC5 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 5행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "달빛곱창 홍대점",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "5번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0002)는 뜨지 않는다",
+     "detail": "달빛곱창 홍대점",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0002",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C6 (ID 는 B6)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 달빛곱창 홍대점",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "7,074,838원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 7,082,633원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "7,082,633 − 7,074,838 = 7,795원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "7,074,838원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 7,082,633원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R6",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 달빛곱창 홍대점",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "2.84일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 54.00% · 배달의민족 34.68% · 쿠팡이츠 7.69% · 요기요 3.63%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 1,359,902,667",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "1,359,902,667 ÷ 478,879,092 = 2.839762일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "2.839762 → 2.84일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 54.00% · 배달의민족 34.68% · 쿠팡이츠 7.69% · 요기요 3.63%",
+    "배달 의존도 b = 0.4600",
+    "Σ Aᵢ 478,879,092원",
+    "Σ AᵢDᵢ 1,359,902,667",
+    "raw 2.839762일"
+   ],
+   "xlsx": "가맹점!J6:M6 (구성비) · O6 (raw) · T6 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 달빛곱창 홍대점",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.06%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "22,674원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 7,083원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "22,674 − 7,083 = 15,591원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "24,798,597원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "15,591 ÷ 24,798,597 × 100 = 0.062870%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.062870% → 0.06%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 22,674원",
+    "Σ 과지급액 7,083원",
+    "Σ SLᵢ 15,591원",
+    "Σ SAᵢ 24,798,597원",
+    "raw 0.062870%"
+   ],
+   "xlsx": "가맹점!U6 (가중 미지급률) · V6 (가중 과지급률) · W6",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 달빛곱창 홍대점",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "14.14%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "2.84일 (raw 2.839762)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 2.84 = 128.521127회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 128.521127 = 14.137324%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "14.137324% → 14.14%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 128.521127회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 14.137324%"
+   ],
+   "xlsx": "가맹점!X6",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 달빛곱창 홍대점",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "8.8%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "7,074,838원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "7,074,838 ÷ 80,000,000 × 1000 = 88.435475 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "88 눈금 (소수부 0.435475)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "8.8%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 88.435475",
+    "내림 88 눈금",
+    "소수부 0.435475",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S6 (raw) · Z6 (내림) · AA6 (잔차) · AB6 (순위) · AC6 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 6행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "청춘포차 신촌점",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "6번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0009)는 뜨지 않는다",
+     "detail": "청춘포차 신촌점",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0009",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C7 (ID 는 B7)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 청춘포차 신촌점",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "5,624,058원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 5,630,265원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "5,630,265 − 5,624,058 = 6,207원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "5,624,058원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 5,630,265원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R7",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 청춘포차 신촌점",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "2.70일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 62.00% · 배달의민족 28.65% · 쿠팡이츠 6.35% · 요기요 3.00%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 1,084,720,769",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "1,084,720,769 ÷ 402,258,510 = 2.696576일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "2.696576 → 2.70일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 62.00% · 배달의민족 28.65% · 쿠팡이츠 6.35% · 요기요 3.00%",
+    "배달 의존도 b = 0.3800",
+    "Σ Aᵢ 402,258,510원",
+    "Σ AᵢDᵢ 1,084,720,769",
+    "raw 2.696576일"
+   ],
+   "xlsx": "가맹점!J7:M7 (구성비) · O7 (raw) · T7 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 청춘포차 신촌점",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.05%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "16,638원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 5,295원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "16,638 − 5,295 = 11,343원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "20,830,833원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "11,343 ÷ 20,830,833 × 100 = 0.054453%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.054453% → 0.05%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 16,638원",
+    "Σ 과지급액 5,295원",
+    "Σ SLᵢ 11,343원",
+    "Σ SAᵢ 20,830,833원",
+    "raw 0.054453%"
+   ],
+   "xlsx": "가맹점!U7 (가중 미지급률) · V7 (가중 과지급률) · W7",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 청춘포차 신촌점",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "14.87%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "2.70일 (raw 2.696576)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 2.70 = 135.185185회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 135.185185 = 14.870370%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "14.870370% → 14.87%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 135.185185회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 14.870370%"
+   ],
+   "xlsx": "가맹점!X7",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 청춘포차 신촌점",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "7.0%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "5,624,058원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "5,624,058 ÷ 80,000,000 × 1000 = 70.300725 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "70 눈금 (소수부 0.300725)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "7.0%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 70.300725",
+    "내림 70 눈금",
+    "소수부 0.300725",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S7 (raw) · Z7 (내림) · AA7 (잔차) · AB7 (순위) · AC7 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 7행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "바다마루 횟집",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "7번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0004)는 뜨지 않는다",
+     "detail": "바다마루 횟집",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0004",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C8 (ID 는 B8)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 바다마루 횟집",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "4,799,968원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 4,805,248원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "4,805,248 − 4,799,968 = 5,280원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "4,799,968원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 4,805,248원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R8",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 바다마루 횟집",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "2.55일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 70.00% · 배달의민족 22.62% · 쿠팡이츠 5.01% · 요기요 2.37%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 929,300,762",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "929,300,762 ÷ 363,948,104 = 2.553388일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "2.553388 → 2.55일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 70.00% · 배달의민족 22.62% · 쿠팡이츠 5.01% · 요기요 2.37%",
+    "배달 의존도 b = 0.3000",
+    "Σ Aᵢ 363,948,104원",
+    "Σ AᵢDᵢ 929,300,762",
+    "raw 2.553388일"
+   ],
+   "xlsx": "가맹점!J8:M8 (구성비) · O8 (raw) · T8 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 바다마루 횟집",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.05%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "12,884원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 4,189원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "12,884 − 4,189 = 8,695원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "18,846,931원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "8,695 ÷ 18,846,931 × 100 = 0.046135%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.046135% → 0.05%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 12,884원",
+    "Σ 과지급액 4,189원",
+    "Σ SLᵢ 8,695원",
+    "Σ SAᵢ 18,846,931원",
+    "raw 0.046135%"
+   ],
+   "xlsx": "가맹점!U8 (가중 미지급률) · V8 (가중 과지급률) · W8",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 바다마루 횟집",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "15.75%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "2.55일 (raw 2.553388)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 2.55 = 143.137255회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 143.137255 = 15.745098%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "15.745098% → 15.75%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 143.137255회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 15.745098%"
+   ],
+   "xlsx": "가맹점!X8",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 바다마루 횟집",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "6.0%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "4,799,968원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "4,799,968 ÷ 80,000,000 × 1000 = 59.999600 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "59 눈금 (소수부 0.999600)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "6.0%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 59.999600",
+    "내림 59 눈금",
+    "소수부 0.999600",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S8 (raw) · Z8 (내림) · AA8 (잔차) · AB8 (순위) · AC8 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "가맹점 — 8행",
+   "term": "대상정산금채권의 가맹점ID",
+   "symbol": "가맹점ID",
+   "formula": "—",
+   "value": "한강커피 잠원점",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 목록을 가져온다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "투자금액 내림차순으로 세운다",
+     "detail": "8번째",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "상호를 적는다 — 화면에 ID(M2026-0005)는 뜨지 않는다",
+     "detail": "한강커피 잠원점",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "가맹점ID M2026-0005",
+    "정렬 기준이 투자금액 내림차순이라는 것"
+   ],
+   "xlsx": "가맹점!C9 (ID 는 B9)",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 · 각 정산금채권의 ID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "투자금액 (원) — 한강커피 잠원점",
+   "term": "투자 실행액 (가맹점 단위)",
+   "symbol": "Σ Aᵢ | 가맹점ID = i",
+   "formula": "그 가맹점의 회수되지 않은 Σ Aᵢ",
+   "value": "3,981,371원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권만 고른다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 기준일보다 뒤인 것만 남긴다",
+     "detail": "7,720건 → 280건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 3,985,769원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ = 순지급액 × (1 − 0.0011) 로 바꿔 더한다",
+     "detail": "3,985,769 − 3,981,371 = 4,398원이 할인율 몫",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "적는다",
+     "detail": "3,981,371원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "그 가맹점 채권 7,720건",
+    "미회수 280건",
+    "Σ 순지급액 3,985,769원",
+    "건별 Aᵢ"
+   ],
+   "xlsx": "가맹점!R9",
+   "source": "ceo_definitions.md [1번 이미지] 투자 실행액 · 대상정산금채권",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "W금융일수 — 한강커피 잠원점",
+   "term": "w금융일수",
+   "symbol": "w | 가맹점ID = i",
+   "formula": "Σ (Aᵢ × Dᵢ) ÷ Σ Aᵢ — 그 가맹점 채권만",
+   "value": "2.52일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 가맹점의 대상정산금채권 전체를 잡는다 — 옆 칸 투자금액과 달리 미회수로 좁히지 않는다",
+     "detail": "7,720건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 플랫폼 구성비를 낸다 — W 를 가르는 것은 이것 하나다",
+     "detail": "카드사 72.00% · 배달의민족 21.11% · 쿠팡이츠 4.68% · 요기요 2.21%",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 평균 금융일수를 곱해 넣는다",
+     "detail": "카드 2.016438 · 배민 3.350685 · 쿠팡이츠 4.747945 · 요기요 6.164384일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 Aᵢ × Dᵢ 를 더한다",
+     "detail": "Σ (Aᵢ × Dᵢ) = 771,598,629",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "Σ Aᵢ 로 나눈다",
+     "detail": "771,598,629 ÷ 306,482,703 = 2.517593일",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "2.517593 → 2.52일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "플랫폼 구성비 카드사 72.00% · 배달의민족 21.11% · 쿠팡이츠 4.68% · 요기요 2.21%",
+    "배달 의존도 b = 0.2800",
+    "Σ Aᵢ 306,482,703원",
+    "Σ AᵢDᵢ 771,598,629",
+    "raw 2.517593일"
+   ],
+   "xlsx": "가맹점!J9:M9 (구성비) · O9 (raw) · T9 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] w금융일수 · platform_duration.py 도수분포 (정산주기.xlsx N6:Q370)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "S입금부족율 — 한강커피 잠원점",
+   "term": "S입금부족율",
+   "symbol": "S | 가맹점ID = i",
+   "formula": "Σ SLᵢ ÷ Σ SAᵢ — 그 가맹점 표본 채권만",
+   "value": "0.04%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "표본 구간을 잡는다",
+     "detail": "선정산일 2026-08-07 ~ 2026-08-16",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점 표본 채권을 센다",
+     "detail": "400건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "플랫폼별 미지급 발생률을 구성비로 가중한다",
+     "detail": "카드 0.025% · 배민 0.140% · 쿠팡이츠 0.210% · 요기요 0.300%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "Σ 미지급액을 낸다",
+     "detail": "10,392원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "플랫폼별 과지급 발생률로 Σ 과지급액을 낸다 — 미지급금과 다른 계정이다",
+     "detail": "카드 0.010% · 배민 0.045% · 쿠팡이츠 0.055% · 요기요 0.075% → 3,368원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "Σ SLᵢ = Σ 미지급액 − Σ 과지급액",
+     "detail": "10,392 − 3,368 = 7,024원",
+     "visible": false
+    },
+    {
+     "n": 7,
+     "what": "Σ SAᵢ 를 낸다",
+     "detail": "15,871,093원",
+     "visible": false
+    },
+    {
+     "n": 8,
+     "what": "나눠 백분율로 만든다",
+     "detail": "7,024 ÷ 15,871,093 × 100 = 0.044257%",
+     "visible": false
+    },
+    {
+     "n": 9,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "0.044257% → 0.04%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "표본 400건",
+    "플랫폼별 미지급·과지급 발생률",
+    "Σ 미지급액 10,392원",
+    "Σ 과지급액 3,368원",
+    "Σ SLᵢ 7,024원",
+    "Σ SAᵢ 15,871,093원",
+    "raw 0.044257%"
+   ],
+   "xlsx": "가맹점!U9 (가중 미지급률) · V9 (가중 과지급률) · W9",
+   "source": "ceo_definitions.md [1번 이미지] S입금부족율 · SLᵢ · SAᵢ · platform_duration.py UNPAID · OVERPAID",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "Ty수익율 — 한강커피 잠원점",
+   "term": "ty수익율",
+   "symbol": "ty | 가맹점ID = i",
+   "formula": "할인율 × (365 ÷ W금융일수)",
+   "value": "15.93%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "할인율을 읽는다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "그 가맹점의 표기 W금융일수를 가져온다 — raw 가 아니다",
+     "detail": "2.52일 (raw 2.517593)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "회전수를 낸다",
+     "detail": "365 ÷ 2.52 = 144.841270회",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "할인율을 곱한다",
+     "detail": "0.11 × 144.841270 = 15.932540%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "15.932540% → 15.93%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "회전수 144.841270회",
+    "표기 W 를 쓴다는 규칙",
+    "중간값 15.932540%"
+   ],
+   "xlsx": "가맹점!X9",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균」",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "비중 — 한강커피 잠원점",
+   "term": "비중",
+   "symbol": "Aᵢ 몫 ÷ Σ Aᵢ",
+   "formula": "그 가맹점 투자금액 ÷ 투자실행액 (소수 1자리 · 최대잉여법)",
+   "value": "5.0%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "분자에 그 가맹점 투자금액을 놓는다",
+     "detail": "3,981,371원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "분모에 투자실행액을 놓는다 — 투자자산(1억)이 아니다",
+     "detail": "80,000,000원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "나눠 0.1pp 눈금으로 환산한다",
+     "detail": "3,981,371 ÷ 80,000,000 × 1000 = 49.767138 눈금",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "눈금을 내림한다",
+     "detail": "49 눈금 (소수부 0.767138)",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "8행 내림 합과 1000 눈금의 차를 소수부 큰 행부터 하나씩 나눠 준다",
+     "detail": "내림 합 995 · 남은 5 눈금 → 바다마루 횟집 > 초록치킨 서초점 > 김밥나라 > 한강커피 잠원점 > 김성호떡볶이 본점 순서",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "10 으로 나눠 백분율로 적는다",
+     "detail": "5.0%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 눈금 49.767138",
+    "내림 49 눈금",
+    "소수부 0.767138",
+    "최대잉여법 배분 (남은 5 눈금)"
+   ],
+   "xlsx": "가맹점!S9 (raw) · Z9 (내림) · AA9 (잔차) · AB9 (순위) · AC9 (표기)",
+   "source": "ceo_definitions.md [1번 이미지] 비중 · roster16_model.py ratios()",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets",
+   "table": "가맹점별 투자자산",
+   "label": "총 n건",
+   "term": "—",
+   "symbol": "|로스터|",
+   "formula": "로스터 곳수",
+   "value": "총 8건",
+   "steps": [
+    {
+     "n": 1,
+     "what": "재양도 합의서를 맺은 가맹점 수를 센다",
+     "detail": "8곳",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "적는다",
+     "detail": "총 8건",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "이 수가 ledger_facts.json merchants 길이를 그대로 따른다는 것"
+   ],
+   "xlsx": "가맹점!B19",
+   "source": "ceo_definitions.md [1번 이미지] 대상정산금채권 (가맹점당 투자자 1명) · D-18",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets · invest-profit",
+   "table": "수익 산정 기준",
+   "label": "할인율",
+   "term": "유동화투자자의 할인율",
+   "symbol": "r",
+   "formula": "투자자 배분액 = 순지급액 × 할인율",
+   "value": "0.11%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "정산상품에 배정된 투자자 몫 요율을 읽는다 — 이 화면은 정하지 않고 받아 쓴다",
+     "detail": "0.11%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "적는다",
+     "detail": "0.11% (VAT 면제)",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "요율을 정하는 곳이 다른 화면이라는 것 (D-32 로 서술 금지)"
+   ],
+   "xlsx": "입력!C2 · C3",
+   "source": "ceo_definitions.md [1번 이미지] 유동화투자자의 할인율 = 0.11% 예정 · D-21",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets · invest-profit",
+   "table": "수익 산정 기준",
+   "label": "조달 이자율",
+   "term": "—",
+   "symbol": "—",
+   "formula": "투자 수익 = 투자실행금 × 조달 이자율 × 사용일수 ÷ 365",
+   "value": "연 12%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "스토리보드가 병기하라고 한 둘째 산식을 가져온다",
+     "detail": "조달이자형",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "요율을 적는다",
+     "detail": "연 12%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "이 카드가 화면의 어느 표와도 연결되지 않는다는 것 — 표 숫자는 전부 배분형이다"
+   ],
+   "xlsx": null,
+   "source": "D-1 산식 2모델 병기 · storyboard_coverage.md",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-assets · invest-profit",
+   "table": "수익 산정 기준",
+   "label": "연 환산 일수",
+   "term": "365",
+   "symbol": "365",
+   "formula": "—",
+   "value": "365",
+   "steps": [
+    {
+     "n": 1,
+     "what": "대표 정의서의 ty수익율·④·⑥ 이 모두 쓰는 상수를 적는다",
+     "detail": "365",
+     "visible": true
+    }
+   ],
+   "xlsx": "입력!C4",
+   "source": "ceo_definitions.md [1번 이미지] ty수익율 · ceo_definitions.md [2번 이미지] ④ · ⑥",
+   "marker": null,
+   "hidden": [],
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황",
+   "label": "검색대상기간",
+   "term": "사용자가 선택한 기간 (default = 일주일)",
+   "symbol": "P",
+   "formula": "—",
+   "value": "일주일",
+   "steps": [
+    {
+     "n": 1,
+     "what": "기본 조회 기간을 읽는다",
+     "detail": "대표 정의서 default = 일주일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "프리셋 이름을 적는다",
+     "detail": "일주일",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "이 프리셋이 종료일 = 기준일, 시작일 = 기준일 − 6일 로 풀린다는 것"
+   ],
+   "xlsx": "입력!C14 · C15",
+   "source": "ceo_definitions.md [2번 이미지] 사용자가 선택한 기간 (default = 일주일)",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황",
+   "label": "검색대상기간 › 범위",
+   "term": "—",
+   "symbol": "[d−6, d]",
+   "formula": "기준일 − 6일 ~ 기준일",
+   "value": "2026-08-21 ~ 2026-08-27",
+   "steps": [
+    {
+     "n": 1,
+     "what": "기준일을 가져온다",
+     "detail": "2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "일주일 = 7일이므로 6일을 뺀다",
+     "detail": "2026-08-27 − 6 = 2026-08-21",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "적는다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "조회 일수 7일 — 이 수가 PSC 의 곱수로 다시 쓰인다"
+   ],
+   "xlsx": "기간집계!B2 · B3 · B4",
+   "source": "ceo_definitions.md [2번 이미지] 선택한 기간 · 입력!C14:C15",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황",
+   "label": "투자실행금",
+   "term": "투자 실행금(PSA)",
+   "symbol": "PSA = Σ SA_{d−1}",
+   "formula": "정산예정일이 조회 기간에 드는 SA_{d−1} 들의 합계",
+   "value": "179,970,919원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 잡는다",
+     "detail": "2026-08-21 ~ 2026-08-27 · 7일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "정산예정일이 그 기간에 드는 대상정산금채권을 고른다",
+     "detail": "하루 320건 × 7일 = 2,240건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "하루씩 묶는다 — d−1 은 어제 날짜가 아니라 «정산예정일이 그 날인 집합» 이다",
+     "detail": "7개 버킷",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "버킷마다 SA_{d−1} = Σ (순지급액 × (1 − 0.0011)) 을 낸다",
+     "detail": "08-21 25,941,773 · 08-22 25,366,208 · 08-23 25,179,655 · 08-24 25,273,193 · 08-25 25,593,903 · 08-26 26,094,204 · 08-27 26,521,983",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "7일치를 더한다",
+     "detail": "PSA = 179,970,919원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "조회 기간 채권 2,240건",
+    "하루 320건",
+    "일별 SA_{d−1} 7개",
+    "Σ 순지급액 180,169,120원"
+   ],
+   "xlsx": "일별!D열 · 기간집계!B5",
+   "source": "ceo_definitions.md [2번 이미지] 투자 실행금(PSA)",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황",
+   "label": "투자수익",
+   "term": "투자수익(PSM)",
+   "symbol": "PSM = Σ SM_{d−1}",
+   "formula": "정산예정일이 조회 기간에 드는 SM_{d−1} 들의 합계",
+   "value": "61,175원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "버킷마다 채권매입수수료를 낸다 — 앵커는 순지급액이지 투자실행금이 아니다",
+     "detail": "Σ 채권매입수수료 = 198,184원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "버킷마다 부족액 차감 max(0, 미지급금 − 과지급금) 을 낸다",
+     "detail": "Σ 차감 = 137,009원 (수수료의 69.13%)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "M_{d−1,i} = 채권매입수수료 − 차감 을 버킷마다 더한다",
+     "detail": "08-21 9,871 · 08-22 9,127 · 08-23 8,632 · 08-24 8,249 · 08-25 8,196 · 08-26 8,339 · 08-27 8,761",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "7일치를 더한다",
+     "detail": "198,184 − 137,009 = 61,175원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 채권매입수수료 198,184원",
+    "Σ 부족액 차감 137,009원",
+    "차감 비율 69.13%",
+    "일별 SM_{d−1} 7개",
+    "Σ 미지급액·Σ 과지급액 각각의 합"
+   ],
+   "xlsx": "일별!E열 · F열 · L열 · 기간집계!B6 · B7 · B19",
+   "source": "ceo_definitions.md [2번 이미지] 투자수익(PSM) · M_{d−1,i} · D-31 순지급액 앵커",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황",
+   "marker": "④",
+   "label": "Ty수익율 › 투자실행금액 대비",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ④)",
+   "symbol": "④ = PSMR × 365 ÷ PSD",
+   "formula": "(PSM ÷ PSA) × 365 ÷ PSD",
+   "value": "3.99%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "PSMR 을 낸다",
+     "detail": "61,175 ÷ 179,970,919 = 0.000340",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "PSD 를 낸다 — 화면은 일별 표기 W 를 투자실행금으로 가중한다",
+     "detail": "Σ (표기 W × SA) ÷ PSA = 3.108481일",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 raw 로 낸 PSD 와 갈리는 것을 확인한다",
+     "detail": "Σ (Aᵢ × Dᵢ) ÷ PSA = 3.107588일 — 화면은 이 값을 쓰지 않는다",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "연 환산한다",
+     "detail": "0.000340 × 365 = 0.124069",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "PSD 로 나눠 백분율로 만든다",
+     "detail": "3.991318%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.991318% → 3.99%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "PSMR 0.000340",
+    "PSD 표기 3.108481일",
+    "PSD raw 3.107588일",
+    "두 PSD 의 갈림 0.000893일",
+    "중간값 3.991318%"
+   ],
+   "xlsx": "기간집계!B10 · B12 · B13",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금액 대비 ty수익율(이미지의 ④) · PSMR · PSD",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황",
+   "marker": "⑤",
+   "label": "Ty수익율 › 투자자산 대비",
+   "term": "투자자산 대비 ty수익율 (이미지의 ⑤)",
+   "symbol": "⑤ = (④ × PSA) ÷ (PSA + PSC)",
+   "formula": "(④ × PSA) ÷ (PSA + PSC)",
+   "value": "2.24%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 를 가져온다 — 반올림 전 값을 쓴다",
+     "detail": "3.991318%",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "PSC 를 낸다 — EC 는 전일자 마감시점 잔액이나 일별 EC 원장이 없다",
+     "detail": "순현금 20,000,000 × 7일 = 140,000,000원 (자리표시자)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "분모를 만든다",
+     "detail": "179,970,919 + 140,000,000 = 319,970,919원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "투자실행금 몫을 낸다",
+     "detail": "179,970,919 ÷ 319,970,919 = 0.562460",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "④ 에 곱한다",
+     "detail": "2.244958%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "2.244958% → 2.24%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "PSC 140,000,000원이 실제 EC 합이 아니라 순현금 × 일수라는 것",
+    "분모 319,970,919원",
+    "투자실행금 몫 0.562460",
+    "반올림 전 ④ 를 쓴다는 것",
+    "중간값 2.244958%"
+   ],
+   "xlsx": "일별!J열 · 기간집계!B15 · B17 ← 입력!C19",
+   "source": "ceo_definitions.md [2번 이미지] 투자자산 대비 ty수익율 (이미지의 ⑤) · PSC — 2026-08-31 회의에서 「수식 오류, 새로 작성해 전달」로 닫힘",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황 · 툴팁",
+   "label": "투자자산 대비 › PSA",
+   "term": "투자 실행금(PSA)",
+   "symbol": "PSA",
+   "formula": "—",
+   "value": "179,970,919원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "같은 카드의 투자실행금 값을 다시 쓴다",
+     "detail": "179,970,919원",
+     "visible": true
+    }
+   ],
+   "xlsx": "기간집계!B5",
+   "source": "ceo_definitions.md [2번 이미지] PSA",
+   "rename_pending": true,
+   "marker": null,
+   "hidden": []
+  },
+  {
+   "screen": "invest-profit",
+   "table": "수익 현황 · 툴팁",
+   "label": "투자자산 대비 › PSC",
+   "term": "PSC",
+   "symbol": "PSC = Σ EC",
+   "formula": "선택 기간의 EC 들의 합",
+   "value": "140,000,000원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "정의대로면 EC 를 날마다 읽어야 한다",
+     "detail": "EC = 전일자 마감시점(자정) 쿠콘 가상계좌 잔액",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "일별 EC 원장이 없다",
+     "detail": "엑셀 일별!J2:J28 27칸 전부 조회시점 순현금",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "조회시점 순현금 × 조회 일수로 채운다",
+     "detail": "20,000,000 × 7 = 140,000,000원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "EC 원장 부재",
+    "자리표시자라는 것"
+   ],
+   "xlsx": "일별!J열 · 기간집계!B15",
+   "source": "ceo_definitions.md [2번 이미지] PSC · EC",
+   "rename_pending": true,
+   "marker": null
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "①",
+   "label": "정산예정일 — 2026-08-21",
+   "term": "정산예정일 (정의서 원문은 「입금일(“정산예정일”로 변경 필요)」)",
+   "symbol": "d−1 집합의 날짜",
+   "formula": "—",
+   "value": "2026-08-21",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 하루씩 가른다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "이 행은 «정산예정일이 그 날인 대상정산금채권 집합» 이다 — 그 날 하루가 아니다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "날짜를 적는다",
+     "detail": "2026-08-21",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "행 하나가 집합이라는 것",
+    "그 집합의 채권 320건"
+   ],
+   "xlsx": "일별!A2 · B2 (건수)",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) 「입금일(“정산예정일”로 변경 필요)」 · 대표 DM 2026-08-31 15:15",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "②",
+   "label": "상환액 — 2026-08-21",
+   "term": "상환액 (이미지의 ②)",
+   "symbol": "② SB_{d−1} = Σ B_{d−1,i}",
+   "formula": "Σ (순지급액 − max(0, 미지급금 − 과지급금))",
+   "value": "25,951,644원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 25,970,340원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액·과지급액을 각각 더한다",
+     "detail": "Σ 미지급액 27,059원 · Σ 과지급액 8,363원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 max(0, 미지급금 − 과지급금) 을 더한다",
+     "detail": "Σ 차감 = 18,696원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "순지급액에서 차감을 뺀다",
+     "detail": "25,970,340 − 18,696 = 25,951,644원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "화면은 ③ + ④ 로 되짚어 적는다 — 건별 반올림 때문에 5단계와 0원 갈린다",
+     "detail": "25,941,773 + 9,871 = 25,951,644원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,970,340원",
+    "Σ 미지급액 27,059원",
+    "Σ 과지급액 8,363원",
+    "Σ 차감 18,696원",
+    "정의대로 낸 25,951,644원과 화면 25,951,644원의 0원 갈림"
+   ],
+   "xlsx": "채권!P열 · 일별!C2 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) · B_{d−1,i}",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "③",
+   "label": "투자실행금 — 2026-08-21",
+   "term": "투자실행금(SA_{d−1})",
+   "symbol": "③ SA_{d−1} = Σ A_{d−1,i}",
+   "formula": "Σ (순지급액 × (1 − 할인율))",
+   "value": "25,941,773원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액에 (1 − 0.0011) 을 곱해 원 단위로 반올림한다",
+     "detail": "A_{d−1,i}",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "Σ A_{d−1,i} = 25,941,773원",
+     "visible": true
+    },
+    {
+     "n": 4,
+     "what": "되짚기 — 순지급액 = ③ ÷ 0.9989",
+     "detail": "25,941,773 ÷ 0.9989 = 25970340.3744원",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,970,340원",
+    "건별 A_{d−1,i}",
+    "할인율 몫 28,567원"
+   ],
+   "xlsx": "채권!J열 · 일별!D2",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금(SA_{d−1}) · A_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "④",
+   "label": "투자 수익 — 2026-08-21",
+   "term": "투자수익(SM_{d−1})",
+   "symbol": "④ SM_{d−1} = Σ M_{d−1,i}",
+   "formula": "Σ (채권매입수수료 − max(0, 미지급금 − 과지급금))",
+   "value": "9,871원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순지급액을 앵커로 잡는다 — 투자실행금이 아니다",
+     "detail": "25,970,340원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "채권매입수수료 = 순지급액 × 할인율",
+     "detail": "25,970,340 × 0.0011 = 28567.3740 → 내림 28,567원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "부족액 차감을 뺀다",
+     "detail": "28,567 − 18,696 = 9,871원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "적는다",
+     "detail": "9,871원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "채권매입수수료 28,567원",
+    "부족액 차감 18,696원",
+    "차감 비율 65.45%",
+    "Σ 미지급액 27,059원 · Σ 과지급액 8,363원"
+   ],
+   "xlsx": "채권!K열 · N열 · O열 · 일별!E2 · F2 · L2",
+   "source": "ceo_definitions.md [2번 이미지] M_{d−1,i} · 대표 DM 2026-08-31 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑤",
+   "label": "W금융일수 — 2026-08-21",
+   "term": "w금융일수(SD_{d−1})",
+   "symbol": "⑤ SD_{d−1} = Σ (A_{d−1,i} × D_{d−1,i}) ÷ Σ A_{d−1,i}",
+   "formula": "Σ (A × D) ÷ Σ A — 그 집합만",
+   "value": "3.06",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 건별 금융일수 D_{d−1,i} 를 잡는다",
+     "detail": "정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 A_{d−1,i} 를 가중치로 쓴다",
+     "detail": "Σ A = 25,941,773원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱해 더한다",
+     "detail": "Σ (A × D) = 79,291,671",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "나눈다",
+     "detail": "79,291,671 ÷ 25,941,773 = 3.056525일",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.056525 → 3.06",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "건별 D_{d−1,i}",
+    "Σ (A × D) 79,291,671",
+    "raw 3.056525일"
+   ],
+   "xlsx": "채권!S열 · 일별!K2 · H2",
+   "source": "ceo_definitions.md [2번 이미지] w금융일수(SD_{d−1}) · D_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑥",
+   "label": "Ty수익율 — 2026-08-21",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ⑥)",
+   "symbol": "⑥ = (④ ÷ ③) × 365 ÷ ⑤ = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "formula": "(투자 수익 ÷ 투자실행금) × 365 ÷ W금융일수",
+   "value": "4.54%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 와 ③ 을 이 표의 같은 행에서 가져온다",
+     "detail": "④ 9,871원 · ③ 25,941,773원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "SMR_{d−1} = ④ ÷ ③",
+     "detail": "9,871 ÷ 25,941,773 = 0.000380506",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "백분율로 만든다",
+     "detail": "0.038050599%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "365 를 곱한다",
+     "detail": "13.888469",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "⑤ 로 나눈다 — 표기 W 를 쓴다",
+     "detail": "÷ 3.06 = 4.538715%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "4.538715% → 4.54%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "SMR_{d−1} 0.000380506",
+    "연 환산 중간값 13.888469",
+    "중간값 4.538715%",
+    "③ 이 상단 현황이 아니라 이 표의 열이라는 읽기 (미확정)"
+   ],
+   "xlsx": "일별!G2 (SMR) · I2",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ⑥ · 전일자 ty수익율 = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "①",
+   "label": "정산예정일 — 2026-08-22",
+   "term": "정산예정일 (정의서 원문은 「입금일(“정산예정일”로 변경 필요)」)",
+   "symbol": "d−1 집합의 날짜",
+   "formula": "—",
+   "value": "2026-08-22",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 하루씩 가른다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "이 행은 «정산예정일이 그 날인 대상정산금채권 집합» 이다 — 그 날 하루가 아니다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "날짜를 적는다",
+     "detail": "2026-08-22",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "행 하나가 집합이라는 것",
+    "그 집합의 채권 320건"
+   ],
+   "xlsx": "일별!A3 · B3 (건수)",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) 「입금일(“정산예정일”로 변경 필요)」 · 대표 DM 2026-08-31 15:15",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "②",
+   "label": "상환액 — 2026-08-22",
+   "term": "상환액 (이미지의 ②)",
+   "symbol": "② SB_{d−1} = Σ B_{d−1,i}",
+   "formula": "Σ (순지급액 − max(0, 미지급금 − 과지급금))",
+   "value": "25,375,335원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 25,394,136원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액·과지급액을 각각 더한다",
+     "detail": "Σ 미지급액 27,191원 · Σ 과지급액 8,385원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 max(0, 미지급금 − 과지급금) 을 더한다",
+     "detail": "Σ 차감 = 18,806원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "순지급액에서 차감을 뺀다",
+     "detail": "25,394,136 − 18,806 = 25,375,330원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "화면은 ③ + ④ 로 되짚어 적는다 — 건별 반올림 때문에 5단계와 -5원 갈린다",
+     "detail": "25,366,208 + 9,127 = 25,375,335원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,394,136원",
+    "Σ 미지급액 27,191원",
+    "Σ 과지급액 8,385원",
+    "Σ 차감 18,806원",
+    "정의대로 낸 25,375,330원과 화면 25,375,335원의 -5원 갈림"
+   ],
+   "xlsx": "채권!P열 · 일별!C3 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) · B_{d−1,i}",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "③",
+   "label": "투자실행금 — 2026-08-22",
+   "term": "투자실행금(SA_{d−1})",
+   "symbol": "③ SA_{d−1} = Σ A_{d−1,i}",
+   "formula": "Σ (순지급액 × (1 − 할인율))",
+   "value": "25,366,208원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액에 (1 − 0.0011) 을 곱해 원 단위로 반올림한다",
+     "detail": "A_{d−1,i}",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "Σ A_{d−1,i} = 25,366,208원",
+     "visible": true
+    },
+    {
+     "n": 4,
+     "what": "되짚기 — 순지급액 = ③ ÷ 0.9989",
+     "detail": "25,366,208 ÷ 0.9989 = 25394141.5557원",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,394,136원",
+    "건별 A_{d−1,i}",
+    "할인율 몫 27,928원"
+   ],
+   "xlsx": "채권!J열 · 일별!D3",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금(SA_{d−1}) · A_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "④",
+   "label": "투자 수익 — 2026-08-22",
+   "term": "투자수익(SM_{d−1})",
+   "symbol": "④ SM_{d−1} = Σ M_{d−1,i}",
+   "formula": "Σ (채권매입수수료 − max(0, 미지급금 − 과지급금))",
+   "value": "9,127원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순지급액을 앵커로 잡는다 — 투자실행금이 아니다",
+     "detail": "25,394,136원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "채권매입수수료 = 순지급액 × 할인율",
+     "detail": "25,394,136 × 0.0011 = 27933.5496 → 내림 27,933원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "부족액 차감을 뺀다",
+     "detail": "27,933 − 18,806 = 9,127원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "적는다",
+     "detail": "9,127원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "채권매입수수료 27,933원",
+    "부족액 차감 18,806원",
+    "차감 비율 67.33%",
+    "Σ 미지급액 27,191원 · Σ 과지급액 8,385원"
+   ],
+   "xlsx": "채권!K열 · N열 · O열 · 일별!E3 · F3 · L3",
+   "source": "ceo_definitions.md [2번 이미지] M_{d−1,i} · 대표 DM 2026-08-31 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑤",
+   "label": "W금융일수 — 2026-08-22",
+   "term": "w금융일수(SD_{d−1})",
+   "symbol": "⑤ SD_{d−1} = Σ (A_{d−1,i} × D_{d−1,i}) ÷ Σ A_{d−1,i}",
+   "formula": "Σ (A × D) ÷ Σ A — 그 집합만",
+   "value": "3.10",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 건별 금융일수 D_{d−1,i} 를 잡는다",
+     "detail": "정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 A_{d−1,i} 를 가중치로 쓴다",
+     "detail": "Σ A = 25,366,208원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱해 더한다",
+     "detail": "Σ (A × D) = 78,635,726",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "나눈다",
+     "detail": "78,635,726 ÷ 25,366,208 = 3.100019일",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.100019 → 3.10",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "건별 D_{d−1,i}",
+    "Σ (A × D) 78,635,726",
+    "raw 3.100019일"
+   ],
+   "xlsx": "채권!S열 · 일별!K3 · H3",
+   "source": "ceo_definitions.md [2번 이미지] w금융일수(SD_{d−1}) · D_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑥",
+   "label": "Ty수익율 — 2026-08-22",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ⑥)",
+   "symbol": "⑥ = (④ ÷ ③) × 365 ÷ ⑤ = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "formula": "(투자 수익 ÷ 투자실행금) × 365 ÷ W금융일수",
+   "value": "4.24%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 와 ③ 을 이 표의 같은 행에서 가져온다",
+     "detail": "④ 9,127원 · ③ 25,366,208원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "SMR_{d−1} = ④ ÷ ③",
+     "detail": "9,127 ÷ 25,366,208 = 0.000359809",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "백분율로 만든다",
+     "detail": "0.035980940%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "365 를 곱한다",
+     "detail": "13.133043",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "⑤ 로 나눈다 — 표기 W 를 쓴다",
+     "detail": "÷ 3.10 = 4.236465%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "4.236465% → 4.24%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "SMR_{d−1} 0.000359809",
+    "연 환산 중간값 13.133043",
+    "중간값 4.236465%",
+    "③ 이 상단 현황이 아니라 이 표의 열이라는 읽기 (미확정)"
+   ],
+   "xlsx": "일별!G3 (SMR) · I3",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ⑥ · 전일자 ty수익율 = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "①",
+   "label": "정산예정일 — 2026-08-23",
+   "term": "정산예정일 (정의서 원문은 「입금일(“정산예정일”로 변경 필요)」)",
+   "symbol": "d−1 집합의 날짜",
+   "formula": "—",
+   "value": "2026-08-23",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 하루씩 가른다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "이 행은 «정산예정일이 그 날인 대상정산금채권 집합» 이다 — 그 날 하루가 아니다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "날짜를 적는다",
+     "detail": "2026-08-23",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "행 하나가 집합이라는 것",
+    "그 집합의 채권 320건"
+   ],
+   "xlsx": "일별!A4 · B4 (건수)",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) 「입금일(“정산예정일”로 변경 필요)」 · 대표 DM 2026-08-31 15:15",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "②",
+   "label": "상환액 — 2026-08-23",
+   "term": "상환액 (이미지의 ②)",
+   "symbol": "② SB_{d−1} = Σ B_{d−1,i}",
+   "formula": "Σ (순지급액 − max(0, 미지급금 − 과지급금))",
+   "value": "25,188,287원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 25,207,385원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액·과지급액을 각각 더한다",
+     "detail": "Σ 미지급액 27,585원 · Σ 과지급액 8,489원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 max(0, 미지급금 − 과지급금) 을 더한다",
+     "detail": "Σ 차감 = 19,096원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "순지급액에서 차감을 뺀다",
+     "detail": "25,207,385 − 19,096 = 25,188,289원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "화면은 ③ + ④ 로 되짚어 적는다 — 건별 반올림 때문에 5단계와 2원 갈린다",
+     "detail": "25,179,655 + 8,632 = 25,188,287원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,207,385원",
+    "Σ 미지급액 27,585원",
+    "Σ 과지급액 8,489원",
+    "Σ 차감 19,096원",
+    "정의대로 낸 25,188,289원과 화면 25,188,287원의 2원 갈림"
+   ],
+   "xlsx": "채권!P열 · 일별!C4 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) · B_{d−1,i}",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "③",
+   "label": "투자실행금 — 2026-08-23",
+   "term": "투자실행금(SA_{d−1})",
+   "symbol": "③ SA_{d−1} = Σ A_{d−1,i}",
+   "formula": "Σ (순지급액 × (1 − 할인율))",
+   "value": "25,179,655원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액에 (1 − 0.0011) 을 곱해 원 단위로 반올림한다",
+     "detail": "A_{d−1,i}",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "Σ A_{d−1,i} = 25,179,655원",
+     "visible": true
+    },
+    {
+     "n": 4,
+     "what": "되짚기 — 순지급액 = ③ ÷ 0.9989",
+     "detail": "25,179,655 ÷ 0.9989 = 25207383.1214원",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,207,385원",
+    "건별 A_{d−1,i}",
+    "할인율 몫 27,730원"
+   ],
+   "xlsx": "채권!J열 · 일별!D4",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금(SA_{d−1}) · A_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "④",
+   "label": "투자 수익 — 2026-08-23",
+   "term": "투자수익(SM_{d−1})",
+   "symbol": "④ SM_{d−1} = Σ M_{d−1,i}",
+   "formula": "Σ (채권매입수수료 − max(0, 미지급금 − 과지급금))",
+   "value": "8,632원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순지급액을 앵커로 잡는다 — 투자실행금이 아니다",
+     "detail": "25,207,385원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "채권매입수수료 = 순지급액 × 할인율",
+     "detail": "25,207,385 × 0.0011 = 27728.1235 → 내림 27,728원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "부족액 차감을 뺀다",
+     "detail": "27,728 − 19,096 = 8,632원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "적는다",
+     "detail": "8,632원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "채권매입수수료 27,728원",
+    "부족액 차감 19,096원",
+    "차감 비율 68.87%",
+    "Σ 미지급액 27,585원 · Σ 과지급액 8,489원"
+   ],
+   "xlsx": "채권!K열 · N열 · O열 · 일별!E4 · F4 · L4",
+   "source": "ceo_definitions.md [2번 이미지] M_{d−1,i} · 대표 DM 2026-08-31 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑤",
+   "label": "W금융일수 — 2026-08-23",
+   "term": "w금융일수(SD_{d−1})",
+   "symbol": "⑤ SD_{d−1} = Σ (A_{d−1,i} × D_{d−1,i}) ÷ Σ A_{d−1,i}",
+   "formula": "Σ (A × D) ÷ Σ A — 그 집합만",
+   "value": "3.12",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 건별 금융일수 D_{d−1,i} 를 잡는다",
+     "detail": "정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 A_{d−1,i} 를 가중치로 쓴다",
+     "detail": "Σ A = 25,179,655원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱해 더한다",
+     "detail": "Σ (A × D) = 78,477,301",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "나눈다",
+     "detail": "78,477,301 ÷ 25,179,655 = 3.116695일",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.116695 → 3.12",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "건별 D_{d−1,i}",
+    "Σ (A × D) 78,477,301",
+    "raw 3.116695일"
+   ],
+   "xlsx": "채권!S열 · 일별!K4 · H4",
+   "source": "ceo_definitions.md [2번 이미지] w금융일수(SD_{d−1}) · D_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑥",
+   "label": "Ty수익율 — 2026-08-23",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ⑥)",
+   "symbol": "⑥ = (④ ÷ ③) × 365 ÷ ⑤ = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "formula": "(투자 수익 ÷ 투자실행금) × 365 ÷ W금융일수",
+   "value": "4.01%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 와 ③ 을 이 표의 같은 행에서 가져온다",
+     "detail": "④ 8,632원 · ③ 25,179,655원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "SMR_{d−1} = ④ ÷ ③",
+     "detail": "8,632 ÷ 25,179,655 = 0.000342816",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "백분율로 만든다",
+     "detail": "0.034281645%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "365 를 곱한다",
+     "detail": "12.512801",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "⑤ 로 나눈다 — 표기 W 를 쓴다",
+     "detail": "÷ 3.12 = 4.010513%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "4.010513% → 4.01%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "SMR_{d−1} 0.000342816",
+    "연 환산 중간값 12.512801",
+    "중간값 4.010513%",
+    "③ 이 상단 현황이 아니라 이 표의 열이라는 읽기 (미확정)"
+   ],
+   "xlsx": "일별!G4 (SMR) · I4",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ⑥ · 전일자 ty수익율 = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "①",
+   "label": "정산예정일 — 2026-08-24",
+   "term": "정산예정일 (정의서 원문은 「입금일(“정산예정일”로 변경 필요)」)",
+   "symbol": "d−1 집합의 날짜",
+   "formula": "—",
+   "value": "2026-08-24",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 하루씩 가른다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "이 행은 «정산예정일이 그 날인 대상정산금채권 집합» 이다 — 그 날 하루가 아니다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "날짜를 적는다",
+     "detail": "2026-08-24",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "행 하나가 집합이라는 것",
+    "그 집합의 채권 320건"
+   ],
+   "xlsx": "일별!A5 · B5 (건수)",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) 「입금일(“정산예정일”로 변경 필요)」 · 대표 DM 2026-08-31 15:15",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "②",
+   "label": "상환액 — 2026-08-24",
+   "term": "상환액 (이미지의 ②)",
+   "symbol": "② SB_{d−1} = Σ B_{d−1,i}",
+   "formula": "Σ (순지급액 − max(0, 미지급금 − 과지급금))",
+   "value": "25,281,442원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 25,301,031원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액·과지급액을 각각 더한다",
+     "detail": "Σ 미지급액 28,281원 · Σ 과지급액 8,699원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 max(0, 미지급금 − 과지급금) 을 더한다",
+     "detail": "Σ 차감 = 19,582원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "순지급액에서 차감을 뺀다",
+     "detail": "25,301,031 − 19,582 = 25,281,449원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "화면은 ③ + ④ 로 되짚어 적는다 — 건별 반올림 때문에 5단계와 7원 갈린다",
+     "detail": "25,273,193 + 8,249 = 25,281,442원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,301,031원",
+    "Σ 미지급액 28,281원",
+    "Σ 과지급액 8,699원",
+    "Σ 차감 19,582원",
+    "정의대로 낸 25,281,449원과 화면 25,281,442원의 7원 갈림"
+   ],
+   "xlsx": "채권!P열 · 일별!C5 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) · B_{d−1,i}",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "③",
+   "label": "투자실행금 — 2026-08-24",
+   "term": "투자실행금(SA_{d−1})",
+   "symbol": "③ SA_{d−1} = Σ A_{d−1,i}",
+   "formula": "Σ (순지급액 × (1 − 할인율))",
+   "value": "25,273,193원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액에 (1 − 0.0011) 을 곱해 원 단위로 반올림한다",
+     "detail": "A_{d−1,i}",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "Σ A_{d−1,i} = 25,273,193원",
+     "visible": true
+    },
+    {
+     "n": 4,
+     "what": "되짚기 — 순지급액 = ③ ÷ 0.9989",
+     "detail": "25,273,193 ÷ 0.9989 = 25301024.1265원",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,301,031원",
+    "건별 A_{d−1,i}",
+    "할인율 몫 27,838원"
+   ],
+   "xlsx": "채권!J열 · 일별!D5",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금(SA_{d−1}) · A_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "④",
+   "label": "투자 수익 — 2026-08-24",
+   "term": "투자수익(SM_{d−1})",
+   "symbol": "④ SM_{d−1} = Σ M_{d−1,i}",
+   "formula": "Σ (채권매입수수료 − max(0, 미지급금 − 과지급금))",
+   "value": "8,249원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순지급액을 앵커로 잡는다 — 투자실행금이 아니다",
+     "detail": "25,301,031원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "채권매입수수료 = 순지급액 × 할인율",
+     "detail": "25,301,031 × 0.0011 = 27831.1341 → 내림 27,831원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "부족액 차감을 뺀다",
+     "detail": "27,831 − 19,582 = 8,249원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "적는다",
+     "detail": "8,249원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "채권매입수수료 27,831원",
+    "부족액 차감 19,582원",
+    "차감 비율 70.36%",
+    "Σ 미지급액 28,281원 · Σ 과지급액 8,699원"
+   ],
+   "xlsx": "채권!K열 · N열 · O열 · 일별!E5 · F5 · L5",
+   "source": "ceo_definitions.md [2번 이미지] M_{d−1,i} · 대표 DM 2026-08-31 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑤",
+   "label": "W금융일수 — 2026-08-24",
+   "term": "w금융일수(SD_{d−1})",
+   "symbol": "⑤ SD_{d−1} = Σ (A_{d−1,i} × D_{d−1,i}) ÷ Σ A_{d−1,i}",
+   "formula": "Σ (A × D) ÷ Σ A — 그 집합만",
+   "value": "3.12",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 건별 금융일수 D_{d−1,i} 를 잡는다",
+     "detail": "정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 A_{d−1,i} 를 가중치로 쓴다",
+     "detail": "Σ A = 25,273,193원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱해 더한다",
+     "detail": "Σ (A × D) = 78,952,324",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "나눈다",
+     "detail": "78,952,324 ÷ 25,273,193 = 3.123955일",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.123955 → 3.12",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "건별 D_{d−1,i}",
+    "Σ (A × D) 78,952,324",
+    "raw 3.123955일"
+   ],
+   "xlsx": "채권!S열 · 일별!K5 · H5",
+   "source": "ceo_definitions.md [2번 이미지] w금융일수(SD_{d−1}) · D_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑥",
+   "label": "Ty수익율 — 2026-08-24",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ⑥)",
+   "symbol": "⑥ = (④ ÷ ③) × 365 ÷ ⑤ = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "formula": "(투자 수익 ÷ 투자실행금) × 365 ÷ W금융일수",
+   "value": "3.82%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 와 ③ 을 이 표의 같은 행에서 가져온다",
+     "detail": "④ 8,249원 · ③ 25,273,193원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "SMR_{d−1} = ④ ÷ ③",
+     "detail": "8,249 ÷ 25,273,193 = 0.000326393",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "백분율로 만든다",
+     "detail": "0.032639327%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "365 를 곱한다",
+     "detail": "11.913354",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "⑤ 로 나눈다 — 표기 W 를 쓴다",
+     "detail": "÷ 3.12 = 3.818383%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.818383% → 3.82%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "SMR_{d−1} 0.000326393",
+    "연 환산 중간값 11.913354",
+    "중간값 3.818383%",
+    "③ 이 상단 현황이 아니라 이 표의 열이라는 읽기 (미확정)"
+   ],
+   "xlsx": "일별!G5 (SMR) · I5",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ⑥ · 전일자 ty수익율 = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "①",
+   "label": "정산예정일 — 2026-08-25",
+   "term": "정산예정일 (정의서 원문은 「입금일(“정산예정일”로 변경 필요)」)",
+   "symbol": "d−1 집합의 날짜",
+   "formula": "—",
+   "value": "2026-08-25",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 하루씩 가른다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "이 행은 «정산예정일이 그 날인 대상정산금채권 집합» 이다 — 그 날 하루가 아니다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "날짜를 적는다",
+     "detail": "2026-08-25",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "행 하나가 집합이라는 것",
+    "그 집합의 채권 320건"
+   ],
+   "xlsx": "일별!A6 · B6 (건수)",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) 「입금일(“정산예정일”로 변경 필요)」 · 대표 DM 2026-08-31 15:15",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "②",
+   "label": "상환액 — 2026-08-25",
+   "term": "상환액 (이미지의 ②)",
+   "symbol": "② SB_{d−1} = Σ B_{d−1,i}",
+   "formula": "Σ (순지급액 − max(0, 미지급금 − 과지급금))",
+   "value": "25,602,099원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 25,622,093원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액·과지급액을 각각 더한다",
+     "detail": "Σ 미지급액 28,865원 · Σ 과지급액 8,877원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 max(0, 미지급금 − 과지급금) 을 더한다",
+     "detail": "Σ 차감 = 19,988원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "순지급액에서 차감을 뺀다",
+     "detail": "25,622,093 − 19,988 = 25,602,105원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "화면은 ③ + ④ 로 되짚어 적는다 — 건별 반올림 때문에 5단계와 6원 갈린다",
+     "detail": "25,593,903 + 8,196 = 25,602,099원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,622,093원",
+    "Σ 미지급액 28,865원",
+    "Σ 과지급액 8,877원",
+    "Σ 차감 19,988원",
+    "정의대로 낸 25,602,105원과 화면 25,602,099원의 6원 갈림"
+   ],
+   "xlsx": "채권!P열 · 일별!C6 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) · B_{d−1,i}",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "③",
+   "label": "투자실행금 — 2026-08-25",
+   "term": "투자실행금(SA_{d−1})",
+   "symbol": "③ SA_{d−1} = Σ A_{d−1,i}",
+   "formula": "Σ (순지급액 × (1 − 할인율))",
+   "value": "25,593,903원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액에 (1 − 0.0011) 을 곱해 원 단위로 반올림한다",
+     "detail": "A_{d−1,i}",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "Σ A_{d−1,i} = 25,593,903원",
+     "visible": true
+    },
+    {
+     "n": 4,
+     "what": "되짚기 — 순지급액 = ③ ÷ 0.9989",
+     "detail": "25,593,903 ÷ 0.9989 = 25622087.2960원",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 25,622,093원",
+    "건별 A_{d−1,i}",
+    "할인율 몫 28,190원"
+   ],
+   "xlsx": "채권!J열 · 일별!D6",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금(SA_{d−1}) · A_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "④",
+   "label": "투자 수익 — 2026-08-25",
+   "term": "투자수익(SM_{d−1})",
+   "symbol": "④ SM_{d−1} = Σ M_{d−1,i}",
+   "formula": "Σ (채권매입수수료 − max(0, 미지급금 − 과지급금))",
+   "value": "8,196원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순지급액을 앵커로 잡는다 — 투자실행금이 아니다",
+     "detail": "25,622,093원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "채권매입수수료 = 순지급액 × 할인율",
+     "detail": "25,622,093 × 0.0011 = 28184.3023 → 내림 28,184원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "부족액 차감을 뺀다",
+     "detail": "28,184 − 19,988 = 8,196원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "적는다",
+     "detail": "8,196원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "채권매입수수료 28,184원",
+    "부족액 차감 19,988원",
+    "차감 비율 70.92%",
+    "Σ 미지급액 28,865원 · Σ 과지급액 8,877원"
+   ],
+   "xlsx": "채권!K열 · N열 · O열 · 일별!E6 · F6 · L6",
+   "source": "ceo_definitions.md [2번 이미지] M_{d−1,i} · 대표 DM 2026-08-31 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑤",
+   "label": "W금융일수 — 2026-08-25",
+   "term": "w금융일수(SD_{d−1})",
+   "symbol": "⑤ SD_{d−1} = Σ (A_{d−1,i} × D_{d−1,i}) ÷ Σ A_{d−1,i}",
+   "formula": "Σ (A × D) ÷ Σ A — 그 집합만",
+   "value": "3.13",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 건별 금융일수 D_{d−1,i} 를 잡는다",
+     "detail": "정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 A_{d−1,i} 를 가중치로 쓴다",
+     "detail": "Σ A = 25,593,903원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱해 더한다",
+     "detail": "Σ (A × D) = 80,012,272",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "나눈다",
+     "detail": "80,012,272 ÷ 25,593,903 = 3.126224일",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.126224 → 3.13",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "건별 D_{d−1,i}",
+    "Σ (A × D) 80,012,272",
+    "raw 3.126224일"
+   ],
+   "xlsx": "채권!S열 · 일별!K6 · H6",
+   "source": "ceo_definitions.md [2번 이미지] w금융일수(SD_{d−1}) · D_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑥",
+   "label": "Ty수익율 — 2026-08-25",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ⑥)",
+   "symbol": "⑥ = (④ ÷ ③) × 365 ÷ ⑤ = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "formula": "(투자 수익 ÷ 투자실행금) × 365 ÷ W금융일수",
+   "value": "3.73%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 와 ③ 을 이 표의 같은 행에서 가져온다",
+     "detail": "④ 8,196원 · ③ 25,593,903원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "SMR_{d−1} = ④ ÷ ③",
+     "detail": "8,196 ÷ 25,593,903 = 0.000320233",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "백분율로 만든다",
+     "detail": "0.032023252%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "365 를 곱한다",
+     "detail": "11.688487",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "⑤ 로 나눈다 — 표기 W 를 쓴다",
+     "detail": "÷ 3.13 = 3.734341%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.734341% → 3.73%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "SMR_{d−1} 0.000320233",
+    "연 환산 중간값 11.688487",
+    "중간값 3.734341%",
+    "③ 이 상단 현황이 아니라 이 표의 열이라는 읽기 (미확정)"
+   ],
+   "xlsx": "일별!G6 (SMR) · I6",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ⑥ · 전일자 ty수익율 = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "①",
+   "label": "정산예정일 — 2026-08-26",
+   "term": "정산예정일 (정의서 원문은 「입금일(“정산예정일”로 변경 필요)」)",
+   "symbol": "d−1 집합의 날짜",
+   "formula": "—",
+   "value": "2026-08-26",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 하루씩 가른다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "이 행은 «정산예정일이 그 날인 대상정산금채권 집합» 이다 — 그 날 하루가 아니다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "날짜를 적는다",
+     "detail": "2026-08-26",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "행 하나가 집합이라는 것",
+    "그 집합의 채권 320건"
+   ],
+   "xlsx": "일별!A7 · B7 (건수)",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) 「입금일(“정산예정일”로 변경 필요)」 · 대표 DM 2026-08-31 15:15",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "②",
+   "label": "상환액 — 2026-08-26",
+   "term": "상환액 (이미지의 ②)",
+   "symbol": "② SB_{d−1} = Σ B_{d−1,i}",
+   "formula": "Σ (순지급액 − max(0, 미지급금 − 과지급금))",
+   "value": "26,102,543원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 26,122,944원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액·과지급액을 각각 더한다",
+     "detail": "Σ 미지급액 29,442원 · Σ 과지급액 9,046원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 max(0, 미지급금 − 과지급금) 을 더한다",
+     "detail": "Σ 차감 = 20,396원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "순지급액에서 차감을 뺀다",
+     "detail": "26,122,944 − 20,396 = 26,102,548원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "화면은 ③ + ④ 로 되짚어 적는다 — 건별 반올림 때문에 5단계와 5원 갈린다",
+     "detail": "26,094,204 + 8,339 = 26,102,543원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 26,122,944원",
+    "Σ 미지급액 29,442원",
+    "Σ 과지급액 9,046원",
+    "Σ 차감 20,396원",
+    "정의대로 낸 26,102,548원과 화면 26,102,543원의 5원 갈림"
+   ],
+   "xlsx": "채권!P열 · 일별!C7 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) · B_{d−1,i}",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "③",
+   "label": "투자실행금 — 2026-08-26",
+   "term": "투자실행금(SA_{d−1})",
+   "symbol": "③ SA_{d−1} = Σ A_{d−1,i}",
+   "formula": "Σ (순지급액 × (1 − 할인율))",
+   "value": "26,094,204원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액에 (1 − 0.0011) 을 곱해 원 단위로 반올림한다",
+     "detail": "A_{d−1,i}",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "Σ A_{d−1,i} = 26,094,204원",
+     "visible": true
+    },
+    {
+     "n": 4,
+     "what": "되짚기 — 순지급액 = ③ ÷ 0.9989",
+     "detail": "26,094,204 ÷ 0.9989 = 26122939.2332원",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 26,122,944원",
+    "건별 A_{d−1,i}",
+    "할인율 몫 28,740원"
+   ],
+   "xlsx": "채권!J열 · 일별!D7",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금(SA_{d−1}) · A_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "④",
+   "label": "투자 수익 — 2026-08-26",
+   "term": "투자수익(SM_{d−1})",
+   "symbol": "④ SM_{d−1} = Σ M_{d−1,i}",
+   "formula": "Σ (채권매입수수료 − max(0, 미지급금 − 과지급금))",
+   "value": "8,339원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순지급액을 앵커로 잡는다 — 투자실행금이 아니다",
+     "detail": "26,122,944원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "채권매입수수료 = 순지급액 × 할인율",
+     "detail": "26,122,944 × 0.0011 = 28735.2384 → 내림 28,735원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "부족액 차감을 뺀다",
+     "detail": "28,735 − 20,396 = 8,339원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "적는다",
+     "detail": "8,339원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "채권매입수수료 28,735원",
+    "부족액 차감 20,396원",
+    "차감 비율 70.98%",
+    "Σ 미지급액 29,442원 · Σ 과지급액 9,046원"
+   ],
+   "xlsx": "채권!K열 · N열 · O열 · 일별!E7 · F7 · L7",
+   "source": "ceo_definitions.md [2번 이미지] M_{d−1,i} · 대표 DM 2026-08-31 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑤",
+   "label": "W금융일수 — 2026-08-26",
+   "term": "w금융일수(SD_{d−1})",
+   "symbol": "⑤ SD_{d−1} = Σ (A_{d−1,i} × D_{d−1,i}) ÷ Σ A_{d−1,i}",
+   "formula": "Σ (A × D) ÷ Σ A — 그 집합만",
+   "value": "3.12",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 건별 금융일수 D_{d−1,i} 를 잡는다",
+     "detail": "정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 A_{d−1,i} 를 가중치로 쓴다",
+     "detail": "Σ A = 26,094,204원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱해 더한다",
+     "detail": "Σ (A × D) = 81,534,176",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "나눈다",
+     "detail": "81,534,176 ÷ 26,094,204 = 3.124609일",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.124609 → 3.12",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "건별 D_{d−1,i}",
+    "Σ (A × D) 81,534,176",
+    "raw 3.124609일"
+   ],
+   "xlsx": "채권!S열 · 일별!K7 · H7",
+   "source": "ceo_definitions.md [2번 이미지] w금융일수(SD_{d−1}) · D_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑥",
+   "label": "Ty수익율 — 2026-08-26",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ⑥)",
+   "symbol": "⑥ = (④ ÷ ③) × 365 ÷ ⑤ = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "formula": "(투자 수익 ÷ 투자실행금) × 365 ÷ W금융일수",
+   "value": "3.74%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 와 ③ 을 이 표의 같은 행에서 가져온다",
+     "detail": "④ 8,339원 · ③ 26,094,204원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "SMR_{d−1} = ④ ÷ ③",
+     "detail": "8,339 ÷ 26,094,204 = 0.000319573",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "백분율로 만든다",
+     "detail": "0.031957288%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "365 를 곱한다",
+     "detail": "11.664410",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "⑤ 로 나눈다 — 표기 W 를 쓴다",
+     "detail": "÷ 3.12 = 3.738593%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.738593% → 3.74%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "SMR_{d−1} 0.000319573",
+    "연 환산 중간값 11.664410",
+    "중간값 3.738593%",
+    "③ 이 상단 현황이 아니라 이 표의 열이라는 읽기 (미확정)"
+   ],
+   "xlsx": "일별!G7 (SMR) · I7",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ⑥ · 전일자 ty수익율 = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "①",
+   "label": "정산예정일 — 2026-08-27",
+   "term": "정산예정일 (정의서 원문은 「입금일(“정산예정일”로 변경 필요)」)",
+   "symbol": "d−1 집합의 날짜",
+   "formula": "—",
+   "value": "2026-08-27",
+   "steps": [
+    {
+     "n": 1,
+     "what": "조회 기간을 하루씩 가른다",
+     "detail": "2026-08-21 ~ 2026-08-27",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "이 행은 «정산예정일이 그 날인 대상정산금채권 집합» 이다 — 그 날 하루가 아니다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "날짜를 적는다",
+     "detail": "2026-08-27",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "행 하나가 집합이라는 것",
+    "그 집합의 채권 320건"
+   ],
+   "xlsx": "일별!A8 · B8 (건수)",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) 「입금일(“정산예정일”로 변경 필요)」 · 대표 DM 2026-08-31 15:15",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "②",
+   "label": "상환액 — 2026-08-27",
+   "term": "상환액 (이미지의 ②)",
+   "symbol": "② SB_{d−1} = Σ B_{d−1,i}",
+   "formula": "Σ (순지급액 − max(0, 미지급금 − 과지급금))",
+   "value": "26,530,744원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액을 더한다",
+     "detail": "Σ 순지급액 = 26,551,191원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "건별 미지급액·과지급액을 각각 더한다",
+     "detail": "Σ 미지급액 29,510원 · Σ 과지급액 9,065원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "건별 max(0, 미지급금 − 과지급금) 을 더한다",
+     "detail": "Σ 차감 = 20,445원",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "순지급액에서 차감을 뺀다",
+     "detail": "26,551,191 − 20,445 = 26,530,746원",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "화면은 ③ + ④ 로 되짚어 적는다 — 건별 반올림 때문에 5단계와 2원 갈린다",
+     "detail": "26,521,983 + 8,761 = 26,530,744원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 26,551,191원",
+    "Σ 미지급액 29,510원",
+    "Σ 과지급액 9,065원",
+    "Σ 차감 20,445원",
+    "정의대로 낸 26,530,746원과 화면 26,530,744원의 2원 갈림"
+   ],
+   "xlsx": "채권!P열 · 일별!C8 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②) · B_{d−1,i}",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "③",
+   "label": "투자실행금 — 2026-08-27",
+   "term": "투자실행금(SA_{d−1})",
+   "symbol": "③ SA_{d−1} = Σ A_{d−1,i}",
+   "formula": "Σ (순지급액 × (1 − 할인율))",
+   "value": "26,521,983원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 채권을 모은다",
+     "detail": "320건",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 순지급액에 (1 − 0.0011) 을 곱해 원 단위로 반올림한다",
+     "detail": "A_{d−1,i}",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "더한다",
+     "detail": "Σ A_{d−1,i} = 26,521,983원",
+     "visible": true
+    },
+    {
+     "n": 4,
+     "what": "되짚기 — 순지급액 = ③ ÷ 0.9989",
+     "detail": "26,521,983 ÷ 0.9989 = 26551189.3082원",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "Σ 순지급액 26,551,191원",
+    "건별 A_{d−1,i}",
+    "할인율 몫 29,208원"
+   ],
+   "xlsx": "채권!J열 · 일별!D8",
+   "source": "ceo_definitions.md [2번 이미지] 투자실행금(SA_{d−1}) · A_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "④",
+   "label": "투자 수익 — 2026-08-27",
+   "term": "투자수익(SM_{d−1})",
+   "symbol": "④ SM_{d−1} = Σ M_{d−1,i}",
+   "formula": "Σ (채권매입수수료 − max(0, 미지급금 − 과지급금))",
+   "value": "8,761원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "순지급액을 앵커로 잡는다 — 투자실행금이 아니다",
+     "detail": "26,551,191원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "채권매입수수료 = 순지급액 × 할인율",
+     "detail": "26,551,191 × 0.0011 = 29206.3101 → 내림 29,206원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "부족액 차감을 뺀다",
+     "detail": "29,206 − 20,445 = 8,761원",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "적는다",
+     "detail": "8,761원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "채권매입수수료 29,206원",
+    "부족액 차감 20,445원",
+    "차감 비율 70.00%",
+    "Σ 미지급액 29,510원 · Σ 과지급액 9,065원"
+   ],
+   "xlsx": "채권!K열 · N열 · O열 · 일별!E8 · F8 · L8",
+   "source": "ceo_definitions.md [2번 이미지] M_{d−1,i} · 대표 DM 2026-08-31 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑤",
+   "label": "W금융일수 — 2026-08-27",
+   "term": "w금융일수(SD_{d−1})",
+   "symbol": "⑤ SD_{d−1} = Σ (A_{d−1,i} × D_{d−1,i}) ÷ Σ A_{d−1,i}",
+   "formula": "Σ (A × D) ÷ Σ A — 그 집합만",
+   "value": "3.11",
+   "steps": [
+    {
+     "n": 1,
+     "what": "그 집합의 건별 금융일수 D_{d−1,i} 를 잡는다",
+     "detail": "정수 1 ~ 13일",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "건별 A_{d−1,i} 를 가중치로 쓴다",
+     "detail": "Σ A = 26,521,983원",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "곱해 더한다",
+     "detail": "Σ (A × D) = 82,372,046",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "나눈다",
+     "detail": "82,372,046 ÷ 26,521,983 = 3.105803일",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.105803 → 3.11",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "건별 D_{d−1,i}",
+    "Σ (A × D) 82,372,046",
+    "raw 3.105803일"
+   ],
+   "xlsx": "채권!S열 · 일별!K8 · H8",
+   "source": "ceo_definitions.md [2번 이미지] w금융일수(SD_{d−1}) · D_{d−1,i}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익",
+   "marker": "⑥",
+   "label": "Ty수익율 — 2026-08-27",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ⑥)",
+   "symbol": "⑥ = (④ ÷ ③) × 365 ÷ ⑤ = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "formula": "(투자 수익 ÷ 투자실행금) × 365 ÷ W금융일수",
+   "value": "3.88%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "④ 와 ③ 을 이 표의 같은 행에서 가져온다",
+     "detail": "④ 8,761원 · ③ 26,521,983원",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "SMR_{d−1} = ④ ÷ ③",
+     "detail": "8,761 ÷ 26,521,983 = 0.000330330",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "백분율로 만든다",
+     "detail": "0.033032975%",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "365 를 곱한다",
+     "detail": "12.057036",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "⑤ 로 나눈다 — 표기 W 를 쓴다",
+     "detail": "÷ 3.11 = 3.876860%",
+     "visible": false
+    },
+    {
+     "n": 6,
+     "what": "소수 2자리로 반올림한다",
+     "detail": "3.876860% → 3.88%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "SMR_{d−1} 0.000330330",
+    "연 환산 중간값 12.057036",
+    "중간값 3.876860%",
+    "③ 이 상단 현황이 아니라 이 표의 열이라는 읽기 (미확정)"
+   ],
+   "xlsx": "일별!G8 (SMR) · I8",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ⑥ · 전일자 ty수익율 = SMR_{d−1} × 365 ÷ SD_{d−1}",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익 · 합계",
+   "label": "합계",
+   "term": "—",
+   "symbol": "—",
+   "formula": "—",
+   "value": "합계",
+   "steps": [
+    {
+     "n": 1,
+     "what": "합계 행 이름을 적는다 — 스토리보드 S7 에는 없던 행이다",
+     "detail": "합계",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "스토리보드 원안에 합계 행이 없다는 것"
+   ],
+   "xlsx": "일별!A29",
+   "source": "storyboard_coverage.md S7 표 2 (합계행 없음) · 우리 추가분",
+   "marker": null,
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익 · 합계",
+   "marker": "②",
+   "label": "상환액 — 합계",
+   "term": "상환액 (이미지의 ②) 기간 합",
+   "symbol": "Σ SB_{d−1}",
+   "formula": "7일치 상환액의 합",
+   "value": "180,032,094원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "7행을 더한다",
+     "detail": "25,951,644 + 25,375,335 + 25,188,287 + 25,281,442 + 25,602,099 + 26,102,543 + 26,530,744",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "적는다",
+     "detail": "180,032,094원",
+     "visible": true
+    },
+    {
+     "n": 3,
+     "what": "검산 — 상환액 − 투자수익 = 투자실행금",
+     "detail": "180,032,094 − 61,175 = 179,970,919",
+     "visible": false
+    }
+   ],
+   "hidden": [
+    "항등식 Σ B − Σ M = Σ A"
+   ],
+   "xlsx": "일별!C29 · 기간집계!B8",
+   "source": "ceo_definitions.md [2번 이미지] 상환액 (이미지의 ②)",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익 · 합계",
+   "marker": "③",
+   "label": "투자실행금 — 합계",
+   "term": "투자 실행금(PSA)",
+   "symbol": "PSA",
+   "formula": "7일치 투자실행금의 합",
+   "value": "179,970,919원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "7행을 더한다",
+     "detail": "25,941,773 + 25,366,208 + 25,179,655 + 25,273,193 + 25,593,903 + 26,094,204 + 26,521,983",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "적는다 — 상단 현황 카드 `투자실행금` 과 같은 값이다",
+     "detail": "179,970,919원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "이 값이 곧 PSA 라는 것"
+   ],
+   "xlsx": "일별!D29 · 기간집계!B5",
+   "source": "ceo_definitions.md [2번 이미지] 투자 실행금(PSA)",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익 · 합계",
+   "marker": "④",
+   "label": "투자 수익 — 합계",
+   "term": "투자수익(PSM)",
+   "symbol": "PSM",
+   "formula": "7일치 투자 수익의 합",
+   "value": "61,175원",
+   "steps": [
+    {
+     "n": 1,
+     "what": "7행을 더한다",
+     "detail": "9,871 + 9,127 + 8,632 + 8,249 + 8,196 + 8,339 + 8,761",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "적는다 — 상단 현황 카드 `투자수익` 과 같은 값이다",
+     "detail": "61,175원",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "Σ 수수료 198,184원 − Σ 차감 137,009원"
+   ],
+   "xlsx": "일별!E29 · 기간집계!B6",
+   "source": "ceo_definitions.md [2번 이미지] 투자수익(PSM)",
+   "rename_pending": false
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익 · 합계",
+   "marker": "⑤",
+   "label": "W금융일수 — 합계 (가중평균)",
+   "term": "PSD",
+   "symbol": "PSD",
+   "formula": "Σ (표기 W × 투자실행금) ÷ PSA",
+   "value": "3.11",
+   "steps": [
+    {
+     "n": 1,
+     "what": "행마다 표기 W 에 그 행 투자실행금을 곱한다",
+     "detail": "7개 곱",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "더한다",
+     "detail": "559436155.94",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "PSA 로 나눈다",
+     "detail": "559436155.94 ÷ 179,970,919 = 3.108481일",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "소수 2자리로 적고 `가중평균` 을 붙인다",
+     "detail": "3.11",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "raw 3.108481일",
+    "건별 Σ(AᵢDᵢ)÷PSA 로 내면 3.107588일 — 화면은 이 값을 쓰지 않는다",
+    "가중치가 건수가 아니라 금액이라는 것"
+   ],
+   "xlsx": "기간집계!B12 (엑셀은 건별 raw 쪽) · 화면대조 153행",
+   "source": "ceo_definitions.md [2번 이미지] PSD = (Σ Aₚᵢ × Dₚᵢ) ÷ PSA · 대표 DM 2026-08-31 16:19 「다 더한 후에 가중 평균」",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익 · 합계",
+   "marker": "⑥",
+   "label": "Ty수익율 — 합계 (가중평균)",
+   "term": "투자실행금액 대비 ty수익율 (이미지의 ④)",
+   "symbol": "PSMR × 365 ÷ PSD",
+   "formula": "(PSM ÷ PSA) × 365 ÷ PSD",
+   "value": "3.99%",
+   "steps": [
+    {
+     "n": 1,
+     "what": "행별 Ty 를 평균 내지 않는다 — 먼저 더하고 나중에 나눈다",
+     "detail": "대표 DM 2026-08-31 16:19",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "PSMR 을 낸다",
+     "detail": "61,175 ÷ 179,970,919 = 0.000340",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "365 를 곱한다",
+     "detail": "12.406935",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "PSD 로 나눈다",
+     "detail": "÷ 3.108481 = 3.991318%",
+     "visible": false
+    },
+    {
+     "n": 5,
+     "what": "소수 2자리로 적고 `가중평균` 을 붙인다",
+     "detail": "3.99%",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "PSMR 0.000340",
+    "PSD 3.108481일",
+    "중간값 3.991318%",
+    "행별 Ty 7개(4.54·4.24·4.01·3.82·3.73·3.74·3.88)의 단순평균 3.99% 와 다르다"
+   ],
+   "xlsx": "기간집계!B13",
+   "source": "ceo_definitions.md [2번 이미지] 이미지의 ④ · 대표 DM 2026-08-31 16:19",
+   "rename_pending": true
+  },
+  {
+   "screen": "invest-profit",
+   "table": "일별 투자수익 · 툴팁",
+   "marker": "③",
+   "label": "투자실행금 › ⑥ 의 ③",
+   "term": "이미지의 ③",
+   "symbol": "③",
+   "formula": "—",
+   "value": "상단 현황의 기간 전체 숫자 · 칸 미지목",
+   "steps": [
+    {
+     "n": 1,
+     "what": "대표가 ③ 을 좁혔다",
+     "detail": "2026-08-31 회의 00:59:21 「저 위에 있는 현황에 있는 거 … 그 기간 전체에 대한 숫자」",
+     "visible": false
+    },
+    {
+     "n": 2,
+     "what": "현황의 어느 칸인지는 지목되지 않았다",
+     "detail": "읽기 미확정 (U-03 · F-23 · TP-66)",
+     "visible": false
+    },
+    {
+     "n": 3,
+     "what": "화면은 일별 표 열 `투자실행금` 으로 읽고 있다",
+     "detail": "daily_ledger.py TY3_EXPR = execu",
+     "visible": false
+    },
+    {
+     "n": 4,
+     "what": "`미확정` 배지를 단다",
+     "detail": "미확정",
+     "visible": true
+    }
+   ],
+   "hidden": [
+    "두 읽기가 다른 값을 낸다는 것 — 열 읽기는 행마다, 현황 읽기는 기간 하나"
+   ],
+   "xlsx": "입력!C18 (빈 칸) · 기간집계!B18",
+   "source": "대표 2026-08-31 회의 00:59:21 · daily_ledger.py TY3_STATUS",
+   "rename_pending": false
+  }
+ ]
+}
