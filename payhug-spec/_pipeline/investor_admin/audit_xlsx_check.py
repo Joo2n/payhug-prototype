@@ -9,6 +9,7 @@ from datetime import date, datetime, timedelta
 from decimal import Decimal as D, ROUND_HALF_UP, ROUND_DOWN
 
 import openpyxl
+from openpyxl.utils import get_column_letter
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 #   기본은 정본. 음성 시험 때만 AUDIT_XLSX 로 사본을 가리킨다.
@@ -907,6 +908,14 @@ def variant_test(quiet=False):
                             'B%d' % pm['⑤ 투자자산 대비 ty수익율 (정의)']),
             '⑤ 화면 반영 표식': bk.wb['기간집계'].cell(
                 pm['⑤ 투자자산 대비 ty수익율 (정의)'], 5).value,
+            #   기본 벌에 넣은 구멍 셋(평균순현금 칸 · EC 표식 · 갈림 표)이 이 벌에도 있는가.
+            '평균순현금 행': pm.get('평균순현금'),
+            '평균순현금 값': (bk.wb['기간집계'].cell(pm['평균순현금'], 2).value
+                              if '평균순현금' in pm else '칸 없음'),
+            '평균순현금 표식': (bk.wb['기간집계'].cell(pm['평균순현금'], 5).value
+                                if '평균순현금' in pm else None),
+            'EC 열머리': ec_head(bk.wb)[2],
+            '갈림 표 머리': bk.wb['읽는 법'].cell(1, 2).value,
             '불변식 판정': judge,
             '가맹점 수': bk.cell('가맹점', 'B%d' % gm['가맹점 수 (적용)']),
         })
@@ -924,6 +933,13 @@ def variant_test(quiet=False):
             len(x['불변식 판정']) == 2 and set(x['불변식 판정'].values()) == {'일치'}
             for x in v),
         '⑤ 가 미확정 표식': bool(v) and all(x['⑤ 화면 반영 표식'] == '미확정' for x in v),
+        '세 벌에 평균순현금 칸이 있다': bool(v) and all(x['평균순현금 행'] for x in v),
+        '세 벌 평균순현금이 값 없이 미확정 표식': bool(v) and all(
+            x['평균순현금 값'] is None and x['평균순현금 표식'] == '미확정' for x in v),
+        '세 벌 EC 열머리에 미확정 표식': bool(v) and all(
+            '미확정' in (x['EC 열머리'] or '') for x in v),
+        '세 벌 첫 시트 맨 위가 갈림 표': bool(v) and all(
+            x['갈림 표 머리'] == '화면 ↔ 엑셀 갈림' for x in v),
         '세 벌이 서로 다른 벌이다': len({x['입력 순현금'] for x in v}) == len(VARIANT),
     }
     rep['통과'] = all(rep['판정'].values())
@@ -1247,6 +1263,295 @@ def notation_test(quiet=False):
     return rep
 
 
+# ── 워드 변수 전수 대응 ───────────────────────────────────────────
+#   합격 기준 1(대표 2026-08-30 00:47:05 「워드에 있는 것들은 전부 엑셀에 나타나면 되지」)을
+#   글자 그대로 잰다. 기준표를 여기 두지 않는다 — 이름은 `ceo_definitions.md` 원문에서 뽑는다.
+#   `산식` 시트는 원문 ↔ 셀 색인이지 칸이 아니고, `읽는 법` 은 안내다. 둘을 빼고 찾는다.
+DEFS_MD = os.path.join(BASE, 'ceo_definitions.md')
+INDEX_SHEETS = ('산식', '읽는 법')
+#   값으로 서 있어도 되는 원문 줄 수. 전부 입력 상수 자리다(할인율 · Di · 플랫폼ID · 기준일).
+#   개수까지 못 박아 예외가 번지는 것을 막는다. 늘어도 줄어도 FAIL 이다.
+VALUE_LINES = 8
+
+
+def word_core(name):
+    """원문의 이름 -> 핵심어. 괄호 안·공백·앞의 Σ 를 떼고 마지막 `의` 뒤 조각을 쓴다."""
+    s = re.sub(r'\([^)]*\)', '', name or '')
+    s = re.sub(r'\s+', '', s).strip('·,.').lstrip('Σ')
+    if '의' in s[:-1]:
+        t = s.rsplit('의', 1)[1]
+        if len(t) >= 2:
+            s = t
+    return s
+
+
+def word_named_vars(path=DEFS_MD):
+    """대표 정의서 원문에서 이름 붙은 변수를 뽑는다.
+
+    못 읽으면 예외로 죽는다. 대상이 0건이면 판정에서 FAIL 이다.
+    """
+    txt = open(path, encoding='utf-8').read()
+    lines = [l[2:].strip() for l in txt.splitlines() if l.startswith('- ')]
+    if len(lines) < 40:
+        raise ValueError('원문 줄을 못 읽었다 (%d줄): %s' % (len(lines), path))
+    #   (가) 줄 머리 이름 — `이름: …` 또는 `이름 = …`. 쉼표가 든 줄은 이름이 아니라 서술이다.
+    heads = []
+    for l in lines:
+        h = re.split(r'[=:]', l, 1)[0].strip()
+        if h and ',' not in h and len(h) <= 30:
+            heads.append(word_core(h))
+    #   (나) 줄 안에서만 이름이 불리는 산출 대상 — `아래와 같이 … 산출해` 열거.
+    enum = []
+    for l in lines:
+        m = re.search(r'아래와 같이\s*(.+?)\s*산출해', l)
+        if not m:
+            continue
+        enum = [word_core(t) for t in m.group(1).split(',') if word_core(t)]
+    #   (다) 괄호로 이름 붙인 기호 — 대문자 두 자 이상. `(D-1)` 같은 날짜 꼬리는 뺀다.
+    syms = sorted({s for s in re.findall(r'\(([A-Za-z][A-Za-z0-9-]*)\)', txt)
+                   if len(s) <= 6 and len(re.findall(r'[A-Z]', s)) >= 2})
+    return {'줄': len(lines), '줄 머리 이름': sorted(set(heads)),
+            '열거 산출 대상': enum, '괄호 기호': syms}
+
+
+def data_cells(wb):
+    """색인·안내 시트를 뺀 시트의 평문 셀 -> [(주소, 원문, 공백 뺀 소문자)]."""
+    out = []
+    for ws in wb.worksheets:
+        if ws.title in INDEX_SHEETS:
+            continue
+        for row in ws.iter_rows():
+            for c in row:
+                if c.value is None:
+                    continue
+                t = _runs(c.value)[0]
+                if not t or t.startswith('='):
+                    continue
+                out.append(('%s!%s' % (ws.title, c.coordinate), t,
+                            re.sub(r'\s+', '', t).lower()))
+    return out
+
+
+def _cellrefs(wb, text):
+    """`산식` C열이 지시한 자리 문자열 -> [(시트, [주소…])].
+
+    괄호 안은 다른 파일·풀이말이라 뺀다. 시트 이름이 앞서지 않은 주소는 버린다.
+    """
+    from openpyxl.utils import column_index_from_string, get_column_letter
+    t = re.sub(r'\([^)]*\)', ' ', text or '')
+    marks = sorted((m.start(), s) for s in wb.sheetnames
+                   for m in re.finditer(re.escape(s), t))
+    tok = re.compile(r'(?P<rng>[A-Z]{1,2}\d+:[A-Z]{1,2}\d+)'
+                     r'|(?P<cell>[A-Z]{1,2}\d+)'
+                     r'|(?P<cols>(?:[A-Z]·)*[A-Z]열)')
+    out = []
+    for m in tok.finditer(t):
+        sh = None
+        for pos, s in marks:
+            if pos < m.start():
+                sh = s
+            else:
+                break
+        if sh is None:
+            continue
+        g, v = m.lastgroup, m.group()
+        if g == 'cell':
+            out.append((sh, [v]))
+        elif g == 'rng':
+            a, b = v.split(':')
+            ca, ra = re.match(r'([A-Z]+)(\d+)', a).groups()
+            cb, rb = re.match(r'([A-Z]+)(\d+)', b).groups()
+            out.append((sh, ['%s%d' % (get_column_letter(ci), ri)
+                             for ci in range(column_index_from_string(ca),
+                                             column_index_from_string(cb) + 1)
+                             for ri in range(int(ra), int(rb) + 1)]))
+        else:
+            ws = wb[sh]
+            out.append((sh, ['%s%d' % (c, ri) for c in v.replace('열', '').split('·')
+                             for ri in range(2, ws.max_row + 1)]))
+    return out
+
+
+def word_test(quiet=False):
+    """원문이 이름 부른 변수가 전부 칸을 갖는가 · 수식이어야 할 자리가 값으로 있지 않은가."""
+    wb = openpyxl.load_workbook(XLSX, rich_text=True)
+    V = word_named_vars()
+    cells = data_cells(wb)
+
+    def where_ko(k):
+        k2 = re.sub(r'\s+', '', k).lower()
+        return [a for a, _t, n in cells if k2 in n][:3]
+
+    def where_sym(k):
+        rx = re.compile(r'(?<![A-Za-z0-9])%s(?![A-Za-z0-9])' % re.escape(k), re.I)
+        return [a for a, t, _n in cells if rx.search(t)][:3]
+
+    enum = {k: where_ko(k) for k in V['열거 산출 대상']}
+    syms = {k: where_sym(k) for k in V['괄호 기호']}
+
+    #   `산식` C열이 빈 줄 — 줄 머리 이름은 이 색인으로 셀을 지시받는다.
+    fs = wb['산식']
+    lines = [(r, _runs(fs.cell(r, 2).value)[0],
+              _runs(fs.cell(r, 3).value)[0] if fs.cell(r, 3).value is not None else '')
+             for r in range(2, fs.max_row + 1) if fs.cell(r, 2).value]
+    blank = [x[1][:34] for x in lines if not x[2]]
+
+    #   지시받은 자리가 수식인가 값인가. 값 셀이 하나라도 있으면 그 줄은 `값` 이다.
+    kinds = []
+    for r, line, cmap in lines:
+        nf = nv = 0
+        ex = []
+        for sh, ads in _cellrefs(wb, cmap):
+            ws = wb[sh]
+            for a in ads:
+                v = ws[a].value
+                if v is None or v == '':
+                    continue
+                if isinstance(v, str) and v.startswith('='):
+                    nf += 1
+                else:
+                    nv += 1
+                    if len(ex) < 2:
+                        ex.append('%s!%s' % (sh, a))
+        kind = '값' if nv else ('수식' if nf else '자리 지시만')
+        kinds.append({'산식 행': r, '원문': line[:34], '지시': cmap[:46],
+                      '분류': kind, '수식셀': nf, '값셀': nv, '보기': ex})
+    val = [x for x in kinds if x['분류'] == '값']
+    vsheets = sorted({e.split('!')[0] for x in val for e in x['보기']})
+
+    rep = {'원문': os.path.relpath(DEFS_MD, BASE), '원문 줄': V['줄'],
+           '줄 머리 이름': V['줄 머리 이름'],
+           '열거 산출 대상 ↔ 칸': enum, '괄호 기호 ↔ 칸': syms,
+           '산식 대응 셀 빈 줄': blank,
+           '줄 분류': {k: sum(1 for x in kinds if x['분류'] == k)
+                       for k in ('수식', '값', '자리 지시만')},
+           '값으로 선 줄': [[x['산식 행'], x['원문'], x['지시'], x['보기']] for x in val],
+           '값으로 선 자리의 시트': vsheets,
+           '값으로 선 줄 못 박은 수': VALUE_LINES,
+           '검사한 평문 셀': len(cells)}
+    rep['판정'] = {
+        '원문 45줄을 읽었다': V['줄'] == 45,
+        '줄 머리 이름 0건 아님': len(V['줄 머리 이름']) > 0,
+        '열거 산출 대상 0건 아님': len(enum) > 0,
+        '괄호 기호 0건 아님': len(syms) > 0,
+        '검사한 평문 셀 0건 아님': len(cells) > 0,
+        '열거 산출 대상 전건이 칸을 갖는다': all(bool(v) for v in enum.values()),
+        '괄호 기호 전건이 칸을 갖는다': all(bool(v) for v in syms.values()),
+        '원문 전건이 산식 색인에서 셀을 지시받는다': not blank,
+        '산식 색인이 45줄 전건을 덮는다': len(lines) == V['줄'],
+        '값으로 선 줄이 못 박은 수와 같다': len(val) == VALUE_LINES,
+        '수식으로 선 줄 0건 아님': rep['줄 분류']['수식'] > 0,
+    }
+    rep['통과'] = all(rep['판정'].values())
+    if not quiet:
+        print(json.dumps(rep, ensure_ascii=False, indent=1, default=str))
+    return rep
+
+
+# ── 표식 · 옮겨 적기 ──────────────────────────────────────────────
+def ec_head(wb):
+    """`일별` EC 열 자리를 열머리에서 찾는다. 못 찾으면 죽는다 — 열 주소를 손으로 적지 않는다."""
+    ws = wb['일별']
+    for c in range(1, ws.max_column + 1):
+        t = _runs(ws.cell(1, c).value)[0] if ws.cell(1, c).value is not None else ''
+        if re.match(r'^\s*EC(?![A-Za-z0-9])', t):
+            return c, get_column_letter(c), t
+    raise ValueError('일별 시트에서 EC 열머리를 못 찾았다')
+
+
+def mark_test(quiet=False):
+    """`일별` EC 열이 상수인 까닭이 적혀 있는가 · `읽는 법` 갈림 표가 `화면대조` 와 같은가."""
+    bk = Book(XLSX)
+    wb = openpyxl.load_workbook(XLSX, rich_text=True)
+    ec, L, echead = ec_head(wb)
+    ws = wb['일별']
+    fml, rows = [], []
+    for r in range(2, ws.max_row + 1):
+        a = ws.cell(r, 1).value
+        v = ws.cell(r, ec).value
+        if not (isinstance(a, str) and a.startswith('=')):
+            break                                   # 합계 행에서 멈춘다
+        if isinstance(v, str) and v.startswith('='):
+            fml.append(v)
+            rows.append('%s%d' % (L, r))
+    const = bool(fml) and len(set(fml)) == 1
+    #   까닭 표식 — `일별` 시트의 평문 칸. 무엇이 없어서 상수인지가 적혀 있어야 한다.
+    why = []
+    for row in ws.iter_rows():
+        for c in row:
+            if c.value is None:
+                continue
+            t = _runs(c.value)[0]
+            if t.startswith('='):
+                continue
+            if all(k in t for k in ('미확정', 'EC', '원장', '순현금')):
+                why.append(['일별!%s' % c.coordinate, t[:90]])
+
+    # ── 읽는 법 갈림 표 ↔ 화면대조
+    gw = wb['읽는 법']
+    h = None
+    for r in range(1, gw.max_row + 1):
+        v = gw.cell(r, 2).value
+        if v is not None and _runs(v)[0].strip() == '화면 ↔ 엑셀 갈림':
+            h = r
+            break
+    if h is None:
+        raise ValueError('읽는 법 시트에서 갈림 표 머리를 못 찾았다')
+    cw = wb['화면대조']
+    gap, bad = [], []
+    r = h + 1
+    while gw.cell(r, 2).value is not None:
+        lab = _runs(gw.cell(r, 2).value)[0]
+        m = re.search(r'(\d+)\s*행', str(gw.cell(r, 4).value or ''))
+        if not m:
+            bad.append([lab, '화면대조 행 표기 없음'])
+            r += 1
+            continue
+        rr = int(m.group(1))
+        src = _runs(cw.cell(rr, 2).value)[0] if cw.cell(rr, 2).value is not None else ''
+        pair = [('엑셀 값', 'E%d' % r, 'C%d' % rr), ('화면 값', 'F%d' % r, 'E%d' % rr),
+                ('차이', 'G%d' % r, 'F%d' % rr)]
+        row = {'항목': lab, '화면대조 행': rr, '구분': cw.cell(rr, 1).value,
+               '원본 항목': src}
+        for nm, ga, ca in pair:
+            a, b = bk.cell('읽는 법', ga), bk.cell('화면대조', ca)
+            row[nm] = a
+            if abs(numify(a) - numify(b)) > 1e-9:
+                bad.append([lab, nm, a, b])
+        wa = bk.cell('읽는 법', 'C%d' % r)
+        wsrc = bk.cell('화면대조', 'H%d' % rr)
+        row['까닭 같음'] = _txt(wa) == _txt(wsrc)
+        if not row['까닭 같음']:
+            bad.append([lab, '까닭', _txt(wa)[:40], _txt(wsrc)[:40]])
+        if src != lab:
+            bad.append([lab, '항목 이름', lab, src])
+        if cw.cell(rr, 1).value != '모델 잔차':
+            bad.append([lab, '화면대조 구분', cw.cell(rr, 1).value])
+        gap.append(row)
+        r += 1
+
+    rep = {'EC 열': '일별!%s' % L, 'EC 열머리': echead,
+           'EC 칸': len(fml), 'EC 수식 가짓수': len(set(fml)),
+           'EC 수식': sorted(set(fml))[:3], 'EC 가 상수': const,
+           'EC 까닭 표식': why,
+           '갈림 표 머리 행': h, '갈림 표 행': gap, '갈림 표 어긋난 자리': bad}
+    rep['판정'] = {
+        'EC 칸 0건 아님': len(fml) > 0,
+        'EC 가 상수면 열머리에 미확정 표식': (not const) or ('미확정' in echead),
+        'EC 가 상수면 까닭 표식이 있다': (not const) or bool(why),
+        '갈림 표 행 0건 아님': len(gap) > 0,
+        '갈림 표가 화면대조와 어긋나지 않는다': not bad,
+        '갈림 표 전건이 모델 잔차 행이다': bool(gap) and all(
+            x['구분'] == '모델 잔차' for x in gap),
+        '갈림 표 전건이 실제로 갈린다': bool(gap) and all(
+            abs(numify(x['차이'])) > 1e-9 for x in gap),
+    }
+    rep['통과'] = all(rep['판정'].values())
+    if not quiet:
+        print(json.dumps(rep, ensure_ascii=False, indent=1, default=str))
+    return rep
+
+
 if __name__ == '__main__':
     arg = sys.argv[1] if len(sys.argv) > 1 else ''
     if arg == 'notation':
@@ -1257,6 +1562,10 @@ if __name__ == '__main__':
         sys.exit(0 if variant_test()['통과'] else 1)
     if arg == 'five':
         sys.exit(0 if five_test()['통과'] else 1)
+    if arg == 'word':
+        sys.exit(0 if word_test()['통과'] else 1)
+    if arg == 'mark':
+        sys.exit(0 if mark_test()['통과'] else 1)
     if arg == 'switch':
         switch_test()
     elif arg == 'sens':
@@ -1272,14 +1581,18 @@ if __name__ == '__main__':
         s5 = idle_test(True)
         s6 = variant_test(True)
         s7 = five_test(True)
+        s8 = word_test(True)
+        s9 = mark_test(True)
         print(json.dumps({'스위치': s1, '배달앱비중 민감도': s2, '구성비 입력 반응': s3,
                           '기호 표기': s4, '총 투자자산·유휴 비율': s5,
-                          '유휴 세 벌': s6, '⑤ 단일 원천 · ⑥ 참조': s7},
+                          '유휴 세 벌': s6, '⑤ 단일 원천 · ⑥ 참조': s7,
+                          '워드 변수 전수 대응': s8, 'EC 표식 · 갈림 표': s9},
                          ensure_ascii=False, indent=1, default=str))
         ok = (r['평가 실패 수'] == 0 and r['화면대조 차이'] == 0
               and not r['화면 값 ↔ ledger_facts 불일치'] and r['바이트 동일']
               and s1['스위치 4개 모두 동작'] and s2['움직임'] and s3['일치']
               and s4['통과'] and s5['통과'] and s6['통과'] and s7['통과']
+              and s8['통과'] and s9['통과']
               and r['S입금부족율 raw 잔차 등재'] and r['S입금부족율 표기 비교 잔존']
               and r['⑤ 미확정 표식']['화면 반영'] == '미확정'
               and '대기' in (r['⑤ 미확정 표식']['출처'] or '')
