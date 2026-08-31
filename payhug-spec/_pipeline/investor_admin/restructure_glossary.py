@@ -40,14 +40,14 @@ META = {
  '대상정산금채권':          dict(shot='invest-assets', anchor='th:가맹점',        kind='indirect'),
 
  '유동화투자자의 할인율':    dict(shot='invest-assets', anchor='div:0.11%',       kind='direct', label='배분 요율 0.11%'),
- 'Ai':                   dict(shot='invest-assets', anchor='td:투자실행액',     kind='indirect'),
+ 'A_i':                   dict(shot='invest-assets', anchor='td:투자실행액',     kind='indirect'),
  '채권매입수수료':          dict(shot='invest-profit', anchor='th:투자 수익',     kind='indirect'),
 
  '회수되지 않은 순지급액':   dict(shot='invest-assets', anchor='td:투자실행액',     kind='indirect'),
  '투자 실행액':            dict(shot='invest-assets', anchor='td:투자실행액',     kind='direct', label='투자실행액'),
  '순현금 (투자 자산 · 잔액)': dict(shot='invest-assets', anchor='td:순현금',       kind='direct', label='순현금'),
  '쿠콘 가상계좌':           dict(shot='invest-assets', anchor='th:보관',          kind='direct', label='보관 ㈜쿠콘'),
- 'Di':                   dict(shot='invest-assets', anchor='th:W금융일수#0',    kind='indirect'),
+ 'D_i':                   dict(shot='invest-assets', anchor='th:W금융일수#0',    kind='indirect'),
  'w금융일수 (투자 자산 · 잔액)': dict(shot='invest-assets', anchor='th:W금융일수#0', kind='direct', label='W금융일수'),
  'ty수익율 (투자 자산 · 잔액)': dict(shot='invest-assets', anchor='th:TY수익율#0',  kind='direct', label='TY수익율'),
  '비중':                  dict(shot='invest-assets', anchor='th:비중#0',        kind='direct'),
@@ -59,8 +59,8 @@ META = {
 
  '미지급금':               dict(shot='invest-profit', anchor='th:상환액',        kind='indirect'),
  '과지급금':               dict(shot='invest-profit', anchor='th:상환액',        kind='indirect'),
- 'SLi':                  dict(shot='invest-assets', anchor='th:S입금부족율#0',  kind='indirect'),
- 'SAi':                  dict(shot='invest-assets', anchor='th:S입금부족율#0',  kind='indirect'),
+ 'SL_i':                  dict(shot='invest-assets', anchor='th:S입금부족율#0',  kind='indirect'),
+ 'SA_i':                  dict(shot='invest-assets', anchor='th:S입금부족율#0',  kind='indirect'),
  '표본집합':               dict(shot='invest-assets', anchor='h2:수익 산정 기준 (예시)', kind='indirect'),
  'S입금부족율':            dict(shot='invest-assets', anchor='th:S입금부족율#0',  kind='direct'),
 
@@ -90,18 +90,18 @@ META = {
 # 원문이 이름만 쓰고 기호를 두지 않은 용어는 None — 지어내지 않는다.
 CARD_SYM = {
  '정산금채권 ID': 'i',
- '금융일수': 'Di',
- 'Ai': 'Ai',
- 'Di': 'Di',
+ '금융일수': 'D_i',
+ 'A_i': 'A_i',
+ 'D_i': 'D_i',
  'w금융일수 (투자 자산 · 잔액)': 'w',
  'ty수익율 (투자 자산 · 잔액)': 'Ty / ty',
- 'SLi': 'SLi',
- 'SAi': 'SAi',
- '상환액 (일별 배치 · 하루치)': 'SB(D-1)',
- '투자실행금 (일별 배치 · 하루치)': 'SA(D-1)',
- '투자수익 (일별 배치 · 하루치)': 'SM(D-1)',
- '투자수익율 (일별 배치 · 하루치)': 'SMR(D-1)',
- 'w금융일수 (일별 배치 · 하루치)': 'SD(D-1)',
+ 'SL_i': 'SL_i',
+ 'SA_i': 'SA_i',
+ '상환액 (일별 배치 · 하루치)': 'SB_{D-1}',
+ '투자실행금 (일별 배치 · 하루치)': 'SA_{D-1}',
+ '투자수익 (일별 배치 · 하루치)': 'SM_{D-1}',
+ '투자수익율 (일별 배치 · 하루치)': 'SMR_{D-1}',
+ 'w금융일수 (일별 배치 · 하루치)': 'SD_{D-1}',
  '순현금 (일별 배치 · 자정 시점)': 'EC',
  '투자실행금 (투자 수익 · 기간 합계)': 'PSA',
  '투자수익 (투자 수익 · 기간 합계)': 'PSM',
@@ -265,7 +265,7 @@ def main():
     W('|---|---|---|')
     W('| 1 | **용어명** | 화면에서 보는 이름이 먼저다. 대표 정의서 표기가 다르면 `화면 표기`로 병기한다. '
       '같은 이름이 계통별로 갈리면 `(어느 계통 · 어느 집계 단위)`를 붙인다 |')
-    W('| 2 | **변수** | 대표 정의 원문이 쓴 기호(`Ai` `SLi` `PSA` 등)와 그 한국어 이름. '
+    W('| 2 | **변수** | 대표 정의 원문이 쓴 기호(`A_i` `SL_i` `PSA` 등)와 그 한국어 이름. '
       '기호를 글자 단위로 쪼갠 풀이가 따라붙는다. 원문에 기호가 없는 용어는 `기호 없음` |')
     W('| 3 | **계산식** | 원문 산식을 그대로 적고, 그 안의 기호를 **그 자리에서** 우리말로 푼 뒤, 숫자 한 벌을 넣어 단계별로 계산한다 |')
     W('| 4 | **화면** | 그 용어가 뜨는 화면 캡처. 이미지를 누르면 확대된다. '

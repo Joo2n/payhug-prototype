@@ -3,6 +3,8 @@
    카드 5필드·캡처 마커·라이트박스·구버전 링크는 verify_glossary5.js 가 본다.
    5필드 재조판(2026-08-28)으로 층위 필터 칩(.fchip)·h4 제목·hitCount 가 사라져 그 기준을 걷어냈다. */
 const http = require('http'); const fs = require('fs'); const path = require('path');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const os = require('os'); const { spawn } = require('child_process');
 const REPO = '/Users/semi/cursor/payhug-investor-admin';
 const PORT = 8790, DPORT = 9490;
@@ -21,7 +23,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function main(){
   await new Promise(r=>server.listen(PORT,r));
   const profile=fs.mkdtempSync(path.join(os.tmpdir(),'phg-'));
-  const chrome=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,'--user-data-dir='+profile,
+  const chrome=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,CHROME_DL.args(PH_DL, profile)[0] /* '--user-data-dir='+profile */,
     '--no-first-run','--no-default-browser-check','--disable-gpu','--window-size=1440,1200','about:blank'],{stdio:'ignore'});
   let targets=null;
   for(let i=0;i<60&&!targets;i++){ await sleep(300);

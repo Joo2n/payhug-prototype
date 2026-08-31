@@ -2,6 +2,8 @@
    1) 콘솔 에러·경고 0  2) 페이지 가로 오버플로 0 (4개 폭)  3) 등급 필터 토글  4) 검색
    5) 복사 텍스트 생성  6) 순서도 SVG 렌더  7) 표는 .scroll 안에 있는가                */
 const http = require('http');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const fs   = require('fs');
 const path = require('path');
 const os   = require('os');
@@ -46,7 +48,7 @@ async function main() {
   await new Promise(r => server.listen(PORT, r));
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'phfeas-'));
   const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT,
-    '--user-data-dir=' + profile, '--no-first-run', '--no-default-browser-check',
+    CHROME_DL.args(PH_DL, profile)[0] /* '--user-data-dir=' + profile */, '--no-first-run', '--no-default-browser-check',
     '--disable-gpu', '--window-size=1440,1200', 'about:blank'], {stdio: 'ignore'});
 
   let targets = null;

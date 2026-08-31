@@ -1,0 +1,68 @@
+{
+  "_": "어드민 정산 현황 > 선정산 결과 요약 카드 실측치. 검증기 verify_settlement_cards.py 가 읽는다.",
+  "_원천": "값의 산지는 payhug-admin-web 이 아니라 그 화면이 붙는 백엔드 집계다. 이 저장소에 목 픽스처가 0건이라(admin-web 전체에 mock/fixture 파일 없음) 산식을 재현할 원본 행 데이터가 없다. 그래서 '기대값'을 모델이 낼 수 없고, 화면에서 읽은 값 자체가 관측이다. 관측을 다시 뜨면 이 파일만 고친다 — 검증기의 검사는 손대지 않는다.",
+  "_판정규칙원천": "산식 문언은 payhug-admin-web 코드에서 읽는다(verify_settlement_cards.py 의 코드 정박 검사). 이 JSON 에는 관측만 둔다.",
+
+  "sets": [
+    {
+      "id": "A",
+      "label": "현행 화면 실측 (2026-08-01~08-31, 에이전시 전체)",
+      "judged": true,
+      "period": "2026-08-01~2026-08-31",
+      "scope": "에이전시 전체 (agencyCodeFilter='' · merchantQuery='' → isClientFiltered=false → 카드값은 서버 집계 원값)",
+      "source": "화면 판독. 상위 에이전트 전달 실측치",
+      "txCount": 7103,
+      "merchantCount": 10,
+      "cards": {
+        "totalSalesAmt": 340965375,
+        "totalFeeAmt": 29760187,
+        "cardFeeAmt": 3805604,
+        "deliveryFeeAmt": 25954583,
+        "netPayoutAmt": 311207552,
+        "preSettlementExcludedAmt": -33989728,
+        "directTransferAmt": 34442384,
+        "directTransferCount": 30,
+        "recordOnlyAmt": 557986,
+        "recordOnlyCount": 6,
+        "feeDiffAmt": 264600,
+        "preSettlementTargetAmt": 277482424,
+        "preSettlementFeeAmt": 2522909,
+        "marginFeeAmt": 2524087,
+        "systemFeeAmt": 0,
+        "transferFeeAmt": 14190,
+        "adjMarginFeeAmt": -15368,
+        "preSettlementPayoutAmt": 272502123,
+        "adjustmentTotal": -3903950,
+        "carryForwardTotal": 2346591,
+        "offlineDeductionTotal": 92868,
+        "adDeductionTotal": 1520061,
+        "platformRefundTotal": 719844,
+        "cancelledCardCount": 28,
+        "cancelledCardAmt": 5438000,
+        "cancelledOrderCount": 25,
+        "cancelledOrderAmt": 557900
+      },
+      "captionSigns": {
+        "_": "지급액 캡션이 실제로 찍은 부호. payoutFormula 가 batchAdj 부호를 보고 +/- 를 고르므로 화면 문언에서 읽는다.",
+        "adjustmentTotal": "-",
+        "carryForwardTotal": "+",
+        "offlineDeductionTotal": "-",
+        "adDeductionTotal": "-",
+        "platformRefundTotal": "+"
+      }
+    },
+    {
+      "id": "B",
+      "label": "동결 캡처 (2026-07-18 정산 · 구버전 빌드) — 검사기 자기시험용",
+      "judged": false,
+      "selftest": true,
+      "period": "2026-07-18",
+      "source": "payhug-spec/_pipeline/enhance_202608/discovery/dom/admin_overview_partner.html (2026-08-12 캡처, 동결)",
+      "_왜자기시험인가": "이 파일은 동결 아티팩트라 지금 고칠 대상이 아니다. 통과/실패로 세면 종료코드가 영구 1 로 굳어 검증기가 게이트로 못 쓰인다. 대신 '검사기가 이 빌드의 알려진 편차 2건을 그대로 집어내는가'를 판정한다 — 검사기가 계산을 느슨하게 바꾸면 이 자리에서 걸린다.",
+      "knownDeltas": {
+        "targetMinusNetPlusExcluded": 48200,
+        "payoutCaptionMinusValue": 21200
+      }
+    }
+  ]
+}

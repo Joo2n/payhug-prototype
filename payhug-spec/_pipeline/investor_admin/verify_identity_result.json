@@ -667,6 +667,35 @@
     "receivables": 61760,
     "openReceivables": 2240
    }
+  },
+  {
+   "case": "대표 DM 16:45 항등식 — 근사식이고 갈림이 1/(1-할인율) 자리 (정본은 대표 확인 대기)",
+   "pass": true,
+   "detail": {
+    "bad": [],
+    "spans": [
+     {
+      "span": "일주일",
+      "days": 7,
+      "smr": 0.0339916,
+      "lhs": 0.11012001,
+      "rate": 0.11,
+      "anchored": 0.11012113,
+      "gapToRate": 0.00012001,
+      "gapToAnchored": -0.00000112
+     },
+     {
+      "span": "전 구간",
+      "days": 180,
+      "smr": 0.03802608,
+      "lhs": 0.11011927,
+      "rate": 0.11,
+      "anchored": 0.11012113,
+      "gapToRate": 0.00011927,
+      "gapToAnchored": -0.00000186
+     }
+    ]
+   }
   }
  ],
  "console": []

@@ -48,9 +48,6 @@
    }
   ]
  },
- "invest-assets--page2.html": {
-  "ins": []
- },
  "invest-assets--download.html": {
   "ins": []
  },
@@ -110,9 +107,6 @@
   "ins": []
  },
  "contracts--all.html": {
-  "ins": []
- },
- "contracts--downloaded.html": {
   "ins": []
  },
  "contracts--empty.html": {

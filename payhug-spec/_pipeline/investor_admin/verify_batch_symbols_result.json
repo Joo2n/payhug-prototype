@@ -1,0 +1,900 @@
+{
+ "total": 144,
+ "fail": 4,
+ "bySection": {
+  "0": {
+   "검사": 3,
+   "FAIL": 0
+  },
+  "1": {
+   "검사": 13,
+   "FAIL": 0
+  },
+  "2": {
+   "검사": 49,
+   "FAIL": 1
+  },
+  "3": {
+   "검사": 29,
+   "FAIL": 0
+  },
+  "4": {
+   "검사": 10,
+   "FAIL": 1
+  },
+  "5": {
+   "검사": 23,
+   "FAIL": 2
+  },
+  "6": {
+   "검사": 17,
+   "FAIL": 0
+  }
+ },
+ "cases": [
+  {
+   "sec": "0",
+   "name": "원장·사실값 적재",
+   "pass": true,
+   "detail": "채권 61760건 · 원장 180일"
+  },
+  {
+   "sec": "0",
+   "name": "헤드리스 크롬 조작 (app · proto)",
+   "pass": true,
+   "detail": "화면 2곳 · 콘솔 0건"
+  },
+  {
+   "sec": "0",
+   "name": "화면 콘솔 오류 0건",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "1",
+   "name": "원장 채권 모집단 0건 아님",
+   "pass": true,
+   "detail": "채권 61760건"
+  },
+  {
+   "sec": "1",
+   "name": "채권층 |BD-1i - AD-1i - MD-1i| <= 0.5원",
+   "pass": true,
+   "detail": "채권 61760건 · 최대 잔차 0.4994원 (한계 0.5 = 원 단위 반올림 e x (1-r))"
+  },
+  {
+   "sec": "1",
+   "name": "하루층 대상 일수 = 원장 일수",
+   "pass": true,
+   "detail": "집계 180일 · 원장 180일 · facts 180일"
+  },
+  {
+   "sec": "1",
+   "name": "하루층 정의식 |SUM BD - SUM AD - SUM MD| <= 0.5 x n",
+   "pass": true,
+   "detail": "어긋난 날 0건 []"
+  },
+  {
+   "sec": "1",
+   "name": "하루층 원장 실현값 상환액 - 투자실행금 - 투자수익 = 0 (정수 완전일치)",
+   "pass": true,
+   "detail": "어긋난 날 0건 []"
+  },
+  {
+   "sec": "1",
+   "name": "하루층 원장 상환액 <-> 정의식 SUM(순지급액 - 차감)",
+   "pass": true,
+   "detail": "어긋난 날 0건 []"
+  },
+  {
+   "sec": "1",
+   "name": "하루층 원장 투자수익 <-> 정의식 SUM(수수료 - 차감) (내림 1원 이내)",
+   "pass": true,
+   "detail": "어긋난 날 0건 []"
+  },
+  {
+   "sec": "1",
+   "name": "전 구간 정의식 |SUM BD - SUM AD - SUM MD| <= 0.5 x n",
+   "pass": true,
+   "detail": "잔차 270.1969원 · 한계 28800.0원 · 채권 57600건"
+  },
+  {
+   "sec": "1",
+   "name": "전 구간 원장 실현값 상환액 - 투자실행금 - 투자수익 = 0",
+   "pass": true,
+   "detail": "차 0원 (상환 4702290720 · 실행 4700503303 · 수익 1787417)"
+  },
+  {
+   "sec": "1",
+   "name": "전 구간 원장 상환액 <-> 정의식",
+   "pass": true,
+   "detail": "차 -358원 · 한계 28980.0원"
+  },
+  {
+   "sec": "1",
+   "name": "전 구간 원장 투자수익 <-> 정의식",
+   "pass": true,
+   "detail": "차 -87.8031원 · 한계 (-180, 0] = 하루 수수료 내림 180회"
+  },
+  {
+   "sec": "1",
+   "name": "전 구간 합계가 facts 와 같음",
+   "pass": true,
+   "detail": "exec 4700503303/4700503303 · profit 1787417/1787417"
+  },
+  {
+   "sec": "1",
+   "name": "ledger_facts.tyByDate 가 원장 행과 바이트 일치",
+   "pass": true,
+   "detail": "누락 0 · 불일치 0 · []"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 뷰포트 1440x1200 (macOS 87px 보정)",
+   "pass": true,
+   "detail": "{'w': 1440, 'h': 1200}"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 씨앗 일주일 행수 0건 아님",
+   "pass": true,
+   "detail": "7행"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 씨앗 일주일 행 ty = SMRD-1 x 365 / SDD-1",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 씨앗 일주일 행값 <-> 원장 tyByDate",
+   "pass": true,
+   "detail": "불일치 0 [] · 원장에 없는 날짜 0 []"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 직접입력 전 구간 행수 0건 아님",
+   "pass": true,
+   "detail": "180행"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 직접입력 전 구간 행 ty = SMRD-1 x 365 / SDD-1",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 직접입력 전 구간 행값 <-> 원장 tyByDate",
+   "pass": true,
+   "detail": "불일치 0 [] · 원장에 없는 날짜 0 []"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 합계 행 ty = PSMR x 365 / PSD",
+   "pass": true,
+   "detail": "화면 3.99 · 되짚기 3.99"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 합계 행 <-> facts 주간값",
+   "pass": true,
+   "detail": "exec 179970919/179970919 · profit 61175/61175 · ty 3.99/3.99"
+  },
+  {
+   "sec": "2",
+   "name": "[app] 2026-08-21 행이 화면에 있음",
+   "pass": true,
+   "detail": "1건"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 뷰포트 1440x1200 (macOS 87px 보정)",
+   "pass": true,
+   "detail": "{'w': 1440, 'h': 1200}"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 씨앗 일주일 행수 0건 아님",
+   "pass": true,
+   "detail": "7행"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 씨앗 일주일 행 ty = SMRD-1 x 365 / SDD-1",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 씨앗 일주일 행값 <-> 원장 tyByDate",
+   "pass": true,
+   "detail": "불일치 0 [] · 원장에 없는 날짜 0 []"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 직접입력 전 구간 행수 0건 아님",
+   "pass": true,
+   "detail": "180행"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 직접입력 전 구간 행 ty = SMRD-1 x 365 / SDD-1",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 직접입력 전 구간 행값 <-> 원장 tyByDate",
+   "pass": true,
+   "detail": "불일치 0 [] · 원장에 없는 날짜 0 []"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 합계 행 ty = PSMR x 365 / PSD",
+   "pass": true,
+   "detail": "화면 3.99 · 되짚기 3.99"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 합계 행 <-> facts 주간값",
+   "pass": true,
+   "detail": "exec 179970919/179970919 · profit 61175/61175 · ty 3.99/3.99"
+  },
+  {
+   "sec": "2",
+   "name": "[proto] 2026-08-21 행이 화면에 있음",
+   "pass": true,
+   "detail": "1건"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 일별 열머리에 SBD-1 · SAD-1 · SMD-1 · SMRD-1 · SDD-1 이 있고 자리가 맞음",
+   "pass": false,
+   "detail": "['정산예정일', '건수', 'SBd-1 상환액', 'SAd-1 투자실행금', 'SMd-1 투자수익 (화면 값)', 'SMd-1 투자수익(차감 제외 · 참고)', 'SMRd-1 투자수익율', 'SDd-1 W금융일수', 'ty수익율(%)', 'EC 순현금', 'Σ(Ai x Di)', '부족액 차감', '차감/수수료(%)']"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 일별 행수 0건 아님",
+   "pass": true,
+   "detail": "27행"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 일별 수식 문언 = SMRD-1 = SMD-1/SAD-1 · ty = SMRD-1 x 365 / SDD-1",
+   "pass": true,
+   "detail": "어긋난 셀 0건 []"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 일별 평가값이 그 수식과 같음",
+   "pass": true,
+   "detail": "어긋난 셀 0건 []"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 화면대조에 [2번] 출처 행 0건 아님",
+   "pass": true,
+   "detail": "8행"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 화면대조 [2번] 행 전건 「일치」",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 화면대조에 「주간 ④(%)」 행 있음",
+   "pass": true,
+   "detail": "[132]"
+  },
+  {
+   "sec": "2",
+   "name": "화면 주간 카드에 Ty수익율 두 칸 있음",
+   "pass": true,
+   "detail": "[{'label': 'Ty수익율', 'vals': ['3.99%', '2.24%'], 'sub': '', 'period': ''}]"
+  },
+  {
+   "sec": "2",
+   "name": "엑셀 되짚은 주간 ④ = 화면 카드 ④",
+   "pass": true,
+   "detail": "엑셀 3.99 · 화면 3.99"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(원고)] SM 실값 판독",
+   "pass": true,
+   "detail": "SM\\(D-1\\)\\s*=\\s*([\\d,]+)"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(원고)] SA 실값 판독",
+   "pass": true,
+   "detail": "SA\\s*=\\s*([\\d,]+)"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(원고)] SMR 실값 판독",
+   "pass": true,
+   "detail": "SMR\\s*=\\s*[\\d,]+\\s*(?:÷|/)\\s*[\\d,]+\\s*[\\r\\n=\\s]*([\\d.]+)"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(원고)] SD 실값 판독",
+   "pass": true,
+   "detail": "SD\\s*=\\s*([\\d.]+)일"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(원고)] ty 실값 판독",
+   "pass": true,
+   "detail": "0\\.038051%\\s*×\\s*119\\.2810\\s*=\\s*([\\d.]+)%"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(원고)] SMRD-1 = SMD-1 / SAD-1",
+   "pass": true,
+   "detail": "9871.0 / 25941773.0 = 0.03805060% · 문서 0.038051%"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(원고)] ty = SMRD-1 x 365 / SDD-1",
+   "pass": true,
+   "detail": "0.038051 x 365 / 3.06 = 4.5388 · 문서 4.5388"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(배포 glossary.html)] SM 실값 판독",
+   "pass": true,
+   "detail": "SM\\(D-1\\)\\s*=\\s*([\\d,]+)"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(배포 glossary.html)] SA 실값 판독",
+   "pass": true,
+   "detail": "SA\\s*=\\s*([\\d,]+)"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(배포 glossary.html)] SMR 실값 판독",
+   "pass": true,
+   "detail": "SMR\\s*=\\s*[\\d,]+\\s*(?:÷|/)\\s*[\\d,]+\\s*[\\r\\n=\\s]*([\\d.]+)"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(배포 glossary.html)] SD 실값 판독",
+   "pass": true,
+   "detail": "SD\\s*=\\s*([\\d.]+)일"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(배포 glossary.html)] ty 실값 판독",
+   "pass": true,
+   "detail": "0\\.038051%\\s*×\\s*119\\.2810\\s*=\\s*([\\d.]+)%"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(배포 glossary.html)] SMRD-1 = SMD-1 / SAD-1",
+   "pass": true,
+   "detail": "9871.0 / 25941773.0 = 0.03805060% · 문서 0.038051%"
+  },
+  {
+   "sec": "2",
+   "name": "[용어정의서(배포 glossary.html)] ty = SMRD-1 x 365 / SDD-1",
+   "pass": true,
+   "detail": "0.038051 x 365 / 3.06 = 4.5388 · 문서 4.5388"
+  },
+  {
+   "sec": "2",
+   "name": "대조 대상 산출물 4곳 모두 값을 냈음",
+   "pass": true,
+   "detail": "5곳: ['용어정의서(배포 glossary.html)', '용어정의서(원고)', '원장(ledger_facts)', '화면(app)', '화면(proto)']"
+  },
+  {
+   "sec": "2",
+   "name": "2026-08-21 삼각 대조 — SM",
+   "pass": true,
+   "detail": "{'화면(app)': 9871.0, '화면(proto)': 9871.0, '용어정의서(원고)': 9871.0, '용어정의서(배포 glossary.html)': 9871.0, '원장(ledger_facts)': 9871.0}"
+  },
+  {
+   "sec": "2",
+   "name": "2026-08-21 삼각 대조 — SA",
+   "pass": true,
+   "detail": "{'화면(app)': 25941773.0, '화면(proto)': 25941773.0, '용어정의서(원고)': 25941773.0, '용어정의서(배포 glossary.html)': 25941773.0, '원장(ledger_facts)': 25941773.0}"
+  },
+  {
+   "sec": "2",
+   "name": "2026-08-21 삼각 대조 — SD",
+   "pass": true,
+   "detail": "{'화면(app)': 3.06, '화면(proto)': 3.06, '용어정의서(원고)': 3.06, '용어정의서(배포 glossary.html)': 3.06, '원장(ledger_facts)': 3.06}"
+  },
+  {
+   "sec": "2",
+   "name": "2026-08-21 삼각 대조 — ty",
+   "pass": true,
+   "detail": "{'화면(app)': 4.54, '화면(proto)': 4.54, '용어정의서(원고)': 4.54, '용어정의서(배포 glossary.html)': 4.54, '원장(ledger_facts)': 4.54}"
+  },
+  {
+   "sec": "2",
+   "name": "2026-08-21 삼각 대조 — SMRD-1(%)",
+   "pass": true,
+   "detail": "{'화면(app)': 0.038051, '화면(proto)': 0.038051, '용어정의서(원고)': 0.038051, '용어정의서(배포 glossary.html)': 0.038051, '원장(ledger_facts)': 0.038051}"
+  },
+  {
+   "sec": "3",
+   "name": "원장 대상 일수 0건 아님",
+   "pass": true,
+   "detail": "180일"
+  },
+  {
+   "sec": "3",
+   "name": "원장 SDD-1 = SUM(AD-1i x DD-1i) / SUM AD-1i 전건",
+   "pass": true,
+   "detail": "어긋난 날 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "건수 가중으로는 어긋난다 (검사에 판별력이 있음)",
+   "pass": true,
+   "detail": "건수 가중과 같아진 날 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "순지급액 가중도 AD-1i 가중과 같은 값 (Ai = net x (1-r) 비례)",
+   "pass": true,
+   "detail": "어긋난 날 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "엑셀 채권 시트에 「Ai」·「금융일수 Di」·「Ai x Di」 열이 있음",
+   "pass": true,
+   "detail": "['Ai', 'Ai x Di', 'S표본', '가맹점', '가맹점#', '과지급액', '금융일수 Di', '만기 도래', '미지급액', '미회수', '번호', '상환액 Bd-1i', '선정산일', '순지급액', '정산예정일', '조회기간', '차감액', '채권매입수수료', '투자수익 Md-1i', '플랫폼', '플랫폼#']"
+  },
+  {
+   "sec": "3",
+   "name": "엑셀 채권 곱 열이 0건 아님",
+   "pass": true,
+   "detail": "1280행"
+  },
+  {
+   "sec": "3",
+   "name": "엑셀 채권 곱 열 = Ai x Di 전행 (다른 열 곱 0건)",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "엑셀 일별 SDD-1 분모가 SAD-1(D열)이며 건수(B열)가 아님",
+   "pass": true,
+   "detail": "27행 · 어긋남 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "엑셀 일별 SDD-1 평가값 = SUM(Ai x Di) / SUM Ai · 건수 가중과 다름",
+   "pass": true,
+   "detail": "어긋남 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 시뮬레이션 기간 내 채권 0건 아님",
+   "pass": true,
+   "detail": "4건"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 시뮬 합계 PSD = SUM(AD-1i x DD-1i) / SUM AD-1i",
+   "pass": true,
+   "detail": "화면 3.04 · 금액가중 3.0400"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 시뮬 합계 PSD 가 건수 가중과 다름 (판별력)",
+   "pass": true,
+   "detail": "금액 3.0400 · 건수 4.0000 · 화면 3.04"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 투자 수익 합계 W = 투자실행금 가중평균",
+   "pass": true,
+   "detail": "화면 3.11 · 가중 3.10848"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 투자 수익 합계 W 가 단순평균과 다름 (판별력)",
+   "pass": true,
+   "detail": "가중 3.108481 · 단순 3.108571"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 월별 단위로 전환됨",
+   "pass": true,
+   "detail": "월별 투자수익"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 월별 행수 0건 아님",
+   "pass": true,
+   "detail": "6행"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 월별 행 W·Ty·투자실행금 <-> 원장 month_rollup",
+   "pass": true,
+   "detail": "불일치 [] · 화면 6행 · 원장 6행"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 월별 W = 그 달 일별 행의 투자실행금 가중평균",
+   "pass": true,
+   "detail": "어긋난 달 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "[app] 월별 W 가 단순평균과 다름 (판별력)",
+   "pass": true,
+   "detail": "구분 안 되는 달 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 시뮬레이션 기간 내 채권 0건 아님",
+   "pass": true,
+   "detail": "4건"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 시뮬 합계 PSD = SUM(AD-1i x DD-1i) / SUM AD-1i",
+   "pass": true,
+   "detail": "화면 3.04 · 금액가중 3.0400"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 시뮬 합계 PSD 가 건수 가중과 다름 (판별력)",
+   "pass": true,
+   "detail": "금액 3.0400 · 건수 4.0000 · 화면 3.04"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 투자 수익 합계 W = 투자실행금 가중평균",
+   "pass": true,
+   "detail": "화면 3.11 · 가중 3.10848"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 투자 수익 합계 W 가 단순평균과 다름 (판별력)",
+   "pass": true,
+   "detail": "가중 3.108481 · 단순 3.108571"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 월별 단위로 전환됨",
+   "pass": true,
+   "detail": "월별 투자수익"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 월별 행수 0건 아님",
+   "pass": true,
+   "detail": "6행"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 월별 행 W·Ty·투자실행금 <-> 원장 month_rollup",
+   "pass": true,
+   "detail": "불일치 [] · 화면 6행 · 원장 6행"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 월별 W = 그 달 일별 행의 투자실행금 가중평균",
+   "pass": true,
+   "detail": "어긋난 달 0건 []"
+  },
+  {
+   "sec": "3",
+   "name": "[proto] 월별 W 가 단순평균과 다름 (판별력)",
+   "pass": true,
+   "detail": "구분 안 되는 달 0건 []"
+  },
+  {
+   "sec": "4",
+   "name": "symbol_glossary.json 이 w금융일수 · W금융일수 두 표기를 같은 용어로 등록했음 (이름 대조에서 대소문자를 접는 근거)",
+   "pass": true,
+   "detail": "['w금융일수 (원문 표기)', 'W금융일수 (화면 표기)']"
+  },
+  {
+   "sec": "4",
+   "name": "symbol_glossary.json 에서 8기호 전건 판독",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "4",
+   "name": "symbol_glossary.md 에서 8기호 전건 판독",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "4",
+   "name": "배포 glossary.html 에서 8기호 전건 판독",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "4",
+   "name": "원문 ceo_definitions.md 에서 이름 붙은 기호 판독 0건 아님",
+   "pass": true,
+   "detail": "이름 붙은 기호 ['SBD-1', 'SAD-1', 'SMD-1', 'SDD-1'] · 원문이 이름을 안 붙인 기호 ['BD-1i', 'AD-1i', 'MD-1i', 'DD-1i']"
+  },
+  {
+   "sec": "4",
+   "name": "검산 엑셀에서 「기호 이름」 꼴 열머리 0건 아님",
+   "pass": false,
+   "detail": "0곳"
+  },
+  {
+   "sec": "4",
+   "name": "기호 8개에 붙은 한글 이름이 출처별로 갈리지 않음",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "4",
+   "name": "기호 8개가 두 곳 이상에서 이름을 얻었음",
+   "pass": true,
+   "detail": "{}"
+  },
+  {
+   "sec": "4",
+   "name": "[2번] 축 기호 표기가 전부 symbol_glossary.json 에 등록돼 있음",
+   "pass": true,
+   "detail": "미등록 표기 {}"
+  },
+  {
+   "sec": "4",
+   "name": "엑셀에서 SMD-1 을 머리에 달고 다른 값을 담은 열에 「참고」 표식이 있음",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "5",
+   "name": "원장에 음수 차감 0건",
+   "pass": true,
+   "detail": "음수 0건"
+  },
+  {
+   "sec": "5",
+   "name": "현행 요율표는 플랫폼 전건 미지급률 > 과지급률 (데이터만으로는 클램프가 발동하지 않음)",
+   "pass": true,
+   "detail": "미지급<과지급 채권 0건 / 61760건 · 요율 [('card', '0.00025', '0.00010'), ('bm', '0.00140', '0.00045'), ('cpe', '0.00210', '0.00055'), ('yo', '0.00300', '0.00075')]"
+  },
+  {
+   "sec": "5",
+   "name": "원장 행태 시험 — 요율을 뒤집으면 미지급 < 과지급 채권이 실제로 생긴다",
+   "pass": true,
+   "detail": "61247건 / 61760건"
+  },
+  {
+   "sec": "5",
+   "name": "원장 행태 시험 — 그 채권들의 차감이 전건 0 (음수가 흐르지 않음)",
+   "pass": true,
+   "detail": "음수 0건 · 0 아닌 값 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "원장 행태 시험 — BD-1i 가 순지급액 그대로 (초과 과지급이 상환액에 얹히지 않음)",
+   "pass": true,
+   "detail": "어긋난 채권 0건"
+  },
+  {
+   "sec": "5",
+   "name": "엑셀 채권 시트에 차감액·미지급액·과지급액 열이 있음",
+   "pass": true,
+   "detail": "['Ai', 'Ai x Di', 'S표본', '가맹점', '가맹점#', '과지급액', '금융일수 Di', '만기 도래', '미지급액', '미회수', '번호', '상환액 Bd-1i', '선정산일', '순지급액', '정산예정일', '조회기간', '차감액', '채권매입수수료', '투자수익 Md-1i', '플랫폼', '플랫폼#']"
+  },
+  {
+   "sec": "5",
+   "name": "엑셀 차감액 열 = MAX(0, 미지급액 - 과지급액) 전행",
+   "pass": true,
+   "detail": "1280행 · 어긋남 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "엑셀 행태 시험 — 요율을 뒤집으면 미지급 < 과지급 행이 생긴다",
+   "pass": false,
+   "detail": "0행 / 1280행"
+  },
+  {
+   "sec": "5",
+   "name": "엑셀 행태 시험 — 그 행들의 차감액이 전건 0",
+   "pass": false,
+   "detail": "0 아닌 행 1280건 [(2, 704.0, 282.0, 422.0), (3, 3795.0, 1220.0, 2575.0), (4, 1262.0, 330.0, 932.0)]"
+  },
+  {
+   "sec": "5",
+   "name": "[app] 시뮬 클램프 시험 행 0건 아님",
+   "pass": true,
+   "detail": "음수쪽 8행 · 양수쪽 8행"
+  },
+  {
+   "sec": "5",
+   "name": "[app] 미지급률 < 과지급률 -> 미지급 차감 전건 0",
+   "pass": true,
+   "detail": "0 아닌 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[app] 그때 BD-1i = 순지급액 (초과 과지급이 얹히지 않음)",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[app] 그때 MD-1i = 채권매입수수료",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[app] 미지급률 > 과지급률 -> 미지급 차감 전건 > 0 (컨트롤 살아 있음)",
+   "pass": true,
+   "detail": "0 이하 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[app] 두 시험의 입력값이 실제로 화면에 들어갔음",
+   "pass": true,
+   "detail": "{'unpaid': '0.01', 'over': '0.08', 'r': '0.11'} / {'unpaid': '0.2', 'over': '0.01', 'r': '0.11'}"
+  },
+  {
+   "sec": "5",
+   "name": "[app] 화면 채권 1건 BD-1i - AD-1i - MD-1i 가 [0,2)원 (내림 2회)",
+   "pass": true,
+   "detail": "잔차 [0.0]"
+  },
+  {
+   "sec": "5",
+   "name": "[proto] 시뮬 클램프 시험 행 0건 아님",
+   "pass": true,
+   "detail": "음수쪽 8행 · 양수쪽 8행"
+  },
+  {
+   "sec": "5",
+   "name": "[proto] 미지급률 < 과지급률 -> 미지급 차감 전건 0",
+   "pass": true,
+   "detail": "0 아닌 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[proto] 그때 BD-1i = 순지급액 (초과 과지급이 얹히지 않음)",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[proto] 그때 MD-1i = 채권매입수수료",
+   "pass": true,
+   "detail": "어긋난 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[proto] 미지급률 > 과지급률 -> 미지급 차감 전건 > 0 (컨트롤 살아 있음)",
+   "pass": true,
+   "detail": "0 이하 행 0건 []"
+  },
+  {
+   "sec": "5",
+   "name": "[proto] 두 시험의 입력값이 실제로 화면에 들어갔음",
+   "pass": true,
+   "detail": "{'unpaid': '0.01', 'over': '0.08', 'r': '0.11'} / {'unpaid': '0.2', 'over': '0.01', 'r': '0.11'}"
+  },
+  {
+   "sec": "5",
+   "name": "[proto] 화면 채권 1건 BD-1i - AD-1i - MD-1i 가 [0,2)원 (내림 2회)",
+   "pass": true,
+   "detail": "잔차 [0.0]"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 채권층 — 깨끗한 벌은 통과",
+   "pass": true,
+   "detail": "최대 -0.4993"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 채권층 — net+1 을 심으면 잡힌다",
+   "pass": true,
+   "detail": "최대 0.8246"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 하루층 — 깨끗한 벌은 통과",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 하루층 — 투자수익 +1 을 심으면 잡힌다",
+   "pass": true,
+   "detail": "{'def': 0, 'emit': 1, 'repay': 0, 'profit': 1}"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 하루층 — 상환액 -1 을 심으면 잡힌다",
+   "pass": true,
+   "detail": "{'def': 0, 'emit': 1, 'repay': 0, 'profit': 0}"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 전 구간층 — 투자실행금을 한계+1,000원 밀면 잡힌다",
+   "pass": true,
+   "detail": "심은 값 29800원 · 한계 28800원"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 전 구간층 — 투자수익을 내림 허용폭 밖으로 밀면 잡힌다",
+   "pass": true,
+   "detail": "허용폭 (-180, 0]"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 가중 — 금액 가중과 건수 가중이 다른 값을 낸다",
+   "pass": true,
+   "detail": "금액 1.09 · 건수 5.50"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 가중 — 건수 가중을 정답으로 두면 어긋난다",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 클램프 — 올바른 구현은 통과",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 클램프 — max 를 뺀 구현은 잡힌다",
+   "pass": true,
+   "detail": "[(30, 100, -70), (30, 100, -70)]"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 이름 — 같은 이름뿐이면 통과",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 이름 — 다른 이름을 심으면 잡힌다",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 ty — 맞는 행은 통과",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 ty — 틀린 행을 심으면 잡힌다",
+   "pass": true,
+   "detail": "[('x', 4.99, 4.54)]"
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 판독기 — 없는 파일은 예외로 끊긴다 (빈 문자열로 넘어가지 않음)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "sec": "6",
+   "name": "자기시험 판독기 — 빈 파일도 예외로 끊긴다",
+   "pass": true,
+   "detail": ""
+  }
+ ]
+}

@@ -4,7 +4,7 @@
    "name": "시연 루트",
    "url": "https://payhug-investor-prototype.vercel.app/",
    "code": 200,
-   "bytes": 212908,
+   "bytes": 212906,
    "need": {
     "주별": 7,
     "계약서보기": 3,
@@ -60,7 +60,7 @@
    "name": "전체 통합본",
    "url": "https://payhug-investor-demo.vercel.app/app.html",
    "code": 200,
-   "bytes": 218173,
+   "bytes": 218171,
    "need": {
     "주별": 8,
     "계약서보기": 4,
@@ -148,7 +148,7 @@
    "code": 200,
    "bytes": 380947,
    "need": {
-    "가중평균만기": 3,
+    "w금융일수": 84,
     "케이뱅크": 6
    },
    "ban": {

@@ -1,0 +1,555 @@
+{
+  "checks": [
+    {
+      "section": "code",
+      "name": "PreSettlementTab.tsx 존재",
+      "pass": true,
+      "detail": "/Users/semi/cursor/payhug-admin-web/app/settlement/overview/PreSettlementTab.tsx"
+    },
+    {
+      "section": "code",
+      "name": "types/settlement.ts 존재",
+      "pass": true,
+      "detail": "/Users/semi/cursor/payhug-admin-web/types/settlement.ts"
+    },
+    {
+      "section": "code",
+      "name": "overview/page.tsx 존재",
+      "pass": true,
+      "detail": "/Users/semi/cursor/payhug-admin-web/app/settlement/overview/page.tsx"
+    },
+    {
+      "section": "code",
+      "name": "순지급액 캡션 = 총 매출액 - 총 수수료",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "총수수료 캡션 = 카드 + 배달",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "선정산수수료 캡션 = 매입+시스템+이체",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "선정산수수료 캡션에 +차액대상",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "지급액 기본항 = 대상액 - 수수료",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "차액 카드 부호 문구",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "차액 카드 정의 문구",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "지급액 캡션 부호: 반영 수수료 차액",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "지급액 캡션 부호: 미회수 이월 +",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "지급액 캡션 부호: 오프라인 차감 -",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "지급액 캡션 부호: 플랫폼 차감 -",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "지급액 캡션 부호: 플랫폼 환급 +",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "types: 대상액 = 순 지급액 + 제외액 + 거래 수수료 차액",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "types: 지급액 항등식 7항 선언",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "지급액 캡션 항 노출 게이트 4종 실재",
+      "pass": true,
+      "detail": "발견 4/4 — 이 게이트들은 항이 음수면 캡션에서 통째로 사라지게 한다"
+    },
+    {
+      "section": "code",
+      "name": "PreSettlementOverview 블록 파싱",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "code",
+      "name": "요약 총계에 검증차이 항목이 없음 (행에만 있음)",
+      "pass": true,
+      "detail": "요약 카드는 잔차를 표기할 자리가 없다 — 행 툴팁(검증 차이)에만 있다"
+    },
+    {
+      "section": "code",
+      "name": "types: 건별 제외액 정의 괄호 부호 = 대상액 항등식과 정합",
+      "pass": false,
+      "detail": "원문 '정산 시점 순지급액(순지급액 − 수수료 차액)' — 대상액 = 순지급액 + 제외액 + 차액 과 동시에 성립하지 않는다"
+    },
+    {
+      "section": "code",
+      "name": "필터 없으면 서버 집계 원값 사용",
+      "pass": true,
+      "detail": "필터가 걸릴 때만 행 합으로 재집계한다 — 전체 뷰의 8개 카드는 서로 독립한 서버 집계다"
+    },
+    {
+      "section": "data",
+      "name": "실측 파일 존재",
+      "pass": true,
+      "detail": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/settlement_cards_measured.json"
+    },
+    {
+      "section": "data",
+      "name": "세트 A 존재",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "A",
+      "name": "① 총수수료 = 카드 + 배달",
+      "pass": true,
+      "detail": "3,805,604 + 25,954,583 = 29,760,187 vs 화면 29,760,187 · 차 0"
+    },
+    {
+      "section": "A",
+      "name": "② 순지급액 = 총매출액 - 총수수료",
+      "pass": false,
+      "detail": "340,965,375 - 29,760,187 = 311,205,188 vs 화면 311,207,552 · 차 2,364 (화면이 2,364 크다)"
+    },
+    {
+      "section": "A",
+      "name": "②' 순지급액 판독 오류로는 설명 불가",
+      "pass": true,
+      "detail": "순지급액을 311,205,188 로 보면 ② 는 맞지만 대상액이 277,480,060 가 되어 화면 277,482,424 와 어긋난다"
+    },
+    {
+      "section": "A",
+      "name": "②'' 총수수료 판독 오류로는 설명 불가",
+      "pass": true,
+      "detail": "총수수료를 29,762,551 로 보면 ② 는 맞지만 카드+배달 29,760,187 와 어긋난다"
+    },
+    {
+      "section": "A",
+      "name": "②''' 남는 단일 판독 후보는 총매출액뿐",
+      "pass": true,
+      "detail": "총매출액이 340,967,739 였다면 ② 가 성립하고 다른 검산은 총매출액을 쓰지 않아 무영향"
+    },
+    {
+      "section": "A",
+      "name": "③ 선정산수수료 = 매입+시스템+이체+차액대상",
+      "pass": true,
+      "detail": "2,524,087+0+14,190+(-15,368) = 2,522,909 vs 화면 2,522,909 · 차 0"
+    },
+    {
+      "section": "A",
+      "name": "③' 제외액 잔차가 양수 (JSDoc: 정산 후 취소분)",
+      "pass": true,
+      "detail": "-(34,442,384+557,986) = -35,000,370 vs 화면 -33,989,728 · 잔차 1,010,642"
+    },
+    {
+      "section": "A",
+      "name": "③'' 제외액 잔차 ≤ 기간 전체 취소액",
+      "pass": true,
+      "detail": "잔차 1,010,642 vs 취소합 5,995,900 (카드 5,438,000 + 배달 557,900)"
+    },
+    {
+      "section": "A",
+      "name": "③''' 잔차가 0이 아니면 화면 안내 조건이 참",
+      "pass": true,
+      "detail": "코드 조건 preSettlementExcludedAmt !== -(directTransferAmt + recordOnlyAmt) 와 같은 판정"
+    },
+    {
+      "section": "A",
+      "name": "④ 대상액 = 순지급액 + 제외액 + 거래수수료차액 (코드 JSDoc 산식)",
+      "pass": true,
+      "detail": "311,207,552 + (-33,989,728) + 264,600 = 277,482,424 vs 화면 277,482,424 · 차 0"
+    },
+    {
+      "section": "A",
+      "name": "④' 3항 이내 정확일치 조합이 유일",
+      "pass": true,
+      "detail": "정확일치 1건: ['순지급액+제외액+거래수수료차액']"
+    },
+    {
+      "section": "A",
+      "name": "④'' 취소분은 대상액 조합에 들어가지 않음",
+      "pass": true,
+      "detail": "카드승인취소 5,438,000 · 배달주문취소 557,900 는 어느 정확일치 조합에도 없다"
+    },
+    {
+      "section": "A",
+      "name": "⑤ 지급액 = 캡션 7항",
+      "pass": false,
+      "detail": "277,482,424 - 2,522,909 + (-3,903,950) + 2,346,591 - 92,868 - 1,520,061 + 719,844 = 272,509,071 vs 화면 272,502,123 · 차 6,948"
+    },
+    {
+      "section": "A",
+      "name": "⑤' 6항 잔차 = 미회수이월 (코드가 주장하는 항등식)",
+      "pass": false,
+      "detail": "Σ검증차이 상당액 2,339,643 vs 이월 2,346,591 · 차 -6,948 → 이월로 설명되지 않는 잔차 6,948"
+    },
+    {
+      "section": "A",
+      "name": "⑤'' 캡션 게이트(>0)가 떨어뜨린 항 0건",
+      "pass": true,
+      "detail": "떨어진 항: 없음 — 있으면 그 금액은 지급액에 들어가고 캡션에는 안 뜬다"
+    },
+    {
+      "section": "A",
+      "name": "⑤''' 캡션 부호 = 값 부호 (반영 수수료 차액)",
+      "pass": true,
+      "detail": "캡션 '-' · 값 -3,903,950"
+    },
+    {
+      "section": "A",
+      "name": "⑥ 대상액 검산에서 차액은 더해야 맞는다",
+      "pass": true,
+      "detail": "더하면 277,482,424 (일치) · 빼면 276,953,224 (차 -529,200)"
+    },
+    {
+      "section": "E",
+      "name": "TaxInvoiceTab.tsx 존재",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "settlement/policies/page.tsx 존재",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "merchants/[id]/page.tsx 존재",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "services/settlementService.ts 존재",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "E1 요율 = supply / baseAmount",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "E2 baseAmount 열 헤더가 '선정산대상액'",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "E3 baseAmount JSDoc = 요율 산정 기준액",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "E4 프론트에 baseAmount 유도 코드 0건",
+      "pass": true,
+      "detail": "타입 선언 1곳 + 서버값 그대로 넘기는 자리뿐 — 앵커를 정하는 것은 서버 /tax-invoice 응답이다"
+    },
+    {
+      "section": "E",
+      "name": "E5 types 가 요약 대상액 ↔ 계산서 대상액을 같은 원천으로 선언",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "E6 대상액 카드 캡션 = 계산서 발행에 따른 채권 매입 금액",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "E7 MARGIN 이 역할별 다행 구조",
+      "pass": true,
+      "detail": "역할 ['INVESTOR', 'LOWER', 'LOWER_SALES', 'PAYHUG', 'SALES', 'UPPER', 'UPPER_SALES'] — 계산서 탭의 '발행 주체' 행이 이 축이다"
+    },
+    {
+      "section": "E",
+      "name": "E8 정책 화면에 기준액 문언 0건",
+      "pass": true,
+      "detail": "요율은 %로만 입력받고 무엇에 곱하는지 화면이 말하지 않는다"
+    },
+    {
+      "section": "E",
+      "name": "E9 블렌디드 요율(선정산대상액)",
+      "pass": true,
+      "detail": "2,524,087 / 277,482,424 = 0.909639%"
+    },
+    {
+      "section": "E",
+      "name": "E9 블렌디드 요율(순지급액)",
+      "pass": true,
+      "detail": "2,524,087 / 311,207,552 = 0.811062%"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 선정산대상액 × 0.25% → 면제분 -263.855%",
+      "pass": true,
+      "detail": "불가(음의 면제분) · 면제 대상액 -732,152,376"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 선정산대상액 × 0.604% → 면제분 -50.602%",
+      "pass": true,
+      "detail": "불가(음의 면제분) · 면제 대상액 -140,412,775"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 선정산대상액 × 0.81% → 면제분 -12.301%",
+      "pass": true,
+      "detail": "불가(음의 면제분) · 면제 대상액 -34,133,255"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 선정산대상액 × 1.0% → 면제분 9.036%",
+      "pass": true,
+      "detail": "가능 · 면제 대상액 25,073,724"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 순지급액 × 0.25% → 면제분 -224.425%",
+      "pass": true,
+      "detail": "불가(음의 면제분) · 면제 대상액 -698,427,248"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 순지급액 × 0.604% → 면제분 -34.282%",
+      "pass": true,
+      "detail": "불가(음의 면제분) · 면제 대상액 -106,687,647"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 순지급액 × 0.81% → 면제분 -0.131%",
+      "pass": true,
+      "detail": "불가(음의 면제분) · 면제 대상액 -408,127"
+    },
+    {
+      "section": "E",
+      "name": "E10 면제 역산 순지급액 × 1.0% → 면제분 18.894%",
+      "pass": true,
+      "detail": "가능 · 면제 대상액 58,798,852"
+    },
+    {
+      "section": "E",
+      "name": "E11 면제로 설명 가능한 요율 후보 = 1.0% 단일",
+      "pass": true,
+      "detail": "생존 후보 [1.0] · 0.81%/0.604%/0.25% 는 두 앵커 모두에서 음의 면제분을 요구한다"
+    },
+    {
+      "section": "E",
+      "name": "E12 순지급액 앵커 + 0.81% 는 면제로 설명 불가",
+      "pass": true,
+      "detail": "필요 면제분 -0.131% (음수) — 실차감이 0.81%×순지급액보다 3,306 많다. 면제는 분자를 줄이기만 하므로 방향이 반대다"
+    },
+    {
+      "section": "E",
+      "name": "E13 r(순지급액) = r(대상액) × 대상액/순지급액 (항등식)",
+      "pass": true,
+      "detail": "두 역산값은 제외액 비율 하나로 연결된다 — 한쪽이 맞으면 다른 쪽 값은 자동으로 정해진다"
+    },
+    {
+      "section": "E",
+      "name": "E14 0.81% 정확일치는 순지급액이 달랐으면 깨진다",
+      "pass": true,
+      "detail": "정확히 0.81% 가 되려면 순지급액 311,615,679 필요 · 실제와 408,127 차 (0.1311%). 바로이체 34,442,384 의 1.18% 만 달랐어도 일치가 사라진다"
+    },
+    {
+      "section": "E",
+      "name": "E14' 0.81% 는 근사일 뿐 정확일치가 아니다",
+      "pass": true,
+      "detail": "0.81% × 순지급액 = 2,520,781 vs 실측 매입수수료 2,524,087"
+    },
+    {
+      "section": "E",
+      "name": "F1 estimatedAmount 는 서버 필드(ForecastMerchant)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "F2 프론트에 estimatedAmount 산출 코드 0건",
+      "pass": true,
+      "detail": "화면은 서버값을 그대로 찍는다 — 산식 검산 자리가 없다"
+    },
+    {
+      "section": "E",
+      "name": "F3 라벨은 '예상 정산 금액'",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "F4 괄호 산식은 '순지급 × 할인율%'",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "E",
+      "name": "F5 같은 배너에 수수료가 별도 슬롯으로 있다",
+      "pass": true,
+      "detail": "수수료 자리가 따로 있으므로 '예상 정산 금액' 은 수수료 슬롯이 아니다"
+    },
+    {
+      "section": "E",
+      "name": "F6 merchants/[id] 226행 주석이 말하는 '수수료율' 이 타입에 없다",
+      "pass": true,
+      "detail": "Assignment 에 요율 필드가 없고 배정 카드도 상품명·배정일만 그린다 — 여기서 요율 기준을 읽을 수 없다"
+    },
+    {
+      "section": "E",
+      "name": "F7 가맹점 상세가 받는 정책은 요율 없이 3필드",
+      "pass": true,
+      "detail": "rateBps 는 정책 화면(settlement/policies)에서만 다루고 가맹점 상세로 오지 않는다"
+    },
+    {
+      "section": "data",
+      "name": "세트 B 존재",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "B",
+      "name": "동결 캡처 파일 존재",
+      "pass": true,
+      "detail": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/enhance_202608/discovery/dom/admin_overview_partner.html"
+    },
+    {
+      "section": "B",
+      "name": "캡처 판독 전건 성공",
+      "pass": true,
+      "detail": "판독 실패 0건"
+    },
+    {
+      "section": "B",
+      "name": "자기시험: ① 총수수료 = 카드+배달 이 이 빌드에서 맞는다",
+      "pass": true,
+      "detail": "1,526,500+2,124,000 vs 3,650,500"
+    },
+    {
+      "section": "B",
+      "name": "자기시험: ② 순지급액 = 총매출-총수수료 가 이 빌드에서 맞는다",
+      "pass": true,
+      "detail": "101,133,500 vs 101,133,500"
+    },
+    {
+      "section": "B",
+      "name": "자기시험: ③ 선정산수수료 = 매입+시스템+이체 가 이 빌드에서 맞는다",
+      "pass": true,
+      "detail": "738,700 vs 738,700"
+    },
+    {
+      "section": "B",
+      "name": "자기시험: 대상액 편차를 알려진 값으로 집어냄",
+      "pass": true,
+      "detail": "대상액 - (순지급+제외) = 48,200 (기대 48,200)"
+    },
+    {
+      "section": "B",
+      "name": "자기시험: 지급액 캡션-값 편차를 알려진 값으로 집어냄",
+      "pass": true,
+      "detail": "(대상액-수수료+반영차액) - 지급액 = 21,200 (기대 21,200)"
+    },
+    {
+      "section": "B",
+      "name": "자기시험: 구버전 대상액 편차 = 배너 반영+대기 차액 합",
+      "pass": true,
+      "detail": "배너 ['21,200', '27,000'] 합 vs 대상액 편차 48,200 — 현행 '거래 수수료 차액' 카드가 승격되기 전 같은 값이 카드 없이 대상액에 들어가 있었다"
+    },
+    {
+      "section": "B",
+      "name": "자기시험: 구버전 지급액 값 = 대상액 - 수수료 (캡션의 차액항은 값에 없음)",
+      "pass": true,
+      "detail": "101,181,700 - 738,700 = 100,443,000 vs 화면 100,443,000"
+    }
+  ],
+  "report": [
+    {
+      "section": "A",
+      "name": "⑥' 캡션 '양수 = 추가 차감' ↔ 산식 '+' 의 양립",
+      "detail": "더해야 맞는다(277,482,424=화면). 캡션은 차감이라 읽힌다",
+      "why": "양립하려면 순지급액이 실제수수료 기준, 대상액이 선정산 시점 예상수수료 스냅샷이어야 한다 — 그 기준 차이는 백엔드 집계 모집단이라 이 검증기가 확인할 수 없다. 산술 방향은 ⑥ 이 판정하고, 코드 문언의 자기모순은 code 섹션 '건별 제외액 정의 괄호 부호' 가 판정한다"
+    },
+    {
+      "section": "A",
+      "name": "취소 집계",
+      "detail": "카드 28건/5,438,000 · 배달 25건/557,900",
+      "why": "요약 모집단 밖 별도 집계라(types JSDoc) 어느 카드와도 검산 관계가 없다 — 기대값을 댈 수 없다"
+    },
+    {
+      "section": "A",
+      "name": "건수",
+      "detail": "7103건 / 10개 가맹점",
+      "why": "행 데이터가 없어 곳수를 재검산할 원천이 없다"
+    },
+    {
+      "section": "B",
+      "name": "구버전 캡션 원문",
+      "detail": "선정산 대상액 - 선정산 수수료 + 정산 반영 수수료 차액(21,200)",
+      "why": "동결 아티팩트라 지금 고칠 대상이 아니다 — 값 자체는 판정하지 않고 검사기가 편차를 잡는지만 판정한다"
+    },
+    {
+      "section": "E",
+      "name": "앵커 결론",
+      "detail": "가맹점별 데이터 없이는 확정 불가",
+      "why": "코드 문언은 대상액을 가리킨다(E1·E2·E3·E5 전건 성립). 그러나 수치로는 대상액 앵커 생존 후보 [1.0] · 순지급액 앵커 생존 후보 [1.0] 로 두 앵커 모두 1.0% 를 살려 둔다(면제분만 9.036% vs 18.894% 로 다르다). 확정에 필요한 것 — ① 계산서 발행 탭에서 가맹점 1곳의 baseAmount 실측 1건과 같은 기간 그 가맹점 행의 선정산대상액·순지급액. 두 값 중 어느 것과 같은지로 즉시 결판난다. ② 수수료 면제 가맹점(feeExempt 배지) 명단과 그 가맹점들의 대상액 합 — 9.036% 인지 18.894% 인지가 남은 한 갈래를 자른다"
+    },
+    {
+      "section": "E",
+      "name": "TP-68 estimatedAmount 의 정체",
+      "detail": "문언은 지급액 · 산식은 수수료 — 프론트만으로 확정 불가",
+      "why": "라벨이 '예상 정산 금액' 이고 같은 배너에 수수료 슬롯이 따로 있다(F3·F5) → 지급액으로 읽힌다. 반면 괄호 산식 '순지급 × 할인율%'(F4) 는 할인율이 요율(0.6~1%대)이면 수수료를 낸다. 값이 서버에서 오고 프론트에 산출 코드가 0건이라(F1·F2) 코드로는 갈리지 않는다. 확정에 필요한 것 — discountRatePct 실측 1건. 1 근처면 estimatedAmount 는 수수료, 99 근처면 지급액이다. merchants/[id] 226행은 근거가 못 된다(F6·F7)"
+    }
+  ],
+  "anchorVerdict": "가맹점별 데이터 없이는 확정 불가",
+  "total": 85,
+  "fail": 4
+}

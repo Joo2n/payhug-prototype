@@ -21,6 +21,7 @@
 어긋나는 지점을 되짚어 뽑는다 — 이 파일에 날짜를 적어 두지 않는다.
 """
 import datetime as dt
+import io
 import os
 import re
 import sys
@@ -46,7 +47,23 @@ def _safe_string_roundtrip(value):
 _cw.safe_string = _safe_string_roundtrip
 
 SRC = '/Users/semi/Downloads/정산주기.xlsx'
-DEFS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ceo_definitions.md')
+BASE = os.path.dirname(os.path.abspath(__file__))
+DEFS = os.path.join(BASE, 'ceo_definitions.md')
+
+
+def _mark_text():
+    """가중 기준 갈라적기 표식.
+
+    이 워크북의 W 2.7504068548610725 · Ty 14.60% 는 MAU(이용자 수) 비중에서 나온 값이다.
+    화면·원장이 쓰는 값은 금액(Ai) 가중이라 다르다. 숫자는 ledger_facts.json 에서 읽는다.
+    """
+    import json
+    f = json.load(io.open(os.path.join(BASE, 'ledger_facts.json'), encoding='utf-8'))
+    return ('MAU(이용자 수) 비중 기준 시장 평균 참고값 — 화면 계산은 금액(Ai) 기준 '
+            'W %s일(표기 %s) · Ty %s%%' % (f['wRaw'], f['w'], f['ty']))
+
+
+MARK_SRC = '용어 정의.docx [1번 이미지] 4~6번 문단 · ledger_facts.json'
 OUTDIR = '/Users/semi/Downloads/payhug_정산주기_정리'
 STAMP = os.environ.get('CYCLE_XLSX_STAMP', '20260830')
 OUT = os.path.join(OUTDIR, '정산주기_정리_%s.xlsx' % STAMP)
@@ -279,7 +296,7 @@ P_STEP = 8
 
 def sheet_read(wb, src, rate_src, n_days, avg_row, plat_avg_rows):
     ws = wb.create_sheet(SH_READ)
-    widths(ws, {'A': 17, 'B': 26, 'C': 58, 'D': 15, 'E': 24})
+    widths(ws, {'A': 17, 'B': 26, 'C': 58, 'D': 15, 'E': 24, 'F': 62})
 
     ws.merge_cells('A1:D1')
     put(ws, 1, 1, src['defn'], F_ORIG, al=AL_L, bold=True)
@@ -291,7 +308,8 @@ def sheet_read(wb, src, rate_src, n_days, avg_row, plat_avg_rows):
     put(ws, 3, 3, '공휴일', F_HOL, al=AL_C)
     put(ws, 3, 4, '공휴일 영향', F_HOLX, al=AL_C)
 
-    head(ws, 5, ['원본 시트', '원본 셀', '원본 표기', '옮긴 시트', '옮긴 범위'])
+    head(ws, 5, ['원본 시트', '원본 셀', '원본 표기', '옮긴 시트', '옮긴 범위', '비고'])
+    NOTE = {src['wavg_addr']: _mark_text()}
 
     lr, lastr = src['last_row'], src['last_row']
     b = src['blocks']
@@ -344,6 +362,10 @@ def sheet_read(wb, src, rate_src, n_days, avg_row, plat_avg_rows):
             if i == 2:
                 cell.alignment = Alignment(horizontal='left', vertical='center',
                                            wrap_text=True)
+        if row[1] in NOTE:
+            cell = put(ws, r, 6, NOTE[row[1]], F_ORIG, al=AL_L)
+            cell.alignment = Alignment(horizontal='left', vertical='center',
+                                       wrap_text=True)
         r += 1
     ws.freeze_panes = 'A6'
     return r - 1
@@ -519,13 +541,21 @@ def sheet_wavg(wb, src, plat_avg_rows, mix, rate, rate_src):
     put(ws, 10, 5, '정산주기!K6:K%d' % src['last_row'], F_ORIG, al=AL_C)
     put(ws, 11, 1, 'Ty수익율', F_CALC, al=AL_L, bold=True)
     put(ws, 11, 2, '=B9*B10/B7', F_CALC, nf=NF_PCT, al=AL_R, bold=True)
-    return {'w': 'B7', 'ty': 'B11', 'mixsum': 'B8'}
+    #   B7·B11 이 어느 기준의 값인지 갈라 적는다. 이 워크북만 보면 화면 값과 어긋나 보인다.
+    put(ws, 13, 1, '가중 기준', F_ORIG, al=AL_L, bold=True)
+    c = put(ws, 13, 2, _mark_text(), F_ORIG, al=AL_L)
+    c.alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
+    ws.merge_cells('B13:D13')
+    put(ws, 13, 5, MARK_SRC, F_ORIG, al=AL_C)
+    ws.row_dimensions[13].height = 30
+    return {'w': 'B7', 'ty': 'B11', 'mixsum': 'B8', 'mark': 13}
 
 
 def sheet_check(wb, src, plat_avg_rows, day_avg_row, freq, mix, wav, n_days):
     ws = wb.create_sheet(SH_CHK)
-    widths(ws, {'A': 34, 'B': 26, 'C': 24, 'D': 24, 'E': 22})
-    head(ws, 1, ['항목', '원본 셀', '원본 값', '정리 값', '차'])
+    widths(ws, {'A': 34, 'B': 26, 'C': 24, 'D': 24, 'E': 22, 'F': 62})
+    head(ws, 1, ['항목', '원본 셀', '원본 값', '정리 값', '차', '비고'])
+    NOTE = {'W 가중평균 금융일수': _mark_text()}
     rows = []
     for i, b in enumerate(src['blocks']):
         rows.append(('%s 평균 금융일수' % b['name'], '정산주기!%s' % b['avg_addr'], b['avg'],
@@ -568,6 +598,9 @@ def sheet_check(wb, src, plat_avg_rows, day_avg_row, freq, mix, wav, n_days):
         put(ws, r, 3, val, F_ORIG, nf=nf, al=AL_R)
         put(ws, r, 4, ref, F_CALC, nf=nf, al=AL_R)
         put(ws, r, 5, '=D%d-C%d' % (r, r), F_CALC, nf=NF_D15, al=AL_R, bold=True)
+        if name in NOTE:
+            c = put(ws, r, 6, NOTE[name], F_ORIG, al=AL_L)
+            c.alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
         r += 1
     put(ws, r, 1, '차 절대값 합계', F_CALC, al=AL_L, bold=True)
     for c in range(2, 5):

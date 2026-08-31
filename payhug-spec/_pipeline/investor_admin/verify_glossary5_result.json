@@ -60,7 +60,7 @@
   "broken": []
  },
  "anchors": {
-  "n": 734,
+  "n": 743,
   "dead": []
  },
  "marks": {
@@ -71,11 +71,11 @@
    {
     "shot": "invest-assets.webp",
     "inView": true,
-    "declared": "18.611,40.043,18.875,3.592",
-    "w": 164.2,
+    "declared": "18.611,42.781,19.132,3.837",
+    "w": 166.4,
     "h": 30.5,
-    "panH": 849,
-    "ty": "translateY(-226.2px)"
+    "panH": 795,
+    "ty": "translateY(-226.4px)"
    },
    {
     "shot": "merchants.webp",
@@ -89,11 +89,11 @@
    {
     "shot": "invest-assets.webp",
     "inView": true,
-    "declared": "18.611,40.043,18.875,3.592",
-    "w": 164.2,
+    "declared": "18.611,42.781,19.132,3.837",
+    "w": 166.4,
     "h": 30.5,
-    "panH": 849,
-    "ty": "translateY(-226.2px)"
+    "panH": 795,
+    "ty": "translateY(-226.4px)"
    }
   ]
  },

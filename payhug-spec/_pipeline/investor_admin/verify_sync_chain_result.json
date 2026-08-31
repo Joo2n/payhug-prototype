@@ -1,43 +1,43 @@
 {
- "finishedAt": "2026-08-31T12:06:20.921Z",
+ "finishedAt": "2026-08-31T13:02:27.616Z",
  "rounds": [
   {
    "round": 1,
-   "at": "2026-08-31T12:05:51.319Z",
+   "at": "2026-08-31T13:01:58.007Z",
    "http": {
     "proto": {
-     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788177951319",
+     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788181318007",
      "status": 200,
      "bytes": 212906,
-     "ms": 140,
+     "ms": 104,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "32113",
+     "age": "35479",
      "cache": "HIT",
      "md5": "9dc611d2986d24b6d839413d72f11c89"
     },
     "gloss": {
-     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788177951460",
+     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788181318112",
      "status": 200,
      "bytes": 380947,
-     "ms": 87,
+     "ms": 79,
      "mitigated": "",
      "challenge": false,
      "title": "용어 해설 — 투자자 어드민",
-     "age": "61165",
+     "age": "64531",
      "cache": "HIT",
      "md5": "eccbfce095bf4ba57bc1e7e695c40610"
     },
     "demo": {
-     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788177951548",
+     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788181318191",
      "status": 200,
      "bytes": 23958,
-     "ms": 81,
+     "ms": 59,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug 투자자 어드민 — 화면 설계(안)",
-     "age": "31891",
+     "age": "35258",
      "cache": "HIT",
      "md5": "c6dcaab7ff02954e3e88725d78e67530"
     },
@@ -45,11 +45,11 @@
      "url": "https://payhug-investor-demo.vercel.app/app.html",
      "status": 200,
      "bytes": 218171,
-     "ms": 30,
+     "ms": 29,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "31993",
+     "age": "35359",
      "cache": "HIT",
      "md5": "379a7a6f0eefd74e0784dd4ab0cd28c3"
     },
@@ -57,11 +57,11 @@
      "url": "https://payhug-investor-demo.vercel.app/glossary.html",
      "status": 200,
      "bytes": 380865,
-     "ms": 29,
+     "ms": 36,
      "mitigated": "",
      "challenge": false,
      "title": "투자자 어드민 용어 해설",
-     "age": "31965",
+     "age": "35331",
      "cache": "HIT",
      "md5": "323c50b26e3cfc5607010ad61d984bf9"
     }
@@ -70,17 +70,17 @@
     {
      "name": "A proto 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=212906 age=32113s cache=HIT"
+     "detail": "code=200 bytes=212906 age=35479s cache=HIT"
     },
     {
      "name": "A gloss 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=380947 age=61165s cache=HIT"
+     "detail": "code=200 bytes=380947 age=64531s cache=HIT"
     },
     {
      "name": "A demo 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=23958 age=31891s cache=HIT"
+     "detail": "code=200 bytes=23958 age=35258s cache=HIT"
     },
     {
      "name": "A demo/app.html",
@@ -95,12 +95,12 @@
     {
      "name": "C 정본 app.html 계측",
      "pass": true,
-     "detail": "15화면 · 상태합 33 · 본문 28110자"
+     "detail": "15화면 · 상태합 33 · 본문 29790자"
     },
     {
      "name": "C 정본 glossary.html 계측",
      "pass": true,
-     "detail": "카드 100 · 본문 85184자"
+     "detail": "카드 100 · 본문 88836자"
     },
     {
      "name": "C 정본 app 표식",
@@ -230,7 +230,7 @@
     {
      "name": "C 용어 본문 길이 근사",
      "pass": false,
-     "detail": "정본 85184 ↔ 배포 84124 (차 1060)"
+     "detail": "정본 88836 ↔ 배포 84124 (차 4712)"
     },
     {
      "name": "B 통합 표식",
@@ -280,7 +280,7 @@
    ],
    "fails": [
     "C 시연 가맹점별 투자자산 총 건수 = 정본 — 정본 [\"총 8건\"] ↔ 시연 []",
-    "C 용어 본문 길이 근사 — 정본 85184 ↔ 배포 84124 (차 1060)"
+    "C 용어 본문 길이 근사 — 정본 88836 ↔ 배포 84124 (차 4712)"
    ],
    "canon": {
     "app": {
@@ -381,13 +381,13 @@
       "screens": 15,
       "states": 18
      },
-     "corpusLen": 28110,
+     "corpusLen": 29790,
      "nav": 8,
      "gran": 3
     },
     "gloss": {
      "cards": 100,
-     "textLen": 85184,
+     "textLen": 88836,
      "title": "투자자 어드민 용어 해설"
     }
    },
@@ -413,7 +413,7 @@
    },
    "canonGlossScan": {
     "found": {
-     "w금융일수": 85,
+     "w금융일수": 88,
      "케이뱅크": 6,
      "목차": 3
     },

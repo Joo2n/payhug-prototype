@@ -3,6 +3,8 @@
    기대 문자열은 외우지 않는다. lib/passwordPolicy.ts 에서 뽑아 쓴다.
    결과: verify_password_result.json                                              */
 const http = require('http');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const fs   = require('fs');
 const path = require('path');
 const os   = require('os');
@@ -154,7 +156,7 @@ async function main(){
   await new Promise(r => server.listen(PORT, r));
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'phpw-'));
   const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT,
-    '--user-data-dir=' + profile, '--no-first-run', '--no-default-browser-check',
+    CHROME_DL.args(PH_DL, profile)[0] /* '--user-data-dir=' + profile */, '--no-first-run', '--no-default-browser-check',
     '--disable-gpu', '--window-size=1440,1287', 'about:blank'], {stdio:'ignore'});
 
   let targets = null;

@@ -7,10 +7,13 @@
 값은 build_app.py 의 simBond/simRun 과 같은 산식을 옮겨 계산한다(대표 정의서 [1번]·[2번] 이미지).
 사이드바·헤드는 assets/template.html, 시뮬레이션 CSS 는 build_app.py 의 CSS 블록에서 그대로 잘라 쓴다.
 """
-import io, os, re, math
+import io, os, re, math, sys
 
 REPO = '/Users/semi/cursor/payhug-investor-admin'
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+# ③⑤⑥ 산식은 daily_ledger.py 한 곳에 있다 — 낱장이 두 번째 산식을 갖지 않는다.
+import daily_ledger as LG
 
 # ── 사이드바 8메뉴 동기화 ─────────────────────────────────────────
 TPL = io.open(os.path.join(REPO, 'assets/template.html'), encoding='utf-8').read()
@@ -94,7 +97,7 @@ def run():
     TY4  = (PSMR * 365 / PSD) if PSD else 0
     ECD  = days(FROM, TO) + 1
     PSC  = CASH * ECD
-    TY5  = (TY4 * PSA / float(PSA + PSC)) if (PSA + PSC) else 0
+    TY5  = LG.ty_asset(TY4, PSA, float(PSC))          # ⑤ — 산식은 daily_ledger.ty_asset 한 곳
     day, keys = {}, []
     for b in mat:
         g = day.get(b['dd'])
@@ -107,7 +110,7 @@ def run():
     for k in keys:
         g = day[k]
         g['W'] = (g['wx'] / float(g['A'])) if g['A'] else 0
-        g['TY'] = ((g['M'] / float(g['A']) * 100) * 365 / g['W']) if (g['A'] and g['W']) else 0
+        g['TY'] = LG.ty_row(g['M'], float(g['A']), g['W'], days=365)   # ⑥ — ty_asset() 을 거친다
         drows.append(g)
     return dict(bonds=bonds, EXEC=EXEC, W=W, TY=TY, S=S, TOT=TOT, SH=SH, PSA=PSA, PSM=PSM,
                 PSB=PSB, PSD=PSD, PSMR=PSMR, TY4=TY4, TY5=TY5, ECD=ECD, PSC=PSC, rows=drows)
@@ -122,8 +125,24 @@ TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty
          '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
          '<span class="tip-row"><span>번호</span><span class="tip-green">'
          '일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>'
+         '<span class="tip-row"><span>행</span><span class="tip-green">'
+         '정산예정일이 그 날짜인 대상정산금채권 집합</span></span>'
          + PEND_ROW +
          '</span></span>' + PEND_BADGE + '</th>')
+# ③ 열머리 — 통합본 build_app.py 의 thirdTh() 와 같은 마크업이다.
+THIRD_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span>'
+            '<span class="tip-panel">⑥ 의 ③'
+            '<span class="tip-row"><span>번호</span><span class="tip-green">'
+            '상단 현황의 기간 전체 숫자 · 칸 미지목</span></span>'
+            + PEND_ROW +
+            '</span></span>' + PEND_BADGE + '</th>')
+# ④ 툴팁 꼬리 — 대표 DM 2026-08-31 16:45. 통합본과 같은 두 줄이다.
+TY4_DM = ('<span class="tip-row"><span>항등식</span><span class="tip-green">'
+          '할인율 − max(0, 미지급금 − 과지급금) ÷ 투자실행액</span></span>'
+          '<span class="tip-row"><span>부족액 0</span><span class="tip-green">'
+          '할인율 %s%%%% ↔ SMR %s%%%% · 미확정</span></span>'
+          '<span class="tip-row sum"><span>대표 DM 16:45</span><span>실적치 · SMR 계통</span></span>'
+          % (fx(R_RATE, 2), fx(R_RATE / (1 - R_RATE / 100.0), 6)))
 
 def field(fid, label, kind, value, extra=''):
     return ('        <div class="filter-field">\n'
@@ -257,6 +276,7 @@ def result_block(R):
            '<span class="tip-panel">PSMR × 365 ÷ PSD'
            '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>'
            '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>'
+           + TY4_DM +
            '</span></span></div>\n'
            '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
            '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
@@ -273,7 +293,7 @@ def result_block(R):
     h += ('    <div class="tbl-wrap mb-6">\n'
           '      <div class="tbl-head"><div class="left"><h2 class="card-title">일별 투자수익</h2></div></div>\n'
           '      <div class="tbl-scroll">\n        <table class="tbl">\n          <thead>\n'
-          '            <tr><th>정산예정일</th><th class="num">상환액</th><th class="num">투자실행금</th>'
+          '            <tr><th>정산예정일</th><th class="num">상환액</th>' + THIRD_TH +
           '<th class="num">투자 수익</th><th class="num">W금융일수</th>' + TY_TH + '</tr>\n'
           '          </thead>\n          <tbody>\n')
     for g in R['rows']:

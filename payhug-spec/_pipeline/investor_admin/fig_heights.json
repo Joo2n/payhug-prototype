@@ -1,8 +1,8 @@
 {
  "invest-assets": {
-  "content": 1407,
+  "content": 1316,
   "sidebar": 571,
-  "vh": 1407
+  "vh": 1316
  },
  "certificate": {
   "content": 1168,
@@ -20,9 +20,9 @@
   "vh": 571
  },
  "merchants": {
-  "content": 862,
+  "content": 770,
   "sidebar": 571,
-  "vh": 862
+  "vh": 770
  },
  "acquisition": {
   "content": 653,
@@ -35,29 +35,24 @@
   "vh": 653
  },
  "contracts": {
-  "content": 788,
+  "content": 730,
   "sidebar": 571,
-  "vh": 788
+  "vh": 730
  },
  "password": {
   "content": 629,
   "sidebar": 571,
   "vh": 629
  },
- "invest-assets--page2": {
-  "content": 1227,
-  "sidebar": 571,
-  "vh": 1227
- },
  "invest-assets--download": {
-  "content": 1407,
+  "content": 1317,
   "sidebar": 571,
-  "vh": 1407
+  "vh": 1317
  },
  "invest-assets--cert-confirm": {
-  "content": 1407,
+  "content": 1317,
   "sidebar": 571,
-  "vh": 1407
+  "vh": 1317
  },
  "invest-assets--empty": {
   "content": 1059,
@@ -75,7 +70,7 @@
   "vh": 1044
  },
  "merchants--filtered": {
-  "content": 557,
+  "content": 425,
   "sidebar": 571,
   "vh": 571
  },
@@ -100,14 +95,9 @@
   "vh": 571
  },
  "contracts--all": {
-  "content": 788,
+  "content": 730,
   "sidebar": 571,
-  "vh": 788
- },
- "contracts--downloaded": {
-  "content": 788,
-  "sidebar": 571,
-  "vh": 788
+  "vh": 730
  },
  "contracts--empty": {
   "content": 386,
@@ -160,9 +150,9 @@
   "vh": 613
  },
  "xls-assets-merchant": {
-  "content": 1005,
+  "content": 781,
   "sidebar": 571,
-  "vh": 1005
+  "vh": 781
  },
  "xls-profit-status": {
   "content": 669,

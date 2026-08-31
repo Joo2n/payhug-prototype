@@ -125,13 +125,16 @@ def unpack(doc):
     return raw, seed, shots
 
 
-def regen(raw, seed, shots, jsjson):
+def regen(raw, seed, shots, jsjson, full):
     """페이지의 renderDoc() 과 같은 절차로 문서를 다시 만든다."""
     cut = raw.index("%%SRC%%")
     before, after = raw[:cut], raw[cut + 7:]
     f = lambda s: (s.replace("%%SEED%%", jsjson(seed))
                     .replace("%%SHOTS%%", jsjson(shots)))
-    return f(before) + base64.b64encode(raw.encode("utf-8")).decode("ascii") + f(after)
+    frag = f(before) + base64.b64encode(raw.encode("utf-8")).decode("ascii") + f(after)
+    # 페이지의 renderDoc() 도 마지막에 껍데기를 씌운다. 여기서도 같은 절차를 거쳐야
+    # 재생산 대조가 실제 산출물과 맞는다.
+    return full(frag)
 
 
 def main():
@@ -158,14 +161,16 @@ def main():
     chk("생성기 · 회수한 원본의 토큰 3종", 
         (raw1 or "").count("%%SEED%%") + (raw1 or "").count("%%SHOTS%%")
         + (raw1 or "").count("%%SRC%%"), 3)
+    # build() 는 조각을 낸다. 재생산은 마지막에 껍데기를 씌우므로 조각에 껍데기를
+    # 씌운 것과 견준다.
     chk_true("생성기 · 재생산이 원본과 같음",
-             raw1 and regen(raw1, s1, h1, bt.js_json) == g1)
+             raw1 and regen(raw1, s1, h1, bt.js_json, bt.full) == bt.full(g1))
 
     s2 = json.loads(json.dumps(seed))
     s2["items"][0]["plain"] = "고친 풀이"
     s2["items"].append({"no": 3, "image": 2, "term": "다", "quote": "",
                         "plain": "덧붙임", "status": "확인필요"})
-    g2 = regen(raw1, s2, h1, bt.js_json)
+    g2 = regen(raw1, s2, h1, bt.js_json, bt.full)
     raw2, sd2, h2 = unpack(g2)
     chk_true("2세대 · 뼈대가 닳지 않음", raw2 == raw1)
     chk("2세대 · 항목 수", len(sd2["items"]), 3)
@@ -173,7 +178,7 @@ def main():
 
     s3 = json.loads(json.dumps(sd2))
     del s3["items"][1]
-    g3 = regen(raw2, s3, h2, bt.js_json)
+    g3 = regen(raw2, s3, h2, bt.js_json, bt.full)
     raw3, sd3, _ = unpack(g3)
     chk_true("3세대 · 뼈대가 닳지 않음", raw3 == raw1)
     chk("3세대 · 삭제 반영", len(sd3["items"]), 2)
@@ -290,7 +295,7 @@ def main():
         rawB, seedB, shotsB = unpack(doc)
         chk_true("산출물 · 원본 회수", rawB is not None)
         chk_true("산출물 · 재생산이 파일과 같음",
-                 rawB and regen(rawB, seedB, shotsB, bt.js_json) == doc)
+                 rawB and regen(rawB, seedB, shotsB, bt.js_json, bt.full) == doc)
         chk("산출물 · 항목 수", len(seedB.get("items", [])), 45)
         want = sorted({i.get("shot") for i in seedB.get("items", []) if i.get("shot")})
         chk("산출물 · 원고가 부르는 캡처 중 안 박힌 것",

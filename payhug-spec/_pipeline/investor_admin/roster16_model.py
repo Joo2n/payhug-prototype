@@ -130,8 +130,8 @@ EC_MONTHLY_ALL = len(LEDGER)
 EC_MONTH_AUG = sum(1 for r in LEDGER if r['d'].startswith('2026-08'))
 
 def ty_asset(ty4, psa, ec_days):
-    psa = D(psa); psc = D(CASH) * D(ec_days)
-    return r2(D(str(ty4)) * psa / (psa + psc))
+    """⑤ 산식은 daily_ledger.ty_asset 한 곳에 있다 — 여기는 EC 일수를 PSC 로 바꿔 넘기는 껍질이다."""
+    return r2(L.ty_asset(D(str(ty4)), D(psa), D(CASH) * D(ec_days)))
 
 def agg(rs, ec_days):
     # 합계 행의 Ty = PSMR x 365 / PSD (대표 정의서). PSD 는 반올림 전 가중평균을 쓴다.

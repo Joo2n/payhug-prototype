@@ -1280,18 +1280,29 @@ function wavg(a, k, wk){ var n=0, d=0; for(var i=0;i<a.length;i++){ n += a[i][k]
    현황표의 두 칸과 맞아떨어지지 않는다. 그 모집단을 열머리 툴팁이 그대로 적는다.
    건수는 채권 원장 실측이다(daily_ledger.py) — 화면에 손으로 적지 않는다. */
 var POP_W = {of:'대상정산금채권 전체 (발생 기준)', n:'@@POPW@@'};
-var POP_S = {of:'선정산일 D-20 ~ D-11 표본',       n:'@@POPS@@'};
+/* 소문자 d 표기는 잠정이다 — 대표 DM 15:15 는 금융일수 쪽 글자를 바꾸라고 했고 우리는 날짜 쪽을
+   내렸다(dm_0831/symbol_rule_0831.md). 4차 미팅 확인 전까지 표기에 미확정을 단다. */
+var POP_S = {of:'선정산일 d-20 ~ d-11 표본',       n:'@@POPS@@', pend:1};
 function popTh(label, p){
   return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">' + label + '</span>' +
          '<span class="tip-panel">' + p.of +
            '<span class="tip-row"><span>채권 건수</span><span class="tip-green">' + p.n + '</span></span>' +
-         '</span></span></th>';
+           (p.pend ? '<span class="tip-row"><span>표기 d</span><span>미확정</span></span>' + PEND_ROW : '') +
+         '</span></span>' + (p.pend ? PEND_BADGE : '') + '</th>';
 }
 /* 대표 재전달 대기 — 2026-08-31 회의에서 ⑤ 는 「수식 새로 작성해 전달」,
    ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」 으로 끝났다(meeting_0831/ceo_definitions_20260831.txt).
    값은 그대로 두고 미확정만 표시한다 — 표기는 용어정의서가 쓰는 낱말 `미확정` 을 그대로 쓴다. */
 var PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>';
 var PEND_ROW   = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>';
+/* ── ③ ⑤ ⑥ 단일 원천 ────────────────────────────────────────────
+   산식은 생성기 daily_ledger.py 의 ty_third · ty_asset · ty_row 한 벌에서 온다
+   (TY3_JS · TY5_JS · TY6_JS). 화면에 두 번째 산식을 적지 않는다 —
+   대표가 ⑤ 를 새로 주면 daily_ledger.ty_asset 한 곳만 고치면 ⑤·⑥ 이 함께 움직인다. */
+function ty3(execu){ @@TY3JS@@ }
+function ty5(ty4, psa, psc){ @@TY5JS@@ }
+var TY6_PSC = @@TY6PSC@@;   /* ⑥ 이 ⑤ 를 거칠 때 넣는 PSC — 일별 EC 원장이 없어 0 이다 */
+function ty6(profit, execu, w){ @@TY6JS@@ }
 /* ⑥ 일별 Ty수익율 열 — 원문 `(④ ÷ ③) × 365 ÷ ⑤` 를 일별 표의 열 번호로 읽은 것이다.
    현황 카드 번호(④ 투자실행금액 대비 · ⑤ 투자자산 대비)를 그대로 넣으면
    `수익률 ÷ 금액 × 365 ÷ 수익률` 이 되어 성립하지 않는다. */
@@ -1299,6 +1310,16 @@ function tyTh(){
   return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>' +
          '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤' +
            '<span class="tip-row"><span>번호</span><span class="tip-green">일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>' +
+           '<span class="tip-row"><span>행</span><span class="tip-green">정산예정일이 그 날짜인 대상정산금채권 집합</span></span>' +
+           PEND_ROW +
+         '</span></span>' + PEND_BADGE + '</th>';
+}
+/* ③ 열머리 — 대표는 ③ 을 「상단 현황의 기간 전체 숫자」까지만 좁혔고 어느 칸인지는 지목하지 않았다
+   (2026-08-31 회의 00:59:21). ⑥ 이 ③ 을 쓰므로 ⑤·⑥ 과 같은 배지를 단다. */
+function thirdTh(){
+  return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span>' +
+         '<span class="tip-panel">⑥ 의 ③' +
+           '<span class="tip-row"><span>번호</span><span class="tip-green">상단 현황의 기간 전체 숫자 · 칸 미지목</span></span>' +
            PEND_ROW +
          '</span></span>' + PEND_BADGE + '</th>';
 }
@@ -1709,13 +1730,26 @@ RENDER['invest-assets'] = function(){
     '<div class="summary-card highlight"><div class="summary-label">투자자산</div>' +
       '<div class="summary-value">' + fmt(total) + '<span class="unit">원</span></div>' +
       '<div class="summary-sub">투자실행액 + 순현금</div></div>' +
-    '<div class="summary-card"><div class="summary-label">투자실행액</div>' +
+    '<div class="summary-card"><div class="summary-label">' +
+      '<span class="tooltip wide"><span class="tip-anchor">투자실행액</span>' +
+        '<span class="tip-panel">순지급액 × (1 − 할인율)' +
+          '<span class="tip-row"><span>할인율</span><span class="tip-green">' + fx(RATE_PCT, 2) + '%</span></span>' +
+          '<span class="tip-row"><span>대표 DM 16:19</span><span class="tip-green">가맹점 매입 1% 차감</span></span>' +
+          '<span class="tip-row sum"><span>미확정</span><span>선정산 실행액은 이보다 작다</span></span>' +
+        '</span></span></div>' +
       '<div class="summary-value">' + fmt(exec) + '<span class="unit">원</span></div>' +
       '<div class="summary-sub">비중 ' + fx(rExec, 1) + '% · 보관 ㈜페이허그</div></div>' +
     '<div class="summary-card"><div class="summary-label">순현금</div>' +
       '<div class="summary-value">' + fmt(cash) + '<span class="unit">원</span></div>' +
       '<div class="summary-sub">비중 ' + fx(rCash, 1) + '% · 보관 ㈜쿠콘</div></div>' +
-    '<div class="summary-card"><div class="summary-label">Ty수익율</div>' +
+    '<div class="summary-card"><div class="summary-label">' +
+      '<span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>' +
+        '<span class="tip-panel">할인율 × (365 ÷ W금융일수)' +
+          '<span class="tip-row"><span>연 환산</span><span class="tip-green">' + fx(tyv, 2) + '%</span></span>' +
+          '<span class="tip-row"><span>일 환산</span><span>미확정</span></span>' +
+          '<span class="tip-row"><span>대표 DM 16:27</span><span class="tip-green">365 ÷ W금융일수 = 1년 회전수</span></span>' +
+          '<span class="tip-row sum"><span>대표 DM 16:45</span><span>예상치 · 할인율 계통</span></span>' +
+        '</span></span></div>' +
       '<div class="summary-value">' + fx(tyv, 2) + '<span class="unit">%</span></div>' +
       '<div class="summary-sub">' + (wv === null ? 'W금융일수 집계 대상 없음' : 'W금융일수 ' + fx(wv, 2) + '일 기준') + '</div></div>';
 
@@ -1823,7 +1857,7 @@ function rollupBy(days, keyOf, labelOf){
        일자별 ty 를 다시 가중평균하면 표기 자리에서 W 와 어긋난다(주 버킷에서 실제로 어긋났다).
        반올림하지 않고 담아 두고 표기할 때만 자른다. 그래야 일별·주별·월별 표의 카드 값이 같다. */
     g.w  = g.exec ? g.wx / g.exec : 0;
-    g.ty = (g.exec && g.w) ? (g.profit / g.exec * 100) * 365 / g.w : 0;
+    g.ty = ty6(g.profit, g.exec, g.w);   /* ⑥ — ty5() 를 거친다 */
   }
   out.sort(function(a, b){ return a.k < b.k ? -1 : (a.k > b.k ? 1 : 0); });
   return out;
@@ -1864,15 +1898,17 @@ function cashRow(){
   return null;
 }
 /* ── 투자자산 대비 Ty수익율 (현황 ⑤) — 대표 정의서 ────────────────
-   ⑤ = (④ × PSA) / (PSA + PSC).  PSA = 기간 투자실행금 합, PSC = 기간 동안 EC들의 합.
-   EC = 전일자 마감시점 순현금이며 하루에 한 건 쌓인다(유량). 기준일 잔액 1개(스톡)로 나누지 않는다.
+   산식은 ty5() 한 곳에 있다(생성기 daily_ledger.ty_asset). 여기는 PSC 를 만들어 넘기기만 한다.
+   PSA = 기간 투자실행금 합, PSC = 기간 동안 EC들의 합.
+   EC = 정산예정일이 어제인 대상정산금채권을 마감한 시점의 순현금이며 하루에 한 건 쌓인다(유량).
+   기준일 잔액 1개(스톡)로 나누지 않는다.
    일별 EC 원장이 없어 EC 는 순현금 잔액으로 고정한다 — 실데이터 연결은 확인 대상. */
 /* EC 는 하루에 한 건 쌓이는 유량이라 조회 기간에 걸린 일수만큼 센다.
    일별·월별 어느 쪽으로 보든 같은 기간이면 같은 일수라야 하므로 원장 일수 하나로 센다. */
 function ecDays(){ return pfDays().length; }
 function tyAssetOf(ty4, psa){
   var c = cashRow(), psc = (c ? c.amount : 0) * ecDays();
-  return (psa + psc) ? ty4 * psa / (psa + psc) : 0;
+  return ty5(ty4, psa, psc);
 }
 RENDER['invest-profit'] = function(){
   var sec = SEC('invest-profit'), rows = pfRows();
@@ -1915,6 +1951,9 @@ RENDER['invest-profit'] = function(){
         '<span class="tip-panel">PSMR × 365 ÷ PSD' +
           '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>' +
           '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>' +
+          '<span class="tip-row"><span>항등식</span><span class="tip-green">할인율 − max(0, 미지급금 − 과지급금) ÷ 투자실행액</span></span>' +
+          '<span class="tip-row"><span>부족액 0</span><span class="tip-green">할인율 ' + fx(RATE_PCT, 2) + '% ↔ SMR ' + fx(RATE_PCT / (1 - RATE_PCT / 100), 6) + '% · 미확정</span></span>' +
+          '<span class="tip-row sum"><span>대표 DM 16:45</span><span>실적치 · SMR 계통</span></span>' +
         '</span></span></div>' +
         '<div class="summary-value">' + fx(tyExec, 2) + '<span class="unit">%</span></div></div>' +
       '<div><div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>' +
@@ -1929,7 +1968,7 @@ RENDER['invest-profit'] = function(){
 
   var box = M('pf-tbl', 'invest-profit');
   var PF_HEAD = '<th>' + GRAN_COL[PF.gran] + '</th><th class="num">상환액</th>' +
-                '<th class="num">투자실행금</th><th class="num">투자 수익</th>' +
+                thirdTh() + '<th class="num">투자 수익</th>' +
                 '<th class="num">W금융일수</th>' + tyTh();
   if(!rows.length){
     box.innerHTML = emptyTable(PF_HEAD, 6, '조회 결과가 없습니다.');
@@ -1964,7 +2003,8 @@ JS += r'''
 /* ───────── 투자 시뮬레이션 ─────────
    기존 화면과 완전히 별개다. SIM 은 IA·PF·MC·AQ·CT 와 독립된 상태 객체이고
    simRun() 은 MERCHANTS·ASSET_ROWS·DAILY 를 읽지도 쓰지도 않는다.
-   산식 출처 — 대표 정의서 [1번 이미지] A<sub>i</sub>·D<sub>i</sub>·w·ty·S · [2번 이미지] M<sub>D−1,&thinsp;i</sub>·B<sub>D−1,&thinsp;i</sub>·PSA·PSM·PSD·PSMR·PSC.
+   산식 출처 — 대표 정의서 [1번 이미지] A<sub>i</sub>·D<sub>i</sub>·w·ty·S · [2번 이미지] M<sub>d−1,&thinsp;i</sub>·B<sub>d−1,&thinsp;i</sub>·PSA·PSM·PSD·PSMR·PSC.
+   대문자 D 는 금융일수, 소문자 d 는 오늘 날짜다. d−1 은 어제 날짜가 아니라 정산예정일이 어제인 대상정산금채권 집합을 가리킨다.
    앵커는 순지급액이다(채권매입수수료 = 순지급액 x 할인율 · D-31). 일별 원장 daily_ledger.py 도 같은 앵커라
    투자 수익 화면과 이 화면의 같은 열은 같은 산식에서 나온다. */
 var SIM_PLAT = [
@@ -2018,7 +2058,7 @@ function simDays(a, b){ return Math.round((dt(b) - dt(a)) / 86400000); }
 function simFloor(x){ return Math.floor(Number(Number(x).toFixed(6))); }
 function simAmtTotal(){ var t = 0, i; for(i = 0; i < SIM.rows.length; i++) t += SIM.rows[i].amt; return t; }
 
-/* 채권 1건 — A<sub>i</sub> · D<sub>i</sub> · 채권매입수수료 · 미지급 차감 · 투자수익 M<sub>D−1,&thinsp;i</sub> · 상환액 B<sub>D−1,&thinsp;i</sub> */
+/* 채권 1건 — A<sub>i</sub> · D<sub>i</sub> · 채권매입수수료 · 미지급 차감 · 투자수익 M<sub>d−1,&thinsp;i</sub> · 상환액 B<sub>d−1,&thinsp;i</sub> */
 function simBond(row, r, dedRate){
   var A   = simFloor(row.amt * (1 - r));
   var D   = simDays(row.sd, row.dd);
@@ -2054,7 +2094,7 @@ function simRun(){
   var TY4  = PSD ? PSMR * 365 / PSD : 0;
   var ECD  = (SIM.from && SIM.to) ? simDays(SIM.from, SIM.to) + 1 : 0;
   var PSC  = SIM.cash * ECD;
-  var TY5  = (PSA + PSC) ? TY4 * PSA / (PSA + PSC) : 0;
+  var TY5  = ty5(TY4, PSA, PSC);
 
   /* ── 일별 ── */
   var day = {}, keys = [];
@@ -2067,7 +2107,7 @@ function simRun(){
   var rows = keys.map(function(k){
     var g = day[k];
     g.W  = g.A ? g.wx / g.A : 0;
-    g.TY = (g.A && g.W) ? (g.M / g.A * 100) * 365 / g.W : 0;
+    g.TY = ty6(g.M, g.A, g.W);   /* ⑥ — ty5() 를 거친다 */
     return g;
   });
 
@@ -2206,6 +2246,9 @@ function simTyTip(R){
       '<span class="tip-panel">PSMR × 365 ÷ PSD' +
         '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>' +
         '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>' +
+        '<span class="tip-row"><span>항등식</span><span class="tip-green">할인율 − max(0, 미지급금 − 과지급금) ÷ 투자실행액</span></span>' +
+        '<span class="tip-row"><span>부족액 0</span><span class="tip-green">할인율 ' + fx(RATE_PCT, 2) + '% ↔ SMR ' + fx(RATE_PCT / (1 - RATE_PCT / 100), 6) + '% · 미확정</span></span>' +
+        '<span class="tip-row sum"><span>대표 DM 16:45</span><span>실적치 · SMR 계통</span></span>' +
       '</span></span></div>' +
       '<div class="summary-value' + (R.TY4 < 0 ? ' neg' : '') + '">' + fx(R.TY4, 2) + '<span class="unit">%</span></div></div>' +
     '<div><div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>' +
@@ -2287,7 +2330,7 @@ function simResultHtml(){
     '</div></div>';
 
   /* ⑤ 일별 투자수익 */
-  var HEAD = '<th>정산예정일</th><th class="num">상환액</th><th class="num">투자실행금</th>' +
+  var HEAD = '<th>정산예정일</th><th class="num">상환액</th>' + thirdTh() +
              '<th class="num">투자 수익</th><th class="num">W금융일수</th>' + tyTh();
   h += '<div class="tbl-wrap mb-6"><div class="tbl-head"><div class="left">' +
        '<h2 class="card-title">일별 투자수익</h2></div></div>';
@@ -3414,6 +3457,11 @@ for _k, _v in (('@@MERCHANTS@@', _MER), ('@@ASSETROWS@@', _AST), ('@@CONTRACTS@@
                ('@@POPW@@', '%s건' % format(len(daily_ledger.RECEIVABLES), ',')),
                ('@@POPS@@', '%s건' % format(daily_ledger.facts()['sampleReceivables'], ',')),
                ('@@LEDGER@@', daily_ledger.js_array()),
+               # ③⑤⑥ 산식 — 원천은 daily_ledger.py 한 곳이다. 화면에 두 번째 산식을 적지 않는다.
+               ('@@TY3JS@@', daily_ledger.TY3_JS),
+               ('@@TY5JS@@', daily_ledger.TY5_JS),
+               ('@@TY6JS@@', daily_ledger.TY6_JS),
+               ('@@TY6PSC@@', str(daily_ledger.TY6_PSC)),
                ('@@SCREENS@@', str(counts.C['screens'])),
                ('@@STATES@@', str(counts.C['states']))):
     assert DOC.count(_k) == 1, _k

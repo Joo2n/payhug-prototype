@@ -39,6 +39,9 @@
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
 }
 .file-bar .fb-meta .dot { color: var(--gray-300); }
+/* 그 기간의 실물이 없을 때 — 파일 이름 자리를 내리고 버튼은 base.css 의 .btn:disabled 규격이 잠근다 */
+.file-bar.is-off .fb-icon { background: var(--gray-100); color: var(--gray-400); }
+.file-bar.is-off .fb-name { color: var(--gray-400); }
 .file-bar .fb-meta .mono { color: var(--gray-500); }
 /* base.css는 .btn-excel svg 에만 크기를 주므로, btn-primary 아이콘 크기를 여기서 지정 */
 .file-bar .btn { flex-shrink: 0; text-decoration: none; white-space: nowrap; }

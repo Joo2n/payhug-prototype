@@ -1,6 +1,8 @@
 /* 용어 해설 재조판본 헤드리스 검증 — 창을 띄우지 않는다(--headless=new). */
 const http=require('http'), fs=require('fs'), path=require('path'), os=require('os'),
       {spawn}=require('child_process');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const REPO='/Users/semi/cursor/payhug-investor-admin';
 const OUT='/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/verify_glossary5_result.json';
 const PORT=8760+(process.pid%80), DPORT=9560+(process.pid%80);
@@ -24,7 +26,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{
 await new Promise(r=>server.listen(PORT,r));
 const prof=fs.mkdtempSync(path.join(os.tmpdir(),'gl5-'));
-const ch=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,'--user-data-dir='+prof,
+const ch=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,CHROME_DL.args(PH_DL, prof)[0],
   '--no-first-run','--no-default-browser-check','--disable-gpu','--hide-scrollbars',
   '--window-size=1440,1287','about:blank'],{stdio:'ignore'});
 let t=null; for(let i=0;i<60&&!t;i++){ await sleep(300);

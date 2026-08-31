@@ -695,6 +695,82 @@ async function main(){
     && rev.idle !== rev.before.idle
     && JSON.stringify(rev.amts) === JSON.stringify(SF.seedAmts), rev);
 
+  /* ── 15) ⑤ 단일 원천 · ⑥ 배선 ────────────────────────────────
+     대표가 ⑤ 산식을 새로 주면 daily_ledger.ty_asset 한 곳만 고치면 되어야 한다.
+     문자열 대조만으로는 배선이 끊긴 것을 못 잡으므로, 화면에서 ⑤ 함수를 인공 값으로 갈아 끼워
+     ⑥ 이 따라 움직이는지 행동으로 본다. ③ 도 같은 방식으로 본다. */
+  console.log('\n[15] ⑤ 단일 원천 · ⑥ 배선');
+  {
+    const SRC = fs.readFileSync(path.join(REPO, 'app.html'), 'utf8');
+    const cnt = re => (SRC.match(re) || []).length;
+    const bodyOf = name => {
+      const m = SRC.match(new RegExp('function ' + name + '\\([^)]*\\)\\{([\\s\\S]*?)\\n?\\}'));
+      return m ? m[1] : '';
+    };
+    const w = {
+      ty3def: cnt(/function ty3\(/g), ty5def: cnt(/function ty5\(/g), ty6def: cnt(/function ty6\(/g),
+      /* ⑤ 산식이 코드에 한 곳에서만 정의된다 — 옛 하드코딩이 남으면 여기서 잡힌다 */
+      ty5body: cnt(/ty4 \* psa \/ tot/g),
+      hard5: cnt(/TY4 \* PSA \/ \(PSA \+ PSC\)/g) + cnt(/ty4 \* psa \/ \(psa \+ psc\)/g)
+             + cnt(/psa \+ psc\) \? ty4/g),
+      /* ⑥ 도 마찬가지 — 행 ty 를 직접 계산하던 두 자리가 ty6() 로 모였다 */
+      hard6: cnt(/\* 100\) \* 365 \/ g\.[wW]/g),
+      ty6call: cnt(/= ty6\(/g),
+      ty6usesTy5: bodyOf('ty6').indexOf('ty5(') >= 0,
+      ty6usesTy3: bodyOf('ty6').indexOf('ty3(') >= 0,
+      tyAssetUsesTy5: bodyOf('tyAssetOf').indexOf('ty5(') >= 0,
+      simRunUsesTy5: cnt(/var TY5  = ty5\(/g)
+    };
+    P('[문자열] ⑤ 정의 1곳 · 하드코딩 0건 · ⑥ 계산 자리 2곳이 모두 ty6()',
+      w.ty3def === 1 && w.ty5def === 1 && w.ty6def === 1 && w.ty5body === 1
+      && w.hard5 === 0 && w.hard6 === 0 && w.ty6call === 2
+      && w.ty6usesTy5 && w.ty6usesTy3 && w.tyAssetUsesTy5 && w.simRunUsesTy5 === 1, w);
+
+    /* 행동 판정 — ty5 를 갈아 끼우고 ⑤·⑥ 이 함께 움직이는지 본다 */
+    const CAP = `
+      var sp = window.__S.out().querySelectorAll('.ty-split > div');
+      var six = window.__S.dailyRows().map(function(r){ return r[r.length - 1]; });
+      return {ty4: sp[0].querySelector('.summary-value').textContent.trim(),
+              ty5: sp[1].querySelector('.summary-value').textContent.trim(),
+              six: six, exec: window.__S.statusRows()[0][1]};`;
+    await evalJS("go('invest-sim','default'); return 1;");
+    await run();
+    const b0 = await evalJS(CAP);
+    const n = t => Number(String(t).replace(/[^0-9.-]/g, ''));
+
+    await evalJS("window.__ty5_orig = ty5; window.ty5 = function(a, b, c){ return 7.77; }; return 1;");
+    await run();
+    const sw = await evalJS(CAP);
+    await evalJS("window.ty5 = window.__ty5_orig; return 1;");
+    await run();
+    const rb = await evalJS(CAP);
+    const badB = [];
+    if(!b0.six.length) badB.push('일별 행 0건 — 대상이 없으면 통과시키지 않는다');
+    if(n(sw.ty5) !== 7.77) badB.push('⑤ 가 인공 값을 안 따라왔다 ' + sw.ty5);
+    if(sw.six.some(v => n(v) !== 7.77)) badB.push('⑥ 가 안 따라왔다 ' + JSON.stringify(sw.six));
+    if(sw.ty4 !== b0.ty4) badB.push('④ 가 흔들렸다 ' + b0.ty4 + ' -> ' + sw.ty4);
+    if(JSON.stringify(rb) !== JSON.stringify(b0)) badB.push('되돌려도 원래 값이 아니다');
+    P('[행동] ⑤ 함수를 인공 값으로 갈면 ⑤·⑥ 이 함께 움직이고 되돌리면 복귀',
+      badB.length === 0, {bad:badB, base:b0.six.slice(0, 3), swapped:sw.six.slice(0, 3),
+                          ty5:{base:b0.ty5, swapped:sw.ty5, back:rb.ty5}});
+
+    await evalJS("window.__ty3_orig = ty3; window.ty3 = function(e){ return e * 2; }; return 1;");
+    await run();
+    const s3 = await evalJS(CAP);
+    await evalJS("window.ty3 = window.__ty3_orig; return 1;");
+    await run();
+    const r3 = await evalJS(CAP);
+    const bad3 = [];
+    if(!s3.six.length) bad3.push('일별 행 0건');
+    s3.six.forEach((v, i) => {
+      if(Math.abs(n(v) - n(b0.six[i]) / 2) > 0.011)
+        bad3.push(b0.six[i] + ' -> ' + v + ' (기대 ' + (n(b0.six[i]) / 2).toFixed(2) + ')');
+    });
+    if(JSON.stringify(r3) !== JSON.stringify(b0)) bad3.push('되돌려도 원래 값이 아니다');
+    P('[행동] ③ 함수를 2배로 갈면 ⑥ 이 절반으로 움직이고 되돌리면 복귀',
+      bad3.length === 0, {bad:bad3, base:b0.six.slice(0, 3), swapped:s3.six.slice(0, 3)});
+  }
+
   /* ── 14) 정적 낱장 ── */
   console.log('\n[14] 정적 낱장');
   await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/invest-sim.html'});

@@ -158,11 +158,18 @@ CARD = re.compile(
 # Ty수익율 두 칸의 산식 툴팁 — 통합본 build_app.py pfRender 와 같은 마크업.
 # ty-label 안쪽을 통째로 갈아 끼우므로 여러 번 돌려도 겹쳐 붙지 않는다.
 TY_LABEL = re.compile(r'<div class="ty-label">.*?</div>', re.S)
+# 대표 DM 2026-08-31 16:45 두 줄 — 통합본과 같은 마크업. 항등식은 근사식이라 두 값을 나란히 둔다.
+_R = float(RM.RPCT)
 TIP4 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
         '<span class="tip-panel">PSMR × 365 ÷ PSD'
         '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>'
         '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>'
-        '</span></span></div>')
+        '<span class="tip-row"><span>항등식</span><span class="tip-green">'
+        '할인율 − max(0, 미지급금 − 과지급금) ÷ 투자실행액</span></span>'
+        '<span class="tip-row"><span>부족액 0</span><span class="tip-green">'
+        '할인율 %.2f%% ↔ SMR %.6f%% · 미확정</span></span>'
+        '<span class="tip-row sum"><span>대표 DM 16:45</span><span>실적치 · SMR 계통</span></span>'
+        '</span></span></div>' % (_R, _R / (1 - _R / 100.0)))
 # 대표 재전달 대기 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW · tyTh() 와 같은 마크업이다.
 # 2026-08-31 회의에서 ⑤ 는 「수식 새로 작성해 전달」, ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」으로 끝났다.
 PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
@@ -171,8 +178,17 @@ TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty
          '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
          '<span class="tip-row"><span>번호</span><span class="tip-green">'
          '일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>'
+         '<span class="tip-row"><span>행</span><span class="tip-green">'
+         '정산예정일이 그 날짜인 대상정산금채권 집합</span></span>'
          + PEND_ROW +
          '</span></span>' + PEND_BADGE + '</th>')
+# ③ 열머리 — 통합본 build_app.py 의 thirdTh() 와 같은 마크업이다.
+THIRD_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span>'
+            '<span class="tip-panel">⑥ 의 ③'
+            '<span class="tip-row"><span>번호</span><span class="tip-green">'
+            '상단 현황의 기간 전체 숫자 · 칸 미지목</span></span>'
+            + PEND_ROW +
+            '</span></span>' + PEND_BADGE + '</th>')
 TIP5 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
         '<span class="tip-panel">(투자실행금액 대비 × PSA) ÷ (PSA + PSC)'
         '<span class="tip-row"><span>PSA</span><span class="tip-green">%s원</span></span>'
@@ -190,6 +206,16 @@ def put_ty_th(s):
                      r'<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>.*?</th>',
                      lambda _m: TY_TH, s, flags=re.S)
     assert n == 1, 'Ty수익율 열머리 %d건 — 1건이라야 한다' % n
+    return out
+
+
+def put_third_th(s):
+    """③ 열머리 — 통합본 thirdTh() 와 같은 자리·같은 마크업. 여러 번 돌려도 겹쳐 붙지 않는다."""
+    out, n = re.subn(r'<th class="num">투자실행금</th>|'
+                     r'<th class="num"><span class="tooltip wide">'
+                     r'<span class="tip-anchor">투자실행금</span>.*?</th>',
+                     lambda _m: THIRD_TH, s, flags=re.S)
+    assert n == 1, '투자실행금 열머리 %d건 — 1건이라야 한다' % n
     return out
 
 
@@ -325,6 +351,7 @@ def one(name, pre, frm, to, gran):
         '%s 현황 카드 엑셀 링크 %d건' % (name, n)
     s = re.sub(r'(href="assets/xlsx/)투자수익현황_[^"]+(" download)', r'\g<1>%s\g<2>' % xls_status, s)
     s = put_ty_th(s)
+    s = put_third_th(s)
     s = put_title(s, name)
 
     io.open(p, 'w', encoding='utf-8').write(s)

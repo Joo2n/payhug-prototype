@@ -91,9 +91,9 @@
  },
  {
   "no": 16,
-  "name": "문서 사용법 안내 0건 — 배포 HTML 40장",
-  "r": "PASS",
-  "d": "없음"
+  "name": "문서 사용법 안내 0건 — 배포 HTML 41장",
+  "r": "FAIL",
+  "d": "glossary.html 1건 — 대문자 D 를 금융일수, 소문자 d 를 오늘 날짜로 갈라 쓴 이 표기는 "
  },
  {
   "no": 17,
@@ -116,8 +116,8 @@
  {
   "no": 20,
   "name": ".html 파일명 화면 노출 = 레지스터 등재분뿐",
-  "r": "PASS",
-  "d": "등재 6건 일치"
+  "r": "FAIL",
+  "d": "terms-edit.html invest-assets.html 13건(등재 0), invest-sim.html 4건(등재 0), coocon.html 1건(등재 0), contracts.html 1건(등재 0), merchants.html 1건(등재 0), invest-profit.html 20건(등재 0), app.html 1건(등재 0)"
  },
  {
   "no": 21,
@@ -127,9 +127,9 @@
  },
  {
   "no": 22,
-  "name": "G-1 문체 — 배포 HTML 40장",
-  "r": "PASS",
-  "d": "위반 0"
+  "name": "G-1 문체 — 배포 HTML 41장",
+  "r": "FAIL",
+  "d": "terms-edit.html 13"
  },
  {
   "no": 27,
@@ -146,14 +146,14 @@
  {
   "no": 28,
   "name": "배포 루트 HTML 전량이 명단·랜딩에 든다",
-  "r": "PASS",
-  "d": "루트 40장 · 명단 22건 전량 일치"
+  "r": "FAIL",
+  "d": "명단 밖 terms-edit.html 생성기 명단 밖, terms-edit.html 랜딩 미등재"
  },
  {
   "no": 26,
   "name": "G-1 문체 — 통합본 (등재된 제품 UI 원문만 예외)",
   "r": "PASS",
-  "d": "등재 외 0건 / 예외 등재 16종 실측 63건 / 비밀번호 메시지 상수 참조 16건"
+  "d": "등재 외 0건 / 예외 등재 16종 실측 67건 / 비밀번호 메시지 상수 참조 16건"
  },
  {
   "no": 23,

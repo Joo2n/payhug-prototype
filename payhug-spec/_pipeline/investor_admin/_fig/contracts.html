@@ -12,12 +12,6 @@
   /* 화면 전용 — 색은 base.css 변수만 사용 */
   .chk { width: 16px; height: 16px; accent-color: var(--primary); flex-shrink: 0; cursor: pointer; vertical-align: middle; }
   .tbl tbody tr.selected td { background: var(--primary-50); }
-  .file-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-weight: 500; color: var(--primary-600); text-decoration: none;
-  }
-  .file-link:hover { text-decoration: underline; }
-  .file-link svg { width: 16px; height: 16px; flex-shrink: 0; }
   .tbl-head-bar {
     display: flex; align-items: center; justify-content: space-between;
     padding: 16px 20px; border-bottom: 1px solid var(--gray-100);
@@ -130,15 +124,15 @@
       <div class="tbl-head-bar">
         <div>
           <span class="card-title" style="margin:0">재양도합의서 목록</span>
-          <span style="font-size:12px; color:var(--gray-400); margin-left:8px">총 <b class="mono">16</b>건</span>
+          <span style="font-size:12px; color:var(--gray-400); margin-left:8px">총 <b class="mono">8</b>건</span>
         </div>
         <div class="list-tools">
           <label class="pg-size">보기<select class="input sz" aria-label="보기 갯수"><option value="10" selected>10개</option><option value="20">20개</option><option value="50">50개</option></select></label>
           <button class="btn btn-ghost" disabled>선택 해제</button>
-          <a class="btn btn-excel" href="assets/docs/전자서명결과_선택3건_20260827.txt" download>
+          <button class="btn btn-excel" disabled>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             선택 문서 다운로드
-          </a>
+          </button>
         </div>
       </div>
       <div class="tbl-scroll">
@@ -154,84 +148,68 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="clickable selected">
-              <td><input type="checkbox" class="chk" checked></td>
+            <tr>
+              <td><input type="checkbox" class="chk" disabled></td>
               <td class="no">1</td>
               <td class="mono">M2026-0001</td>
               <td><span class="name">김성호떡볶이 본점</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0001.txt" target="_blank" rel="noopener">전자서명결과_M2026-0001.txt</a></td>
-              <td class="center"><span class="badge badge-green">하나인증서</span></td>
+              <td><span class="badge badge-amber">서명 대기</span></td>
+              <td class="center"><span class="none">-</span></td>
             </tr>
-            <tr class="clickable">
-              <td><input type="checkbox" class="chk"></td>
+            <tr class="clickable selected">
+              <td><input type="checkbox" class="chk" checked></td>
               <td class="no">2</td>
-              <td class="mono">M2026-0002</td>
-              <td><span class="name">달빛곱창 홍대점</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0002.txt" target="_blank" rel="noopener">전자서명결과_M2026-0002.txt</a></td>
+              <td class="mono">M2026-0007</td>
+              <td><span class="name">초록치킨 서초점</span></td>
+              <td><button type="button" class="btn btn-excel" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> 문서 다운로드</button></td>
               <td class="center"><span class="badge badge-green">하나인증서</span></td>
             </tr>
-            <tr class="clickable">
-              <td><input type="checkbox" class="chk"></td>
+            <tr class="clickable selected">
+              <td><input type="checkbox" class="chk" checked></td>
               <td class="no">3</td>
-              <td class="mono">M2026-0003</td>
-              <td><span class="name">성호분식 2호점</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0003.txt" target="_blank" rel="noopener">전자서명결과_M2026-0003.txt</a></td>
+              <td class="mono">M2026-0006</td>
+              <td><span class="name">김밥나라</span></td>
+              <td><button type="button" class="btn btn-excel" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> 문서 다운로드</button></td>
               <td class="center"><span class="badge badge-green">하나인증서</span></td>
             </tr>
             <tr class="clickable selected">
               <td><input type="checkbox" class="chk" checked></td>
               <td class="no">4</td>
+              <td class="mono">M2026-0008</td>
+              <td><span class="name">골목냉면</span></td>
+              <td><button type="button" class="btn btn-excel" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> 문서 다운로드</button></td>
+              <td class="center"><span class="badge badge-green">하나인증서</span></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="chk" disabled></td>
+              <td class="no">5</td>
+              <td class="mono">M2026-0002</td>
+              <td><span class="name">달빛곱창 홍대점</span></td>
+              <td><span class="badge badge-amber">서명 대기</span></td>
+              <td class="center"><span class="none">-</span></td>
+            </tr>
+            <tr class="clickable">
+              <td><input type="checkbox" class="chk"></td>
+              <td class="no">6</td>
+              <td class="mono">M2026-0009</td>
+              <td><span class="name">청춘포차 신촌점</span></td>
+              <td><button type="button" class="btn btn-excel" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> 문서 다운로드</button></td>
+              <td class="center"><span class="badge badge-green">하나인증서</span></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="chk" disabled></td>
+              <td class="no">7</td>
               <td class="mono">M2026-0004</td>
               <td><span class="name">바다마루 횟집</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0004.txt" target="_blank" rel="noopener">전자서명결과_M2026-0004.txt</a></td>
-              <td class="center"><span class="badge badge-green">하나인증서</span></td>
-            </tr>
-            <tr class="clickable">
-              <td><input type="checkbox" class="chk"></td>
-              <td class="no">5</td>
-              <td class="mono">M2026-0005</td>
-              <td><span class="name">한강커피 잠원점</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0005.txt" target="_blank" rel="noopener">전자서명결과_M2026-0005.txt</a></td>
-              <td class="center"><span class="badge badge-green">하나인증서</span></td>
-            </tr>
-            <tr class="clickable selected">
-              <td><input type="checkbox" class="chk" checked></td>
-              <td class="no">6</td>
-              <td class="mono">M2026-0006</td>
-              <td><span class="name">김밥나라</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0006.txt" target="_blank" rel="noopener">전자서명결과_M2026-0006.txt</a></td>
-              <td class="center"><span class="badge badge-green">하나인증서</span></td>
-            </tr>
-            <tr class="clickable">
-              <td><input type="checkbox" class="chk"></td>
-              <td class="no">7</td>
-              <td class="mono">M2026-0007</td>
-              <td><span class="name">초록치킨 서초점</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0007.txt" target="_blank" rel="noopener">전자서명결과_M2026-0007.txt</a></td>
-              <td class="center"><span class="badge badge-green">하나인증서</span></td>
+              <td><span class="badge badge-amber">서명 대기</span></td>
+              <td class="center"><span class="none">-</span></td>
             </tr>
             <tr class="clickable">
               <td><input type="checkbox" class="chk"></td>
               <td class="no">8</td>
-              <td class="mono">M2026-0008</td>
-              <td><span class="name">골목냉면</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0008.txt" target="_blank" rel="noopener">전자서명결과_M2026-0008.txt</a></td>
-              <td class="center"><span class="badge badge-green">하나인증서</span></td>
-            </tr>
-            <tr class="clickable">
-              <td><input type="checkbox" class="chk"></td>
-              <td class="no">9</td>
-              <td class="mono">M2026-0009</td>
-              <td><span class="name">청춘포차 신촌점</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0009.txt" target="_blank" rel="noopener">전자서명결과_M2026-0009.txt</a></td>
-              <td class="center"><span class="badge badge-green">하나인증서</span></td>
-            </tr>
-            <tr class="clickable">
-              <td><input type="checkbox" class="chk"></td>
-              <td class="no">10</td>
-              <td class="mono">M2026-0010</td>
-              <td><span class="name">왕십리곱창타운</span></td>
-              <td><a class="file-link" href="assets/docs/전자서명결과_M2026-0010.txt" target="_blank" rel="noopener">전자서명결과_M2026-0010.txt</a></td>
+              <td class="mono">M2026-0005</td>
+              <td><span class="name">한강커피 잠원점</span></td>
+              <td><button type="button" class="btn btn-excel" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> 문서 다운로드</button></td>
               <td class="center"><span class="badge badge-green">하나인증서</span></td>
             </tr>
           </tbody>
@@ -244,8 +222,7 @@
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
           </button>
           <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-arrow">
+          <button class="page-arrow" disabled>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </button>
         </div>

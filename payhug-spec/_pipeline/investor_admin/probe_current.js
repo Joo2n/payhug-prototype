@@ -1,5 +1,7 @@
 /* 현재 app.html(타 조 재빌드본) 대상 최소 점검 — 상태 20 해시 도달 + 콘솔 에러 */
 const http=require('http'), fs=require('fs'), path=require('path'), os=require('os'), {spawn}=require('child_process');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const REPO='/Users/semi/cursor/payhug-investor-admin';
 const PORT=8600+(process.pid%90), DPORT=9600+(process.pid%90);
 const MIME={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'};
@@ -15,7 +17,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   await new Promise(r=>srv.listen(PORT,r));
   const prof=fs.mkdtempSync(path.join(os.tmpdir(),'phprobe-'));
   const ch=spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    ['--headless=new','--remote-debugging-port='+DPORT,'--user-data-dir='+prof,'--no-first-run','--disable-gpu','--window-size=1440,1200','about:blank'],{stdio:'ignore'});
+    ['--headless=new','--remote-debugging-port='+DPORT,CHROME_DL.args(PH_DL, prof)[0],'--no-first-run','--disable-gpu','--window-size=1440,1200','about:blank'],{stdio:'ignore'});
   let t=null;for(let i=0;i<60&&!t;i++){await sleep(300);
     try{t=await new Promise((res,rej)=>http.get({host:'127.0.0.1',port:DPORT,path:'/json'},r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>res(JSON.parse(d)))}).on('error',rej));}catch(e){t=null;}}
   const pg=t.find(x=>x.type==='page');

@@ -5,16 +5,23 @@
 2) 수식 셀 개수 — 집계 칸이 값이 아니라 수식인지
 3) `검산` 시트 각 행의 차를 파이썬으로 독립 계산 (원본을 다시 읽어서)
 4) `일자별 365일` 전 셀이 원본 K6:Q370 과 1:1 일치하는지
+5) 가중 기준 갈라적기 — 이 워크북의 W·Ty 는 MAU(이용자 수) 비중에서 나온 값이다.
+   그 값이 나오는 자리마다 ±4행 안에 `참고`·`시장 평균`·`MAU` 중 하나가 있어야 하고,
+   `가중평균` 시트에 금액 기준 화면 값(ledger_facts.json 의 w·ty)을 갈라 적은 줄이 있어야 한다.
+   MAU 값 자체는 지우지 않는다 — 자리가 0건이면 FAIL 이다.
 """
 import datetime as dt
 import glob
+import json
 import os
+import re
 import sys
 
 import openpyxl
 
 SRC = '/Users/semi/Downloads/정산주기.xlsx'
-OUTDIR = '/Users/semi/Downloads/payhug_정산주기_정리'
+#   기본은 실물 산출 폴더. 음성 시험 때만 CYCLE_OUTDIR 로 사본 폴더를 가리킨다.
+OUTDIR = os.environ.get('CYCLE_OUTDIR', '/Users/semi/Downloads/payhug_정산주기_정리')
 WEEK = '월화수목금토일'
 COLS = ['E', 'F', 'G', 'H']
 
@@ -193,6 +200,56 @@ def main():
     print('플랫폼 요약 요일 수식 %d행 — 원본 관측치와 일치 %d · 불일치 %d'
           % (fok + fbad, fok, fbad))
     ok = ok and fbad == 0
+
+    # ── 가중 기준 갈라적기 ────────────────────────────────────
+    BAN = re.compile(r'(?<![\d.])65(?:\.0+)?\s*%|(?<![\d.])2\.7504'
+                     r'|(?<![\d.])14\.60?0*\s*%')
+    MARK = ('참고', '시장 평균', 'MAU')
+    hits, unmarked = [], []
+    for wsx in sv.worksheets:
+        for row in wsx.iter_rows():
+            for c in row:
+                if c.value is None or not BAN.search(str(c.value)):
+                    continue
+                where = '%s!%s' % (wsx.title, c.coordinate)
+                hits.append(where)
+                near = ' '.join(str(x.value)
+                                for rr in wsx.iter_rows(min_row=max(1, c.row - 4),
+                                                        max_row=c.row + 4)
+                                for x in rr if x.value is not None)
+                if not any(k in near for k in MARK):
+                    unmarked.append(where)
+    fx = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                     'ledger_facts.json'), encoding='utf-8'))
+    wv = sv['가중평균']
+    mtxt = ' '.join(str(wv.cell(r, c).value)
+                    for r in range(1, wv.max_row + 1)
+                    for c in range(1, wv.max_column + 1) if wv.cell(r, c).value)
+    need = {'표식 낱말': any(k in mtxt for k in MARK), '금액 기준 명시': '금액' in mtxt,
+            '화면 W %s' % fx['w']: fx['w'] in mtxt,
+            '화면 Ty %s' % fx['ty']: fx['ty'] in mtxt}
+    print('MAU 값 자리 %d곳%s' % (len(hits), (' — ' + ', '.join(hits)) if hits else ''))
+    print('갈라 적지 않은 자리 %d곳%s'
+          % (len(unmarked), (' — ' + ', '.join(unmarked)) if unmarked else ''))
+    print('가중평균 갈라적기 줄 — %s'
+          % ' · '.join('%s %s' % (k, 'O' if v else 'X') for k, v in need.items()))
+    ok = ok and bool(hits) and not unmarked and all(need.values())
+
+    # ── 워크북 XML 금지어 ─────────────────────────────────────
+    #   셀 값만 보면 정의된 이름·시트 이름·데이터 유효성에 숨은 것을 못 잡는다.
+    #   금지어 판정기는 audit_xlsx_check 한 곳에만 둔다 — 기준을 두 벌 두지 않는다.
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import audit_xlsx_check as AX
+    ban = AX.banned_xml(out)
+    print('XML 조각 %d개 · 금지어 잔여 %d건 · 예외 자리 %s'
+          % (ban['검사한 XML 조각'], len(ban['금지어 잔여']), ban['예외 자리 실측']))
+    for h in ban['금지어 잔여'][:5]:
+        print('  금지어: %s  %s' % (h[0], h[1]))
+    #   이 워크북에는 예외 자리가 없다 — 하나라도 생기면 FAIL 이다.
+    xml_ok = (ban['검사한 XML 조각'] > 0 and not ban['금지어 잔여']
+              and set(ban['예외 자리 실측'].values()) == {0})
+    print('XML 금지어 판정 — %s' % ('O' if xml_ok else 'X'))
+    ok = ok and xml_ok
 
     print()
     print('판정: %s' % ('PASS' if ok else 'FAIL'))

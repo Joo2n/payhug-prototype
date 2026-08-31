@@ -6,6 +6,8 @@
    macOS 헤드리스는 --window-size=1440,H 가 실제 뷰포트 1440×(H-87) 로 잡히는 경우가 있어 87 을 더해 둔다.
    실제로 잡힌 뷰포트는 결과 맨 아래 '뷰포트' 줄에 그대로 적는다. */
 const http = require('http'), fs = require('fs'), path = require('path'), os = require('os'), { spawn } = require('child_process');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const REPO  = '/Users/semi/cursor/payhug-investor-admin';
 const OUT   = '/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/verify_period_result.json';
 const PORT  = 8890 + (process.pid % 40), DPORT = 9590 + (process.pid % 40);
@@ -105,7 +107,7 @@ const fieldBox = which => ev(`
 async function main(){
   await new Promise(r => server.listen(PORT, r));
   const prof = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-'));
-  const ch = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT, '--user-data-dir=' + prof,
+  const ch = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT, CHROME_DL.args(PH_DL, prof)[0] /* '--user-data-dir=' + prof */,
     '--no-first-run', '--disable-gpu', '--window-size=1440,' + WIN_H, 'about:blank'], {stdio:'ignore'});
   let t = null;
   for(let i = 0; i < 60 && !t; i++){

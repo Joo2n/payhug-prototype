@@ -2,6 +2,8 @@
    CDP 로 실제 마우스를 올리고 실제 Tab 키를 눌러 computed style 을 읽는다.
    확대는 transform 이라 흐름을 밀지 않는다 — 표 폭·표 높이·이웃 행 위치·문서 가로폭으로 잰다. */
 const http=require('http'),fs=require('fs'),path=require('path'),os=require('os'),{spawn}=require('child_process');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const REPO='/Users/semi/cursor/payhug-investor-admin';
 const OUT ='/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/verify_rows_result.json';
 const OUTDIR='/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin';
@@ -107,7 +109,7 @@ async function probeNoTabStop(label, url, sel, live){
 async function main(){
   await new Promise(r=>server.listen(PORT,r));
   const prof=fs.mkdtempSync(path.join(os.tmpdir(),'vr-'));
-  const ch=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,'--user-data-dir='+prof,'--no-first-run','--disable-gpu','--window-size=1440,1200','about:blank'],{stdio:'ignore'});
+  const ch=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,CHROME_DL.args(PH_DL, prof)[0],'--no-first-run','--disable-gpu','--window-size=1440,1200','about:blank'],{stdio:'ignore'});
   let t=null;for(let i=0;i<60&&!t;i++){await sleep(300);try{t=await new Promise((res,rej)=>{http.get({host:'127.0.0.1',port:DPORT,path:'/json'},r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>res(JSON.parse(d)));}).on('error',rej);});}catch(e){t=null;}}
   const pg=t.find(x=>x.type==='page'); ws=new WebSocket(pg.webSocketDebuggerUrl);
   await new Promise(r=>ws.addEventListener('open',r));

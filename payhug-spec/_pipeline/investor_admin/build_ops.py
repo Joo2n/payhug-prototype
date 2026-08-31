@@ -11,31 +11,19 @@ MAP = json.load(open(os.path.join(BASE, 'figma_map_investor.json')))
 H = json.load(open(os.path.join(BASE, 'fig_heights.json')))
 
 # 판정: replace 교체 · keep 그대로 · hold 보류 · retire 폐기 · new 신규
-VERDICT = {n: 'replace' for n in [
-    'invest-assets', 'invest-assets--download',
-    'invest-assets--cert-confirm', 'invest-assets--empty', 'certificate',
-    'invest-profit', 'invest-profit--monthly', 'invest-profit--empty',
-    'coocon', 'merchants', 'merchants--filtered', 'merchants--empty',
-    'acquisition', 'acquisition--confirm', 'acquisition--signing', 'acquisition--done',
-    'contracts', 'contracts--all', 'contracts--empty',
-    'password', 'password--weak', 'password--error', 'password--done',
-    'index', 'login',
-    'xls-assets-status', 'xls-assets-merchant', 'xls-profit-status', 'xls-profit-daily',
-]}
+#
+# 판정표에 프레임 이름을 손으로 적지 않는다. 매핑표에 서 있는 프레임은 전부 `replace` 가 기본이고,
+# 아래 두 표에 적힌 것만 그 판정에서 빠진다. 임포트가 끝난 프레임이 매핑표에 들어오는 순간
+# 판정도 같이 따라오므로, 이미 올라간 화면이 `new` 로 남아 있는 일이 생기지 않는다.
 # 동결 b0717bf — 사이드바 8메뉴화(D-35)와 숫자 전면 교체(D-31)가 전 프레임에 걸린다.
 # 폐기 프레임은 VERDICT 가 아니라 매핑표 retired 가 갖는다 — 원본 파일이 없어 대응표에서도 빠지기 때문이다.
+KEEP = set()
 HOLD_REASON = {}
-NEW = [
-    {'file': 'invest-profit--weekly', 'frame_name': '03-c 투자 수익 — 주별', 'x': 3200, 'y': 7839,
-     'note': '04-a 폐기로 비는 자리. 투자 수익 계열 행에 붙는다'},
-    {'file': 'acquisition--doc', 'frame_name': '06-d 정산채권 양수 — 계약서 내용', 'x': 4800, 'y': 13065,
-     'note': '양수 계열 행의 빈 슬롯'},
-    {'file': 'invest-sim', 'frame_name': '15 투자 시뮬레이션', 'x': 1600, 'y': 23517,
-     'note': '신규 메뉴. 기존 01~14 번호를 건드리지 않으려고 끝번으로 붙인다'},
-    {'file': 'invest-sim--result', 'frame_name': '15-a 투자 시뮬레이션 — 실행 결과', 'x': 3200, 'y': 23517,
-     'note': '상동'},
-]
+
+# 아직 매핑표에 자리가 없는 화면만 여기 적는다. 매핑표에 들어온 것을 남겨 두면 아래에서 죽는다.
+NEW = []
 HOLD_NEW = []
+# 페이지에 남아 있던 옛 좌표의 잔여 프레임 — 매핑표 deleted_orphans 에 든 것은 이미 지웠다.
 ORPHANS = [
     ('3189:14605', '01 투자 자산', -6797, -4575, 1269),
     ('3189:15019', '02 투자자산 증명서', -6797, -2392, 1306),
@@ -48,6 +36,15 @@ ORPHANS = [
 ]
 
 by_file = {f['file'][:-5]: f for f in MAP['frames']}
+VERDICT = {n: ('hold' if n in HOLD_REASON else 'keep' if n in KEEP else 'replace')
+           for n in by_file}
+for n in NEW:
+    if n['file'] in by_file:
+        raise SystemExit('신규가 아니라 이미 매핑표에 있다: %s — NEW 에서 빼라' % n['file'])
+_unplaced = sorted(set(H) - set(by_file) - {n['file'] for n in NEW})
+if _unplaced:
+    raise SystemExit('높이만 있고 판정이 없다: %s' % ', '.join(_unplaced))
+DONE_ORPHANS = set(MAP.get('deleted_orphans', []))
 ops = {'file_key': MAP['file_key'], 'page_node_id': MAP['page_node_id'],
        'capture': {'server': 'http://localhost:8903 (루트 = _fig)',
                    'script': 'figcap_ia.sh <file> <captureId> <vh> [delay]',
@@ -80,6 +77,8 @@ for r in MAP['retired']:
 for n in HOLD_NEW:
     ops['hold_new'].append(dict(n))
 for nid, nm, x, y, h in ORPHANS:
+    if nid in DONE_ORPHANS:
+        continue
     ops['delete_orphans'].append({'node_id': nid, 'frame_name': nm, 'x': x, 'y': y, 'h': h})
 
 json.dump(ops, open(os.path.join(BASE, 'figma_ops_0828.json'), 'w'), ensure_ascii=False, indent=1)

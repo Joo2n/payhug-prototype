@@ -15,12 +15,13 @@
     하루 투자실행금   = 정산예정일이 그날인 채권의 Sum Ai   (유량 계통)
 
     투자수익(채권매입수수료)은 순지급액이 앵커다 — D-31 확정. 여기서 부족액을 뺀다.
-      MD-1i = 채권매입수수료 - max(0, 미지급금 - 과지급금)
-      BD-1i = 순지급액       - max(0, 미지급금 - 과지급금)
-      하루 투자수익  = Sum MD-1i,   하루 상환액 = Sum BD-1i
+      M(d-1)i = 채권매입수수료 - max(0, 미지급금 - 과지급금)
+      B(d-1)i = 순지급액       - max(0, 미지급금 - 과지급금)
+      하루 투자수익  = Sum M(d-1)i,   하루 상환액 = Sum B(d-1)i
+      d-1 은 어제 날짜가 아니라 `정산예정일이 어제인 대상정산금채권 집합` 이다.
       하루 ty수익율  = (투자수익 / 투자실행금 x 100) x 365 / w금융일수
     투자실행금 x 할인율로 잡으면 앵커가 (1 - 할인율)배만큼 작아져 투자 시뮬레이션과 갈린다.
-    S입금부족율      = Sum SLi / Sum SAi   (표본 = 선정산일 D-20 ~ D-11)
+    S입금부족율      = Sum SLi / Sum SAi   (표본 = 선정산일 d-20 ~ d-11)
       SLi = 미지급액 - 과지급액 ,  SAi = 순지급액 x (1 - 할인율)
 
 이 파일이 손으로 적는 것은 아래 셋뿐이다. 나머지는 전부 위 산식으로 나온다.
@@ -35,7 +36,7 @@ w금융일수의 모집단 — 대상정산금채권 전체
     이라 회수 여부 조건이 없다. 대표가 낸 `정산주기.xlsx` H41 의 값도 2025년 365일
     발생분 전수의 가중평균이다. 그래서 발생 기준으로 센다.
     가맹점별 W 도 같다. 옆 칸 투자금액(미회수 Sum Ai)은 하루 선정산액 x (1 - 할인율) x 그
-    가맹점의 평균만기라 W 와 같은 만기를 쓴다 — 두 칸이 어긋나지 않는다.
+    가맹점의 w금융일수라 W 와 같은 금융일수를 쓴다 — 두 칸이 어긋나지 않는다.
 
 가맹점 규모 구간 — 기준은 일일 선정산 규모다. 대표 밴드 100만~1,000만을 3등분한 경계다.
     고액  일 500만원 이상       2건   배달 의존도 높은 상위 2곳
@@ -46,7 +47,7 @@ w금융일수의 모집단 — 대상정산금채권 전체
 """
 import io, json, math, os, sys
 from datetime import date, timedelta
-from decimal import Decimal as D, ROUND_HALF_UP, ROUND_FLOOR
+from decimal import Decimal as D, ROUND_HALF_UP, ROUND_FLOOR, localcontext
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from platform_duration import (DURATION, ORDER, LABEL, FLOOR, CEIL, BUCKET, OBS_DAYS,
@@ -61,10 +62,10 @@ BOOK = 80000000                    # 투자실행액 — 규모 기준(불변식
 CASH = 20000000                    # 순현금 — 쿠콘 가상계좌 현금잔액. 채권과 무관한 별개 스톡이라
                                    #          원장이 만들지 않고 그대로 받는 입력이다(불변식).
 
-ASOF      = date(2026, 8, 27)      # 기준일 D
+ASOF      = date(2026, 8, 27)      # 기준일 d (오늘 날짜). 금융일수 D 와 다른 글자다
 FIRST_DUE = date(2026, 3, 1)       # 일별 표 첫 행(정산예정일)
 FIRST_ADV = FIRST_DUE - timedelta(days=DI_MAX)     # 첫 행을 채우는 가장 이른 선정산일
-SAMPLE    = (ASOF - timedelta(days=20), ASOF - timedelta(days=11))   # S 표본집합 구간
+SAMPLE    = (ASOF - timedelta(days=20), ASOF - timedelta(days=11))   # S 표본집합 구간 d-20 ~ d-11
 
 TIER_NAME = {'H': '고액', 'M': '평범', 'L': '소액'}
 TIER_CUT  = (5000000, 2000000)     # 고액 / 평범 경계 — 일일 선정산 규모
@@ -111,8 +112,8 @@ BOOKROWS = [
 #   SIZE  그날 선정산 규모의 증감. 주말 주문분이 몰리는 요일과 카드 매입분이 몰리는 요일이
 #         갈려 하루치가 평균에서 ±7% 안쪽으로 흔들린다.
 #   TILT  그날 채권 묶음의 배달 의존도 틸트. + 면 그날 b 가 그만큼 커진다(b x (1 + t)).
-#         주기를 7일이 아닌 13·29일로 잡은 것은, 만기 1~13일이 섞이면 7일 주기가 상쇄돼
-#         정산예정일 기준 묶음에서 만기 차이가 드러나지 않기 때문이다.
+#         주기를 7일이 아닌 13·29일로 잡은 것은, 금융일수 1~13일이 섞이면 7일 주기가 상쇄돼
+#         정산예정일 기준 묶음에서 금융일수 차이가 드러나지 않기 때문이다.
 #         진폭의 상한은 b x (1 + t) <= 1 이다. 로스터 최대 b 는 초록치킨 서초점 0.80,
 #         틸트 최대는 0.216237 이라 0.80 x 1.216237 = 0.973 — 구성비가 [0, 1] 안에 남는다.
 #         구성비 원천이 MAU(카드 65%)에서 금액 실측(카드 42.83%)으로 바뀌며 규모가중 b 가
@@ -133,11 +134,85 @@ def r2(x):  return D(x).quantize(D('0.01'), rounding=ROUND_HALF_UP)
 def fl(x):  return int(D(x).quantize(D('1'), rounding=ROUND_FLOOR))
 def ri(x):  return int(D(x).quantize(D('1'), rounding=ROUND_HALF_UP))
 def ty_of(w): return r2(RPCT * DAYS / D(str(w)))
-def day_ty_raw(profit, execu, w):
-    """일별 행 ty수익율 = SMR x 365 / SD — 통합본 rollupBy·엑셀 bucket 과 같은 규칙."""
-    return (D(profit) / D(execu) * D(100)) * DAYS / D(str(w))
-def day_ty(profit, execu, w): return r2(day_ty_raw(profit, execu, w))
 def ymd(d): return d.strftime('%Y-%m-%d')
+
+
+# ══ ③④⑤⑥ 단일 원천 — 대표 정의서 [2번 이미지] 번호 ═══════════════
+#     ④ = PSMR x 365 / PSD
+#     ⑤ = (④ x PSA) / (PSA + PSC)
+#     ⑥ = (④ ÷ ③) x 365 ÷ ⑤
+#   화면(build_app.py) · 시뮬 낱장(build_sim_static.py) · 수익 낱장(roster16_model.ty_asset)
+#   · 내려받는 엑셀(build_xlsx.py) 이 전부 아래 함수를 거쳐 값을 받는다.
+#   자바스크립트 쪽은 같은 식을 TY3_JS · TY5_JS · TY6_JS 로 내려보내 생성기가 심는다 —
+#   파이썬과 화면이 두 벌로 갈리지 않는다.
+#   숫자형을 고정하지 않는다 — 원장은 Decimal, 시뮬 낱장은 float 로 같은 함수를 쓴다.
+
+TY_PENDING = '미확정'          # 화면 배지에 쓰는 낱말. 새 문구를 짓지 않는다.
+
+# ── ⑤ 투자자산 대비 Ty수익율 ──────────────────────────────────────
+#   미확정 · 대표 재전달 대기. 2026-08-31 회의에서 ⑤ 는 「수식 오류, 새로 작성해 전달」로 닫혔다
+#   (meeting_0831/ceo_definitions_20260831.txt). 아래 식은 대표 정의서 [2번 이미지] 원문 그대로다 —
+#     「투자자산 대비 ty수익율 (이미지의 ⑤) = (이미지의 ④ x PSA) / (PSA + PSC)」
+#   새 수식이 오면 고칠 자리는 ty_asset() 본문 한 줄과 그 짝인 TY5_JS 한 줄뿐이다.
+TY5_STATUS = TY_PENDING
+TY5_SOURCE = 'ceo_definitions.md [2번 이미지] · 대표 재전달 대기'
+
+
+def ty_asset(ty4, psa, psc):
+    """⑤ = (④ x PSA) / (PSA + PSC).  PSA = 기간 투자실행금 합, PSC = 기간 EC 합."""
+    tot = psa + psc
+    if not tot:
+        return 0
+    # Decimal 은 기본 28자리에서 끊긴다. 중간 곱을 넉넉히 잡아 PSC 가 0 일 때
+    # ④ 가 마지막 자리를 잃지 않고 그대로 나오게 한다(float 는 이 설정과 무관).
+    with localcontext() as ctx:
+        ctx.prec = 60
+        return ty4 * psa / tot
+
+
+# ── ③ ⑥ 의 분모 ─────────────────────────────────────────────────
+#   대표는 00:59:21 에 ③ 을 「저 위에 있는 현황에 있는 거 … 그 기간 전체에 대한 숫자」까지만
+#   좁혔다. 현황의 **어느 칸**인지는 지목되지 않았다 — 읽기 미확정(U-03 · F-23 · TP-66).
+#   화면은 일별 표 열 `투자실행금` 으로 읽고 있고, 그 읽기를 여기 한 곳에 모은다.
+TY3_STATUS = TY_PENDING
+TY3_SOURCE = '대표 2026-08-31 회의 00:59:21 「상단 현황의 기간 전체 숫자」 · 칸 미지목'
+
+
+def ty_third(execu):
+    """③ — ⑥ 의 분모. 일별 표 열 `투자실행금` 으로 읽는다(미확정)."""
+    return execu
+
+
+# ── ⑥ 행 Ty수익율 ────────────────────────────────────────────────
+#   행 하나 = 정산예정일이 그 날짜인 대상정산금채권 집합이다. 「그날」이 아니라 그 집합이다.
+#   ③·④·⑤ 를 일별 표 세 열(③투자실행금 ④투자 수익 ⑤W금융일수)로 읽는다 — 읽기 미확정.
+#   나온 값은 ⑤ 함수 ty_asset() 을 거친다. 일별 EC 원장이 없어 TY6_PSC 가 0 이고,
+#   0 인 동안 ⑥ 은 ④ 와 같은 값이다. ty_asset() 을 고치면 ⑥ 이 따라 움직인다.
+TY6_PSC = 0
+
+
+def ty_row(profit, execu, w, days=None, psc=None):
+    """⑥ = (④ ÷ ③) x 365 ÷ ⑤ — 한 행."""
+    third = ty_third(execu)
+    if not (third and w):
+        return 0
+    four = (profit / third * 100) * (DAYS if days is None else days) / w
+    return ty_asset(four, third, TY6_PSC if psc is None else psc)
+
+
+def day_ty_raw(profit, execu, w):
+    """일별 행 ty수익율 — 통합본 rollupBy·엑셀 bucket 과 같은 규칙(⑥)."""
+    return ty_row(D(profit), D(execu), D(str(w)))
+def day_ty(profit, execu, w): return r2(day_ty_raw(profit, execu, w))
+
+
+# ── 화면(자바스크립트)이 심는 같은 식 ─────────────────────────────
+#   build_app.py 가 @@TY3JS@@ · @@TY5JS@@ · @@TY6JS@@ 로 받아 app.html 에 그대로 넣는다.
+TY3_JS = 'return execu;'
+TY5_JS = 'var tot = psa + psc;\n  return tot ? ty4 * psa / tot : 0;'
+TY6_JS = ('var third = ty3(execu);\n'
+          '  if(!(third && w)) return 0;\n'
+          '  return ty5((profit / third * 100) * 365 / w, third, TY6_PSC);')
 
 
 def _size(k, wd):
@@ -148,7 +223,7 @@ def _tilt(k):
     return sum(a * math.sin(2 * math.pi * (k + ph) / p) for a, p, ph in TILT)
 
 
-# 선정산일 축 — 첫 행(정산예정일 2026-03-01)을 채우려면 만기 최대치만큼 앞서 시작한다.
+# 선정산일 축 — 첫 행(정산예정일 2026-03-01)을 채우려면 금융일수 최대치만큼 앞서 시작한다.
 ADV_DAYS = [FIRST_ADV + timedelta(days=i) for i in range((ASOF - FIRST_ADV).days + 1)]
 
 _size_raw = [_size(i, d.weekday()) for i, d in enumerate(ADV_DAYS)]
@@ -159,7 +234,7 @@ _tilt_raw = [_tilt(i) for i in range(len(ADV_DAYS))]
 _zt = sum(D(str(t)) * s for t, s in zip(_tilt_raw, SIZE)) / sum(SIZE)
 DAYTILT = [D(str(t)) - _zt for t in _tilt_raw]               # 규모가중 평균 정확히 0
 #   → 규모가중 평균이 0이므로 가맹점별·전체 w금융일수가 틸트에 흔들리지 않는다.
-#     하루치 묶음만 틸트만큼 만기가 길거나 짧아진다.
+#     하루치 묶음만 틸트만큼 금융일수가 길거나 짧아진다.
 
 
 def tilted(b, t):
@@ -169,7 +244,7 @@ def tilted(b, t):
 
 
 # ══ 채권 생성 ═══════════════════════════════════════════════════
-#   한 칸 = (가맹점, 플랫폼, 만기 버킷, 선정산일) → 채권 한 건.
+#   한 칸 = (가맹점, 플랫폼, 금융일수 버킷, 선정산일) → 채권 한 건.
 #   대표 정의서의 채권 ID(가맹점ID & 플랫폼ID & 매출일자)와 같은 잘림이다.
 def _cells():
     out = []
@@ -299,8 +374,9 @@ def _daily():
         g = agg[d]
         w = r2(D(g['wx']) / D(g['ai']))
         fee = fl(D(g['net']) * RATE)        # 채권매입수수료 = 순지급액 x 할인율 (D-31 앵커)
-        # MD-1i = 채권매입수수료 - max(0, 미지급금 - 과지급금)  (대표 정의서 [2번 이미지])
-        # BD-1i = 순지급액       - max(0, 미지급금 - 과지급금)  = Ai + MD-1i
+        # M(d-1)i = 채권매입수수료 - max(0, 미지급금 - 과지급금)  (대표 정의서 [2번 이미지])
+        # B(d-1)i = 순지급액       - max(0, 미지급금 - 과지급금)  = Ai + M(d-1)i
+        # 한 행 = 정산예정일이 그 날짜인 대상정산금채권 집합이다.
         p = fee - g['ded']
         out.append(dict(d=ymd(d), repay=g['ai'] + p, exec=g['ai'], profit=p, w=w,
                         fee=fee, ded=g['ded'], ty=day_ty(p, g['ai'], w)))
@@ -362,14 +438,14 @@ def facts():
     wk = [r for r in LEDGER if '2026-08-21' <= r['d'] <= '2026-08-27']
     # 기본 조회 기간(일주일) 집계 — 수익 화면 카드 4/5 와 표 합계 행이 여기서 나온다.
     #   4 투자실행금액 대비 Ty = PSMR x 365 / PSD  (PSD = 투자실행금 가중평균 W, 반올림 전)
-    #   5 투자자산   대비 Ty = (4 x PSA) / (PSA + PSC),  PSC = 순현금 x 조회 일수(유량)
+    #   5 투자자산   대비 Ty = ty_asset() — PSC = 순현금 x 조회 일수(유량). 산식은 그 함수 한 곳이다
     # build_app.py 의 tyOfRows()·tyAssetOf() 와 같은 규칙이다. 검증기가 이 값을 손으로 적지 않게 한다.
     wk_ex = sum(r['exec'] for r in wk)
     wk_pf = sum(r['profit'] for r in wk)
     wk_wraw = sum(r['w'] * D(r['exec']) for r in wk) / D(wk_ex)
     wk_ty = (D(wk_pf) / D(wk_ex) * D(100)) * DAYS / wk_wraw
     wk_psc = D(CASH) * D(len(wk))
-    wk_ty5 = wk_ty * D(wk_ex) / (D(wk_ex) + wk_psc)
+    wk_ty5 = ty_asset(wk_ty, D(wk_ex), wk_psc)
     # 월별 화면(기본 6개월 = 원장 전 구간)의 같은 집계. 일별 표와 달리 달 행의 W 는 달 안에서
     # 다시 가중평균한 값이라 일별 행과 짝이 맞지 않는다 — 달 행은 month_rollup 값으로 대조한다.
     fu_ex = sum(r['exec'] for r in LEDGER)
@@ -377,10 +453,10 @@ def facts():
     fu_wraw = sum(r['w'] * D(r['exec']) for r in LEDGER) / D(fu_ex)
     fu_ty = (D(fu_pf) / D(fu_ex) * D(100)) * DAYS / fu_wraw
     fu_psc = D(CASH) * D(len(LEDGER))
-    fu_ty5 = fu_ty * D(fu_ex) / (D(fu_ex) + fu_psc)
+    fu_ty5 = ty_asset(fu_ty, D(fu_ex), fu_psc)
     # 일별 표의 날짜 -> [W금융일수, Ty수익율, 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감].
     #   W 하나에 Ty 하나로 접을 수 없다 — 투자수익에서 부족액(max(0, 미지급-과지급))을 빼면
-    #   Ty 가 W 만의 함수가 아니게 된다(대표 정의서 [2번 이미지] MD-1i). 날짜로 잡는다.
+    #   Ty 가 W 만의 함수가 아니게 된다(대표 정의서 [2번 이미지] M(d-1)i). 날짜로 잡는다.
     #   같은 이유로 수익을 순지급액에서 되짚을 수도 없다. 원장이 낸 값을 그대로 실어 검증기가
     #   행 단위로 맞춰 보게 한다.
     ty_by_date = dict((r['d'], [str(r['w']), str(r['ty']), r['exec'], r['profit'],
@@ -395,13 +471,13 @@ def facts():
         ledgerSpan=[LEDGER[0]['d'], LEDGER[-1]['d']],
         receivables=len(RECEIVABLES), openReceivables=len(OPEN),
         # W 와 S 는 같은 행에 나란히 서지만 모집단이 다르다 — 화면 툴팁이 이 두 값을 그대로 읽는다.
-        #   W = 대상정산금채권 전체(발생 기준)  ·  S = 선정산일 D-20 ~ D-11 표본
+        #   W = 대상정산금채권 전체(발생 기준)  ·  S = 선정산일 d-20 ~ d-11 표본
         sampleReceivables=len(_SAMPLE), sampleSpan=[ymd(SAMPLE[0]), ymd(SAMPLE[1])],
         diRange=[min(r['di'] for r in RECEIVABLES), max(r['di'] for r in RECEIVABLES)],
         wRange=[str(min(r['w'] for r in LEDGER)), str(max(r['w'] for r in LEDGER))],
         # 범위 가드의 상·하한 — 원장이 실제로 낸 값(diRange·wRange)이 아니라 허용 경계다.
-        # 출처는 platform_duration.py 하나뿐이다(FLOOR/CEIL = 플랫폼별 평균만기 실측 2.0~6.2일,
-        # DI_MIN/DI_MAX = 그 평균을 쪼갠 정수 만기 버킷 2~7일). 검증기가 이 숫자를 손으로 적지 않게 한다.
+        # 출처는 platform_duration.py 하나뿐이다(FLOOR/CEIL = 플랫폼별 w금융일수 실측 2.0~6.2일,
+        # DI_MIN/DI_MAX = 그 평균을 쪼갠 정수 금융일수 버킷 2~7일). 검증기가 이 숫자를 손으로 적지 않게 한다.
         wBound=[str(FLOOR), str(CEIL)], diBound=[DI_MIN, DI_MAX],
         weekExec=sum(r['exec'] for r in wk), weekProfit=sum(r['profit'] for r in wk),
         weekRepay=sum(r['repay'] for r in wk), weekDays=len(wk),

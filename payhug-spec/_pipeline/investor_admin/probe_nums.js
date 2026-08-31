@@ -1,5 +1,7 @@
 /* 화면 전 조합에서 0.11* / 2.24 / 비중합 을 훑어 실제 표기 문자열을 확인한다 */
 const http=require('http'),fs=require('fs'),path=require('path'),os=require('os'),{spawn}=require('child_process');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const REPO=process.env.PROTO_REPO||'/Users/semi/cursor/payhug-investor-prototype';
 const PORT=8900+(process.pid%90),DPORT=9600+(process.pid%90);
 const CHROME='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -14,7 +16,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{
   await new Promise(r=>server.listen(PORT,r));
   const prof=fs.mkdtempSync(path.join(os.tmpdir(),'pn-'));
-  const ch=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,'--user-data-dir='+prof,'--no-first-run','--disable-gpu','--window-size=1440,1200','about:blank'],{stdio:'ignore'});
+  const ch=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,CHROME_DL.args(PH_DL, prof)[0],'--no-first-run','--disable-gpu','--window-size=1440,1200','about:blank'],{stdio:'ignore'});
   let t=null;for(let i=0;i<60&&!t;i++){await sleep(300);try{t=await new Promise((res,rej)=>{http.get({host:'127.0.0.1',port:DPORT,path:'/json'},r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>res(JSON.parse(d)));}).on('error',rej);});}catch(e){t=null;}}
   const pg=t.find(x=>x.type==='page');ws=new WebSocket(pg.webSocketDebuggerUrl);
   await new Promise(r=>ws.addEventListener('open',r));

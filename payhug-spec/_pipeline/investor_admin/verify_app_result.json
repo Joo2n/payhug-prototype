@@ -59,7 +59,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -74,7 +74,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-sim",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -89,7 +89,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -104,7 +104,7 @@
    "visible": true,
    "state": "default",
    "hash": "#acquisition-list",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -134,7 +134,7 @@
    "visible": true,
    "state": "default",
    "hash": "#password",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -819,10 +819,8 @@
  "layout": [
   {
    "at": "invest-assets/default",
-   "h": 1228,
-   "empties": [
-    "ia-merch-page"
-   ],
+   "h": 1280,
+   "empties": [],
    "modals": [],
    "wantModal": null,
    "barShown": false,
@@ -830,10 +828,8 @@
   },
   {
    "at": "invest-assets/download",
-   "h": 1228,
-   "empties": [
-    "ia-merch-page"
-   ],
+   "h": 1280,
+   "empties": [],
    "modals": [],
    "wantModal": null,
    "barShown": false,
@@ -841,10 +837,8 @@
   },
   {
    "at": "invest-assets/cert-confirm",
-   "h": 1228,
-   "empties": [
-    "ia-merch-page"
-   ],
+   "h": 1280,
+   "empties": [],
    "modals": [
     "invest-assets-cert-confirm"
    ],
@@ -854,7 +848,7 @@
   },
   {
    "at": "invest-assets/empty",
-   "h": 994,
+   "h": 998,
    "empties": [
     "ia-size",
     "ia-merch-page"
@@ -866,7 +860,7 @@
   },
   {
    "at": "invest-profit/default",
-   "h": 1240,
+   "h": 1244,
    "empties": [
     "pf-from",
     "pf-to"
@@ -878,7 +872,7 @@
   },
   {
    "at": "invest-profit/weekly",
-   "h": 1105,
+   "h": 1109,
    "empties": [
     "pf-from",
     "pf-to"
@@ -890,7 +884,7 @@
   },
   {
    "at": "invest-profit/monthly",
-   "h": 1195,
+   "h": 1199,
    "empties": [
     "pf-from",
     "pf-to"
@@ -902,7 +896,7 @@
   },
   {
    "at": "invest-profit/empty",
-   "h": 980,
+   "h": 984,
    "empties": [
     "pf-from",
     "pf-to"
@@ -914,8 +908,10 @@
   },
   {
    "at": "invest-sim/default",
-   "h": 1035,
+   "h": 1109,
    "empties": [
+    "sim-asset",
+    "sim-idle",
     "sim-r",
     "sim-cash",
     "sim-unpaid",
@@ -931,8 +927,10 @@
   },
   {
    "at": "invest-sim/result",
-   "h": 2451,
+   "h": 2529,
    "empties": [
+    "sim-asset",
+    "sim-idle",
     "sim-r",
     "sim-cash",
     "sim-unpaid",

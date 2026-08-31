@@ -1,0 +1,390 @@
+{
+ "total": 64,
+ "fail": 0,
+ "cases": [
+  {
+   "sec": "A",
+   "name": "ceo_definitions.md 해시 일치 (읽기 전용)",
+   "pass": true,
+   "detail": "기록 3ae47c35535f5b67 / 지금 3ae47c35535f5b67"
+  },
+  {
+   "sec": "A",
+   "name": "원문 항목 43건 판독",
+   "pass": true,
+   "detail": "43건"
+  },
+  {
+   "sec": "B",
+   "name": "인용 자리 92곳이 전부 원문 부분문자열",
+   "pass": true,
+   "detail": "어긋난 곳 0 []"
+  },
+  {
+   "sec": "C",
+   "name": "원문 43항 전건이 산출물 어딘가에 그대로 남아 있음 (풀어 쓴 배치 절차문 1항 제외)",
+   "pass": true,
+   "detail": "못 찾은 항 0 []"
+  },
+  {
+   "sec": "C",
+   "name": "[glossary_manuscript.md] 원문 항 인용 0건 아님",
+   "pass": true,
+   "detail": "42항"
+  },
+  {
+   "sec": "C",
+   "name": "[symbol_glossary.md] 원문 항 인용 0건 아님",
+   "pass": true,
+   "detail": "26항"
+  },
+  {
+   "sec": "C",
+   "name": "[symbol_glossary.json] 원문 항 인용 0건 아님",
+   "pass": true,
+   "detail": "26항"
+  },
+  {
+   "sec": "C",
+   "name": "[glossary.html(배포)] 원문 항 인용 0건 아님",
+   "pass": true,
+   "detail": "42항"
+  },
+  {
+   "sec": "D",
+   "name": "[glossary_manuscript.md] 아래첨자 마크다운 표기 0건 아님",
+   "pass": true,
+   "detail": "363건"
+  },
+  {
+   "sec": "D",
+   "name": "[glossary_manuscript.md] 괄호 표기 X(D-1)i 0건 (표기 흔들림 기록·aliases 제외)",
+   "pass": true,
+   "detail": "0건 []"
+  },
+  {
+   "sec": "D",
+   "name": "[symbol_glossary.md] 아래첨자 마크다운 표기 0건 아님",
+   "pass": true,
+   "detail": "229건"
+  },
+  {
+   "sec": "D",
+   "name": "[symbol_glossary.md] 괄호 표기 X(D-1)i 0건 (표기 흔들림 기록·aliases 제외)",
+   "pass": true,
+   "detail": "0건 []"
+  },
+  {
+   "sec": "D",
+   "name": "[symbol_glossary.json] 아래첨자 마크다운 표기 0건 아님",
+   "pass": true,
+   "detail": "189건"
+  },
+  {
+   "sec": "D",
+   "name": "[symbol_glossary.json] 괄호 표기 X(D-1)i 0건 (표기 흔들림 기록·aliases 제외)",
+   "pass": true,
+   "detail": "0건 []"
+  },
+  {
+   "sec": "D",
+   "name": "[restructure_glossary.py] 아래첨자 마크다운 표기 0건 아님",
+   "pass": true,
+   "detail": "20건"
+  },
+  {
+   "sec": "D",
+   "name": "[restructure_glossary.py] 괄호 표기 X(D-1)i 0건 (표기 흔들림 기록·aliases 제외)",
+   "pass": true,
+   "detail": "0건 []"
+  },
+  {
+   "sec": "D",
+   "name": "배포 glossary.html 아래첨자 <sub> 0건 아님",
+   "pass": true,
+   "detail": "373건"
+  },
+  {
+   "sec": "D",
+   "name": "배포 glossary.html 에 마크다운 밑줄 표기 잔존 0건",
+   "pass": true,
+   "detail": "[]"
+  },
+  {
+   "sec": "D",
+   "name": "배포 glossary.html 괄호 표기 X(D-1)i 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "D",
+   "name": "<sub> 안 하이픈이 빼기표 U+2212",
+   "pass": true,
+   "detail": "평문 하이픈 잔존"
+  },
+  {
+   "sec": "D",
+   "name": "[glossary_manuscript.md] 옛 대문자 첨자 _{D-1} 0건",
+   "pass": true,
+   "detail": "0건 []"
+  },
+  {
+   "sec": "D",
+   "name": "[glossary_manuscript.md] 새 소문자 첨자 _{d-1} 0건 아님",
+   "pass": true,
+   "detail": "127건"
+  },
+  {
+   "sec": "D",
+   "name": "배포 glossary.html 옛 대문자 첨자 <sub>D−1 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "D",
+   "name": "배포 glossary.html 새 소문자 첨자 <sub>d−1 0건 아님",
+   "pass": true,
+   "detail": "132건"
+  },
+  {
+   "sec": "D",
+   "name": "[glossary_manuscript.md] 표본 구간 서술이 소문자 d-20 ~ d-11",
+   "pass": true,
+   "detail": "소문자 서술 누락"
+  },
+  {
+   "sec": "D",
+   "name": "배포 glossary.html 표본 구간 서술이 소문자 d-20 ~ d-11",
+   "pass": true,
+   "detail": "소문자 서술 누락"
+  },
+  {
+   "sec": "D",
+   "name": "_pipeline/investor_admin/glossary.html = 배포본 거울",
+   "pass": true,
+   "detail": "281440 B"
+  },
+  {
+   "sec": "D",
+   "name": "배포 glossary.html 에 원문 평문 표기(AD-1i·SAD-1 …) 살아 있음",
+   "pass": true,
+   "detail": "81건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary_manuscript.md] duration 각주가 정확히 1자리",
+   "pass": true,
+   "detail": "1자리"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary_manuscript.md] 각주 밖「만기」 = 조어 근거의 지목뿐",
+   "pass": true,
+   "detail": "전체 0 · 지목 0 · 그 밖 0"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary_manuscript.md] 각주 밖대출·표준용어 차용 Duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary_manuscript.md] 각주 밖대출·표준용어 차용 duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary_manuscript.md] 각주 밖대출·표준용어 차용 가중평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary_manuscript.md] 각주 밖대출·표준용어 차용 평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.md] 「만기」 = 조어 근거의 지목뿐",
+   "pass": true,
+   "detail": "전체 0 · 지목 0 · 그 밖 0"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.md] 대출·표준용어 차용 Duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.md] 대출·표준용어 차용 duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.md] 대출·표준용어 차용 가중평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.md] 대출·표준용어 차용 평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.json] 「만기」 = 조어 근거의 지목뿐",
+   "pass": true,
+   "detail": "전체 2 · 지목 2 · 그 밖 0"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.json] 대출·표준용어 차용 Duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.json] 대출·표준용어 차용 duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.json] 대출·표준용어 차용 가중평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[symbol_glossary.json] 대출·표준용어 차용 평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[restructure_glossary.py] 「만기」 = 조어 근거의 지목뿐",
+   "pass": true,
+   "detail": "전체 0 · 지목 0 · 그 밖 0"
+  },
+  {
+   "sec": "E",
+   "name": "[restructure_glossary.py] 대출·표준용어 차용 Duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[restructure_glossary.py] 대출·표준용어 차용 duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[restructure_glossary.py] 대출·표준용어 차용 가중평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[restructure_glossary.py] 대출·표준용어 차용 평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary.html(배포)] duration 각주가 정확히 1자리",
+   "pass": true,
+   "detail": "1자리"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary.html(배포)] 각주 밖「만기」 = 조어 근거의 지목뿐",
+   "pass": true,
+   "detail": "전체 0 · 지목 0 · 그 밖 0"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary.html(배포)] 각주 밖대출·표준용어 차용 Duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary.html(배포)] 각주 밖대출·표준용어 차용 duration 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary.html(배포)] 각주 밖대출·표준용어 차용 가중평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "[glossary.html(배포)] 각주 밖대출·표준용어 차용 평균만기 0건",
+   "pass": true,
+   "detail": "0건"
+  },
+  {
+   "sec": "E",
+   "name": "배포 glossary.html 「만기」 총 곳수 = 각주 안 곳수",
+   "pass": true,
+   "detail": "전체 4 · 각주 4"
+  },
+  {
+   "sec": "E",
+   "name": "배포 glossary.html duration 총 곳수 = 각주 안 곳수",
+   "pass": true,
+   "detail": "전체 2 · 각주 2"
+  },
+  {
+   "sec": "E",
+   "name": "각주에 출처(DM 시각·회의 시각) 병기",
+   "pass": true,
+   "detail": "출처 누락"
+  },
+  {
+   "sec": "E",
+   "name": "정본 표기 w금융일수가 각주 밖에서 살아 있음",
+   "pass": true,
+   "detail": "86건"
+  },
+  {
+   "sec": "E",
+   "name": "조어 모집단 용어가 사전에 근거와 함께 등재됨",
+   "pass": true,
+   "detail": "['정산예정일 도래분']"
+  },
+  {
+   "sec": "E",
+   "name": "조어가 원고·기호 사전에서 쓰이고 있음",
+   "pass": true,
+   "detail": "['정산예정일 도래분', '전일자 도래분', '기간 도래분']"
+  },
+  {
+   "sec": "F",
+   "name": "인용 블록이 서술 블록과 다른 클래스로 나옴",
+   "pass": true,
+   "detail": "인용 37 · 서술 87"
+  },
+  {
+   "sec": "F",
+   "name": "인용 블록 안 아래첨자 조판 0건",
+   "pass": true,
+   "detail": "<sub> 0"
+  },
+  {
+   "sec": "F",
+   "name": "인용 블록 37개의 산식 문자열이 원문과 글자 그대로 같음",
+   "pass": true,
+   "detail": "어긋난 줄 0 []"
+  }
+ ]
+}

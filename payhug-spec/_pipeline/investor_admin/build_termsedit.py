@@ -65,7 +65,10 @@ def with_links(seed):
 
 
 def js_json(obj):
-    return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
+    # JS 의 JSON.stringify 와 글자까지 같아야 한다. 파이썬 기본 구분자는 ", " · ": "
+    # 라 띄어쓰기가 끼고, 그러면 페이지가 만든 문서가 받은 파일과 바이트로 갈린다.
+    return json.dumps(obj, ensure_ascii=False,
+                      separators=(",", ":")).replace("</", "<\\/")
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -319,7 +322,8 @@ function b64dec(s){
   for (var i=0;i<bin.length;i++) b[i] = bin.charCodeAt(i);
   return new TextDecoder().decode(b);
 }
-try { SRC = b64dec(document.getElementById("src").textContent.trim()); }
+/* #src 는 JSON 문자열 하나다. 따옴표째 atob 에 넘기면 그 자리에서 깨진다. */
+try { SRC = b64dec(JSON.parse(document.getElementById("src").textContent)); }
 catch(e){ SRC = null; }
 
 function jsonFor(o){ return JSON.stringify(o).split("</").join("<\\/"); }
@@ -337,7 +341,20 @@ function renderDoc(){
   };
   var b = new TextEncoder().encode(SRC), raw = "", CH = 0x8000;
   for (var i=0;i<b.length;i+=CH) raw += String.fromCharCode.apply(null, b.subarray(i,i+CH));
-  return fill(before) + btoa(raw) + fill(after);
+  return wrapFull(fill(before) + btoa(raw) + fill(after));
+}
+
+/* 조각에 껍데기를 씌운다. 생성기의 full() 과 같은 절차다.
+   조각 맨 앞의 <title> 은 머리로 옮긴다 — 본문에 남으면 글자로 찍힌다. */
+function wrapFull(frag){
+  var m = /^\s*<title>([\s\S]*?)<\/title>\s*/.exec(frag);
+  var title = m ? m[1] : "용어 정의서";
+  var body = m ? frag.slice(m[0].length) : frag;
+  return '<!doctype html>\n<html lang="ko">\n<head>\n'
+       + '<meta charset="utf-8">\n'
+       + '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+       + '<title>' + title + '</title>\n</head>\n<body>\n'
+       + body + '\n</body>\n</html>\n';
 }
 
 /* ── 그리기 ───────────────────────────────── */
@@ -719,6 +736,11 @@ window.addEventListener("beforeunload", function(e){
   if (dirty){ e.preventDefault(); e.returnValue = "" }
 });
 
+/* 검증기가 페이지가 실제로 만드는 문서를 바이트로 대조한다.
+   파이썬 쪽 재생산만 보면 페이지 안에서 깨진 것을 못 잡는다. */
+window.__renderDoc = renderDoc;
+window.__seed = SEED;
+
 render();
 say(SRC ? "" : "원본을 못 읽었습니다 — 저장이 안 됩니다", SRC ? "" : "bad");
 $("#save").disabled = true;
@@ -734,18 +756,9 @@ if (window.claude && window.claude.use){
 """
 
 
-TEMPLATE = """<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>%%TITLE%%</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<style>%%CSS%%</style>
-</head>
-<body>
+TEMPLATE = """<title>%%TITLE%%</title>
+<style>@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+%%CSS%%</style>
 
 <header class="bar">
   <h1>%%TITLE%%</h1>
@@ -783,11 +796,22 @@ TEMPLATE = """<!doctype html>
 
 <script type="application/json" id="seed">%%SEED%%</script>
 <script type="application/json" id="shots">%%SHOTS%%</script>
-<script>%%JS%%</script>
 <script type="application/json" id="src">"%%SRC%%"</script>
-</body>
-</html>
+<script>%%JS%%</script>
 """
+
+
+# 조각에 씌우는 껍데기. 파이썬과 페이지 안 JS 가 같은 절차를 쓴다.
+# 조각 맨 앞의 <title> 은 머리로 옮긴다 — 본문에 남으면 글자로 찍힌다.
+def full(frag):
+    m = re.match(r"\s*<title>(.*?)</title>\s*", frag, re.S)
+    title = m.group(1) if m else "용어 정의서"
+    body = frag[m.end():] if m else frag
+    return ("<!doctype html>\n<html lang=\"ko\">\n<head>\n"
+            "<meta charset=\"utf-8\">\n"
+            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+            "<title>" + title + "</title>\n</head>\n<body>\n"
+            + body + "\n</body>\n</html>\n")
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -822,11 +846,17 @@ def main():
 
     stamp = os.environ.get("TERMSDOC_STAMP") or date.today().strftime("%Y%m%d")
     os.makedirs(OUTDIR, exist_ok=True)
+    page = full(doc)
     targets = [os.path.join(REPO, "terms-edit.html"),
                os.path.join(OUTDIR, "용어정의서_편집판_%s.html" % stamp)]
     for t in targets:
         with open(t, "w", encoding="utf-8") as f:
-            f.write(doc)
+            f.write(page)
+    # 아티팩트로 올릴 때 쓰는 조각. 게시가 껍데기를 한 겹 씌우므로 조각을 준다.
+    frag = os.path.join(PIPE, "terms-edit.fragment.html")
+    with open(frag, "w", encoding="utf-8") as f:
+        f.write(doc)
+    targets.append(frag)
 
     used = sorted({i.get("shot") for i in seed["items"] if i.get("shot")})
     miss = [s for s in used if s not in shots]

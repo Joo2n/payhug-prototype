@@ -500,6 +500,47 @@ async function main(){
        receivables:FACTS.receivables, openReceivables:FACTS.openReceivables});
   }
 
+  /* ── 대표 DM 2026-08-31 16:45 항등식 검산 ─────────────────────────
+     원문 「투자수익률은 할인율 -max(0, 미지급금-과지급금)/투자실행액 이므로 미지급-과지급이 0이면
+     할인율이 되므로 같다」. 원장에서 되짚으면 근사식이다 — 채권매입수수료의 앵커가 순지급액인데
+     SMR 의 분모는 투자실행액(순지급액 x (1-할인율))이라 두 값이 1/(1-할인율) 배만큼 갈린다.
+     어느 쪽이 정본인지는 대표 확인 대상이라 여기서 고르지 않는다. 판정하는 것은 둘 —
+       ① `SMR + 부족액/투자실행액` 이 할인율과 같지 않다 (근사식이다)
+       ② 그 갈림이 정확히 `할인율 / (1 - 할인율)` 자리다
+     원장 값이 없으면 대상 0건으로 통과하는 것을 막으려고 구간별 건수도 함께 본다. */
+  {
+    const rate = Number(FACTS.rate);                    /* 0.11 (%) */
+    const anchored = rate / (1 - rate / 100);           /* 분모가 순지급액일 때의 값 */
+    const agg = (from, to) => {
+      let ex = 0, pf = 0, ded = 0, n = 0;
+      Object.keys(FACTS.tyByDate).forEach(d => {
+        if(d < from || d > to) return;
+        const v = FACTS.tyByDate[d];
+        ex += v[2]; pf += v[3]; ded += v[6]; n++;
+      });
+      return {ex, pf, ded, n};
+    };
+    const spans = [['일주일', '2026-08-21', '2026-08-27'],
+                   ['전 구간', FACTS.ledgerSpan[0], FACTS.ledgerSpan[1]]];
+    const seen = [], bad = [];
+    spans.forEach(sp => {
+      const label = sp[0], g = agg(sp[1], sp[2]);
+      if(!g.n || !g.ex){ bad.push(label + ' — 원장 행 0건. 대상이 없으면 통과시키지 않는다'); return; }
+      const smr = g.pf / g.ex * 100;                    /* 투자수익율 PSMR = PSM / PSA */
+      const lhs = smr + g.ded / g.ex * 100;             /* SMR + max(0, 미지급-과지급) / 투자실행액 */
+      seen.push({span:label, days:g.n, smr:+smr.toFixed(8), lhs:+lhs.toFixed(8),
+                 rate:rate, anchored:+anchored.toFixed(8),
+                 gapToRate:+(lhs - rate).toFixed(8), gapToAnchored:+(lhs - anchored).toFixed(8)});
+      if(Math.abs(lhs - rate) < 1e-5)
+        bad.push(label + ' — 할인율과 1e-5%p 안에서 같다. 근사식이라는 판정이 서지 않는다');
+      if(Math.abs(lhs - anchored) > 1e-5)
+        bad.push(label + ' — 할인율/(1-할인율) 에서 ' + (lhs - anchored).toExponential(2) + '%p 갈린다');
+    });
+    if(seen.length !== spans.length) bad.push('구간 ' + seen.length + '/' + spans.length + '건만 셌다');
+    push('대표 DM 16:45 항등식 — 근사식이고 갈림이 1/(1-할인율) 자리 (정본은 대표 확인 대기)',
+      bad.length === 0, {bad, spans:seen});
+  }
+
   OUT.console = consoleErrors.slice();
   fs.writeFileSync(path.join(OUTDIR, 'verify_identity_result.json'), JSON.stringify(OUT, null, 1));
   let fail = 0;
