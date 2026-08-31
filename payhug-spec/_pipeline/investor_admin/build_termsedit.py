@@ -54,13 +54,14 @@ def shots_payload():
 
 
 def with_links(seed):
-    """screen 문자열에 적힌 화면 파일명으로 실물 주소를 뽑아 붙인다."""
+    """화면 파일명으로 실물 주소를 뽑아 붙인다.
+
+    파일명은 screen_file 에 따로 담겨 있다. 화면에 뜨는 screen 문구에는 파일명을
+    두지 않는다 — 배포 화면에 .html 이름을 노출하지 않는 규칙(verify_0828 20번)이다.
+    """
     for it in seed.get("items", []):
-        href = None
-        m = re.search(r"([a-z0-9][a-z0-9-]*\.html)", it.get("screen") or "")
-        if m:
-            href = "%s/%s" % (LIVE, m.group(1))
-        it["href"] = href
+        f = it.get("screen_file")
+        it["href"] = ("%s/%s" % (LIVE, f)) if f else None
     return seed
 
 
@@ -536,7 +537,7 @@ function filter(){
 function mark(){
   if (dirty) return;
   dirty = true;
-  say("고친 것이 있습니다", "on");
+  say("고친 것 있음", "on");
   $("#save").disabled = false;
 }
 
@@ -594,7 +595,7 @@ document.addEventListener("click", function(e){
     return;
   }
   if (act === "del"){
-    if (!confirm("“"+(SEED.items[i].term||"이 항목")+"” 을 지웁니다.")) return;
+    if (!confirm("“"+(SEED.items[i].term||"이 항목")+"” 삭제")) return;
     SEED.items.splice(i,1); renumber(); mark(); render(); return;
   }
   if (act === "add" || act === "addend"){
@@ -702,32 +703,32 @@ $("#only").addEventListener("change", filter);
 
 $("#save").addEventListener("click", async function(){
   var doc = renderDoc();
-  if (!doc){ say("원본을 못 읽어 저장할 수 없습니다", "bad"); return }
+  if (!doc){ say("원본 회수 실패 · 저장 불가", "bad"); return }
   $("#save").disabled = true;
   say("저장하는 중", "on");
   if (pub){
     try {
       await pub.publish(doc);
-      dirty = false; say("저장했습니다", "ok");
+      dirty = false; say("저장됨", "ok");
       return;
     } catch(err){
       var c = err && err.code;
-      if (c === "conflict"){ say("다른 판이 먼저 저장돼 최신 판으로 다시 엽니다", "on"); return }
+      if (c === "conflict"){ say("다른 판이 먼저 저장됨 · 최신 판으로 다시 엶", "on"); return }
       if (c === "not_writer" || c === "not_granted" || c === "not_declared"){
-        pub = null; say("읽기 전용이라 이 주소에는 저장이 안 됩니다", "bad");
+        pub = null; say("읽기 전용 · 이 주소에는 저장 불가", "bad");
       } else {
-        say("저장 실패 ("+(c||"알 수 없음")+")", "bad");
+        say("저장 실패 · "+(c||"까닭 모름"), "bad");
       }
     }
   }
   if (dl){
     try {
       await dl.save({filename:"용어정의서_편집판.html", data:doc});
-      dirty = false; say("파일로 내려받았습니다", "ok");
+      dirty = false; say("파일로 내려받음", "ok");
       return;
-    } catch(e2){ say("내려받기가 취소됐습니다", "bad") }
+    } catch(e2){ say("내려받기 취소됨", "bad") }
   } else {
-    say("이 사본에서는 저장이 안 됩니다", "bad");
+    say("이 사본에서는 저장 불가", "bad");
   }
   $("#save").disabled = false;
 });
@@ -742,13 +743,13 @@ window.__renderDoc = renderDoc;
 window.__seed = SEED;
 
 render();
-say(SRC ? "" : "원본을 못 읽었습니다 — 저장이 안 됩니다", SRC ? "" : "bad");
+say(SRC ? "" : "원본 회수 실패 · 저장 불가", SRC ? "" : "bad");
 $("#save").disabled = true;
 
 if (window.claude && window.claude.use){
   claude.use("artifact").then(function(a){
     pub = a;
-    if (a) say(dirty ? "고친 것이 있습니다" : "저장할 수 있습니다", dirty ? "on" : "");
+    if (a) say(dirty ? "고친 것 있음" : "저장 가능", dirty ? "on" : "");
   }).catch(function(){});
   claude.use("downloads").then(function(d){ dl = d }).catch(function(){});
 }

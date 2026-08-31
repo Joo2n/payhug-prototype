@@ -209,7 +209,10 @@ def item_block(doc, seed, it):
     elif it.get("our_value"):
         rows.append(("우리 값", it["our_value"], None))
     if it.get("screen"):
-        rows.append(("화면", it["screen"], None))
+        # 워드는 개발 전달까지 겸하므로 화면 파일명을 함께 적는다. 배포 HTML 은
+        # 파일명을 화면에 노출하지 않는 규칙이 있어 그쪽만 빼고 간다.
+        rows.append(("화면", it["screen"]
+                     + ((" (%s)" % it["screen_file"]) if it.get("screen_file") else ""), None))
     if it.get("note"):
         rows.append(("비고", it["note"], None))
     if rows:

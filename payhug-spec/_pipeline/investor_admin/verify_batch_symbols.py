@@ -51,7 +51,31 @@ XLSX = os.path.join(BASE, '검산_투자자어드민_20260901.xlsx')
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
 # 원문 기호 8개 — 이 목록이 검사 범위다.
-SYMBOLS = ['BD-1i', 'AD-1i', 'MD-1i', 'DD-1i', 'SBD-1', 'SAD-1', 'SMD-1', 'SDD-1']
+# 전일자 첨자를 대문자로 쓰는지 소문자로 쓰는지는 dm_0831/symbol_rule_0831.md 가 정한다.
+# 여기에 표를 또 두면 규칙이 바뀔 때 두 곳이 어긋난다 — 2026-08-31 에 실제로 그렇게 깨졌다.
+_STEMS = ['B%s-1i', 'A%s-1i', 'M%s-1i', 'D%s-1i', 'SB%s-1', 'SA%s-1', 'SM%s-1', 'SD%s-1']
+
+
+def _date_letter():
+    """규칙 문서의 갈아끼움표에서 전일자 첨자 글자를 읽는다."""
+    path = os.path.join(BASE, 'dm_0831', 'symbol_rule_0831.md')
+    if not os.path.exists(path):
+        raise SystemExit('!! 기호 규칙 문서가 없다 — ' + path)
+    txt = io.open(path, encoding='utf-8').read()
+    m = re.search(r'`SB_\{D-1\}`\s*\|\s*`SB_\{([Dd])-1\}`', txt)
+    if not m:
+        raise SystemExit('!! 기호 규칙에서 전일자 첨자 표기를 못 읽었다')
+    return m.group(1)
+
+
+DATE_LETTER = _date_letter()
+SYMBOLS = [t % DATE_LETTER for t in _STEMS]
+SYM = dict(zip(['B', 'A', 'M', 'D', 'SB', 'SA', 'SM', 'SD'], SYMBOLS))
+SMR = 'SMR%s-1' % DATE_LETTER
+# 대표 원문은 대문자 평문 표기(SBD-1)다. 기호 규칙은 우리 표기만 소문자로 내렸고
+# 원문 인용은 손대지 않으므로, 원문을 훑을 때만 이 짝을 쓴다.
+CEO_SYMBOLS = [t % 'D' for t in _STEMS]
+CEO_OF = dict(zip(SYMBOLS, CEO_SYMBOLS))
 
 R = []          # {sec, name, pass, detail}
 _SEEN = set()
@@ -626,9 +650,10 @@ def sec2(L, drv):
     for i, h in enumerate(hdr):
         if h:
             col.setdefault(str(h).split(' ')[0].split('(')[0], i + 1)
-    chk('2', '엑셀 일별 열머리에 SBD-1 · SAD-1 · SMD-1 · SMRD-1 · SDD-1 이 있고 자리가 맞음',
-        col.get('SBD-1') == 3 and col.get('SAD-1') == 4 and col.get('SMD-1') == 5
-        and col.get('SMRD-1') == 7 and col.get('SDD-1') == 8, str(hdr))
+    chk('2', '엑셀 일별 열머리에 %s · %s · %s · %s · %s 이 있고 자리가 맞음'
+        % (SYM['SB'], SYM['SA'], SYM['SM'], SMR, SYM['SD']),
+        col.get(SYM['SB']) == 3 and col.get(SYM['SA']) == 4 and col.get(SYM['SM']) == 5
+        and col.get(SMR) == 7 and col.get(SYM['SD']) == 8, str(hdr))
     nrow = 0
     fbad, vbad = [], []
     for r in range(2, ws.max_row):
@@ -907,8 +932,8 @@ def deflate(t):
 
 def sec4(L):
     table = dict((s, {}) for s in SYMBOLS)
-    plain = {'B(D-1)i': 'BD-1i', 'A(D-1)i': 'AD-1i', 'M(D-1)i': 'MD-1i', 'D(D-1)i': 'DD-1i',
-             'SB(D-1)': 'SBD-1', 'SA(D-1)': 'SAD-1', 'SM(D-1)': 'SMD-1', 'SD(D-1)': 'SDD-1'}
+    plain = dict(zip(['B(D-1)i', 'A(D-1)i', 'M(D-1)i', 'D(D-1)i',
+                      'SB(D-1)', 'SA(D-1)', 'SM(D-1)', 'SD(D-1)'], SYMBOLS))
 
     # (1) symbol_glossary.json
     sg = json.loads(rd(os.path.join(BASE, 'symbol_glossary.json')))
@@ -956,7 +981,8 @@ def sec4(L):
     cd = rd(os.path.join(BASE, 'ceo_definitions.md'))
     #     「대상정산금채권의 상환액(SBD-1)」 처럼 앞에 한정어가 붙는다. 공백 뒤 마지막 낱말이 이름이다.
     for flat in SYMBOLS:
-        for m in re.finditer(r'([가-힣wW][가-힣A-Za-z0-9]*)\(' + re.escape(flat) + r'\)', cd):
+        for m in re.finditer(r'([가-힣wW][가-힣A-Za-z0-9]*)\('
+                             + re.escape(CEO_OF[flat]) + r'\)', cd):
             table[flat]['ceo_definitions.md'] = norm_name(m.group(1))
     named = [s for s in SYMBOLS if 'ceo_definitions.md' in table[s]]
     chk('4', '원문 ceo_definitions.md 에서 이름 붙은 기호 판독 0건 아님',
@@ -1098,10 +1124,25 @@ def sec5(L, drv):
     import openpyxl
     wb2 = openpyxl.load_workbook(tmp)
     inp = wb2['입력']
-    for r in range(24, 28):
-        u = inp.cell(r, 4).value
-        o = inp.cell(r, 5).value
-        inp.cell(r, 4).value, inp.cell(r, 5).value = o, u
+    # 요율 표의 자리를 세지 않는다. 입력 시트는 칸이 늘면 행이 밀린다 —
+    # 2026-08-31 에 두 칸이 늘면서 24~27 이 28~31 로 밀려 이 시험이 통째로 헛돌았다.
+    hrow = ucol = ocol = None
+    for r in range(1, inp.max_row + 1):
+        row = [str(inp.cell(r, c).value or '') for c in range(1, inp.max_column + 1)]
+        if '미지급률' in row and '과지급률' in row:
+            hrow, ucol, ocol = r, row.index('미지급률') + 1, row.index('과지급률') + 1
+            break
+    if hrow is None:
+        raise SystemExit('!! 입력 시트에서 미지급률·과지급률 열을 못 찾았다')
+    swapped = 0
+    for r in range(hrow + 1, inp.max_row + 1):
+        u, o = inp.cell(r, ucol).value, inp.cell(r, ocol).value
+        if not isinstance(u, (int, float)) or not isinstance(o, (int, float)):
+            break
+        inp.cell(r, ucol).value, inp.cell(r, ocol).value = o, u
+        swapped += 1
+    if swapped == 0:
+        raise SystemExit('!! 요율 행을 한 줄도 못 뒤집었다 — 표 모양이 바뀌었다')
     wb2.save(tmp)
     bk2 = AX.Book(tmp)
     nz, nn, chg = [], 0, 0

@@ -229,6 +229,13 @@ o.append('''
         <div class="d-desc">화면과 엑셀에 쓰인 계산식 용어 50건</div>
       </div>
     </a>
+    <a class="doc-card" href="terms-edit.html">
+      <div class="doc-icon">%s</div>
+      <div>
+        <div class="d-name">용어 정의서 편집판</div>
+        <div class="d-desc">대표 정의 45항 &mdash; 그 자리에서 고쳐 저장</div>
+      </div>
+    </a>
     <a class="doc-card" href="capability.html">
       <div class="doc-icon">%s</div>
       <div>
@@ -266,7 +273,8 @@ o.append('''
     </a>
   </div>
 ''' % (svg('ext'), counts.C['menus'], counts.menu_sentence().replace(' · ', ' &middot; '),
-       svg('doc'), svg('shield'), svg('trend'), svg('cards'), svg('lock'), svg('grid')))
+       svg('doc'), svg('calc'), svg('shield'), svg('trend'), svg('cards'), svg('lock'),
+       svg('grid')))
 
 # 화면·상태 수는 MAIN 실측으로 찍는다. 박아 두면 D-34(주별 신설)처럼 화면이 늘 때마다 낡는다.
 o.append('''
