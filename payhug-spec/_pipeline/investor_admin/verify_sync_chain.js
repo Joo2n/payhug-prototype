@@ -54,7 +54,7 @@ const COOCON_MUST     = ['We-bank 바로가기'];
 const COOCON_MUST_NOT = ['전자금융서비스에서 조회', '조회 가능한 내역', '기관코드', 'OTP'];
 
 /* 용어 해설 */
-const GLOSS_MUST     = ['가중평균만기', 'Duration', '케이뱅크', '목차'];
+const GLOSS_MUST     = ['w금융일수', '케이뱅크', '목차'];
 const GLOSS_MUST_NOT = ['카드 한 장', '값의 출처', '용어 50건', '관리자 어드민'];
 /* 용어판에서 href·action 안에 나오면 안 되는 형제 문서 (본문 <code> 표기는 내용이라 허용 — sync_glossary.py 와 같은 규칙) */
 const GLOSS_BANNED_HREF = ['app.html', 'capability.html', 'feasibility.html', 'inquiry.html',
@@ -211,11 +211,21 @@ const APP_PROBE = `
   out.cooconLinks = cs ? Array.prototype.map.call(cs.querySelectorAll('a[href]'), function(a){ return a.getAttribute('href'); }) : [];
   out.cooconBtns = cs ? cs.querySelectorAll('a.btn, button').length : -1;
   out.cooconIcons = cs ? cs.querySelectorAll('svg').length : -1;
-  /* 보기 갯수 select */
+  /* 보기 갯수 select — 곳수만 세면 어느 표에 붙었는지는 못 본다.
+     통합본은 data-act 를 달고 정적 낱장은 달지 않으므로 겉껍질(label.pg-size)로 센다. */
   go('merchants','default');
-  var sels = document.querySelectorAll('select[data-act="pg-size"]');
+  var sels = document.querySelectorAll('label.pg-size select');
   out.sizeSelectors = sels.length;
   out.sizeOptions = sels.length ? Array.prototype.map.call(sels[0].options, function(o){ return o.textContent; }) : [];
+  /* 보기 갯수·총 건수가 붙은 표 — 쪽 넘김이 달린 표의 것이라야 한다 */
+  go('invest-assets','default');
+  out.sizeOwner = Array.prototype.map.call(
+    document.querySelectorAll('section.screen[data-screen="invest-assets"] .tbl-head'), function(h){
+      return {title:(h.querySelector('h2')||{textContent:''}).textContent.trim(),
+              size:!!h.querySelector('label.pg-size')}; });
+  out.pgCount = Array.prototype.map.call(
+    document.querySelectorAll('section.screen[data-screen="invest-assets"] .pg-count'),
+    function(e){ return e.textContent.trim(); });
   /* 기간 3단 */
   go('invest-profit','default');
   var g = document.querySelectorAll('[data-act="pf-gran"]');
@@ -322,6 +332,15 @@ async function round(n) {
       R.canonAppScan = s;
       const sn = NUMS.filter(x => canonApp.corpus.indexOf(x) < 0);
       add('C 정본 숫자 불변식', sn.length === 0, sn.length ? '없음=' + JSON.stringify(sn) : NUMS.join(' · '));
+      /* 보기 갯수·총 건수의 자리 — 곳수가 아니라 어느 표에 붙었는지로 본다.
+         3행 고정인 현황 표에 보기 갯수가 붙거나 총 건수가 비면 FAIL. */
+      const cOwn = (canonApp.sizeOwner || []).filter(x => x.size).map(x => x.title);
+      add('C 정본 보기 갯수는 쪽 넘김이 달린 표에만',
+        JSON.stringify(cOwn) === JSON.stringify(['가맹점별 투자자산']),
+        JSON.stringify(canonApp.sizeOwner));
+      add('C 정본 가맹점별 투자자산 총 건수 표시',
+        (canonApp.pgCount || []).length === 1 && /^총\s*\d+건$/.test((canonApp.pgCount || [''])[0]),
+        JSON.stringify(canonApp.pgCount));
     }
     if (canonGloss && canonGloss.text) {
       const s = scan(canonGloss.text, GLOSS_MUST, GLOSS_MUST_NOT);
@@ -370,6 +389,16 @@ async function round(n) {
         add('D 기간 ' + PERIOD_GRAN + '단 토글', d.granCount === PERIOD_GRAN, d.granCount + '개 ' + JSON.stringify(d.granLabels));
         add('D 보기 갯수 select', d.sizeSelectors > 0 && d.sizeOptions.indexOf('10개') >= 0,
           'select ' + d.sizeSelectors + '개 ' + JSON.stringify(d.sizeOptions));
+        /* 자리를 곳수가 아니라 표 제목으로 못 박는다 — 3행 고정인 현황 표에 붙어 있으면 FAIL */
+        const owner = d.sizeOwner || [];
+        const onRoster = owner.filter(x => x.size).map(x => x.title);
+        add('D 보기 갯수는 쪽 넘김이 달린 표에만',
+          JSON.stringify(onRoster) === JSON.stringify(['가맹점별 투자자산']),
+          JSON.stringify(owner));
+        /* 총 건수는 정본과 같은 자리·같은 글자라야 한다 — 배포가 뒤처지면 여기서 잡힌다 */
+        add('C 시연 가맹점별 투자자산 총 건수 = 정본',
+          !canonApp || JSON.stringify(d.pgCount) === JSON.stringify(canonApp.pgCount),
+          '정본 ' + JSON.stringify(canonApp && canonApp.pgCount) + ' ↔ 시연 ' + JSON.stringify(d.pgCount));
         /* 사이드바 로고의 index.html 은 자기 자신을 가리킨다(data-nav 로 JS 가 가로챈다) —
            sync_prototype.py 가 남기기로 한 것이라 형제 문서 유출이 아니다. */
         const sib = d.siblingLinks.filter(h => !SELF_LINK_OK.some(x => String(h).indexOf(x) >= 0));

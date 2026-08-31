@@ -12,6 +12,8 @@
 
    macOS 함정 — --window-size=1440,H 는 실제 뷰포트 1440x(H-87). 1287 로 줘야 1200 이 잡힌다. */
 const http = require('http');
+const CHROME_DL = require('./chrome_dl');
+const PH_DL = CHROME_DL.dir();
 const fs   = require('fs');
 const path = require('path');
 const os   = require('os');
@@ -21,7 +23,7 @@ const REPO   = '/Users/semi/cursor/payhug-investor-admin';
 const OUTDIR = '/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin';
 /* 기대값을 검증기에 손으로 적지 않는다.
    시뮬레이션 쪽 — sim_facts.py 가 build_app.py 의 씨앗 8행(simSeedRows)·기본 변수(SIM_DEFAULT)·
-   플랫폼 만기(SIM_DUR)를 읽어 산출한 것. 씨앗 한 곳만 고치면 기대값이 따라온다.
+   플랫폼 금융일수(SIM_DUR)를 읽어 산출한 것. 씨앗 한 곳만 고치면 기대값이 따라온다.
    원장 불변식 쪽 — daily_ledger.py 가 내는 ledger_facts.json (verify_identity.js:13 과 같은 원천). */
 /* 파일을 읽지 않고 산출기를 그 자리에서 돌려 받는다 — sim_facts.json 이 낡아 있어도
    검증기가 옛 기대값을 지키는 일이 없다. 산출기가 죽으면 검증기도 그대로 죽는다(FAIL). */
@@ -137,12 +139,48 @@ const HELPERS = `
       return r ? r.querySelector('.sim-days').textContent.trim() : null;
     },
     btn: function(){ return document.querySelector('[data-mount="sim-go"]'); },
+    varVal: function(k){
+      var el = document.querySelector('[data-act="sim-var"][data-k="' + k + '"]')
+            || document.querySelector('[data-act="sim-scale"][data-k="' + k + '"]');
+      return el ? el.value : null;
+    },
+    setScale: function(k, v){
+      var el = document.querySelector('[data-act="sim-scale"][data-k="' + k + '"]');
+      el.focus(); el.value = v;
+      el.dispatchEvent(new Event('input', {bubbles:true}));
+      el.dispatchEvent(new Event('change', {bubbles:true}));
+      el.blur();
+      return el.value;
+    },
+    amts: function(){
+      return Array.prototype.map.call(
+        document.querySelectorAll('[data-act="sim-row"][data-f="amt"]'), function(e){ return e.value; });
+    },
+    /* ⑤ Ty 2분할 오른쪽 · ⑥ 일별 표 마지막 열머리 — 표기만 읽는다 */
+    ty5Label: function(){
+      var g = window.__S.out().querySelectorAll('.ty-split > div');
+      return g.length > 1 ? g[1].querySelector('.ty-label').textContent.trim() : null;
+    },
+    ty5Badge: function(){
+      var g = window.__S.out().querySelectorAll('.ty-split > div');
+      var b = g.length > 1 ? g[1].querySelector('.ty-label .badge') : null;
+      return b ? b.textContent.trim() : null;
+    },
+    dailyTh: function(){
+      var t = window.__S.tables()[2], th = t.querySelectorAll('thead th');
+      return th[th.length - 1].textContent.trim();
+    },
+    dailyThBadge: function(){
+      var t = window.__S.tables()[2], th = t.querySelectorAll('thead th'), b = th[th.length - 1].querySelector('.badge');
+      return b ? b.textContent.trim() : null;
+    },
     snap: function(){
       return {rows: window.__S.sec().querySelectorAll('[data-mount="sim-rows"] .sim-row').length,
               total: document.querySelector('[data-mount="sim-total"]').textContent.trim(),
               btnLabel: window.__S.btn().textContent.trim(),
               btnDisabled: window.__S.btn().disabled,
               warn: !document.querySelector('[data-mount="sim-warn"]').hidden,
+              warnText: document.querySelector('[data-mount="sim-warn"]').textContent.trim(),
               state: window.__S.sec().dataset.state,
               badge: (window.__S.sec().querySelector('[data-state-mark]') || {textContent:''}).textContent.trim(),
               outLen: window.__S.out().innerHTML.length};
@@ -157,7 +195,7 @@ async function main(){
   await new Promise(r => server.listen(PORT, r));
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'vsim-'));
   const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DPORT,
-    '--user-data-dir=' + profile, '--no-first-run', '--no-default-browser-check',
+    CHROME_DL.args(PH_DL, profile)[0] /* '--user-data-dir=' + profile */, '--no-first-run', '--no-default-browser-check',
     '--disable-gpu', '--window-size=1440,1287', 'about:blank'], {stdio:'ignore'});
 
   let targets = null;
@@ -279,7 +317,7 @@ async function main(){
     n(foot[1]) === n(foot[2]) + n(foot[3]) && n(foot[1]) === B.psb, foot);
   P('일별 합계 PSD ' + B.psd + ' · ④ ' + B.ty4pct,
     foot[4].indexOf(B.psd) === 0 && foot[5].indexOf(B.ty4pct) === 0, foot);
-  P('일별 행 ' + B.dailyDates.length + '건 (만기 채권의 서로 다른 정산예정일)',
+  P('일별 행 ' + B.dailyDates.length + '건 (기간 내 채권의 서로 다른 정산예정일)',
     JSON.stringify(base.daily.map(r => r[0])) === JSON.stringify(B.dailyDates),
     base.daily.map(r => r[0]));
   P('수익 현황 — 투자실행금 · 투자수익 · 기간',
@@ -290,7 +328,7 @@ async function main(){
     base.tyStat.indexOf(B.ty4) >= 0 && base.tyStat.indexOf(B.ty5) >= 0, base.tyStat);
   P('채권별 산출 ' + B.bondKinds.length + '행 · 구분 '
     + B.bondKinds.filter(k => k === '미회수').length + ' 미회수 · '
-    + B.bondKinds.filter(k => k === '만기').length + ' 만기',
+    + B.bondKinds.filter(k => k === '기간 내').length + ' 기간 내',
     JSON.stringify(base.bonds.map(b => b[1])) === JSON.stringify(B.bondKinds), base.bonds.map(b => b[1]));
   P('채권 1행 = 설계 검산표',
     JSON.stringify(base.bonds[0]) === JSON.stringify(B.bond0), base.bonds[0]);
@@ -336,7 +374,7 @@ async function main(){
     var b = window.__S.bondRows();
     return {kinds:b.map(function(x){ return x.cells[1]; }), daily:window.__S.dailyRows().length,
             기간:window.__S.stat('검색대상기간'), exec:window.__S.statusRows()[0][1]};`);
-  P('종료일 ' + SF.defaults.to + ' → ' + SF.scenarios.to0831.value + ' : 만기/미회수 경계가 옮겨간다',
+  P('종료일 ' + SF.defaults.to + ' → ' + SF.scenarios.to0831.value + ' : 기간 내/미회수 경계가 옮겨간다',
     JSON.stringify(t31.kinds) === JSON.stringify(SF.to0831.bondKinds)
     && t31.daily === SF.to0831.dailyDates.length
     && t31.기간.indexOf(SF.to0831.ecd) >= 0 && t31.exec === SF.to0831.exec, t31);
@@ -356,7 +394,7 @@ async function main(){
       out.push({k:k, due:window.__S.rowVal(0,'dd'), days:window.__S.rowDays(0), want:m[k]});
     });
     return out;`);
-  P('플랫폼 4종 만기 ' + SF.platDays.map(d => parseInt(d, 10)).join('·'),
+  P('플랫폼 4종 금융일수 ' + SF.platDays.map(d => parseInt(d, 10)).join('·'),
     platAll.every(x => x.due === x.want) &&
     JSON.stringify(platAll.map(x => x.days)) === JSON.stringify(SF.platDays), platAll);
 
@@ -395,7 +433,7 @@ async function main(){
             italic:b.filter(function(x){ return x.skip; }).map(function(x){ return x.style; }),
             daily:window.__S.dailyRows().map(function(r){ return r[0]; }),
             PSA:window.__S.stat('투자실행금'), foot:window.__S.dailyFoot()};`);
-  P('시작일 ' + SF.scenarios.from0825.value + ' : ' + B.dailyDates[0] + ' 만기 행이 기간 밖으로 빠진다',
+  P('시작일 ' + SF.scenarios.from0825.value + ' : ' + B.dailyDates[0] + ' 기간 내 행이 기간 밖으로 빠진다',
     JSON.stringify(skip.kinds) === JSON.stringify(SF.from0825.bondKinds)
     && skip.skipFlags[SF.from0825.bondKinds.indexOf('기간 밖')] === true, skip.kinds);
   P('기간 밖 행은 회색 이탤릭', skip.italic.length > 0 && skip.italic.every(v => v === 'italic'), skip.italic);
@@ -523,8 +561,142 @@ async function main(){
     keep.rollupMatchesLedger === true && keep.ledgerDays === FACTS.ledgerDays, keep.ledgerDays);
   R.selfcheck = keep;
 
-  /* ── 10) 정적 낱장 ── */
-  console.log('\n[10] 정적 낱장');
+
+  /* ── 10) 대표 재전달 대기 표기 (⑤ · ⑥) ── */
+  console.log('\n[10] 대표 재전달 대기 표기');
+  await evalJS("go('invest-sim','result'); return 1;");
+  const pend = await evalJS(`
+    return {ty5:window.__S.ty5Label(), ty5Badge:window.__S.ty5Badge(),
+            th:window.__S.dailyTh(), thBadge:window.__S.dailyThBadge()};`);
+  P('⑤ 투자자산 대비 — 값은 두고 ' + SF.pendBadge + ' 배지',
+    pend.ty5Badge === SF.pendBadge && pend.ty5.indexOf(SF.pendRow) >= 0, pend.ty5);
+  P('⑥ 일별 Ty수익율 열머리 — 배지 + 어느 읽기인지 툴팁',
+    pend.thBadge === SF.pendBadge && pend.th === SF.tyThText, pend.th);
+  const pendPf = await evalJS(`
+    go('invest-profit','default');
+    var sec = document.querySelector('section.screen[data-screen="invest-profit"]');
+    var g = sec.querySelectorAll('.ty-split > div');
+    var th = sec.querySelectorAll('.tbl thead th');
+    return {ty5:g[1].querySelector('.ty-label').textContent.trim(),
+            ty5Badge:(g[1].querySelector('.ty-label .badge')||{textContent:''}).textContent.trim(),
+            th:th[th.length-1].textContent.trim(),
+            values:Array.prototype.map.call(sec.querySelectorAll('.ty-split .summary-value'),
+                     function(e){ return e.textContent.trim(); })};`);
+  P('투자 수익 화면도 같은 표기 — ⑤ 배지 · ⑥ 열머리',
+    pendPf.ty5Badge === SF.pendBadge && pendPf.ty5.indexOf(SF.pendRow) >= 0
+    && pendPf.th === SF.tyThText, {ty5:pendPf.ty5Badge, th:pendPf.th});
+  P('표기를 붙여도 ⑤ 값 자체는 그대로 뜬다',
+    pendPf.values.length === 2 && /^\d+\.\d\d%$/.test(pendPf.values[1]), pendPf.values);
+
+  /* ── 11) 실행 게이트 — 각 칸의 min/max 를 실제로 본다 ── */
+  console.log('\n[11] 실행 게이트');
+  async function seed(){ await evalJS("go('invest-sim','result'); return 1;"); }
+  for(const b of SF.bounds){
+    await seed();
+    const g = await evalJS(`
+      var before = window.__S.snap().outLen;
+      window.__S.setVar('${b.k}', '${b.probe}');
+      var a = window.__S.snap();
+      window.__S.btn().click();
+      var after = window.__S.snap();
+      return {before:before, disabled:a.btnDisabled, warn:a.warn, text:a.warnText,
+              outLen:a.outLen, afterClick:after.outLen};`);
+    P(b.label + ' ' + b.probe + ' (' + (b.max === null ? '≥ ' + b.min : b.min + ' ~ ' + b.max) + ') → 버튼 비활성 · 까닭 한 줄 · 묵은 결과 없음',
+      g.before > 2000 && g.disabled === true && g.warn === true && g.text === b.msg
+      && g.outLen === 0 && g.afterClick === 0, g);
+  }
+  await seed();
+  const gAmt = await evalJS(`
+    var before = window.__S.snap().outLen;
+    window.__S.setRow(0, 'amt', '-1');
+    var a = window.__S.snap();
+    return {before:before, disabled:a.btnDisabled, text:a.warnText, outLen:a.outLen};`);
+  P('순지급액 -1 → 버튼 비활성 · 까닭 한 줄 · 묵은 결과 없음',
+    gAmt.before > 2000 && gAmt.disabled === true && gAmt.text === SF.amtMsg && gAmt.outLen === 0, gAmt);
+  await seed();
+  const gRange = await evalJS(`
+    var before = window.__S.snap().outLen;
+    window.__S.setVar('from', '${SF.badFrom}');
+    var a = window.__S.snap();
+    window.__S.setVar('from', '${SF.defaults.from}');
+    var b = window.__S.snap();
+    return {before:before, disabled:a.btnDisabled, text:a.warnText, outLen:a.outLen,
+            backDisabled:b.btnDisabled, backWarn:b.warn};`);
+  P('기간 역전 → 묵은 결과도 함께 내린다 · 되돌리면 다시 활성',
+    gRange.before > 2000 && gRange.disabled === true && gRange.text === SF.rangeMsg
+    && gRange.outLen === 0 && gRange.backDisabled === false && gRange.backWarn === false, gRange);
+
+  /* ── 12) 입력이 화면을 벗어나도 남는다 ── */
+  console.log('\n[12] 입력 유지');
+  await evalJS("go('invest-sim','default'); return 1;");
+  await evalJS("window.__S.setVar('cash', '30000000'); return 1;");
+  await run();
+  const keepIn = await evalJS(`
+    var before = {cash:window.__S.varVal('cash'), state:window.__S.snap().state, outLen:window.__S.snap().outLen};
+    document.querySelector('.nav-item[data-menu="merchants"]').click();
+    document.querySelector('.nav-item[data-menu="invest-sim"]').click();
+    var a = window.__S.snap();
+    return {before:before, cash:window.__S.varVal('cash'), state:a.state, outLen:a.outLen};`);
+  P('순현금 30,000,000 · 실행 결과가 메뉴를 오가도 남는다',
+    keepIn.before.cash === '30000000' && keepIn.before.outLen > 2000
+    && keepIn.cash === '30000000' && keepIn.state === 'result' && keepIn.outLen > 2000, keepIn);
+  const deep = await evalJS(`
+    location.hash = '#invest-assets';
+    location.hash = '#invest-sim';
+    go('invest-sim','default');
+    return {cash:window.__S.varVal('cash'), state:window.__S.snap().state, outLen:window.__S.snap().outLen};`);
+  P('상태를 콕 집어 부르면(딥링크) 그때는 씨앗을 다시 심는다',
+    deep.cash === String(SF.defaults.cash) && deep.state === 'default' && deep.outLen === 0, deep);
+
+  /* ── 13) 투자자산 규모 · 유휴자금 비율 ── */
+  console.log('\n[13] 투자자산 규모 · 유휴자금 비율');
+  await evalJS("go('invest-sim','default'); return 1;");
+  const seedScale = await evalJS("return {asset:window.__S.varVal('asset'), idle:window.__S.varVal('idle')};");
+  P('두 칸은 지금 상태에서 되읽은 값으로 선다 (투자자산 = 미회수 투자실행금 + 순현금)',
+    seedScale.asset === SF.seedAsset && seedScale.idle === SF.seedIdle, seedScale);
+  for(const p of SF.scaleIdle){
+    const w = SF.scale[p];
+    await evalJS("go('invest-sim','default'); return 1;");
+    await evalJS(`window.__S.setScale('asset', '${SF.scaleAsset}'); window.__S.setScale('idle', '${p}'); return 1;`);
+    const got = await evalJS(`
+      return {asset:window.__S.varVal('asset'), idle:window.__S.varVal('idle'),
+              cash:window.__S.varVal('cash'), amts:window.__S.amts()};`);
+    await run();
+    const st2 = await evalJS("return {status:window.__S.statusRows(), tot:window.__S.snap()};");
+    P('투자자산 ' + SF.scaleAsset + ' · 유휴 ' + p + '% → 투자실행액 ' + w.exec + ' (반올림 어긋남 0)',
+      got.cash === w.cashField && got.asset === SF.scaleAsset && got.idle === String(p)
+      && JSON.stringify(got.amts) === JSON.stringify(w.amts)
+      && st2.status[0][1] === w.exec && st2.status[1][1] === w.cash
+      && st2.status[2][1] === w.total && st2.status[2][5] === w.shareSum
+      && st2.status[0][5] === w.share0 && st2.status[1][5] === w.share1,
+      {cash:got.cash, exec:st2.status[0][1], total:st2.status[2][1], 비중:st2.status[2][5]});
+    /* 규칙 — 같은 값을 다시 넣어도 결과가 그대로다(멱등). 어느 칸을 마지막에 만졌든 값이 튀지 않는다. */
+    const again = await evalJS(`
+      window.__S.setScale('idle', '${p}');
+      var a = {asset:window.__S.varVal('asset'), idle:window.__S.varVal('idle'),
+               cash:window.__S.varVal('cash'), amts:window.__S.amts()};
+      window.__S.setScale('asset', '${SF.scaleAsset}');
+      var b = {asset:window.__S.varVal('asset'), idle:window.__S.varVal('idle'),
+               cash:window.__S.varVal('cash'), amts:window.__S.amts()};
+      return {a:a, b:b};`);
+    P('유휴 ' + p + '% — 두 칸을 다시 만져도 값이 튀지 않는다(멱등)',
+      JSON.stringify(again.a) === JSON.stringify(got) && JSON.stringify(again.b) === JSON.stringify(got),
+      again);
+  }
+  /* 반대 방향 — 순현금을 직접 만지면 두 칸이 되읽힌다 */
+  await evalJS("go('invest-sim','default'); return 1;");
+  const rev = await evalJS(`
+    var b0 = {asset:window.__S.varVal('asset'), idle:window.__S.varVal('idle')};
+    window.__S.setVar('cash', '30000000');
+    return {before:b0, asset:window.__S.varVal('asset'), idle:window.__S.varVal('idle'),
+            amts:window.__S.amts()};`);
+  P('순현금을 직접 만지면 두 칸이 되읽힌다 — 행 금액은 건드리지 않는다',
+    rev.asset === String(Number(SF.seedAsset) - SF.defaults.cash + 30000000)
+    && rev.idle !== rev.before.idle
+    && JSON.stringify(rev.amts) === JSON.stringify(SF.seedAmts), rev);
+
+  /* ── 14) 정적 낱장 ── */
+  console.log('\n[14] 정적 낱장');
   await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/invest-sim.html'});
   await sleep(700);
   const leaf1 = await evalJS(`
@@ -534,11 +706,19 @@ async function main(){
             rows:document.querySelectorAll('.sim-row').length,
             total:document.querySelector('.sim-total').textContent.trim(),
             tables:document.querySelectorAll('.tbl').length,
+            fields:Array.prototype.map.call(document.querySelectorAll('.sim-grid .filter-field label'),
+                     function(e){ return e.textContent.trim(); }),
+            asset:document.querySelector('#sim-asset').value,
+            idle:document.querySelector('#sim-idle').value,
             btn:document.querySelector('.sim-run').textContent.trim()};`);
   P('invest-sim 낱장 — 8메뉴 · ' + SF.seedRows + '행 · 결과 없음',
     leaf1.nav === 8 && leaf1.active === 'invest-sim' && leaf1.rows === SF.seedRows
     && leaf1.total === SF.seedTotalText && leaf1.tables === 0
     && leaf1.btn === '시뮬레이션 실행', leaf1);
+  P('낱장 기준 변수 8칸 — 투자자산 규모 · 유휴자금 비율이 통합본과 같은 값',
+    leaf1.fields.length === 8 && leaf1.fields[0] === '투자자산 규모 (원)'
+    && leaf1.fields[1] === '유휴자금 비율 (%)'
+    && leaf1.asset === SF.seedAsset && leaf1.idle === SF.seedIdle, leaf1.fields);
 
   await send('Page.navigate', {url:'http://127.0.0.1:' + PORT + '/invest-sim--result.html'});
   await sleep(700);
@@ -552,7 +732,11 @@ async function main(){
             foot:cells(t[2].querySelector('tfoot tr')),
             bonds:t[0].querySelectorAll('tbody tr').length,
             daily:t[2].querySelectorAll('tbody tr').length,
-            cards:document.querySelectorAll('.summary-card').length};`);
+            cards:document.querySelectorAll('.summary-card').length,
+            ty5:document.querySelectorAll('.ty-split > div')[1].querySelector('.ty-label').textContent.trim(),
+            ty5Badge:(document.querySelectorAll('.ty-split > div')[1].querySelector('.ty-label .badge')
+                      || {textContent:''}).textContent.trim(),
+            dailyTh:(function(){ var th = t[2].querySelectorAll('thead th'); return th[th.length-1].textContent.trim(); })()};`);
   const b = R.baseline;
   P('invest-sim--result 낱장 — 배지 · 표 3 · 카드 4',
     leaf2.nav === 8 && leaf2.badge === '실행 결과' && leaf2.tables === 3
@@ -562,8 +746,11 @@ async function main(){
     JSON.stringify(leaf2.status) === JSON.stringify(b.status), {낱장:leaf2.status[0], 통합본:b.status[0]});
   P('낱장 일별 합계행 = 통합본 합계행',
     JSON.stringify(leaf2.foot) === JSON.stringify(b.foot), {낱장:leaf2.foot, 통합본:b.foot});
+  P('낱장도 ⑤ · ⑥ 에 같은 대표 재전달 대기 표기',
+    leaf2.ty5Badge === SF.pendBadge && leaf2.ty5.indexOf(SF.pendRow) >= 0
+    && leaf2.dailyTh === SF.tyThText, {ty5:leaf2.ty5Badge, th:leaf2.dailyTh});
 
-  /* ── 11) 콘솔 ── */
+  /* ── 15) 콘솔 ── */
   R.console = consoleErrors.filter(c => c.indexOf('/favicon.ico') < 0);
   P('콘솔 에러 0', R.console.length === 0, R.console.slice(0, 5));
 

@@ -12,6 +12,7 @@
     계약기록 표 <thead> 첫 칸이 체크박스인 표의 <tbody>
     페이지네이션 pg-size 의 selected 옵션(1쪽 행수) · page-btn active(현재 쪽)
     건수        `<b class="mono">N</b>건` · `다운로드 (N)` · `N건 선택`
+    발급 대상   증명서 확인 모달의 `<dt>대상</dt>` 다음 `<dd>`
 
 옛 값 문자열을 locator 로 쓰면 값이 한 세대 바뀌는 순간 0건 치환이 되고, 0건 치환은
 실패로 보이지 않는다. 그래서 기대한 자리를 못 잡으면 AssertionError 로 죽는다.
@@ -232,6 +233,56 @@ def page_size(s):
     return int(got[0])
 
 
+# ── 4-1) 보기 갯수·총 건수의 자리 ─────────────────────────────────
+# 곳수만 세면 어느 표에 붙었는지는 못 본다. 자리는 표 제목으로 잡는다 —
+# 보기 갯수는 쪽 넘김이 달린 표(가맹점별 투자자산)의 것이지 3행 고정인 현황 표의 것이 아니다.
+PGLABEL = re.compile(r'\s*<label class="pg-size">.*?</label>', re.S)
+PGCOUNT = re.compile(r'(<span class="pg-count">).*?(</span>)', re.S)
+TBLHEAD = re.compile(r'(<div class="tbl-head">\s*<h2>)([^<]+)(</h2>\s*<div class="actions">)(.*?)(</div>\s*</div>)', re.S)
+
+SIZE_TABLE = '가맹점별 투자자산'      # 쪽 넘김이 달린 표
+FIXED_TABLE = '현황'                  # 자산 구분 3행 고정
+
+
+def head_of(s, title):
+    for m in TBLHEAD.finditer(s):
+        if m.group(2).strip() == title:
+            return m
+    raise AssertionError('<div class="tbl-head"><h2>%s</h2> 를 못 잡았다' % title)
+
+
+def place_page_tools(s):
+    """보기 갯수 select 를 쪽 넘김이 달린 표 머리로 옮기고, 그 자리를 구조로 못 박는다."""
+    m = head_of(s, FIXED_TABLE)
+    moved, acts = '', m.group(4)
+    hit = PGLABEL.search(acts)
+    if hit:
+        moved = hit.group(0)
+        s = s[:m.start(4)] + PGLABEL.sub('', acts, count=1) + s[m.end(4):]
+
+    m = head_of(s, SIZE_TABLE)
+    if not PGLABEL.search(m.group(4)):
+        assert moved, '보기 갯수 select 를 어느 표 머리에서도 못 찾았다'
+        s = s[:m.start(4)] + moved + m.group(4) + s[m.end(4):]
+
+    n = len(re.findall(r'<label class="pg-size">', s))
+    assert n == 1, '보기 갯수 select %d건 — 1건이라야 한다' % n
+    assert PGLABEL.search(head_of(s, SIZE_TABLE).group(4)), \
+        '보기 갯수 select 가 「%s」 표 머리에 없다' % SIZE_TABLE
+    assert not PGLABEL.search(head_of(s, FIXED_TABLE).group(4)), \
+        '고정 %s 표에 보기 갯수 select 가 붙어 있다' % FIXED_TABLE
+    return s
+
+
+def page_count(s):
+    """쪽 넘김 줄 왼쪽 총 건수 — 가맹점 낱장·통합본과 같은 꼴. 비면 몇 건인지 알 수 없다."""
+    out, n = PGCOUNT.subn(
+        lambda _m: '<span class="pg-count">총 <b class="mono">%d</b>건</span>' % N_ROSTER, s, count=1)
+    assert n == 1, 'pg-count %d건 — 1건이라야 한다' % n
+    assert re.search(r'<span class="pg-count">총 <b class="mono">\d+</b>건</span>', out), 'pg-count 비었다'
+    return out
+
+
 def page_now(s):
     got = PGACT.findall(s)
     assert len(got) == 1, 'page-btn active %d건 — 1건이라야 한다' % len(got)
@@ -329,6 +380,8 @@ def build_assets(s):
     s = summary_cards(s)
     s = pop_heads(s)
     s = status_table(s)
+    s = place_page_tools(s)
+    s = page_count(s)
     size = page_size(s)
     page = page_now(s)
     pages = -(-N_ROSTER // size)
@@ -351,6 +404,13 @@ def build_certificate(s):
              lambda mm: mm.group(1) + str(EXEC_SHARE + CASH_SHARE) + mm.group(2), '증명서 합계 비중')
     return sub1(s, r'(<span class="k">대상 가맹점</span><span class="v">)\d+(개</span>)',
                 r'\g<1>%d\g<2>' % N_ROSTER, '대상 가맹점 N개')
+
+
+def build_cert_confirm(s):
+    """증명서 발급 확인 모달 — 발급 대상 곳수도 로스터에서 읽는다."""
+    s = build_assets(s)
+    return sub1(s, r'(<dt>대상</dt><dd>가맹점 )\d+(개</dd>)',
+                r'\g<1>%d\g<2>' % N_ROSTER, '발급 대상 N개')
 
 
 def build_merchants(s):
@@ -451,7 +511,7 @@ def build_merchants_filtered(s):
 PLAN = [
     ('invest-assets.html',              build_assets),
     ('invest-assets--download.html',    build_assets),
-    ('invest-assets--cert-confirm.html', build_assets),
+    ('invest-assets--cert-confirm.html', build_cert_confirm),
     # 빈 상태 낱장은 표에 행이 없어 본문을 다시 그릴 것이 없다 — 열머리만 같은 자리에 둔다.
     ('invest-assets--empty.html',       pop_heads),
     ('certificate.html',                build_certificate),

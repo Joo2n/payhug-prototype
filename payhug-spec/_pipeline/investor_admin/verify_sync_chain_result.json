@@ -1,57 +1,57 @@
 {
- "finishedAt": "2026-08-30T19:14:43.027Z",
+ "finishedAt": "2026-08-31T12:06:20.921Z",
  "rounds": [
   {
    "round": 1,
-   "at": "2026-08-30T19:14:12.457Z",
+   "at": "2026-08-31T12:05:51.319Z",
    "http": {
     "proto": {
-     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788117252457",
+     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788177951319",
      "status": 200,
-     "bytes": 212908,
-     "ms": 422,
+     "bytes": 212906,
+     "ms": 140,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "467",
+     "age": "32113",
      "cache": "HIT",
-     "md5": "5642da5de5368e7677649e87f21f34c1"
+     "md5": "9dc611d2986d24b6d839413d72f11c89"
     },
     "gloss": {
-     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788117252880",
+     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788177951460",
      "status": 200,
      "bytes": 380947,
-     "ms": 119,
+     "ms": 87,
      "mitigated": "",
      "challenge": false,
      "title": "용어 해설 — 투자자 어드민",
-     "age": "466",
+     "age": "61165",
      "cache": "HIT",
      "md5": "eccbfce095bf4ba57bc1e7e695c40610"
     },
     "demo": {
-     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788117253001",
+     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788177951548",
      "status": 200,
      "bytes": 23958,
-     "ms": 73,
+     "ms": 81,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug 투자자 어드민 — 화면 설계(안)",
-     "age": "460",
+     "age": "31891",
      "cache": "HIT",
      "md5": "c6dcaab7ff02954e3e88725d78e67530"
     },
     "demo/app.html": {
      "url": "https://payhug-investor-demo.vercel.app/app.html",
      "status": 200,
-     "bytes": 218173,
-     "ms": 31,
+     "bytes": 218171,
+     "ms": 30,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "468",
+     "age": "31993",
      "cache": "HIT",
-     "md5": "11cba02fd44ae34472acc150012de17c"
+     "md5": "379a7a6f0eefd74e0784dd4ab0cd28c3"
     },
     "demo/glossary.html": {
      "url": "https://payhug-investor-demo.vercel.app/glossary.html",
@@ -61,7 +61,7 @@
      "mitigated": "",
      "challenge": false,
      "title": "투자자 어드민 용어 해설",
-     "age": "450",
+     "age": "31965",
      "cache": "HIT",
      "md5": "323c50b26e3cfc5607010ad61d984bf9"
     }
@@ -70,22 +70,22 @@
     {
      "name": "A proto 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=212908 age=467s cache=HIT"
+     "detail": "code=200 bytes=212906 age=32113s cache=HIT"
     },
     {
      "name": "A gloss 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=380947 age=466s cache=HIT"
+     "detail": "code=200 bytes=380947 age=61165s cache=HIT"
     },
     {
      "name": "A demo 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=23958 age=460s cache=HIT"
+     "detail": "code=200 bytes=23958 age=31891s cache=HIT"
     },
     {
      "name": "A demo/app.html",
      "pass": true,
-     "detail": "code=200 bytes=218173"
+     "detail": "code=200 bytes=218171"
     },
     {
      "name": "A demo/glossary.html",
@@ -95,12 +95,12 @@
     {
      "name": "C 정본 app.html 계측",
      "pass": true,
-     "detail": "15화면 · 상태합 33 · 본문 27538자"
+     "detail": "15화면 · 상태합 33 · 본문 28110자"
     },
     {
      "name": "C 정본 glossary.html 계측",
      "pass": true,
-     "detail": "카드 100 · 본문 84130자"
+     "detail": "카드 100 · 본문 85184자"
     },
     {
      "name": "C 정본 app 표식",
@@ -111,6 +111,16 @@
      "name": "C 정본 숫자 불변식",
      "pass": true,
      "detail": "80,000,000 · 20,000,000 · 100,000,000 · 100.0%"
+    },
+    {
+     "name": "C 정본 보기 갯수는 쪽 넘김이 달린 표에만",
+     "pass": true,
+     "detail": "[{\"title\":\"현황\",\"size\":false},{\"title\":\"가맹점별 투자자산\",\"size\":true}]"
+    },
+    {
+     "name": "C 정본 가맹점별 투자자산 총 건수 표시",
+     "pass": true,
+     "detail": "[\"총 8건\"]"
     },
     {
      "name": "C 정본 용어 표식",
@@ -163,6 +173,16 @@
      "detail": "select 1개 [\"10개\",\"20개\",\"50개\"]"
     },
     {
+     "name": "D 보기 갯수는 쪽 넘김이 달린 표에만",
+     "pass": true,
+     "detail": "[{\"title\":\"현황\",\"size\":false},{\"title\":\"가맹점별 투자자산\",\"size\":true}]"
+    },
+    {
+     "name": "C 시연 가맹점별 투자자산 총 건수 = 정본",
+     "pass": false,
+     "detail": "정본 [\"총 8건\"] ↔ 시연 []"
+    },
+    {
      "name": "D 형제 문서 링크 0건",
      "pass": true,
      "detail": "[] (자기참조 허용 [\"index.html [data-nav=invest-assets]\"])"
@@ -209,8 +229,8 @@
     },
     {
      "name": "C 용어 본문 길이 근사",
-     "pass": true,
-     "detail": "정본 84130 ↔ 배포 84124 (차 6)"
+     "pass": false,
+     "detail": "정본 85184 ↔ 배포 84124 (차 1060)"
     },
     {
      "name": "B 통합 표식",
@@ -258,7 +278,10 @@
      "detail": "정본 100 ↔ 배포 100"
     }
    ],
-   "fails": [],
+   "fails": [
+    "C 시연 가맹점별 투자자산 총 건수 = 정본 — 정본 [\"총 8건\"] ↔ 시연 []",
+    "C 용어 본문 길이 근사 — 정본 85184 ↔ 배포 84124 (차 1060)"
+   ],
    "canon": {
     "app": {
      "screens": [
@@ -358,13 +381,13 @@
       "screens": 15,
       "states": 18
      },
-     "corpusLen": 27538,
+     "corpusLen": 28110,
      "nav": 8,
      "gran": 3
     },
     "gloss": {
      "cards": 100,
-     "textLen": 84130,
+     "textLen": 85184,
      "title": "투자자 어드민 용어 해설"
     }
    },
@@ -390,8 +413,7 @@
    },
    "canonGlossScan": {
     "found": {
-     "가중평균만기": 3,
-     "Duration": 6,
+     "w금융일수": 85,
      "케이뱅크": 6,
      "목차": 3
     },
@@ -527,6 +549,17 @@
      "20개",
      "50개"
     ],
+    "sizeOwner": [
+     {
+      "title": "현황",
+      "size": false
+     },
+     {
+      "title": "가맹점별 투자자산",
+      "size": true
+     }
+    ],
+    "pgCount": [],
     "granCount": 3,
     "granLabels": [
      "일별",
@@ -597,7 +630,7 @@
     "cards": 100,
     "textLen": 84130
    },
-   "pass": true
+   "pass": false
   }
  ]
 }

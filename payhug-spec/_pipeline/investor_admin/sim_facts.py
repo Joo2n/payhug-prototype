@@ -32,7 +32,7 @@
 
     실행:  python3 sim_facts.py     →  sim_facts.json
 """
-import io, json, os, re, sys
+import io, json, math, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -154,6 +154,105 @@ def add_days(d, n):
     return B._d(d).__class__.fromordinal(B._d(d).toordinal() + n).isoformat()
 
 
+# ── 실행 게이트 — 막는 기준을 통합본에서 그대로 읽는다 ─────────────
+# 검증기가 두 번째 기준표를 들고 있지 않게 한다. 문장 틀만 여기 있고(build_app.py simBoundMsg 와 같은 틀)
+# 라벨·상·하한은 build_app.py 의 var SIM_BOUND 가 정한다.
+_BND = re.search(r'var SIM_BOUND = \[(.*?)\];', _SRC, re.S).group(1)
+BOUNDS = [{'k': m.group(1), 'label': m.group(2),
+           'min': float(m.group(3)),
+           'max': None if m.group(4) == 'null' else float(m.group(4))}
+          for m in re.finditer(r"\{k:'(\w+)',\s*label:'([^']+)',\s*min:([\d.]+),\s*max:([\d.]+|null)\}", _BND)]
+assert len(BOUNDS) == 4, BOUNDS
+
+
+def _num(v):
+    return int(v) if float(v).is_integer() else v
+
+
+def bound_msg(b):
+    # build_app.py simBoundMsg 와 같은 틀 — 라벨 + 허용 범위. 새 존댓말 문장을 짓지 않는다(G-1).
+    if b['max'] is None:
+        return '%s 범위 %s 이상' % (b['label'], _num(b['min']))
+    return '%s 범위 %s ~ %s' % (b['label'], _num(b['min']), _num(b['max']))
+
+
+# 게이트를 실제로 때려 보는 값 — min 아래·max 위로 한 칸씩 벗어난다.
+def bound_probe(b):
+    return ('%g' % (b['max'] + 1)) if b['max'] is not None else '-5000000'
+
+
+# ── 대표 재전달 대기 표기 — 통합본 마크업에서 글자만 뽑는다 ────────
+_TAG = re.compile(r'<[^>]+>')
+_LIT = re.compile(r"'([^']*)'")
+_PEND_BADGE_HTML = re.search(r"var PEND_BADGE = '(.*?)';", _SRC).group(1)
+_PEND_ROW_HTML = re.search(r"var PEND_ROW   = '(.*?)';", _SRC).group(1)
+PEND_BADGE_TEXT = _TAG.sub('', _PEND_BADGE_HTML).strip()
+PEND_ROW_TEXT = _TAG.sub('', _PEND_ROW_HTML).strip()
+
+# ⑥ 열머리 — tyTh() 안의 문자열 조각을 이어 붙여 화면에 뜰 글자를 만든다.
+_TYTH = re.search(r'function tyTh\(\)\{(.*?)\n\}', _SRC, re.S).group(1)
+_TYTH = _TYTH.replace('PEND_ROW', "'" + _PEND_ROW_HTML + "'")
+_TYTH = _TYTH.replace('PEND_BADGE', "'" + _PEND_BADGE_HTML + "'")
+TY_TH_HTML = ''.join(_LIT.findall(_TYTH))
+TY_TH_TEXT = _TAG.sub('', TY_TH_HTML).strip()
+assert TY_TH_TEXT.startswith('Ty수익율') and PEND_ROW_TEXT in TY_TH_TEXT, TY_TH_TEXT
+
+# ── 투자자산 규모 · 유휴자금 비율 — 통합본 simApplyScale 과 같은 규칙 ──
+def _split(total, w):
+    """최대잉여법 — build_app.py simSplit 과 같은 정렬·같은 나눠주기."""
+    n, sm, out, order, t = len(w), sum(w), [], [], 0
+    for i in range(n):
+        raw = (total * w[i] / float(sm)) if sm else total / float(n)
+        fl = int(math.floor(raw))
+        out.append(fl)
+        t += fl
+        order.append((-(raw - fl), -w[i], i))
+    order.sort()
+    for k in range(min(total - t, n)):
+        out[order[k][2]] += 1
+    return out
+
+
+def _gross(a, r):
+    """build_app.py simGross — floor(순지급액 x (1-r)) 가 목표 투자실행금과 정확히 같아지는 최소 정수."""
+    return 0 if a <= 0 else int(math.ceil(float('%.6f' % (a / (1.0 - r)))))
+
+
+def scale(asset, idle, rows=None, r_rate=None, to=None):
+    """두 칸에서 유도한 (행 목록, 순현금). 통합본이 화면에서 하는 것과 같은 계산이다."""
+    rows = list(B.ROWS if rows is None else rows)
+    r_rate = B.R_RATE if r_rate is None else r_rate
+    to = B.TO if to is None else to
+    r = r_rate / 100.0
+    cash = int(math.floor(asset * idle / 100.0 + 0.5))
+    idx = [i for i, x in enumerate(rows) if x[3] > to]
+    w = [B.flr(rows[i][1] * (1 - r)) for i in idx]
+    parts = _split(max(0, asset - cash), w)
+    for k, i in enumerate(idx):
+        pl, _amt, sd, dd = rows[i]
+        rows[i] = (pl, _gross(parts[k], r), sd, dd)
+    return rows, cash
+
+
+SCALE_ASSET = 100000000            # 2026-08-31 회의 조건 — 투자자산 1억
+SCALE_IDLE = [20, 25, 30]          # 유휴자금 20 ~ 30%
+
+
+def scale_facts():
+    out = {}
+    for p in SCALE_IDLE:
+        rows, cash = scale(SCALE_ASSET, p)
+        sn = snap(scenario(ROWS=rows, CASH=cash), cash)
+        sn['rowsTotalText'] = rows_total(rows)
+        sn['amts'] = [str(a) for _, a, _, _ in rows]
+        sn['outSum'] = B.fmt(sum(a for _, a, _, d in rows if d > B.TO))
+        sn['cashField'] = str(cash)
+        sn['assetField'] = str(SCALE_ASSET)
+        sn['idleField'] = str(p)
+        out[str(p)] = sn
+    return out
+
+
 def facts():
     rows = list(B.ROWS)
     base = scenario()
@@ -168,6 +267,7 @@ def facts():
         'platDur': _DUR,
         'seedRows': len(rows),
         'seedTotalText': rows_total(rows),
+        'seedAmts': [str(a) for _, a, _, _ in rows],
         'seedDays': [str(B.days(sd, dd)) + '일' for _, _, sd, dd in rows],
         # 1행 선정산일 기준으로 플랫폼을 갈아 끼웠을 때 다시 채워지는 정산예정일·금융일수
         'row0Sd': rows[0][2],
@@ -182,6 +282,20 @@ def facts():
         'badFrom': add_days(B.TO, 14),
         'badDue':  add_days(rows[0][2], -6),
         'base': snap(base, B.CASH),
+        # 실행 게이트 — 막는 기준·막힐 때 뜨는 한 줄·때려 볼 값
+        'bounds': [dict(b, msg=bound_msg(b), probe=bound_probe(b)) for b in BOUNDS],
+        'rangeMsg': '시작일은 종료일보다 이후일 수 없습니다.',
+        'amtMsg': '순지급액 범위 0 이상',
+        # 대표 재전달 대기 표기
+        'pendBadge': PEND_BADGE_TEXT,
+        'pendRow': PEND_ROW_TEXT,
+        'tyThText': TY_TH_TEXT,
+        # 투자자산 규모 · 유휴자금 비율
+        'seedAsset': str(base['EXEC'] + B.CASH),
+        'seedIdle': B.numstr(round(B.CASH / float(base['EXEC'] + B.CASH) * 1000) / 10.0),
+        'scaleAsset': str(SCALE_ASSET),
+        'scaleIdle': [str(x) for x in SCALE_IDLE],
+        'scale': scale_facts(),
     }
     for name, sc in SCENARIOS.items():
         ov = _override(sc, rows)

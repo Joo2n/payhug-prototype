@@ -595,7 +595,7 @@ SCREENS_HTML = '''
             </div>
           </div>
           <div data-mount="ia-merch"></div>
-          <div data-mount="ia-merch-page"></div>
+          <div class="pagination with-count" data-mount="ia-merch-page"></div>
         </div>
 
 {FORMULA}
@@ -631,7 +631,7 @@ SCREENS_HTML = '''
               <div class="issue-meta">
                 <div><span class="k">작성일자</span><span class="v mono">2026-08-27</span></div>
                 <div><span class="k">투자자</span><span class="v">㈜테스트인베스트</span></div>
-                <div><span class="k">대상 가맹점</span><span class="v" data-mount="cert-count">16개</span></div>
+                <div><span class="k">대상 가맹점</span><span class="v" data-mount="cert-count">{NR}개</span></div>
               </div>
               <a class="btn btn-primary" style="width:100%" href="assets/docs/투자자산증명서_20260827.pdf" download="투자자산증명서_20260827.pdf" data-act="cert-pdf">{DLICO}
                 PDF 다운로드</a>
@@ -639,7 +639,8 @@ SCREENS_HTML = '''
           </aside>
         </div>
       </section>
-'''.replace('{EX}', EXCEL_BTN_INNER) \
+'''.replace('{NR}', str(len(RM.ROSTER))) \
+   .replace('{EX}', EXCEL_BTN_INNER) \
    .replace('{CERTICO}', sv(D_DOC, '1.8', 'icon')) \
    .replace('{LEFT}', sv(D_LEFT, '2', '', 'width:14px;height:14px')) \
    .replace('{DLICO}', sv(D_DL, '2', 'icon')) \
@@ -717,6 +718,14 @@ SCREENS_HTML += '''
             <h2 class="card-title">기준 변수</h2>
           </div>
           <div class="sim-grid">
+            <div class="filter-field">
+              <label for="sim-asset">투자자산 규모 (원)</label>
+              <input type="number" id="sim-asset" class="input" step="10000000" min="0" data-mount="sim-asset" data-act="sim-scale" data-k="asset">
+            </div>
+            <div class="filter-field">
+              <label for="sim-idle">유휴자금 비율 (%)</label>
+              <input type="number" id="sim-idle" class="input" step="1" min="0" max="100" data-mount="sim-idle" data-act="sim-scale" data-k="idle">
+            </div>
             <div class="filter-field">
               <label for="sim-r">할인율 (%)</label>
               <input type="number" id="sim-r" class="input" step="0.01" min="0.01" max="5" data-mount="sim-r" data-act="sim-var" data-k="r">
@@ -964,7 +973,7 @@ MODALS_HTML = '''
       <dl class="cert-info">
         <dt>문서명</dt><dd>투자자산 증명서</dd>
         <dt>기준일</dt><dd class="mono">2026-08-27</dd>
-        <dt>대상</dt><dd data-mount="cf-target">가맹점 16개</dd>
+        <dt>대상</dt><dd data-mount="cf-target">가맹점 {NR}개</dd>
         <dt>작성자</dt><dd>㈜페이허그</dd>
       </dl>
     </div>
@@ -1065,6 +1074,7 @@ MODALS_HTML = '''
 </div>
 
 '''.replace('{X}', sv(D_X)).replace('{CHK}', sv(D_CHECK, '3')).replace('{CHKB}', sv(D_CHECK, '2.5')) \
+   .replace('{NR}', str(len(RM.ROSTER))) \
    .replace('{CONTRACT}', contract_text.as_html('        '))
 
 CHROME_HTML = '''
@@ -1266,7 +1276,7 @@ function ratios(a, base){
 }
 function wavg(a, k, wk){ var n=0, d=0; for(var i=0;i<a.length;i++){ n += a[i][k]*a[i][wk]; d += a[i][wk]; } return d? n/d : 0; }
 /* W금융일수와 S입금부족율은 한 행에 나란히 서지만 모집단이 다르다.
-   옆 칸 금액(미회수 Σ Ai)까지 셋이 각자 다른 집합에서 나오므로, 행을 금액으로 가중평균해도
+   옆 칸 금액(미회수 Σ A<sub>i</sub>)까지 셋이 각자 다른 집합에서 나오므로, 행을 금액으로 가중평균해도
    현황표의 두 칸과 맞아떨어지지 않는다. 그 모집단을 열머리 툴팁이 그대로 적는다.
    건수는 채권 원장 실측이다(daily_ledger.py) — 화면에 손으로 적지 않는다. */
 var POP_W = {of:'대상정산금채권 전체 (발생 기준)', n:'@@POPW@@'};
@@ -1276,6 +1286,21 @@ function popTh(label, p){
          '<span class="tip-panel">' + p.of +
            '<span class="tip-row"><span>채권 건수</span><span class="tip-green">' + p.n + '</span></span>' +
          '</span></span></th>';
+}
+/* 대표 재전달 대기 — 2026-08-31 회의에서 ⑤ 는 「수식 새로 작성해 전달」,
+   ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」 으로 끝났다(meeting_0831/ceo_definitions_20260831.txt).
+   값은 그대로 두고 미확정만 표시한다 — 표기는 용어정의서가 쓰는 낱말 `미확정` 을 그대로 쓴다. */
+var PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>';
+var PEND_ROW   = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>';
+/* ⑥ 일별 Ty수익율 열 — 원문 `(④ ÷ ③) × 365 ÷ ⑤` 를 일별 표의 열 번호로 읽은 것이다.
+   현황 카드 번호(④ 투자실행금액 대비 · ⑤ 투자자산 대비)를 그대로 넣으면
+   `수익률 ÷ 금액 × 365 ÷ 수익률` 이 되어 성립하지 않는다. */
+function tyTh(){
+  return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>' +
+         '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤' +
+           '<span class="tip-row"><span>번호</span><span class="tip-green">일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>' +
+           PEND_ROW +
+         '</span></span>' + PEND_BADGE + '</th>';
 }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function Q(sel, root){ return (root||document).querySelector(sel); }
@@ -1728,7 +1753,7 @@ RENDER['invest-assets'] = function(){
                 '<th class="num">Ty수익율</th><th class="num">비중</th>';
   if(!mrows.length){
     mm.innerHTML = emptyTable(IA_HEAD, 6, '조회 결과가 없습니다.');
-    mp.innerHTML = '';
+    mp.innerHTML = ''; mp.hidden = true;
     M('ia-size', 'invest-assets').innerHTML = '';
   } else {
     var t = '<div class="tbl-scroll"><table class="tbl"><thead><tr>' + IA_HEAD + '</tr></thead><tbody>';
@@ -1741,7 +1766,10 @@ RENDER['invest-assets'] = function(){
     }
     mm.innerHTML = t + '</tbody></table></div>';
     M('ia-size', 'invest-assets').innerHTML = sizeSel('ia-merch');
-    mp.innerHTML = pages > 1 ? '<div class="pagination">' + pageBar(IA.page, pages, 'ia-page') + '</div>' : '';
+    /* 쪽 넘김 줄 왼쪽 총 건수 — 가맹점·계약기록과 같은 자리·같은 꼴이다.
+       쪽 버튼은 pageBar 가 총 쪽수 1쪽이면 스스로 비운다. */
+    mp.innerHTML = pageBar(IA.page, pages, 'ia-page', '총 <b class="mono">' + view.length + '</b>건');
+    mp.hidden = false;
   }
 
   var bx = Q('[data-xls="assets-status"]', sec); bx.disabled = empty;
@@ -1894,14 +1922,15 @@ RENDER['invest-profit'] = function(){
           '<span class="tip-row"><span>PSA</span><span class="tip-green">' + fmt(exec) + '원</span></span>' +
           '<span class="tip-row"><span>PSC</span><span class="tip-green">' + fmt((cashRow() ? cashRow().amount : 0) * ecDays()) + '원</span></span>' +
           '<span class="tip-row sum"><span>EC ' + ecDays() + '일 합</span><span>기간 순현금 합계</span></span>' +
-        '</span></span></div>' +
+          PEND_ROW +
+        '</span></span>' + PEND_BADGE + '</div>' +
         '<div class="summary-value">' + fx(tyAsset, 2) + '<span class="unit">%</span></div></div>' +
     '</div></div>';
 
   var box = M('pf-tbl', 'invest-profit');
   var PF_HEAD = '<th>' + GRAN_COL[PF.gran] + '</th><th class="num">상환액</th>' +
                 '<th class="num">투자실행금</th><th class="num">투자 수익</th>' +
-                '<th class="num">W금융일수</th><th class="num">Ty수익율</th>';
+                '<th class="num">W금융일수</th>' + tyTh();
   if(!rows.length){
     box.innerHTML = emptyTable(PF_HEAD, 6, '조회 결과가 없습니다.');
   } else {
@@ -1935,7 +1964,7 @@ JS += r'''
 /* ───────── 투자 시뮬레이션 ─────────
    기존 화면과 완전히 별개다. SIM 은 IA·PF·MC·AQ·CT 와 독립된 상태 객체이고
    simRun() 은 MERCHANTS·ASSET_ROWS·DAILY 를 읽지도 쓰지도 않는다.
-   산식 출처 — 대표 정의서 [1번 이미지] Ai·Di·W·Ty·S · [2번 이미지] Mi·Bi·PSA·PSM·PSD·PSMR·PSC.
+   산식 출처 — 대표 정의서 [1번 이미지] A<sub>i</sub>·D<sub>i</sub>·w·ty·S · [2번 이미지] M<sub>D−1,&thinsp;i</sub>·B<sub>D−1,&thinsp;i</sub>·PSA·PSM·PSD·PSMR·PSC.
    앵커는 순지급액이다(채권매입수수료 = 순지급액 x 할인율 · D-31). 일별 원장 daily_ledger.py 도 같은 앵커라
    투자 수익 화면과 이 화면의 같은 열은 같은 산식에서 나온다. */
 var SIM_PLAT = [
@@ -1944,19 +1973,19 @@ var SIM_PLAT = [
   {k:'cpe',  label:'쿠팡이츠',   d:5},
   {k:'yo',   label:'요기요',     d:6}
 ];
-/* 플랫폼별 만기 = round(DURATION) — platform_duration.py 도수분포 실측 2.0 / 3.4 / 4.7 / 6.2.
+/* 플랫폼별 금융일수 = round(DURATION) — platform_duration.py 도수분포 실측 2.0 / 3.4 / 4.7 / 6.2.
    채권 한 건의 금융일수는 선정산일과 정산예정일의 날짜 차이라 정수만 나온다. 실측 4.7 일(쿠팡이츠)은
    플랫폼 전체의 금액가중 평균이고, 채권 1건에 그 평균을 그대로 넣을 수는 없어 반올림한 5 를 기본값으로 둔다.
-   정산예정일 칸을 직접 고치면 그 행의 만기는 입력한 날짜대로 다시 잡힌다. */
+   정산예정일 칸을 직접 고치면 그 행의 금융일수는 입력한 날짜대로 다시 잡힌다. */
 var SIM_DUR = {card:2, bm:3, cpe:5, yo:6};
 function simLabel(k){ for(var i = 0; i < SIM_PLAT.length; i++) if(SIM_PLAT[i].k === k) return SIM_PLAT[i].label; return k; }
 function simDue(sd, plat){ return sd ? addDays(sd, SIM_DUR[plat] || 0) : sd; }
 /* 미회수 4행(1~4)은 38:44:12:6 — 2x0.38 + 3x0.44 + 5x0.12 + 6x0.06 = 3.04 로, W 가 투자 자산
-   화면의 3.04 일과 같은 자리에 선다. 만기 4행(5~8)도 같은 구성이라 PSD 3.04 로 투자 수익 화면
+   화면의 3.04 일과 같은 자리에 선다. 기간 내 4행(5~8)도 같은 구성이라 PSD 3.04 로 투자 수익 화면
    일별 합계와 같은 자리다. 미회수 합 8,000만이라 투자실행액 79,912,000 이 된다.
    금액 실측 구성비(카드 42.83 · 배민 43.10 · 쿠팡이츠 9.55 · 요기요 4.51)를 여기 그대로
-   넣으면 W 가 2.90 이 된다 — 이 화면의 만기는 채권 1건짜리 정수(2·3·5·6)라 플랫폼별 실측
-   2.016 / 3.351 / 4.748 / 6.164 를 반올림한 값이기 때문이다. 그래서 정수 만기 위에서 3.04 가
+   넣으면 W 가 2.90 이 된다 — 이 화면의 금융일수는 채권 1건짜리 정수(2·3·5·6)라 플랫폼별 실측
+   2.016 / 3.351 / 4.748 / 6.164 를 반올림한 값이기 때문이다. 그래서 정수 금융일수 위에서 3.04 가
    나오는 자리로 옮겼다. 순서(배민 > 카드 > 쿠팡이츠 > 요기요)는 실측과 같다. */
 function simSeedRows(){
   return [
@@ -1989,7 +2018,7 @@ function simDays(a, b){ return Math.round((dt(b) - dt(a)) / 86400000); }
 function simFloor(x){ return Math.floor(Number(Number(x).toFixed(6))); }
 function simAmtTotal(){ var t = 0, i; for(i = 0; i < SIM.rows.length; i++) t += SIM.rows[i].amt; return t; }
 
-/* 채권 1건 — Ai · Di · 채권매입수수료 · 미지급 차감 · 투자수익 Mi · 상환액 Bi */
+/* 채권 1건 — A<sub>i</sub> · D<sub>i</sub> · 채권매입수수료 · 미지급 차감 · 투자수익 M<sub>D−1,&thinsp;i</sub> · 상환액 B<sub>D−1,&thinsp;i</sub> */
 function simBond(row, r, dedRate){
   var A   = simFloor(row.amt * (1 - r));
   var D   = simDays(row.sd, row.dd);
@@ -2006,7 +2035,7 @@ function simRun(){
   for(i = 0; i < bonds.length; i++){
     var b = bonds[i];
     if(b.dd > SIM.to){ b.kind = '미회수'; out.push(b); }
-    else if(b.dd >= SIM.from){ b.kind = '만기'; mat.push(b); }
+    else if(b.dd >= SIM.from){ b.kind = '기간 내'; mat.push(b); }
     else b.kind = '기간 밖';
   }
 
@@ -2018,7 +2047,7 @@ function simRun(){
   var TOT  = EXEC + SIM.cash;
   var SH   = ratios([{amount:EXEC}, {amount:SIM.cash}], TOT);
 
-  /* ── 투자 수익 (기간 안에 만기가 도래한 채권) ── */
+  /* ── 투자 수익 (정산예정일이 기간 안에 든 채권) ── */
   var PSA  = sum(mat, 'A'), PSM = sum(mat, 'M'), PSB = sum(mat, 'B');
   var PSD  = PSA ? mat.reduce(function(t, b){ return t + b.A * b.D; }, 0) / PSA : 0;
   var PSMR = PSA ? PSM / PSA * 100 : 0;
@@ -2048,16 +2077,90 @@ function simRun(){
                 TY4:TY4, TY5:TY5, ECD:ECD, PSC:PSC, rows:rows};
 }
 
-/* 실행 가능 조건 — 어드민 page.tsx:308 과 같은 방식으로, 못 돌릴 입력이면 버튼을 막는다 */
-function simCanRun(){
-  if(!SIM.rows.length) return false;
-  if(!SIM.from || !SIM.to || SIM.from > SIM.to) return false;
-  if(!(SIM.r > 0) || SIM.r >= 100) return false;
-  for(var i = 0; i < SIM.rows.length; i++){
-    var x = SIM.rows[i];
-    if(!x.sd || !x.dd || x.sd > x.dd) return false;
+/* 실행 가능 조건 — 어드민 page.tsx:308 과 같은 방식으로, 못 돌릴 입력이면 버튼을 막는다.
+   막는 기준은 각 입력 칸의 min/max 그대로다. 브라우저가 무효라고 표시한 값(할인율 6 · 미지급률 150 ·
+   순현금 음수)이 그대로 실행돼 -18,015.28% 같은 숫자가 화면에 박히던 자리다.
+   막힌 까닭은 기간 역전 안내와 같은 자리(.range-warn 한 줄)에 같은 꼴로 적는다. */
+var SIM_BOUND = [
+  {k:'r',      label:'할인율',   min:0.01, max:5},
+  {k:'unpaid', label:'미지급률', min:0,    max:100},
+  {k:'over',   label:'과지급률', min:0,    max:100},
+  {k:'cash',   label:'순현금',   min:0,    max:null}
+];
+/* 한 줄은 라벨 + 허용 범위다. 새 존댓말 문장을 짓지 않는다 —
+   제품 UI 원문을 그대로 옮긴 기간 역전 안내만 종결형이다(G-1). */
+function simBoundMsg(b){
+  return b.label + ' 범위 ' + b.min + (b.max === null ? ' 이상' : ' ~ ' + b.max);
+}
+/* 막히는 까닭 한 줄. 막을 것이 없으면 빈 문자열. */
+function simBlock(){
+  var i, x, b;
+  if(!SIM.rows.length) return '정산금채권 1건 이상';
+  if(!SIM.from || !SIM.to) return '시작일 · 종료일 입력 필요';
+  /* 원문 payhug-admin-web/components/DateRangeFilter.tsx:14 — 문구를 그대로 쓴다 */
+  if(SIM.from > SIM.to) return '시작일은 종료일보다 이후일 수 없습니다.';
+  for(i = 0; i < SIM_BOUND.length; i++){
+    b = SIM_BOUND[i];
+    if(!(SIM[b.k] >= b.min) || (b.max !== null && SIM[b.k] > b.max)) return simBoundMsg(b);
   }
-  return true;
+  for(i = 0; i < SIM.rows.length; i++){
+    x = SIM.rows[i];
+    if(!(x.amt >= 0)) return '순지급액 범위 0 이상';
+    if(!x.sd || !x.dd) return '선정산일 · 정산예정일 입력 필요';
+    if(x.sd > x.dd) return '선정산일 ≤ 정산예정일';
+  }
+  return '';
+}
+function simCanRun(){ return simBlock() === ''; }
+
+/* ── 투자자산 규모 · 유휴자금 비율 ──────────────────────────────
+   두 칸은 따로 담아 두지 않는다. 표시값은 늘 지금 상태에서 되읽은 것이다.
+     투자자산 규모   = 미회수 채권의 투자실행금 합 + 순현금
+     유휴자금 비율   = 순현금 / 투자자산 규모
+   두 칸 중 하나를 만지면 순현금과 미회수 행 금액을 그 두 값으로 다시 채우고,
+   다른 칸(순현금 · 행 금액 · 할인율 · 종료일)을 만지면 두 칸의 표시값이 다시 계산된다.
+   같은 값을 다시 넣어도 결과가 그대로다(멱등) — 어느 칸을 마지막에 만졌든 값이 튀지 않는다. */
+function simOutRows(){
+  var o = [], i;
+  for(i = 0; i < SIM.rows.length; i++) if(SIM.to && SIM.rows[i].dd > SIM.to) o.push(SIM.rows[i]);
+  return o;
+}
+function simExecNow(){
+  var r = SIM.r / 100, o = simOutRows(), t = 0, i;
+  for(i = 0; i < o.length; i++) t += simFloor(o[i].amt * (1 - r));
+  return t;
+}
+function simAssetNow(){ return simExecNow() + SIM.cash; }
+function simIdleNow(){ var a = simAssetNow(); return a ? Math.round(SIM.cash / a * 1000) / 10 : 0; }
+/* 목표액을 가중치대로 정수 배분 — 비중과 같은 최대잉여법(ratios 와 같은 규칙).
+   내림으로 남은 원을 소수부가 큰 행부터 하나씩 나눠 줘 합이 목표와 정확히 같다. */
+function simSplit(total, w){
+  var n = w.length, out = [], ord = [], s = 0, t = 0, i, raw, fl;
+  for(i = 0; i < n; i++) s += w[i];
+  for(i = 0; i < n; i++){
+    raw = s ? total * w[i] / s : total / n;
+    fl = Math.floor(raw);
+    out.push(fl); t += fl;
+    ord.push({i:i, fr:raw - fl, w:w[i]});
+  }
+  ord.sort(function(x, y){ return (y.fr - x.fr) || (y.w - x.w) || (x.i - y.i); });
+  for(i = 0; i < total - t && i < n; i++) out[ord[i].i] += 1;
+  return out;
+}
+/* 순지급액 → 투자실행금은 절사다. 목표 투자실행금 A 를 정확히 되찾으려면
+   순지급액 = ceil(A / (1 - 할인율)) 이라야 floor(순지급액 x (1 - 할인율)) = A 가 된다.
+   투자실행액이 75,000,001 · 70,000,013 으로 어긋나던 자리가 여기다. */
+function simGross(a, r){ return a <= 0 ? 0 : Math.ceil(Number((a / (1 - r)).toFixed(6))); }
+function simApplyScale(asset, idle){
+  var o = simOutRows(), r = SIM.r / 100, w = [], parts, i;
+  asset = Math.max(0, asset);
+  idle  = Math.min(100, Math.max(0, idle));
+  SIM.cash = Math.round(asset * idle / 100);
+  if(!o.length || !(r < 1)) return;
+  for(i = 0; i < o.length; i++) w.push(simFloor(o[i].amt * (1 - r)));
+  parts = simSplit(Math.max(0, asset - SIM.cash), w);
+  for(i = 0; i < o.length; i++) o[i].amt = simGross(parts[i], r);
+  SIM.redraw = true;
 }
 
 /* ── 그리기 ── */
@@ -2110,7 +2213,8 @@ function simTyTip(R){
         '<span class="tip-row"><span>PSA</span><span class="tip-green">' + fmt(R.PSA) + '원</span></span>' +
         '<span class="tip-row"><span>PSC</span><span class="tip-green">' + fmt(R.PSC) + '원</span></span>' +
         '<span class="tip-row sum"><span>EC ' + R.ECD + '일 합</span><span>기간 순현금 합계</span></span>' +
-      '</span></span></div>' +
+        PEND_ROW +
+      '</span></span>' + PEND_BADGE + '</div>' +
       '<div class="summary-value' + (R.TY5 < 0 ? ' neg' : '') + '">' + fx(R.TY5, 2) + '<span class="unit">%</span></div></div>' +
   '</div></div>';
 }
@@ -2184,7 +2288,7 @@ function simResultHtml(){
 
   /* ⑤ 일별 투자수익 */
   var HEAD = '<th>정산예정일</th><th class="num">상환액</th><th class="num">투자실행금</th>' +
-             '<th class="num">투자 수익</th><th class="num">W금융일수</th><th class="num">Ty수익율</th>';
+             '<th class="num">투자 수익</th><th class="num">W금융일수</th>' + tyTh();
   h += '<div class="tbl-wrap mb-6"><div class="tbl-head"><div class="left">' +
        '<h2 class="card-title">일별 투자수익</h2></div></div>';
   if(!R.rows.length){
@@ -2207,36 +2311,56 @@ function simResultHtml(){
 }
 
 RENDER['invest-sim'] = function(){
+  simSetVal('sim-asset', simAssetNow()); simSetVal('sim-idle', simIdleNow());
   simSetVal('sim-r', SIM.r); simSetVal('sim-cash', SIM.cash);
   simSetVal('sim-unpaid', SIM.unpaid); simSetVal('sim-over', SIM.over);
   simSetVal('sim-from', SIM.from); simSetVal('sim-to', SIM.to);
   if(SIM.redraw){ simDrawRows(); SIM.redraw = false; }
   simSyncRows();
   M('sim-total', 'invest-sim').textContent = '총 ' + SIM.rows.length + '건, 합계 ' + fmt(simAmtTotal()) + '원';
-  /* 기간 역전 안내 — 원문 payhug-admin-web/components/DateRangeFilter.tsx:14 · 표시 조건 :79 · 자리 :139 */
-  M('sim-warn', 'invest-sim').hidden = !(SIM.from && SIM.to && SIM.from > SIM.to);
+  /* 막힌 까닭 한 줄 — 자리·모양은 기간 역전 안내 그대로다
+     (원문 payhug-admin-web/components/DateRangeFilter.tsx:14 · 표시 조건 :79 · 자리 :139). */
+  var why = simBlock(), warn = M('sim-warn', 'invest-sim');
+  warn.textContent = why || '시작일은 종료일보다 이후일 수 없습니다.';
+  warn.hidden = !why;
   var btn = M('sim-go', 'invest-sim');
   btn.textContent = SIM.running ? '계산 중...' : '시뮬레이션 실행';
-  btn.disabled = SIM.running || !simCanRun();
+  btn.disabled = SIM.running || !!why;
   M('sim-out', 'invest-sim').innerHTML = SIM.result ? simResultHtml() : '';
 };
 
 /* ── 조작 ── */
 var simTimer = null;
-function clearSimTimer(){ if(simTimer){ clearTimeout(simTimer); simTimer = null; } }
+/* 화면을 벗어나면 돌던 계산은 접는다 — 씨앗을 다시 심지 않는 진입에서도 버튼이
+   `계산 중...` 으로 굳지 않게 실행 표시까지 함께 내린다. */
+function clearSimTimer(){ if(simTimer){ clearTimeout(simTimer); simTimer = null; } SIM.running = false; }
+/* 입력을 만지면 이 화면은 메뉴를 오가도 그대로 남는다 — 씨앗을 다시 심는 것은
+   상태를 콕 집어 부를 때(딥링크 #invest-sim/…)뿐이다. 정산채권 양수와 같은 규칙이다. */
+function simTouched(){
+  DIRTY['invest-sim'] = 1;
+  /* 조건이 깨지면 묶은 결과를 남기지 않는다 — 못 돌릴 입력 위에 옛 표가 서 있던 자리 */
+  if(!simCanRun()) SIM.result = null;
+  refresh('invest-sim');
+}
 function simTakeVar(el){
   var k = el.dataset.k;
   if(k === 'from' || k === 'to') SIM[k] = el.value;
   else SIM[k] = simNum(el.value);
-  refresh('invest-sim');
+  simTouched();
+}
+/* 투자자산 규모 · 유휴자금 비율 — 둘 중 만진 칸만 새 값이고 나머지 하나는 지금 표시값이다 */
+function simTakeScale(el){
+  var k = el.dataset.k, v = simNum(el.value);
+  simApplyScale(k === 'asset' ? v : simAssetNow(), k === 'idle' ? v : simIdleNow());
+  simTouched();
 }
 function simTakeRow(el){
   var i = parseInt(el.dataset.i, 10), f = el.dataset.f, x = SIM.rows[i];
   if(!x) return;
-  if(f === 'amt') x.amt = Math.max(0, simNum(el.value));
+  if(f === 'amt') x.amt = simNum(el.value);
   else if(f === 'plat'){ x.plat = el.value; x.dd = simDue(x.sd, x.plat); }
   else x[f] = el.value;
-  refresh('invest-sim');
+  simTouched();
 }
 '''
 
@@ -3016,17 +3140,18 @@ ACT['sim-add'] = function(){
   var sd = SIM.to ? addDays(SIM.to, -SIM_DUR.card) : SIM.to;
   SIM.rows.push({plat:'card', amt:100000000, sd:sd, dd:SIM.to});
   SIM.redraw = true;
-  refresh('invest-sim');
+  simTouched();
 };
 ACT['sim-del'] = function(el){
   if(SIM.rows.length <= 1) return;
   SIM.rows.splice(parseInt(el.dataset.i, 10), 1);
   SIM.redraw = true;
-  refresh('invest-sim');
+  simTouched();
 };
 ACT['sim-run'] = function(){
   if(SIM.running || !simCanRun()) return;
   clearSimTimer();
+  DIRTY['invest-sim'] = 1;
   SIM.running = true;
   refresh('invest-sim');
   /* 계산은 그 자리에서 끝난다. 300ms 는 진행 상태를 보이기 위한 것 — 어드민 page.tsx:311 이 라벨만 바꾼다 */
@@ -3111,6 +3236,7 @@ document.addEventListener('change', function(e){
     return;
   }
   if(el.dataset.act === 'sim-var'){ simTakeVar(el); return; }
+  if(el.dataset.act === 'sim-scale'){ simTakeScale(el); return; }
   if(el.dataset.act === 'sim-row'){ simTakeRow(el); return; }
   if(el.dataset.act === 'pg-size'){
     var k = el.dataset.key;
@@ -3148,6 +3274,7 @@ document.addEventListener('input', function(e){
     return;
   }
   if(el.dataset.act === 'sim-var'){ simTakeVar(el); return; }
+  if(el.dataset.act === 'sim-scale'){ simTakeScale(el); return; }
   if(el.dataset.act === 'sim-row'){ simTakeRow(el); return; }
   if(el.dataset.act === 'pw-input'){
     /* IME(한글 등) 조합 중에는 값을 건드리지 않는다 — 조합이 끝난 뒤 compositionend 에서 최종 값을 한 번에 받는다.

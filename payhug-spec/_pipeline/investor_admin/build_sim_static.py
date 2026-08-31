@@ -80,7 +80,7 @@ def run():
     out, mat = [], []
     for b in bonds:
         if b['dd'] > TO:      b['kind'] = '미회수'; out.append(b)
-        elif b['dd'] >= FROM: b['kind'] = '만기';   mat.append(b)
+        elif b['dd'] >= FROM: b['kind'] = '기간 내'; mat.append(b)
         else:                 b['kind'] = '기간 밖'
     EXEC = sum(b['A'] for b in out)
     W    = (sum(b['A'] * b['D'] for b in out) / float(EXEC)) if EXEC else 0
@@ -113,15 +113,38 @@ def run():
                 PSB=PSB, PSD=PSD, PSMR=PSMR, TY4=TY4, TY5=TY5, ECD=ECD, PSC=PSC, rows=drows)
 
 # ── 마크업 ────────────────────────────────────────────────────────
+
+# 대표 재전달 대기 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW · tyTh() 와 같은 마크업이다.
+# 2026-08-31 회의에서 ⑤ 는 「수식 새로 작성해 전달」, ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」으로 끝났다.
+PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
+PEND_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>'
+TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>'
+         '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
+         '<span class="tip-row"><span>번호</span><span class="tip-green">'
+         '일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>'
+         + PEND_ROW +
+         '</span></span>' + PEND_BADGE + '</th>')
+
 def field(fid, label, kind, value, extra=''):
     return ('        <div class="filter-field">\n'
             '          <label for="%s">%s</label>\n'
             '          <input type="%s" id="%s" class="input"%s value="%s">\n'
             '        </div>\n' % (fid, label, kind, fid, extra, value))
 
-def vars_block():
+def numstr(v):
+    """통합본 simIdleNow() 가 내는 자바스크립트 수와 같은 글자 — 20.0 은 `20` 으로 찍힌다."""
+    return '%d' % v if float(v).is_integer() else ('%.1f' % v)
+
+
+def vars_block(R):
+    # 투자자산 규모·유휴자금 비율은 담아 두는 값이 아니라 지금 상태에서 되읽은 값이다
+    # (통합본 simAssetNow()/simIdleNow() 와 같은 산식).
+    asset = R['EXEC'] + CASH
+    idle = round(CASH / float(asset) * 1000) / 10.0 if asset else 0
     h  = '    <div class="card mb-6">\n      <div class="card-head">\n        <h2 class="card-title">기준 변수</h2>\n      </div>\n'
     h += '      <div class="sim-grid">\n'
+    h += field('sim-asset', '투자자산 규모 (원)', 'number', asset, ' step="10000000" min="0"')
+    h += field('sim-idle', '유휴자금 비율 (%)', 'number', numstr(idle), ' step="1" min="0" max="100"')
     h += field('sim-r', '할인율 (%)', 'number', R_RATE, ' step="0.01" min="0.01" max="5"')
     h += field('sim-cash', '순현금 (원)', 'number', CASH, ' step="100000" min="0"')
     h += field('sim-unpaid', '미지급률 (%)', 'number', UNPAID, ' step="0.01" min="0" max="100"')
@@ -228,29 +251,30 @@ def result_block(R):
           '        <div class="stat">\n          <div class="summary-label">투자수익</div>\n'
           '          <div class="summary-value">%s<span class="unit">원</span></div>\n        </div>\n'
           % (R['ECD'], FROM, TO, fmt(R['PSA']), fmt(R['PSM'])))
-    h += ('        <div class="stat">\n          <div class="summary-label">Ty수익율</div>\n'
-          '          <div class="ty-split">\n'
-          '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
-          '<span class="tip-panel">PSMR × 365 ÷ PSD'
-          '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>'
-          '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>'
-          '</span></span></div>\n'
-          '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
-          '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
-          '<span class="tip-panel">(투자실행금액 대비 × PSA) ÷ (PSA + PSC)'
-          '<span class="tip-row"><span>PSA</span><span class="tip-green">%s원</span></span>'
-          '<span class="tip-row"><span>PSC</span><span class="tip-green">%s원</span></span>'
-          '<span class="tip-row sum"><span>EC %d일 합</span><span>기간 순현금 합계</span></span>'
-          '</span></span></div>\n'
-          '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
-          '          </div>\n        </div>\n      </div>\n    </div>\n\n'
+    h += (('        <div class="stat">\n          <div class="summary-label">Ty수익율</div>\n'
+           '          <div class="ty-split">\n'
+           '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
+           '<span class="tip-panel">PSMR × 365 ÷ PSD'
+           '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>'
+           '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>'
+           '</span></span></div>\n'
+           '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
+           '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
+           '<span class="tip-panel">(투자실행금액 대비 × PSA) ÷ (PSA + PSC)'
+           '<span class="tip-row"><span>PSA</span><span class="tip-green">%s원</span></span>'
+           '<span class="tip-row"><span>PSC</span><span class="tip-green">%s원</span></span>'
+           '<span class="tip-row sum"><span>EC %d일 합</span><span>기간 순현금 합계</span></span>'
+           + PEND_ROW +
+           '</span></span>' + PEND_BADGE + '</div>\n'
+           '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
+           '          </div>\n        </div>\n      </div>\n    </div>\n\n')
           % (fx(R['TY4'], 2), fmt(R['PSA']), fmt(R['PSC']), R['ECD'], fx(R['TY5'], 2)))
 
     h += ('    <div class="tbl-wrap mb-6">\n'
           '      <div class="tbl-head"><div class="left"><h2 class="card-title">일별 투자수익</h2></div></div>\n'
           '      <div class="tbl-scroll">\n        <table class="tbl">\n          <thead>\n'
           '            <tr><th>정산예정일</th><th class="num">상환액</th><th class="num">투자실행금</th>'
-          '<th class="num">투자 수익</th><th class="num">W금융일수</th><th class="num">Ty수익율</th></tr>\n'
+          '<th class="num">투자 수익</th><th class="num">W금융일수</th>' + TY_TH + '</tr>\n'
           '          </thead>\n          <tbody>\n')
     for g in R['rows']:
         h += ('            <tr><td class="mono">%s</td><td class="num">%s</td><td class="num">%s</td>'
@@ -313,7 +337,7 @@ def page(title, badge, body):
 def main():
     moved = sync_sidebars()
     R = run()
-    form = vars_block() + rows_block(R['bonds'])
+    form = vars_block(R) + rows_block(R['bonds'])
     btn_off = '    <button class="sim-run">시뮬레이션 실행</button>\n'
     io.open(os.path.join(REPO, 'invest-sim.html'), 'w', encoding='utf-8').write(
         page('투자 시뮬레이션', '', form + btn_off))

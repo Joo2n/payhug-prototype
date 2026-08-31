@@ -163,12 +163,34 @@ TIP4 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-ancho
         '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>'
         '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>'
         '</span></span></div>')
+# 대표 재전달 대기 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW · tyTh() 와 같은 마크업이다.
+# 2026-08-31 회의에서 ⑤ 는 「수식 새로 작성해 전달」, ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」으로 끝났다.
+PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
+PEND_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>'
+TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>'
+         '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
+         '<span class="tip-row"><span>번호</span><span class="tip-green">'
+         '일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>'
+         + PEND_ROW +
+         '</span></span>' + PEND_BADGE + '</th>')
 TIP5 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
         '<span class="tip-panel">(투자실행금액 대비 × PSA) ÷ (PSA + PSC)'
         '<span class="tip-row"><span>PSA</span><span class="tip-green">%s원</span></span>'
         '<span class="tip-row"><span>PSC</span><span class="tip-green">%s원</span></span>'
         '<span class="tip-row sum"><span>EC %d일 합</span><span>기간 순현금 합계</span></span>'
-        '</span></span></div>')
+        + PEND_ROW +
+        '</span></span>' + PEND_BADGE + '</div>')
+
+
+def put_ty_th(s):
+    """⑥ 열머리 — 통합본 tyTh() 와 같은 자리·같은 마크업. 이미 갈아 끼운 낱장은 그대로 둔다.
+
+    열머리 안쪽을 통째로 잡으므로 여러 번 돌려도 겹쳐 붙지 않는다."""
+    out, n = re.subn(r'<th class="num">Ty수익율</th>|'
+                     r'<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>.*?</th>',
+                     lambda _m: TY_TH, s, flags=re.S)
+    assert n == 1, 'Ty수익율 열머리 %d건 — 1건이라야 한다' % n
+    return out
 
 
 def put_tips(s, psa, ec_days):
@@ -302,6 +324,7 @@ def one(name, pre, frm, to, gran):
     assert n == (0 if name == 'invest-profit--empty.html' else 1), \
         '%s 현황 카드 엑셀 링크 %d건' % (name, n)
     s = re.sub(r'(href="assets/xlsx/)투자수익현황_[^"]+(" download)', r'\g<1>%s\g<2>' % xls_status, s)
+    s = put_ty_th(s)
     s = put_title(s, name)
 
     io.open(p, 'w', encoding='utf-8').write(s)
