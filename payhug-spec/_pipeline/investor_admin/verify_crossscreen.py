@@ -218,18 +218,80 @@ chk('일별 원장 %d일 W금융일수 ⊂ [%s, %s]' % (len(LEDGER), FLOOR, CEIL
 chk('낱장 가맹점 표 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range(x[2] for x in p1), [])
 chk('투자실행액 행 W금융일수 ⊂ [%s, %s]' % (FLOOR, CEIL), in_range([r2(W_W)]), [])
 
-# ── Duration(가중평균만기) 등재 — 용어 문서에만, 화면에는 쓰지 않는다 ──
+# ── 가중치 등재 — 정본 표기는 w금융일수 하나, duration 은 허용 블록 한 곳 ──────
+#   이 검사의 이름은 「대출 어휘 0건」이다. 막으려는 것은 선정산을 대출로 읽히게 하는 낱말이지
+#   금융 일반어가 아니다. 그 취지가 규칙을 좁히는 근거다.
+#
+#   2026-08-31 재판정. 앞선 판은 「Duration·가중평균만기·만기」를 문서 전체에서 0건으로 막았고
+#   사유는 「근거 없는 조어」였다. 그 사유는 무효다 — 대표가 세 자리에서 직접 썼다.
+#     · 대표 DM 2026-08-31 16:41:24 「w금융일수 = 공식 용어로 duration, 우리는 가중 평균 만기일(weight)」
+#     · 3차 미팅 00:43:33 「엄밀히는 공식 영어는 듀레이션」
+#     · 3차 미팅 00:44:30 「가중 평균 만기해서 웨이티드의 W 를 붙인 것」
+#   가중평균 만기일은 매콜리 듀레이션의 정의 그 자체이고, 금리 민감도는 수정 듀레이션이라 별개다.
+#   그래서 「뜻이 어긋난다」는 옛 사유도 무효다.
+#   낱말을 통짜로 막으면 대표 원문 인용도 못 싣는다 — DM 2026-08-31 15:37 「전일자 만기 (지급예정일)」.
+#   인용 자리를 막는 규칙은 그 자체로 틀렸다.
+#
+#   그래서 이렇게 좁힌다.
+#     · 화면 6종 — 지금대로 0건 (D-23)
+#     · glossary.html — 허용 블록 밖에서 0건. 허용 블록은 부록 A 낱글자 `w` 항의 각주 한 곳뿐이고,
+#       블록 전문을 글자 그대로 못 박아 곳수를 1로 고정한다. **2개 이상이면 FAIL** 이다.
+#       같은 블록이 둘이면 count 가 2가 되어 걸리고, 다른 문장으로 자리를 더 만들면
+#       블록을 걷어 낸 나머지에 낱말이 남아 걸린다.
+#   정본 표기는 `w금융일수` 하나 그대로다. 화면·표·머리글 어디에도 다른 이름을 쓰지 않는다.
+BANNED = ('가중평균만기', '평균만기', '만기')          # 한글은 글자 그대로
+BANNED_EN = re.compile(r'(?i)duration')                # 영문은 대소문자 가리지 않는다
+DUR_NOTE = (
+    '공식 용어는 duration, 대표 표현은 가중평균 만기일 — 대표 DM 2026-08-31 16:41:24 '
+    '「w금융일수 = 공식 용어로 duration, 우리는 가중 평균 만기일(weight) 가중평균금융일수」 · '
+    '3차 미팅 00:43:33 「엄밀히는 공식 영어는 듀레이션」 · 00:44:30 '
+    '「가중 평균 만기해서 웨이티드의 W 를 붙인 것」. 가중평균 만기일은 매콜리 듀레이션의 정의 그대로이고, '
+    '금리 민감도를 재는 수정 듀레이션과는 다르다. 정본 표기는 w금융일수 하나이고 '
+    '화면·표·머리글에는 이 이름만 쓴다.')
+
+
+def _text(h):
+    """태그·스크립트를 걷고 공백을 접은 화면 글자."""
+    import html as _H
+    return re.sub(r'\s+', ' ', _H.unescape(
+        re.sub(r'<[^>]+>', ' ', re.sub(r'<(script|style)\b.*?</\1>', ' ', h, flags=re.S | re.I)))).strip()
+
+
 gl = rd('glossary.html')
-chk('용어 해설 · Duration 카드 3종', gl.count('금융 일반 용어로는'), 3)
-chk('용어 해설 · 가중평균만기 표기', ('Duration' in gl) and ('가중평균만기' in gl), True)
-chk('용어 해설 · 플랫폼별 평균만기 실측 4건',
+glt = _text(gl)
+chk('용어 해설 · 가중치 블록 3종', gl.count('<b>가중치</b>'), 3)
+chk('용어 해설 · 가중치가 투자액(= 선정산대금)임을 3곳에서 말함',
+    gl.count('투자액(= 선정산대금)'), 3)
+chk('용어 해설 · 정본 표기 w금융일수 등재', 'w금융일수' in gl, True)
+# (1) 허용 블록은 정확히 한 곳 — 곳수를 못 박는다
+chk('용어 해설 · duration 허용 블록 = 1곳 (2곳 이상이면 FAIL · 부록 A 낱글자 w)',
+    glt.count(DUR_NOTE), 1)
+chk('용어 해설 · 허용 블록에 출처 세 자리(DM 16:41 · 회의 00:43:33 · 00:44:30) 병기',
+    all(s in DUR_NOTE and s in glt for s in ('대표 DM 2026-08-31 16:41:24',
+                                             '3차 미팅 00:43:33', '00:44:30')), True)
+# (2) 그 블록을 통째로 걷어 낸 나머지에는 0건
+_rest = glt.replace(DUR_NOTE, '', 1)
+chk('용어 해설 · 허용 블록 밖 대출 어휘 0건 (%s)' % ' · '.join(BANNED),
+    sorted({w for w in BANNED if w in _rest}), [])
+chk('용어 해설 · 허용 블록 밖 duration 0건', BANNED_EN.findall(_rest), [])
+# (3) 전체 곳수까지 못 박는다 — 블록 안에서 낱말이 늘어나도 걸린다
+chk('용어 해설 · duration 총 곳수 = 허용 블록 안 곳수',
+    len(BANNED_EN.findall(glt)), len(BANNED_EN.findall(DUR_NOTE)))
+chk('용어 해설 · 「만기」 총 곳수 = 허용 블록 안 곳수',
+    glt.count('만기'), DUR_NOTE.count('만기'))
+chk('용어 해설 · 플랫폼별 평균 금융일수 실측 4건',
     all(v in gl for v in ('2.0일', '3.4일', '4.7일', '6.2일')), True)
 chk('용어 해설 · 출처 병기', '정산주기.xlsx' in gl, True)
+# (4) 화면 6종은 예외 없이 0건 — 허용 블록은 용어 해설에만 있다
 screens = [rd(x) for x in ('app.html', 'invest-assets.html',
                            'invest-profit.html', 'invest-profit--weekly.html',
                            'invest-profit--monthly.html', 'certificate.html')]
-chk('화면에는 Duration 설명문 없음 (D-23)',
-    sorted({w for w in ('Duration', '가중평균만기', '평균만기') for t in screens if w in t}), [])
+chk('화면에 대출 어휘 없음 (D-23)',
+    sorted({w for w in BANNED for t in screens if w in t}), [])
+#   영문 duration 은 화면 글자만 본다. 원문 그대로 옮긴 프론트 주석(Toast.tsx duration 0)·
+#   Tailwind 클래스(duration-200)·파이썬 상수(DURATION)가 마크업 안에 있고, 그것은 화면 낱말이 아니다.
+chk('화면 글자에 duration 없음 (D-23)',
+    sorted({m for t in screens for m in BANNED_EN.findall(_text(t))}), [])
 
 # ── 열머리 모집단 툴팁 — W·S 가 자기 모집단을 스스로 말한다 ────────
 #   현황표의 W·S·금액 세 칸은 모집단이 서로 달라, 가맹점별 표를 금액으로 가중평균해도
@@ -242,17 +304,24 @@ POP_TIP = re.compile(r'<span class="tip-anchor">(W금융일수|S입금부족율)
                      r'<span class="tip-row"><span>채권 건수</span>'
                      r'<span class="tip-green">([\d,]+)건</span>')
 POP_WANT = [('W금융일수', '대상정산금채권 전체 (발생 기준)', POP_W_N),
-            ('S입금부족율', '선정산일 D-20 ~ D-11 표본', POP_S_N)]
+            ('S입금부족율', '선정산일 d-20 ~ d-11 표본', POP_S_N)]
+# 소문자 d 표기는 잠정이다(dm_0831/symbol_rule_0831.md 「이 규칙은 잠정이다」) —
+# 그 글자가 뜨는 S 열머리에만 `미확정` 이 붙고 W 열머리에는 붙지 않는다.
+PEND_TH = re.compile(r'<span class="tip-anchor">(W금융일수|S입금부족율)</span>.*?'
+                     r'</span></span>( <span class="badge sm badge-amber">미확정</span>)?</th>', re.S)
 for _p in ('invest-assets.html', 'invest-assets--download.html',
            'invest-assets--cert-confirm.html', 'invest-assets--empty.html'):
     _got = POP_TIP.findall(rd(_p))
     chk('%s 열머리 모집단 툴팁 (현황표·가맹점별 표)' % _p, _got, POP_WANT * 2)
+    chk('%s 표기 미확정은 S 열머리에만' % _p,
+        [(_a, bool(_b)) for _a, _b in PEND_TH.findall(rd(_p))],
+        [('W금융일수', False), ('S입금부족율', True)] * 2)
 # 통합본은 popTh() 가 그리므로 마크업이 아니라 그 재료(POP_W · POP_S)를 대조한다.
 _app = rd('app.html')
 chk('app.html 열머리 모집단 재료',
-    re.findall(r"var (POP_[WS]) = \{of:'([^']+)',\s*n:'([\d,]+)건'\}", _app),
-    [('POP_W', '대상정산금채권 전체 (발생 기준)', POP_W_N),
-     ('POP_S', '선정산일 D-20 ~ D-11 표본', POP_S_N)])
+    re.findall(r"var (POP_[WS]) = \{of:'([^']+)',\s*n:'([\d,]+)건'(, pend:1)?\}", _app),
+    [('POP_W', '대상정산금채권 전체 (발생 기준)', POP_W_N, ''),
+     ('POP_S', '선정산일 d-20 ~ d-11 표본', POP_S_N, ', pend:1')])
 chk('app.html 두 표가 같은 popTh 를 쓴다', _app.count("popTh('W금융일수', POP_W)"), 2)
 chk('app.html 두 표가 같은 popTh 를 쓴다 (S)', _app.count("popTh('S입금부족율', POP_S)"), 2)
 # 모집단이 다르다는 사실 자체 — 두 건수가 같으면 툴팁을 달 이유가 없다
