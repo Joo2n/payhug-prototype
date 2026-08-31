@@ -643,6 +643,24 @@ def main():
                             'B%d' % am['W금융일수 표기 (스위치 ② 적용)'])) < 1e-9,
     }
 
+    #   대표 DM 인용 — 「읽는 법」 시트에 옮긴 원문이 DM 원본의 부분문자열인가.
+    #   대상이 0건이면 FAIL 이다.
+    dmraw = open(os.path.join(BASE, 'dm_0831', 'dm_20260831_raw.md'),
+                 encoding='utf-8').read()
+    dmlines = [l.replace('*', '').strip() for l in dmraw.splitlines()]
+    gw = wb['읽는 법']
+    quotes = []
+    for r in range(2, gw.max_row + 1):
+        t = str(gw.cell(r, 2).value or '')
+        if not re.match(r'^2026-\d\d-\d\d \d\d:\d\d$', t):
+            continue
+        q = _runs(gw.cell(r, 3).value)[0] if gw.cell(r, 3).value is not None else ''
+        quotes.append([t, q[:70], bool(q) and any(q in l for l in dmlines)])
+    rep['대표 DM 인용'] = quotes
+    rep['대표 DM 인용 판정'] = {'인용 0건 아님': len(quotes) > 0,
+                                '전건이 DM 원문 부분문자열': bool(quotes)
+                                and all(x[2] for x in quotes)}
+
     #   산식 — 대표 정의서 원문 줄마다 대응 셀(또는 왜 비어 있는지)이 적혀 있는가.
     fs = wb['산식']
     rep['산식 원문 줄'] = sum(1 for r in range(2, fs.max_row + 1) if fs.cell(r, 2).value)
@@ -1268,6 +1286,7 @@ if __name__ == '__main__':
               and r['⑥ 미확정 표식']['화면 반영'] == '미확정'
               and all(r['대표 DM 16:45 판정'].values())
               and all(r['대표 DM 16:27 판정'].values())
+              and all(r['대표 DM 인용 판정'].values())
               and r['산식 원문 줄'] > 0 and not r['산식 대응 셀 빈 줄']
               and not r['사유 빠진 잔차 행'] and abs(r['비중 합'] - 100.0) < 1e-9)
         print(json.dumps({'전체 통과': ok}, ensure_ascii=False))
