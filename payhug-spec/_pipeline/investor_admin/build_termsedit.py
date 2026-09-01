@@ -240,7 +240,8 @@ blockquote.q .tag{display:block; font-family:"Noto Sans KR",sans-serif; font-siz
          color:var(--mute); letter-spacing:.03em; display:flex; align-items:center;
          justify-content:space-between; gap:4px}
 .rows .k button{font:inherit; font-size:12px; line-height:1; border:0; background:none;
-                cursor:pointer; color:var(--faint); padding:0 2px}
+                cursor:pointer; color:var(--faint); padding:0 2px; flex:none}
+.rows .k [contenteditable]{flex:1; min-width:0}
 .rows .k button:hover{color:var(--check)}
 .rows .v{background:var(--surface); padding:8px 12px; font-size:13.5px; min-width:0;
          overflow-x:auto}
@@ -254,7 +255,8 @@ blockquote.q .tag{display:block; font-family:"Noto Sans KR",sans-serif; font-siz
                         box-shadow:inset 0 0 0 1px var(--accent)}
 [contenteditable]:empty::before{content:attr(data-ph); color:var(--faint)}
 
-.addrow{margin-top:8px; display:flex; gap:6px}
+.addrow{margin-top:8px; display:flex; gap:6px; align-items:center; flex-wrap:wrap}
+.addrow .ah{font-size:11px; letter-spacing:.06em; color:var(--mute); margin-right:2px}
 .addrow button{font:inherit; font-size:11.5px; cursor:pointer; padding:5px 9px;
                border:1px dashed var(--rule-hard); border-radius:6px;
                background:none; color:var(--mute)}
@@ -423,7 +425,9 @@ function cardHTML(it, idx){
           + '<div class="v '+f[2]+'" contenteditable data-f="'+f[0]+'">'+esc(it[f[0]])+'</div>';
   });
   (it.extra||[]).forEach(function(x,j){
-    rows += '<div class="k" contenteditable data-f="xk" data-j="'+j+'">'+esc(x.k)+'</div>'
+    rows += '<div class="k"><span contenteditable data-f="xk" data-j="'+j+'" '
+          + 'data-ph="이름">'+esc(x.k)+'</span>'
+          + '<button data-act="rmx" data-j="'+j+'" title="이 줄 지우기">×</button></div>'
           + '<div class="v" contenteditable data-f="xv" data-j="'+j+'">'+esc(x.v)+'</div>';
   });
   if (rows) h += '<div class="rows">'+rows+'</div>';
@@ -432,9 +436,9 @@ function cardHTML(it, idx){
     if (p && (f[0] === "formula" || f[0] === "our_value")) return false;
     return it[f[0]] == null || it[f[0]] === "";
   });
-  h += '<div class="addrow">';
-  miss.forEach(function(f){ h += '<button data-act="addf" data-f="'+f[0]+'">＋ '+f[1]+'</button>' });
-  h += '<button data-act="addx">＋ 내가 만든 줄</button></div>';
+  h += '<div class="addrow"><span class="ah">줄 추가</span>';
+  miss.forEach(function(f){ h += '<button data-act="addf" data-f="'+f[0]+'">'+f[1]+'</button>' });
+  h += '<button data-act="addx">이름을 직접</button></div>';
 
   var sh = it.shot && SHOTS[it.shot];
   if (sh || it.href){
@@ -613,10 +617,16 @@ document.addEventListener("click", function(e){
     var fe = document.querySelector('.card[data-i="'+i+'"] [data-f="'+b.dataset.f+'"]');
     if (fe){ fe.scrollIntoView({block:"center"}); fe.focus() } return }
   if (act === "rmf"){ delete SEED.items[i][b.dataset.f]; mark(); render(); return }
+  if (act === "rmx"){
+    var ex = SEED.items[i].extra || [];
+    ex.splice(+b.dataset.j, 1);
+    if (!ex.length) delete SEED.items[i].extra;
+    mark(); render(); return;
+  }
   if (act === "addx"){
     var it2 = SEED.items[i];
     it2.extra = it2.extra || [];
-    it2.extra.push({k:"이름", v:""});
+    it2.extra.push({k:"", v:""});
     mark(); render();
     var xe = document.querySelector('.card[data-i="'+i+'"] [data-f="xk"][data-j="'
                                     +(it2.extra.length-1)+'"]');

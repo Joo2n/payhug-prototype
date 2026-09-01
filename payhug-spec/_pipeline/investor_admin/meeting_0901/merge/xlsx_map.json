@@ -1,0 +1,3317 @@
+{
+ "meta": {
+  "대상": "~/Downloads/payhug_검산엑셀/검산_투자자어드민_20260901.xlsx (읽기만 · data_only=False)",
+  "생성기": "build_audit_xlsx.py (읽기만) · 검사기 audit_xlsx_check.py (읽기만)",
+  "근거": [
+   "meeting_0901/steps_all.json — 화면 칸 138 · xlsx null 11",
+   "meeting_0901/steps_all.md §4-1 — 자리 없는 중간 변수 16",
+   "meeting_0830/xlsx_acceptance_check.md · meeting_0830/fix_xlsx_gap.md",
+   "대표 2026-08-30 00:45:44 「수식이 들어 있는 채로」 · 00:47:05 「워드에 있는 것들은 전부 엑셀에」"
+  ],
+  "줄수": 163,
+  "없는_자리": 26,
+  "고치지_않음": "엑셀·생성기·검사기 전부 읽기만. 이 파일 하나만 썼다"
+ },
+ "chain_breaks": [
+  {
+   "자리": "채권!H2:H1281 (D_i)",
+   "무엇": "날짜별 금융일수가 1,280칸 전부 값이다. 셀 참조로 들어오는 것이 없다",
+   "파급": "D_i → A_i×D_i → Σ(A_iD_i) → W → ty 사슬의 첫 마디가 값이라 대표가 H 를 클릭하면 숫자만 나온다",
+   "덧붙임": "채권!G(정산예정일) = F + H 로 방향이 뒤집혀 있다. 워드는 금융일수 = 정산예정일 − 선정산일"
+  },
+  {
+   "자리": "플랫폼!C2:O5 → 채권!H",
+   "무엇": "도수표(값 52칸)와 채권 H 사이에 셀 참조가 없다. 한계도수도 비례하지 않는다",
+   "파급": "「도수표를 고치면 W 가 따라 움직인다」가 채권 축에서는 성립하지 않는다",
+   "덧붙임": "build_audit_xlsx.py assign() 이 40일 슬라이스 오프셋과 배열을 목표값에 맞춰 탐색으로 정한다"
+  },
+  {
+   "자리": "읽는 법!D23 이 적어 둔 W 되짚기 경로",
+   "무엇": "「플랫폼 C2:O5 → 플랫폼 D9:D12 → 가맹점 O2:O9 → 채권 S2:S1281 → 기간집계 B41 → B42」 가운데 가맹점!O → 채권!S 마디가 셀 참조로 없다",
+   "파급": "가맹점!O 는 B13·B14·B15 를 거쳐 하루 선정산액(금액)에만 닿는다. 채권!S = J × H 의 H 는 값이라 일수는 그 경로로 들어가지 않는다",
+   "덧붙임": "통합문서가 스스로 적어 둔 경로 설명이 실제 참조와 어긋난다"
+  },
+  {
+   "자리": "채권!I(순지급액)",
+   "무엇": "이 열을 읽는 수식이 통합문서 전체에 0건이다",
+   "파급": "미회수 Σ순지급액 · 전체 Σ순지급액 · 일별 Σ순지급액 세 앵커가 전부 없다. 「③ ÷ (1−r)」 되짚기의 근거 칸이 없다",
+   "덧붙임": "채권!I 는 계산에는 쓰인다(J·K·L·M·P 가 문다). 합계만 없다"
+  },
+  {
+   "자리": "채권!L·M(미지급·과지급)",
+   "무엇": "두 열이 만나는 자리는 기간집계!B49 SUMPRODUCT 한 칸뿐이고, 각각의 합이 어디에도 없다",
+   "파급": "일별·기간·표본 세 층 모두 「차감」 한 칸으로 접혀 두 계정이 안 보인다",
+   "덧붙임": "6대 개념(미지급금 · 과지급)을 갈라 두는 원칙에 걸린다"
+  },
+  {
+   "자리": "채권!U(조회기간 플래그)",
+   "무엇": "정의는 됐는데 읽는 수식이 0건인 죽은 열이다",
+   "파급": "산식!C41 이 A_pi 를 「채권 J열 x U열」로 지시하지만 그 곱을 계산하는 칸이 없다. PSA 는 일별!D 경유로만 나온다",
+   "덧붙임": ""
+  },
+  {
+   "자리": "일별!J2:J28 (EC)",
+   "무엇": "27칸 전부 `=순현금` 상수 참조다",
+   "파급": "PSC 가 실측이 아니라 순현금 × 조회일수다. ⑤ 의 분모가 여기서 나온다",
+   "덧붙임": "열머리 `(미확정)` 과 N1 까닭 표식은 있다. 값 대기 상태로 표시돼 있다"
+  },
+  {
+   "자리": "일별!29 합계행 G·H·I",
+   "무엇": "SMR·SD·ty 합계 칸이 비어 있다",
+   "파급": "화면 일별 표의 합계 행(W금융일수·Ty 가중평균)에 대응하는 자리가 일별 시트에 없다",
+   "덧붙임": "일별 합계는 27일치, 화면 합계는 조회기간 7일치라 모집단도 다르다"
+  },
+  {
+   "자리": "가맹점 시트 ↔ 채권 시트",
+   "무엇": "가맹점 시트가 채권 시트를 읽는 수식이 0건이다. 두 모형이 나란히 서 있다",
+   "파급": "곳별 투자금액·W·S 를 채권 낱건으로 되짚을 수 없다. 두 모형은 화면대조 83행 항등식 한 줄로만 맞닿는다",
+   "덧붙임": "곳별 건수·Σ순지급액·ΣSL·ΣSA·Σ(A×D) 다섯이 없는 근본 원인이 이것이다"
+  },
+  {
+   "자리": "요일 규모 계수 · 배달 의존도 틸트",
+   "무엇": "화면 원장(daily_ledger.py SIZE_WD · TILT)에만 있고 엑셀에 없다",
+   "파급": "엑셀 채권!I 는 선정산일에 따라 흔들리지 않는다. ④·⑤·PSA·PSD·S 다섯 값이 화면과 갈리는 원인",
+   "덧붙임": "지금은 화면대조 151~177행이 「모델 잔차」 문장으로만 적는다"
+  }
+ ],
+ "값인데_수식이어야_할_자리": [
+  {
+   "자리": "채권!H2:H1281",
+   "판정": "값이되 사슬이 끊긴다",
+   "왜": "워드 정의는 파생값(정산예정일 − 선정산일)이다. 도수 실측을 넣는 자리라 값 자체는 근거가 있으나, 이 통합문서가 도수표를 갖고 있으면서도 참조로 잇지 않았다",
+   "손댈까": "지시 없이 바꾸지 말 것. 값을 수식으로 바꾸면 1,280행이 전부 움직이고 투자실행액 앵커가 흔들린다. 미팅에서 방향이 뒤집혀 있다고 먼저 말하는 편이 낫다"
+  },
+  {
+   "자리": "기간집계!B16 평균순현금",
+   "판정": "빈 칸 (값도 수식도 없음)",
+   "왜": "워드가 이름만 부르고 정의가 없다. 칸과 `미확정` 표식은 섰다",
+   "손댈까": "대표가 EC·PSC 와의 관계를 정한 뒤"
+  },
+  {
+   "자리": "입력!C18 ③",
+   "판정": "빈 칸",
+   "왜": "지시 대상 칸이 미지목",
+   "손댈까": "대표가 칸을 지목한 뒤. 그 순간 ⑥ 이 살아난다"
+  },
+  {
+   "자리": "입력 상수 83칸 · 플랫폼 도수 70칸 · 화면대조 83칸",
+   "판정": "값이 맞는 자리",
+   "왜": "할인율·기준일·구성비·미지급/과지급률·flow·b·도수·화면 원본값",
+   "손댈까": "바꿀 것 없음"
+  },
+  {
+   "자리": "기간집계 · 일별 · 가맹점 세 시트",
+   "판정": "숫자 값셀 0건",
+   "왜": "직접 세었다. 계산 시트 전체가 수식이다",
+   "손댈까": "바꿀 것 없음"
+  }
+ ],
+ "vars_대조": {
+  "대상": "meeting_0901/merge/vars.json (다른 조 산출 · 읽기만)",
+  "맞춤": "같은 개념은 vars.json 의 sym 을 쓴다. rows[].vars_sym 이 대응 기호이고 없으면 null",
+  "남은_충돌": [
+   "⑥ — vars.json 은 「투자실행금액 대비 ty수익율 (일별 행)」로 잡았고, 통합문서 기간집계!B18 은 「(④ ÷ ③) × 365 ÷ ⑤」 기간 칸에 ⑥ 을 붙였다. 화면 일별 표의 Ty 열과 기간집계 B18 이 같은 번호를 쓰는 셈이라 둘 중 하나를 갈라 불러야 한다",
+   "M_i — 통합문서 채권!M열은 과지급액이고 vars.json M_i 는 투자수익이다. 이 지도는 vars.json 쪽을 따르고 채권 M열은 과지급금_i 로 적었다. 열 문자와 기호가 어긋나는 자리라 미팅에서 셀을 짚을 때 헷갈릴 수 있다",
+   "w — vars.json 은 한 기호인데 통합문서는 raw(B41)와 표기(B42) 두 칸으로 갈라 둔다"
+  ]
+ },
+ "rows": [
+  {
+   "target": "r",
+   "target_kind": "상수",
+   "human": "유동화투자자의 할인율",
+   "sheet": "입력",
+   "cell": "C2",
+   "is_formula": false,
+   "formula": "0.0011",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "r%",
+    "A_i",
+    "채권매입수수료_i",
+    "가맹점_하루Ai",
+    "가맹점_S%"
+   ],
+   "note": "값이 맞는 자리. ledger_facts.json rate 그대로. 대표 DM 16:19 「1%」는 이 통합문서 어디에도 없다 (C1 미확정)",
+   "vars_sym": "r"
+  },
+  {
+   "target": "r%",
+   "target_kind": "중간",
+   "human": "할인율 퍼센트 표기",
+   "sheet": "입력",
+   "cell": "C3",
+   "is_formula": true,
+   "formula": "=C2*100",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "r"
+   ],
+   "chain_to": [
+    "ty",
+    "가맹점_Ty",
+    "Ty_모집단3",
+    "Ty_일환산"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "연일수",
+   "target_kind": "상수",
+   "human": "연 환산 일수 365",
+   "sheet": "입력",
+   "cell": "C4",
+   "is_formula": false,
+   "formula": "365",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "ty",
+    "ty_{d−1}",
+    "④",
+    "⑥",
+    "회전수"
+   ],
+   "note": "",
+   "vars_sym": "365"
+  },
+  {
+   "target": "총투자자산",
+   "target_kind": "상수",
+   "human": "총 투자자산 규모",
+   "sheet": "입력",
+   "cell": "C5",
+   "is_formula": false,
+   "formula": "100000000",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "투자실행액목표",
+    "EC"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "유휴비율",
+   "target_kind": "상수",
+   "human": "순현금 / 투자자산",
+   "sheet": "입력",
+   "cell": "C6",
+   "is_formula": false,
+   "formula": "0.2",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "EC"
+   ],
+   "note": "네 벌이 0.2 / 0.2 / 0.25 / 0.3 로만 갈린다",
+   "vars_sym": null
+  },
+  {
+   "target": "투자실행액목표",
+   "target_kind": "중간",
+   "human": "투자실행액 목표",
+   "sheet": "입력",
+   "cell": "C7",
+   "is_formula": true,
+   "formula": "=C5-C8",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "총투자자산",
+    "EC"
+   ],
+   "chain_to": [
+    "가맹점_하루합계_A"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "EC",
+   "target_kind": "결과",
+   "human": "순현금 (조회시점 잔액)",
+   "sheet": "입력",
+   "cell": "C8",
+   "is_formula": true,
+   "formula": "=ROUND(C5*C6,0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "총투자자산",
+    "유휴비율"
+   ],
+   "chain_to": [
+    "투자자산",
+    "순현금비중",
+    "EC_{d−1}"
+   ],
+   "note": "",
+   "vars_sym": "EC"
+  },
+  {
+   "target": "가맹점평균",
+   "target_kind": "상수",
+   "human": "가맹점 평균 하루 선정산액",
+   "sheet": "입력",
+   "cell": "C9",
+   "is_formula": false,
+   "formula": "3287500",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "가맹점_곳수_방향A"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "d",
+   "target_kind": "상수",
+   "human": "기준일 (현재일자)",
+   "sheet": "입력",
+   "cell": "C10",
+   "is_formula": false,
+   "formula": "2026-08-27",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "축시작",
+    "일별시작",
+    "조회시작",
+    "표본시작",
+    "미회수플래그",
+    "만기플래그"
+   ],
+   "note": "",
+   "vars_sym": "d"
+  },
+  {
+   "target": "축시작",
+   "target_kind": "중간",
+   "human": "선정산일 축 시작 (d−39)",
+   "sheet": "입력",
+   "cell": "C11",
+   "is_formula": true,
+   "formula": "=C10-39",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "d"
+   ],
+   "chain_to": [
+    "선정산일_i"
+   ],
+   "note": "축 40일. 화면 원장은 193일이라 모집단이 다르다",
+   "vars_sym": null
+  },
+  {
+   "target": "일별시작",
+   "target_kind": "중간",
+   "human": "일별 표 시작 (d−26)",
+   "sheet": "입력",
+   "cell": "C12",
+   "is_formula": true,
+   "formula": "=C10-26",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "d"
+   ],
+   "chain_to": [
+    "일별_날짜"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "조회시작",
+   "target_kind": "중간",
+   "human": "조회기간 시작 (d−6)",
+   "sheet": "입력",
+   "cell": "C14",
+   "is_formula": true,
+   "formula": "=C10-6",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "d"
+   ],
+   "chain_to": [
+    "PSA",
+    "PSM",
+    "②",
+    "PSC",
+    "조회플래그"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "표본시작",
+   "target_kind": "중간",
+   "human": "S표본 시작 (d−20)",
+   "sheet": "입력",
+   "cell": "C16",
+   "is_formula": true,
+   "formula": "=C10-20",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "d"
+   ],
+   "chain_to": [
+    "표본플래그"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "표본종료",
+   "target_kind": "중간",
+   "human": "S표본 종료 (d−11)",
+   "sheet": "입력",
+   "cell": "C17",
+   "is_formula": true,
+   "formula": "=C10-11",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "d"
+   ],
+   "chain_to": [
+    "표본플래그"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "③",
+   "target_kind": "상수",
+   "human": "이미지의 ③ — 지시 대상",
+   "sheet": "입력",
+   "cell": "C18",
+   "is_formula": false,
+   "formula": null,
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "⑥"
+   ],
+   "note": "빈 칸. 이름정의 `지시대상3`. 대표가 칸을 지목할 때까지 ⑥ 은 문자열 「미확정」. 값을 만들지 않는 것이 맞다",
+   "vars_sym": null
+  },
+  {
+   "target": "⑤",
+   "target_kind": "결과",
+   "human": "투자자산 대비 ty수익율",
+   "sheet": "입력",
+   "cell": "C19",
+   "is_formula": true,
+   "formula": "=IF(기간집계!B5+기간집계!B15=0,0,기간집계!B13*기간집계!B5/(기간집계!B5+기간집계!B15))",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "④",
+    "PSA",
+    "PSC"
+   ],
+   "chain_to": [
+    "⑥"
+   ],
+   "note": "대표 재작성 대기(A-01). 기간집계!B17 이 이 칸을 물고, ⑥ 이 B17 을 문다. 갈아 끼울 칸은 이 하나",
+   "vars_sym": "⑤"
+  },
+  {
+   "target": "구성비_p",
+   "target_kind": "상수",
+   "human": "플랫폼 구성비 (금액 실측)",
+   "sheet": "입력",
+   "cell": "C28:C31",
+   "is_formula": false,
+   "formula": "0.4283444298440191 / 0.4310079297740158 / 0.09552164283461166 / 0.04512599754735346",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "가맹점_구성비",
+    "W_구성비가중"
+   ],
+   "note": "금액 실측. MAU 비중(카드 65%)은 `가중치 대조` 참고값 계열로만 둔다",
+   "vars_sym": null
+  },
+  {
+   "target": "미지급률_p",
+   "target_kind": "상수",
+   "human": "플랫폼 미지급률",
+   "sheet": "입력",
+   "cell": "D28:D31",
+   "is_formula": false,
+   "formula": "0.00025 / 0.0014 / 0.0021 / 0.003",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "미지급금_i",
+    "가맹점_가중미지급률"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "과지급률_p",
+   "target_kind": "상수",
+   "human": "플랫폼 과지급률",
+   "sheet": "입력",
+   "cell": "E28:E31",
+   "is_formula": false,
+   "formula": "0.0001 / 0.00045 / 0.00055 / 0.00075",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "과지급금_i",
+    "가맹점_가중과지급률"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "flow_m",
+   "target_kind": "상수",
+   "human": "가맹점 flow 상수 (규모 사다리)",
+   "sheet": "입력",
+   "cell": "G50:G57",
+   "is_formula": false,
+   "formula": "6400000 … 1600000",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "가맹점_flow"
+   ],
+   "note": "범위 160만~641만. 대표 발언 100만~1,000만을 덮지 못한다 (Q13 미해소 · 지시 없이 손대지 말 것)",
+   "vars_sym": null
+  },
+  {
+   "target": "b_m",
+   "target_kind": "상수",
+   "human": "가맹점 배달 의존도 b",
+   "sheet": "입력",
+   "cell": "H50:H57",
+   "is_formula": false,
+   "formula": "0.28 ~ 0.80",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "가맹점_구성비"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "도수표_n",
+   "target_kind": "상수",
+   "human": "플랫폼별 금융일수 도수분포 (1~13일 · 365 관측)",
+   "sheet": "플랫폼",
+   "cell": "C2:O5",
+   "is_formula": false,
+   "formula": "카드 189/53/96/… · 배민 0/138/52/139/… · 쿠팡 · 요기요",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "도수합_P",
+    "Σ(d·도수)_Q",
+    "Σ(d²·도수)_R"
+   ],
+   "note": "값 52칸. `정산주기.xlsx` 실측. 이 표와 채권!H 는 셀 참조로 이어져 있지 않다",
+   "vars_sym": null
+  },
+  {
+   "target": "도수합_P",
+   "target_kind": "중간",
+   "human": "플랫폼별 도수 합",
+   "sheet": "플랫폼",
+   "cell": "P2:P5",
+   "is_formula": true,
+   "formula": "=SUM(C2:O2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "도수표_n"
+   ],
+   "chain_to": [
+    "Ed_p",
+    "Ed2_p"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "Σ(d·도수)_Q",
+   "target_kind": "중간",
+   "human": "Σ(금융일수 × 도수)",
+   "sheet": "플랫폼",
+   "cell": "Q2:Q5",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT($C$1:$O$1,C2:O2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "도수표_n"
+   ],
+   "chain_to": [
+    "Ed_p"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "Σ(d²·도수)_R",
+   "target_kind": "중간",
+   "human": "Σ(금융일수² × 도수)",
+   "sheet": "플랫폼",
+   "cell": "R2:R5",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT($C$1:$O$1,$C$1:$O$1,C2:O2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "도수표_n"
+   ],
+   "chain_to": [
+    "Ed2_p"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "Ed_p",
+   "target_kind": "중간",
+   "human": "플랫폼 평균 금융일수 E[d]",
+   "sheet": "플랫폼",
+   "cell": "D9:D12",
+   "is_formula": true,
+   "formula": "=Q2/P2",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "Σ(d·도수)_Q",
+    "도수합_P"
+   ],
+   "chain_to": [
+    "가맹점_w금융일수",
+    "W_구성비가중"
+   ],
+   "note": "이름정의 `평균금융일수범위`. 가맹점 축 D 의 원천. 채권 축 D(채권!H)와 다른 갈래다",
+   "vars_sym": null
+  },
+  {
+   "target": "Ed2_p",
+   "target_kind": "중간",
+   "human": "플랫폼 E[d²]",
+   "sheet": "플랫폼",
+   "cell": "E9:E12",
+   "is_formula": true,
+   "formula": "=R2/P2",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "Σ(d²·도수)_R",
+    "도수합_P"
+   ],
+   "chain_to": [
+    "미회수이론W"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "W_구성비가중",
+   "target_kind": "중간",
+   "human": "구성비 × 평균 금융일수 W",
+   "sheet": "플랫폼",
+   "cell": "B17",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(구성비범위,평균금융일수범위)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "구성비_p",
+    "Ed_p"
+   ],
+   "chain_to": [
+    "미회수이론W",
+    "Ty_구성비W"
+   ],
+   "note": "화면대조 100행이 화면 W raw 와 대조한다",
+   "vars_sym": null
+  },
+  {
+   "target": "MAU_참고",
+   "target_kind": "상수",
+   "human": "대표 엑셀 MAU 비중 (시장 평균 참고값)",
+   "sheet": "입력",
+   "cell": "B43:B45 · B47",
+   "is_formula": false,
+   "formula": "2175 / 1044 / 486 · 배달앱/전체 0.35",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "가중치대조_MAU열"
+   ],
+   "note": "참고값 계열. 화면·원장 계산에 쓰지 않는다",
+   "vars_sym": null
+  },
+  {
+   "target": "i",
+   "target_kind": "낱개",
+   "human": "채권번호",
+   "sheet": "채권",
+   "cell": "A2:A1281",
+   "is_formula": true,
+   "formula": "=ROW()-1",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "가맹점#_m",
+    "플랫폼#_p",
+    "선정산일_i"
+   ],
+   "note": "",
+   "vars_sym": "i"
+  },
+  {
+   "target": "가맹점#_m",
+   "target_kind": "낱개",
+   "human": "가맹점 번호",
+   "sheet": "채권",
+   "cell": "D2:D1281",
+   "is_formula": true,
+   "formula": "=MOD(INT((A2-1)/4),8)+1",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "i"
+   ],
+   "chain_to": [
+    "순지급액_i"
+   ],
+   "note": "",
+   "vars_sym": "가맹점ID_i"
+  },
+  {
+   "target": "플랫폼#_p",
+   "target_kind": "낱개",
+   "human": "플랫폼 번호",
+   "sheet": "채권",
+   "cell": "E2:E1281",
+   "is_formula": true,
+   "formula": "=MOD(A2-1,4)+1",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "i"
+   ],
+   "chain_to": [
+    "순지급액_i",
+    "미지급금_i",
+    "과지급금_i"
+   ],
+   "note": "",
+   "vars_sym": "플랫폼ID_i"
+  },
+  {
+   "target": "선정산일_i",
+   "target_kind": "낱개",
+   "human": "선정산일",
+   "sheet": "채권",
+   "cell": "F2:F1281",
+   "is_formula": true,
+   "formula": "=축시작+INT((A2-1)/32)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "i",
+    "축시작"
+   ],
+   "chain_to": [
+    "정산예정일_i",
+    "표본플래그"
+   ],
+   "note": "하루 32건 = 8곳 × 4플랫폼",
+   "vars_sym": "선정산일_i"
+  },
+  {
+   "target": "D_i",
+   "target_kind": "낱개",
+   "human": "금융일수 (채권 한 건)",
+   "sheet": "채권",
+   "cell": "H2:H1281",
+   "is_formula": false,
+   "formula": "1 ~ 13 정수 1,280칸 (도수 163/159/194/189/201/207/66/38/30/18/4/6/5)",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "정산예정일_i",
+    "A_i×D_i"
+   ],
+   "note": "사슬이 여기서 끊긴다. 1,280칸 전부 값이고 셀 참조로 들어오는 것이 없다. 정산주기.xlsx N6:Q370 365일 실측 시퀀스의 40일 순환 슬라이스이되, build_audit_xlsx.py assign() 이 오프셋과 배열을 미회수 건수·d합 목표에 맞춰 탐색으로 정한다. 플랫폼 도수표(플랫폼!C2:O5)와 셀 참조가 없고 한계도수도 비례하지 않는다 (카드 D=1 이 채권 163/320=50.9% · 도수표 189/365=51.8%)",
+   "vars_sym": "D_i"
+  },
+  {
+   "target": "정산예정일_i",
+   "target_kind": "낱개",
+   "human": "정산예정일",
+   "sheet": "채권",
+   "cell": "G2:G1281",
+   "is_formula": true,
+   "formula": "=F2+H2",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "선정산일_i",
+    "D_i"
+   ],
+   "chain_to": [
+    "미회수플래그",
+    "만기플래그",
+    "조회플래그",
+    "일별_날짜"
+   ],
+   "note": "방향이 뒤집혀 있다. 워드는 금융일수 = 정산예정일 − 선정산일 인데 이 통합문서는 D_i 를 넣고 날짜를 만든다. 대표가 H 를 클릭하면 수식이 아니라 숫자가 나온다",
+   "vars_sym": "정산예정일_i"
+  },
+  {
+   "target": "결합ID_i",
+   "target_kind": "낱개",
+   "human": "정산금채권 ID (가맹점ID & 플랫폼ID & 매출일자)",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 채권!V2:V1281 `=INDEX(입력!$B$50:$B$57,D2)&INDEX(플랫폼코드범위,E2)&TEXT(F2,\"yyyymmdd\")`. 산식!C9 는 지금 `채권 D·E·F열` 로 세 칸을 가리킬 뿐 결합 칸이 없다",
+   "chain_from": [
+    "가맹점#_m",
+    "플랫폼#_p",
+    "선정산일_i"
+   ],
+   "chain_to": [],
+   "note": "대표 정의서가 채권의 단위로 못 박은 값. 값 계산에는 안 쓰이나 「워드에 있는 것이 전부」 기준에 걸린다",
+   "vars_sym": null
+  },
+  {
+   "target": "순지급액_i",
+   "target_kind": "낱개",
+   "human": "채권 한 건의 순지급액",
+   "sheet": "채권",
+   "cell": "I2:I1281",
+   "is_formula": true,
+   "formula": "=ROUND(INDEX(가맹점!$P$2:$P$9,D2)*INDEX(가맹점!$J$2:$M$9,D2,E2),0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루선정산액",
+    "가맹점_구성비"
+   ],
+   "chain_to": [
+    "A_i",
+    "채권매입수수료_i",
+    "미지급금_i",
+    "과지급금_i",
+    "B_i"
+   ],
+   "note": "하루 선정산액 × 구성비. 선정산일에 따라 흔들리지 않는다 — 화면 원장의 요일 규모 계수·틸트가 여기 없다",
+   "vars_sym": "순지급액_i"
+  },
+  {
+   "target": "A_i",
+   "target_kind": "낱개",
+   "human": "투자실행금 = 순지급액 × (1−r)",
+   "sheet": "채권",
+   "cell": "J2:J1281",
+   "is_formula": true,
+   "formula": "=ROUND(I2*(1-할인율),0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "순지급액_i",
+    "r"
+   ],
+   "chain_to": [
+    "A_i×D_i",
+    "SA_{d−1}",
+    "ΣA_전체",
+    "ΣA_미회수",
+    "ΣSA_표본"
+   ],
+   "note": "워드 Ai · A_{d−1,i} · A_{p,i} · SA_i 네 이름이 전부 이 한 열이다",
+   "vars_sym": "A_i"
+  },
+  {
+   "target": "채권매입수수료_i",
+   "target_kind": "낱개",
+   "human": "채권매입수수료",
+   "sheet": "채권",
+   "cell": "K2:K1281",
+   "is_formula": true,
+   "formula": "=ROUNDDOWN(I2*할인율,0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "순지급액_i",
+    "r"
+   ],
+   "chain_to": [
+    "M_i",
+    "일별_Σ수수료"
+   ],
+   "note": "",
+   "vars_sym": "채권매입수수료_i"
+  },
+  {
+   "target": "미지급금_i",
+   "target_kind": "낱개",
+   "human": "미지급액",
+   "sheet": "채권",
+   "cell": "L2:L1281",
+   "is_formula": true,
+   "formula": "=ROUND(I2*INDEX(미지급률범위,E2),0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "순지급액_i",
+    "미지급률_p"
+   ],
+   "chain_to": [
+    "N_i",
+    "ΣSL_표본"
+   ],
+   "note": "",
+   "vars_sym": "미지급금_i"
+  },
+  {
+   "target": "과지급금_i",
+   "target_kind": "낱개",
+   "human": "과지급액",
+   "sheet": "채권",
+   "cell": "M2:M1281",
+   "is_formula": true,
+   "formula": "=ROUND(I2*INDEX(과지급률범위,E2),0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "순지급액_i",
+    "과지급률_p"
+   ],
+   "chain_to": [
+    "N_i",
+    "ΣSL_표본"
+   ],
+   "note": "",
+   "vars_sym": "과지급금_i"
+  },
+  {
+   "target": "N_i",
+   "target_kind": "낱개",
+   "human": "차감액 max(0, 미지급−과지급)",
+   "sheet": "채권",
+   "cell": "N2:N1281",
+   "is_formula": true,
+   "formula": "=MAX(0,L2-M2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "미지급금_i",
+    "과지급금_i"
+   ],
+   "chain_to": [
+    "M_i",
+    "B_i",
+    "일별_Σ차감"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "L_i",
+   "target_kind": "낱개",
+   "human": "표본 낱개 입금부족액 = 미지급 − 과지급",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 채권!W2:W1281 `=(L2-M2)*T2`. 지금은 기간집계!B49 의 SUMPRODUCT 안에서만 뺄셈이 일어나 낱개 칸이 없다",
+   "chain_from": [
+    "미지급금_i",
+    "과지급금_i",
+    "표본플래그"
+   ],
+   "chain_to": [
+    "ΣSL_표본"
+   ],
+   "note": "워드 SLi 는 낱개 이름인데 엑셀엔 합계 한 칸뿐이다. N_i(=MAX(0,L−M))와 다른 값이므로 N 열로 대신할 수 없다",
+   "vars_sym": "L_i"
+  },
+  {
+   "target": "M_i",
+   "target_kind": "낱개",
+   "human": "투자수익 = 수수료 − 차감",
+   "sheet": "채권",
+   "cell": "O2:O1281",
+   "is_formula": true,
+   "formula": "=K2-N2",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "채권매입수수료_i",
+    "N_i"
+   ],
+   "chain_to": [
+    "SM_{d−1}"
+   ],
+   "note": "",
+   "vars_sym": "M_i"
+  },
+  {
+   "target": "B_i",
+   "target_kind": "낱개",
+   "human": "상환액 = 순지급액 − 차감",
+   "sheet": "채권",
+   "cell": "P2:P1281",
+   "is_formula": true,
+   "formula": "=I2-N2",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "순지급액_i",
+    "N_i"
+   ],
+   "chain_to": [
+    "SB_{d−1}"
+   ],
+   "note": "",
+   "vars_sym": "B_i"
+  },
+  {
+   "target": "미회수플래그",
+   "target_kind": "낱개",
+   "human": "정산예정일 > 기준일",
+   "sheet": "채권",
+   "cell": "Q2:Q1281",
+   "is_formula": true,
+   "formula": "=IF(G2>기준일,1,0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "정산예정일_i",
+    "d"
+   ],
+   "chain_to": [
+    "ΣA_미회수",
+    "Σ(AD)_미회수",
+    "미회수건수"
+   ],
+   "note": "",
+   "vars_sym": "미회수"
+  },
+  {
+   "target": "만기플래그",
+   "target_kind": "낱개",
+   "human": "정산예정일 ≤ 기준일",
+   "sheet": "채권",
+   "cell": "R2:R1281",
+   "is_formula": true,
+   "formula": "=IF(G2<=기준일,1,0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "정산예정일_i",
+    "d"
+   ],
+   "chain_to": [
+    "ΣA_만기",
+    "Σ(AD)_만기"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "A_i×D_i",
+   "target_kind": "낱개",
+   "human": "금액 × 금융일수",
+   "sheet": "채권",
+   "cell": "S2:S1281",
+   "is_formula": true,
+   "formula": "=J2*H2",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i",
+    "D_i"
+   ],
+   "chain_to": [
+    "일별_Σ(AD)",
+    "Σ(AD)_전체",
+    "Σ(AD)_미회수",
+    "Σ(AD)_만기"
+   ],
+   "note": "W금융일수 사슬의 허리. 왼쪽 인자는 수식, 오른쪽 인자는 값이다",
+   "vars_sym": null
+  },
+  {
+   "target": "표본플래그",
+   "target_kind": "낱개",
+   "human": "선정산일이 d−20 ~ d−11",
+   "sheet": "채권",
+   "cell": "T2:T1281",
+   "is_formula": true,
+   "formula": "=IF(AND(F2>=표본시작,F2<=표본종료),1,0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "선정산일_i",
+    "표본시작",
+    "표본종료"
+   ],
+   "chain_to": [
+    "ΣSL_표본",
+    "ΣSA_표본"
+   ],
+   "note": "",
+   "vars_sym": "표본집합"
+  },
+  {
+   "target": "조회플래그",
+   "target_kind": "낱개",
+   "human": "정산예정일이 조회기간 안",
+   "sheet": "채권",
+   "cell": "U2:U1281",
+   "is_formula": true,
+   "formula": "=IF(AND(G2>=조회시작,G2<=조회종료),1,0)",
+   "exists": true,
+   "action": "참조 신설 — A_{p,i} 계산 칸(예: 채권!X2 `=J2*U2`)이 있어야 산식!C41 의 「채권 J열 x U열」이 실제 칸을 지시한다",
+   "chain_from": [
+    "정산예정일_i",
+    "조회시작"
+   ],
+   "chain_to": [],
+   "note": "이 열을 읽는 수식이 통합문서 전체에 0건이다. 죽은 열이다. PSA 는 일별!D 경유로만 나온다",
+   "vars_sym": "P"
+  },
+  {
+   "target": "A_{p,i}",
+   "target_kind": "낱개",
+   "human": "조회기간 낱개 투자실행금",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 채권!X2:X1281 `=J2*U2`",
+   "chain_from": [
+    "A_i",
+    "조회플래그"
+   ],
+   "chain_to": [
+    "PSA"
+   ],
+   "note": "산식!C41 이 「채권 J열 x U열」이라 적었지만 그 곱을 계산하는 칸은 없다",
+   "vars_sym": null
+  },
+  {
+   "target": "일별_날짜",
+   "target_kind": "집계",
+   "human": "정산예정일 축 27일",
+   "sheet": "일별",
+   "cell": "A2:A28",
+   "is_formula": true,
+   "formula": "=일별시작+0",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "일별시작"
+   ],
+   "chain_to": [
+    "건수_{d-1}",
+    "SB_{d−1}",
+    "SA_{d−1}",
+    "SM_{d−1}",
+    "SD_{d−1}"
+   ],
+   "note": "",
+   "vars_sym": "d−1"
+  },
+  {
+   "target": "건수_{d-1}",
+   "target_kind": "집계",
+   "human": "그 날짜의 채권 건수",
+   "sheet": "일별",
+   "cell": "B2:B28",
+   "is_formula": true,
+   "formula": "=COUNTIFS(채권!$G$2:$G$1281,$A2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "정산예정일_i"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "SB_{d−1}",
+   "target_kind": "집계",
+   "human": "② 상환액",
+   "sheet": "일별",
+   "cell": "C2:C28",
+   "is_formula": true,
+   "formula": "=SUMIFS(채권!$P$2:$P$1281,채권!$G$2:$G$1281,$A2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "B_i",
+    "일별_날짜"
+   ],
+   "chain_to": [
+    "②"
+   ],
+   "note": "",
+   "vars_sym": "SB_{d−1}"
+  },
+  {
+   "target": "SA_{d−1}",
+   "target_kind": "집계",
+   "human": "③ 투자실행금",
+   "sheet": "일별",
+   "cell": "D2:D28",
+   "is_formula": true,
+   "formula": "=SUMIFS(채권!$J$2:$J$1281,채권!$G$2:$G$1281,$A2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i",
+    "일별_날짜"
+   ],
+   "chain_to": [
+    "SMR_{d−1}",
+    "SD_{d−1}",
+    "PSA"
+   ],
+   "note": "",
+   "vars_sym": "SA_{d−1}"
+  },
+  {
+   "target": "SM_{d−1}",
+   "target_kind": "집계",
+   "human": "④ 투자수익 (차감 반영)",
+   "sheet": "일별",
+   "cell": "E2:E28",
+   "is_formula": true,
+   "formula": "=SUMIFS(채권!$O$2:$O$1281,채권!$G$2:$G$1281,$A2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "M_i",
+    "일별_날짜"
+   ],
+   "chain_to": [
+    "SMR_{d−1}",
+    "PSM"
+   ],
+   "note": "",
+   "vars_sym": "SM_{d−1}"
+  },
+  {
+   "target": "일별_Σ수수료",
+   "target_kind": "집계",
+   "human": "채권매입수수료 합 (차감 제외 · 참고)",
+   "sheet": "일별",
+   "cell": "F2:F28",
+   "is_formula": true,
+   "formula": "=SUMIFS(채권!$K$2:$K$1281,채권!$G$2:$G$1281,$A2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "채권매입수수료_i"
+   ],
+   "chain_to": [
+    "PSM_차감제외",
+    "일별_차감비"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "SMR_{d−1}",
+   "target_kind": "중간",
+   "human": "투자수익율 = ④ ÷ ③",
+   "sheet": "일별",
+   "cell": "G2:G28",
+   "is_formula": true,
+   "formula": "=IF(D2=0,0,E2/D2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "SM_{d−1}",
+    "SA_{d−1}"
+   ],
+   "chain_to": [
+    "ty_{d−1}"
+   ],
+   "note": "대표가 콕 집은 「UI엔 없는 변수」. 27칸 전부 수식으로 서 있다",
+   "vars_sym": "SMR_{d−1}"
+  },
+  {
+   "target": "SD_{d−1}",
+   "target_kind": "집계",
+   "human": "⑤ W금융일수 = Σ(A×D) ÷ ΣA",
+   "sheet": "일별",
+   "cell": "H2:H28",
+   "is_formula": true,
+   "formula": "=IF(D2=0,0,K2/D2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "일별_Σ(AD)",
+    "SA_{d−1}"
+   ],
+   "chain_to": [
+    "ty_{d−1}"
+   ],
+   "note": "",
+   "vars_sym": "SD_{d−1}"
+  },
+  {
+   "target": "ty_{d−1}",
+   "target_kind": "결과",
+   "human": "⑥ ty수익율 = SMR × 365 ÷ SD",
+   "sheet": "일별",
+   "cell": "I2:I28",
+   "is_formula": true,
+   "formula": "=IF(H2=0,0,G2*연일수/H2*100)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "SMR_{d−1}",
+    "SD_{d−1}",
+    "연일수"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": "ty_{d−1}"
+  },
+  {
+   "target": "EC_{d−1}",
+   "target_kind": "집계",
+   "human": "전일자 순현금 EC",
+   "sheet": "일별",
+   "cell": "J2:J28",
+   "is_formula": true,
+   "formula": "=순현금",
+   "exists": true,
+   "action": "값 대기 — 일별 EC 원장이 서면 27칸을 날짜별 잔액으로 갈아 끼운다",
+   "chain_from": [
+    "EC"
+   ],
+   "chain_to": [
+    "PSC"
+   ],
+   "note": "27칸이 같은 상수 참조다. 열머리 `EC 순현금 (미확정)` · N1 까닭 표식은 있다. PSC 는 그래서 순현금 × 조회일수다",
+   "vars_sym": "EC_{d−1}"
+  },
+  {
+   "target": "일별_Σ(AD)",
+   "target_kind": "집계",
+   "human": "Σ(A_i × D_i)",
+   "sheet": "일별",
+   "cell": "K2:K28",
+   "is_formula": true,
+   "formula": "=SUMIFS(채권!$S$2:$S$1281,채권!$G$2:$G$1281,$A2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i×D_i"
+   ],
+   "chain_to": [
+    "SD_{d−1}",
+    "Σ(ApiDpi)"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "일별_Σ차감",
+   "target_kind": "집계",
+   "human": "부족액 차감 합",
+   "sheet": "일별",
+   "cell": "L2:L28",
+   "is_formula": true,
+   "formula": "=SUMIFS(채권!$N$2:$N$1281,채권!$G$2:$G$1281,$A2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "N_i"
+   ],
+   "chain_to": [
+    "기간_차감합",
+    "일별_차감비"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "일별_차감비",
+   "target_kind": "중간",
+   "human": "차감 / 수수료(%)",
+   "sheet": "일별",
+   "cell": "M2:M28",
+   "is_formula": true,
+   "formula": "=IF(F2=0,0,L2/F2*100)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "일별_Σ차감",
+    "일별_Σ수수료"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "일별_Σ순지급액",
+   "target_kind": "집계",
+   "human": "일별 Σ 순지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 일별!O2:O28 `=SUMIFS(채권!$I$2:$I$1281,채권!$G$2:$G$1281,$A2)` · 합계 O29 `=SUM(O2:O28)`",
+   "chain_from": [
+    "순지급액_i"
+   ],
+   "chain_to": [
+    "SB_{d−1}",
+    "SM_{d−1}"
+   ],
+   "note": "② 와 ④ 가 둘 다 여기서 갈라지는데 칸이 없다. 채권!I 를 읽는 수식이 통합문서 전체에 0건이다. `③ ÷ (1−r)` 로 되짚는 근거 칸이 없어 대표가 손으로 나눠 봐야 한다",
+   "vars_sym": null
+  },
+  {
+   "target": "일별_Σ미지급액",
+   "target_kind": "집계",
+   "human": "일별 Σ 미지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 일별!P2:P28 `=SUMIFS(채권!$L$2:$L$1281,채권!$G$2:$G$1281,$A2)` · 합계 P29",
+   "chain_from": [
+    "미지급금_i"
+   ],
+   "chain_to": [
+    "일별_Σ차감"
+   ],
+   "note": "지금은 `차감` 한 칸(=max(0, 미지급−과지급))으로 접혀 두 계정이 안 보인다. 6대 개념 분리 원칙에 걸린다",
+   "vars_sym": null
+  },
+  {
+   "target": "일별_Σ과지급액",
+   "target_kind": "집계",
+   "human": "일별 Σ 과지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 일별!Q2:Q28 `=SUMIFS(채권!$M$2:$M$1281,채권!$G$2:$G$1281,$A2)` · 합계 Q29",
+   "chain_from": [
+    "과지급금_i"
+   ],
+   "chain_to": [
+    "일별_Σ차감"
+   ],
+   "note": "위와 같은 이유",
+   "vars_sym": null
+  },
+  {
+   "target": "일별_합계행",
+   "target_kind": "집계",
+   "human": "일별 27일 합계",
+   "sheet": "일별",
+   "cell": "B29:F29 · J29:M29",
+   "is_formula": true,
+   "formula": "=SUM(B2:B28)",
+   "exists": true,
+   "action": "보강 — G29 `=IF(D29=0,0,E29/D29)` · H29 `=IF(D29=0,0,K29/D29)` · I29 `=IF(H29=0,0,G29*연일수/H29*100)`",
+   "chain_from": [
+    "SB_{d−1}",
+    "SA_{d−1}",
+    "SM_{d−1}"
+   ],
+   "chain_to": [],
+   "note": "G·H·I(SMR·SD·ty) 합계 칸이 비어 있다. 화면 일별 표의 합계 행은 W금융일수·Ty를 가중평균으로 보여 주는데 그 자리가 일별 시트에 없고 기간집계 B12·B13 쪽 갈래로만 있다. 덧붙여 이 합계는 27일치이고 화면 합계는 조회기간 7일치라 모집단이 다르다",
+   "vars_sym": null
+  },
+  {
+   "target": "조회일수",
+   "target_kind": "중간",
+   "human": "조회 일수",
+   "sheet": "기간집계",
+   "cell": "B4",
+   "is_formula": true,
+   "formula": "=조회종료-조회시작+1",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "조회시작"
+   ],
+   "chain_to": [
+    "PSC"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "PSA",
+   "target_kind": "집계",
+   "human": "투자 실행금 (기간 합)",
+   "sheet": "기간집계",
+   "cell": "B5",
+   "is_formula": true,
+   "formula": "=SUMIFS(일별!$D$2:$D$28,일별!$A$2:$A$28,\">=\"&조회시작,일별!$A$2:$A$28,\"<=\"&조회종료)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "SA_{d−1}",
+    "조회시작"
+   ],
+   "chain_to": [
+    "PSMR",
+    "PSD",
+    "⑤"
+   ],
+   "note": "",
+   "vars_sym": "PSA"
+  },
+  {
+   "target": "PSM",
+   "target_kind": "집계",
+   "human": "투자수익 (정의 · 차감 반영)",
+   "sheet": "기간집계",
+   "cell": "B6",
+   "is_formula": true,
+   "formula": "=SUMIFS(일별!$E$2:$E$28,…조회시작…조회종료)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "SM_{d−1}"
+   ],
+   "chain_to": [
+    "PSMR"
+   ],
+   "note": "",
+   "vars_sym": "PSM"
+  },
+  {
+   "target": "PSM_차감제외",
+   "target_kind": "집계",
+   "human": "투자수익 (차감 제외 · 참고)",
+   "sheet": "기간집계",
+   "cell": "B7",
+   "is_formula": true,
+   "formula": "=SUMIFS(일별!$F$2:$F$28,…)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "일별_Σ수수료"
+   ],
+   "chain_to": [
+    "PSMR_차감제외",
+    "차감비"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "②",
+   "target_kind": "결과",
+   "human": "상환액 (기간 합)",
+   "sheet": "기간집계",
+   "cell": "B8",
+   "is_formula": true,
+   "formula": "=SUMIFS(일별!$C$2:$C$28,…)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "SB_{d−1}"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "Σ(ApiDpi)",
+   "target_kind": "집계",
+   "human": "Σ(A_pi × D_pi)",
+   "sheet": "기간집계",
+   "cell": "B9",
+   "is_formula": true,
+   "formula": "=SUMIFS(일별!$K$2:$K$28,…)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "일별_Σ(AD)"
+   ],
+   "chain_to": [
+    "PSD"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "PSMR",
+   "target_kind": "중간",
+   "human": "PSM ÷ PSA",
+   "sheet": "기간집계",
+   "cell": "B10",
+   "is_formula": true,
+   "formula": "=IF(B5=0,0,B6/B5)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "PSM",
+    "PSA"
+   ],
+   "chain_to": [
+    "④"
+   ],
+   "note": "화면에 없는 중간 변수",
+   "vars_sym": "PSMR"
+  },
+  {
+   "target": "PSD",
+   "target_kind": "중간",
+   "human": "Σ(A_pi × D_pi) ÷ PSA",
+   "sheet": "기간집계",
+   "cell": "B12",
+   "is_formula": true,
+   "formula": "=IF(B5=0,0,B9/B5)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "Σ(ApiDpi)",
+    "PSA"
+   ],
+   "chain_to": [
+    "④"
+   ],
+   "note": "건별 raw 갈래다. 화면은 날짜별 표기 W 를 다시 가중한 쪽을 쓴다 (화면대조 153행이 두 값을 나란히 둔다)",
+   "vars_sym": "PSD"
+  },
+  {
+   "target": "④",
+   "target_kind": "결과",
+   "human": "투자실행금액 대비 ty수익율",
+   "sheet": "기간집계",
+   "cell": "B13",
+   "is_formula": true,
+   "formula": "=IF(B12=0,0,B10*연일수/B12*100)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "PSMR",
+    "PSD",
+    "연일수"
+   ],
+   "chain_to": [
+    "⑤",
+    "⑥"
+   ],
+   "note": "",
+   "vars_sym": "④"
+  },
+  {
+   "target": "PSC",
+   "target_kind": "집계",
+   "human": "기간 순현금 합",
+   "sheet": "기간집계",
+   "cell": "B15",
+   "is_formula": true,
+   "formula": "=SUMIFS(일별!$J$2:$J$28,…)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "EC_{d−1}"
+   ],
+   "chain_to": [
+    "⑤"
+   ],
+   "note": "일별 EC 가 상수라 실질은 순현금 × 조회일수다",
+   "vars_sym": "PSC"
+  },
+  {
+   "target": "평균순현금",
+   "target_kind": "결과",
+   "human": "평균순현금",
+   "sheet": "기간집계",
+   "cell": "B16",
+   "is_formula": false,
+   "formula": null,
+   "exists": true,
+   "action": "값 대기 — 대표가 EC·PSC 와의 관계를 정하면 `=IF(B4=0,0,B15/B4)` 꼴이 들어갈 자리",
+   "chain_from": [
+    "PSC",
+    "조회일수"
+   ],
+   "chain_to": [],
+   "note": "칸과 `미확정` 표식만 있고 값이 없다. 워드 [2번] 첫 줄이 산출 대상 일곱 가지 중 하나로 이름을 부른다",
+   "vars_sym": "평균순현금"
+  },
+  {
+   "target": "⑤_기간집계",
+   "target_kind": "결과",
+   "human": "투자자산 대비 ty수익율 (참조 칸)",
+   "sheet": "기간집계",
+   "cell": "B17",
+   "is_formula": true,
+   "formula": "=입력!C19",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "⑤"
+   ],
+   "chain_to": [
+    "⑥"
+   ],
+   "note": "실제 산식은 입력!C19 한 칸에만 있다",
+   "vars_sym": null
+  },
+  {
+   "target": "⑥",
+   "target_kind": "결과",
+   "human": "투자실행금액 대비 ty수익율 (④ ÷ ③ × 365 ÷ ⑤)",
+   "sheet": "기간집계",
+   "cell": "B18",
+   "is_formula": true,
+   "formula": "=IF(COUNT(입력!C18)=0,\"미확정\",B13/입력!C18*연일수/B17)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "④",
+    "③",
+    "⑤_기간집계",
+    "연일수"
+   ],
+   "chain_to": [],
+   "note": "③ 이 빈 칸인 동안 문자열 「미확정」. 세 항이 전부 셀 참조라 ③ 이 들어오는 순간 살아난다",
+   "vars_sym": "⑥"
+  },
+  {
+   "target": "기간_차감합",
+   "target_kind": "집계",
+   "human": "부족액 차감 합 (기간)",
+   "sheet": "기간집계",
+   "cell": "B19",
+   "is_formula": true,
+   "formula": "=SUMIFS(일별!$L$2:$L$28,…)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "일별_Σ차감"
+   ],
+   "chain_to": [
+    "차감비",
+    "검산_수수료차감",
+    "DM가"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "차감비",
+   "target_kind": "중간",
+   "human": "차감 / 채권매입수수료(%)",
+   "sheet": "기간집계",
+   "cell": "B20",
+   "is_formula": true,
+   "formula": "=IF(B7=0,0,B19/B7*100)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "기간_차감합",
+    "PSM_차감제외"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "검산_수수료차감",
+   "target_kind": "중간",
+   "human": "수수료 − 차감 − PSM = 0",
+   "sheet": "기간집계",
+   "cell": "B21",
+   "is_formula": true,
+   "formula": "=B7-B19-B6",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "PSM_차감제외",
+    "기간_차감합",
+    "PSM"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "DM가",
+   "target_kind": "중간",
+   "human": "대표 근사식 (할인율 − 차감÷PSA)",
+   "sheet": "기간집계",
+   "cell": "B22",
+   "is_formula": true,
+   "formula": "=(할인율-IF(B5=0,0,B19/B5))*100",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "r",
+    "기간_차감합",
+    "PSA"
+   ],
+   "chain_to": [
+    "DM차",
+    "DM배"
+   ],
+   "note": "대표 DM 16:45. (나) PSMR 과 분모가 달라 1/(1−r) 배로 갈린다 — 어느 쪽이 정본인지 대표 확인 대기",
+   "vars_sym": null
+  },
+  {
+   "target": "기간_Σ순지급액",
+   "target_kind": "집계",
+   "human": "기간 Σ 순지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUMIFS(일별!$O$2:$O$28,…조회시작…조회종료)` (일별!O 신설이 선행)",
+   "chain_from": [
+    "일별_Σ순지급액"
+   ],
+   "chain_to": [
+    "②",
+    "PSM"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "기간_Σ미지급액",
+   "target_kind": "집계",
+   "human": "기간 Σ 미지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUMIFS(일별!$P$2:$P$28,…)` (일별!P 신설이 선행)",
+   "chain_from": [
+    "일별_Σ미지급액"
+   ],
+   "chain_to": [
+    "기간_차감합"
+   ],
+   "note": "지금은 기간집계!B19 차감 합 하나로 접혀 있다",
+   "vars_sym": null
+  },
+  {
+   "target": "기간_Σ과지급액",
+   "target_kind": "집계",
+   "human": "기간 Σ 과지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUMIFS(일별!$Q$2:$Q$28,…)` (일별!Q 신설이 선행)",
+   "chain_from": [
+    "일별_Σ과지급액"
+   ],
+   "chain_to": [
+    "기간_차감합"
+   ],
+   "note": "위와 같은 이유",
+   "vars_sym": null
+  },
+  {
+   "target": "PSD_표기가중",
+   "target_kind": "중간",
+   "human": "표기 W 를 가중한 PSD",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUMPRODUCT(일별!$D$2:$D$28,ROUND(일별!$H$2:$H$28,SW_자릿수),(일별!$A$2:$A$28>=조회시작)*(일별!$A$2:$A$28<=조회종료))/B5`",
+   "chain_from": [
+    "SD_{d−1}",
+    "SA_{d−1}"
+   ],
+   "chain_to": [],
+   "note": "화면이 쓰는 갈래. 지금 엑셀은 건별 raw(B12) 한 갈래뿐이라 화면 PSD 와 갈린다",
+   "vars_sym": null
+  },
+  {
+   "target": "ΣA_전체",
+   "target_kind": "집계",
+   "human": "대상정산금채권 전체 Σ A_i",
+   "sheet": "기간집계",
+   "cell": "B32",
+   "is_formula": true,
+   "formula": "=SUM(채권!$J$2:$J$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i"
+   ],
+   "chain_to": [
+    "W_전체"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "Σ(AD)_전체",
+   "target_kind": "집계",
+   "human": "전체 Σ(A_i × D_i)",
+   "sheet": "기간집계",
+   "cell": "B33",
+   "is_formula": true,
+   "formula": "=SUM(채권!$S$2:$S$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i×D_i"
+   ],
+   "chain_to": [
+    "W_전체"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "W_전체",
+   "target_kind": "중간",
+   "human": "W금융일수 — 전체",
+   "sheet": "기간집계",
+   "cell": "B34",
+   "is_formula": true,
+   "formula": "=B33/B32",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "Σ(AD)_전체",
+    "ΣA_전체"
+   ],
+   "chain_to": [
+    "W_raw",
+    "Ty_모집단3"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "ΣA_만기",
+   "target_kind": "집계",
+   "human": "만기 도래분 Σ A_i",
+   "sheet": "기간집계",
+   "cell": "B35",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(채권!$J$2:$J$1281,채권!$R$2:$R$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i",
+    "만기플래그"
+   ],
+   "chain_to": [
+    "W_만기"
+   ],
+   "note": "조어 — 워드에 대응 낱말 없음",
+   "vars_sym": null
+  },
+  {
+   "target": "Σ(AD)_만기",
+   "target_kind": "집계",
+   "human": "만기 도래분 Σ(A×D)",
+   "sheet": "기간집계",
+   "cell": "B36",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(채권!$S$2:$S$1281,채권!$R$2:$R$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i×D_i",
+    "만기플래그"
+   ],
+   "chain_to": [
+    "W_만기"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "W_만기",
+   "target_kind": "중간",
+   "human": "W금융일수 — 만기 도래분",
+   "sheet": "기간집계",
+   "cell": "B37",
+   "is_formula": true,
+   "formula": "=IF(B35=0,0,B36/B35)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "Σ(AD)_만기",
+    "ΣA_만기"
+   ],
+   "chain_to": [
+    "W_raw"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "ΣA_미회수",
+   "target_kind": "결과",
+   "human": "미회수 Σ A_i = 투자실행액",
+   "sheet": "기간집계",
+   "cell": "B38",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(채권!$J$2:$J$1281,채권!$Q$2:$Q$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i",
+    "미회수플래그"
+   ],
+   "chain_to": [
+    "W_미회수",
+    "투자실행액",
+    "투자실행액비중"
+   ],
+   "note": "",
+   "vars_sym": "Σ A_i"
+  },
+  {
+   "target": "Σ(AD)_미회수",
+   "target_kind": "집계",
+   "human": "미회수 Σ(A×D)",
+   "sheet": "기간집계",
+   "cell": "B39",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(채권!$S$2:$S$1281,채권!$Q$2:$Q$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i×D_i",
+    "미회수플래그"
+   ],
+   "chain_to": [
+    "W_미회수"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "W_미회수",
+   "target_kind": "중간",
+   "human": "W금융일수 — 미회수 잔량",
+   "sheet": "기간집계",
+   "cell": "B40",
+   "is_formula": true,
+   "formula": "=IF(B38=0,0,B39/B38)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "Σ(AD)_미회수",
+    "ΣA_미회수"
+   ],
+   "chain_to": [
+    "W_raw"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "W_raw",
+   "target_kind": "중간",
+   "human": "W금융일수 raw (스위치 ① 적용)",
+   "sheet": "기간집계",
+   "cell": "B41",
+   "is_formula": true,
+   "formula": "=IF(SW_모집단=\"미회수 잔량만\",B40,IF(SW_모집단=\"만기 도래분만\",B37,B34))",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "W_전체",
+    "W_만기",
+    "W_미회수"
+   ],
+   "chain_to": [
+    "W_표기"
+   ],
+   "note": "",
+   "vars_sym": "w"
+  },
+  {
+   "target": "W_표기",
+   "target_kind": "중간",
+   "human": "W금융일수 표기 (스위치 ②)",
+   "sheet": "기간집계",
+   "cell": "B42",
+   "is_formula": true,
+   "formula": "=ROUND(B41,SW_자릿수)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "W_raw"
+   ],
+   "chain_to": [
+    "ty",
+    "회전수",
+    "Ty_일환산"
+   ],
+   "note": "",
+   "vars_sym": "w"
+  },
+  {
+   "target": "ty",
+   "target_kind": "결과",
+   "human": "Ty수익율 = r × 365 ÷ 표기 W",
+   "sheet": "기간집계",
+   "cell": "B43",
+   "is_formula": true,
+   "formula": "=할인율퍼센트*연일수/B42",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "r%",
+    "연일수",
+    "W_표기"
+   ],
+   "chain_to": [],
+   "note": "날짜별 금융일수 → 결과 사슬의 끝. D_i 를 뺀 모든 마디가 셀 참조로 이어진다",
+   "vars_sym": "ty"
+  },
+  {
+   "target": "투자실행액",
+   "target_kind": "결과",
+   "human": "투자실행액",
+   "sheet": "기간집계",
+   "cell": "B44",
+   "is_formula": true,
+   "formula": "=B38",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "ΣA_미회수"
+   ],
+   "chain_to": [
+    "투자자산",
+    "투자실행액비중"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "순현금_집계",
+   "target_kind": "결과",
+   "human": "순현금",
+   "sheet": "기간집계",
+   "cell": "B45",
+   "is_formula": true,
+   "formula": "=순현금",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "EC"
+   ],
+   "chain_to": [
+    "투자자산"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "투자자산",
+   "target_kind": "결과",
+   "human": "투자자산 = 투자실행액 + 순현금",
+   "sheet": "기간집계",
+   "cell": "B46",
+   "is_formula": true,
+   "formula": "=B44+B45",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "투자실행액",
+    "순현금_집계"
+   ],
+   "chain_to": [
+    "투자실행액비중",
+    "순현금비중"
+   ],
+   "note": "",
+   "vars_sym": "투자자산"
+  },
+  {
+   "target": "투자실행액비중",
+   "target_kind": "결과",
+   "human": "투자실행액 비중",
+   "sheet": "기간집계",
+   "cell": "B47",
+   "is_formula": true,
+   "formula": "=B44/B46",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "투자실행액",
+    "투자자산"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": "투자 실행액의 비중"
+  },
+  {
+   "target": "순현금비중",
+   "target_kind": "결과",
+   "human": "순현금 비중",
+   "sheet": "기간집계",
+   "cell": "B48",
+   "is_formula": true,
+   "formula": "=B45/B46",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "순현금_집계",
+    "투자자산"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": "순현금의 비중"
+  },
+  {
+   "target": "ΣSL_표본",
+   "target_kind": "집계",
+   "human": "표본 Σ(미지급 − 과지급)",
+   "sheet": "기간집계",
+   "cell": "B49",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(채권!$L$2:$L$1281-채권!$M$2:$M$1281,채권!$T$2:$T$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "미지급금_i",
+    "과지급금_i",
+    "표본플래그"
+   ],
+   "chain_to": [
+    "S입금부족율"
+   ],
+   "note": "L 과 M 이 이 한 칸 안에서만 만난다. 두 계정을 따로 보여 주는 칸이 통합문서에 없다",
+   "vars_sym": null
+  },
+  {
+   "target": "ΣSA_표본",
+   "target_kind": "집계",
+   "human": "표본 Σ A_i",
+   "sheet": "기간집계",
+   "cell": "B50",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(채권!$J$2:$J$1281,채권!$T$2:$T$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "A_i",
+    "표본플래그"
+   ],
+   "chain_to": [
+    "S입금부족율"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "S입금부족율",
+   "target_kind": "결과",
+   "human": "S입금부족율 = ΣSL ÷ ΣSA",
+   "sheet": "기간집계",
+   "cell": "B51",
+   "is_formula": true,
+   "formula": "=IF(B50=0,0,B49/B50*100)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "ΣSL_표본",
+    "ΣSA_표본"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": "S입금부족율"
+  },
+  {
+   "target": "미회수건수",
+   "target_kind": "집계",
+   "human": "미회수 채권 건수",
+   "sheet": "기간집계",
+   "cell": "B52",
+   "is_formula": true,
+   "formula": "=SUM(채권!$Q$2:$Q$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "미회수플래그"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": "n"
+  },
+  {
+   "target": "채권건수",
+   "target_kind": "집계",
+   "human": "채권 건수",
+   "sheet": "기간집계",
+   "cell": "B53",
+   "is_formula": true,
+   "formula": "=COUNT(채권!$H$2:$H$1281)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "D_i"
+   ],
+   "chain_to": [],
+   "note": "40일 축 1,280건. 화면 원장은 193일 축 61,760건이라 모집단이 다르다",
+   "vars_sym": "대상정산금채권"
+  },
+  {
+   "target": "Ty_모집단3",
+   "target_kind": "결과",
+   "human": "Ty — 전체 · 만기 · 미회수 세 갈래",
+   "sheet": "기간집계",
+   "cell": "B54:B56",
+   "is_formula": true,
+   "formula": "=할인율퍼센트*연일수/ROUND(B34,SW_자릿수)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "W_전체",
+    "W_만기",
+    "W_미회수",
+    "r%"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "회전수",
+   "target_kind": "중간",
+   "human": "1년 회전수 = 365 ÷ 표기 W",
+   "sheet": "기간집계",
+   "cell": "B57",
+   "is_formula": true,
+   "formula": "=연일수/B42",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "연일수",
+    "W_표기"
+   ],
+   "chain_to": [],
+   "note": "대표 DM 16:27 「1년동안 몇 번 굴릴 수 있는가」",
+   "vars_sym": null
+  },
+  {
+   "target": "Ty_일환산",
+   "target_kind": "중간",
+   "human": "Ty 일 환산",
+   "sheet": "기간집계",
+   "cell": "B59",
+   "is_formula": true,
+   "formula": "=할인율퍼센트/B42",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "r%",
+    "W_표기"
+   ],
+   "chain_to": [],
+   "note": "B60 이 일 환산 × 365 − 연 환산 = 0 을 검산한다",
+   "vars_sym": null
+  },
+  {
+   "target": "Σ순지급액_미회수",
+   "target_kind": "집계",
+   "human": "미회수 Σ 순지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUMPRODUCT(채권!$I$2:$I$1281,채권!$Q$2:$Q$1281)`",
+   "chain_from": [
+    "순지급액_i",
+    "미회수플래그"
+   ],
+   "chain_to": [
+    "ΣA_미회수"
+   ],
+   "note": "투자실행액의 앵커. 할인율 몫이 여기서 갈라지는데 칸이 없다. 채권!I 를 읽는 수식 0건",
+   "vars_sym": null
+  },
+  {
+   "target": "Σ순지급액_전체",
+   "target_kind": "집계",
+   "human": "대상정산금채권 전체 Σ 순지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUM(채권!$I$2:$I$1281)`",
+   "chain_from": [
+    "순지급액_i"
+   ],
+   "chain_to": [
+    "ΣA_전체"
+   ],
+   "note": "채권매입수수료 산정의 앵커(D-31)",
+   "vars_sym": null
+  },
+  {
+   "target": "ΣL_표본",
+   "target_kind": "집계",
+   "human": "표본 Σ 미지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUMPRODUCT(채권!$L$2:$L$1281,채권!$T$2:$T$1281)`",
+   "chain_from": [
+    "미지급금_i",
+    "표본플래그"
+   ],
+   "chain_to": [
+    "ΣSL_표본"
+   ],
+   "note": "S입금부족율의 분자가 두 계정의 차라는 것이 지금 안 보인다",
+   "vars_sym": null
+  },
+  {
+   "target": "ΣM_표본",
+   "target_kind": "집계",
+   "human": "표본 Σ 과지급액",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 기간집계 새 행 `=SUMPRODUCT(채권!$M$2:$M$1281,채권!$T$2:$T$1281)`",
+   "chain_from": [
+    "과지급금_i",
+    "표본플래그"
+   ],
+   "chain_to": [
+    "ΣSL_표본"
+   ],
+   "note": "위와 같은 이유",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_사용",
+   "target_kind": "낱개",
+   "human": "스위치 ③ 안에 드는가",
+   "sheet": "가맹점",
+   "cell": "G2:G9",
+   "is_formula": true,
+   "formula": "=IF(A2<=SW_가맹점수,1,0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [],
+   "chain_to": [
+    "가맹점_구성비",
+    "가맹점_하루선정산액",
+    "가맹점_곳수"
+   ],
+   "note": "",
+   "vars_sym": "가맹점별"
+  },
+  {
+   "target": "가맹점_flow",
+   "target_kind": "낱개",
+   "human": "flow 상수",
+   "sheet": "가맹점",
+   "cell": "H2:H9",
+   "is_formula": true,
+   "formula": "=입력!G50",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "flow_m"
+   ],
+   "chain_to": [
+    "가맹점_하루선정산액",
+    "W_flow"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_구성비",
+   "target_kind": "낱개",
+   "human": "플랫폼 구성비 (곳별)",
+   "sheet": "가맹점",
+   "cell": "J2:M9",
+   "is_formula": true,
+   "formula": "=G2*(1-I2) · =G2*I2*INDEX(배달배분범위,1..3)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "b_m",
+    "구성비_p"
+   ],
+   "chain_to": [
+    "가맹점_w금융일수",
+    "순지급액_i",
+    "가맹점_가중미지급률"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_w금융일수",
+   "target_kind": "중간",
+   "human": "곳별 w금융일수 (구성비 × 평균 금융일수)",
+   "sheet": "가맹점",
+   "cell": "O2:O9",
+   "is_formula": true,
+   "formula": "=J2*INDEX(평균금융일수범위,1)+K2*…+M2*INDEX(평균금융일수범위,4)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_구성비",
+    "Ed_p"
+   ],
+   "chain_to": [
+    "가맹점_표기W",
+    "가맹점_투자금액",
+    "W_flow"
+   ],
+   "note": "곳별 W 는 플랫폼 도수표에서 나온다. 채권!H 와 셀 참조로 이어지지 않는 두 번째 D 원천이다",
+   "vars_sym": null
+  },
+  {
+   "target": "W_flow",
+   "target_kind": "중간",
+   "human": "flow 가중 w금융일수",
+   "sheet": "가맹점",
+   "cell": "B13",
+   "is_formula": true,
+   "formula": "=IF(SUMPRODUCT(G2:G9,H2:H9)=0,0,SUMPRODUCT(G2:G9,H2:H9,O2:O9)/SUMPRODUCT(G2:G9,H2:H9))",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_w금융일수",
+    "가맹점_flow"
+   ],
+   "chain_to": [
+    "가맹점_하루합계_A"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_하루합계_A",
+   "target_kind": "중간",
+   "human": "하루 선정산액 합계 (방향 A)",
+   "sheet": "가맹점",
+   "cell": "B14",
+   "is_formula": true,
+   "formula": "=IF(B13=0,0,투자실행액목표/((1-할인율)*B13))",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "투자실행액목표",
+    "r",
+    "W_flow"
+   ],
+   "chain_to": [
+    "가맹점_배율"
+   ],
+   "note": "투자실행액 목표를 역산해 하루치를 정한다. 엑셀 모형의 규모 앵커",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_배율",
+   "target_kind": "중간",
+   "human": "배율 (방향 A)",
+   "sheet": "가맹점",
+   "cell": "B15",
+   "is_formula": true,
+   "formula": "=IF(SUMPRODUCT(G2:G9,H2:H9)=0,0,B14/SUMPRODUCT(G2:G9,H2:H9))",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루합계_A"
+   ],
+   "chain_to": [
+    "가맹점_하루선정산액"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_하루선정산액",
+   "target_kind": "낱개",
+   "human": "곳별 하루 선정산액",
+   "sheet": "가맹점",
+   "cell": "P2:P9",
+   "is_formula": true,
+   "formula": "=IF(SW_방향=\"A\",G2*H2*$B$15,G2*입력!I50)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_배율",
+    "가맹점_flow"
+   ],
+   "chain_to": [
+    "순지급액_i",
+    "가맹점_하루Ai",
+    "가맹점_투자금액"
+   ],
+   "note": "채권 시트로 내려가는 유일한 다리",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_하루Ai",
+   "target_kind": "낱개",
+   "human": "곳별 하루 A_i",
+   "sheet": "가맹점",
+   "cell": "Q2:Q9",
+   "is_formula": true,
+   "formula": "=P2*(1-할인율)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루선정산액",
+    "r"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_투자금액",
+   "target_kind": "결과",
+   "human": "곳별 투자금액",
+   "sheet": "가맹점",
+   "cell": "R2:R9",
+   "is_formula": true,
+   "formula": "=P2*(1-할인율)*O2",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루선정산액",
+    "r",
+    "가맹점_w금융일수"
+   ],
+   "chain_to": [
+    "가맹점_비중raw",
+    "투자실행액_모집단산식"
+   ],
+   "note": "채권 시트를 거치지 않는다. 화면대조 83행이 이 값과 기간집계!B38 을 항등식으로 맞댄다",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_비중raw",
+   "target_kind": "중간",
+   "human": "곳별 비중 raw",
+   "sheet": "가맹점",
+   "cell": "S2:S9",
+   "is_formula": true,
+   "formula": "=IF($R$10=0,0,R2/$R$10)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_투자금액"
+   ],
+   "chain_to": [
+    "가맹점_비중표기"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_표기W",
+   "target_kind": "결과",
+   "human": "곳별 표기 W",
+   "sheet": "가맹점",
+   "cell": "T2:T9",
+   "is_formula": true,
+   "formula": "=IF(G2=0,\"\",ROUND(O2,SW_자릿수))",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_w금융일수"
+   ],
+   "chain_to": [
+    "가맹점_Ty"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_가중미지급률",
+   "target_kind": "중간",
+   "human": "곳별 가중 미지급률",
+   "sheet": "가맹점",
+   "cell": "U2:U9",
+   "is_formula": true,
+   "formula": "=J2*INDEX(미지급률범위,1)+…",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_구성비",
+    "미지급률_p"
+   ],
+   "chain_to": [
+    "가맹점_S%"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_가중과지급률",
+   "target_kind": "중간",
+   "human": "곳별 가중 과지급률",
+   "sheet": "가맹점",
+   "cell": "V2:V9",
+   "is_formula": true,
+   "formula": "=J2*INDEX(과지급률범위,1)+…",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_구성비",
+    "과지급률_p"
+   ],
+   "chain_to": [
+    "가맹점_S%"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_S%",
+   "target_kind": "결과",
+   "human": "곳별 S입금부족율",
+   "sheet": "가맹점",
+   "cell": "W2:W9",
+   "is_formula": true,
+   "formula": "=IF(G2=0,\"\",(U2-V2)/(1-할인율)*100)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_가중미지급률",
+    "가맹점_가중과지급률",
+    "r"
+   ],
+   "chain_to": [],
+   "note": "율로만 낸다. 금액(ΣSL·ΣSA)으로 되짚는 칸이 없다",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_Ty",
+   "target_kind": "결과",
+   "human": "곳별 Ty수익율",
+   "sheet": "가맹점",
+   "cell": "X2:X9",
+   "is_formula": true,
+   "formula": "=IF(G2=0,\"\",할인율퍼센트*연일수/T2)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "r%",
+    "연일수",
+    "가맹점_표기W"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_비중표기",
+   "target_kind": "결과",
+   "human": "곳별 비중 표기 (최대잉여법)",
+   "sheet": "가맹점",
+   "cell": "Z2:AC9",
+   "is_formula": true,
+   "formula": "=ROUNDDOWN(S2*1000,0)/10 · 잔차 · 순위 · =Z2+IF(AB2<=$B$11,0.1,0)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_비중raw"
+   ],
+   "chain_to": [],
+   "note": "합 100.0% 불변식은 화면대조 94행",
+   "vars_sym": null
+  },
+  {
+   "target": "투자실행액_모집단산식",
+   "target_kind": "중간",
+   "human": "투자실행액 (모집단 산식)",
+   "sheet": "가맹점",
+   "cell": "B18",
+   "is_formula": true,
+   "formula": "=B16*(1-할인율)*B17",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루합계_적용",
+    "r",
+    "가맹점_금액가중W"
+   ],
+   "chain_to": [
+    "항등식_투자실행액"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_금액가중W",
+   "target_kind": "중간",
+   "human": "금액가중 W금융일수 (로스터)",
+   "sheet": "가맹점",
+   "cell": "B17 (=O10)",
+   "is_formula": true,
+   "formula": "=IF(P10=0,0,SUMPRODUCT(P2:P9,O2:O9)/P10)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루선정산액",
+    "가맹점_w금융일수"
+   ],
+   "chain_to": [
+    "투자실행액_모집단산식"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_곳수",
+   "target_kind": "집계",
+   "human": "가맹점 수 (적용)",
+   "sheet": "가맹점",
+   "cell": "B19",
+   "is_formula": true,
+   "formula": "=SUM(G2:G9)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_사용"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_건수",
+   "target_kind": "집계",
+   "human": "곳별 채권 건수 (전체 · 미회수 · 표본)",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 가맹점!AE2:AE9 `=COUNTIF(채권!$D$2:$D$1281,$A2)` · AF `=SUMIF(채권!$D$2:$D$1281,$A2,채권!$Q$2:$Q$1281)` · AG `=SUMIF(채권!$D$2:$D$1281,$A2,채권!$T$2:$T$1281)`",
+   "chain_from": [
+    "가맹점#_m",
+    "미회수플래그",
+    "표본플래그"
+   ],
+   "chain_to": [],
+   "note": "8행 어느 칸에도 「몇 건에서 나온 값인지」가 없다. 가맹점 시트가 채권 시트를 읽는 수식이 지금 0건이다",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_Σ순지급액",
+   "target_kind": "집계",
+   "human": "곳별 Σ 순지급액 (미회수)",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 가맹점!AH2:AH9 `=SUMPRODUCT((채권!$D$2:$D$1281=$A2)*채권!$Q$2:$Q$1281*채권!$I$2:$I$1281)`",
+   "chain_from": [
+    "순지급액_i",
+    "가맹점#_m",
+    "미회수플래그"
+   ],
+   "chain_to": [
+    "가맹점_투자금액"
+   ],
+   "note": "곳별 투자금액의 앵커",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_ΣSL",
+   "target_kind": "집계",
+   "human": "곳별 Σ SL_i",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 가맹점!AI2:AI9 `=SUMPRODUCT((채권!$D$2:$D$1281=$A2)*채권!$T$2:$T$1281*(채권!$L$2:$L$1281-채권!$M$2:$M$1281))`",
+   "chain_from": [
+    "미지급금_i",
+    "과지급금_i",
+    "표본플래그",
+    "가맹점#_m"
+   ],
+   "chain_to": [
+    "가맹점_S%"
+   ],
+   "note": "곳별 S 를 금액으로 되짚을 수 없다",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_ΣSA",
+   "target_kind": "집계",
+   "human": "곳별 Σ SA_i",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 가맹점!AJ2:AJ9 `=SUMPRODUCT((채권!$D$2:$D$1281=$A2)*채권!$T$2:$T$1281*채권!$J$2:$J$1281)`",
+   "chain_from": [
+    "A_i",
+    "표본플래그",
+    "가맹점#_m"
+   ],
+   "chain_to": [
+    "가맹점_S%"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_Σ(AD)",
+   "target_kind": "집계",
+   "human": "곳별 Σ(A_i × D_i)",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 가맹점!AK2:AK9 `=SUMPRODUCT((채권!$D$2:$D$1281=$A2)*채권!$Q$2:$Q$1281*채권!$S$2:$S$1281)` · 곳별 W `=AK2/AH2` 꼴로 이어 붙인다",
+   "chain_from": [
+    "A_i×D_i",
+    "가맹점#_m"
+   ],
+   "chain_to": [
+    "가맹점_표기W"
+   ],
+   "note": "곳별 W금융일수를 채권 낱건으로 되짚는 칸이 없다. 지금 곳별 W 는 구성비 × 평균 금융일수 갈래뿐이다",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_회전수",
+   "target_kind": "중간",
+   "human": "곳별 1년 회전수",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 가맹점!AL2:AL9 `=IF(T2=\"\",\"\",연일수/T2)`",
+   "chain_from": [
+    "연일수",
+    "가맹점_표기W"
+   ],
+   "chain_to": [],
+   "note": "대표 DM 16:27 의 설명을 곳마다 보이려면 필요",
+   "vars_sym": null
+  },
+  {
+   "target": "SIZE_WD",
+   "target_kind": "상수",
+   "human": "요일 규모 계수",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 입력 새 블록에 요일 7칸(0.021 / 0.006 / −0.004 / −0.028 / −0.033 / 0.017 / 0.021) + 정현파 3항(진폭 0.030 · 주기 11.0 · 위상 6) 상수. 다만 이 계수를 채권!I 에 곱하면 1,280행 값이 전부 움직여 기존 불변식·항등식이 함께 흔들린다 — 참고 표로 두는 편이 안전하다. 확인 필요",
+   "chain_from": [],
+   "chain_to": [
+    "순지급액_i"
+   ],
+   "note": "daily_ledger.py:123 SIZE_WD · 평균 1 정규화. 엑셀 채권!I 는 선정산일에 따라 흔들리지 않는다. 화면대조 151~177행이 이 차이를 「모델 잔차」로 뭉뚱그린다",
+   "vars_sym": null
+  },
+  {
+   "target": "TILT",
+   "target_kind": "상수",
+   "human": "배달 의존도 틸트",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 입력 새 블록에 3항(0.120·13일·위상 10 / 0.057·29일·0 / 0.044·101일·20) 상수. 적용 자리는 SIZE_WD 와 같은 문제라 참고 표 권장. 확인 필요",
+   "chain_from": [],
+   "chain_to": [
+    "가맹점_구성비"
+   ],
+   "note": "daily_ledger.py:125 TILT. 규모가중 평균 0 정규화라 전체 W 는 안 흔들리고 하루치만 흔들린다",
+   "vars_sym": null
+  },
+  {
+   "target": "축_193일",
+   "target_kind": "상수",
+   "human": "화면 원장 모집단 축",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — `읽는 법` 갈림 표 옆에 193일 × 8곳 × 4플랫폼 × 금융일수 버킷 = 61,760건 셈을 적은 칸",
+   "chain_from": [],
+   "chain_to": [
+    "채권건수"
+   ],
+   "note": "엑셀은 40일 축 1,280건이라 재현이 안 된다. 지금은 화면대조 160행 H열 사유 문장에만 있다",
+   "vars_sym": null
+  },
+  {
+   "target": "상환액_두경로",
+   "target_kind": "중간",
+   "human": "상환액 두 경로의 갈림",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 — 일별 새 열 `=D2+E2` 를 두고 C열(정의 경로)과의 차를 옆 칸에 둔다",
+   "chain_from": [
+    "SA_{d−1}",
+    "SM_{d−1}",
+    "SB_{d−1}"
+   ],
+   "chain_to": [],
+   "note": "정의 경로(Σ순지급액 − Σ차감)와 화면 경로(③ + ④)가 반올림 때문에 하루 −5 ~ +7원 갈린다",
+   "vars_sym": null
+  },
+  {
+   "target": "조달이자율",
+   "target_kind": "상수",
+   "human": "조달 이자율 (연 12%)",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 여부 확인 필요 — 화면 `수익 산정 기준` 카드에만 있고 표 숫자와 이어지지 않는다. 엑셀에 넣으면 쓰지 않는 상수가 하나 늘어난다",
+   "chain_from": [],
+   "chain_to": [],
+   "note": "steps_all.json 에서 xlsx 가 null 인 11칸 가운데 유일하게 산식을 가진 칸. D-1 산식 2모델 병기. 대표 정의서에는 없는 낱말이라 「워드에 있는 것 전부」 기준의 대상은 아니다",
+   "vars_sym": "조달 이자율"
+  },
+  {
+   "target": "PSMR_차감제외",
+   "target_kind": "중간",
+   "human": "PSMR (차감 제외 · 참고)",
+   "sheet": "기간집계",
+   "cell": "B11",
+   "is_formula": true,
+   "formula": "=IF(B5=0,0,B7/B5)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "PSM_차감제외",
+    "PSA"
+   ],
+   "chain_to": [
+    "④_차감제외"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "④_차감제외",
+   "target_kind": "결과",
+   "human": "④ (차감 제외 · 참고)",
+   "sheet": "기간집계",
+   "cell": "B14",
+   "is_formula": true,
+   "formula": "=IF(B12=0,0,B11*연일수/B12*100)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "PSMR_차감제외",
+    "PSD",
+    "연일수"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "DM나",
+   "target_kind": "중간",
+   "human": "DM 16:45 (나) 원식 PSMR(%)",
+   "sheet": "기간집계",
+   "cell": "B23",
+   "is_formula": true,
+   "formula": "=B10*100",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "PSMR"
+   ],
+   "chain_to": [
+    "DM차",
+    "DM배"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "DM차",
+   "target_kind": "중간",
+   "human": "DM 16:45 (나) − (가) (%p)",
+   "sheet": "기간집계",
+   "cell": "B24",
+   "is_formula": true,
+   "formula": "=B23-B22",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "DM가",
+    "DM나"
+   ],
+   "chain_to": [],
+   "note": "읽는 법 55행이 이 칸을 문다",
+   "vars_sym": null
+  },
+  {
+   "target": "DM배",
+   "target_kind": "중간",
+   "human": "DM 16:45 (나) ÷ (가) (배)",
+   "sheet": "기간집계",
+   "cell": "B25",
+   "is_formula": true,
+   "formula": "=IF(B22=0,0,B23/B22)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "DM가",
+    "DM나"
+   ],
+   "chain_to": [],
+   "note": "이론 갈림 배수 1/(1−r) 은 B26. 두 식은 분모가 달라 갈린다 — 정본은 대표 확인 대기",
+   "vars_sym": null
+  },
+  {
+   "target": "가중Ed2",
+   "target_kind": "중간",
+   "human": "가중 E[d²]",
+   "sheet": "플랫폼",
+   "cell": "B20",
+   "is_formula": true,
+   "formula": "=SUMPRODUCT(구성비범위,Ed2범위)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "구성비_p",
+    "Ed2_p"
+   ],
+   "chain_to": [
+    "미회수이론W"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "미회수이론W",
+   "target_kind": "중간",
+   "human": "미회수 이론 W = 가중 E[d²] ÷ W",
+   "sheet": "플랫폼",
+   "cell": "B21",
+   "is_formula": true,
+   "formula": "=B20/B17",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가중Ed2",
+    "W_구성비가중"
+   ],
+   "chain_to": [],
+   "note": "화면대조 98행이 기간집계!B40(채권 축 미회수 W)과 이 값을 맞댄다",
+   "vars_sym": null
+  },
+  {
+   "target": "Ty_구성비W",
+   "target_kind": "결과",
+   "human": "Ty수익율 — 구성비 W 기준",
+   "sheet": "플랫폼",
+   "cell": "B22",
+   "is_formula": true,
+   "formula": "=할인율퍼센트*연일수/ROUND(B17,SW_자릿수)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "r%",
+    "연일수",
+    "W_구성비가중"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가중치대조_MAU열",
+   "target_kind": "중간",
+   "human": "MAU 기준 구성비 · W · Ty (참고값 계열)",
+   "sheet": "가중치 대조",
+   "cell": "D12:D21",
+   "is_formula": true,
+   "formula": "=1-배달앱비중 · =배달앱비중*INDEX(MAU배분범위,1) · =SUMPRODUCT(평균금융일수범위,D12:D15)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "MAU_참고",
+    "Ed_p"
+   ],
+   "chain_to": [],
+   "note": "시장 평균 참고값. 금액 실측 열(C)과 나란히만 두고 계산에 쓰지 않는다",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_하루합계_적용",
+   "target_kind": "중간",
+   "human": "하루 선정산액 합계 (적용)",
+   "sheet": "가맹점",
+   "cell": "B16 (=P10)",
+   "is_formula": true,
+   "formula": "=P10",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루선정산액"
+   ],
+   "chain_to": [
+    "투자실행액_모집단산식",
+    "가맹점_곳수_방향A",
+    "곳당평균"
+   ],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "가맹점_곳수_방향A",
+   "target_kind": "중간",
+   "human": "가맹점 수 (방향 A 산출)",
+   "sheet": "가맹점",
+   "cell": "B20",
+   "is_formula": true,
+   "formula": "=IF(가맹점평균=0,0,B16/가맹점평균)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루합계_적용",
+    "가맹점평균"
+   ],
+   "chain_to": [],
+   "note": "",
+   "vars_sym": null
+  },
+  {
+   "target": "곳당평균",
+   "target_kind": "중간",
+   "human": "곳당 평균 하루 선정산액",
+   "sheet": "가맹점",
+   "cell": "B21",
+   "is_formula": true,
+   "formula": "=IF(B19=0,0,B16/B19)",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "가맹점_하루합계_적용",
+    "가맹점_곳수"
+   ],
+   "chain_to": [],
+   "note": "합격선 300~400만 대조 자리",
+   "vars_sym": null
+  },
+  {
+   "target": "항등식_투자실행액",
+   "target_kind": "결과",
+   "human": "항등식 — 채권 축 ↔ 가맹점 축",
+   "sheet": "화면대조",
+   "cell": "C83 · E83 · G83",
+   "is_formula": true,
+   "formula": "C83 `=기간집계!B38` · E83 `=가맹점!B18` · G83 `=IF(ABS(F83)<=0.5,\"일치\",\"차이\")`",
+   "exists": true,
+   "action": null,
+   "chain_from": [
+    "ΣA_미회수",
+    "투자실행액_모집단산식"
+   ],
+   "chain_to": [],
+   "note": "두 모형이 맞닿는 유일한 줄이다. 여기서만 이어지고 셀 참조로는 서로를 읽지 않는다",
+   "vars_sym": null
+  },
+  {
+   "target": "매출일자_i",
+   "target_kind": "낱개",
+   "human": "i번째 채권의 매출일자",
+   "sheet": null,
+   "cell": null,
+   "is_formula": null,
+   "formula": null,
+   "exists": false,
+   "action": "신설 여부 확인 필요 — 채권 시트에 매출일자 열이 없다. 지금은 채권!F 선정산일 한 축뿐이고 결합 ID 도 선정산일로 대신해야 한다. 매출일자 ↔ 선정산일이 같은 날인지가 안 풀렸다",
+   "chain_from": [],
+   "chain_to": [
+    "결합ID_i"
+   ],
+   "note": "대표 정의서가 채권 ID 를 「가맹점ID & 플랫폼ID & 매출일자」로 못 박았다. 이 통합문서는 매출일자 자리에 선정산일을 쓴다 — 두 날짜가 같다는 근거를 못 찾았다",
+   "vars_sym": "매출일자_i"
+  }
+ ]
+}
