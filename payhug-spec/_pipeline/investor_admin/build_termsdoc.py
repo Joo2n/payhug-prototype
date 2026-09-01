@@ -183,9 +183,6 @@ def item_block(doc, seed, it):
     p.paragraph_format.line_spacing = 1.3
     font(p.add_run("%02d  " % no), size=12, bold=True, color=MUTE)
     font(p.add_run(term), size=13.5, bold=True)
-    if status != "확정":
-        font(p.add_run("   " + status), size=10, bold=True,
-             color=STATUS_COLOR.get(status, INK))
 
     q = doc.add_paragraph()
     q.paragraph_format.left_indent = Cm(0.6)
@@ -205,16 +202,13 @@ def item_block(doc, seed, it):
     if it.get("symbol"):
         rows.append(("기호", it["symbol"], None))
     if pf and pf.get("our_value"):
-        rows.append(("우리 값", pf["our_value"], pf.get("status")))
+        rows.append(("예시", pf["our_value"], pf.get("status")))
     elif it.get("our_value"):
-        rows.append(("우리 값", it["our_value"], None))
+        rows.append(("예시", it["our_value"], None))
     if it.get("screen"):
         # 워드는 개발 전달까지 겸하므로 화면 파일명을 함께 적는다. 배포 HTML 은
         # 파일명을 화면에 노출하지 않는 규칙이 있어 그쪽만 빼고 간다.
-        rows.append(("화면", it["screen"]
-                     + ((" (%s)" % it["screen_file"]) if it.get("screen_file") else ""), None))
-    if it.get("note"):
-        rows.append(("비고", it["note"], None))
+        rows.append(("화면", it["screen"], None))
     if rows:
         t = doc.add_table(rows=0, cols=2)
         t.style = "Table Grid"
@@ -254,7 +248,6 @@ def build(seed):
         rf.set(qn(axis), HANGUL)
 
     head(doc, seed)
-    pending_block(doc, seed)
 
     items = sorted(seed["items"], key=lambda x: x["no"])
     for img in (1, 2):

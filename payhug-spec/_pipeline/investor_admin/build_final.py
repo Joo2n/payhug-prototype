@@ -99,8 +99,6 @@ def docx(d, path):
     para(doc, "금액으로 되돌린 검산", 11.5, True, before=6, after=4)
     table(doc, ["단계","값"], [[a,b] for a,b in d["calc"]["검산"]], [10.6,6.4], monos=(1,))
 
-    para(doc, "5. 확인 대기", 15, True, before=12, after=6)
-    table(doc, ["항목","무엇이 걸리나"], [[p["item"],p["note"]] for p in d["pending"]], [4.6,12.4])
     doc.save(path)
 
 CSS = """
@@ -188,11 +186,7 @@ def html_doc(d):
         o.append("<tr><td>%s</td><td class='n'>%s</td></tr>" % (e(a), e(b)))
     o.append("</tbody></table></div>")
 
-    o.append("<h2>5. 확인 대기</h2>")
-    o.append("<div class='scroll'><table><thead><tr><th>항목</th><th>무엇이 걸리나</th></tr></thead><tbody>")
-    for p in d["pending"]:
-        o.append("<tr><td>%s</td><td>%s</td></tr>" % (e(p["item"]), e(p["note"]).replace("`","")))
-    o.append("</tbody></table></div></div>")
+    o.append("</div>")
     return "".join(o)
 
 def main():
