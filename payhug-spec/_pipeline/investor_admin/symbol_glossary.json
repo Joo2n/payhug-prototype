@@ -13,7 +13,7 @@
     "표본 기호에서 S 를 떼는지 갈린다 — 대표 DM 2026-08-31 15:15 「표본의 합은 S가 빠지고 시그마 i부터 S까지로 통계식으로 된다」 가 우리 표기 Σ SL_i / Σ SA_i 와 어긋난다.",
     "ty수익률의 일 환산 갈래가 미정이다 — 대표 DM 2026-08-31 16:27 이 연 환산·일 환산 둘을 적었고 일 환산은 산식도 자리도 없다."
   ],
-  "symbol_count": 33,
+  "symbol_count": 50,
   "symbols": [
     {
       "symbol": "Σ",
@@ -198,6 +198,58 @@
       "group": "채권 1건분"
     },
     {
+      "symbol": "M_i",
+      "ko_name": "채권 1건분 투자수익",
+      "coined": true,
+      "coined_basis": "원문이 M_i에 이름을 붙이지 않았다. 같은 식의 합계를 「투자수익(SMD-1) = Σ MD-1i」로 명명하므로 그 합의 낱개를 '채권 1건분 투자수익'으로 유도했다.",
+      "meaning": "채권 한 건에서 투자자가 남기는 값이다. 그 채권의 채권매입수수료에서 입금부족액만큼 뺀 금액이고, 입금부족액이 음수면 빼지 않는다.",
+      "ceo_source": null,
+      "formula": "M_i = 채권매입수수료_i - max(0, L_i)",
+      "unit": "채권 1건분 · 금액(원)",
+      "related_terms": [
+        "투자수익 (일별 배치 · 하루치) = M_{d-1}",
+        "투자수익 (투자 수익 · 기간 합계) = PM",
+        "채권매입수수료",
+        "L_i",
+        "B_i",
+        "투자수익율 MR_{d-1}(분자)"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "Mi (평문 표기 — 엑셀 열머리 · 코드 · DB)"
+      ],
+      "letter_origin": "정본 dm_0901/symbol_rule_0901.md 「기호 전건」 낱개 행",
+      "notes": "검산 엑셀 채권 시트 O열 「투자수익 Mi」가 이 값이다. 같은 시트 K열 채권매입수수료는 차감 전 값이라 다르다.",
+      "group": "채권 1건분"
+    },
+    {
+      "symbol": "B_i",
+      "ko_name": "채권 1건분 상환액",
+      "coined": true,
+      "coined_basis": "원문이 B_i에 이름을 붙이지 않았다. 같은 식의 합계를 「상환액(SBD-1) = Σ BD-1i」로 명명하므로 그 합의 낱개를 '채권 1건분 상환액'으로 유도했다.",
+      "meaning": "채권 한 건이 정산예정일에 실제로 돌아오는 금액이다. 순지급액에서 입금부족액만큼 뺀 값이고, 입금부족액이 음수면 빼지 않는다.",
+      "ceo_source": null,
+      "formula": "B_i = 순지급액_i - max(0, L_i)",
+      "unit": "채권 1건분 · 금액(원)",
+      "related_terms": [
+        "상환액 (일별 배치 · 하루치) = B_{d-1}",
+        "상환액 (투자 수익 · 기간 합계) = PB",
+        "순지급액",
+        "L_i",
+        "M_i",
+        "A_i"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "Bi (평문 표기 — 엑셀 열머리 · 코드 · DB)"
+      ],
+      "letter_origin": "정본 dm_0901/symbol_rule_0901.md 「기호 전건」 낱개 행",
+      "notes": "한 줄로 낸다 — A_i + M_i 로 나눠 더하면 원 단위로 두 번 끊어 7일 17원이 어긋난다(dm_0901/rounding_rule_0901.md).",
+      "group": "채권 1건분"
+    },
+    {
       "symbol": "L",
       "ko_name": "입금부족액",
       "coined": false,
@@ -246,8 +298,9 @@
         "SLi (이전 문서 표기)"
       ],
       "letter_origin": "원문에 근거 없음",
-      "notes": "SL_i는 음수가 될 수 있다(과지급이 더 큰 경우). 상환액 쪽의 max(0, 미지급금-과지급금)과 달리 0으로 누르는 장치가 원문에 없다.",
-      "group": "표본집합 1건분"
+      "notes": "SL_i는 음수가 될 수 있다(과지급이 더 큰 경우). 상환액 쪽의 max(0, 미지급금-과지급금)과 달리 0으로 누르는 장치가 원문에 없다. 갈아 끼우기 전 표기다 — 우리 표기는 앞 S 를 떼고 L_i 로 쓰고, 표본 구간은 「i 는 선정산일이 d-20 ~ d-11 인 채권」 조건 문장으로 적는다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "표본집합 1건분",
+      "superseded_by": "L_i"
     },
     {
       "symbol": "SA_i",
@@ -270,9 +323,10 @@
         "SAi (이전 문서 표기)"
       ],
       "letter_origin": "원문에 근거 없음",
-      "notes": "원문의 '대상정산급채권'은 '대상정산금채권'의 오기로 읽힌다. SA_i와 SA_{d-1}을 같은 것으로 보면 안 된다 — SA_i는 표본집합 채권 1건분이고, SA_{d-1}은 전일자 도래분 채권의 하루치 합계다. 대표 DM 2026-08-31 15:37 은 「투자실행액 : SAi」 라 적어 SA_i 를 투자실행액 자리에 세웠다. 원문에서 SA_i 는 표본집합 채권 1건분이라 어긋난다. 어느 쪽이 맞는지는 판정하지 않았다.",
+      "notes": "원문의 '대상정산급채권'은 '대상정산금채권'의 오기로 읽힌다. SA_i와 SA_{d-1}을 같은 것으로 보면 안 된다 — SA_i는 표본집합 채권 1건분이고, SA_{d-1}은 전일자 도래분 채권의 하루치 합계다. 대표 DM 2026-08-31 15:37 은 「투자실행액 : SAi」 라 적어 SA_i 를 투자실행액 자리에 세웠다. 원문에서 SA_i 는 표본집합 채권 1건분이라 어긋난다. 어느 쪽이 맞는지는 판정하지 않았다. 갈아 끼우기 전 표기다 — 우리 표기는 앞 S 를 떼고 A_i 로 쓰고, 표본 구간은 「i 는 선정산일이 d-20 ~ d-11 인 채권」 조건 문장으로 적는다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
       "group": "표본집합 1건분",
-      "status": "확인필요"
+      "status": "확인필요",
+      "superseded_by": "A_i"
     },
     {
       "symbol": "B_{d-1,i}",
@@ -394,7 +448,32 @@
         "SB(D-1) (이전 문서 표기)"
       ],
       "letter_origin": "원문에 근거 없음",
-      "notes": "원문 표기는 SBD-1. 꼬리표 '(일별 배치 · 하루치)'는 문서가 이름 충돌을 피하려고 붙인 것이고 원문에는 없다.",
+      "notes": "원문 표기는 SBD-1. 꼬리표 '(일별 배치 · 하루치)'는 문서가 이름 충돌을 피하려고 붙인 것이고 원문에는 없다. 갈아 끼우기 전 표기다 — 우리 표기는 B_{d-1} 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "하루치 집계",
+      "superseded_by": "B_{d-1}"
+    },
+    {
+      "symbol": "B_{d-1}",
+      "ko_name": "하루 상환액",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "정산예정일이 그 날인 채권들에서 실제로 돌아온 금액의 합계다.",
+      "ceo_source": null,
+      "formula": "B_{d-1} = Σ B_i   (i 는 정산예정일이 d-1 인 대상정산금채권)",
+      "unit": "하루 합계 · 금액(원)",
+      "related_terms": [
+        "B_i",
+        "PB",
+        "SB_{d-1}"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "SB(D-1) — 대표 원문 평문 표기",
+        "B(d-1) — 평문 표기(엑셀 열머리 · 코드 · DB)"
+      ],
+      "letter_origin": "갈래 표시 없는 개념 글자 B 에 범위 d-1 을 붙인 꼴. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "순지급액에서 부족액을 한 번에 뺀다. A_{d-1} + M_{d-1} 로 나눠 더하면 원 단위로 두 번 끊겨 7일 17원이 어긋난다(dm_0901/rounding_rule_0901.md 규칙 2).",
       "group": "하루치 집계"
     },
     {
@@ -421,7 +500,34 @@
         "SA(D-1) (이전 문서 표기)"
       ],
       "letter_origin": "원문에 근거 없음",
-      "notes": "철자가 비슷한 SA_i(표본집합 채권 1건분)와 다른 것이다.",
+      "notes": "철자가 비슷한 SA_i(표본집합 채권 1건분)와 다른 것이다. 갈아 끼우기 전 표기다 — 우리 표기는 A_{d-1} 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "하루치 집계",
+      "superseded_by": "A_{d-1}"
+    },
+    {
+      "symbol": "A_{d-1}",
+      "ko_name": "하루 투자실행금",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "정산예정일이 그 날인 채권들에 넣었던 돈의 합계다.",
+      "ceo_source": null,
+      "formula": "A_{d-1} = Σ A_i   (i 는 정산예정일이 d-1 인 대상정산금채권)",
+      "unit": "하루 합계 · 금액(원)",
+      "related_terms": [
+        "A_i",
+        "PA",
+        "MR_{d-1}(분모)",
+        "wD_{d-1}(분모)",
+        "SA_{d-1}"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "SA(D-1) — 대표 원문 평문 표기",
+        "A(d-1) — 평문 표기(엑셀 열머리 · 코드 · DB)"
+      ],
+      "letter_origin": "개념 글자 A 에 범위 d-1 을 붙인 꼴. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "표본집합 1건분 SA_i 와 철자가 겹쳐 보이지만 단위가 다르다 — 이쪽은 하루치 합계다.",
       "group": "하루치 집계"
     },
     {
@@ -447,7 +553,33 @@
         "SM(D-1) (이전 문서 표기)"
       ],
       "letter_origin": "원문에 근거 없음",
-      "notes": null,
+      "notes": "갈아 끼우기 전 표기다 — 우리 표기는 M_{d-1} 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "하루치 집계",
+      "superseded_by": "M_{d-1}"
+    },
+    {
+      "symbol": "M_{d-1}",
+      "ko_name": "하루 투자수익",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "정산예정일이 그 날인 채권들에서 남은 수익의 합계다.",
+      "ceo_source": null,
+      "formula": "M_{d-1} = Σ M_i   (i 는 정산예정일이 d-1 인 대상정산금채권)",
+      "unit": "하루 합계 · 금액(원)",
+      "related_terms": [
+        "M_i",
+        "PM",
+        "MR_{d-1}(분자)",
+        "SM_{d-1}"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "SM(D-1) — 대표 원문 평문 표기",
+        "M(d-1) — 평문 표기(엑셀 열머리 · 코드 · DB)"
+      ],
+      "letter_origin": "개념 글자 M 에 범위 d-1 을 붙인 꼴. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "채권매입수수료에서 입금부족액을 뺀 뒤 더한 값이다. 수수료 합계와 다르다.",
       "group": "하루치 집계"
     },
     {
@@ -472,7 +604,34 @@
         "SMR(D-1) (이전 문서 표기)"
       ],
       "letter_origin": "원문에 근거 없음",
-      "notes": "화면에는 뜨지 않는다. ty수익율(하루치)의 재료로만 쓰인다. 대표 DM 2026-08-31 16:45 의 「할인율 -max(0, 미지급금-과지급금)/투자실행액」 은 근사식이다. 원식 Σ M / Σ A 는 분모가 순지급액 × (1 − 할인율) 이라 1 ÷ (1 − 할인율) 배만큼 갈리고, 부족액이 0 일 때 0.11% 와 0.110121% 로 나뉜다. 어느 쪽이 정본인지는 판정하지 않았다.",
+      "notes": "화면에는 뜨지 않는다. ty수익율(하루치)의 재료로만 쓰인다. 대표 DM 2026-08-31 16:45 의 「할인율 -max(0, 미지급금-과지급금)/투자실행액」 은 근사식이다. 원식 Σ M / Σ A 는 분모가 순지급액 × (1 − 할인율) 이라 1 ÷ (1 − 할인율) 배만큼 갈리고, 부족액이 0 일 때 0.11% 와 0.110121% 로 나뉜다. 어느 쪽이 정본인지는 판정하지 않았다. 갈아 끼우기 전 표기다 — 우리 표기는 MR_{d-1} 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "하루치 집계",
+      "superseded_by": "MR_{d-1}"
+    },
+    {
+      "symbol": "MR_{d-1}",
+      "ko_name": "하루 투자수익율",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "그 날 도래분이 넣은 돈 대비 몇 %를 남겼나다.",
+      "ceo_source": null,
+      "formula": "MR_{d-1} = M_{d-1} / A_{d-1}",
+      "unit": "하루 · 비율(%)",
+      "related_terms": [
+        "M_{d-1}",
+        "A_{d-1}",
+        "Y_{MR,d-1}",
+        "PMR",
+        "SMR_{d-1}"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "SMR(D-1) — 대표 원문 평문 표기",
+        "MR(d-1) — 평문 표기(엑셀 열머리 · 코드 · DB)"
+      ],
+      "letter_origin": "M(투자수익) + R(비율)에 범위 d-1 을 붙인 꼴. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "소수 일곱째 자리에서 반올림해 여섯째 자리까지 남기고 그 값을 Y_{MR,d-1} 에 넣는다(dm_0901/rounding_rule_0901.md 규칙 1).",
       "group": "하루치 집계"
     },
     {
@@ -498,7 +657,35 @@
         "SD(D-1) (이전 문서 표기)"
       ],
       "letter_origin": "원문에 근거 없음",
-      "notes": null,
+      "notes": "갈아 끼우기 전 표기다 — 우리 표기는 wD_{d-1} 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "하루치 집계",
+      "superseded_by": "wD_{d-1}"
+    },
+    {
+      "symbol": "wD_{d-1}",
+      "ko_name": "하루 가중평균 금융일수",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "그 날 도래분 채권들이 평균 며칠짜리였나다. 금액이 큰 채권 쪽으로 끌리는 평균이다.",
+      "ceo_source": null,
+      "formula": "wD_{d-1} = (Σ A_i x D_i) / A_{d-1}   (i 는 정산예정일이 d-1 인 대상정산금채권)",
+      "unit": "하루 · 날수(일, 금액 가중평균)",
+      "related_terms": [
+        "A_i",
+        "D_i",
+        "A_{d-1}",
+        "wD",
+        "PwD",
+        "SD_{d-1}"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "SD(D-1) — 대표 원문 평문 표기",
+        "wD(d-1) — 평문 표기(엑셀 열머리 · 코드 · DB)"
+      ],
+      "letter_origin": "w(가중) + D(금융일수)에 범위 d-1 을 붙인 꼴. w 는 자기가 가중한 D 앞에 붙는다. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "소수 여섯째 자리까지 남긴 값을 화면·엑셀·원장이 같이 쓴다. 기간 PwD 는 이 값을 다시 가중하지 않고 기간 안 채권을 한 뭉치로 모아 따로 낸다.",
       "group": "하루치 집계"
     },
     {
@@ -543,7 +730,33 @@
       "kind": "value",
       "aliases": [],
       "letter_origin": "P — 원문에 근거 없음",
-      "notes": "꼬리표 '(투자 수익 · 기간 합계)'는 문서가 붙인 것이고 원문에는 없다.",
+      "notes": "꼬리표 '(투자 수익 · 기간 합계)'는 문서가 붙인 것이고 원문에는 없다. 갈아 끼우기 전 표기다 — 우리 표기는 PA 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "기간 집계",
+      "superseded_by": "PA"
+    },
+    {
+      "symbol": "PA",
+      "ko_name": "기간 투자실행금",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "정산예정일이 고른 기간에 든 채권들에 넣었던 돈의 합계다.",
+      "ceo_source": null,
+      "formula": "PA = Σ A_{d-1}   (기간 안 레코드 전부)",
+      "unit": "기간 합계 · 금액(원)",
+      "related_terms": [
+        "A_{d-1}",
+        "PMR(분모)",
+        "PwD(분모)",
+        "wPY_{MR}",
+        "PSA"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "PSA — 대표 원문 표기"
+      ],
+      "letter_origin": "P(기간) + 개념 글자 A. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "invest-profit 화면 현황 카드 『투자실행금』 이 이 값이다.",
       "group": "기간 집계"
     },
     {
@@ -565,7 +778,31 @@
       "kind": "value",
       "aliases": [],
       "letter_origin": "P — 원문에 근거 없음",
-      "notes": null,
+      "notes": "갈아 끼우기 전 표기다 — 우리 표기는 PM 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "기간 집계",
+      "superseded_by": "PM"
+    },
+    {
+      "symbol": "PM",
+      "ko_name": "기간 투자수익",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "정산예정일이 고른 기간에 든 채권들에서 남은 수익의 합계다.",
+      "ceo_source": null,
+      "formula": "PM = Σ M_{d-1}",
+      "unit": "기간 합계 · 금액(원)",
+      "related_terms": [
+        "M_{d-1}",
+        "PMR(분자)",
+        "PSM"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "PSM — 대표 원문 표기"
+      ],
+      "letter_origin": "P(기간) + 개념 글자 M. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "invest-profit 화면 현황 카드 『투자 수익』 이 이 값이다.",
       "group": "기간 집계"
     },
     {
@@ -587,7 +824,33 @@
       "kind": "value",
       "aliases": [],
       "letter_origin": "P — 원문에 근거 없음",
-      "notes": "화면에는 뜨지 않는다. ④의 재료로만 쓰인다.",
+      "notes": "화면에는 뜨지 않는다. ④의 재료로만 쓰인다. 갈아 끼우기 전 표기다 — 우리 표기는 PMR 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "기간 집계",
+      "superseded_by": "PMR"
+    },
+    {
+      "symbol": "PMR",
+      "ko_name": "기간 투자수익율",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "고른 기간 도래분이 넣은 돈 대비 몇 %를 남겼나다.",
+      "ceo_source": null,
+      "formula": "PMR = PM / PA",
+      "unit": "기간 · 비율(%)",
+      "related_terms": [
+        "PM",
+        "PA",
+        "PY_{MR}",
+        "MR_{d-1}",
+        "PSMR"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "PSMR — 대표 원문 표기"
+      ],
+      "letter_origin": "P(기간) + M(투자수익) + R(비율). 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "두 합을 나눈 비라 산식에 곱이 드러나지 않아 w 가 붙지 않는다. 소수 일곱째 자리에서 반올림해 여섯째 자리까지 남기고 그 값을 PY_{MR} 에 넣는다(dm_0901/rounding_rule_0901.md 규칙 1).",
       "group": "기간 집계"
     },
     {
@@ -610,7 +873,35 @@
       "kind": "value",
       "aliases": [],
       "letter_origin": "P — 원문에 근거 없음",
-      "notes": "이름은 대표 정의서 2026-08-31 판이 PSD 줄에 직접 달았다 — PSD = (Σ Api x Dpi) / PSA → 위 선택한 기간에 해당하는 w금융일수. 2026-08-31 회의 00:45:21 에서 대표가 확인했다 (출처 meeting_0831/ceo_definitions_20260831.txt). 하루치 SD를 그냥 평균 내는 게 아니라 채권 단위까지 내려가 다시 금액 가중평균한다.",
+      "notes": "이름은 대표 정의서 2026-08-31 판이 PSD 줄에 직접 달았다 — PSD = (Σ Api x Dpi) / PSA → 위 선택한 기간에 해당하는 w금융일수. 2026-08-31 회의 00:45:21 에서 대표가 확인했다 (출처 meeting_0831/ceo_definitions_20260831.txt). 하루치 SD를 그냥 평균 내는 게 아니라 채권 단위까지 내려가 다시 금액 가중평균한다. 갈아 끼우기 전 표기다 — 우리 표기는 PwD 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "기간 집계",
+      "superseded_by": "PwD"
+    },
+    {
+      "symbol": "PwD",
+      "ko_name": "기간 가중평균 금융일수",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "정산예정일이 고른 기간에 든 채권들이 평균 며칠짜리였나다.",
+      "ceo_source": null,
+      "formula": "PwD = (Σ A_i x D_i) / PA   (i 는 정산예정일이 고른 기간에 드는 대상정산금채권)",
+      "unit": "기간 · 날수(일, 금액 가중평균)",
+      "related_terms": [
+        "A_i",
+        "D_i",
+        "PA",
+        "wD_{d-1}",
+        "PY_{MR}",
+        "PSD"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "PSD — 대표 원문 표기",
+        "PwD(P) — 평문 표기"
+      ],
+      "letter_origin": "P(기간) + w(가중) + D(금융일수). w 는 자기가 가중한 D 앞에 붙는다. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "기간 안 채권 전부를 한 뭉치로 모아 한 번에 낸다 — 6자리로 끊은 하루치 wD_{d-1} 을 다시 가중하지 않는다(dm_0901/rounding_rule_0901.md).",
       "group": "기간 집계"
     },
     {
@@ -632,7 +923,32 @@
       "kind": "value",
       "aliases": [],
       "letter_origin": "P — 원문에 근거 없음",
-      "notes": "합이라서 기간이 길어질수록 커진다. ⑤의 분모(PSA + PSC)에 들어가므로 기간 길이가 ⑤ 값을 바꾼다.",
+      "notes": "합이라서 기간이 길어질수록 커진다. ⑤의 분모(PSA + PSC)에 들어가므로 기간 길이가 ⑤ 값을 바꾼다. 갈아 끼우기 전 표기다 — 우리 표기는 PEC 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문에 있는 글자라 지우지 않는다.",
+      "group": "기간 집계",
+      "superseded_by": "PEC"
+    },
+    {
+      "symbol": "PEC",
+      "ko_name": "기간 순현금",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "고른 기간 동안 하루에 한 건씩 쌓인 순현금(EC)의 합계다.",
+      "ceo_source": null,
+      "formula": "PEC = Σ EC_{d-1}",
+      "unit": "기간 합계 · 금액(원)",
+      "related_terms": [
+        "EC",
+        "wPY_{MR}(분모)",
+        "PSC"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "PSC — 대표 원문 표기",
+        "PEC(P) — 평문 표기"
+      ],
+      "letter_origin": "P(기간) + EC(순현금). 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "EC 는 하루에 한 건 쌓이는 유량이라 조회 기간에 걸린 일수만큼 센다. 기준일 잔액 하나(스톡)로 나누지 않는다.",
       "group": "기간 집계"
     },
     {
@@ -767,11 +1083,16 @@
       "ko_name": "기간(period) 합계",
       "coined": false,
       "coined_basis": null,
-      "meaning": "기간을 뜻하는 접두 글자다. P 가 붙은 기호는 정산예정일이 사용자가 고른 기간에 드는 것들의 합계다 — PSA · PSM · PSMR · PSD · PSC.",
+      "meaning": "기간을 뜻하는 접두 글자다. P 가 붙은 기호는 정산예정일이 사용자가 고른 기간에 드는 것들의 합계다 — PA · PM · PMR · PwD · PEC.",
       "ceo_source": null,
       "formula": null,
       "unit": "접두 글자 (값이 아니다)",
       "related_terms": [
+        "PA",
+        "PM",
+        "PMR",
+        "PwD",
+        "PEC",
         "PSA",
         "PSM",
         "PSMR",
@@ -783,7 +1104,7 @@
       "kind": "prefix",
       "aliases": [],
       "letter_origin": "period 의 머리글자. 대표 DM 2026-08-31 15:15",
-      "notes": "PSA · PSM · PSMR · PSD · PSC 는 표기를 바꾸지 않는다. P 가 기간이라는 뜻만 여기 적는다.",
+      "notes": "우리 표기는 PA · PM · PMR · PwD · PEC 다(정본 dm_0901/symbol_rule_0901.md 「갈아 끼우는 표」). 대표 원문 표기 PSA · PSM · PSMR · PSD · PSC 는 인용 자리에 그대로 두고 갈아 끼우기 전 표기로 남긴다. P 가 기간이라는 뜻은 두 표기에 같이 걸린다.",
       "group": "낱글자",
       "meeting_source": "대표 DM 2026-08-31 15:15 「P : 기간 period, 정산예정일이 위 선택한 기간에 해당하는 ~ *합계*」 · 3차 미팅(2026-08-31) 대표 확인 「P = 피리어드」"
     },
@@ -832,6 +1153,131 @@
       "notes": "낱개 M_{d-1,i} 의 재료인 채권매입수수료의 범위가 원문에 없다 — 수익률 ④·⑤·⑥ 이 전부 여기에 걸린다.",
       "group": "낱글자",
       "meeting_source": "대표 DM 2026-08-31 15:15 「M : 투자 수익」 · 같은 날 15:37 「투자 수익 : M(D-1)i = 채권매입수수료 − max(0, 미지급금 − 과지급금)」"
+    },
+    {
+      "symbol": "wD",
+      "ko_name": "가중평균 금융일수",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "지금 세는 채권들이 평균 며칠짜리냐다. 단순 평균이 아니라 금액이 큰 채권 쪽으로 끌리는 평균이다.",
+      "ceo_source": null,
+      "formula": "wD = (Σ A_i x D_i) / Σ A_i   (i 는 발생한 대상정산금채권 전체)",
+      "unit": "날수(일, 금액 가중평균)",
+      "related_terms": [
+        "w",
+        "A_i",
+        "D_i",
+        "Y_r",
+        "wD_{d-1}",
+        "PwD"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "w금융일수 — 대표 원문 표기",
+        "W금융일수 — 화면 표기"
+      ],
+      "letter_origin": "w(가중) + D(금융일수). 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "산식 안의 Σ A_i 는 발생한 채권 전체를 센다 — 투자 실행액의 Σ A_i(미회수)와 모집단이 다르다. 가맹점별 행도 그 가맹점 채권을 한 뭉치로 모아 따로 낸 값이라, 행을 금액으로 가중평균해도 전체 wD 로 되짚어지지 않는다.",
+      "group": "잔액 집계"
+    },
+    {
+      "symbol": "Y_r",
+      "ko_name": "예상 연환산수익률",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "할인율을 1년 기준으로 환산한 값이다. 1년에 몇 번 굴리나(365 / wD)를 할인율에 곱한다.",
+      "ceo_source": null,
+      "formula": "Y_r = r x 365 / wD",
+      "unit": "비율(%, 연 환산)",
+      "related_terms": [
+        "r",
+        "wD",
+        "Ty / ty",
+        "PY_{MR}"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "ty수익율 — 대표 원문 표기(잔액식)"
+      ],
+      "letter_origin": "Y(연환산수익률) + r(할인율). 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "분모가 항별 합이 아니라 산식에 곱이 드러나지 않는다 — w 가 붙지 않는다. invest-assets 화면 『Ty수익율』 이 이 값이다.",
+      "group": "잔액 집계"
+    },
+    {
+      "symbol": "LR",
+      "ko_name": "입금부족률",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "표본 구간 채권에서 덜 들어온 돈이 넣은 돈의 몇 %인가다.",
+      "ceo_source": null,
+      "formula": "LR = Σ L_i / Σ A_i   (i 는 선정산일이 d-20 ~ d-11 인 채권)",
+      "unit": "비율(%)",
+      "related_terms": [
+        "L_i",
+        "A_i",
+        "SL_i",
+        "SA_i",
+        "S입금부족율"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "S입금부족율 — 대표 원문 표기"
+      ],
+      "letter_origin": "L(입금부족) + R(비율). 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "두 합을 나눈 비라 산식에 곱이 드러나지 않아 w 가 붙지 않는다. 모집단이 표본 구간이라 옆 칸 wD(발생 기준 전체)와 세는 채권이 다르다.",
+      "group": "표본집합 집계"
+    },
+    {
+      "symbol": "PY_{MR}",
+      "ko_name": "투자실행금액 대비 연환산수익률",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "고른 기간의 투자수익율을 1년 기준으로 환산한 값이다.",
+      "ceo_source": null,
+      "formula": "PY_{MR} = PMR x 365 / PwD",
+      "unit": "기간 · 비율(%, 연 환산)",
+      "related_terms": [
+        "PMR",
+        "PwD",
+        "wPY_{MR}",
+        "Y_{MR,d-1}"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "④ — 대표 정의서 [2번 이미지] 번호",
+        "PYMR — 평문 표기"
+      ],
+      "letter_origin": "Y(연환산수익률)에 범위 P 와 재료 MR 을 붙인 꼴. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "분모가 항별 합이 아니라 산식에 곱이 드러나지 않는다 — w 가 붙지 않는다. invest-profit 화면 현황 카드 ④ 가 이 값이다.",
+      "group": "기간 집계"
+    },
+    {
+      "symbol": "wPY_{MR}",
+      "ko_name": "투자자산 대비 연환산수익률",
+      "coined": true,
+      "coined_basis": "대표 원문에 없는 글자다. 기획이 정한 표기 정본 dm_0901/symbol_rule_0901.md 「기호 전건」 표에서 그대로 옮겼다.",
+      "meaning": "④를 투자자산(투자실행금 + 순현금) 기준으로 다시 잡은 값이다.",
+      "ceo_source": null,
+      "formula": "wPY_{MR} = PY_{MR} x PA / (PA + PEC)",
+      "unit": "기간 · 비율(%, 연 환산)",
+      "related_terms": [
+        "PY_{MR}",
+        "PA",
+        "PEC"
+      ],
+      "is_index": false,
+      "kind": "value",
+      "aliases": [
+        "⑤ — 대표 정의서 [2번 이미지] 번호",
+        "wPYMR — 평문 표기"
+      ],
+      "letter_origin": "w(가중) + PY_{MR}. w 는 자기가 가중한 PY_{MR} 앞에 붙는다. 정본 dm_0901/symbol_rule_0901.md",
+      "notes": "미확정 — 2026-08-31 회의에서 대표가 「수식 오류, 새로 작성해 전달」 로 닫았다. 산식은 대표 정의서 [2번 이미지] 원문 그대로 두고 화면에 미확정 배지를 단다.",
+      "group": "기간 집계"
     }
   ],
   "operators": [
@@ -884,7 +1330,7 @@
     }
   ],
   "notation_canon": {
-    "authority": "대표 정의서 원문",
+    "authority": "대표 정의서 원문(인용 자리) · dm_0901/symbol_rule_0901.md(우리 표기)",
     "rules": [
       {
         "item": "곱셈 기호",
@@ -905,16 +1351,16 @@
         "drift": "문서 서술 자리는 아래첨자로 쓴다 — HTML 은 <sub>, 마크다운은 _{ }, 빼기표는 −(U+2212). 인용 자리는 원문 평문 표기 그대로 둔다. 이 사전의 symbol 값도 마크다운 표기를 정본으로 삼고, 이전 평문·괄호 표기는 aliases 에 남긴다."
       },
       {
-        "item": "하루치 기호의 약칭",
-        "canonical": "SB_{d-1} · SA_{d-1} · SM_{d-1} · SMR_{d-1} · SD_{d-1} — 아래첨자를 떼지 않는다",
-        "evidence": "원문은 언제나 SBD-1 · SAD-1 · SMD-1 · SMRD-1 · SDD-1로 아래첨자를 붙여 쓴다. 아래첨자를 뗀 SB · SA · SM · SMR · SD는 원문에 한 번도 없다.",
-        "drift": "문서가 SB · SA · SM · SMR · SD로 줄여 쓴다. 줄이면 표본집합 기호 SAi와 구별이 흐려지고, 어느 날짜치인지가 사라진다. 줄여 쓸 때는 '하루치'임을 옆에 적는다."
-      },
-      {
         "item": "w · ty 대소문자",
         "canonical": "원문은 소문자 w금융일수 · ty수익율",
         "evidence": "원문 전 표기가 소문자다.",
         "drift": "화면은 대문자 W금융일수 · Ty수익율로 뜬다. 화면 라벨을 말하는 자리에서만 대문자를 쓰고 산식에서는 소문자로 쓴다."
+      },
+      {
+        "item": "우리 표기의 정본",
+        "canonical": "dm_0901/symbol_rule_0901.md 「기호 전건」 표 — 하루치는 B_{d-1} · A_{d-1} · M_{d-1} · MR_{d-1} · wD_{d-1}, 기간은 PA · PM · PMR · PwD · PEC, 연환산은 Y_r · Y_{MR,d-1} · PY_{MR} · wPY_{MR}",
+        "evidence": "dm_0901/symbol_rule_0901.md 가 스스로 「이 파일이 기호 표기의 유일한 정본」 이라 적고 dm_0831/symbol_rule_0831.md 를 대신한다.",
+        "drift": "대표 원문 표기(SB_{d-1} 계열 · PSA 계열 · SL_i · SA_i)는 지우지 않고 갈아 끼우기 전 표기로 남긴다. 인용 자리는 원문 표기 그대로 두고, 우리 서술 자리에서만 정본 표기를 쓴다."
       }
     ],
     "drift_sites": [

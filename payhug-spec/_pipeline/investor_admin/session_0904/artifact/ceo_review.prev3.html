@@ -1,0 +1,188 @@
+<title>기호 정리표</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FBFAF8; --paper:#FFF; --sunk:#F4F1EC;
+  --ink:#1C1B19; --mute:#6E6A63; --faint:#938E86;
+  --rule:#E3DFD8; --rule-hard:#CFC8BC;
+  --ok:#2F6B4F; --ok-bg:#2F6B4F14;
+  --no:#A63D2F; --no-bg:#A63D2F14;
+  --pick:#2C4470; --pick-bg:#2C447012;
+  --shadow:0 1px 2px #1c1b1910, 0 10px 28px #1c1b190a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#15161A; --paper:#1C1E23; --sunk:#22252B;
+  --ink:#ECE9E4; --mute:#9C978E; --faint:#7A756D;
+  --rule:#2C3038; --rule-hard:#3B404A;
+  --ok:#6FBF93; --ok-bg:#6FBF9320; --no:#E08573; --no-bg:#E0857320;
+  --pick:#93AEE0; --pick-bg:#93AEE01C;
+  --shadow:0 1px 2px #00000050, 0 10px 28px #00000038;
+}}
+:root[data-theme="dark"]{
+  --bg:#15161A; --paper:#1C1E23; --sunk:#22252B;
+  --ink:#ECE9E4; --mute:#9C978E; --faint:#7A756D;
+  --rule:#2C3038; --rule-hard:#3B404A;
+  --ok:#6FBF93; --ok-bg:#6FBF9320; --no:#E08573; --no-bg:#E0857320;
+  --pick:#93AEE0; --pick-bg:#93AEE01C;
+  --shadow:0 1px 2px #00000050, 0 10px 28px #00000038;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+  font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:40px 20px 100px}
+code,.sym{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+h1{font-family:"Noto Serif KR",serif;font-size:30px;font-weight:700;
+  letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:700;
+  margin:44px 0 10px;padding-top:22px;border-top:2px solid var(--rule-hard)}
+h3{font-size:14px;font-weight:700;margin:26px 0 8px}
+p{margin:0 0 12px}
+.scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;
+  margin:12px 0;background:var(--paper);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+th{background:var(--sunk);font-size:11px;font-weight:700;color:var(--mute);
+  letter-spacing:.05em;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.c{text-align:center;white-space:nowrap}
+td.n{font-family:"IBM Plex Mono",monospace;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.f{font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.65}
+tbody tr:hover{background:var(--sunk)}
+tr.grp td{background:var(--sunk);font-weight:700;font-size:11.5px;
+  color:var(--mute);letter-spacing:.05em}
+.sym{background:var(--sunk);border:1px solid var(--rule);border-radius:4px;
+  padding:1px 6px;font-size:12px;white-space:nowrap;display:inline-block}
+.sym.new{background:var(--pick-bg);border-color:var(--pick);color:var(--pick);font-weight:600}
+.sym.old{background:var(--no-bg);border-color:var(--no);color:var(--no);opacity:.8}
+.pill{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.p-ok{background:var(--ok-bg);color:var(--ok)}
+.p-no{background:var(--no-bg);color:var(--no)}
+.formula{background:var(--sunk);border-radius:8px;padding:12px 15px;margin:10px 0;
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.85;
+  white-space:pre-wrap;overflow-x:auto;border-left:3px solid var(--rule-hard)}
+.formula .hi{color:var(--no);font-weight:600}
+.formula .ok{color:var(--ok);font-weight:600}
+sub{font-size:.72em}
+.note{font-size:12.5px;color:var(--mute);margin:8px 0 0}
+</style>
+
+<div class="wrap">
+
+<h1>기호 정리표</h1>
+
+<h2>이름 짓는 규칙</h2>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:16%">분류</th><th style="width:52%">의미</th><th>예시</th></tr></thead>
+<tbody>
+<tr><td>접두 <span class="sym">P</span></td><td>조회기간을 뜻한다</td>
+    <td><span class="sym">PA</span> <span class="sym">PD</span> <span class="sym">PY<sub>a</sub></span></td></tr>
+<tr><td>아래첨자</td><td>그 값을 가르는 것 하나만 넣는다</td>
+    <td><span class="sym">A<sub>i</sub></span> <span class="sym">Y<sub>r</sub></span>
+        <span class="sym">PY<sub>a</sub></span></td></tr>
+<tr><td>첨자 <span class="sym">i</span></td><td>대상정산금채권 하나의 ID</td>
+    <td><span class="sym">A<sub>i</sub></span> <span class="sym">D<sub>i</sub></span></td></tr>
+<tr><td>첨자 <span class="sym">r</span></td><td>예상 연환산수익률을 나타낼 때 쓴다</td>
+    <td><span class="sym">Y<sub>r</sub></span></td></tr>
+<tr><td>첨자 <span class="sym">a</span></td><td>투자실행금 기준 연환산수익률을 나타낼 때 쓴다</td>
+    <td><span class="sym">PY<sub>a</sub></span></td></tr>
+<tr><td>첨자 <span class="sym">t</span></td><td>투자자산 기준 연환산수익률을 나타낼 때 쓴다</td>
+    <td><span class="sym">PY<sub>t</sub></span></td></tr>
+</tbody></table></div>
+
+<h2>전체 기호</h2>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:12%">분류</th><th style="width:12%">개선</th><th style="width:10%">기존</th>
+    <th style="width:24%">용어 이름</th><th>산식</th></tr></thead>
+<tbody>
+<tr><td></td><td><span class="sym new">d</span></td><td><span class="sym old">D</span></td>
+    <td>기준일</td><td></td></tr>
+<tr><td></td><td><span class="sym">r</span></td><td></td><td>유동화투자자의 할인율</td>
+    <td class="f">0.11% 예정</td></tr>
+<tr><td></td><td><span class="sym new">D</span></td><td><span class="sym old">wD</span></td>
+    <td>가중평균 금융일수 (Duration)</td>
+    <td class="f">투자실행금으로 가중평균한 금융일수</td></tr>
+<tr><td></td><td><span class="sym">A</span></td><td></td><td>투자실행금</td><td></td></tr>
+<tr><td></td><td><span class="sym">M</span></td><td></td><td>투자수익</td><td></td></tr>
+<tr><td></td><td><span class="sym">B</span></td><td></td><td>상환액</td><td></td></tr>
+<tr><td></td><td><span class="sym">L</span></td><td></td><td>입금부족</td><td></td></tr>
+<tr><td></td><td><span class="sym">MR</span></td><td></td><td>투자수익율 (Margin)</td><td></td></tr>
+<tr><td></td><td><span class="sym">Y</span></td><td></td><td>연환산수익률</td><td></td></tr>
+
+<tr><td>채권 한 건</td><td><span class="sym">D<sub>i</sub></span></td><td></td><td>금융일수</td>
+    <td class="f">선정산일로부터 정산예정일까지의 한편 넣기 일수<br>08-24 선정산 · 08-26 정산예정이면 2</td></tr>
+<tr><td>채권 한 건</td><td><span class="sym">A<sub>i</sub></span></td><td></td><td>투자 실행액</td>
+    <td class="f">A<sub>i</sub> = 순지급액<sub>i</sub> × (1 − r)</td></tr>
+<tr><td>채권 한 건</td><td><span class="sym">L<sub>i</sub></span></td><td></td><td>입금부족액</td>
+    <td class="f">L<sub>i</sub> = 미지급금<sub>i</sub> − 과지급금<sub>i</sub></td></tr>
+<tr><td>채권 한 건</td><td><span class="sym">채권매입수수료<sub>i</sub></span></td><td></td><td>채권매입수수료</td>
+    <td class="f">채권매입수수료<sub>i</sub> = 순지급액<sub>i</sub> × r</td></tr>
+<tr><td>채권 한 건</td><td><span class="sym">M<sub>i</sub></span></td><td></td><td>투자수익</td>
+    <td class="f">M<sub>i</sub> = 채권매입수수료<sub>i</sub> − max(0, L<sub>i</sub>)</td></tr>
+<tr><td>채권 한 건</td><td><span class="sym">B<sub>i</sub></span></td><td></td><td>상환액</td>
+    <td class="f">B<sub>i</sub> = 순지급액<sub>i</sub> − max(0, L<sub>i</sub>)</td></tr>
+
+<tr><td>투자 자산</td><td><span class="sym">Σ A<sub>i</sub></span></td><td></td><td>투자 실행액</td>
+    <td class="f">Σ A<sub>i</sub><br>i 는 정산예정일이 d 보다 뒤인 채권</td></tr>
+<tr><td>투자 자산</td><td><span class="sym">EC</span></td><td></td><td>순현금</td>
+    <td class="f">d 시점 쿠콘 가상계좌의 현금 잔액</td></tr>
+<tr><td>투자 자산</td><td><span class="sym">Σ A<sub>i</sub> + EC</span></td><td></td><td>조회시점의 투자자산</td>
+    <td class="f">Σ A<sub>i</sub> + EC<br>i 는 정산예정일이 d 보다 뒤인 채권</td></tr>
+<tr><td>투자 자산</td><td><span class="sym new">D</span></td><td><span class="sym old">wD</span></td>
+    <td>가중평균 금융일수</td>
+    <td class="f">D = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ Σ A<sub>i</sub><br>i 는 대상정산금채권 전체</td></tr>
+<tr><td>투자 자산</td><td><span class="sym">LR</span></td><td></td><td>입금부족률</td>
+    <td class="f">LR = Σ L<sub>i</sub> ÷ Σ A<sub>i</sub><br>i 는 선정산일이 d 의 20일 전부터 11일 전까지인 채권</td></tr>
+<tr><td>투자 자산</td><td><span class="sym">Y<sub>r</sub></span></td><td></td><td>예상 연환산수익률</td>
+    <td class="f">Y<sub>r</sub> = r × 365 ÷ D</td></tr>
+
+<tr><td>투자 수익</td><td><span class="sym">PA</span></td><td></td><td>조회대상기간의 투자실행금</td>
+    <td class="f">PA = Σ A<sub>i</sub><br>i 는 정산예정일이 P 안에 든 채권</td></tr>
+<tr><td>투자 수익</td><td><span class="sym">PM</span></td><td></td><td>조회대상기간의 투자수익</td>
+    <td class="f">PM = Σ M<sub>i</sub> &nbsp; i ∈ P</td></tr>
+<tr><td>투자 수익</td><td><span class="sym">PB</span></td><td></td><td>조회대상기간의 상환액</td>
+    <td class="f">PB = Σ B<sub>i</sub> &nbsp; i ∈ P</td></tr>
+<tr><td>투자 수익</td><td><span class="sym">PMR</span></td><td></td><td>조회대상기간의 투자수익율</td>
+    <td class="f">PMR = PM ÷ PA</td></tr>
+<tr><td>투자 수익</td><td><span class="sym new">PD</span></td><td><span class="sym old">PwD</span></td>
+    <td>조회대상기간의 가중평균 금융일수</td>
+    <td class="f">PD = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ PA &nbsp; i ∈ P</td></tr>
+<tr><td>투자 수익</td><td><span class="sym">PEC</span></td><td></td><td>조회대상기간의 누적 순현금</td>
+    <td class="f">PEC = P 안 각 날의 EC 를 더한 값</td></tr>
+<tr><td>투자 수익</td><td><span class="sym new">PY<sub>a</sub></span></td><td><span class="sym old">PY<sub>MR</sub></span></td>
+    <td>조회대상기간의 투자실행금액 대비 연환산수익률</td>
+    <td class="f">PY<sub>a</sub> = PMR × 365 ÷ PD</td></tr>
+<tr><td>투자 수익</td><td><span class="sym new">PY<sub>t</sub></span></td><td><span class="sym old">wPY<sub>MR</sub></span></td>
+    <td>조회대상기간의 투자자산 대비 연환산수익률</td>
+    <td class="f">PY<sub>t</sub> = PY<sub>a</sub> × PA ÷ (PA + PEC)</td></tr>
+</tbody></table></div>
+
+<p class="note">일별 표의 한 행은 P 가 1일인 경우다. 주별은 7일, 월별은 그 달의 일수다.</p>
+
+<h2>기호 변경내역</h2>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:22%">변경점</th><th style="width:38%">기존</th><th>개선</th></tr></thead>
+<tbody>
+<tr><td><span class="sym">w</span> 삭제</td>
+    <td><span class="sym old">wD</span> <span class="sym old">PwD</span>
+        <span class="sym old">wPY<sub>MR</sub></span></td>
+    <td><span class="sym new">D</span> <span class="sym new">PD</span>
+        <span class="sym new">PY<sub>t</sub></span></td></tr>
+<tr><td><span class="sym">d−1</span> 제거</td>
+    <td><span class="sym old">A<sub>d−1</sub></span> <span class="sym old">M<sub>d−1</sub></span>
+        <span class="sym old">B<sub>d−1</sub></span> <span class="sym old">MR<sub>d−1</sub></span>
+        <span class="sym old">wD<sub>d−1</sub></span> <span class="sym old">EC<sub>d−1</sub></span>
+        <span class="sym old">Y<sub>MR,d−1</sub></span></td>
+    <td>조회기간 <span class="sym new">P</span> 를 1일로 잡아 대신한다</td></tr>
+<tr><td><span class="sym">d</span> 재정의</td>
+    <td><span class="sym old">D</span> 현재일자 · <span class="sym old">D−1</span> 전일자</td>
+    <td><span class="sym new">d</span> 기준일 하나</td></tr>
+<tr><td>연환산수익률 기호 변경</td>
+    <td><span class="sym old">PY<sub>MR</sub></span> <span class="sym old">wPY<sub>MR</sub></span></td>
+    <td><span class="sym new">PY<sub>a</sub></span> <span class="sym new">PY<sub>t</sub></span></td></tr>
+</tbody></table></div>
+
+</div>

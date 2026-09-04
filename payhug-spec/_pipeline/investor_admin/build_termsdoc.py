@@ -24,6 +24,12 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 PIPE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, PIPE)
+import alias_table
+import subscript
+import termsfacts
+import testcase_table
+
 SEED = os.path.join(PIPE, "termsdoc_seed.json")
 OUTDIR = os.path.expanduser("~/Downloads/payhug_용어정의서")
 
@@ -60,6 +66,17 @@ def font(run, name=HANGUL, size=None, bold=None, color=None):
     return run
 
 
+def write(p, text, name=HANGUL, size=None, bold=None, color=None):
+    """마크다운 아래첨자를 run 으로 쪼개 넣는다 — `_{d−1}` 는 subscript run 이 된다."""
+    for chunk, sub in subscript.runs(text):
+        if not chunk:
+            continue
+        r = font(p.add_run(chunk), name=name, size=size, bold=bold, color=color)
+        if sub:
+            r.font.subscript = True
+    return p
+
+
 def para(doc, text="", size=10.5, bold=False, color=INK, name=HANGUL,
          before=0, after=4, indent=0, line=1.5, align=None):
     p = doc.add_paragraph()
@@ -72,7 +89,7 @@ def para(doc, text="", size=10.5, bold=False, color=INK, name=HANGUL,
     if align is not None:
         p.alignment = align
     if text:
-        font(p.add_run(text), name=name, size=size, bold=bold, color=color)
+        write(p, text, name=name, size=size, bold=bold, color=color)
     return p
 
 
@@ -89,14 +106,14 @@ def cell_text(cell, text, size=9.5, bold=False, color=INK, name=HANGUL):
     p.paragraph_format.space_before = Pt(2)
     p.paragraph_format.space_after = Pt(2)
     p.paragraph_format.line_spacing = 1.3
-    font(p.add_run(text), name=name, size=size, bold=bold, color=color)
+    write(p, text, name=name, size=size, bold=bold, color=color)
 
 
 # ══════════════════════════════════════════════════════════════════
 #  조각
 # ══════════════════════════════════════════════════════════════════
 
-STATUS_COLOR = {"확정": INK, "대기": WAIT, "확인필요": CHECK}
+STATUS_COLOR = {"확정": INK, "대기": WAIT, "미확정": CHECK}
 
 
 def kv_table(doc, rows):
@@ -127,6 +144,72 @@ def head(doc, seed):
             ("%g" % (sc.get("할인율", 0) * 100)))),
         ("용도", seed.get("meeting", "")),
     ])
+
+
+def alias_block(doc):
+    """기존 표기 → 바뀐 기호 대조표. 표만 넣는다."""
+    para(doc, alias_table.TITLE, size=14, bold=True, before=10, after=6)
+    t = doc.add_table(rows=1, cols=3)
+    t.style = "Table Grid"
+    t.alignment = WD_TABLE_ALIGNMENT.LEFT
+    widths = (3.6, 3.6, 8.8)
+    for i, (label, w) in enumerate(zip(alias_table.HEAD, widths)):
+        t.rows[0].cells[i].width = Cm(w)
+        shade(t.rows[0].cells[i], "ECEEF2")
+        cell_text(t.rows[0].cells[i], label, bold=True, color=MUTE)
+    for row in alias_table.rows():
+        r = t.add_row()
+        for i, v in enumerate(row):
+            r.cells[i].width = Cm(widths[i])
+            cell_text(r.cells[i], v, name=(MONO if i < 2 else HANGUL))
+    para(doc, "", after=8)
+
+
+def rounding_block(doc, seed):
+    """반올림 자리 — dm_0901/rounding_rule_0901.md 를 용어로 등재한 자리."""
+    rd = seed.get("rounding")
+    if not rd:
+        return
+    para(doc, rd["title"], size=14, bold=True, before=10, after=6)
+    t = doc.add_table(rows=1, cols=2)
+    t.style = "Table Grid"
+    t.alignment = WD_TABLE_ALIGNMENT.LEFT
+    for i, (label, w) in enumerate((("갈래", 3.2), ("규칙", 12.8))):
+        t.rows[0].cells[i].width = Cm(w)
+        shade(t.rows[0].cells[i], "ECEEF2")
+        cell_text(t.rows[0].cells[i], label, bold=True, color=MUTE)
+    for a, b in rd["rows"]:
+        r = t.add_row()
+        r.cells[0].width = Cm(3.2)
+        r.cells[1].width = Cm(12.8)
+        cell_text(r.cells[0], a, bold=True)
+        cell_text(r.cells[1], b)
+    para(doc, "", after=8)
+
+
+def testcase_block(doc):
+    """테스트 케이스 — 절 제목·표·값 전부 testcase_table 한 곳에서 온다."""
+    doc.add_page_break()
+    para(doc, testcase_table.TITLE, size=15, bold=True, before=0, after=6)
+    for sec in testcase_table.sections():
+        para(doc, "%d) %s" % (sec["no"], sec["title"]),
+             size=11.5, bold=True, before=8, after=4)
+        for tb in sec["tables"]:
+            t = doc.add_table(rows=1, cols=len(tb["head"]))
+            t.style = "Table Grid"
+            t.alignment = WD_TABLE_ALIGNMENT.LEFT
+            for i, (label, w) in enumerate(zip(tb["head"], tb["w"])):
+                t.rows[0].cells[i].width = Cm(w)
+                shade(t.rows[0].cells[i], "ECEEF2")
+                cell_text(t.rows[0].cells[i], label, size=9, bold=True, color=MUTE)
+            for row in tb["rows"]:
+                r = t.add_row()
+                for i, v in enumerate(row):
+                    r.cells[i].width = Cm(tb["w"][i])
+                    # 값이 없으면 비운다. 대시를 채우면 없는 값이 있는 것처럼 읽힌다.
+                    cell_text(r.cells[i], v or "", size=9,
+                              name=(MONO if i in tb["mono"] else HANGUL))
+            para(doc, "", after=6)
 
 
 def pending_block(doc, seed):
@@ -182,7 +265,7 @@ def item_block(doc, seed, it):
     p.paragraph_format.space_after = Pt(3)
     p.paragraph_format.line_spacing = 1.3
     font(p.add_run("%02d  " % no), size=12, bold=True, color=MUTE)
-    font(p.add_run(term), size=13.5, bold=True)
+    write(p, term, size=13.5, bold=True)
 
     q = doc.add_paragraph()
     q.paragraph_format.left_indent = Cm(0.6)
@@ -248,6 +331,8 @@ def build(seed):
         rf.set(qn(axis), HANGUL)
 
     head(doc, seed)
+    alias_block(doc)
+    rounding_block(doc, seed)
 
     items = sorted(seed["items"], key=lambda x: x["no"])
     for img in (1, 2):
@@ -260,6 +345,7 @@ def build(seed):
         for it in group:
             item_block(doc, seed, it)
 
+    testcase_block(doc)
     return doc
 
 
@@ -267,7 +353,8 @@ def main():
     if not os.path.exists(SEED):
         sys.exit("원고 없음 — %s" % SEED)
     with open(SEED, encoding="utf-8") as f:
-        seed = json.load(f)
+        # 원고의 `{{키}}` 자리에 원장 값을 끼운다 — termsfacts.py
+        seed = termsfacts.resolve(json.load(f))
 
     os.makedirs(OUTDIR, exist_ok=True)
     stamp = os.environ.get("TERMSDOC_STAMP") or date.today().strftime("%Y%m%d")

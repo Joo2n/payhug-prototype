@@ -1,22 +1,22 @@
 {
- "total": 82,
- "fail": 0,
+ "total": 60,
+ "fail": 2,
  "verdict": "(가) 표기 정리 — 산식·표본 구간 변경 없음 (회의 2026-08-31)",
  "bySection": {
   "0": {
    "검사": 2,
-   "FAIL": 0
+   "FAIL": 1
   },
   "1": {
    "검사": 10,
    "FAIL": 0
   },
   "2": {
-   "검사": 21,
+   "검사": 15,
    "FAIL": 0
   },
   "3": {
-   "검사": 14,
+   "검사": 8,
    "FAIL": 0
   },
   "4": {
@@ -24,11 +24,11 @@
    "FAIL": 0
   },
   "5": {
-   "검사": 5,
-   "FAIL": 0
+   "검사": 1,
+   "FAIL": 1
   },
   "6": {
-   "검사": 22,
+   "검사": 16,
    "FAIL": 0
   }
  },
@@ -70,8 +70,8 @@
   {
    "sec": "0",
    "name": "헤드리스 크롬 조작 (app · proto)",
-   "pass": true,
-   "detail": "화면 2곳"
+   "pass": false,
+   "detail": "OSError: 드라이버 예외: Error: proto 현황표에 입금부족률 툴팁 앵커가 없다\n    at drive (/private/var/folders/0b/d63qdxfx0plfncyj_dwfmgb40000gn/T/phsf-driver-8a8663to.js:110:19)\n    at async main (/private/var/folders/0b/d63qdxfx0plfncyj_dwfmgb40000gn/T/phsf-driver-8a8663to.js:193:52)"
   },
   {
    "sec": "1",
@@ -197,13 +197,13 @@
    "sec": "2",
    "name": "S 모집단 툴팁을 가진 화면 파일 0건 아님",
    "pass": true,
-   "detail": "6건 ['app.html', 'invest-assets--cert-confirm.html', 'invest-assets--download.html', 'invest-assets--empty.html', 'invest-assets.html', 'index.html']"
+   "detail": "5건 ['app.html', 'invest-assets--cert-confirm.html', 'invest-assets--download.html', 'invest-assets--empty.html', 'invest-assets.html']"
   },
   {
    "sec": "2",
-   "name": "화면 원천 6건이 전부 구간·건수를 말한다",
+   "name": "화면 원천 5건이 전부 구간·건수를 말한다",
    "pass": true,
-   "detail": "어긋남 [] · 기대 「선정산일 d-20 ~ d-11 표본」 3,200건"
+   "detail": "어긋남 [] · 기대 「선정산일이 기준일 20일 전 ~ 11일 전인 표본」 3,200건"
   },
   {
    "sec": "2",
@@ -221,43 +221,7 @@
    "sec": "2",
    "name": "엑셀 S 셀이 두 합의 비 꼴 (평균 아님)",
    "pass": true,
-   "detail": "분자 =SUMPRODUCT(채권!$L$2:$L$1281-채권!$M$2:$M$1281,채권!$T$2:$T$1281) | 분모 =SUMPRODUCT(채권!$J$2:$J$1281,채권!$T$2:$T$1281) | 비 =IF(B49=0,0,B48/B49*100)"
-  },
-  {
-   "sec": "2",
-   "name": "app 열머리에 포인터를 올리면 툴팁이 뜬다",
-   "pass": true,
-   "detail": "좌표 {'x': 910, 'y': 316} · {'text': '선정산일 d-20 ~ d-11 표본채권 건수3,200건표기 d미확정미확정대표 재전달 대기', 'display': 'block', 'w': 256, 'h': 107}"
-  },
-  {
-   "sec": "2",
-   "name": "app 포인터를 치우면 툴팁이 숨는다",
-   "pass": true,
-   "detail": "none"
-  },
-  {
-   "sec": "2",
-   "name": "app 툴팁 문언이 구간·건수",
-   "pass": true,
-   "detail": "선정산일 d-20 ~ d-11 표본채권 건수3,200건표기 d미확정미확정대표 재전달 대기"
-  },
-  {
-   "sec": "2",
-   "name": "proto 열머리에 포인터를 올리면 툴팁이 뜬다",
-   "pass": true,
-   "detail": "좌표 {'x': 908, 'y': 316} · {'text': '선정산일 d-20 ~ d-11 표본채권 건수3,200건표기 d미확정미확정대표 재전달 대기', 'display': 'block', 'w': 256, 'h': 107}"
-  },
-  {
-   "sec": "2",
-   "name": "proto 포인터를 치우면 툴팁이 숨는다",
-   "pass": true,
-   "detail": "none"
-  },
-  {
-   "sec": "2",
-   "name": "proto 툴팁 문언이 구간·건수",
-   "pass": true,
-   "detail": "선정산일 d-20 ~ d-11 표본채권 건수3,200건표기 d미확정미확정대표 재전달 대기"
+   "detail": "분자 =SUMPRODUCT(채권!$L$2:$L$1281-채권!$M$2:$M$1281,채권!$T$2:$T$1281) | 분모 =SUMPRODUCT(채권!$J$2:$J$1281,채권!$T$2:$T$1281) | 비 =IF(B50=0,0,ROUND(B49/B50*100,6))"
   },
   {
    "sec": "3",
@@ -306,42 +270,6 @@
    "name": "화면 표기 2자리 != 방식2 (정산예정일 축)",
    "pass": true,
    "detail": "facts 0.07 · 방식2 0.10"
-  },
-  {
-   "sec": "3",
-   "name": "app 현황표 투자실행액 행 S = 원장 표기",
-   "pass": true,
-   "detail": "0.07% · 기대 0.07%"
-  },
-  {
-   "sec": "3",
-   "name": "app 현황표 순현금 행 S = -",
-   "pass": true,
-   "detail": "-"
-  },
-  {
-   "sec": "3",
-   "name": "app 가맹점표 S 8행 전건 = 원장",
-   "pass": true,
-   "detail": "화면 [('김성호떡볶이 본점', '0.07%'), ('초록치킨 서초점', '0.10%'), ('김밥나라', '0.09%')] · 원장 [('김성호떡볶이 본점', '0.07%'), ('초록치킨 서초점', '0.10%'), ('김밥나라', '0.09%')]"
-  },
-  {
-   "sec": "3",
-   "name": "proto 현황표 투자실행액 행 S = 원장 표기",
-   "pass": true,
-   "detail": "0.07% · 기대 0.07%"
-  },
-  {
-   "sec": "3",
-   "name": "proto 현황표 순현금 행 S = -",
-   "pass": true,
-   "detail": "-"
-  },
-  {
-   "sec": "3",
-   "name": "proto 가맹점표 S 8행 전건 = 원장",
-   "pass": true,
-   "detail": "화면 [('김성호떡볶이 본점', '0.07%'), ('초록치킨 서초점', '0.10%'), ('김밥나라', '0.09%')] · 원장 [('김성호떡볶이 본점', '0.07%'), ('초록치킨 서초점', '0.10%'), ('김밥나라', '0.09%')]"
   },
   {
    "sec": "4",
@@ -393,33 +321,9 @@
   },
   {
    "sec": "5",
-   "name": "화면 2주소 조작",
-   "pass": true,
-   "detail": "['app', 'proto']"
-  },
-  {
-   "sec": "5",
-   "name": "화면 콘솔 오류 0건",
-   "pass": true,
-   "detail": "[]"
-  },
-  {
-   "sec": "5",
-   "name": "다운로드 폴더 오염 0건 (chrome_dl 임시자리)",
-   "pass": true,
-   "detail": "[]"
-  },
-  {
-   "sec": "5",
-   "name": "app 뷰포트 1440x1200 (macOS 87px 보정)",
-   "pass": true,
-   "detail": "{'w': 1440, 'h': 1200} · 창 1440x1287"
-  },
-  {
-   "sec": "5",
-   "name": "proto 뷰포트 1440x1200 (macOS 87px 보정)",
-   "pass": true,
-   "detail": "{'w': 1440, 'h': 1200} · 창 1440x1287"
+   "name": "헤드리스 크롬 조작",
+   "pass": false,
+   "detail": "드라이버 결과 없음"
   },
   {
    "sec": "6",
@@ -479,19 +383,19 @@
    "sec": "6",
    "name": "툴팁 판독기가 D-10 치환본을 전건 잡는다",
    "pass": true,
-   "detail": "6/6건"
+   "detail": "5/5건"
   },
   {
    "sec": "6",
    "name": "툴팁 판독기가 건수 치환본을 전건 잡는다",
    "pass": true,
-   "detail": "6/6건"
+   "detail": "5/5건"
   },
   {
    "sec": "6",
    "name": "엑셀 판독기가 원본을 통과시킨다",
    "pass": true,
-   "detail": "=IF(B49=0,0,B48/B49*100)"
+   "detail": "=IF(B50=0,0,ROUND(B49/B50*100,6))"
   },
   {
    "sec": "6",
@@ -510,42 +414,6 @@
    "name": "엑셀 판독기가 den 를 AVERAGE 로 바꾼 사본을 잡는다",
    "pass": true,
    "detail": "den = =AVERAGE(채권!J2:J1281)"
-  },
-  {
-   "sec": "6",
-   "name": "app 가맹점표 판독기가 원본을 통과시킨다",
-   "pass": true,
-   "detail": "[('김성호떡볶이 본점', '0.07%'), ('초록치킨 서초점', '0.10%'), ('김밥나라', '0.09%'), ('골목냉면', '0.08%'), ('달빛곱창 홍대점', '0.06%'), ('청춘포차 신촌점'"
-  },
-  {
-   "sec": "6",
-   "name": "app 가맹점표 판독기가 한 칸 치환본을 잡는다",
-   "pass": true,
-   "detail": "심은 값 0.10%"
-  },
-  {
-   "sec": "6",
-   "name": "app 가맹점표 판독기가 S 열 삭제본을 잡는다",
-   "pass": true,
-   "detail": "S 열이 사라지면 0건 통과가 아니라 실패"
-  },
-  {
-   "sec": "6",
-   "name": "proto 가맹점표 판독기가 원본을 통과시킨다",
-   "pass": true,
-   "detail": "[('김성호떡볶이 본점', '0.07%'), ('초록치킨 서초점', '0.10%'), ('김밥나라', '0.09%'), ('골목냉면', '0.08%'), ('달빛곱창 홍대점', '0.06%'), ('청춘포차 신촌점'"
-  },
-  {
-   "sec": "6",
-   "name": "proto 가맹점표 판독기가 한 칸 치환본을 잡는다",
-   "pass": true,
-   "detail": "심은 값 0.10%"
-  },
-  {
-   "sec": "6",
-   "name": "proto 가맹점표 판독기가 S 열 삭제본을 잡는다",
-   "pass": true,
-   "detail": "S 열이 사라지면 0건 통과가 아니라 실패"
   },
   {
    "sec": "6",

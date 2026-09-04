@@ -90,7 +90,7 @@ async function main(){
 
   /* 기호 검색 */
   R.search = {};
-  for (const q of ['PSA','SB','SMR','W금융일수','ty수익율','④','순현금']) {
+  for (const q of ['PA','SB','SMR','W금융일수','ty수익율','④','순현금']) {
     R.search[q] = await evalJS(`var i=document.getElementById('q'); i.value=${JSON.stringify(q)};
       i.dispatchEvent(new Event('input')); return document.querySelectorAll('.term:not(.hidden)').length;`);
   }

@@ -4,12 +4,12 @@
 검색 카드(프리셋 줄·날짜 줄·집계 단위 토글), 현황 카드 값, 표 제목·열머리·본문·합계,
 표 엑셀 링크를 그 상태 그대로 맞춘다.
 
-  invest-profit.html              일별 · 일주일  2026-08-21 ~ 2026-08-27 · 7행
-  invest-profit--weekly.html      주별 · 4주     2026-08-03 ~ 2026-08-27 · 4행
-  invest-profit--monthly.html     월별 · 6개월   2026-03-01 ~ 2026-08-27 · 6행
-  invest-profit--empty.html       일별 · 직접입력 2026-02-01 ~ 2026-02-07 · 0행
+  invest-profit.html              일별 · 일주일   프리셋 week
+  invest-profit--weekly.html      주별 · 4주      프리셋 w4
+  invest-profit--monthly.html     월별 · 6개월    프리셋 m6
+  invest-profit--empty.html       일별 · 직접입력 원장 밖 구간 · 0행
 
-프리셋 종료일은 여섯 묶음 전부 기준일 2026-08-27 이다 — 통합본 PRESET_RANGE 와 같은 값이다.
+프리셋 종료일은 여섯 묶음 전부 기준일이다. 통합본 PRESET_RANGE 와 같은 값이다.
 
 주별 낱장은 월별 낱장을 본으로 삼아 만든다 — 두 화면이 버킷 표라는 점에서 구조가 같다.
 """
@@ -36,18 +36,6 @@ DATES = ('      <div class="filter-row">\n'
          '        <button class="btn btn-primary">검색</button>\n'
          '        <button class="btn btn-outline">초기화</button>\n'
          '      </div>\n')
-
-# 집계 단위별 — (표 제목, 열머리, 표 엑셀 파일, 현황 카드 엑셀 파일)
-#   현황 카드도 집계 단위마다 기간이 다르다. 카드가 4주를 말하는데 링크가 일주일 파일이면
-#   화면과 파일이 다른 기간을 말한다 — 그래서 두 링크를 따로 맞춘다.
-GRAN = {
-    'daily':   ('일별 투자수익', '정산예정일', '일별투자수익_2026-08-21_2026-08-27.xlsx',
-                '투자수익현황_2026-08-21_2026-08-27.xlsx'),
-    'weekly':  ('주별 투자수익', '정산예정주', '주별투자수익_2026-08-03_2026-08-27.xlsx',
-                '투자수익현황_2026-08-03_2026-08-27.xlsx'),
-    'monthly': ('월별 투자수익', '정산예정월', '월별투자수익_2026-03-01_2026-08-27.xlsx',
-                '투자수익현황_2026-03-01_2026-08-27.xlsx'),
-}
 
 BLOCK = re.compile(r'    <div class="search-bar">.*?\n    </div>\n', re.S)
 TBODY = re.compile(r'          <tbody>\n.*?\n          </tfoot>\n', re.S)
@@ -109,7 +97,19 @@ from decimal import Decimal as D                                  # noqa: E402
 import roster16_model as RM                                       # noqa: E402
 import build_xlsx as BX                                           # noqa: E402
 
-WEEK_RANGE = ('2026-08-03', '2026-08-27')
+# 집계 단위별 — (표 제목, 열머리, 표 엑셀 파일, 현황 카드 엑셀 파일)
+#   현황 카드도 집계 단위마다 기간이 다르다. 카드가 4주를 말하는데 링크가 일주일 파일이면
+#   화면과 파일이 다른 기간을 말한다 — 그래서 두 링크를 따로 맞춘다.
+_P = {p[0]: p for p in BX.PRESETS}          # week · month · w4 · w12 · m3 · m6
+PRE = {'daily': _P['week'], 'weekly': _P['w4'], 'monthly': _P['m6']}
+_RANGE = {g: (v[3], v[4]) for g, v in PRE.items()}
+_LABEL = {g: v[2] for g, v in PRE.items()}
+
+GRAN = {g: (BX.GRAN_NAME[v[1]] + ' 투자수익', BX.GRAN_COL[v[1]],
+            BX.profit_file(v[1], v[3], v[4]), BX.status_file(v[3], v[4]))
+        for g, v in PRE.items()}
+
+WEEK_RANGE = _RANGE['weekly']
 # 마지막 주는 기준일에서 끊긴 부분 주다 — 라벨도 종료일까지만 적는다(통합본 rollupWeeks 와 같다).
 _wk = BX.rollup(WEEK_RANGE[0], WEEK_RANGE[1], BX._mon_start, BX._week_label(WEEK_RANGE[1]))
 _wtot = BX.bucket(_wk, '합계')
@@ -126,17 +126,17 @@ def _foot(sm):
 
 
 f = lambda n: format(n, ',')
-_wkasset = RM.ty_asset(_wtot['ty'], _wtot['exec'],
+_wkasset = RM.ty_asset(_wtot['ty'], _wtot['wx'],
                        len([r for r in RM.LEDGER if WEEK_RANGE[0] <= r['d'] <= WEEK_RANGE[1]]))
 
-# 화면별 (검색대상기간 라벨, 구간, 표 행, 표 합계, 카드 투자실행금·투자수익·④·⑤)
+# 화면별 (검색대상기간 라벨, 구간, 표 행, 표 합계, 카드 투자실행금·투자수익·④·⑤, Σ(Ai x Di))
 VIEW = {
-    'daily':   ('일주일', '2026-08-21 ~ 2026-08-27', _fmt(RM.DAILY), _foot(RM.DSUM),
-                RM.DSUM['exec'], RM.DSUM['profit'], RM.DSUM['ty'], RM.DSUM['tyAsset']),
-    'weekly':  ('4주', '%s ~ %s' % WEEK_RANGE, _fmt(_wk), _foot(_wtot),
-                _wtot['exec'], _wtot['profit'], RM.r2(_wtot['ty']), _wkasset),
-    'monthly': ('6개월', '2026-03-01 ~ 2026-08-27', _fmt(RM.MONTHLY), _foot(RM.MSUM),
-                RM.MSUM['exec'], RM.MSUM['profit'], RM.MSUM['ty'], RM.MSUM['tyAsset']),
+    'daily':   (_LABEL['daily'], '%s ~ %s' % _RANGE['daily'], _fmt(RM.DAILY), _foot(RM.DSUM),
+                RM.DSUM['exec'], RM.DSUM['profit'], RM.DSUM['ty'], RM.DSUM['tyAsset'], RM.DSUM['ad']),
+    'weekly':  (_LABEL['weekly'], '%s ~ %s' % WEEK_RANGE, _fmt(_wk), _foot(_wtot),
+                _wtot['exec'], _wtot['profit'], RM.r2(_wtot['ty']), _wkasset, int(_wtot['wx'])),
+    'monthly': (_LABEL['monthly'], '%s ~ %s' % _RANGE['monthly'], _fmt(RM.MONTHLY), _foot(RM.MSUM),
+                RM.MSUM['exec'], RM.MSUM['profit'], RM.MSUM['ty'], RM.MSUM['tyAsset'], RM.MSUM['ad']),
 }
 
 # Ty 두 칸의 ty-label 은 put_tips 가 툴팁 마크업으로 채운다. 라벨 안쪽을 고정 문자열로 잡으면
@@ -161,23 +161,28 @@ TY_LABEL = re.compile(r'<div class="ty-label">.*?</div>', re.S)
 # 대표 DM 2026-08-31 16:45 두 줄 — 통합본과 같은 마크업. 항등식은 근사식이라 두 값을 나란히 둔다.
 _R = float(RM.RPCT)
 TIP4 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
-        '<span class="tip-panel">PSMR × 365 ÷ PSD'
-        '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>'
-        '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>'
+        '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산수익률 (관찰된 값) · PMR × 365 ÷ PD'
+        '<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = %(pmr)s%%</span></span>'
+        '<span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · %(pm)s원</span></span>'
+        '<span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · %(pa)s원</span></span>'
+        '<span class="tip-row"><span>PD</span><span class="tip-green">기간 가중평균 금융일수 · %(pd)s일</span></span>'
         '<span class="tip-row"><span>항등식</span><span class="tip-green">'
         '할인율 − max(0, 미지급금 − 과지급금) ÷ 투자실행액</span></span>'
         '<span class="tip-row"><span>부족액 0</span><span class="tip-green">'
-        '할인율 %.2f%% ↔ SMR %.6f%% · 미확정</span></span>'
-        '<span class="tip-row sum"><span>대표 DM 16:45</span><span>실적치 · SMR 계통</span></span>'
-        '</span></span></div>' % (_R, _R / (1 - _R / 100.0)))
-# 대표 재전달 대기 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW · tyTh() 와 같은 마크업이다.
-# 2026-08-31 회의에서 ⑤ 는 「수식 새로 작성해 전달」, ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」으로 끝났다.
+        '할인율 %(r)s%% ↔ PMR %(pmr0)s%% · 미확정</span></span>'
+        '<span class="tip-row sum"><span>대표 DM 16:45</span><span>관찰된 값 · PMR 계통</span></span>'
+        '</span></span></div>')
+TIP4_FIX = dict(r='%.2f' % _R, pmr0='%.6f' % (_R / (1 - _R / 100.0)))
+# 미확정 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW · PEND5_ROW · tyTh() 와 같은 마크업이다.
+# 2026-08-31 회의에서 ③ 은 칸 미지목, ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」으로 끝나 대표 재전달 대기다.
+# ⑤ 는 원문 산식이 「수식 오류」로 닫혀 우리 확정안(daily_ledger.TY5_EXPR)을 넣고 대표 확인을 기다린다.
 PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
 PEND_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>'
-TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>'
+PEND5_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 확인 대기</span></span>'
+TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산수익률</span>'
          '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
          '<span class="tip-row"><span>번호</span><span class="tip-green">'
-         '일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>'
+         '일별 표 열 ③투자실행금 ④투자 수익 ⑤가중평균 금융일수</span></span>'
          '<span class="tip-row"><span>행</span><span class="tip-green">'
          '정산예정일이 그 날짜인 대상정산금채권 집합</span></span>'
          + PEND_ROW +
@@ -190,11 +195,12 @@ THIRD_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor"
             + PEND_ROW +
             '</span></span>' + PEND_BADGE + '</th>')
 TIP5 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
-        '<span class="tip-panel">(투자실행금액 대비 × PSA) ÷ (PSA + PSC)'
-        '<span class="tip-row"><span>PSA</span><span class="tip-green">%s원</span></span>'
-        '<span class="tip-row"><span>PSC</span><span class="tip-green">%s원</span></span>'
-        '<span class="tip-row sum"><span>EC %d일 합</span><span>기간 순현금 합계</span></span>'
-        + PEND_ROW +
+        '<span class="tip-panel">PY<sub>t</sub> · 투자자산 대비 연환산수익률 (관찰된 값) · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
+        '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산수익률 (관찰된 값) · %(ty4)s%%</span></span>'
+        '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">%(ad)s원</span></span>'
+        '<span class="tip-row"><span>PEC</span><span class="tip-green">기간 순현금 · %(pec)s원</span></span>'
+        '<span class="tip-row sum"><span>EC</span><span>순현금 · %(ec)s원 × %(ecd)d일</span></span>'
+        + PEND5_ROW +
         '</span></span>' + PEND_BADGE + '</div>')
 
 
@@ -202,10 +208,10 @@ def put_ty_th(s):
     """⑥ 열머리 — 통합본 tyTh() 와 같은 자리·같은 마크업. 이미 갈아 끼운 낱장은 그대로 둔다.
 
     열머리 안쪽을 통째로 잡으므로 여러 번 돌려도 겹쳐 붙지 않는다."""
-    out, n = re.subn(r'<th class="num">Ty수익율</th>|'
-                     r'<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>.*?</th>',
+    out, n = re.subn(r'<th class="num">연환산수익률</th>|'
+                     r'<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산수익률</span>.*?</th>',
                      lambda _m: TY_TH, s, flags=re.S)
-    assert n == 1, 'Ty수익율 열머리 %d건 — 1건이라야 한다' % n
+    assert n == 1, '연환산수익률 열머리 %d건 — 1건이라야 한다' % n
     return out
 
 
@@ -219,8 +225,10 @@ def put_third_th(s):
     return out
 
 
-def put_tips(s, psa, ec_days):
-    tips = [TIP4, TIP5 % (f(psa), f(RM.CASH * ec_days), ec_days)]
+def put_tips(s, psa, psm, ty4, pd, ad, ec_days):
+    pmr = RM.r6(D(psm) / D(psa) * D(100)) if psa else 0
+    tips = [TIP4 % dict(TIP4_FIX, pmr=pmr, pm=f(psm), pa=f(psa), pd=pd),
+            TIP5 % dict(ty4=ty4, ad=f(ad), pec=f(RM.CASH * ec_days), ec=f(RM.CASH), ecd=ec_days)]
     n = [0]
     def take(_m):
         i = n[0]; n[0] += 1
@@ -231,7 +239,7 @@ def put_tips(s, psa, ec_days):
 
 
 def put_card(s, v):
-    lbl, sub, _rows, _foot_, ex, pf, ty4, ty5 = v
+    lbl, sub, _rows, _foot_, ex, pf, ty4, ty5, _ad = v
     out, n = CARD.subn(lambda m: (m.group(1) + lbl + m.group(2) + sub + m.group(3) + f(ex)
                                   + m.group(4) + f(pf) + m.group(5) + str(ty4) + m.group(6)
                                   + str(ty5) + m.group(7)), s, count=1)
@@ -240,12 +248,12 @@ def put_card(s, v):
 
 
 PLAN = [
-    ('invest-profit.html',             DAILY_PRE(True),  '2026-08-21', '2026-08-27', 'daily'),
+    ('invest-profit.html',             DAILY_PRE(True),  *_RANGE['daily'],   'daily'),
     ('invest-profit--empty.html',      DAILY_PRE(False), '2026-02-01', '2026-02-07', 'daily'),
     ('invest-profit--monthly.html',    [('3개월', False), ('6개월', True)],
-                                                         '2026-03-01', '2026-08-27', 'monthly'),
+                                                         *_RANGE['monthly'], 'monthly'),
     ('invest-profit--weekly.html',     [('4주', True), ('12주', False)],
-                                                         '2026-08-03', '2026-08-27', 'weekly'),
+                                                         *_RANGE['weekly'],  'weekly'),
 ]
 
 # 낱장별 상태 이름 — 문서 제목 · 제목줄 뱃지가 같은 값을 쓴다
@@ -335,9 +343,10 @@ def one(name, pre, frm, to, gran):
     if name != 'invest-profit--empty.html':
         s = put_card(s, VIEW[gran])
         s = TBODY.sub(lambda m: table_block(VIEW[gran][2], VIEW[gran][3]), s, count=1)
-        s = put_tips(s, VIEW[gran][4], ec_days(frm, to))
+        v = VIEW[gran]
+        s = put_tips(s, v[4], v[5], v[6], v[3][3], v[8], ec_days(frm, to))
     else:
-        s = put_tips(s, 0, ec_days(frm, to))
+        s = put_tips(s, 0, 0, 0, 0, 0, ec_days(frm, to))
 
     # 표 제목·열머리·엑셀 링크 — 그 집계 단위 것으로
     title, col, xls, xls_status = GRAN[gran]

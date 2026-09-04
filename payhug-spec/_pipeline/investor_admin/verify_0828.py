@@ -261,6 +261,9 @@ UI_ORIG = [
     # 원본은 홑따옴표가 `&lsquo;`/`&rsquo;` 라 우리 문서의 ASCII 따옴표와 글자만 다르다.
     ('재양도 합의서가 \'투자자 없음\' 버전으로 작성됩니다',
      'payhug-admin-web/app/merchants/[id]/page.tsx:957'),
+    # 로그인 화면을 실물대로 되돌리며(2026-09-04 step7 로그인) 들어온 안내 상자 원문.
+    ('이 페이지는 관리자 전용입니다.',
+     'payhug-admin-web/app/login/page.tsx:186'),
 ]
 
 def _ui_strip(t):

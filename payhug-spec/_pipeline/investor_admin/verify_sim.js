@@ -1,7 +1,7 @@
 /* 투자 시뮬레이션 헤드리스 검증 — 창을 띄우지 않는다(--headless=new).
    실제 입력·클릭으로 몬다. 값을 코드에서 읽어 오는 것이 아니라 화면에 찍힌 글자를 읽는다.
 
-     1) 기본값 실행 — W · Ty · 비중 합 100.0% · 상환액 = PSA + PSM
+     1) 기본값 실행 — W · Ty · 비중 합 100.0% · 상환액 = Σ(순지급액 − 차감)
      2) 입력을 바꾸면 결과가 따라 바뀐다 — 할인율 · 순현금 · 미지급률 · 기간 · 플랫폼
      3) S입금부족율 > 할인율 → 투자수익 음수를 그대로 보인다 (설계 L-3)
      4) 기간 밖 행은 회색 이탤릭 · 집계 제외
@@ -68,6 +68,44 @@ function P(name, pass, detail){
   R.cases.push({name, pass, detail});
   if(!pass) failed++;
   console.log((pass ? '  PASS ' : '  FAIL ') + name + (detail === undefined ? '' : '  ' + JSON.stringify(detail)));
+}
+const n = t => Number(String(t).replace(/[^0-9.-]/g, ''));
+
+/* ── 상환액 항등식 ───────────────────────────────────────────────
+   대표 정의서 원문(ceo_definitions.md:34) —
+     Σ B(D-1)i = 정산예정일이 전일자인 모든 대상정산금채권의 '순지급액 - max(0, 미지급금-과지급금)' 의 합
+   상환액은 이 한 줄에서 나온다. 투자실행금(Ai) + 투자수익(Mi) 로 쪼개면
+     Ai   = floor(순지급액 x (1 - 할인율))
+     Mi   = floor(순지급액 x 할인율) - 차감
+   두 floor 가 각자 소수부를 버려, 순지급액 x 할인율이 정수가 아닌 채권마다 1원이 남는다
+   (방향은 늘 B >= A + M). 원장 조회기간 이레에서 실제로 17원 갈린다
+   (weekRepay 180,032,111 ↔ PA+PM 180,032,094 · dm_0901 규칙 2).
+
+   [기준 교체 2026-09-02] 예전엔 PB === PA + PM 을 완전일치로 요구했다. 씨앗 8행이 전부
+   금액 x 0.0011 = 정수라 우연히 통과하고 있었을 뿐이다. 시뮬레이션은 사용자가 금액을 직접
+   넣는 화면이므로 그 우연은 실사용에서 깨진다(순지급액 5,000,001원이면 1원 갈린다).
+
+   완전일치는 **정의식 쪽**에 건다 — 화면 채권 표의 순지급액·차감을 그대로 더한 값과 맞대며,
+   여기엔 원 단위 반올림이 개입하지 않아 봐 줄 자리가 없다.
+   PA + PM 과의 갈림에는 채권 수라는 **유도된 상한**을 건다(허용치가 아니라 산식이 낸 한계).
+   verify_identity.js 는 같은 등식을 원장 세 칸에서 정확한 기대값으로 뽑아 본다. */
+function repayCase(tag, foot, bonds){
+  const IN = bonds.filter(b => b[1] === '기간 내');
+  const defSum = IN.reduce((t, b) => t + (n(b[3]) - n(b[7])), 0);
+  const PB = n(foot[1]), PA = n(foot[2]), PM = n(foot[3]), gap = PB - (PA + PM);
+  /* 행 단위 — B = 순지급액 - 차감 (완전일치) · B - (A + M) 은 0 또는 1원 */
+  const rowBad = [];
+  bonds.forEach((b, i) => {
+    if(n(b[9]) !== n(b[3]) - n(b[7])) rowBad.push('#' + (i + 1) + ' B≠순지급액-차감');
+    const g = n(b[9]) - (n(b[5]) + n(b[8]));
+    if(g !== 0 && g !== 1) rowBad.push('#' + (i + 1) + ' B-(A+M)=' + g);
+  });
+  P(tag + ' 채권 행 — 상환액 = 순지급액 − 차감 · A+M 과의 갈림 0 또는 1원',
+    rowBad.length === 0, {rows:bonds.length, bad:rowBad});
+  P(tag + ' 합계행 — 상환액 = Σ(순지급액 − 차감) 완전일치 · PA+PM 과의 갈림 ≤ 채권 수',
+    PB === defSum && gap >= 0 && gap <= IN.length,
+    {PB, defSum, PA, PM, gap, inRange:IN.length});
+  return {PB, PA, PM, gap, defSum, inRange:IN.length};
 }
 
 /* 화면에 찍힌 글자를 읽어 오는 페이지 쪽 도구 — 검증기는 SIM 객체를 직접 보지 않는다 */
@@ -289,12 +327,12 @@ async function main(){
     var st = window.__S.statusRows(), ft = window.__S.dailyFoot();
     return {status:st, foot:ft,
       summary:{자산:window.__S.card('투자자산'), 실행:window.__S.card('투자실행액'),
-               현금:window.__S.card('순현금'), ty:window.__S.card('Ty수익율')},
+               현금:window.__S.card('순현금'), ty:window.__S.card('예상 연환산수익률')},
       bonds:window.__S.bondRows().map(function(b){ return b.cells; }),
       daily:window.__S.dailyRows(),
       실행금:window.__S.stat('투자실행금'), 수익:window.__S.stat('투자수익'),
       기간:window.__S.stat('검색대상기간'),
-      tyStat:window.__S.stat('Ty수익율')};`);
+      tyStat:window.__S.stat('연환산수익률')};`);
   R.baseline = base;
   const st = base.status;
   P('현황 · 투자실행액 행', st[0][0] === '투자실행액' && st[0][1] === B.exec
@@ -312,9 +350,8 @@ async function main(){
     Object.keys(base.summary).map(k => base.summary[k].value));
 
   const foot = base.foot;
-  const n = t => Number(String(t).replace(/[^0-9.-]/g, ''));
-  P('검산 상환액 = PSA + PSM (일별 합계행)',
-    n(foot[1]) === n(foot[2]) + n(foot[3]) && n(foot[1]) === B.psb, foot);
+  P('검산 상환액 = 모델 PSB (일별 합계행)', n(foot[1]) === B.psb, foot);
+  repayCase('기본값', foot, base.bonds);
   P('일별 합계 PSD ' + B.psd + ' · ④ ' + B.ty4pct,
     foot[4].indexOf(B.psd) === 0 && foot[5].indexOf(B.ty4pct) === 0, foot);
   P('일별 행 ' + B.dailyDates.length + '건 (기간 내 채권의 서로 다른 정산예정일)',
@@ -355,7 +392,7 @@ async function main(){
 
   await reset();
   await apply('cash200m'); await run();
-  const c2 = await evalJS("var s=window.__S.statusRows(); return {cash:s[1][1], tot:s[2][1], sh:[s[0][5],s[1][5],s[2][5]], ty5:window.__S.stat('Ty수익율')};");
+  const c2 = await evalJS("var s=window.__S.statusRows(); return {cash:s[1][1], tot:s[2][1], sh:[s[0][5],s[1][5],s[2][5]], ty5:window.__S.stat('연환산수익률')};");  /* 라벨 확정 2026-09-04 — 시뮬 수익 카드 `Ty수익율` → `연환산수익률` */
   P('순현금 ' + B.cash + ' → ' + SF.cash200m.cash + ' : 순현금 · 투자자산 · 비중 · ⑤ 가 함께 움직인다',
     c2.cash === SF.cash200m.cash && c2.tot === SF.cash200m.total
     && c2.sh[2] === SF.cash200m.shareSum
@@ -405,6 +442,25 @@ async function main(){
     amt.total === SF.amt800m.rowsTotalText && amt.A === SF.amt800m.bond0A
     && amt.exec === SF.amt800m.exec, amt);
 
+  /* ── 3-b) 나눠떨어지지 않는 순지급액 — 상환액 검사의 판별력 ──
+     씨앗 8행은 순지급액 x 할인율이 전부 정수라 상환액 = 투자실행금 + 투자수익 이 우연히 딱 맞는다.
+     사용자가 금액을 직접 넣는 화면이므로 그 우연이 깨지는 자리를 검사에 박아 둔다.
+     기간 내 행 하나에 5,000,001원을 넣으면 A·M 두 floor 가 각자 소수부를 버려 1원이 남는다. */
+  await reset();
+  await apply('amtOdd'); await run();
+  const odd = await evalJS(`
+    return {foot:window.__S.dailyFoot(), bonds:window.__S.bondRows().map(function(x){ return x.cells; }),
+            PSA:window.__S.stat('투자실행금'), PSM:window.__S.stat('투자수익')};`);
+  const oddWant = SF.amtOdd.psb - (n(SF.amtOdd.psa) + n(SF.amtOdd.psm));
+  /* 이 입력에서마저 갈림이 0 이면 시험 자체가 판별력을 잃은 것이다 — 씨앗·할인율이 바뀐 자리다 */
+  P('판별력 — 모델이 낸 갈림이 0 이 아니다 (0 이면 이 시험은 무용)', oddWant > 0,
+    {psb:SF.amtOdd.psb, psa:SF.amtOdd.psa, psm:SF.amtOdd.psm, gap:oddWant});
+  const oddGot = repayCase('나눠떨어지지 않는 순지급액', odd.foot, odd.bonds);
+  P('순지급액 ' + SF.scenarios.amtOdd.value + ' : 화면 갈림 = 모델 갈림 ' + oddWant + '원 · 화면 3칸 = 모델',
+    oddGot.gap === oddWant && oddGot.PB === SF.amtOdd.psb
+    && odd.PSA.indexOf(SF.amtOdd.psa) >= 0 && odd.PSM.indexOf(SF.amtOdd.psm) >= 0,
+    {gap:oddGot.gap, want:oddWant, PB:oddGot.PB, psb:SF.amtOdd.psb});
+
   /* ── 4) 음수 투자수익 (L-3) ── */
   console.log('\n[4] 음수 투자수익');
   await reset();
@@ -412,15 +468,15 @@ async function main(){
   const neg = await evalJS(`
     var b = window.__S.bondRows(), f = window.__S.dailyFoot();
     return {S:window.__S.statusRows()[0][3], M:b[0].cells[8], profit:window.__S.stat('투자수익'),
-            foot:f, ty:window.__S.stat('Ty수익율'),
+            foot:f, ty:window.__S.stat('연환산수익률'),  /* 라벨 확정 2026-09-04 — Ty수익율 → 연환산수익률 */
+            bonds:b.map(function(x){ return x.cells; }),
             negCls:!!window.__S.out().querySelector('.summary-value.neg')};`);
   P('S ' + SF.unpaid020.s + ' > 할인율 ' + SF.defaults.rate + '% → 채권 투자수익 음수',
     neg.S === SF.unpaid020.s && neg.M === SF.unpaid020.bond0M && n(neg.M) < 0, {S:neg.S, M:neg.M});
   P('수익 현황 투자수익 음수를 그대로 보인다',
     neg.profit.indexOf(SF.unpaid020.psm) >= 0
     && n(neg.profit.replace('투자수익','')) < 0 && neg.negCls === true, neg.profit);
-  P('음수여도 상환액 = PSA + PSM 항등식 유지',
-    n(neg.foot[1]) === n(neg.foot[2]) + n(neg.foot[3]), neg.foot);
+  repayCase('음수 투자수익', neg.foot, neg.bonds);
 
   /* ── 5) 기간 밖 행 ── */
   console.log('\n[5] 기간 밖');
@@ -432,6 +488,7 @@ async function main(){
             skipFlags:b.map(function(x){ return x.skip; }),
             italic:b.filter(function(x){ return x.skip; }).map(function(x){ return x.style; }),
             daily:window.__S.dailyRows().map(function(r){ return r[0]; }),
+            bonds:b.map(function(x){ return x.cells; }),
             PSA:window.__S.stat('투자실행금'), foot:window.__S.dailyFoot()};`);
   P('시작일 ' + SF.scenarios.from0825.value + ' : ' + B.dailyDates[0] + ' 기간 내 행이 기간 밖으로 빠진다',
     JSON.stringify(skip.kinds) === JSON.stringify(SF.from0825.bondKinds)
@@ -440,8 +497,7 @@ async function main(){
   P('기간 밖 행은 일별 표·집계에서 빠진다',
     JSON.stringify(skip.daily) === JSON.stringify(SF.from0825.dailyDates)
     && skip.PSA.indexOf(SF.from0825.psa) >= 0, {daily:skip.daily, PSA:skip.PSA});
-  P('기간 밖 제외 후에도 상환액 = PSA + PSM',
-    n(skip.foot[1]) === n(skip.foot[2]) + n(skip.foot[3]), skip.foot);
+  repayCase('기간 밖 제외', skip.foot, skip.bonds);
 
   /* ── 6) 행 추가·삭제 ── */
   console.log('\n[6] 행 추가·삭제');
@@ -562,15 +618,18 @@ async function main(){
   R.selfcheck = keep;
 
 
-  /* ── 10) 대표 재전달 대기 표기 (⑤ · ⑥) ── */
-  console.log('\n[10] 대표 재전달 대기 표기');
+  /* ── 10) 미확정 표기 — ⑤ 「대표 확인 대기」 · ⑥ 「대표 재전달 대기」 ──
+     [기준 교체 2026-09-04] ⑤ 는 우리 확정안(PM × 365 ÷ ( Σ Ai×Di + PEC ))이라 툴팁 행이 PEND5_ROW
+     「대표 확인 대기」로 갈라졌다(step7 ⑤ 산식 교체 · build_app.py PEND5_ROW). ⑥ 열머리는 PEND_ROW 그대로. */
+  console.log('\n[10] 미확정 표기 (⑤ 확인 대기 · ⑥ 재전달 대기)');
   await evalJS("go('invest-sim','result'); return 1;");
   const pend = await evalJS(`
     return {ty5:window.__S.ty5Label(), ty5Badge:window.__S.ty5Badge(),
             th:window.__S.dailyTh(), thBadge:window.__S.dailyThBadge()};`);
-  P('⑤ 투자자산 대비 — 값은 두고 ' + SF.pendBadge + ' 배지',
-    pend.ty5Badge === SF.pendBadge && pend.ty5.indexOf(SF.pendRow) >= 0, pend.ty5);
-  P('⑥ 일별 Ty수익율 열머리 — 배지 + 어느 읽기인지 툴팁',
+  P('⑤ 투자자산 대비 — 값은 두고 ' + SF.pendBadge + ' 배지 · 「' + SF.pend5Row + '」 행',
+    pend.ty5Badge === SF.pendBadge && pend.ty5.indexOf(SF.pend5Row) >= 0
+    && pend.ty5.indexOf(SF.pendRow) < 0, pend.ty5);
+  P('⑥ 일별 연환산수익률 열머리 — 배지 + 어느 읽기인지 툴팁',
     pend.thBadge === SF.pendBadge && pend.th === SF.tyThText, pend.th);
   const pendPf = await evalJS(`
     go('invest-profit','default');
@@ -582,8 +641,9 @@ async function main(){
             th:th[th.length-1].textContent.trim(),
             values:Array.prototype.map.call(sec.querySelectorAll('.ty-split .summary-value'),
                      function(e){ return e.textContent.trim(); })};`);
-  P('투자 수익 화면도 같은 표기 — ⑤ 배지 · ⑥ 열머리',
-    pendPf.ty5Badge === SF.pendBadge && pendPf.ty5.indexOf(SF.pendRow) >= 0
+  P('투자 수익 화면도 같은 표기 — ⑤ 배지·확인 대기 행 · ⑥ 열머리',
+    pendPf.ty5Badge === SF.pendBadge && pendPf.ty5.indexOf(SF.pend5Row) >= 0
+    && pendPf.ty5.indexOf(SF.pendRow) < 0
     && pendPf.th === SF.tyThText, {ty5:pendPf.ty5Badge, th:pendPf.th});
   P('표기를 붙여도 ⑤ 값 자체는 그대로 뜬다',
     pendPf.values.length === 2 && /^\d+\.\d\d%$/.test(pendPf.values[1]), pendPf.values);
@@ -710,12 +770,19 @@ async function main(){
     const w = {
       ty3def: cnt(/function ty3\(/g), ty5def: cnt(/function ty5\(/g), ty6def: cnt(/function ty6\(/g),
       /* ⑤ 산식이 코드에 한 곳에서만 정의된다 — 옛 하드코딩이 남으면 여기서 잡힌다 */
-      ty5body: cnt(/ty4 \* psa \/ tot/g),
+      /* [기준 교체 2026-09-04] ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) 확정안(step7 ⑤ 산식 교체 ·
+         daily_ledger.TY5_EXPR = 'ty4 * ad / tot'). 둘째 인자가 PSA(투자실행금) 에서 AD(Σ Ai×Di) 로 바뀌었다.
+         옛 꼴(psa)은 하드코딩 목록에 남겨 되살아나면 잡는다. */
+      ty5body: cnt(/ty4 \* ad \/ tot/g),
       hard5: cnt(/TY4 \* PSA \/ \(PSA \+ PSC\)/g) + cnt(/ty4 \* psa \/ \(psa \+ psc\)/g)
-             + cnt(/psa \+ psc\) \? ty4/g),
+             + cnt(/psa \+ psc\) \? ty4/g) + cnt(/ty4 \* psa \/ tot/g)
+             + cnt(/TY4 \* AD \/ \(AD \+ PEC\)/g) + cnt(/ty4 \* ad \/ \(ad \+ psc\)/g)
+             + cnt(/ad \+ psc\) \? ty4/g),
       /* ⑥ 도 마찬가지 — 행 ty 를 직접 계산하던 두 자리가 ty6() 로 모였다 */
       hard6: cnt(/\* 100\) \* 365 \/ g\.[wW]/g),
-      ty6call: cnt(/= ty6\(/g),
+      /* ⑥ 계산 자리 2곳. 원장 롤업 쪽은 6자리 반올림 r6() 로 감싸 부른다
+         (dm_0901/rounding_rule_0901.md 규칙 1) — 감싼 꼴도 호출로 센다. */
+      ty6call: cnt(/= (?:r6\()?ty6\(/g),
       ty6usesTy5: bodyOf('ty6').indexOf('ty5(') >= 0,
       ty6usesTy3: bodyOf('ty6').indexOf('ty3(') >= 0,
       tyAssetUsesTy5: bodyOf('tyAssetOf').indexOf('ty5(') >= 0,
@@ -822,8 +889,9 @@ async function main(){
     JSON.stringify(leaf2.status) === JSON.stringify(b.status), {낱장:leaf2.status[0], 통합본:b.status[0]});
   P('낱장 일별 합계행 = 통합본 합계행',
     JSON.stringify(leaf2.foot) === JSON.stringify(b.foot), {낱장:leaf2.foot, 통합본:b.foot});
-  P('낱장도 ⑤ · ⑥ 에 같은 대표 재전달 대기 표기',
-    leaf2.ty5Badge === SF.pendBadge && leaf2.ty5.indexOf(SF.pendRow) >= 0
+  P('낱장도 ⑤ 확인 대기 · ⑥ 재전달 대기 같은 표기',
+    leaf2.ty5Badge === SF.pendBadge && leaf2.ty5.indexOf(SF.pend5Row) >= 0
+    && leaf2.ty5.indexOf(SF.pendRow) < 0
     && leaf2.dailyTh === SF.tyThText, {ty5:leaf2.ty5Badge, th:leaf2.dailyTh});
 
   /* ── 15) 콘솔 ── */

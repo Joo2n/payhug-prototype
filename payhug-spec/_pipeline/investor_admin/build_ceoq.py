@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""대표님 확인 20문 — 답을 적어 저장하면 같은 주소가 새 판이 되는 화면.
+"""대표님 확인 문항 — 답을 적어 저장하면 같은 주소가 새 판이 되는 화면.
 
 앞판은 답을 브라우저에만 담아서 Claude 가 가져올 수 없었다. 이 판은 답을
 페이지 원고에 담아 새 판으로 게시하므로, Claude 가 그 주소를 읽어 답을 그대로
@@ -328,7 +328,7 @@ def main():
     stamp = os.environ.get("TERMSDOC_STAMP") or date.today().strftime("%Y%m%d")
     out = [(os.path.join(PIPE, "ceoq.fragment.html"), frag),
            (os.path.join(REPO, "ceo-questions.html"), page),
-           (os.path.join(OUTDIR, "대표님확인20문_%s.html" % stamp), page)]
+           (os.path.join(OUTDIR, "대표님확인문항_%s.html" % stamp), page)]
     for p, body in out:
         with open(p, "w", encoding="utf-8") as f:
             f.write(body)

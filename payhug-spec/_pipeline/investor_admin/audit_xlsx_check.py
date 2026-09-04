@@ -481,7 +481,7 @@ def main():
     rep['평가 실패 수'] = len(err)
     rep['평가 실패'] = err[:12]
 
-    # 값 셀이 허용된 자리에만 있는가 — 입력 가정값 · 채권 Di · 화면 값
+    # 값 셀이 허용된 자리에만 있는가 — 입력 가정값 · 채권 Di · 화면 표시값
     vcells = {}
     for ws in wb.worksheets:
         n = 0
@@ -499,13 +499,13 @@ def main():
     # ── 화면대조 ────────────────────────────────────────────────
     ws = wb['화면대조']
     blocks = {'항등식': [], '불변식': [], '교차': [], '화면 정합': [], '가맹점': [],
-              '모델 잔차': [], '화면 값 원본': []}
+              '모델 잔차': [], '화면 표시값 원본': []}
     for r in range(2, ws.max_row + 1):
         g = ws.cell(r, 1).value
         if g not in blocks:
             continue
         lab = ws.cell(r, 2).value
-        if g == '화면 값 원본':
+        if g == '화면 표시값 원본':
             blocks[g].append([lab, bk.cell('화면대조', 'E%d' % r)])
             continue
         row = [lab, bk.cell('화면대조', 'C%d' % r), bk.cell('화면대조', 'E%d' % r),
@@ -518,7 +518,7 @@ def main():
     rep['화면대조 차이 목록'] = [x for x in judged if x[4] != '일치']
     rep['모델 잔차 행'] = len(blocks['모델 잔차'])
     rep['모델 잔차'] = [[x[0], x[1], x[2], x[3]] for x in blocks['모델 잔차']]
-    rep['화면 값 원본 행'] = len(blocks['화면 값 원본'])
+    rep['화면 표시값 원본 행'] = len(blocks['화면 표시값 원본'])
 
     # 모델 잔차 행에 사유가 비어 있으면 안 된다
     nowhy = []
@@ -527,8 +527,8 @@ def main():
             nowhy.append(ws.cell(r, 2).value)
     rep['사유 빠진 잔차 행'] = nowhy
 
-    # ── 화면 값이 ledger_facts.json 과 같은가 ────────────────────
-    sv = dict(blocks['화면 값 원본'])
+    # ── 화면 표시값이 ledger_facts.json 과 같은가 ────────────────────
+    sv = dict(blocks['화면 표시값 원본'])
     chk = [('투자실행액', fx['exec']), ('순현금', fx['cash']), ('투자자산', fx['total']),
            ('W금융일수 raw', float(fx['wRaw'])), ('W금융일수 표기', float(fx['w'])),
            ('Ty수익율(%)', float(fx['ty'])), ('S입금부족율 raw(%)', float(fx['sRaw'])),
@@ -537,14 +537,18 @@ def main():
            ('미회수 채권 건수', fx['openReceivables']),
            ('채권 Di 최소', fx['diRange'][0]), ('채권 Di 최대', fx['diRange'][1]),
            ('로스터 건수', len(fx['merchants'])),
-           ('주간 PSA', fx['weekExec']), ('주간 PSM', fx['weekProfit']),
-           ('주간 PSD raw', float(fx['weekWRaw'])), ('주간 PSC', fx['weekPsc']),
+           ('주간 PA', fx['weekExec']), ('주간 PM', fx['weekProfit']),
+           ('주간 PwD raw', float(fx['weekWRaw'])), ('주간 PEC', fx['weekPsc']),
+           # ⑤ 의 새 분모 재료 Σ(Ai x Di) — facts weekAD·fullAD (step7 ⑤ 산식 교체 2026-09-04 ·
+           # build_audit_xlsx.py 화면대조 행 신설분). 행 위치는 라벨로 잡으므로 밀림과 무관하다.
+           ('주간 Σ(Ai x Di)', fx['weekAD']),
            ('주간 ④(%)', float(fx['weekTy'])), ('주간 ⑤(%)', float(fx['weekTyAsset'])),
-           ('전 구간 PSA', fx['fullExec']), ('전 구간 PSM', fx['fullProfit']),
-           ('전 구간 PSC', fx['fullPsc']), ('전 구간 ④(%)', float(fx['fullTy'])),
+           ('전 구간 PA', fx['fullExec']), ('전 구간 PM', fx['fullProfit']),
+           ('전 구간 PEC', fx['fullPsc']), ('전 구간 Σ(Ai x Di)', fx['fullAD']),
+           ('전 구간 ④(%)', float(fx['fullTy'])),
            ('전 구간 ⑤(%)', float(fx['fullTyAsset']))]
     bad = [[k, sv.get(k), v] for k, v in chk if abs(numify(sv.get(k)) - v) > 1e-9]
-    rep['화면 값 ↔ ledger_facts 불일치'] = bad
+    rep['화면 표시값 ↔ ledger_facts 불일치'] = bad
 
     # ── 가중치 대조 ─────────────────────────────────────────────
     ws = wb['가중치 대조']
@@ -589,7 +593,7 @@ def main():
                                         if x[0] == 'S입금부족율(%)']
 
     #   ⑤ 는 대표가 수식을 새로 써서 다시 주기로 했다. 값은 두되 표식이 살아 있어야 한다.
-    r5 = pm['⑤ 투자자산 대비 ty수익율 (정의)']
+    r5 = pm['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)']
     r6 = pm['⑥ 투자실행금액 대비 ty수익율 (정의)']
     rep['⑤ 미확정 표식'] = {'행': r5, '화면 반영': wb['기간집계'].cell(r5, 5).value,
                              '출처': wb['기간집계'].cell(r5, 4).value,
@@ -600,7 +604,7 @@ def main():
 
     #   대표 DM 2026-08-31 16:45 — 근사식과 원식을 나란히. 어느 쪽이 정본인지는 판정하지 않는다.
     dm45 = {k: bk.cell('기간집계', 'B%d' % pm[k]) for k in
-            ('DM 16:45 (가) 대표 근사식(%)', 'DM 16:45 (나) 원식 PSMR(%)',
+            ('DM 16:45 (가) 대표 근사식(%)', 'DM 16:45 (나) 원식 PMR(%)',
              'DM 16:45 (나) - (가) (%p)', 'DM 16:45 (나) / (가) (배)',
              'DM 16:45 1 / (1 - 할인율) (배)', 'DM 16:45 차감합',
              'DM 16:45 차감합 0 일 때 (가) (%)', 'DM 16:45 차감합 0 일 때 (나) (%)')}
@@ -611,9 +615,9 @@ def main():
     rep['대표 DM 16:45 판정'] = {
         '두 값이 셀로 나란히 있다': all(isinstance(dm45[k], float) for k in
                                         ('DM 16:45 (가) 대표 근사식(%)',
-                                         'DM 16:45 (나) 원식 PSMR(%)')),
+                                         'DM 16:45 (나) 원식 PMR(%)')),
         '차 셀이 두 값의 차와 같다': abs(dm45['DM 16:45 (나) - (가) (%p)']
-                                        - (dm45['DM 16:45 (나) 원식 PSMR(%)']
+                                        - (dm45['DM 16:45 (나) 원식 PMR(%)']
                                            - dm45['DM 16:45 (가) 대표 근사식(%)'])) < 1e-12,
         '차감합 0 일 때 (가) = 할인율': abs(dm45['DM 16:45 차감합 0 일 때 (가) (%)']
                                            - rate_pct) < 1e-12,
@@ -898,16 +902,16 @@ def variant_test(quiet=False):
             'W 표기': bk.cell('기간집계', 'B%d' % pm['W금융일수 표기 (스위치 ② 적용)']),
             'Ty(%)': bk.cell('기간집계', 'B%d' % pm['Ty수익율(%)']),
             'S raw(%)': bk.cell('기간집계', 'B%d' % pm['S입금부족율(%)']),
-            'PSA': bk.cell('기간집계', 'B%d' % pm['PSA 투자실행금']),
-            'PSM': bk.cell('기간집계', 'B%d' % pm['PSM 투자수익 (정의 · 차감 반영)']),
+            'PA': bk.cell('기간집계', 'B%d' % pm['PA 투자실행금']),
+            'PM': bk.cell('기간집계', 'B%d' % pm['PM 투자수익 (정의 · 차감 반영)']),
             '② 상환액': bk.cell('기간집계', 'B%d' % pm['② 상환액']),
-            'PSD': bk.cell('기간집계', 'B%d' % pm['PSD']),
+            'PwD': bk.cell('기간집계', 'B%d' % pm['PwD']),
             '④(%)': bk.cell('기간집계',
                             'B%d' % pm['④ 투자실행금액 대비 ty수익율 (정의)']),
             '⑤(%)': bk.cell('기간집계',
-                            'B%d' % pm['⑤ 투자자산 대비 ty수익율 (정의)']),
+                            'B%d' % pm['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)']),
             '⑤ 화면 반영 표식': bk.wb['기간집계'].cell(
-                pm['⑤ 투자자산 대비 ty수익율 (정의)'], 5).value,
+                pm['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'], 5).value,
             #   기본 벌에 넣은 구멍 셋(평균순현금 칸 · EC 표식 · 갈림 표)이 이 벌에도 있는가.
             '평균순현금 행': pm.get('평균순현금'),
             '평균순현금 값': (bk.wb['기간집계'].cell(pm['평균순현금'], 2).value
@@ -960,27 +964,36 @@ def five_test(quiet=False):
     pm = rowmap(wb['기간집계'])
     F5 = 'C%d' % im['⑤ 산식 (미확정 · 대표 재작성 대기)']
     N3 = 'C%d' % im['③ 지시 대상 (미확정)']
-    R5, R6 = (pm['⑤ 투자자산 대비 ty수익율 (정의)'],
+    R5, R6 = (pm['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'],
               pm['⑥ 투자실행금액 대비 ty수익율 (정의)'])
-    R4, PSA, PSC = (pm['④ 투자실행금액 대비 ty수익율 (정의)'],
-                    pm['PSA 투자실행금'], pm['PSC 순현금 합'])
+    R4, PA, PEC = (pm['④ 투자실행금액 대비 ty수익율 (정의)'],
+                    pm['PA 투자실행금'], pm['PEC 순현금 합'])
+    # ⑤ = PM x 365 / (Σ(Ai x Di) + PEC) 확정안(step7 ⑤ 산식 교체 2026-09-04 · daily_ledger.TY5_EXPR).
+    # [기준 교체] ⑤ 를 계산하는 셀이 무는 짝이 (PA, PEC) 에서 (Σ(Ai x Di), PEC) 로 바뀌었다.
+    SAD = pm['Σ(Ai x Di)']
     f5src = str(wb['입력'][F5].value or '')
     f5v = str(wb['기간집계'].cell(R5, 2).value or '')
     f6v = str(wb['기간집계'].cell(R6, 2).value or '')
 
-    #   ⑤ 를 계산하는 자리 — PSA 와 PSC 를 함께 문 수식 셀. 하나뿐이어야 한다.
-    hard = []
+    #   ⑤ 를 계산하는 자리 — Σ(Ai x Di) 와 PEC 를 함께 문 수식 셀. 하나뿐이어야 한다.
+    #   옛 식(PA 와 PEC 를 함께 문 셀)은 0건이어야 한다 — 되살아나면 여기서 잡힌다.
+    hard, old_hard = [], []
     for ws in wb.worksheets:
         for row in ws.iter_rows():
             for c in row:
                 f = c.value
                 if not (isinstance(f, str) and f.startswith('=')):
                     continue
-                if ('기간집계!B%d' % PSA) in f and ('기간집계!B%d' % PSC) in f:
+                if ('기간집계!B%d' % SAD) in f and ('기간집계!B%d' % PEC) in f:
                     hard.append('%s!%s' % (ws.title, c.coordinate))
-    #   산식 설명 문자열로 남은 ⑤ 계산 — `입력` 시트 ⑤ 칸 밖에 있으면 안 된다.
+                if ('기간집계!B%d' % PA) in f and ('기간집계!B%d' % PEC) in f:
+                    old_hard.append('%s!%s' % (ws.title, c.coordinate))
+    #   산식 설명 문자열로 남은 ⑤ 계산 — `입력` 시트 ⑤ 칸(그 행의 출처 셀 포함) 밖에 있으면 안 된다.
     #   대표 정의서 원문 열(QUOTE_CELLS)은 인용이라 뺀다.
-    shape = []
+    #   [기준 교체 2026-09-04] ⑤ 문면이 `PA + PEC` 에서 `Σ(Ai x Di) + PEC` 로 바뀌었다(step7 ⑤ 산식 교체 ·
+    #   build_audit_xlsx.py 읽는 법 기호 사전·입력 출처 셀). 옛 문면은 어디에도 0건, 새 문면은 뜻풀이 1줄 + ⑤ 칸 출처 셀뿐.
+    NEW_SHAPE = 'Σ(Ai x Di) + PEC'
+    shape, old_shape = [], []
     for ws in wb.worksheets:
         for row in ws.iter_rows():
             for c in row:
@@ -989,8 +1002,17 @@ def five_test(quiet=False):
                 t, _ = _runs(c.value) if c.value is not None else ('', [])
                 if t.startswith('='):
                     continue
-                if 'PSA + PSC' in t or 'PSA+PSC' in t:
+                if 'PA + PEC' in t or 'PA+PEC' in t:
+                    old_shape.append(['%s!%s' % (ws.title, c.coordinate), t[:70]])
+                if NEW_SHAPE in t:
                     shape.append(['%s!%s' % (ws.title, c.coordinate), t[:70]])
+    #   기호 사전 한 줄은 남긴다 — 정본(dm_0901/symbol_rule_0901.md) 기호 전건 표의
+    #   `wPYMR` 항목이다. 계산하는 자리가 아니라 뜻풀이다. 개수까지 못 박는다.
+    dict_rows = [x for x in shape if x[0].startswith('읽는 법!')]
+    #   ⑤ 칸이 있는 행의 출처 셀(같은 행 · 다른 열)은 그 칸의 설명이라 ⑤ 칸으로 친다.
+    five_row = int(re.sub(r'\D', '', F5))
+    src_cells = [x for x in shape if x[0].startswith('입력!') and int(re.sub(r'\D', '', x[0].split('!')[1])) == five_row]
+    shape = [x for x in shape if x not in dict_rows and x not in src_cells]
 
     #   ⑤ 칸을 갈아 끼우면 ⑤ 셀과 ⑥ 셀이 따라 움직이는가.
     def probe(f5val, n3val):
@@ -1008,8 +1030,13 @@ def five_test(quiet=False):
         '③ 칸 값 (비어 있어야 한다)': wb['입력'][N3].value,
         '기본 벌 ⑤ 값': base.cell('기간집계', 'B%d' % R5),
         '기본 벌 ⑥ 값': base.cell('기간집계', 'B%d' % R6),
-        'PSA·PSC 를 함께 문 수식 셀': hard,
-        '「PSA + PSC」 문자열이 남은 셀': shape,
+        'Σ(Ai x Di)·PEC 를 함께 문 수식 셀': hard,
+        'PA·PEC 를 함께 문 수식 셀 (옛 식 · 0건이어야)': old_hard,
+        '「Σ(Ai x Di) + PEC」 문자열이 ⑤ 칸·뜻풀이 밖에 남은 셀': shape,
+        '「PA + PEC」 옛 문면이 남은 셀 (0건이어야)': old_shape,
+        '⑤ 칸 행의 출처 셀 (새 문면 · 예외)': src_cells,
+        '기호 사전 줄 (뜻풀이 · 예외)': dict_rows,
+        '기호 사전 줄 못 박은 수': 1,
         '⑤=2 일 때 (⑤셀, ⑥셀)': [a5, a6], '⑤=4 일 때 (⑤셀, ⑥셀)': [b5, b6],
         '④ 값': t4,
     }
@@ -1019,7 +1046,10 @@ def five_test(quiet=False):
         '⑥ 수식이 ⑤ 셀 주소를 담고 있다': ('B%d' % R5) in f6v,
         '⑥ 수식이 ③ 칸 주소를 담고 있다': ('입력!%s' % N3) in f6v,
         '⑤ 를 계산하는 수식 셀이 입력 칸 하나뿐': hard == ['입력!%s' % F5],
+        '옛 식 (PA + PEC) 수식 셀 0건': not old_hard,
         '⑤ 산식 문자열이 다른 셀에 남지 않았다': not shape,
+        '옛 문면 (PA + PEC) 0건': not old_shape,
+        '기호 사전 줄이 못 박은 수와 같다': len(dict_rows) == 1,
         '③ 칸이 비어 있다': wb['입력'][N3].value is None,
         '③ 이 비면 ⑥ 은 미확정': base.cell('기간집계', 'B%d' % R6) == '미확정',
         '⑤ 칸을 바꾸면 ⑤ 셀이 따라온다': (a5, b5) == (2.0, 4.0),
@@ -1035,85 +1065,106 @@ def five_test(quiet=False):
 
 
 # ── 기호 표기 ─────────────────────────────────────────────────────
-#   기준표를 여기 두지 않는다. `dm_0831/symbol_rule_0831.md` 갈아끼움표에서 읽어 온다.
+#   기준표를 여기 두지 않는다. `dm_0901/symbol_rule_0901.md` 두 표에서 읽어 온다.
+#     · 「갈아 끼우는 표」 왼쪽 = 워크북에 남으면 안 되는 옛 표기
+#     · 「기호 전건」 세 번째 열 = 워크북이 써야 하는 정본 기호
+#   표기 형태는 평문 괄호 규약이다 — `Ai` · `wD(d-1)`. 아래첨자 조판은 넣지 않는다.
 #   대문자 `D` 는 금융일수, 소문자 `d` 는 오늘 날짜다. `d-1` 은 날짜가 아니라
 #   「정산예정일이 어제인 대상정산금채권 집합」이다.
-#   생성기는 글자열을 바꾸지 않고 서식만 갈랐다. 평문으로 읽으면 이 고침이 안 보여
-#   rich_text=True 로 다시 읽어 글자별 아래첨자 여부로 판정한다.
 #   대상이 0건이면 FAIL 이다 — 못 찾아서 통과하는 구조를 두지 않는다.
-RULE_MD = os.path.join(BASE, 'dm_0831', 'symbol_rule_0831.md')
-#   대표 정의서 원문을 그대로 옮긴 자리. 여기만 옛 표기(`D-1`)를 그대로 둔다.
+RULE_MD = os.path.join(BASE, 'dm_0901', 'symbol_rule_0901.md')
+#   대표 정의서 원문을 그대로 옮긴 자리. 여기만 옛 표기(`PSA` · `SBD-1`)를 그대로 둔다.
 #   (시트, 열, 시작 행). 머리 행은 인용이 아니라 뺀다.
 QUOTE_CELLS = [('산식', 2, 2)]
+#   옛 표기로 읽히지만 막지 않는 자리 — 까닭을 여기 적어 둔다.
+#     `AC` `TA` `EX` : 엑셀 열 이름과 글자가 겹친다 (가맹점 AC열 등)
+#     `w금융일수` `S입금부족율` `ty수익율` : 화면 라벨이라 화면대조 블록에 그대로 남는다
+FORBID_SKIP = {'AC': '엑셀 열 이름', 'TA': '엑셀 열 이름', 'EX': '엑셀 열 이름',
+               'w금융일수': '화면 라벨', 'S입금부족율': '화면 라벨', 'ty수익율': '화면 라벨'}
 
 
 def is_quote(sheet, col, row):
     return any(sheet == a and col == b and row >= c for a, b, c in QUOTE_CELLS)
 
 
+def _plain(tok):
+    """정본 표기 -> 평문 괄호 규약. 아래첨자 유니코드·밑줄 조판을 벗긴다."""
+    s = tok.replace('\u1d62', 'i').replace('\u2081', '1')
+    s = s.replace('\u2212', '-').replace('\u2013', '-').replace('\u2014', '-')
+    #   `X_{MR,d-1}` -> 이름 조각은 붙이고 범위 조각만 괄호로. `X_r` -> `Xr`.
+    m = re.match(r'^([A-Za-z가-힣Σ +]+)_\{?([^}]*)\}?$', s)
+    if m:
+        head_, tail = m.group(1), m.group(2)
+        parts = [x for x in tail.split(',') if x]
+        name = ''.join(x for x in parts if not re.match(r'^d-?\d+$', x))
+        rng = [x for x in parts if re.match(r'^d-?\d+$', x)]
+        s = head_ + name + ('(%s)' % ','.join(rng) if rng else '')
+    return s.strip()
+
+
 def symbol_rule(path=RULE_MD):
-    """갈아끼움표를 읽어 (새 표기 쌍, 금지된 옛 표기)를 만든다.
+    """정본 두 표를 읽어 (써야 하는 기호, 남으면 안 되는 옛 표기)를 만든다.
 
     파일이 없거나 표를 못 읽으면 예외로 죽는다. 조용히 건너뛰어 통과하는 자리를 두지 않는다.
     """
     txt = open(path, encoding='utf-8').read()
-    seg = txt.split('## 갈아 끼우는 표', 1)[1].split('\n## ', 1)[0]
     tick = re.compile(r'`([^`]+)`')
-    pairs, forbid, bare = [], [], False
-    for line in seg.splitlines():
-        line = line.strip()
-        if not line.startswith('|') or set(line) <= set('|- '):
+
+    def rows(head):
+        seg = txt.split(head, 1)[1].split('\n## ', 1)[0]
+        for line in seg.splitlines():
+            line = line.strip()
+            if not line.startswith('|') or set(line) <= set('|- '):
+                continue
+            col = [c.strip() for c in line.strip('|').split('|')]
+            if len(col) >= 2:
+                yield col
+
+    #   정본 기호 — 「기호 전건」 세 번째 열
+    canon = []
+    for col in rows('## 기호 전건'):
+        if len(col) < 3:
             continue
-        col = [c.strip() for c in line.strip('|').split('|')]
-        if len(col) < 2:
+        for s in tick.findall(col[2]):
+            s = _plain(s)
+            if s and s not in canon:
+                canon.append(s)
+    #   옛 표기 — 「갈아 끼우는 표」 왼쪽 열
+    forbid, cond = [], []
+    for col in rows('## 갈아 끼우는 표'):
+        if not tick.findall(col[1]):
             continue
-        a, b = tick.findall(col[0]), tick.findall(col[1])
-        if not a or not b:
-            continue                              # 「그대로」 처럼 새 표기가 없는 줄
-        o, n = a[0], b[0]
-        if '그대로' in col[1] and '_' not in o:
-            continue                              # 「PSD · PSA … 그대로」 처럼 안 바뀌는 줄
-        if o == 'D' and n == 'd':
-            bare = True                           # 홀로 선 `D` 를 오늘 날짜로 쓰지 않는다
-            continue
-        if '_' in n:                              # `SB_{d-1}` · `B_{d-1,i}` · `D_i`
-            h, t = n.split('_', 1)
-            t = t.strip('{}').replace(',', '')
-            if (h + t) not in [x[0] for x in pairs]:
-                pairs.append((h + t, h, t))
-        if '_' in o:
-            ho, to = o.split('_', 1)
-            po = ho + to.strip('{}').replace(',', '')
-            if po != (n.split('_', 1)[0] + n.split('_', 1)[1].strip('{}').replace(',', '')):
-                forbid.append(po)
-        else:
-            for tok in re.split(r'\s*~\s*', o):  # `D-20 ~ D-11`
-                tok = tok.strip()
-                if tok and tok != n:
-                    forbid.append(tok)
-    if not pairs:
-        raise ValueError('갈아끼움표에서 기호 쌍을 못 읽었다: %s' % path)
+        for s in tick.findall(col[0]):
+            s = _plain(s)
+            if not s or s in canon:
+                continue
+            if s in FORBID_SKIP:
+                cond.append(s)
+                continue
+            forbid.append(s)
+            #   원문은 범위를 대문자 `D-1` 로 쓴다. 소문자 벌도 같이 막는다.
+            if 'D-1' in s:
+                forbid.append(s.replace('D-1', 'd-1'))
+            if s.startswith('(') is False and '(' in s:
+                forbid.append(s.replace('(', '').replace(')', ''))
+    if not canon:
+        raise ValueError('기호 전건 표를 못 읽었다: %s' % path)
     if not forbid:
-        raise ValueError('갈아끼움표에서 옛 표기를 못 읽었다: %s' % path)
-    return {'pairs': pairs, 'forbid': sorted(set(forbid), key=len, reverse=True),
-            'bare_D': bare, 'src': os.path.relpath(path, BASE)}
+        raise ValueError('갈아 끼우는 표를 못 읽었다: %s' % path)
+    return {'canon': canon, 'forbid': sorted(set(forbid), key=len, reverse=True),
+            'cond': sorted(set(cond)), 'src': os.path.relpath(path, BASE)}
 
 
 RULE = symbol_rule()
-NOTMAP = {k: (h, t) for k, h, t in RULE['pairs']}
-NOTRE = re.compile(r'(?<![A-Za-z0-9])(%s)(?![A-Za-z0-9])'
-                   % '|'.join(re.escape(k) for k, _, _ in RULE['pairs']))
-#   규칙 문서가 손대지 않은 꼬리(`i` · `pi`)는 워크북에서 직접 찾는다.
-#   기준표를 두 벌 두지 않으려고 낱말 목록 대신 꼬리 규칙 하나로 잡는다.
-TAILRE = re.compile(r'(?<![A-Za-z0-9])(S?[A-Z]{1,3})(pi|i)(?![A-Za-z0-9])')
+#   워크북에서 찾아야 하는 정본 기호 — 낱개·집계·범위 기호 전건.
+CANONRE = {k: re.compile(r'(?<![A-Za-z0-9])%s(?![A-Za-z0-9])' % re.escape(k))
+           for k in RULE['canon']}
 OLDRE = re.compile(r'(?<![A-Za-z0-9])(%s)(?![A-Za-z0-9])'
                    % '|'.join(re.escape(x) for x in RULE['forbid']))
 BAREDRE = re.compile(r'(?<![A-Za-z0-9])D(?=\s|$)')
 #   「만기」를 남겨 둔 자리 — 우리 분석 조어라 원문에 대응 낱말이 없다.
 #   그 밖의 「만기」가 새로 생기면 FAIL 이다.
 COINED = '만기 도래'
-#   채권 열머리에 쓰면 안 되는 약칭 — 원문에 없는 우리 조어.
-ABBREV = re.compile(r'(?<![A-Za-z0-9])(Mi|Bi)(?![A-Za-z0-9])')
 #   워크북 XML 전체(정의된 이름 · 시트 이름 · 데이터 유효성 · 주석)에서 막는 낱말.
 BANNED = re.compile('가중평균만기|만기|[Dd]uration')
 #   그 낱말을 품고도 남겨 두는 자리 — 개수까지 못 박는다. 늘어나면 FAIL 이다.
@@ -1139,30 +1190,6 @@ def _runs(v):
     return s, [False] * len(s)
 
 
-def notation_spans(txt):
-    """기호 자리 -> (시작, 끝, 머리 길이, 평문). 규칙 쌍이 먼저, 남은 자리를 꼬리 규칙이 줍는다."""
-    out, taken = [], []
-    for m in NOTRE.finditer(txt):
-        h, _ = NOTMAP[m.group(1)]
-        out.append((m.start(), m.end(), len(h), m.group(1)))
-        taken.append((m.start(), m.end()))
-    for m in TAILRE.finditer(txt):
-        if any(m.start() < e and s0 < m.end() for s0, e in taken):
-            continue
-        out.append((m.start(), m.end(), len(m.group(1)), m.group(0)))
-    return sorted(out)
-
-
-def notation_bad(txt, flag):
-    """규약을 어긴 기호 자리. 머리는 평서, 꼬리는 아래첨자여야 한다."""
-    out = []
-    for i, j, hl, tok in notation_spans(txt):
-        hd, tl = flag[i:i + hl], flag[i + hl:j]
-        if any(hd) or not (tl and all(tl)):
-            out.append(tok)
-    return out
-
-
 def banned_xml(path=None):
     """워크북 XML 전체에서 금지어를 찾는다. 셀 값만 보면 정의된 이름에 숨은 것을 놓친다.
 
@@ -1183,17 +1210,33 @@ def banned_xml(path=None):
             '예외 자리 못 박은 수': BAN_OK}
 
 
-def notation_test(quiet=False):
-    """기호 셀이 아래첨자 서식을 달았는가 · 옛 표기가 남았는가 · XML 에 금지어가 있는가."""
-    wb = openpyxl.load_workbook(XLSX, rich_text=True)
-    cells = subs = 0
-    bad, mgi, abbrev, old, bareD, quoted = [], [], [], [], [], 0
+def subscript_runs(path=None):
+    """아래첨자 서식이 남은 셀. 엑셀은 평문 괄호 규약이라 0건이어야 한다."""
+    out = []
+    wb = openpyxl.load_workbook(path or XLSX, rich_text=True)
     for ws in wb.worksheets:
         for row in ws.iter_rows():
             for c in row:
                 if c.value is None:
                     continue
                 txt, flag = _runs(c.value)
+                if any(flag):
+                    out.append([ws.title, c.coordinate, txt[:60]])
+    return out
+
+
+def notation_test(quiet=False):
+    """정본 기호를 쓰는가 · 옛 표기가 남았는가 · 아래첨자 조판이 없는가 · XML 금지어."""
+    wb = openpyxl.load_workbook(XLSX, rich_text=True)
+    found = {k: 0 for k in RULE['canon']}
+    old, bareD, quoted = [], [], 0
+    mgi = []
+    for ws in wb.worksheets:
+        for row in ws.iter_rows():
+            for c in row:
+                if c.value is None:
+                    continue
+                txt, _flag = _runs(c.value)
                 if txt.startswith('='):
                     continue
                 if is_quote(ws.title, c.column, c.row):
@@ -1203,59 +1246,50 @@ def notation_test(quiet=False):
                         old.append([ws.title, c.coordinate, txt[:60],
                                     sorted(set(OLDRE.findall(txt)))])
                     #   칸 전체가 `D` 하나면 기호 사전 항목이다. 그 밖의 홀로 선 `D` 만 잡는다.
-                    if (RULE['bare_D'] and txt.strip() != 'D'
-                            and BAREDRE.search(txt)):
+                    if txt.strip() != 'D' and BAREDRE.search(txt):
                         bareD.append([ws.title, c.coordinate, txt[:60]])
-                if notation_spans(txt):
-                    cells += 1
-                    subs += sum(1 for x in flag if x)
-                    b = notation_bad(txt, flag)
-                    if b:
-                        bad.append([ws.title, c.coordinate, txt[:60], b])
+                    for k, rx in CANONRE.items():
+                        if rx.search(txt):
+                            found[k] += 1
                 if '만기' in txt and COINED not in txt:
                     mgi.append([ws.title, c.coordinate, txt[:60]])
-    hdr = [_runs(wb['채권'].cell(1, c).value or '')[0]
-           for c in range(1, wb['채권'].max_column + 1)]
-    for h in hdr:
-        if ABBREV.search(h):
-            abbrev.append(h)
+    missing = sorted(k for k, n in found.items() if n == 0)
+    subs = subscript_runs()
     xml = banned_xml()
-    #   자기시험 — 같은 글자열에서 아래첨자를 떼면 판정기가 잡아야 한다.
-    runs = [('SB', False), ('d-1', True), (' 상환액 · ', False),
-            ('A', False), ('i', True), (' x ', False), ('D', False), ('i', True)]
-    probe = ''.join(t for t, _ in runs)
-    self_ok = notation_bad(probe, [f for t, f in runs for _ in t])
-    self_flat = notation_bad(probe, [False] * len(probe))
     #   자기시험 — 옛 표기로 되돌린 글자열을 잡아야 한다.
-    self_old = sorted(set(OLDRE.findall('SBD-1 상환액 · 표본 D-20 ~ D-11')))
+    self_old = sorted(set(OLDRE.findall('SBD-1 상환액 · PSA · PSD · SLi')))
+    #   자기시험 — 정본 기호가 든 글자열에서 찾아야 한다.
+    self_new = sorted(k for k, rx in CANONRE.items()
+                      if rx.search('B(d-1) 상환액 · PA · PwD · Li'))
     rep = {'기준표 출처': RULE['src'],
-           '기준표 기호 쌍': [k for k, _, _ in RULE['pairs']],
-           '기준표 금지 표기': RULE['forbid'],
-           '기호를 담은 셀': cells, '아래첨자 글자': subs,
+           '정본 기호': RULE['canon'],
+           '금지 표기': RULE['forbid'],
+           '막지 않는 표기 (까닭)': {k: FORBID_SKIP[k] for k in RULE['cond']},
+           '정본 기호를 담은 셀 수': found,
+           '워크북에 안 나타난 정본 기호': missing,
            '원문 인용 셀 (옛 표기 예외)': quoted,
-           '규약 어긴 자리': bad, '옛 표기가 남은 자리': old,
+           '옛 표기가 남은 자리': old,
            '홀로 선 대문자 D': bareD,
-           '조어 밖 「만기」 셀': mgi, '채권 열머리 조어 약칭': abbrev,
+           '아래첨자 서식이 남은 셀': subs,
+           '조어 밖 「만기」 셀': mgi,
            'XML 금지어': xml,
-           '자기시험 — 아래첨자 뗀 벌에서 잡은 자리': self_flat,
-           '자기시험 — 제대로 단 벌에서 잡은 자리': self_ok,
-           '자기시험 — 옛 표기 벌에서 잡은 자리': self_old}
+           '자기시험 — 옛 표기 벌에서 잡은 자리': self_old,
+           '자기시험 — 정본 기호 벌에서 잡은 자리': self_new}
     rep['판정'] = {
-        '기준표 기호 쌍 0건 아님': len(RULE['pairs']) > 0,
-        '기준표 금지 표기 0건 아님': len(RULE['forbid']) > 0,
-        '대상 0건 아님': cells > 0,
-        '아래첨자 글자 0건 아님': subs > 0,
-        '규약 어긴 자리 0건': not bad,
+        '정본 기호 0건 아님': len(RULE['canon']) > 0,
+        '금지 표기 0건 아님': len(RULE['forbid']) > 0,
+        '정본 기호 전건이 워크북에 있다': not missing,
         '옛 표기가 남은 자리 0건 (원문 인용 제외)': not old,
         '홀로 선 대문자 D 0건 (원문 인용 제외)': not bareD,
+        '아래첨자 조판 0건': not subs,
         '원문 인용 셀 0건 아님': quoted > 0,
         '조어(만기 도래) 밖 「만기」 0건': not mgi,
-        '채권 열머리에 Mi·Bi 0건': not abbrev,
         'XML 조각 0건 아님': xml['검사한 XML 조각'] > 0,
         'XML 금지어 잔여 0건': not xml['금지어 잔여'],
         'XML 예외 자리가 못 박은 수와 같음': xml['예외 자리 실측'] == BAN_OK,
-        '자기시험 판별력 — 아래첨자': len(self_flat) == 3 and not self_ok,
-        '자기시험 판별력 — 옛 표기': len(self_old) == 3,
+        '자기시험 판별력 — 옛 표기': len(self_old) == 4,
+        '자기시험 판별력 — 정본 기호':
+            {'B(d-1)', 'PA', 'PwD', 'Li'} <= set(self_new),
     }
     rep['통과'] = all(rep['판정'].values())
     if not quiet:
@@ -1372,6 +1406,40 @@ def _cellrefs(wb, text):
     return out
 
 
+def word_swap(path=RULE_MD):
+    """대표 원문 기호 -> 정본 기호. 정본 「갈아 끼우는 표」 두 열을 자리끼리 짝짓는다.
+
+    짝이 하나도 안 나오면 예외로 죽는다.
+    """
+    txt = open(path, encoding='utf-8').read()
+    seg = txt.split('## 갈아 끼우는 표', 1)[1].split('\n## ', 1)[0]
+    tick = re.compile(r'`([^`]+)`')
+    out = {}
+    for line in seg.splitlines():
+        line = line.strip()
+        if not line.startswith('|') or set(line) <= set('|- '):
+            continue
+        col = [c.strip() for c in line.strip('|').split('|')]
+        if len(col) < 2:
+            continue
+        a = [_plain(x) for x in tick.findall(col[0])]
+        b = [_plain(x) for x in tick.findall(col[1])]
+        if len(b) == 1 and len(a) > 1:
+            b = b * len(a)                        # 여럿이 한 정본으로 모이는 줄
+        if len(a) != len(b):
+            continue                              # 「없음 — …」 처럼 짝이 안 맞는 줄
+        for x, y in zip(a, b):
+            out[x] = y
+            if 'D-1' in x:                        # 원문은 범위를 대문자로 쓴다
+                out[x.replace('D-1', 'd-1')] = y
+    if not out:
+        raise ValueError('갈아 끼우는 표에서 짝을 못 읽었다: %s' % path)
+    return out
+
+
+SWAP = word_swap()
+
+
 def word_test(quiet=False):
     """원문이 이름 부른 변수가 전부 칸을 갖는가 · 수식이어야 할 자리가 값으로 있지 않은가."""
     wb = openpyxl.load_workbook(XLSX, rich_text=True)
@@ -1383,11 +1451,17 @@ def word_test(quiet=False):
         return [a for a, _t, n in cells if k2 in n][:3]
 
     def where_sym(k):
-        rx = re.compile(r'(?<![A-Za-z0-9])%s(?![A-Za-z0-9])' % re.escape(k), re.I)
-        return [a for a, t, _n in cells if rx.search(t)][:3]
+        #   원문 기호는 폐기된 표기다. 정본 기호로 옮겨서 찾는다
+        #   (dm_0901/symbol_rule_0901.md 갈아 끼우는 표).
+        for tok in [SWAP.get(k, k)]:
+            rx = re.compile(r'(?<![A-Za-z0-9])%s(?![A-Za-z0-9])' % re.escape(tok), re.I)
+            hit = [a for a, t, _n in cells if rx.search(t)][:3]
+            if hit:
+                return hit
+        return []
 
     enum = {k: where_ko(k) for k in V['열거 산출 대상']}
-    syms = {k: where_sym(k) for k in V['괄호 기호']}
+    syms = {'%s → %s' % (k, SWAP.get(k, k)): where_sym(k) for k in V['괄호 기호']}
 
     #   `산식` C열이 빈 줄 — 줄 머리 이름은 이 색인으로 셀을 지시받는다.
     fs = wb['산식']
@@ -1509,7 +1583,7 @@ def mark_test(quiet=False):
             continue
         rr = int(m.group(1))
         src = _runs(cw.cell(rr, 2).value)[0] if cw.cell(rr, 2).value is not None else ''
-        pair = [('엑셀 값', 'E%d' % r, 'C%d' % rr), ('화면 값', 'F%d' % r, 'E%d' % rr),
+        pair = [('엑셀 값', 'E%d' % r, 'C%d' % rr), ('화면 표시값', 'F%d' % r, 'E%d' % rr),
                 ('차이', 'G%d' % r, 'F%d' % rr)]
         row = {'항목': lab, '화면대조 행': rr, '구분': cw.cell(rr, 1).value,
                '원본 항목': src}
@@ -1589,7 +1663,7 @@ if __name__ == '__main__':
                           '워드 변수 전수 대응': s8, 'EC 표식 · 갈림 표': s9},
                          ensure_ascii=False, indent=1, default=str))
         ok = (r['평가 실패 수'] == 0 and r['화면대조 차이'] == 0
-              and not r['화면 값 ↔ ledger_facts 불일치'] and r['바이트 동일']
+              and not r['화면 표시값 ↔ ledger_facts 불일치'] and r['바이트 동일']
               and s1['스위치 4개 모두 동작'] and s2['움직임'] and s3['일치']
               and s4['통과'] and s5['통과'] and s6['통과'] and s7['통과']
               and s8['통과'] and s9['통과']

@@ -159,10 +159,8 @@ async function main(){
       ['nav','.nav-item[data-menu="invest-returns"]'],
       ['change','[data-mount="pf-from"]','2026-02-01'],
       ['change','[data-mount="pf-to"]','2026-02-07']]],
-    ['invest-sim','result', [
-      ['nav','.nav-item[data-menu="invest-sim"]'],
-      ['click','[data-mount="sim-go"]'],
-      ['wait', 500]]],
+    /* invest-sim/result — 시연본에서 투자 시뮬레이션을 뺐다(step7 시뮬 제거 2026-09-04 · sync_prototype.py drop_sim ·
+       PROTO_DROPPED). 상태 도달 경로도 함께 뺀다. 원본 쪽 검사는 verify_app.js·verify_sim.js 가 그대로 본다. */
     ['merchants','filtered', [
       ['nav','.nav-item[data-menu="merchants"]'],
       ['change','[data-mount="mc-sector"]','음식점업'],
@@ -424,13 +422,12 @@ async function main(){
     }
     var TARGETS=[['invest-assets','default'],['invest-assets','empty'],['invest-assets','cert-confirm'],
       ['invest-profit','default'],['invest-profit','monthly'],['invest-profit','empty'],
-      ['invest-sim','default'],['invest-sim','result'],
+      /* invest-sim · xls-* 는 시연본에 없다 — PROTO_DROPPED (step7 2026-09-04). 검사는 verify_app.js 가 원본에서 본다 */
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
       ['acquisition-list','default'],['acquisition-list','confirm'],['acquisition-list','done'],
       ['contracts','default'],['contracts','all'],['contracts','empty'],
       ['coocon','default'],['password','default'],['password','weak'],['password','done'],
-      ['certificate','default'],['xls-assets-status','default'],['xls-assets-merchant','default'],
-      ['xls-profit-status','default'],['xls-profit-daily','default'],['login','default']];
+      ['certificate','default'],['login','default']];
     var dead=[], a11y=[], newtab=[], seen={}, scanned=0;
     function vis(e){
       if(e.getClientRects().length===0) return false;
@@ -696,13 +693,12 @@ async function main(){
   try { R.layout = await evalJS(`
     var T=[['invest-assets','default'],['invest-assets','download'],['invest-assets','cert-confirm'],['invest-assets','empty'],
       ['invest-profit','default'],['invest-profit','monthly'],['invest-profit','empty'],
-      ['invest-sim','default'],['invest-sim','result'],
+      /* invest-sim · xls-* 는 시연본에 없다 — PROTO_DROPPED (step7 2026-09-04). 검사는 verify_app.js 가 원본에서 본다 */
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
       ['acquisition-list','default'],['acquisition-list','confirm'],['acquisition-list','signing'],['acquisition-list','done'],
       ['contracts','default'],['contracts','all'],['contracts','empty'],
       ['coocon','default'],['password','default'],['password','weak'],['password','error'],['password','done'],
-      ['certificate','default'],['xls-assets-status','default'],['xls-assets-merchant','default'],
-      ['xls-profit-status','default'],['xls-profit-daily','default'],['login','default']];
+      ['certificate','default'],['login','default']];
     /* D-14 로 coocon/confirm 화면·coocon-confirm 모달이 없어졌다. 쿠콘은 2-b 에서 외부 링크로 본다. */
     var MOD={'invest-assets/cert-confirm':'invest-assets-cert-confirm','acquisition-list/confirm':'acquisition-confirm',
       'acquisition-list/signing':'acquisition-signing','acquisition-list/done':'acquisition-done'};
@@ -733,13 +729,12 @@ async function main(){
   R.escape = await evalJS(`
     var TARGETS=[['invest-assets','default'],['invest-assets','download'],['invest-assets','cert-confirm'],['invest-assets','empty'],
       ['invest-profit','default'],['invest-profit','monthly'],['invest-profit','empty'],
-      ['invest-sim','default'],['invest-sim','result'],
+      /* invest-sim · xls-* 는 시연본에 없다 — PROTO_DROPPED (step7 2026-09-04). 검사는 verify_app.js 가 원본에서 본다 */
       ['merchants','default'],['merchants','filtered'],['merchants','empty'],
       ['acquisition-list','default'],['acquisition-list','confirm'],['acquisition-list','signing'],['acquisition-list','done'],
       ['contracts','default'],['contracts','all'],['contracts','empty'],
       ['coocon','default'],['password','default'],['password','weak'],['password','error'],['password','done'],
-      ['certificate','default'],['xls-assets-status','default'],['xls-assets-merchant','default'],
-      ['xls-profit-status','default'],['xls-profit-daily','default'],['login','default']];
+      ['certificate','default'],['login','default']];
     var BAD=/glossary|capability|feasibility|inquiry|archive|review/i;
     var here=location.pathname;
     var out={offsite:[], sibling:[], banned:[], asset:[], hash:0, total:0, docText:[]};
@@ -778,11 +773,11 @@ async function main(){
   /* ── 8) 가로 오버플로 ── */
   R.overflow = await evalJS(`
     var T=[['invest-assets','default'],['invest-assets','empty'],
-      ['invest-profit','default'],['invest-profit','monthly'],['invest-sim','default'],['invest-sim','result'],
+      ['invest-profit','default'],['invest-profit','monthly'],
+      /* invest-sim · xls-* 는 시연본에 없다 — PROTO_DROPPED (step7 2026-09-04). 검사는 verify_app.js 가 원본에서 본다 */
       ['merchants','default'],['merchants','filtered'],
       ['acquisition-list','default'],['acquisition-list','confirm'],['contracts','default'],['contracts','all'],
       ['coocon','default'],['password','default'],['certificate','default'],
-      ['xls-assets-status','default'],['xls-assets-merchant','default'],['xls-profit-status','default'],['xls-profit-daily','default'],
       ['login','default']];
     var out=[];
     T.forEach(function(t){
@@ -797,7 +792,7 @@ async function main(){
   /* ── 9) 숫자 불변 — 화면에 뜨는 Ty수익율·W금융일수가 원장 사실값과 같은가 ──
      [기준 노후 교체] 예전 이 자리는 found224(2.24%) · found110000(0.110000) 두 상수를
      넣어 두고 출력만 했다 — PASS/FAIL 판정에 쓰지 않았고, 둘 다 현행 화면에 없다.
-       · 2.24% 는 옛 원장(PSA 1,250,800,000 · ④ 3.55%) 시절의 ⑤ 다. D-31 로 산식 앵커가
+       · 2.24% 는 옛 원장(PA 1,250,800,000 · ④ 3.55%) 시절의 ⑤ 다. D-31 로 산식 앵커가
          순지급액으로 통일되면서 원장이 재생성됐고 ⑤ 는 기본 기간 10.72% 가 됐다.
        · 0.110000 은 일별 표에 할인율을 소수 6자리로 적던 시절 표기다. 화면·엑셀 모두 0.11% 로 그린다.
      검사를 없애지 않고 기대값만 현행으로 바꾼다. 리터럴로 박지 않는다 — ledger_facts.json 을 읽어 대조한다.
@@ -807,6 +802,7 @@ async function main(){
       ty: FACTS.ty, w: FACTS.w, tyByDate: FACTS.tyByDate,
       weekTy: FACTS.weekTy, weekTyAsset: FACTS.weekTyAsset, weekW: FACTS.weekW,
       psa: Number(FACTS.weekExec).toLocaleString('en-US'), psc: Number(FACTS.weekPsc).toLocaleString('en-US'),
+      ad: Number(FACTS.weekAD).toLocaleString('en-US'),
       fullTy: FACTS.fullTy, fullTyAsset: FACTS.fullTyAsset, fullW: FACTS.fullW, monthTy: FACTS.monthTy
     })};
     var out = [];
@@ -822,14 +818,19 @@ async function main(){
     add('자산표 투자실행액 W', F.w + '일', iaRow[2]);
     add('자산표 투자실행액 Ty', F.ty + '%', iaRow[4]);
 
-    /* (2) 투자 수익 기본(일주일·일별) — 카드 ④·⑤ · PSA·PSC · 합계 행 · 행별 W↔Ty */
+    /* (2) 투자 수익 기본(일주일·일별) — 카드 ④·⑤ · PA·PEC · 합계 행 · 행별 W↔Ty */
     go('invest-profit','default');
     var tv = SECQ('invest-profit','.ty-split .summary-value');
     add('기본 기간 ④ 투자실행금액 대비', F.weekTy + '%',      tv[0] ? tv[0].textContent.trim() : '없음');
     add('기본 기간 ⑤ 투자자산 대비',   F.weekTyAsset + '%', tv[1] ? tv[1].textContent.trim() : '없음');
     var tip = Array.prototype.map.call(SECQ('invest-profit','.ty-split .tip-row'), function(e){ return e.textContent.trim(); });
-    add('기본 기간 PSA', 'PSA' + F.psa + '원', tip.filter(function(x){ return x.indexOf('PSA')===0; })[0] || '없음');
-    add('기본 기간 PSC', 'PSC' + F.psc + '원', tip.filter(function(x){ return x.indexOf('PSC')===0; })[0] || '없음');
+    /* [기준 교체 2026-09-04] (1) 툴팁 기호 옆에 정본 용어명이 붙었다(step6 툴팁 용어명 · build_app.py pfRender).
+       (2) ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) 로 바뀌어(step7 ⑤ 산식 교체) ⑤ 툴팁의 PA 행이
+       Σ( Ai × Di ) 행이 됐다. PA 행은 ④ 툴팁에 「기간 투자실행금」으로 남는다.
+       <sub> 는 textContent 에서 글자로 붙는다 — Σ( A<sub>i</sub> × D<sub>i</sub> ) → 'Σ( Ai × Di )'. */
+    add('기본 기간 PA (④ 툴팁)', 'PA기간 투자실행금 · ' + F.psa + '원', tip.filter(function(x){ return x.indexOf('PA')===0; })[0] || '없음');
+    add('기본 기간 PEC (⑤ 툴팁)', 'PEC기간 순현금 · ' + F.psc + '원', tip.filter(function(x){ return x.indexOf('PEC')===0; })[0] || '없음');
+    add('기본 기간 Σ( Ai × Di ) (⑤ 툴팁)', 'Σ( Ai × Di )' + F.ad + '원', tip.filter(function(x){ return x.indexOf('Σ( Ai × Di )')===0; })[0] || '없음');
     var ft = Array.prototype.map.call(SECQ('invest-profit','.tbl tfoot td'), function(td){ return td.textContent.replace('가중평균','').trim(); });
     add('일별 표 합계 W',  F.weekW,          ft[4] || '없음');
     add('일별 표 합계 Ty', F.weekTy + '%',   ft[5] || '없음');
@@ -868,25 +869,12 @@ async function main(){
     add('월별 표 ' + F.monthTy.length + '행 W·Ty',
         F.monthTy.map(function(m){ return m[0] + '|' + m[1] + '|' + m[2] + '%'; }).join(' , '), mrows.join(' , '));
 
-    /* (4) 엑셀 서식 미리보기 — 기간은 수익 화면 상태를 따른다. 기본(일주일)로 되돌리고 본다. */
-    go('invest-profit','default');
-    go('xls-profit-daily','default');
-    var xdRows = Array.prototype.map.call(SECQ('xls-profit-daily','table tr'), cells)
-      .filter(function(c){ return /^\\d{4}-\\d{2}-\\d{2}$/.test(c[1] || ''); })
-      .map(function(c){ return {d:c[1], w:c[5], ty:c[6]}; });
-    pairCheck('엑셀 일별투자수익', xdRows);
-
-    go('xls-profit-status','default');
-    var xps = {};
-    Array.prototype.map.call(SECQ('xls-profit-status','table tr'), cells).forEach(function(c){ if(c[1]) xps[c[1]] = c[2]; });
-    add('엑셀 투자수익현황 ④', F.weekTy + '%',      xps['Ty수익율 (투자실행금액 대비)'] || '없음');
-    add('엑셀 투자수익현황 ⑤', F.weekTyAsset + '%', xps['Ty수익율 (투자자산 대비)'] || '없음');
-
-    go('xls-assets-status','default');
-    var xasExec = Array.prototype.map.call(SECQ('xls-assets-status','table tr'), cells)
-      .filter(function(c){ return c[1] === '투자실행액'; })[0] || [];
-    add('엑셀 투자자산현황 W',  F.w,        xasExec[3] || '없음');
-    add('엑셀 투자자산현황 Ty', F.ty + '%', xasExec[5] || '없음');
+    /* (4) 엑셀 서식 미리보기(xls-*) — 시연본에서 뺐다(PROTO_DROPPED · step7 2026-09-04).
+       검사는 지우지 않고 verify_app.js 9) 로 옮겨 원본 app.html 의 미리보기 화면에서 그대로 본다.
+       시연본의 엑셀은 위 3) 이 실물 바이트로 대조한다. 시연본에 xls 화면이 되살아나면 아래 (6) 이 잡는다. */
+    var xlsAlive = Array.prototype.filter.call(document.querySelectorAll('section.screen[data-screen]'),
+      function(sc){ return /^xls-|^invest-sim$/.test(sc.dataset.screen); }).map(function(sc){ return sc.dataset.screen; });
+    out.push({name:'(6) 시연본에 xls-*·invest-sim 화면 없음', want:'0건', got: xlsAlive.length ? xlsAlive.join(',') : '0건', pass: xlsAlive.length === 0});
 
     /* (5) 비중 합 — 예전에도 값만 찍고 판정은 안 했다. 같이 판정에 올린다. */
     var sumRatio = window.__selfcheck().ratioSum;

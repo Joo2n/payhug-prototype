@@ -76,7 +76,7 @@ RATIO_SENTENCE = 'S입금부족율 = Σ SLi / Σ SAi'
 # 화면 툴팁이 말해야 하는 모집단 문언. 건수는 원장에서 읽는다 — 여기 적지 않는다.
 # 2026-08-31 기호 규칙 — 날짜 쪽은 소문자 d 다 (dm_0831/symbol_rule_0831.md).
 # 바로 위 SAMPLE_SENTENCE 는 대표 원문 인용이라 대문자 그대로 둔다.
-POP_S_TEXT = '선정산일 d-20 ~ d-11 표본'
+POP_S_TEXT = '선정산일이 기준일 20일 전 ~ 11일 전인 표본'
 
 # macOS 함정 — --window-size=1440,H 의 실제 뷰포트는 1440x(H-87). 87 을 더해 창을 띄운다.
 # --screenshot 플래그를 붙이면 편차가 0 이 되어 보정이 사라진 것처럼 오판한다. 붙이지 않는다.
@@ -156,9 +156,9 @@ def facts_match(facts, m1):
 
 def screen_merch_match(tbl, merchants):
     """화면 가맹점표의 S 열이 원장 명단과 전건 같은가. 항목 6 이 손댄 표로 부른다."""
-    if not tbl or 'S입금부족율' not in tbl['head']:
+    if not tbl or '입금부족률' not in tbl['head']:
         return False, None, None
-    mi = tbl['head'].index('S입금부족율')
+    mi = tbl['head'].index('입금부족률')
     got = [(r[0], r[mi]) for r in tbl['body']]
     want = [(m[0], '%s%%' % m[3]) for m in merchants]
     return got == want, got, want
@@ -276,7 +276,7 @@ async function drive(t, base){
     var ths = sec.querySelectorAll('[data-mount="ia-status"] thead th');
     for(var i = 0; i < ths.length; i++){
       var a = ths[i].querySelector('.tip-anchor');
-      if(a && a.textContent.trim() === 'S입금부족율'){
+      if(a && a.textContent.trim() === '입금부족률'){
         a.scrollIntoView({block:'center'});
         var r = a.getBoundingClientRect();
         return {x: Math.round(r.left + r.width/2), y: Math.round(r.top + r.height/2)};
@@ -284,7 +284,7 @@ async function drive(t, base){
     }
     return null;
   `);
-  if(!rect) throw new Error(t.key + ' 현황표에 S입금부족율 툴팁 앵커가 없다');
+  if(!rect) throw new Error(t.key + ' 현황표에 입금부족률 툴팁 앵커가 없다');
   out.tipHoverAt = rect;
   await send('Input.dispatchMouseEvent', {type:'mouseMoved', x:rect.x, y:rect.y,
     button:'none', buttons:0, clickCount:0});
@@ -294,7 +294,7 @@ async function drive(t, base){
     var ths = sec.querySelectorAll('[data-mount="ia-status"] thead th');
     for(var i = 0; i < ths.length; i++){
       var a = ths[i].querySelector('.tip-anchor');
-      if(a && a.textContent.trim() === 'S입금부족율'){
+      if(a && a.textContent.trim() === '입금부족률'){
         var p = ths[i].querySelector('.tip-panel');
         var cs = getComputedStyle(p);
         return {text:p.textContent.trim(), display:cs.display,
@@ -312,7 +312,7 @@ async function drive(t, base){
     var ths = sec.querySelectorAll('[data-mount="ia-status"] thead th');
     for(var i = 0; i < ths.length; i++){
       var a = ths[i].querySelector('.tip-anchor');
-      if(a && a.textContent.trim() === 'S입금부족율')
+      if(a && a.textContent.trim() === '입금부족률')
         return getComputedStyle(ths[i].querySelector('.tip-panel')).display;
     }
     return null;
@@ -535,9 +535,9 @@ def sec2(L, s1, drv):
             if not fn.endswith('.html'):
                 continue
             t = rd(os.path.join(root, fn))
-            if 'S입금부족율' not in t:
+            if '입금부족률' not in t:
                 continue
-            if 'POP_S' in t or 'tip-anchor">S입금부족율' in t:
+            if 'POP_S' in t or 'tip-anchor">입금부족률' in t:
                 files.append((os.path.join(root, fn), t))
     chk('2', 'S 모집단 툴팁을 가진 화면 파일 0건 아님', len(files) > 0,
         '%d건 %s' % (len(files), [os.path.basename(f) for f, _ in files]))
@@ -652,7 +652,7 @@ def sec3(L, s1, drv):
     if drv:
         for key, t in sorted(drv['targets'].items()):
             st, me = t['assets']['status'], t['assets']['merch']
-            ci = st['head'].index('S입금부족율')
+            ci = st['head'].index('입금부족률')
             exec_row = [r for r in st['body'] if r and r[0] == '투자실행액']
             cash_row = [r for r in st['body'] if r and r[0] == '순현금']
             chk('3', '%s 현황표 투자실행액 행 S = 원장 표기' % key,
@@ -752,7 +752,7 @@ def sec6(L, s1, s2, s3, drv):
     nstr = s2['nstr']
     tampered = 0
     for path, t in s2['files']:
-        bad = t.replace(POP_S_TEXT, '선정산일 d-20 ~ d-10 표본')
+        bad = t.replace(POP_S_TEXT, '선정산일이 기준일 20일 전 ~ 10일 전인 표본')
         if POP_S_TEXT not in bad:
             tampered += 1
     chk('6', '툴팁 판독기가 D-10 치환본을 전건 잡는다',
@@ -779,14 +779,14 @@ def sec6(L, s1, s2, s3, drv):
             me = t['assets']['merch']
             ok0, got0, _ = screen_merch_match(me, L['facts']['merchants'])
             chk('6', '%s 가맹점표 판독기가 원본을 통과시킨다' % key, ok0, str(got0)[:120])
-            mi = me['head'].index('S입금부족율')
+            mi = me['head'].index('입금부족률')
             tam = {'head': me['head'],
                    'body': [list(r) for r in me['body']]}
             tam['body'][0][mi] = '%s%%' % q2(m2due)      # 방식2 값으로 한 칸만 바꿈
             ok1, _, _ = screen_merch_match(tam, L['facts']['merchants'])
             chk('6', '%s 가맹점표 판독기가 한 칸 치환본을 잡는다' % key, not ok1,
                 '심은 값 %s%%' % q2(m2due))
-            tam2 = {'head': [h for h in me['head'] if h != 'S입금부족율'],
+            tam2 = {'head': [h for h in me['head'] if h != '입금부족률'],
                     'body': [list(r) for r in me['body']]}
             ok2, _, _ = screen_merch_match(tam2, L['facts']['merchants'])
             chk('6', '%s 가맹점표 판독기가 S 열 삭제본을 잡는다' % key, not ok2,

@@ -21,6 +21,16 @@ const MIME = {'.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-
   '.png':'image/png', '.pdf':'application/pdf', '.zip':'application/zip',
   '.xlsx':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'};
 const ALLOWED_HOSTS = ['www.we-bank.co.kr', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+/* 원장 사실값 — 게이트에 숫자를 손으로 적지 않되, 기대값은 원장에서 읽는다.
+   daily_ledger.py 의 dump_facts() 산출물(verify_identity.js 와 같은 원천). */
+const FACTS = JSON.parse(fs.readFileSync(path.join(__dirname, 'ledger_facts.json'), 'utf8'));
+/* 원본에서 시연본이 덜어 내는 화면 — sync_prototype.py 와 같은 목록. 랜딩 갤러리 · 투자 시뮬레이션 · 엑셀 미리보기 4종(통합본 전용) */
+const PROTO_DROPPED = ['index', 'invest-sim', 'xls-assets-status', 'xls-assets-merchant', 'xls-profit-status', 'xls-profit-daily'];
+/* 시뮬레이션 흔적 — 메뉴·화면·JS·문자열 어느 것이든 시연본 DOM 에 있으면 안 된다 (sync_prototype.py SIM_BANNED 와 같은 목록) */
+const SIM_TRACE = /invest-sim|시뮬|simRun|simBond|\bSIM(?:\b|_)|\bsim-/;
+/* 엑셀 미리보기 흔적 — 뷰 id·시트 DOM 클래스·시트 JS 함수·파일바 (sync_prototype.py XLS_BANNED 와 같은 목록).
+   assets/sheet.css 링크는 남는다 — .back-link 를 증명서 화면이 쓴다 */
+const XLS_TRACE = /xls-assets-status|xls-assets-merchant|xls-profit|\bsheet-(?:frame|tabs|scroll|tab)\b|class="sheet"|\b(?:sheetRow|sheetData|sheetName|renderXls)\b|data-mount="(?:filebar|sheettabs|sheet)"|\bfile-bar\b|xls-get|미리보기 화면/;
 
 function serve(root){
   return http.createServer((req, res) => {
@@ -95,7 +105,10 @@ async function main(){
     await sleep(2200);
     try {
       SRCREG = await ev('var c=window.__selfcheck();' +
-        'return {screens:c.screens, states:c.states, order:SCREEN_ORDER.slice()};');
+        'var per={}; Object.keys(STATE_META).forEach(function(k){ per[k]=Object.keys(STATE_META[k]).length-1; });' +
+        'var nav=[].map.call(document.querySelectorAll(".sidebar .nav-item[data-menu]"), function(a){ return a.dataset.menu; });' +
+        'var xls=Object.keys(XLSX).filter(function(k){ return !!XLSX[k].file; }).map(function(k){ return XLSX[k].file; });' +
+        'return {screens:c.screens, states:c.states, order:SCREEN_ORDER.slice(), per:per, nav:nav, xls:xls};');
     } catch(e){ SRCREG = null; }
   }
   consoleErrors.length = 0;   /* 원본 페이지에서 난 것은 이 게이트 대상이 아니다 — verify_app.js 가 본다 */
@@ -174,6 +187,110 @@ async function main(){
   check('로고 -> 자기 자신 메인', logo.view === 'invest-assets' && (logo.href === 'index.html' || logo.href === '#invest-assets'),
         JSON.stringify(logo));
 
+  /* 3b) 투자 시뮬레이션 — 통합본 전용. 시연본에는 메뉴·화면·레지스터·JS·문자열 어느 것도 없다.
+        사이드바는 원본 실측에서 invest-sim 하나를 뺀 목록과 순서까지 같아야 한다(곳수를 박지 않는다). */
+  const sim = await ev(`
+    var bad=[];
+    if(document.querySelector('.sidebar .nav-item[data-menu="invest-sim"]')) bad.push('메뉴 있음');
+    if(document.querySelector('section.screen[data-screen="invest-sim"]')) bad.push('화면 있음');
+    if(SCREEN_ORDER.indexOf('invest-sim')>=0) bad.push('SCREEN_ORDER');
+    if('invest-sim' in STATE_META) bad.push('STATE_META');
+    if('invest-sim' in MENU_OF) bad.push('MENU_OF');
+    if(Object.keys(FILE2SCREEN).concat(Object.keys(STATEFILE)).some(function(k){ return k.indexOf('invest-sim')===0; })) bad.push('FILE2SCREEN·STATEFILE');
+    if(typeof simRun!=='undefined' || typeof SIM!=='undefined' || typeof clearSimTimer!=='undefined') bad.push('시뮬 JS 정의 있음');
+    var m=document.documentElement.outerHTML.match(new RegExp(${JSON.stringify(SIM_TRACE.source)}));
+    if(m) bad.push('문자열 '+m[0]);
+    return bad;
+  `);
+  const navWant = SRCREG ? SRCREG.nav.filter(m => m !== 'invest-sim') : null;
+  const navGot = NAV.map(x => x.m);
+  if(navWant && JSON.stringify(navGot) !== JSON.stringify(navWant))
+    sim.push('사이드바 ' + JSON.stringify(navGot) + ' ≠ 원본 - invest-sim ' + JSON.stringify(navWant));
+  check('투자 시뮬레이션 없음 (메뉴 ' + navGot.length + (navWant ? ' = 원본 ' + SRCREG.nav.length + ' - 1' : '') + ')',
+        sim.length === 0, sim.join(' | '));
+
+  /* 그 해시로 들어오면 투자 자산 기본 화면 — 첫 진입(init)과 화면 안 이동(hashchange) 둘 다 */
+  await send('Page.navigate', {url:'about:blank'}); await sleep(200);
+  await send('Page.navigate', {url: TARGET + '#invest-sim/result'}); await sleep(1800);
+  const simHash = await ev(`
+    var sec=document.querySelector('section.screen:not([hidden])');
+    var a={load:{view:document.body.dataset.view, state:sec?sec.dataset.state:'-', hash:location.hash}};
+    go('contracts','default');
+    return a;`);
+  await ev(`location.hash='#invest-sim'; return 1;`); await sleep(300);
+  simHash.change = await ev(`return {view:document.body.dataset.view, hash:location.hash};`);
+  check('invest-sim 해시 진입 -> 투자 자산 (첫 진입 · 화면 안 이동)',
+        simHash.load.view === 'invest-assets' && simHash.load.state === 'default' && simHash.load.hash === '#invest-assets' &&
+        simHash.change.view === 'invest-assets' && simHash.change.hash === '#invest-assets',
+        JSON.stringify(simHash));
+
+  /* 3c) 엑셀 미리보기 4종 — 통합본 전용. 시연본에는 뷰·레지스터·시트 JS·파일바·문자열 어느 것도 없다.
+        「엑셀 다운로드」 버튼은 중간 화면 없이 실물 xlsx 를 a[download] 로 바로 내려준다(원본 lib/excel.ts:38-51 규격). */
+  const XLS_VIEWS = PROTO_DROPPED.filter(x => /^xls-/.test(x));
+  await send('Page.navigate', {url: TARGET}); await sleep(1800);
+  const xp = await ev(`
+    var bad=[], V=${JSON.stringify(XLS_VIEWS)};
+    if(document.querySelector('section.screen[data-screen^="xls-"]')) bad.push('화면 있음');
+    if(document.querySelector('.sheet-frame, .sheet-tabs, table.sheet, .file-bar, [data-mount="filebar"], [data-mount="sheettabs"], [data-mount="sheet"]')) bad.push('시트·파일바 DOM 있음');
+    V.forEach(function(v){
+      if(SCREEN_ORDER.indexOf(v)>=0) bad.push('SCREEN_ORDER '+v);
+      if(v in STATE_META) bad.push('STATE_META '+v);
+      if(v in MENU_OF) bad.push('MENU_OF '+v);
+      if(v in SCREEN_LABEL) bad.push('SCREEN_LABEL '+v);
+      if(v in RENDER) bad.push('RENDER '+v);
+    });
+    if(Object.keys(FILE2SCREEN).concat(Object.keys(STATEFILE)).some(function(k){ return k.indexOf('xls-')===0; })) bad.push('FILE2SCREEN·STATEFILE');
+    if(typeof renderXls!=='undefined' || typeof sheetData!=='undefined' || typeof sheetRow!=='undefined' || typeof sheetName!=='undefined') bad.push('시트 JS 정의 있음');
+    if(ACT['xls-get']) bad.push("ACT['xls-get']");
+    if(KEEP_DEFAULT.indexOf('xls-get')>=0) bad.push('KEEP_DEFAULT xls-get');
+    Object.keys(XLSX).forEach(function(k){
+      if(!XLSX[k].file) bad.push('XLSX '+k+' 파일 없음');
+      if(String(XLSX[k].screen||'').indexOf('xls-')===0) bad.push('XLSX '+k+' screen');
+    });
+    var m=document.documentElement.outerHTML.match(new RegExp(${JSON.stringify(XLS_TRACE.source)}));
+    if(m) bad.push('문자열 '+m[0]);
+    return bad;
+  `);
+  check('엑셀 미리보기 없음 (뷰 ' + XLS_VIEWS.length + '종 · 레지스터 · 시트 JS · 파일바 · 문자열)', xp.length === 0, xp.join(' | '));
+
+  /* 다운로드 버튼 — 레지스터의 파일 목록은 원본과 같고 전건이 시연본 자산에 있으며, 4개 버튼 모두 기본 상태에서 파일에 닿는다.
+     실제 수신·바이트 일치는 5) 가 본다. */
+  const dl = await ev(`
+    var files=Object.keys(XLSX).map(function(k){ return XLSX[k].file; });
+    var direct=String(pullFile).indexOf('a.download')>=0 && String(ACT['xls-open']).indexOf("'assets/xlsx/'")>=0;
+    var btns=[].map.call(document.querySelectorAll('[data-act="xls-open"]'), function(b){ return b.dataset.xls; });
+    go('invest-profit','default');
+    var res=btns.map(function(x){ var k=xlsKey(x); return {btn:x, key:k, file:k?XLSX[k].file:null}; });
+    go('invest-assets','default');
+    return {files:files, direct:direct, btns:res};
+  `);
+  const dlBad = [];
+  const dlMissing = dl.files.filter(f => !fs.existsSync(path.join(REPO, 'assets/xlsx', f)));
+  const dlWant = SRCREG ? SRCREG.xls : null;
+  if(!dl.direct) dlBad.push('pullFile·xls-open 이 a[download]·assets/xlsx/ 를 쓰지 않음');
+  if(dlMissing.length) dlBad.push('시연본 자산에 없음 ' + dlMissing.join(','));
+  if(dlWant && JSON.stringify(dl.files) !== JSON.stringify(dlWant)) dlBad.push('레지스터 파일 목록 ≠ 원본 (' + dl.files.length + '/' + dlWant.length + ')');
+  dl.btns.forEach(b => { if(!b.file) dlBad.push('버튼 ' + b.btn + ' 기본 상태에서 파일 없음'); });
+  check('엑셀 다운로드 = 실물 xlsx 직행 (레지스터 ' + dl.files.length + '건' + (dlWant ? ' = 원본 ' + dlWant.length : '') +
+        ' · 자산 실재 · 버튼 ' + dl.btns.length + ')', dlBad.length === 0, dlBad.join(' | '));
+
+  /* 그 해시로 들어오면 투자 자산 기본 화면 — 첫 진입 4종 · 화면 안 이동 1종 */
+  const xh = {load:{}, change:null};
+  for(const v of XLS_VIEWS){
+    await send('Page.navigate', {url:'about:blank'}); await sleep(200);
+    await send('Page.navigate', {url: TARGET + '#' + v}); await sleep(1600);
+    xh.load[v] = await ev(`var sec=document.querySelector('section.screen:not([hidden])');
+      return {view:document.body.dataset.view, state:sec?sec.dataset.state:'-', hash:location.hash};`);
+  }
+  await ev(`go('invest-profit','default'); return 1;`);
+  await ev(`location.hash='#' + ${JSON.stringify(XLS_VIEWS[0] || 'xls-assets-status')}; return 1;`); await sleep(300);
+  xh.change = await ev(`return {view:document.body.dataset.view, hash:location.hash};`);
+  const xhBad = Object.keys(xh.load)
+    .filter(v => !(xh.load[v].view === 'invest-assets' && xh.load[v].state === 'default' && xh.load[v].hash === '#invest-assets'))
+    .concat(xh.change.view === 'invest-assets' && xh.change.hash === '#invest-assets' ? [] : ['화면 안 이동']);
+  check('xls-* 해시 진입 -> 투자 자산 (첫 진입 ' + XLS_VIEWS.length + '종 · 화면 안 이동)', xhBad.length === 0,
+        xhBad.length ? xhBad.join(' | ') + ' ' + JSON.stringify(xh) : '');
+
   /* 4) 바깥으로 나가는 통로 — 화면·상태 전 조합의 클릭 가능 요소 전수 */
   const esc = await ev(`
     var BAD=/glossary|capability|feasibility|inquiry|archive|review/i;
@@ -216,7 +333,7 @@ async function main(){
         일별 버튼 하나가 PF.gran 에 따라 갈린다(app.html: var PROFIT_XLS, ACT['xls-open']).
         그래서 pullFile 을 잠시 가로채 화면·상태를 돌며 "이 버튼이 무슨 파일을 부르는가"를 앱에게 물어 경로를 찾고,
         찾은 경로로 진짜 클릭해 받는다. XLSX 에 항목이 늘어도 경로는 저절로 따라온다. */
-  /* file 이 없는 자리(미리보기 화면을 가리키는 키)는 도달 경로를 따질 대상이 아니다 */
+  /* file 이 없는 자리는 도달 경로를 따질 대상이 아니다 */
   const meta = (await ev('return Object.keys(XLSX).map(function(k){ return {key:k, file:XLSX[k].file}; });'))
                  .filter(m => !!m.file);
   const norm = x => x.normalize('NFC');
@@ -324,13 +441,18 @@ async function main(){
   check('비중 합 100.0%', sc.ratioSum === 100, String(sc.ratioSum));
   check('투자실행금 화면 간 일치', sc.execMatch === true, String(sc.assetExecRow));
   check('일별 원장 = 월별 롤업', sc.rollupMatchesLedger === true, sc.ledgerProfitSum + ' / ' + sc.monthRollupSum);
-  /* 투자자산 대비 Ty수익율 — 절대값을 박지 않는다.
+  /* 투자자산 대비 Ty수익율 — 게이트에 절대값을 **손으로** 박지 않는다. 원장에서 읽는다.
      2026-08-28 버킷 Ty 산식 정정으로 이 값이 2.24% -> 8.15% 로 움직였다
-     (app.html tyAssetOf: PSC 를 기준일 잔액 1개(스톡)가 아니라 EC 일수만큼 쌓이는 유량으로 센다).
+     (app.html tyAssetOf: PEC 를 기준일 잔액 1개(스톡)가 아니라 EC 일수만큼 쌓이는 유량으로 센다).
      숫자를 박아 두면 재산출 때마다 게이트가 깨지고, 그때 숫자만 갈아 끼우면 근거 없는 추인이 된다.
-     그래서 화면이 스스로 내놓은 값끼리 맞는지를 본다 — ⑤ = ④ x PSA/(PSA+PSC), PSA·PSC 는 툴팁에 찍힌 금액.
-     같은 함수를 다시 부르는 것이 아니라 표기값으로 되짚는 것이라 항등식이 실제로 걸린다.
-     절대값 자체는 verify_identity.js 가 기간 7종으로 따로 본다(대표 정의서 ⑤). */
+
+     [기준 교체 2026-09-02] 그래서 「화면이 스스로 내놓은 값끼리 맞는지」만 봤는데,
+     되짚기의 재료가 표기 2자리 ④ 라 되짚은 값이 애초에 정확하지 않다(주간 want 2.244 ↔ 화면 2.25).
+     그 갈림을 0.02 허용치가 삼켜, ⑤ 가 2.24 로 되돌아가도 게이트가 통과했다.
+     기대값을 원장(ledger_facts.json)에서 읽어 표기값끼리 완전일치로 본다 — 기본 기간이 일주일이라
+     weekTy(④) · weekTyAsset(⑤) 자리다. 원장이 다시 찍히면 기대값도 함께 움직여 추인이 생기지 않는다.
+     되짚기 자체는 남긴다 — 툴팁 Σ(Ai×Di)·PEC 가 카드와 다른 기간을 말하는 것을 그 자리가 잡는다.
+     기간 7종의 절대값은 verify_identity.js 가 따로 본다(대표 정의서 ⑤). */
   const ty = await ev(`
     go('invest-profit','default');
     var sec=document.querySelector('section.screen[data-screen="invest-profit"]');
@@ -345,33 +467,54 @@ async function main(){
     var four=num(c0.querySelector('.summary-value').textContent);
     var five=num(c1.querySelector('.summary-value').textContent);
     go('invest-assets','default');
-    return {four:four, five:five, psa:got['PSA'], psc:got['PSC'],
+    var adKey=Object.keys(got).filter(function(k){ return k.indexOf('Σ')===0; })[0];
+    return {four:four, five:five, ad:got[adKey], psc:got['PEC'],
             label:c1.textContent.indexOf('투자자산 대비')>=0};
   `);
-  const tyWant = (ty && ty.psa + ty.psc) ? ty.four * ty.psa / (ty.psa + ty.psc) : NaN;
-  check('Ty수익율 ⑤ = ④ x PSA/(PSA+PSC) — 툴팁 표기값으로 되짚기',
+  const tyK = (ty && ty.ad + ty.psc) ? ty.ad / (ty.ad + ty.psc) : NaN;
+  const tyWant = ty.four * tyK;
+  /* 되짚기 허용치는 상수가 아니라 표기 반올림에서 유도한다 —
+     ⑤ = r2(④6 x k) · ④ = r2(④6) 이므로 |⑤ - ④ x k| <= 0.005 x (1 + k) 다.
+     이 자리에 허용치가 남는 이유는 재료인 ④ 가 이미 2자리로 잘려 있어서다(원 자리 반올림 2회).
+     판별력은 바로 아래 원장 대조가 갖는다 — 그쪽에는 허용치가 없다. */
+  const tyLim = 0.005 * (1 + (isNaN(tyK) ? 1 : tyK)) + 1e-9;
+  check('연환산수익률 ⑤ = ④ x Σ(Ai×Di)/(Σ(Ai×Di)+PEC) — 툴팁 표기값으로 되짚기',
         !ty.err && ty.label === true && ty.four > 0 && ty.five > 0 && ty.five <= ty.four &&
-        Math.abs(ty.five - tyWant) <= 0.02,
-        JSON.stringify(ty) + ' want=' + (isNaN(tyWant) ? 'NaN' : tyWant.toFixed(3)));
+        Math.abs(ty.five - tyWant) <= tyLim,
+        JSON.stringify(ty) + ' want=' + (isNaN(tyWant) ? 'NaN' : tyWant.toFixed(3)) +
+        ' lim=' + tyLim.toFixed(5));
+  /* 원장 대조 — 기본 기간(일주일)의 ④·⑤ 표기값과 완전일치. 허용치 없음 */
+  check('연환산수익률 ④ ⑤ = 원장 weekTy · weekTyAsset (기본 기간 일주일)',
+        !ty.err && ty.four === Number(FACTS.weekTy) && ty.five === Number(FACTS.weekTyAsset),
+        '④ ' + ty.four + '/' + FACTS.weekTy + ' · ⑤ ' + ty.five + '/' + FACTS.weekTyAsset);
+  /* 툴팁 Σ(Ai×Di)·PEC 도 원장 기대값과 맞대 본다 — 카드와 툴팁이 다른 기간을 말하면 여기서 걸린다 */
+  check('연환산수익률 툴팁 Σ(Ai×Di) · PEC = 원장 weekAD · weekPsc',
+        ty.ad === FACTS.weekAD && ty.psc === FACTS.weekPsc,
+        'Σ(Ai×Di) ' + ty.ad + '/' + FACTS.weekAD + ' · PEC ' + ty.psc + '/' + FACTS.weekPsc);
   check('콘솔 에러 0', consoleErrors.length === 0, consoleErrors.slice(0, 3).join(' | '));
 
   /* 화면·상태 수 — 고정 숫자를 박지 않는다.
-     시연본이 원본에서 빼는 것은 랜딩 갤러리(index) 화면 1건뿐이고(sync_prototype.py), 상태는 하나도 빼지 않는다.
-     그러니 "원본 - 1화면 · 상태 동수" 가 기준이고, 상태가 늘어도(D-14 invest-profit/weekly) 저절로 따라간다.
+     시연본이 원본에서 빼는 것은 PROTO_DROPPED 의 화면과 그 화면에 달린 상태뿐이다(sync_prototype.py).
+     기준은 "원본 실측 - 그 목록" 이라 상태가 늘어도(D-14 invest-profit/weekly) 저절로 따라간다.
      덤으로 DOM 섹션 수 ↔ SCREEN_ORDER ↔ STATE_META 가 서로 어긋나지 않는지도 같이 본다. */
   const reg = await ev('return {order:SCREEN_ORDER.slice(), meta:Object.keys(STATE_META)};');
   const regBad = [];
   if(sc.screens !== reg.order.length) regBad.push('DOM 섹션 ' + sc.screens + ' ≠ SCREEN_ORDER ' + reg.order.length);
   if(reg.meta.length !== reg.order.length) regBad.push('STATE_META ' + reg.meta.length + ' ≠ SCREEN_ORDER ' + reg.order.length);
   if(sc.states !== walk.states) regBad.push('STATE_META 상태 ' + sc.states + ' ≠ 렌더 확인 ' + walk.states);
+  let dropWant = PROTO_DROPPED, dropStates = 0;
   if(SRCREG){
+    dropWant = SRCREG.order.filter(x => PROTO_DROPPED.indexOf(x) >= 0);   /* 원본 순서로 — 빠진 화면 목록과 그대로 맞댄다 */
+    dropStates = dropWant.reduce((a, x) => a + (SRCREG.per[x] || 0), 0);
     const dropped = SRCREG.order.filter(x => reg.order.indexOf(x) < 0);
-    if(dropped.length !== 1 || dropped[0] !== 'index')
-      regBad.push('원본에서 빠진 화면 ' + JSON.stringify(dropped) + ' — index 1건이어야 한다');
-    if(sc.screens !== SRCREG.screens - 1) regBad.push('화면 ' + sc.screens + ' ≠ 원본 ' + SRCREG.screens + ' - 1');
-    if(sc.states !== SRCREG.states) regBad.push('상태 ' + sc.states + ' ≠ 원본 ' + SRCREG.states);
+    if(JSON.stringify(dropped) !== JSON.stringify(dropWant))
+      regBad.push('원본에서 빠진 화면 ' + JSON.stringify(dropped) + ' ≠ ' + JSON.stringify(dropWant));
+    if(sc.screens !== SRCREG.screens - dropWant.length)
+      regBad.push('화면 ' + sc.screens + ' ≠ 원본 ' + SRCREG.screens + ' - ' + dropWant.length);
+    if(sc.states !== SRCREG.states - dropStates)
+      regBad.push('상태 ' + sc.states + ' ≠ 원본 ' + SRCREG.states + ' - ' + dropStates);
   }
-  check('화면·상태 = 원본 - 랜딩 1화면 (' + sc.screens + '화면 · 상태 ' + sc.states + ')',
+  check('화면·상태 = 원본 - ' + dropWant.join('·') + ' (' + sc.screens + '화면 · 상태 ' + sc.states + ')',
         regBad.length === 0, regBad.join(' | '));
 
   console.log(fails.length ? '\n게이트 실패 ' + fails.length + '건: ' + fails.join(', ')

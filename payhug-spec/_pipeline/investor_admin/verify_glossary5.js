@@ -97,7 +97,7 @@ R.lightbox = await ev(`
 
 R.search = await ev(`
   var q=document.getElementById('q');
-  q.value='PSD'; q.dispatchEvent(new Event('input'));
+  q.value='PwD'; q.dispatchEvent(new Event('input'));
   var a=document.querySelectorAll('article.term:not(.hidden)').length;
   q.value=''; q.dispatchEvent(new Event('input'));
   var b=document.querySelectorAll('article.term:not(.hidden)').length;
@@ -166,7 +166,7 @@ if(/Esc/i.test(LB.closeLabel || '') && !LB.escCloses)
   fails.push('닫기 버튼이 「' + LB.closeLabel + '」 라고 적어 두고 ESC 로 안 닫힌다');
 if(!LB.closeLabel) fails.push('라이트박스 닫기 버튼(#lb-close) 이 없다');
 /* 검색 — 좁혀야 좁힌 것이고, 지우면 전건이 돌아와야 한다. 걸리는 곳수는 판정하지 않는다. */
-if(!(R.search.filtered > 0)) fails.push('검색 PSD 0건 — 검색이 죽었거나 그 기호가 사라졌다');
+if(!(R.search.filtered > 0)) fails.push('검색 PwD 0건 — 검색이 죽었거나 그 기호가 사라졌다');
 if(!(R.search.filtered < R.search.restored)) fails.push('검색이 좁히지 않는다 ' + R.search.filtered + '/' + R.search.restored);
 if(R.search.restored !== R.cards.n) fails.push('검색 지운 뒤 ' + R.search.restored + ' ≠ 카드 ' + R.cards.n);
 Object.keys(R.overflow).forEach(w => { const o = R.overflow[w];

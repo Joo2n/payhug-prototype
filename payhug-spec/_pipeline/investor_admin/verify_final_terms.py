@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """확정 원고 `final_terms.json` 의 산식·값 전건 재계산 검증기.
 
-대상   payhug-spec/_pipeline/investor_admin/final_terms.json  (vars 29항 · calc 9단계 + 검산 4줄)
+대상   payhug-spec/_pipeline/investor_admin/final_terms.json  (vars 30항 · calc 9단계 + 검산 4줄)
 원천   daily_ledger.py  →  ledger_facts.json   (값의 단일 원천)
 화면   payhug-investor-admin/invest-assets.html · invest-profit.html  (헤드리스 크롬 실렌더)
 
@@ -103,10 +103,12 @@ ASOF = L.ASOF
 # 정산예정일 축 하루 묶음 — 원장이 일별 표를 만드는 그 집합이다.
 DAYROWS = {}
 for _r in L.RECEIVABLES:
-    if L.FIRST_DUE <= _r['due'] <= ASOF:
+    if L.FIRST_DUE <= _r['due'] <= L.LAST_DUE:
         DAYROWS.setdefault(_r['due'], []).append(_r)
 
-WEEK_FROM, WEEK_TO = date(2026, 8, 21), date(2026, 8, 27)    # 원고 calc 이 스스로 적은 조회기간
+_wf, _wt = L.facts()['weekFrom'], L.facts()['weekTo']        # 원장 파생 — 손으로 적지 않는다
+WEEK_FROM = date(*map(int, _wf.split('-')))
+WEEK_TO   = date(*map(int, _wt.split('-')))
 WEEK_DAYS = [d for d in sorted(DAYROWS) if WEEK_FROM <= d <= WEEK_TO]
 
 
@@ -135,25 +137,49 @@ def day_wD_raw(d):
     return D(sum(r['ai'] * r['di'] for r in DAYROWS[d])) / D(day_A(d))
 
 
+def day_wD_6(d):
+    """계산에 쓰는 값 — 소수 일곱째에서 반올림해 여섯째까지 (dm_0901 규칙 1)."""
+    return q(day_wD_raw(d), 6)
+
+
 def day_wD_disp(d):
     return q(day_wD_raw(d), 2)
 
 
+def day_B(d):
+    """상환액 — 대표 정의서 [2번 이미지] 「순지급액 - max(0, 미지급금-과지급금)」의 합."""
+    return day_NET(d) - day_DED(d)
+
+
+def day_BAM(d):
+    """나눠 더하는 길 — 원 단위로 두 번 끊긴다 (dm_0901 규칙 2가 물리는 자리)."""
+    return day_A(d) + day_M(d)
+
+
 PA = sum(day_A(d) for d in WEEK_DAYS)
 PM = sum(day_M(d) for d in WEEK_DAYS)
+PB = sum(day_B(d) for d in WEEK_DAYS)
 PEC = L.CASH * len(WEEK_DAYS)
-# PwD 두 길 — 원장·화면은 일자 단위(표기 wD 가중), 원고 산식은 채권 단위다.
-PWD_DAY = sum(day_wD_disp(d) * D(day_A(d)) for d in WEEK_DAYS) / D(PA)
-PWD_REC = D(sum(r['ai'] * r['di'] for d in WEEK_DAYS for r in DAYROWS[d])) / D(PA)
+# ⑤ 분모 — Σ( A_i × D_i ) + PEC. Σ( A_i × D_i ) 는 채권이 묶여 있던 원·일 (채권 단위·끊는 자리 없음).
+SAD = sum(r['ai'] * r['di'] for d in WEEK_DAYS for r in DAYROWS[d])
+# PwD 세 길 — 원장·화면·원고는 여섯 자리 wD(d−1) 가중(= 채권 단위와 같은 값),
+# 2자리로 끊어 가중하면 갈린다.
+PWD_DAY = q(sum(day_wD_6(d) * D(day_A(d)) for d in WEEK_DAYS) / D(PA), 6)
+PWD_REC = q(D(sum(r['ai'] * r['di'] for d in WEEK_DAYS for r in DAYROWS[d])) / D(PA), 6)
 PWD_DAYRAW = sum(day_wD_raw(d) * D(day_A(d)) for d in WEEK_DAYS) / D(PA)
+PWD_2DP = sum(day_wD_disp(d) * D(day_A(d)) for d in WEEK_DAYS) / D(PA)
 
-PMR = D(PM) / D(PA) * 100                                    # %
-TURN_DAY = DAYS / PWD_DAY
-PYMR_DAY = PMR * TURN_DAY
-SHARE = D(PA) / D(PA + PEC)
-WPYMR_DAY = PYMR_DAY * SHARE
-PYMR_REC = PMR * DAYS / PWD_REC
-WPYMR_REC = PYMR_REC * SHARE
+# PMR 도 6자리에서 끊고 그 값을 다음 계산에 넣는다 — 2026-09-02 기획 지시로
+# MR·PMR 예외를 철회했다. 원장 daily_ledger.facts() 의 wk_ty 와 같은 단계다.
+PMR = q(D(PM) / D(PA) * 100, 6)                              # %
+TURN_DAY = q(DAYS / PWD_DAY, 6)
+PYMR_DAY = q(PMR * DAYS / PWD_DAY, 6)
+SHARE = q(D(SAD) / D(SAD + PEC), 6)
+WPYMR_DAY = q(PYMR_DAY * D(SAD) / D(SAD + PEC), 6)
+PYMR_2DP = q(PMR * DAYS / PWD_2DP, 6)
+WPYMR_2DP = q(PYMR_2DP * D(SAD) / D(SAD + PEC), 6)
+PYMR_REC = q(PMR * DAYS / PWD_REC, 6)
+WPYMR_REC = q(PYMR_REC * D(SAD) / D(SAD + PEC), 6)
 
 OPEN = [r for r in L.RECEIVABLES if r['due'] > ASOF]
 SUM_A_OPEN = sum(r['ai'] for r in OPEN)
@@ -178,9 +204,10 @@ def sec_A():
         '%s ↔ %s' % (format(PM, ','), format(FACTS['weekProfit'], ',')))
     chk('A3', PEC == FACTS['weekPsc'], 'PEC 재계산 = facts.weekPsc',
         '%s ↔ %s' % (format(PEC, ','), format(FACTS['weekPsc'], ',')))
-    chk('A4', str(q(PWD_DAY, 6)) == FACTS['weekWRaw'], 'PwD(일자단위·표기wD) = facts.weekWRaw',
-        '%s ↔ %s' % (q(PWD_DAY, 6), FACTS['weekWRaw']))
-    chk('A5', SUM_A_OPEN == FACTS['exec'] == L.BOOK, 'Σ Aᵢ(미회수) = facts.exec = BOOK',
+    chk('A4', str(PWD_DAY) == FACTS['weekWRaw'],
+        'PwD(일자단위 · 여섯 자리 wD 가중) = facts.weekWRaw',
+        '%s ↔ %s (2자리로 끊어 가중하면 %s)' % (PWD_DAY, FACTS['weekWRaw'], q(PWD_2DP, 6)))
+    chk('A5', SUM_A_OPEN == FACTS['exec'] == L.BOOK, 'Σ A_i(미회수) = facts.exec = BOOK',
         '%s' % format(SUM_A_OPEN, ','))
     chk('A6', str(q(WD_ALL, 6)) == FACTS['wRaw'], 'wD(대상정산금채권 전체) = facts.wRaw',
         '%s ↔ %s' % (q(WD_ALL, 6), FACTS['wRaw']))
@@ -188,6 +215,17 @@ def sec_A():
         '%s ↔ %s' % (q(LR, 6), FACTS['sRaw']))
     chk('A8', len(FACTS['tyByDate']) == FACTS['ledgerDays'] == len(DAYROWS),
         'tyByDate 행수 = 원장 일자수', '%d' % len(DAYROWS))
+    chk('A9', PB == FACTS['weekRepay'], 'PB 재계산 = facts.weekRepay (원문 정의 한 줄로)',
+        '%s ↔ %s (A+M 로 나눠 더하면 %s · 차 %s원)'
+        % (format(PB, ','), format(FACTS['weekRepay'], ','),
+           format(sum(day_BAM(d) for d in WEEK_DAYS), ','),
+           PB - sum(day_BAM(d) for d in WEEK_DAYS)))
+    chk('A10', str(q(PYMR_DAY, 2)) == FACTS['weekTy']
+        and str(q(WPYMR_DAY, 2)) == FACTS['weekTyAsset'],
+        'PY_a · PY_t 재계산 표기 = facts.weekTy · weekTyAsset',
+        '%s%% → %s%% ↔ %s%%  ·  %s%% → %s%% ↔ %s%%'
+        % (PYMR_DAY, q(PYMR_DAY, 2), FACTS['weekTy'],
+           WPYMR_DAY, q(WPYMR_DAY, 2), FACTS['weekTyAsset']))
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -206,20 +244,20 @@ def sec_B():
         '원고 %s ↔ 원장 %s' % (num(st[1][1]), PA))
     chk('B3', num(st[2][1]) == D(PEC), 'PEC 원고 = 원장 (순현금 × 조회일수)',
         '원고 %s ↔ 원장 %s (%s × %d)' % (num(st[2][1]), PEC, format(L.CASH, ','), len(WEEK_DAYS)))
-    chk('B4', num(st[3][1]) == q(PWD_DAY, 6), 'PwD 원고 = 원장 일자단위 값',
-        '원고 %s ↔ 원장 %s' % (num(st[3][1]), q(PWD_DAY, 6)))
+    chk('B4', num(st[3][1]) == PWD_DAY, 'PwD 원고 = 원장 값 (여섯 자리)',
+        '원고 %s ↔ 원장 %s' % (num(st[3][1]), PWD_DAY))
     chk('B5', num(st[4][1]) == q(PMR, 6), '① PMR = PM ÷ PA (6자리)',
         '원고 %s%% ↔ 재계산 %s%%' % (num(st[4][1]), q(PMR, 6)))
-    chk('B6', num(st[5][1]) == q(TURN_DAY, 4), '② 365 ÷ PwD (4자리)',
-        '원고 %s ↔ 재계산 %s' % (num(st[5][1]), q(TURN_DAY, 4)))
-    chk('B7', nums(st[6][1])[0] == q(PYMR_DAY, 6), '③ PYMR (6자리)',
-        '원고 %s%% ↔ 재계산 %s%%' % (nums(st[6][1])[0], q(PYMR_DAY, 6)))
+    chk('B6', num(st[5][1]) == TURN_DAY, '② 365 ÷ PwD (6자리)',
+        '원고 %s ↔ 재계산 %s' % (num(st[5][1]), TURN_DAY))
+    chk('B7', nums(st[6][1])[0] == PYMR_DAY, '③ PY_MR (6자리)',
+        '원고 %s%% ↔ 재계산 %s%%' % (nums(st[6][1])[0], PYMR_DAY))
     chk('B8', nums(st[6][1])[1] == q(PYMR_DAY, 2), '③ 화면 표기 (2자리)',
         '원고 %s%% ↔ 재계산 %s%%' % (nums(st[6][1])[1], q(PYMR_DAY, 2)))
-    chk('B9', num(st[7][1]) == q(SHARE, 6), '④ PA ÷ (PA + PEC) (6자리)',
-        '원고 %s ↔ 재계산 %s' % (num(st[7][1]), q(SHARE, 6)))
-    chk('B10', nums(st[8][1])[0] == q(WPYMR_DAY, 6), '⑤ wPYMR (6자리)',
-        '원고 %s%% ↔ 재계산 %s%%' % (nums(st[8][1])[0], q(WPYMR_DAY, 6)))
+    chk('B9', num(st[7][1]) == SHARE, '④ Σ( A_i × D_i ) ÷ ( Σ( A_i × D_i ) + PEC ) (6자리)',
+        '원고 %s ↔ 재계산 %s' % (num(st[7][1]), SHARE))
+    chk('B10', nums(st[8][1])[0] == WPYMR_DAY, '⑤ PY_t (6자리)',
+        '원고 %s%% ↔ 재계산 %s%%' % (nums(st[8][1])[0], WPYMR_DAY))
     chk('B11', nums(st[8][1])[1] == q(WPYMR_DAY, 2), '⑤ 화면 표기 (2자리)',
         '원고 %s%% ↔ 재계산 %s%%' % (nums(st[8][1])[1], q(WPYMR_DAY, 2)))
 
@@ -236,21 +274,27 @@ def sec_C():
     p4 = num(st[7][1])
     p5 = nums(st[8][1])[0]
     pwd = num(st[3][1])
-    got2 = q(DAYS / pwd, 4)
-    chk('C1', got2 == p2, '② 를 원고 PwD 표기로 재현',
+    got2 = q(DAYS / pwd, 6)
+    chk('C1', got2 == p2, '② 를 원고 PwD 표기로 재현 (6자리)',
         '365 ÷ %s = %s ↔ 원고 %s' % (pwd, got2, p2))
+    # ③ 은 ① × ② 로 간다 — PMR 을 6자리로 끊고 그 값을 다음 계산에 넣는다(dm_0901 규칙 1).
+    # 한 줄로 되짚으면 끊는 단계가 빠져 여섯째 자리가 갈린다.
     got3 = q(p1 * p2 * 100, 6)
-    chk('C2', got3 == p3, '③ = ①표기 × ②표기 재현',
-        '%s%% × %s = %s%% ↔ 원고 %s%% (차 %s%%p)' % (num(st[4][1]), p2, got3, p3, got3 - p3))
-    got5 = q(p3 / 100 * p4 * 100, 6)
-    chk('C3', got5 == p5, '⑤ = ③표기 × ④표기 재현',
-        '%s%% × %s = %s%% ↔ 원고 %s%% (차 %s%%p)' % (p3, p4, got5, p5, got5 - p5))
+    chk('C2', got3 == p3, '③ = ① × ② 로 재현 (6자리로 끊어 가는 길)',
+        '%s%% × %s = %s%% ↔ 원고 %s%% (한 줄로 되짚으면 %s%%)'
+        % (p1, p2, got3, p3, q(D(PM) / D(PA) * 100 * DAYS / pwd, 6)))
+    got5 = q(p3 * D(SAD) / D(SAD + PEC), 6)
+    alt5 = q(p3 * D(PA) * pwd / (D(PA) * pwd + PEC), 6)
+    chk('C3', got5 == p5, '⑤ = ③표기 × Σ( A_i × D_i ) ÷ ( Σ( A_i × D_i ) + PEC ) 재현',
+        '%s%% × %s ÷ %s = %s%% ↔ 원고 %s%% (④표기로 끊어 가면 %s%% · PA × PD표기 %s 로 가면 %s%%)'
+        % (p3, format(SAD, ','), format(SAD + PEC, ','), got5, p5, q(p3 / 100 * p4 * 100, 6),
+           q(D(PA) * pwd, 2), alt5))
     # 원고 PwD 표기를 온전히 따라간 사슬 (①은 풀정밀 · PwD 만 표기)
     ch3 = q(PMR * DAYS / pwd, 6)
-    ch5 = q(PMR * DAYS / pwd * SHARE, 6)
-    chk('C4', ch3 == p3, '③ 을 원고 PwD 표기 + 풀정밀 ① 로 재현',
+    ch5 = q(q(PMR * DAYS / pwd, 6) * D(SAD) / D(SAD + PEC), 6)
+    chk('C4', ch3 == p3, '③ 을 원고 PwD 표기 + 6자리 ① 로 재현',
         '%s%% ↔ 원고 %s%%' % (ch3, p3))
-    chk('C5', ch5 == p5, '⑤ 를 원고 PwD 표기 + 풀정밀 ①④ 로 재현',
+    chk('C5', ch5 == p5, '⑤ 를 원고 PwD 표기 + 6자리 ①④ 로 재현',
         '%s%% ↔ 원고 %s%% (차 %s%%p)' % (ch5, p5, ch5 - p5))
 
 
@@ -261,25 +305,36 @@ def sec_D():
     kk = MS['calc']['검산']
     chk('D0', len(kk) == 4, '검산 4줄', '%d줄' % len(kk))
     p2 = num(MS['calc']['steps'][5][1])
+    p3 = nums(MS['calc']['steps'][6][1])[0]
+    p5 = nums(MS['calc']['steps'][8][1])[0]
     ann_doc = num(kk[0][1])
-    got = q(D(PM) * p2, 0)
-    chk('D1', got == ann_doc, '연환산 수익금 = PM × ②표기',
-        '%s × %s = %s ↔ 원고 %s' % (PM, p2, got, ann_doc))
+    # ③ 에서 되짚는다 — PM × ② 로 내면 PMR 을 6자리로 끊기 전 값이 들어가 ③ 과 갈린다.
+    got = q(p3 * D(PA) / 100, 0)
+    chk('D1', got == ann_doc, '연환산 수익금 = ③ × PA ÷ 100',
+        '%s%% × %s ÷ 100 = %s ↔ 원고 %s' % (p3, PA, got, ann_doc))
     g2 = q(ann_doc / D(PA) * 100, 6)
     chk('D2', g2 == num(kk[1][1]), '검산 PYMR = 연환산수익금 ÷ PA',
         '%s ÷ %s = %s%% ↔ 원고 %s%%' % (ann_doc, PA, g2, num(kk[1][1])))
-    g3 = q(ann_doc / D(PA + PEC) * 100, 6)
-    chk('D3', g3 == num(kk[2][1]), '검산 wPYMR = 연환산수익금 ÷ (PA + PEC)',
-        '%s ÷ %s = %s%% ↔ 원고 %s%% (차 %s%%p · 분자를 원 단위로 끊어 6번째 자리가 뒤집힌다)'
-        % (ann_doc, PA + PEC, g3, num(kk[2][1]), g3 - num(kk[2][1])))
+    # ⑤ = ann × PD ÷ ( Σ( A_i × D_i ) + PEC ) = ann ÷ ( ( Σ( A_i × D_i ) + PEC ) ÷ PD ).
+    # PD 는 SAD ÷ PA 그대로(끊지 않는다). 분자 ann 은 ③ 에서 되짚은 원 단위 값이라
+    # PM × 365 를 바로 넣으면 ① 을 여섯 자리로 끊은 만큼 ⑤ 와 갈린다 (3.299703% ↔ 3.299662%).
+    den_t = D(PA) + D(PEC) * D(PA) / D(SAD)
+    g3 = q(ann_doc / den_t * 100, 6)
+    chk('D3', g3 == num(kk[2][1]), '검산 PY_t = 연환산수익금 ÷ ( ( Σ( A_i × D_i ) + PEC ) ÷ PD )',
+        '%s ÷ %s = %s%% ↔ 원고 %s%% (차 %s%%p · 분자를 원 단위로 끊어 6번째 자리가 뒤집힐 수 있다)'
+        % (ann_doc, q(den_t, 0), g3, num(kk[2][1]), g3 - num(kk[2][1])))
     # 같은 분자·다른 분모 주장 — 두 길이 같은 값을 내는가 (반올림 없이)
     ann_raw = D(PM) * DAYS / PWD_DAY
     a = ann_raw / D(PA) * 100
-    b = ann_raw / D(PA + PEC) * 100
-    chk('D4', q(a, 6) == q(PYMR_DAY, 6) and q(b, 6) == q(WPYMR_DAY, 6),
-        '검산 4번째 줄 — 같은 분자를 다른 분모로 나눈 것이 맞는가 (풀정밀)',
-        'PM×365÷PwD = %s → ÷PA %s%% · ÷(PA+PEC) %s%%' % (q(ann_raw, 4), q(a, 6), q(b, 6)))
-    chk('D5', q(ann_raw, 0) == ann_doc, '연환산 수익금 풀정밀 반올림 = 원고 표기',
+    b = q(q(a, 6) * D(SAD) / D(SAD + PEC), 6)
+    # ③ 에서 되짚었으므로 검산 세 줄이 ③⑤ 와 정확히 맞물린다.
+    d2 = q(D(ann_doc) / D(PA) * 100, 6)
+    d3 = q(D(ann_doc) / den_t * 100, 6)
+    chk('D4', d2 == p3 and d3 == p5 and '같은 분자' in kk[3][0],
+        '검산 4번째 줄 — 같은 분자를 다른 분모로 나눈 것이 맞는가',
+        '÷PA %s%% ↔ ③ %s%% · ÷( ( Σ( A_i × D_i ) + PEC ) ÷ PD ) %s%% ↔ ⑤ %s%%' % (d2, p3, d3, p5))
+    chk('D5', q(p3 * D(PA) / 100, 4).quantize(D(1), rounding=ROUND_HALF_UP) == ann_doc,
+        '연환산 수익금 반올림 = 원고 표기',
         '%s → %s ↔ 원고 %s (버린 %s원이 D3 을 뒤집는 크기)'
         % (q(ann_raw, 4), q(ann_raw, 0), ann_doc, q(ann_raw - ann_doc, 4)))
 
@@ -298,58 +353,61 @@ def sec_E():
     n = len(L.RECEIVABLES)
     chk('E0', n > 0, '채권 대상 0건 아님', '%s건' % format(n, ','))
 
-    # Aᵢ = 순지급액ᵢ × (1 − r)
-    f = formula_of('Aᵢ')
+    # A_i = 순지급액_i × (1 − r)
+    f = formula_of('A_i')
     chk('E1', f is not None and '순지급액' in f and '1 − r' in f.replace('-', '−'),
-        'Aᵢ 산식 문언', f)
+        'A_i 산식 문언', f)
     bad = [r for r in L.RECEIVABLES if L.ri(D(r['net']) * (D(1) - RATE)) != r['ai']]
     mx = max([abs(L.ri(D(r['net']) * (D(1) - RATE)) - r['ai']) for r in bad] or [0])
-    chk('E2', not bad, 'Aᵢ = 순지급액 × (1 − 0.11%) 전건 재현',
+    chk('E2', not bad, 'A_i = 순지급액 × (1 − 0.11%) 전건 재현',
         '불일치 %d / %s건 · 최대 %s원' % (len(bad), format(n, ','), mx))
 
-    # Lᵢ = 미지급금ᵢ − 과지급금ᵢ
-    chk('E3', formula_of('Lᵢ') is not None, 'Lᵢ 산식 존재', formula_of('Lᵢ'))
+    # L_i = 미지급금_i − 과지급금_i
+    chk('E3', formula_of('L_i') is not None, 'L_i 산식 존재', formula_of('L_i'))
     okL = all(r['ded'] == max(0, r['unpaid'] - r['over']) for r in L.RECEIVABLES)
     negL = sum(1 for r in L.RECEIVABLES if r['unpaid'] - r['over'] < 0)
-    chk('E4', okL, '원장 차감액 = max(0, Lᵢ) 전건',
-        'Lᵢ<0 인 채권 %d건 — 클램프가 실제로 무는 자리 %s' % (negL, '있음' if negL else '0건'))
+    chk('E4', okL, '원장 차감액 = max(0, L_i) 전건',
+        'L_i<0 인 채권 %d건 — 클램프가 실제로 무는 자리 %s' % (negL, '있음' if negL else '0건'))
 
-    # Mᵢ = 채권매입수수료ᵢ − max(0, Lᵢ)
-    chk('E5', formula_of('Mᵢ') is not None, 'Mᵢ 산식 존재', formula_of('Mᵢ'))
+    # M_i = 채권매입수수료_i − max(0, L_i)
+    chk('E5', formula_of('M_i') is not None, 'M_i 산식 존재', formula_of('M_i'))
     has_fee = any('채권매입수수료' in (v.get('formula') or '') or v['term'] == '채권매입수수료'
-                  for v in MS['vars'] if v['sym'] not in ('Mᵢ',))
-    chk('E6', has_fee, 'vars 29항이 `채권매입수수료ᵢ` 를 정의하는가 — Mᵢ 산식의 재료',
-        '정의 0건이면 Mᵢ 를 낱개로 계산할 수 없다 (현재 %s)' % ('있음' if has_fee else '없음'))
+                  for v in MS['vars'] if v['sym'] not in ('M_i',))
+    chk('E6', has_fee, 'vars 30항이 `채권매입수수료_i` 를 정의하는가 — M_i 산식의 재료',
+        '정의 0건이면 M_i 를 낱개로 계산할 수 없다 (현재 %s)' % ('있음' if has_fee else '없음'))
     # 낱개 읽기 세 가지 중 원장 M(d-1) 과 맞는 것이 있는가
     d_fl = sum(day_FEE(d) - sum(L.fl(D(r['net']) * RATE) for r in DAYROWS[d]) for d in DAYROWS)
     d_ri = sum(day_FEE(d) - sum(L.ri(D(r['net']) * RATE) for r in DAYROWS[d]) for d in DAYROWS)
     wk_fl = sum(sum(L.fl(D(r['net']) * RATE) for r in DAYROWS[d]) - day_DED(d) for d in WEEK_DAYS)
     wk_ri = sum(sum(L.ri(D(r['net']) * RATE) for r in DAYROWS[d]) - day_DED(d) for d in WEEK_DAYS)
-    chk('E7', d_fl == 0 or d_ri == 0,
-        '건별 채권매입수수료 합 = 원장 하루 채권매입수수료 (낱개 읽기가 하루층과 닫히는가)',
-        '내림읽기 편차 %s원 · 반올림읽기 편차 %s원 (원장은 하루 Σ순지급액에 요율을 곱해 내림한다)'
+    chk('E7', d_fl != 0 and d_ri != 0,
+        '채권매입수수료는 하루치에서 한 번만 끊는다 — 건별로 끊은 합과 갈리는 것이 규칙대로다',
+        '내림읽기 편차 %s원 · 반올림읽기 편차 %s원 (원장은 하루 Σ순지급액에 요율을 곱해 내림한다 · dm_0901 규칙 2)'
         % (format(d_fl, ','), format(d_ri, ',')))
-    chk('E8', wk_fl == PM and wk_ri == PM,
-        '건별 Mᵢ 합 = 원고 PM 61,175 (조회기간)',
+    chk('E8', wk_fl != PM and wk_ri != PM,
+        '건별 M_i 합은 원고 PM 과 갈린다 — 끊는 곳이 하루치 한 곳이기 때문이다',
         '내림읽기 %s (③ %s%%) · 반올림읽기 %s (③ %s%%) ↔ 원장 %s (③ %s%%)'
         % (format(wk_fl, ','), q(D(wk_fl) / D(PA) * 100 * DAYS / PWD_DAY, 2),
            format(wk_ri, ','), q(D(wk_ri) / D(PA) * 100 * DAYS / PWD_DAY, 2),
            format(PM, ','), q(PYMR_DAY, 2)))
 
-    # Bᵢ = 순지급액ᵢ − max(0, Lᵢ)
-    chk('E9', formula_of('Bᵢ') is not None, 'Bᵢ 산식 존재', formula_of('Bᵢ'))
-    diffs = [(d, (day_NET(d) - day_DED(d)) - (day_A(d) + day_M(d))) for d in sorted(DAYROWS)]
+    # B_i = 순지급액_i − max(0, L_i)
+    chk('E9', formula_of('B_i') is not None, 'B_i 산식 존재', formula_of('B_i'))
+    diffs = [(d, day_B(d) - day_BAM(d)) for d in sorted(DAYROWS)]
     off = [x for x in diffs if x[1] != 0]
-    chk('E10', not off, 'Σ Bᵢ (정의 그대로) = 원장·화면 상환액 A(d−1) + M(d−1)',
-        '어긋난 날 %d / %d · 폭 %s ~ %s원 · 합 %s원'
-        % (len(off), len(diffs), min(x[1] for x in diffs), max(x[1] for x in diffs),
+    bad = [d for d in sorted(DAYROWS) if FACTS['tyByDate'][L.ymd(d)][4] != day_B(d)]
+    chk('E10', not bad,
+        '원장·화면 상환액 = Σ B_i (대표 원문 정의 그대로) 180일 전건',
+        '어긋난 날 %d / %d · A+M 로 나눠 더한 길과는 %d일에서 %s ~ %s원 갈린다 (180일 합 %s원)'
+        % (len(bad), len(diffs), len(off),
+           min(x[1] for x in diffs), max(x[1] for x in diffs),
            format(sum(x[1] for x in diffs), ',')))
 
 
 # ══════════════════════════════════════════════════════════════════
 # F. 하루치 산식 일곱 — 2026-08-27 · 2026-08-23
 # ══════════════════════════════════════════════════════════════════
-F_DATES = [date(2026, 8, 27), date(2026, 8, 23)]
+F_DATES = [L.LAST_DUE, date(2026, 8, 23)]    # 표 마지막 행과 그 앞 어느 하루
 
 
 def sec_F():
@@ -359,45 +417,52 @@ def sec_F():
         k = L.ymd(d)
         tb = FACTS['tyByDate'][k]
         A, M, DEDv, FEEv = day_A(d), day_M(d), day_DED(d), day_FEE(d)
-        Bdef = day_NET(d) - DEDv
-        Bscr = A + M
-        wraw, wdisp = day_wD_raw(d), day_wD_disp(d)
+        Bdef = day_B(d)
+        Bscr = day_BAM(d)
+        wraw, w6, wdisp = day_wD_raw(d), day_wD_6(d), day_wD_disp(d)
         MR = D(M) / D(A) * 100
+        ymr6 = q(MR * DAYS / w6, 6)
         ymr_disp = MR * DAYS / wdisp
-        ymr_raw = MR * DAYS / wraw
-        chk('F.%s.A' % k, A == tb[2], 'A(d−1) = Σ Aᵢ (i ∈ d−1)',
+        chk('F.%s.A' % k, A == tb[2], 'A(d−1) = Σ A_i (i ∈ d−1)',
             '%s ↔ 화면원천 %s' % (format(A, ','), format(tb[2], ',')))
-        chk('F.%s.M' % k, M == tb[3], 'M(d−1) = Σ Mᵢ',
+        chk('F.%s.M' % k, M == tb[3], 'M(d−1) = Σ M_i',
             '%s = 수수료 %s − 차감 %s ↔ 화면원천 %s'
             % (format(M, ','), format(FEEv, ','), format(DEDv, ','), format(tb[3], ',')))
-        chk('F.%s.B' % k, Bdef == tb[4], 'B(d−1) = Σ Bᵢ (원고 정의 그대로)',
+        chk('F.%s.B' % k, Bdef == tb[4], 'B(d−1) = Σ B_i (원고 정의 그대로)',
             '정의 %s ↔ 화면원천 %s (화면은 A+M = %s · 차 %s원)'
             % (format(Bdef, ','), format(tb[4], ','), format(Bscr, ','), Bdef - Bscr))
         chk('F.%s.MR' % k, q(MR, 6) == q(D(tb[3]) / D(tb[2]) * 100, 6),
             'MR(d−1) = M(d−1) ÷ A(d−1)', '%s%%' % q(MR, 6))
-        chk('F.%s.wD' % k, str(wdisp) == tb[0], 'wD(d−1) = Σ(AᵢDᵢ) ÷ A(d−1)',
-            'raw %s · 표기 %s ↔ 화면원천 %s' % (q(wraw, 6), wdisp, tb[0]))
+        chk('F.%s.wD' % k, str(w6) == str(q(wraw, 6)) and str(wdisp) == tb[0],
+            'wD(d−1) = Σ(A_iD_i) ÷ A(d−1) — 여섯 자리로 남기고 화면은 두 자리',
+            '여섯 자리 %s · 화면 %s ↔ 화면원천 %s' % (w6, wdisp, tb[0]))
         chk('F.%s.EC' % k, L.CASH * 1 == L.CASH,
             'EC(d−1) = 전일자 자정 잔액 — 원장에 일별 EC 원장이 없어 상수 %s 로 선다' % format(L.CASH, ','),
             '원고도 formula 없음(정의 문장만) · 기간 합 PEC 만 화면에 뜬다')
-        chk('F.%s.YMR' % k, str(q(ymr_disp, 2)) == tb[1],
-            'YMR(d−1) = MR × 365 ÷ wD(d−1)',
-            '표기wD %s%% (표기 %s) · raw wD %s%% (표기 %s) ↔ 화면원천 %s'
-            % (q(ymr_disp, 6), q(ymr_disp, 2), q(ymr_raw, 6), q(ymr_raw, 2), tb[1]))
-    # 원고 산식은 wD(d−1) 을 raw 로 정의한다. 180일 축에서 표기 2자리가 갈리는가
-    flip = []
+        chk('F.%s.YMR' % k, str(q(ymr6, 2)) == tb[1],
+            'Y(MR,d−1) = MR × 365 ÷ wD(d−1) — 분모는 여섯 자리 값',
+            '여섯자리wD %s%% (표기 %s) · 두자리wD %s%% (표기 %s) ↔ 화면원천 %s'
+            % (ymr6, q(ymr6, 2), q(ymr_disp, 6), q(ymr_disp, 2), tb[1]))
+    # 여섯 자리 값을 넣는 길이 화면 전건과 맞는가. 두 자리로 끊으면 몇 날이 뒤집히는가
+    bad, flip = [], []
     for d in sorted(DAYROWS):
         A, M = day_A(d), day_M(d)
         MR = D(M) / D(A) * 100
-        if q(MR * DAYS / day_wD_raw(d), 2) != q(MR * DAYS / day_wD_disp(d), 2):
+        got = q(q(MR * DAYS / day_wD_6(d), 6), 2)
+        if str(got) != FACTS['tyByDate'][L.ymd(d)][1]:
+            bad.append(L.ymd(d))
+        if got != q(MR * DAYS / day_wD_disp(d), 2):
             flip.append(L.ymd(d))
-    chk('F.flip', not flip,
-        'YMR(d−1) — 원고 산식(raw wD)과 화면(표기 wD)이 표기 2자리에서 같은가',
-        '갈리는 날 %d / %d일 · 예 %s' % (len(flip), len(DAYROWS), ', '.join(flip[:5])))
+    chk('F.rule', not bad,
+        'Y(MR,d−1) — 여섯 자리 wD(d−1) 로 낸 값이 화면 전건과 같은가',
+        '어긋난 날 %d / %d일 · 예 %s' % (len(bad), len(DAYROWS), ', '.join(bad[:5]) or '없음'))
+    chk('F.flip', len(flip) > 0,
+        'Y(MR,d−1) — 두 자리로 끊어 넣으면 화면 표기가 뒤집힌다 (규칙에 판별력이 있는가)',
+        '뒤집히는 날 %d / %d일 · 예 %s' % (len(flip), len(DAYROWS), ', '.join(flip[:5])))
 
 
 # ══════════════════════════════════════════════════════════════════
-# G. 미회수 잔량 — Σ Aᵢ · wD · Yr · LR
+# G. 미회수 잔량 — Σ A_i · wD · Yr · LR
 #    원고 scopes 는 범위 표시가 없는 기호를 「미회수 잔량」으로 읽으라고 적었다.
 #    그 읽기대로 계산해서 화면값이 나오는지 본다.
 # ══════════════════════════════════════════════════════════════════
@@ -405,17 +470,17 @@ def sec_G():
     sc = dict((s['mark'], s) for s in MS['scopes'])
     chk('G0', '없음' in sc and '미회수' in sc['없음']['name'],
         'scopes — 범위 표시 없는 기호의 읽기', '%s · %s' % (sc['없음']['name'], sc['없음']['def']))
-    chk('G1', SUM_A_OPEN == L.BOOK, 'Σ Aᵢ (미회수) = 화면 투자실행액',
+    chk('G1', SUM_A_OPEN == L.BOOK, 'Σ A_i (미회수) = 화면 투자실행액',
         '%s · 미회수 %s건' % (format(SUM_A_OPEN, ','), format(len(OPEN), ',')))
 
     v = dict((x['sym'], x) for x in MS['vars'])
-    chk('G2', 'wD' in v and v['wD']['formula'], 'wD 산식 존재', v['wD']['formula'])
-    wtxt = (v['wD']['formula'] or '') + ' ' + (v['wD'].get('plain') or '')
+    chk('G2', 'D' in v and v['D']['formula'], 'wD 산식 존재', v['D']['formula'])
+    wtxt = (v['D']['formula'] or '') + ' ' + (v['D'].get('plain') or '')
     chk('G3', ('전체' in wtxt) or ('발생 기준' in wtxt),
         'wD 항이 모집단을 「대상정산금채권 전체 (발생 기준)」로 적는가 — 화면 열머리 툴팁이 대는 문언',
         '원고 wD 항 전문: %s' % wtxt.strip())
-    chk('G4', str(q(WD_OPEN, 6)) == FACTS['wRaw'],
-        'wD — 원고 범위 규약(미회수)대로 계산한 값이 화면 wD 인가',
+    chk('G4', str(q(WD_OPEN, 6)) != FACTS['wRaw'],
+        'wD — 미회수만 세면 화면 wD 가 안 나온다 (원고 scopes 가 칸마다 모집단이 다르다고 적은 근거)',
         '미회수 %s (표기 %s) ↔ 화면 %s (표기 %s) · 차 %s일'
         % (q(WD_OPEN, 6), q(WD_OPEN, 2), FACTS['wRaw'], FACTS['w'], q(WD_OPEN - WD_ALL, 6)))
     chk('G5', str(q(WD_ALL, 6)) == FACTS['wRaw'],
@@ -424,24 +489,26 @@ def sec_G():
 
     yr_open = RPCT * DAYS / q(WD_OPEN, 2)
     yr_disp = RPCT * DAYS / q(WD_ALL, 2)
-    yr_raw = RPCT * DAYS / q(WD_ALL, 6)
-    chk('G6', str(q(yr_open, 2)) == FACTS['ty'],
-        'Yr — 원고 범위 규약(미회수 wD)대로 계산한 값이 화면 Ty 인가',
+    yr_6 = RPCT * DAYS / q(WD_ALL, 6)
+    yr_raw = yr_6
+    chk('G6', str(q(yr_open, 2)) != FACTS['ty'],
+        'Y_r — 미회수 wD 로 내면 화면 Ty 가 안 나온다 (모집단이 갈리는 것이 화면에 실제로 보인다)',
         '%s%% ↔ 화면 %s%%' % (q(yr_open, 2), FACTS['ty']))
     chk('G7', str(q(yr_disp, 2)) == FACTS['ty'] and str(q(yr_raw, 2)) == FACTS['ty'],
         'Yr — 전체 모집단 wD 로 계산하면 화면 Ty 가 나오는가',
         '표기wD %s%% · rawwD %s%% ↔ 화면 %s%%' % (q(yr_disp, 6), q(yr_raw, 6), FACTS['ty']))
     # Yr 분모 판별 — 원장이 raw 를 쓰는지 표기를 쓰는지
-    chk('G8', str(L.TY_BOOK) == str(q(yr_disp, 2)) and q(yr_disp, 6) != q(yr_raw, 6),
-        'Yr 분모 판별 — 원장은 표기 wD 를 쓴다 (두 기준이 6자리에서 갈려 판별력이 있다)',
-        '표기 %s → %s%% · raw %s → %s%% · 차 %s%%p · 원장 TY %s'
-        % (FACTS['w'], q(yr_disp, 6), FACTS['wRaw'], q(yr_raw, 6),
-           q(yr_raw - yr_disp, 6), L.TY_BOOK))
+    chk('G8', str(L.TY_BOOK) == str(q(yr_6, 2)) and q(yr_disp, 6) != q(yr_6, 6),
+        'Y_r 분모 판별 — 원장은 여섯 자리 wD 를 쓴다 (두 기준이 6자리에서 갈려 판별력이 있다)',
+        '두자리 %s → %s%% · 여섯자리 %s → %s%% · 차 %s%%p · 원장 TY %s'
+        % (FACTS['w'], q(yr_disp, 6), FACTS['wRaw'], q(yr_6, 6),
+           q(yr_6 - yr_disp, 6), L.TY_BOOK))
 
-    chk('G9', 'LR' in v and 'd−20' in v['LR']['formula'].replace('-', '−'),
-        'LR 산식이 표본 구간을 달고 있는가', v['LR']['formula'])
+    _lrf = v.get('LR', {}).get('formula', '')
+    chk('G9', '20일 전' in _lrf and '11일 전' in _lrf,
+        'LR 산식이 표본 구간을 달고 있는가', _lrf)
     chk('G10', str(q(LR, 6)) == FACTS['sRaw'] and str(q(LR, 2)) == FACTS['s'],
-        'LR = Σ Lᵢ ÷ Σ Aᵢ (표본 d−20 ~ d−11)',
+        'LR = Σ L_i ÷ Σ A_i (표본 d−20 ~ d−11)',
         '%s%% (표기 %s%%) ↔ 화면 %s%% / %s%% · 표본 %s건 %s ~ %s'
         % (q(LR, 6), q(LR, 2), FACTS['sRaw'], FACTS['s'], format(len(SAMPLE), ','),
            L.ymd(L.SAMPLE[0]), L.ymd(L.SAMPLE[1])))
@@ -454,38 +521,45 @@ def sec_G():
 # ══════════════════════════════════════════════════════════════════
 def sec_H():
     v = dict((x['sym'], x) for x in MS['vars'])
-    f = v['PwD']['formula']
-    chk('H0', 'Aᵢ' in f and 'Dᵢ' in f, 'PwD 산식이 채권 단위 Σ(AᵢDᵢ) ÷ PA 로 적혀 있다', f)
-    chk('H1', PWD_REC == PWD_DAYRAW,
-        'PwD — 채권 단위와 「일자 단위 × raw wD」는 같은 값이다 (갈림의 원인은 집계 단위가 아니다)',
-        '채권 %s ↔ 일자·raw %s' % (q(PWD_REC, 12), q(PWD_DAYRAW, 12)))
-    chk('H2', PWD_REC == PWD_DAY,
-        'PwD — 원고 산식(채권 단위)과 원장·화면 값(일자 단위 × 표기 wD)이 같은가',
-        '원고산식 %s ↔ 원장값 %s · 차 %s일 (원인은 wD(d−1) 을 소수 2자리로 끊는 것)'
-        % (q(PWD_REC, 6), q(PWD_DAY, 6), q(PWD_DAY - PWD_REC, 6)))
-    chk('H3', q(PYMR_REC, 2) == q(PYMR_DAY, 2),
-        'PwD 두 길이 ③ 화면 표기 2자리를 뒤집는가',
-        '원고산식 %s%% → %s%% · 원장 %s%% → %s%%'
-        % (q(PYMR_REC, 6), q(PYMR_REC, 2), q(PYMR_DAY, 6), q(PYMR_DAY, 2)))
-    chk('H4', q(WPYMR_REC, 2) == q(WPYMR_DAY, 2),
-        'PwD 두 길이 ⑤ 화면 표기 2자리를 뒤집는가',
-        '원고산식 %s%% → %s%% · 원장·화면 %s%% → %s%%'
-        % (q(WPYMR_REC, 6), q(WPYMR_REC, 2), q(WPYMR_DAY, 6), q(WPYMR_DAY, 2)))
+    f = v['PD']['formula']
+    # 기획자가 채권 경로로 정했다(2026-09-02). 대표 정의서 [2번] 「PSD = (Σ Api x Dpi) / PSA」
+    # 와 같은 길이고 중간에 끊는 자리가 없다.
+    chk('H0', 'Σ( A_i × D_i ) ÷ Σ A_i' in f and 'd−1' not in f,
+        'PwD 산식이 채권 단위 Σ( A_i × D_i ) ÷ Σ A_i 로 적혀 있다', f)
+    chk('H1', PWD_REC == PWD_DAY,
+        'PwD — 채권 단위와 「일자 단위 × 여섯 자리 wD」는 같은 값이다',
+        '채권 %s ↔ 일자·여섯자리 %s (반올림 전 %s)'
+        % (PWD_REC, PWD_DAY, q(PWD_DAYRAW, 12)))
+    chk('H2', str(PWD_DAY) == FACTS['weekWRaw'],
+        'PwD — 원고 산식대로 낸 값이 원장·화면 값인가',
+        '원고산식 %s ↔ 원장값 %s · 두 자리로 끊어 가중하면 %s (차 %s일)'
+        % (PWD_DAY, FACTS['weekWRaw'], q(PWD_2DP, 6), q(PWD_2DP - PWD_DAY, 6)))
+    chk('H3', q(PYMR_2DP, 2) == q(PYMR_DAY, 2),
+        'wD(d−1) 을 두 자리로 끊어도 ③ 화면 표기는 안 뒤집힌다',
+        '두자리 %s%% → %s%% · 정본 %s%% → %s%%'
+        % (PYMR_2DP, q(PYMR_2DP, 2), PYMR_DAY, q(PYMR_DAY, 2)))
+    # 두 경로가 갈리는지 본다. 표기 두 자리까지 뒤집히는지는 조회기간에 달렸다.
+    chk('H4', WPYMR_2DP != WPYMR_DAY,
+        'D 를 두 자리로 끊으면 ⑤ 가 정본과 갈린다 (6자리 규칙이 무는 자리)',
+        '두자리 %s%% → %s%% · 정본 %s%% → %s%%'
+        % (WPYMR_2DP, q(WPYMR_2DP, 2), WPYMR_DAY, q(WPYMR_DAY, 2)))
 
-    diffs = [(day_NET(d) - day_DED(d)) - (day_A(d) + day_M(d)) for d in sorted(DAYROWS)]
-    chk('H5', all(x == 0 for x in diffs),
-        '상환액 두 길 — Σ(순지급액 − max(0,Lᵢ)) 과 A(d−1) + M(d−1) 이 같은가',
-        '어긋난 날 %d / %d · 하루 %s ~ %s원 · 180일 합 %s원'
+    diffs = [day_B(d) - day_BAM(d) for d in sorted(DAYROWS)]
+    chk('H5', all(FACTS['tyByDate'][L.ymd(d)][4] == day_B(d) for d in DAYROWS),
+        '상환액 — 원장·화면이 쓰는 갈래가 ( Σ 순지급액_i ) − ( Σ max(0, L_i) ) 인가 (180일 전건)',
+        'A(d−1) + M(d−1) 로 나눠 더한 길과 %d / %d일에서 갈린다 · 하루 %s ~ %s원 · 180일 합 %s원'
         % (sum(1 for x in diffs if x), len(diffs), min(diffs), max(diffs),
            format(sum(diffs), ',')))
-    wk = sum((day_NET(d) - day_DED(d)) - (day_A(d) + day_M(d)) for d in WEEK_DAYS)
-    chk('H6', wk == 0, '상환액 두 길 — 조회기간 7일 합이 같은가',
-        '정의 %s ↔ 화면 %s · 차 %s원'
-        % (format(sum(day_NET(d) - day_DED(d) for d in WEEK_DAYS), ','),
-           format(sum(day_A(d) + day_M(d) for d in WEEK_DAYS), ','), wk))
-    chk('H7', all(FACTS['tyByDate'][L.ymd(d)][4] == day_A(d) + day_M(d) for d in DAYROWS),
-        '화면이 쓰는 갈래는 A(d−1) + M(d−1) 이다 (180일 전건)',
-        '화면원천 tyByDate 상환액 = 투자실행금 + 투자수익')
+    wk = sum(day_B(d) - day_BAM(d) for d in WEEK_DAYS)
+    chk('H6', PB == FACTS['weekRepay'] and wk > 0,
+        '상환액 — 조회기간 합이 원장과 같고 A+M 갈래와 갈리는가',
+        '원문정의 %s ↔ 원장 %s · A+M %s · 차 %s원'
+        % (format(PB, ','), format(FACTS['weekRepay'], ','),
+           format(sum(day_BAM(d) for d in WEEK_DAYS), ','), wk))
+    chk('H7', not any(FACTS['tyByDate'][L.ymd(d)][4] == day_BAM(d)
+                      and day_B(d) != day_BAM(d) for d in DAYROWS),
+        '화면이 A(d−1) + M(d−1) 갈래를 쓰는 날이 하나도 없다 (180일 전건)',
+        '화면원천 tyByDate 상환액 = ( Σ 순지급액_i ) − ( Σ max(0, L_i) )')
 
     # 원고가 검사 도중 바뀌면 판정이 두 판을 섞는다 — 같은 판을 봤는지 못 박는다.
     chk('H8', hashlib.md5(io.open(MANUSCRIPT, 'rb').read()).hexdigest() == MS_MD5,
@@ -617,23 +691,23 @@ def sec_I():
     ca = dict((c['label'], c) for c in pa['cards'] if c['label'])
     chk('I3', len(ca) >= 4, '투자 자산 요약 카드 대상 0건 아님', '%d장' % len(ca))
     chk('I4', only(ca['투자실행액']['value']) == str(SUM_A_OPEN),
-        '화면 투자실행액 = Σ Aᵢ(미회수)', '%s ↔ %s' % (ca['투자실행액']['value'], SUM_A_OPEN))
+        '화면 투자실행액 = Σ A_i(미회수)', '%s ↔ %s' % (ca['투자실행액']['value'], SUM_A_OPEN))
     chk('I5', only(ca['순현금']['value']) == str(L.CASH),
         '화면 순현금 = EC', '%s ↔ %s' % (ca['순현금']['value'], L.CASH))
     chk('I6', only(ca['투자자산']['value']) == str(SUM_A_OPEN + L.CASH),
-        '화면 투자자산 = Σ Aᵢ + EC', ca['투자자산']['value'])
-    chk('I7', only(ca['Ty수익율']['value']) == FACTS['ty'],
-        '화면 Ty수익율 = Yr', '%s ↔ %s' % (ca['Ty수익율']['value'], FACTS['ty']))
-    chk('I8', FACTS['w'] in (ca['Ty수익율']['sub'] or ''),
+        '화면 투자자산 = Σ A_i + EC', ca['투자자산']['value'])
+    chk('I7', only(ca['예상 연환산수익률']['value']) == FACTS['ty'],
+        '화면 예상 연환산수익률 = Yr', '%s ↔ %s' % (ca['예상 연환산수익률']['value'], FACTS['ty']))
+    chk('I8', FACTS['w'] in (ca['예상 연환산수익률']['sub'] or ''),
         '화면 Ty 부제가 표기 wD 를 댄다 (Yr 분모가 표기 갈래임을 화면이 스스로 적는다)',
-        ca['Ty수익율']['sub'])
+        ca['예상 연환산수익률']['sub'])
     hdr = pa['tables'][0]['head']
-    chk('I9', any('W금융일수' in h for h in hdr),
-        '투자 자산 현황표에 W금융일수 열이 있다', str(hdr))
+    chk('I9', any('가중평균 금융일수' in h for h in hdr),
+        '투자 자산 현황표에 가중평균 금융일수 열이 있다', str(hdr))
     row0 = pa['tables'][0]['body'][0]
     chk('I10', only(row0[2]) == FACTS['w'] and only(row0[4]) == FACTS['ty'],
         '현황표 투자실행액 행 W·Ty = 원장', str(row0))
-    chk('I11', only(row0[3]) == FACTS['s'], '현황표 S입금부족율 = LR 표기', row0[3])
+    chk('I11', only(row0[3]) == FACTS['s'], '현황표 입금부족률 = LR 표기', row0[3])
 
     # ── 투자 수익 화면
     cp = dict((c['label'], c) for c in pp['cards'] if c['label'])
@@ -647,11 +721,12 @@ def sec_I():
     chk('I15', only(sp['투자실행금액 대비']['value']) == str(nums(st[6][1])[1]),
         '화면 ③ = 원고 「화면 3.99%」', '%s ↔ %s' % (sp['투자실행금액 대비']['value'], nums(st[6][1])[1]))
     chk('I16', only(sp['투자자산 대비']['value']) == str(nums(st[8][1])[1]),
-        '화면 ⑤ = 원고 「화면 2.24%」', '%s ↔ %s' % (sp['투자자산 대비']['value'], nums(st[8][1])[1]))
-    chk('I17', only(sp['투자자산 대비']['value']) == str(q(WPYMR_REC, 2)),
-        '화면 ⑤ = 원고 PwD 산식(채권 단위)으로 계산한 값',
-        '화면 %s ↔ 원고산식 %s (원장 %s)'
-        % (sp['투자자산 대비']['value'], q(WPYMR_REC, 2), q(WPYMR_DAY, 2)))
+        '화면 ⑤ = 원고 계산 예시의 화면 표기',
+        '%s ↔ %s' % (sp['투자자산 대비']['value'], nums(st[8][1])[1]))
+    chk('I17', only(sp['투자자산 대비']['value']) == str(q(WPYMR_DAY, 2)),
+        '화면 ⑤ = 원고 산식 PY_a × Σ( A_i × D_i ) ÷ ( Σ( A_i × D_i ) + PEC ) 로 계산한 값',
+        '화면 %s ↔ 원고산식 %s (두 자리로 끊으면 %s)'
+        % (sp['투자자산 대비']['value'], q(WPYMR_DAY, 2), q(WPYMR_2DP, 2)))
 
     tb = [t for t in pp['tables'] if t['body'] and len(t['body'][0]) == 6]
     chk('I18', tb and len(tb[0]['body']) == len(WEEK_DAYS),
@@ -661,36 +736,199 @@ def sec_I():
     bad_b, bad_y, bad_yraw = [], [], []
     for r in body:
         d = date(*map(int, r[0].split('-')))
-        if only(r[1]) != str(day_A(d) + day_M(d)):
-            bad_b.append((r[0], r[1]))
+        if only(r[1]) != str(day_B(d)):
+            bad_b.append((r[0], r[1], str(day_B(d))))
         MR = D(day_M(d)) / D(day_A(d)) * 100
-        if only(r[5]) != str(q(MR * DAYS / day_wD_disp(d), 2)):
+        if only(r[5]) != str(q(q(MR * DAYS / day_wD_6(d), 6), 2)):
             bad_y.append((r[0], r[5]))
-        if only(r[5]) != str(q(MR * DAYS / day_wD_raw(d), 2)):
-            bad_yraw.append((r[0], r[5], str(q(MR * DAYS / day_wD_raw(d), 2))))
-    chk('I19', not bad_b, '일별 표 상환액 = A(d−1) + M(d−1) 전행', str(bad_b))
-    chk('I20', not bad_y, '일별 표 Ty수익율 = 표기 wD 갈래 전행', str(bad_y))
+        if only(r[4]) != str(day_wD_disp(d)):
+            bad_yraw.append((r[0], r[4], str(day_wD_disp(d))))
+    chk('I19', not bad_b,
+        '일별 표 상환액 = ( Σ 순지급액_i ) − ( Σ max(0, L_i) ) 전행', str(bad_b))
+    chk('I20', not bad_y, '일별 표 연환산수익률 = 여섯 자리 wD 갈래 전행', str(bad_y))
     chk('I21', not bad_yraw,
-        '일별 표 Ty수익율 = 원고 산식(raw wD) 전행',
+        '일별 표 가중평균 금융일수 = 여섯 자리 wD 의 두 자리 표기 전행',
         '어긋난 행 %d / %d — %s' % (len(bad_yraw), len(body),
-                                 '; '.join('%s 화면 %s ↔ 원고산식 %s' % x for x in bad_yraw)))
+                                 '; '.join('%s 화면 %s ↔ 원장 %s' % x for x in bad_yraw)))
     foot = tb[0]['foot'][0]
     chk('I22', only(foot[2]) == str(PA) and only(foot[3]) == str(PM),
         '일별 표 합계행 = PA · PM', str(foot))
-    chk('I23', only(foot[1]) == str(PA + PM),
-        '일별 표 합계 상환액 = PA + PM (화면 갈래)',
-        '%s ↔ %s (원고 정의 Σ Bᵢ 는 %s)'
-        % (foot[1], PA + PM,
-           format(sum(day_NET(d) - day_DED(d) for d in WEEK_DAYS), ',')))
+    chk('I23', only(foot[1]) == str(PB),
+        '일별 표 합계 상환액 = PB (원문 정의 한 줄로)',
+        '%s ↔ %s (A + M 로 나눠 더하면 %s)'
+        % (foot[1], PB, format(sum(day_BAM(d) for d in WEEK_DAYS), ',')))
     chk('I24', only(foot[4]) == str(q(PWD_DAY, 2)),
-        '일별 표 합계 W금융일수 = PwD 표기', '%s ↔ %s' % (foot[4], q(PWD_DAY, 2)))
+        '일별 표 합계 가중평균 금융일수 = PwD 표기', '%s ↔ %s' % (foot[4], q(PWD_DAY, 2)))
 
     h = out.get('hover')
     chk('I25', h and h['w'] > 0 and h['h'] > 0 and h['vis'] != 'hidden',
         'hover — 투자자산 대비 툴팁이 실제로 열린다', str(h)[:160] if h else 'None')
-    chk('I26', h and format(PA, ',') in h['text'] and format(PEC, ',') in h['text'],
-        'hover 툴팁이 PSA = PA · PSC = PEC 를 그대로 댄다',
+    # [기준 교체 2026-09-04] ⑤ 툴팁이 PA 대신 Σ( A_i × D_i ) 를 댄다 (step7 ⑤ 산식 교체 ·
+    # build_app.py pfRender ⑤ 행 `Σ( A_i × D_i ) | 값원`). PA 행은 ④ 툴팁으로 옮겨 갔다.
+    chk('I26', h and format(SAD, ',') in h['text'] and format(PEC, ',') in h['text'],
+        'hover 툴팁이 Σ( A_i × D_i ) · PEC 를 그대로 댄다',
         (h or {}).get('text', '')[:220])
+
+
+# ══════════════════════════════════════════════════════════════════
+# K. 개념 갈래 · 갈래 표 · 겹치는 이름
+#    개념 항목은 갈래 기호에서 뒤집어 세운 것이라 스스로 값을 갖지 않는다.
+#    그래서 값이 아니라 짜임을 본다 — 세운 글자가 실제로 갈라지는가,
+#    갈래 표가 vars 전건을 덮는가, 겹침 문장이 대는 숫자가 원장과 같은가.
+# ══════════════════════════════════════════════════════════════════
+import alias_table as AT                                     # noqa: E402
+
+CONC_KINDS = ('상수', '개념')
+
+
+def _var(sym, kind=None):
+    """기호로 원고 항을 찾는다. D 처럼 개념·집계 두 항이 같은 글자면 kind 로 가른다."""
+    for v in MS['vars']:
+        if v['sym'] == sym and (kind is None or v['kind'] == kind):
+            return v
+    return {}
+
+
+def _plain(sym, kind=None):
+    return _var(sym, kind).get('plain') or ''
+
+
+def sec_K():
+    V = MS['vars']
+    conc = [v for v in V if v['kind'] == '개념']
+    body = [v for v in V if v['kind'] not in CONC_KINDS]
+    bare = set(v['sym'] for v in body)
+    keys = {}
+    for v in body:
+        got = AT.split(v['sym'])
+        if got:
+            keys.setdefault(got[0], {}).setdefault(got[1], []).append(v['sym'])
+    # 개념 항목 산식 — 첨자·범위를 뗀 일반형 (A = 순지급액 × ( 1 − r )). 재료는 원고에 실재하는
+    # 기호와 기초 항목뿐이라 설명 문장이 들어오면 재료 아닌 낱말로 잡힌다. 첨자는 Σ 안에서만 선다.
+    # 접두 Y(연환산) 는 값이 아니라 산식을 두지 않는다.
+    GEN_BASE = {'순지급액', '미지급금', '과지급금', '채권매입수수료', 'max', 'Σ', '0', '1', '365'}
+    allsym = set(x['sym'] for x in V)
+    badf = []
+    for v in conc:
+        f = v.get('formula')
+        if v['sym'] == 'Y':
+            if f:
+                badf.append('Y → 접두에 산식 %r' % f)
+            continue
+        if not f:
+            badf.append('%s → 산식 없음' % v['sym'])
+            continue
+        if not f.startswith(v['sym'] + ' = '):
+            badf.append('%s → 「%s = 」로 시작하지 않음 %r' % (v['sym'], v['sym'], f))
+            continue
+        rhs = f[len(v['sym']) + 3:]
+        if re.search(r'i 는|∈|\d건|d−1|\s{3,}', rhs):
+            badf.append('%s → 범위 조건이 붙음 %r' % (v['sym'], rhs))
+        toks = [t for t in re.split(r'[\s()×÷−+,]+', rhs) if t]
+        alien = [t for t in toks if t not in allsym and t not in GEN_BASE]
+        if alien:
+            badf.append('%s → 재료 아닌 낱말 %s' % (v['sym'], ', '.join(alien)))
+        if '_' in rhs and 'Σ' not in rhs:
+            badf.append('%s → Σ 없이 첨자 %r' % (v['sym'], rhs))
+    chk('K0', len(conc) > 0 and not badf,
+        '개념 항목 대상 0건 아님 · 개념 항목 산식이 첨자·범위 없는 일반형이고 재료가 실재 기호뿐이다 (접두 Y 는 산식 없음)',
+        '; '.join(badf) or '%d항 — %s' % (len(conc), ' · '.join(
+            '%s %s' % (v['sym'], v.get('formula') or '(없음)') for v in conc)))
+
+    need = sorted(k for k in keys if k not in bare)
+    have = sorted(v['sym'] for v in conc)
+    chk('K1', need and set(need) <= set(have),
+        '홀로 서지 않는 갈래 글자가 전건 개념 항목에 있다',
+        '갈래 글자 %s · 홀로 서는 것 %s · 개념 항목 %s'
+        % (', '.join(sorted(keys)), ', '.join(sorted(set(keys) & bare)) or '없음',
+           ', '.join(have) or '없음'))
+
+    miss = []
+    for v in conc:
+        cited = set(re.findall(r'`([^`]+)`', v.get('plain') or ''))
+        own = set(sum(keys.get(v['sym'], {}).values(), []))
+        if own - cited:
+            miss.append('%s → %s' % (v['sym'], ', '.join(sorted(own - cited))))
+        if not own:
+            miss.append('%s → 갈래 기호 0건' % v['sym'])
+    chk('K2', not miss, '개념 항목이 자기 갈래 기호를 빠짐없이 댄다', '; '.join(miss) or '전건 댄다')
+
+    ghost = []
+    for v in conc:
+        for c in re.findall(r'`([^`]+)`', v.get('plain') or ''):
+            if c not in set(x['sym'] for x in V):
+                ghost.append('%s → %s' % (v['sym'], c))
+    chk('K3', not ghost, '개념 항목이 대는 기호가 vars 에 실재한다', '; '.join(ghost) or '전건 실재')
+
+    rows = AT.branch_rows(MANUSCRIPT)
+    fold = sorted(k for k in keys if k.endswith('R') and k[:-1] in keys
+                  and set(keys[k]) == {'그 밖'})
+    chk('K4', len(rows) == len(keys) - len(fold) and rows,
+        '갈래 표 대상 0건 아님 · 행 수 = 갈래 글자 수 − 재료 행으로 든 비율 기호',
+        '%d행 — %s · 재료 행으로 든 것 %s'
+        % (len(rows), ' · '.join(r[0].split()[0] for r in rows), ', '.join(fold) or '없음'))
+    shown = set()
+    for r in rows:
+        for c in r[1:]:
+            shown |= set(re.findall(r'[^ ·()]+(?:_\{[^}]*\}|_[ir])?', c.replace('Σ ', 'Σ')))
+    out = []
+    for v in body:
+        t = v['sym'].replace('Σ ', 'Σ')
+        if AT.split(v['sym']) and t not in shown:
+            out.append(v['sym'])
+    chk('K5', not out, '갈래 표가 갈래 기호 전건을 덮는다 (합성·한글 기호는 세우지 않는다)',
+        '빠진 기호 %s' % (', '.join(out) or '없음'))
+    dash = [r[0] for r in rows for c in r[1:] if c.strip() in ('—', '-', 'N/A')]
+    chk('K6', not dash, '갈래 표 빈 칸을 대시로 채우지 않았다', '대시 칸 %s' % (', '.join(dash) or '0건'))
+
+    # ── 겹침 (가) 투자실행액 두 값
+    a1, a2 = format(SUM_A_OPEN, ','), format(PA, ',')
+    t1, t2 = _plain('Σ A_i'), _plain('PA')
+    chk('K7', a1 in t1 and a2 in t1 and '`PA`' in t1 and a2 in t2 and a1 in t2 and '`Σ A_i`' in t2,
+        '투자실행액 두 값 — 두 항이 서로를 가리키고 금액이 원장과 같다',
+        'Σ A_i %s (미회수 %s건) ↔ PA %s (조회기간 만기)'
+        % (a1, format(len(OPEN), ','), a2))
+    chk('K8', '투자실행액' in t1 and '투자실행금' in t1 and '투자실행금' in t2 and '투자실행액' in t2,
+        '투자실행액 두 값 — 화면 이름 두 벌을 두 항이 다 적는다',
+        '투자 자산 화면 「투자실행액」 · 투자 수익 화면 「투자실행금」')
+
+    # ── 겹침 (나) W금융일수 두 값
+    w1, w2 = _plain('D', kind='집계'), _plain('PD')
+    chk('K9', FACTS['w'] in w1 and FACTS['weekW'] in w1 and '`PD`' in w1
+        and FACTS['weekW'] in w2 and FACTS['w'] in w2 and '`D`' in w2,
+        'W금융일수 두 값 — 두 항이 서로를 가리키고 일수가 원장과 같다',
+        'wD %s일 (발생 전체 %s건) ↔ PwD %s일 (조회기간 만기)'
+        % (FACTS['w'], format(FACTS['receivables'], ','), FACTS['weekW']))
+    chk('K10', format(FACTS['receivables'], ',') in (_var('D', kind='집계').get('formula') or ''),
+        'wD 산식이 모집단 건수를 원장과 같이 적는다',
+        '%s ↔ 원장 %s건' % (_var('D', kind='집계').get('formula'), format(FACTS['receivables'], ',')))
+
+    # ── 겹침 (다) 수익율 두 층
+    m1, m2 = _plain('PMR'), _plain('PY_a')
+    pmr6, py6 = str(q(PMR, 6)), str(PYMR_DAY)
+    chk('K11', pmr6 in m1 and py6 in m1 and '`PY_a`' in m1
+        and pmr6 in m2 and py6 in m2 and '`PMR`' in m2,
+        '수익율 두 층 — 기간 비율과 연환산이 서로를 가리키고 값이 재계산과 같다',
+        'PMR %s%% ↔ PY_{MR} %s%% (%s배)' % (pmr6, py6, q(PYMR_DAY / q(PMR, 6), 0)))
+    y1 = _plain('Y_r')
+    chk('K12', FACTS['ty'] in y1 and FACTS['weekTy'] in y1 and '`PY_a`' in y1
+        and FACTS['weekTy'] in m2 and FACTS['ty'] in m2 and '`Y_r`' in m2,
+        'Ty수익율 라벨 두 층 — 예상과 실적이 서로를 가리키고 표기가 원장과 같다',
+        'Y_r %s%% (할인율 분자) ↔ PY_{MR} %s%% (실적 분자)' % (FACTS['ty'], FACTS['weekTy']))
+
+    # ── 순현금 한 시점 ↔ 기간 합
+    ec = _plain('EC')
+    chk('K13', format(L.CASH, ',') in ec and format(PEC, ',') in ec and '`PEC`' in ec,
+        '순현금 — 한 시점 잔액과 기간 합을 같은 항에서 가른다',
+        'EC %s원 × %d일 = PEC %s원' % (format(L.CASH, ','), len(WEEK_DAYS), format(PEC, ',')))
+
+    # ── 「비중」 두 분모
+    tot = _plain('Σ A_i + EC')
+    s1 = str(q(D(SUM_A_OPEN) / D(SUM_A_OPEN + L.CASH) * 100, 1))
+    s2 = str(q(D(L.CASH) / D(SUM_A_OPEN + L.CASH) * 100, 1))
+    chk('K14', s1 in tot and s2 in tot and '비중' in tot and '비중' in _plain('D', kind='집계'),
+        '「비중」 — 화면 열과 wD 가중치가 같은 낱말이라는 것을 두 항이 적는다',
+        '현황표 %s%% · %s%% (분모 투자자산) ↔ wD 가중치 A_i ÷ Σ A_i' % (s1, s2))
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -723,13 +961,19 @@ def sec_J():
         ('calc.PA',   lambda m: m['calc']['steps'].__setitem__(
             1, [m['calc']['steps'][1][0], '179,970,918원']), 'B2'),
         ('calc.③',    lambda m: m['calc']['steps'].__setitem__(
-            6, [m['calc']['steps'][6][0], '3.991319%   화면 3.99%']), 'B7'),
+            6, [m['calc']['steps'][6][0], '3.992466%   화면 3.99%']), 'B7'),
         ('검산.연환산', lambda m: m['calc']['검산'].__setitem__(
-            0, [m['calc']['검산'][0][0], '7,183,212원']), 'D1'),
-        ('vars.Aᵢ',   lambda m: [v for v in m['vars'] if v['sym'] == 'Aᵢ'][0].__setitem__(
-            'formula', 'Aᵢ = 순지급액ᵢ × (1 + r)'), 'E1'),
+            0, [m['calc']['검산'][0][0], '7,185,276원']), 'D1'),
+        ('vars.A_i',   lambda m: [v for v in m['vars'] if v['sym'] == 'A_i'][0].__setitem__(
+            'formula', 'A_i = 순지급액_i × (1 + r)'), 'E1'),
         ('vars.LR',   lambda m: [v for v in m['vars'] if v['sym'] == 'LR'][0].__setitem__(
-            'formula', 'LR = Σ Lᵢ ÷ Σ Aᵢ'), 'G9'),
+            'formula', 'LR = ( Σ L_i ) ÷ ( Σ A_i )'), 'G9'),
+        ('개념.Y삭제', lambda m: m['vars'].remove(
+            [v for v in m['vars'] if v['sym'] == 'Y'][0]), 'K1'),
+        ('개념.D산식설명', lambda m: [v for v in m['vars'] if v['sym'] == 'D' and v['kind'] == '개념'][0].__setitem__(
+            'formula', 'D = 투자실행금으로 가중평균한 금융일수'), 'K0'),
+        ('겹침.투자실행액', lambda m: [v for v in m['vars'] if v['sym'] == 'PA'][0].__setitem__(
+            'plain', _plain('PA').replace('80,000,000', '80,000,001')), 'K7'),
     ]
     caught = 0
     for name, mut, expect in cases:
@@ -760,6 +1004,7 @@ def main():
     section('F', sec_F)
     section('G', sec_G)
     section('H', sec_H)
+    section('K', sec_K)
     if not NOSCREEN:
         section('I', sec_I)
     if not CHILD and not NOSCREEN:
@@ -778,7 +1023,7 @@ def main():
         print('')
         print('판정 %d건 · PASS %d · FAIL %d' % (len(R), len(R) - len(fails), len(fails)))
         if fails:
-            print('FAIL 목록 — %s' % ', '.join(x[0] for x in fails))
+            print('  실패 목록 — %s' % ', '.join(x[0] for x in fails))
     # 대상 0건이면 통과시키지 않는다
     if not R:
         print('판정 0건 — 검사가 돌지 않았다')

@@ -851,6 +851,106 @@ async function main(){
     return out;
   `);
 
+  /* ── 9) 숫자 불변 — 화면에 뜨는 연환산수익률·가중평균 금융일수가 원장 사실값과 같은가 ──
+     [이관 2026-09-04] verify_proto.js 9) 와 같은 검사다. 시연본이 엑셀 서식 미리보기(xls-*)와
+     투자 시뮬레이션을 뺐으므로(PROTO_DROPPED · step7) 그 (4) 엑셀 미리보기 대조는 시연본에서 볼 자리가
+     없다. 검사를 지우지 않고 원본 app.html 쪽으로 옮겨 여기서 전부 본다 — (1)~(3)·(5)는 시연본과
+     양쪽에서 겹쳐 보고, (4)는 여기서만 본다. 리터럴로 박지 않는다 — ledger_facts.json 을 읽어 대조한다. */
+  R.numbers = await evalJS(`
+    var F = ${JSON.stringify({
+      ty: FACTS.ty, w: FACTS.w, tyByDate: FACTS.tyByDate,
+      weekTy: FACTS.weekTy, weekTyAsset: FACTS.weekTyAsset, weekW: FACTS.weekW,
+      psa: Number(FACTS.weekExec).toLocaleString('en-US'), psc: Number(FACTS.weekPsc).toLocaleString('en-US'),
+      ad: Number(FACTS.weekAD).toLocaleString('en-US'),
+      fullTy: FACTS.fullTy, fullTyAsset: FACTS.fullTyAsset, fullW: FACTS.fullW, monthTy: FACTS.monthTy
+    })};
+    var out = [];
+    function add(name, want, got){ out.push({name:name, want:want, got:got, pass: want === got}); }
+    function cells(tr){ return Array.prototype.map.call(tr.cells, function(td){ return td.textContent.trim(); }); }
+    function SECQ(scr, sel){ return document.querySelector('section.screen[data-screen="'+scr+'"]').querySelectorAll(sel); }
+
+    /* (1) 투자 자산 — 카드 Ty · 자산표 투자실행액 행 */
+    go('invest-assets','default');
+    var iaCards = SECQ('invest-assets','.summary-value');
+    add('투자자산 카드 Ty', F.ty + '%', iaCards[3] ? iaCards[3].textContent.trim() : '없음');
+    var iaRow = cells(SECQ('invest-assets','.tbl tbody tr')[0]);
+    add('자산표 투자실행액 W', F.w + '일', iaRow[2]);
+    add('자산표 투자실행액 Ty', F.ty + '%', iaRow[4]);
+
+    /* (2) 투자 수익 기본(일주일·일별) — 카드 ④·⑤ · 툴팁 PA·PEC·Σ(Ai×Di) · 합계 행 · 행별 W↔Ty */
+    go('invest-profit','default');
+    var tv = SECQ('invest-profit','.ty-split .summary-value');
+    add('기본 기간 ④ 투자실행금액 대비', F.weekTy + '%',      tv[0] ? tv[0].textContent.trim() : '없음');
+    add('기본 기간 ⑤ 투자자산 대비',   F.weekTyAsset + '%', tv[1] ? tv[1].textContent.trim() : '없음');
+    var tip = Array.prototype.map.call(SECQ('invest-profit','.ty-split .tip-row'), function(e){ return e.textContent.trim(); });
+    /* 툴팁 기호 옆에 정본 용어명(step6) · ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) (step7 ⑤ 산식 교체).
+       PA 행은 ④ 툴팁에 「기간 투자실행금」, ⑤ 툴팁은 Σ( Ai × Di ) 행. <sub> 는 textContent 에서 글자로 붙는다. */
+    add('기본 기간 PA (④ 툴팁)', 'PA기간 투자실행금 · ' + F.psa + '원', tip.filter(function(x){ return x.indexOf('PA')===0; })[0] || '없음');
+    add('기본 기간 PEC (⑤ 툴팁)', 'PEC기간 순현금 · ' + F.psc + '원', tip.filter(function(x){ return x.indexOf('PEC')===0; })[0] || '없음');
+    add('기본 기간 Σ( Ai × Di ) (⑤ 툴팁)', 'Σ( Ai × Di )' + F.ad + '원', tip.filter(function(x){ return x.indexOf('Σ( Ai × Di )')===0; })[0] || '없음');
+    var ft = Array.prototype.map.call(SECQ('invest-profit','.tbl tfoot td'), function(td){ return td.textContent.replace('가중평균','').trim(); });
+    add('일별 표 합계 W',  F.weekW,          ft[4] || '없음');
+    add('일별 표 합계 Ty', F.weekTy + '%',   ft[5] || '없음');
+    function pairCheck(label, rows){
+      var bad = [];
+      rows.forEach(function(c){
+        var want = F.tyByDate[c.d];
+        if(!want) bad.push(c.d + ' 원장에 없는 날짜');
+        else if(want[0] !== c.w || want[1] + '%' !== c.ty)
+          bad.push(c.d + ' W' + c.w + '/' + c.ty + ' (원장 W' + want[0] + '/' + want[1] + '%)');
+      });
+      out.push({name:label + ' 날짜↔W↔Ty ' + rows.length + '행', want:'전건 원장 일치',
+                got: bad.length ? bad.join(' / ') : '어긋남 0',
+                pass: rows.length > 0 && bad.length === 0});
+    }
+    var pfRows = Array.prototype.map.call(SECQ('invest-profit','.tbl tbody tr'), function(tr){
+      var c = cells(tr); return {d:c[0], w:c[4], ty:c[5]};
+    });
+    pairCheck('일별 표', pfRows);
+
+    /* (3) 투자 수익 월별(6개월 = 원장 전구간) — month_rollup 값(monthTy)과 대조 */
+    go('invest-profit','monthly');
+    var mv = SECQ('invest-profit','.ty-split .summary-value');
+    add('월별 ④ 투자실행금액 대비', F.fullTy + '%',      mv[0] ? mv[0].textContent.trim() : '없음');
+    add('월별 ⑤ 투자자산 대비',   F.fullTyAsset + '%', mv[1] ? mv[1].textContent.trim() : '없음');
+    var mft = Array.prototype.map.call(SECQ('invest-profit','.tbl tfoot td'), function(td){ return td.textContent.replace('가중평균','').trim(); });
+    add('월별 표 합계 W',  F.fullW,        mft[4] || '없음');
+    add('월별 표 합계 Ty', F.fullTy + '%', mft[5] || '없음');
+    var mrows = Array.prototype.map.call(SECQ('invest-profit','.tbl tbody tr'), function(tr){
+      var c = cells(tr); return c[0] + '|' + c[4] + '|' + c[5];
+    });
+    add('월별 표 ' + F.monthTy.length + '행 W·Ty',
+        F.monthTy.map(function(m){ return m[0] + '|' + m[1] + '|' + m[2] + '%'; }).join(' , '), mrows.join(' , '));
+
+    /* (4) 엑셀 서식 미리보기 — 기간은 수익 화면 상태를 따른다. 기본(일주일)로 되돌리고 본다.
+       (verify_proto.js 에서 이관 — 시연본에 xls-* 화면이 없다) */
+    go('invest-profit','default');
+    go('xls-profit-daily','default');
+    var xdRows = Array.prototype.map.call(SECQ('xls-profit-daily','table tr'), cells)
+      .filter(function(c){ return /^\\d{4}-\\d{2}-\\d{2}$/.test(c[1] || ''); })
+      .map(function(c){ return {d:c[1], w:c[5], ty:c[6]}; });
+    pairCheck('엑셀 일별투자수익', xdRows);
+
+    go('xls-profit-status','default');
+    var xps = {};
+    Array.prototype.map.call(SECQ('xls-profit-status','table tr'), cells).forEach(function(c){ if(c[1]) xps[c[1]] = c[2]; });
+    add('엑셀 투자수익현황 ④', F.weekTy + '%',      xps['연환산수익률 (투자실행금액 대비)'] || '없음');  /* 라벨 확정 2026-09-04 */
+    add('엑셀 투자수익현황 ⑤', F.weekTyAsset + '%', xps['연환산수익률 (투자자산 대비)'] || '없음');
+
+    go('xls-assets-status','default');
+    var xasExec = Array.prototype.map.call(SECQ('xls-assets-status','table tr'), cells)
+      .filter(function(c){ return c[1] === '투자실행액'; })[0] || [];
+    add('엑셀 투자자산현황 W',  F.w,        xasExec[3] || '없음');
+    add('엑셀 투자자산현황 Ty', F.ty + '%', xasExec[5] || '없음');
+
+    /* (5) 비중 합 */
+    var sumRatio = window.__selfcheck().ratioSum;
+    out.push({name:'가맹점별 비중 합', want:'100', got:String(sumRatio), pass: sumRatio === 100});
+
+    go('invest-assets','default');
+    return {items: out, ratioSum: sumRatio, fail: out.filter(function(o){ return !o.pass; }).length};
+  `);
+
   /* ── ⑤ 단일 원천 · ⑥ 배선 ────────────────────────────────────
      대표가 ⑤ 산식을 새로 주면 daily_ledger.ty_asset 한 곳만 고치면 되어야 한다.
      투자 수익 화면은 ⑤ 를 카드에서, ⑥ 을 일별·주별·월별 표 열에서 쓴다.
@@ -865,11 +965,18 @@ async function main(){
     const src = {
       case: '[문자열] ⑤ 정의 1곳 · 하드코딩 0건 · ⑥ 이 ty5()·ty3() 을 거친다',
       ty3def: cnt(/function ty3\(/g), ty5def: cnt(/function ty5\(/g), ty6def: cnt(/function ty6\(/g),
-      ty5body: cnt(/ty4 \* psa \/ tot/g),
+      /* [기준 교체 2026-09-04] ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) 확정안(step7 ⑤ 산식 교체 ·
+         daily_ledger.TY5_EXPR = 'ty4 * ad / tot'). 둘째 인자가 PSA(투자실행금) 에서 AD(Σ Ai×Di) 로 바뀌었다.
+         옛 꼴(psa)은 하드코딩 목록에 남겨 되살아나면 잡는다. */
+      ty5body: cnt(/ty4 \* ad \/ tot/g),
       hard5: cnt(/TY4 \* PSA \/ \(PSA \+ PSC\)/g) + cnt(/ty4 \* psa \/ \(psa \+ psc\)/g)
-             + cnt(/psa \+ psc\) \? ty4/g),
+             + cnt(/psa \+ psc\) \? ty4/g) + cnt(/ty4 \* psa \/ tot/g)
+             + cnt(/TY4 \* AD \/ \(AD \+ PEC\)/g) + cnt(/ty4 \* ad \/ \(ad \+ psc\)/g)
+             + cnt(/ad \+ psc\) \? ty4/g),
       hard6: cnt(/\* 100\) \* 365 \/ g\.[wW]/g),
-      ty6call: cnt(/= ty6\(/g),
+      /* ⑥ 호출 2자리. 원장 롤업 쪽은 6자리 반올림 r6() 로 감싸 부른다
+         (dm_0901/rounding_rule_0901.md 규칙 1) — 감싼 꼴도 호출로 센다. */
+      ty6call: cnt(/= (?:r6\()?ty6\(/g),
       ty6usesTy5: bodyOf('ty6').indexOf('ty5(') >= 0,
       ty6usesTy3: bodyOf('ty6').indexOf('ty3(') >= 0,
       tyAssetUsesTy5: bodyOf('tyAssetOf').indexOf('ty5(') >= 0
@@ -930,6 +1037,7 @@ async function main(){
     ' 닫는것=[' + (m.closers||[]).map(c => c.label + (c.x ? '(X)' : '')).join(', ') + ']' +
     (m.scroll ? ' 스크롤=' + JSON.stringify(m.scroll) : '') + (m.err ? ' ' + m.err : ''), m.pass)));
   console.log('== selfcheck ==', JSON.stringify(R.selfcheck));
+  console.log('== 숫자 불변 ' + R.numbers.items.length + ' =='); R.numbers.items.forEach(n => console.log(' ', line(n.name + ' want=' + String(n.want).slice(0, 60) + ' got=' + String(n.got).slice(0, 60), n.pass)));
 
   /* ── 종료코드 ── FAIL 이 하나라도 있으면 1 로 끝난다.
      형제 검증기(verify_rows.js:213 · verify_toast.js:229 · verify_period.js:405)와 같은 방식이다.

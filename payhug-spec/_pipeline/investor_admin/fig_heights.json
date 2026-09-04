@@ -10,14 +10,9 @@
   "vh": 1168
  },
  "invest-profit": {
-  "content": 1267,
+  "content": 1272,
   "sidebar": 571,
-  "vh": 1267
- },
- "coocon": {
-  "content": 346,
-  "sidebar": 571,
-  "vh": 571
+  "vh": 1272
  },
  "merchants": {
   "content": 770,
@@ -60,14 +55,14 @@
   "vh": 1059
  },
  "invest-profit--monthly": {
-  "content": 1222,
+  "content": 1227,
   "sidebar": 571,
-  "vh": 1222
+  "vh": 1227
  },
  "invest-profit--empty": {
-  "content": 1044,
+  "content": 1049,
   "sidebar": 571,
-  "vh": 1044
+  "vh": 1049
  },
  "merchants--filtered": {
   "content": 425,
@@ -120,48 +115,8 @@
   "vh": 630
  },
  "invest-profit--weekly": {
-  "content": 1132,
+  "content": 1137,
   "sidebar": 571,
-  "vh": 1132
- },
- "invest-sim": {
-  "content": 1123,
-  "sidebar": 571,
-  "vh": 1123
- },
- "invest-sim--result": {
-  "content": 2541,
-  "sidebar": 571,
-  "vh": 2541
- },
- "index": {
-  "content": 1863,
-  "sidebar": 0,
-  "vh": 1863
- },
- "login": {
-  "content": 505,
-  "sidebar": 0,
-  "vh": 505
- },
- "xls-assets-status": {
-  "content": 613,
-  "sidebar": 571,
-  "vh": 613
- },
- "xls-assets-merchant": {
-  "content": 781,
-  "sidebar": 571,
-  "vh": 781
- },
- "xls-profit-status": {
-  "content": 669,
-  "sidebar": 571,
-  "vh": 669
- },
- "xls-profit-daily": {
-  "content": 753,
-  "sidebar": 571,
-  "vh": 753
+  "vh": 1137
  }
 }

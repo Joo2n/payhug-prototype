@@ -277,8 +277,18 @@ async function runPass(dsf, quality){
       try { st = await evalJS('return document.readyState;'); } catch(e){ st = ''; }
       if(st === 'complete') break;
     }
-    /* 웹폰트(Noto Sans KR)는 외부 CDN — fonts.ready 대기 후 여유 800ms */
-    try { await evalJS('return document.fonts.ready.then(function(){return 1;});'); } catch(e){}
+    /* 웹폰트(Noto Sans KR)는 외부 CDN · display=swap — fonts.ready 는 「지금 내려받는 중인 것」만 기다린다.
+       Google Fonts CSS 자체가 아직 안 닿았으면 @font-face 가 0건이라 fonts.ready 가 즉시 풀리고 fonts.check 도 true 다.
+       그 순간 찍으면 대체 글꼴 폭으로 줄이 더 접혀 문서가 37px 길어진다(2026-09-04 실측 · invest-assets 1316 → 1353).
+       그래서 실제 FontFace 가 loaded 가 될 때까지 최대 12초 기다리고, 끝내 못 받으면 그 화면은 실패로 센다. */
+    let fontLoaded = false;
+    for(let i = 0; i < 100; i++){
+      try {
+        fontLoaded = await evalJS('return document.fonts.ready.then(function(){ var ok=false; document.fonts.forEach(function(f){ if(/Noto Sans KR/i.test(f.family) && f.status===\'loaded\') ok=true; }); return ok; });');
+      } catch(e){ fontLoaded = false; }
+      if(fontLoaded) break;
+      await sleep(120);
+    }
     await sleep(800);
 
     const R = await evalJS('return (' + COLLECT.toString() + ')();');
@@ -296,7 +306,7 @@ async function runPass(dsf, quality){
     screens.push({
       file: f, shot: 'assets/shots/' + name,
       docW: docW, docH: docH, imgW: sz.w, imgH: sz.h,
-      bytes: fs.statSync(dest).size, sizeVia: sz.via, fontOK: R.fontOK, scrollers: R.scrollers,
+      bytes: fs.statSync(dest).size, sizeVia: sz.via, fontOK: R.fontOK, fontLoaded: fontLoaded, scrollers: R.scrollers,
       clipped: R.items.filter(function(i){ return i.clipped; }).length,
       consoleErrors: consoleErrors.slice(before),
       items: R.items
@@ -370,6 +380,7 @@ async function main(){
     const src = path.join(REPO, s.file);
     seal[s.file] = {
       shot: s.shot,
+      fontLoaded: s.fontLoaded,
       imgSha256: sha(fs.readFileSync(img)),
       imgBytes: fs.statSync(img).size,
       imgMtime: Math.floor(fs.statSync(img).mtimeMs),
@@ -402,7 +413,7 @@ async function main(){
     if(s.docH < 500) bad.push('docH<500');
     if(!s.imgW || !s.imgH) bad.push('이미지크기측정실패');
     if(s.consoleErrors.length) bad.push('콘솔' + s.consoleErrors.length);
-    if(s.fontOK === false) bad.push('폰트미로드');
+    if(s.fontOK === false || s.fontLoaded !== true) bad.push('폰트미로드');
     if(bad.length) fail++;
     console.log((bad.length ? 'FAIL ' : 'ok   ') + s.file.padEnd(34) +
       String(s.bytes).padStart(8) + 'B  doc ' + s.docW + 'x' + s.docH +

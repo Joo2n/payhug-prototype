@@ -275,8 +275,7 @@ DUR_NOTE = (
     '「w금융일수 = 공식 용어로 duration, 우리는 가중 평균 만기일(weight) 가중평균금융일수」 · '
     '3차 미팅 00:43:33 「엄밀히는 공식 영어는 듀레이션」 · 00:44:30 '
     '「가중 평균 만기해서 웨이티드의 W 를 붙인 것」. 가중평균 만기일은 매콜리 듀레이션의 정의 그대로이고, '
-    '금리 민감도를 재는 수정 듀레이션과는 다르다. 정본 표기는 w금융일수 하나이고 '
-    '화면·표·머리글에는 이 이름만 쓴다.')
+    '금리 민감도를 재는 수정 듀레이션과는 다르다. 정본 표기는 w금융일수 하나다.')
 NOTE_SITES = ('glossary_manuscript.md', 'glossary.html(배포)')
 MENTION = '「만기」'
 for name, t in [('glossary_manuscript.md', rd(os.path.join(BASE, 'glossary_manuscript.md'))),

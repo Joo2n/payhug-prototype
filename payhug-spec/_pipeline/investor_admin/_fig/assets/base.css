@@ -507,6 +507,7 @@ select.input { background-color: #fff; border-color: var(--gray-300); }
 .tooltip:hover .tip-panel { display: block; }
 /* 툴팁 내부 항목행 (수수료 구성 분해 실측) */
 .tip-panel .tip-row { display: flex; justify-content: space-between; padding: 2px 0; }
+.tip-panel .tip-row > span:first-child { flex-shrink: 0; white-space: nowrap; margin-right: 8px; }
 .tip-panel .tip-row.sum { border-top: 1px solid var(--gray-700); padding-top: 6px; margin-top: 4px; }
 .tip-panel .tip-green { color: var(--emerald-300); }
 

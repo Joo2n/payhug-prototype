@@ -43,7 +43,7 @@
 
   .doc-tbl { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 18px; }
   .doc-tbl th, .doc-tbl td { border: 1px solid var(--gray-200); padding: 8px 12px; color: var(--gray-700); }
-  .doc-tbl th {
+  .doc-tbl th { word-break: keep-all;
     background: var(--gray-50); text-align: center;
     font-size: 12px; font-weight: 600; color: var(--gray-600);
   }
@@ -65,8 +65,6 @@
   .issue-meta .k { color: var(--gray-500); }
   .issue-meta .v { color: var(--gray-700); font-weight: 500; }
 </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=block" rel="stylesheet">
-  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-active="invest-assets">
 <div class="page">
@@ -93,10 +91,6 @@
         <a class="nav-item" data-menu="invest-returns" href="invest-profit.html">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
           <span>투자 수익</span>
-        </a>
-        <a class="nav-item" data-menu="invest-sim" href="invest-sim.html">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm3.75-6.75A2.25 2.25 0 0119.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75z"/></svg>
-          <span>투자 시뮬레이션</span>
         </a>
       </div>
 
@@ -172,10 +166,10 @@
             <thead>
               <tr>
                 <th>가맹점</th>
-                <th>투자금액 (원)</th>
-                <th>W금융일수</th>
-                <th>S입금부족율</th>
-                <th>Ty수익율</th>
+                <th>투자실행액 (원)</th>
+                <th>가중평균 금융일수</th>
+                <th>입금부족률</th>
+                <th>예상 연환산수익률</th>
                 <th>비중</th>
               </tr>
             </thead>
@@ -225,7 +219,7 @@
                 <td class="num">5,624,058</td>
                 <td class="num">2.70일</td>
                 <td class="num">0.05%</td>
-                <td class="num">14.87%</td>
+                <td class="num">14.89%</td>
                 <td class="num">7.0%</td>
               </tr>
               <tr>
@@ -233,7 +227,7 @@
                 <td class="num">4,799,968</td>
                 <td class="num">2.55일</td>
                 <td class="num">0.05%</td>
-                <td class="num">15.75%</td>
+                <td class="num">15.72%</td>
                 <td class="num">6.0%</td>
               </tr>
               <tr>
@@ -241,7 +235,7 @@
                 <td class="num">3,981,371</td>
                 <td class="num">2.52일</td>
                 <td class="num">0.04%</td>
-                <td class="num">15.93%</td>
+                <td class="num">15.95%</td>
                 <td class="num">5.0%</td>
               </tr>
             </tbody>

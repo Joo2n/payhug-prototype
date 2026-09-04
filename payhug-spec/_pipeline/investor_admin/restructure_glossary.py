@@ -21,7 +21,7 @@ BLOCKS = ['층위', '한마디로 뭐냐', '어떻게 계산하나', '이 값은
 #  카드별 손 지정 — 화면 표기 / 캡처 / 오버레이 앵커
 #     shot   assets/shots/<key>.webp
 #     anchor shot_rects.json 안 items[].text 와 맞출 문자열
-#     kind   direct = 그 자리에 그 값이 뜬다 / indirect = 재료라 그 자리 뒤에 숨는다
+#     kind   direct = 그 자리에 그 값이 뜬다 / indirect = 화면에 안 뜨고 그 자리로 들어간다
 #     label  화면 표기가 카드 이름과 다를 때만
 # ══════════════════════════════════════════════════════════════════
 META = {
@@ -74,9 +74,9 @@ META = {
 
  '투자실행금 (투자 수익 · 기간 합계)': dict(shot='invest-profit', anchor='div:투자실행금#0', kind='direct', label='투자실행금 (현황 카드)'),
  '투자수익 (투자 수익 · 기간 합계)':  dict(shot='invest-profit', anchor='div:투자수익#0',  kind='direct', label='투자수익 (현황 카드)'),
- 'PSMR':                        dict(shot='invest-profit', anchor='div:Ty수익율#0', kind='indirect'),
- 'PSD':                         dict(shot='invest-profit', anchor='td:합계',      kind='direct', label='W금융일수 (합계 행)'),
- 'PSC':                         dict(shot='invest-profit', anchor='div:투자자산 대비', kind='indirect'),
+ 'PMR':                         dict(shot='invest-profit', anchor='div:Ty수익율#0', kind='indirect'),
+ 'PwD':                         dict(shot='invest-profit', anchor='td:합계',      kind='direct', label='W금융일수 (합계 행)'),
+ 'PEC':                         dict(shot='invest-profit', anchor='div:투자자산 대비', kind='indirect'),
  'ty수익율 › 투자실행금액 대비 (투자 수익 · 기간 합계)':
                                 dict(shot='invest-profit', anchor='div:투자실행금액 대비', kind='direct', label='Ty수익율 › 투자실행금액 대비'),
  'ty수익율 › 투자자산 대비 (투자 수익 · 기간 합계)':
@@ -103,11 +103,11 @@ CARD_SYM = {
  '투자수익율 (일별 배치 · 하루치)': 'SMR_{D-1}',
  'w금융일수 (일별 배치 · 하루치)': 'SD_{D-1}',
  '순현금 (일별 배치 · 자정 시점)': 'EC',
- '투자실행금 (투자 수익 · 기간 합계)': 'PSA',
- '투자수익 (투자 수익 · 기간 합계)': 'PSM',
- 'PSMR': 'PSMR',
- 'PSD': 'PSD',
- 'PSC': 'PSC',
+ '투자실행금 (투자 수익 · 기간 합계)': 'PA',
+ '투자수익 (투자 수익 · 기간 합계)': 'PM',
+ 'PMR': 'PMR',
+ 'PwD': 'PwD',
+ 'PEC': 'PEC',
  'ty수익율 › 투자실행금액 대비 (투자 수익 · 기간 합계)': '③④⑤⑥',
  'ty수익율 › 투자자산 대비 (투자 수익 · 기간 합계)': '③④⑤⑥',
  'ty수익율 (일별 표 · 행 단위)': '③④⑤⑥',
@@ -187,7 +187,11 @@ def first_sentence(t):
 
 
 def split_chain(t):
-    """`재료: X → 결과: Y` 를 둘로 가른다. 못 가르면 통째로 결과 쪽에 둔다."""
+    """구조판 이전 원고가 쓰던 `재료: X → 결과: Y` 줄을 둘로 가른다.
+
+    낱말 두 개는 **입력 원고의 표기**라 여기서 바꾸지 않는다. 산출 쪽 이름은
+    `계산에 넣는 값` · `쓰이는 곳` 이다. 못 가르면 통째로 `쓰이는 곳` 에 둔다.
+    """
     t = t.strip()
     m = re.match(r'재료[:：]\s*(.*?)\s*→\s*결과[:：]\s*(.*)$', t, re.S)
     if m:
@@ -269,11 +273,11 @@ def main():
       '기호를 글자 단위로 쪼갠 풀이가 따라붙는다. 원문에 기호가 없는 용어는 `기호 없음` |')
     W('| 3 | **계산식** | 원문 산식을 그대로 적고, 그 안의 기호를 **그 자리에서** 우리말로 푼 뒤, 숫자 한 벌을 넣어 단계별로 계산한다 |')
     W('| 4 | **화면** | 그 용어가 뜨는 화면 캡처. 이미지를 누르면 확대된다. '
-      '용어가 있는 자리는 이미지 위에 상자로 표시한다. 화면에 안 뜨는 용어는 그 값이 흘러드는 자리를 표시하고 `재료`로 적는다 |')
-    W('| 5 | **관련 용어** | `재료`(이 용어를 만드는 것)와 `쓰이는 곳`(이 용어를 재료로 쓰는 것). 이름을 누르면 그 카드로 간다 |\n')
+      '용어가 있는 자리는 이미지 위에 상자로 표시한다. 화면에 안 뜨는 용어는 그 값이 흘러드는 자리를 표시한다 |')
+    W('| 5 | **관련 용어** | `계산에 넣는 값`(이 용어를 만드는 값)와 `쓰이는 곳`(이 용어가 들어가는 값). 이름을 누르면 그 카드로 간다 |\n')
     W('다섯 아래에 **값의 출처**(기존 어드민이냐 신설이냐)와 **기획할 때 정해야 할 것**이 접혀 있다. 펼쳐서 본다.\n')
     W('카드 순서는 사전순도 중요도순도 아니다. **앞의 것을 알아야 뒤의 것이 이해되는 순서**로 1단계부터 7단계까지 놓았다. '
-      '위에서 아래로 읽으면 재료가 결과보다 먼저 나온다.\n')
+      '위에서 아래로 읽으면 들어가는 값이 나온 값보다 먼저 온다.\n')
     W(src_tbl + '\n')
     W(ex_tbl)
     W('\n---\n')
@@ -343,7 +347,7 @@ def main():
             W('### 관련 용어\n')
             src_, dst_, _ = split_chain(b['다른 용어와 어떻게 이어지나'])
             if src_:
-                W(f'**재료** {src_}\n')
+                W(f'**계산에 넣는 값** {src_}\n')
             W(f'**쓰이는 곳** {dst_}\n')
 
             W('### 값의 출처 · 정해야 할 것\n')
@@ -433,7 +437,7 @@ def main():
 
     # ── 목차 = 용어 50건 목록 ──
     toc = ['## 용어 50건 — 목차\n',
-           '용어명을 누르면 그 카드로 간다. `변수`가 비어 있으면 대표 정의 원문에 기호가 없는 용어다.\n',
+           '용어명을 누르면 그 카드로 간다.\n',
            '| # | 용어명 | 변수 | 화면 | 한 줄 뜻 |', '|---|---|---|---|---|']
     n = 0
     for st in stages:
@@ -446,7 +450,7 @@ def main():
             sy = CARD_CIRCLED.get(term) or CARD_SYM.get(term)
             m = META[term]
             lbl = m.get('label') or term
-            toc.append(f"| {n} | [{term}](#{term}) | {'`'+sy+'`' if sy else '—'} "
+            toc.append(f"| {n} | [{term}](#{term}) | {'`'+sy+'`' if sy else ''} "
                        f"| `{m['shot']}.html` › `{lbl}` | {first_sentence(c['blocks']['한마디로 뭐냐'])} |")
     out = out.replace('%%TOC%%', '\n'.join(toc))
 

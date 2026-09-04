@@ -45,7 +45,7 @@ _SIMDEF = re.search(r'var SIM_DEFAULT = \{\s*(.*?)\n', _SIMSRC, re.S).group(1)
 def _simv(k):
     return float(re.search(k + r':\s*([0-9.]+)', _SIMDEF).group(1))
 R_RATE, CASH, UNPAID, OVER = _simv('r'), int(_simv('cash')), _simv('unpaid'), _simv('over')
-FROM, TO = '2026-08-21', '2026-08-27'
+FROM, TO = LG.WEEK
 PLAT = [('card', '카드사', 2), ('bm', '배달의민족', 3), ('cpe', '쿠팡이츠', 5), ('yo', '요기요', 6)]
 LABEL = dict((k, l) for k, l, _ in PLAT)
 # 채권 8행도 통합본 simSeedRows() 에서 그대로 읽는다 — 두 곳에 같은 행을 적지 않는다.
@@ -92,12 +92,13 @@ def run():
     TOT  = EXEC + CASH
     SH   = ratios([EXEC, CASH], TOT)
     PSA  = sum(b['A'] for b in mat); PSM = sum(b['M'] for b in mat); PSB = sum(b['B'] for b in mat)
-    PSD  = (sum(b['A'] * b['D'] for b in mat) / float(PSA)) if PSA else 0
+    AD   = sum(b['A'] * b['D'] for b in mat)          # Σ(Ai x Di) — PSD 의 분자 · ⑤ 의 AD
+    PSD  = (AD / float(PSA)) if PSA else 0
     PSMR = (PSM / float(PSA) * 100) if PSA else 0
     TY4  = (PSMR * 365 / PSD) if PSD else 0
     ECD  = days(FROM, TO) + 1
     PSC  = CASH * ECD
-    TY5  = LG.ty_asset(TY4, PSA, float(PSC))          # ⑤ — 산식은 daily_ledger.ty_asset 한 곳
+    TY5  = LG.ty_asset(TY4, float(AD), float(PSC))    # ⑤ — 산식은 daily_ledger.ty_asset 한 곳
     day, keys = {}, []
     for b in mat:
         g = day.get(b['dd'])
@@ -113,18 +114,20 @@ def run():
         g['TY'] = LG.ty_row(g['M'], float(g['A']), g['W'])   # ⑥ — ty_asset() 을 거친다
         drows.append(g)
     return dict(bonds=bonds, EXEC=EXEC, W=W, TY=TY, S=S, TOT=TOT, SH=SH, PSA=PSA, PSM=PSM,
-                PSB=PSB, PSD=PSD, PSMR=PSMR, TY4=TY4, TY5=TY5, ECD=ECD, PSC=PSC, rows=drows)
+                PSB=PSB, AD=AD, PSD=PSD, PSMR=PSMR, TY4=TY4, TY5=TY5, ECD=ECD, PSC=PSC, rows=drows)
 
 # ── 마크업 ────────────────────────────────────────────────────────
 
-# 대표 재전달 대기 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW · tyTh() 와 같은 마크업이다.
-# 2026-08-31 회의에서 ⑤ 는 「수식 새로 작성해 전달」, ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」으로 끝났다.
+# 미확정 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW · PEND5_ROW · tyTh() 와 같은 마크업이다.
+# 2026-08-31 회의에서 ③ 은 칸 미지목, ⑥ 은 「4,5번과 다르니 계산식 다시 확인할 것」으로 끝나 대표 재전달 대기다.
+# ⑤ 는 원문 산식이 「수식 오류」로 닫혀 우리 확정안(daily_ledger.TY5_EXPR)을 넣고 대표 확인을 기다린다.
 PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
 PEND_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>'
-TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">Ty수익율</span>'
+PEND5_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 확인 대기</span></span>'
+TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산수익률</span>'
          '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
          '<span class="tip-row"><span>번호</span><span class="tip-green">'
-         '일별 표 열 ③투자실행금 ④투자 수익 ⑤W금융일수</span></span>'
+         '일별 표 열 ③투자실행금 ④투자 수익 ⑤가중평균 금융일수</span></span>'
          '<span class="tip-row"><span>행</span><span class="tip-green">'
          '정산예정일이 그 날짜인 대상정산금채권 집합</span></span>'
          + PEND_ROW +
@@ -140,8 +143,8 @@ THIRD_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor"
 TY4_DM = ('<span class="tip-row"><span>항등식</span><span class="tip-green">'
           '할인율 − max(0, 미지급금 − 과지급금) ÷ 투자실행액</span></span>'
           '<span class="tip-row"><span>부족액 0</span><span class="tip-green">'
-          '할인율 %s%%%% ↔ SMR %s%%%% · 미확정</span></span>'
-          '<span class="tip-row sum"><span>대표 DM 16:45</span><span>실적치 · SMR 계통</span></span>'
+          '할인율 %s%%%% ↔ PMR %s%%%% · 미확정</span></span>'
+          '<span class="tip-row sum"><span>대표 DM 16:45</span><span>관찰된 값 · PMR 계통</span></span>'
           % (fx(R_RATE, 2), fx(R_RATE / (1 - R_RATE / 100.0), 6)))
 
 def field(fid, label, kind, value, extra=''):
@@ -219,9 +222,9 @@ def result_block(R):
           '        <div class="summary-value">%s<span class="unit">원</span></div>\n'
           '        <div class="summary-sub">비중 %s%% · 보관 ㈜쿠콘</div>\n      </div>\n'
           % (fmt(CASH), fx(R['SH'][1], 1)))
-    h += ('      <div class="summary-card">\n        <div class="summary-label">Ty수익율</div>\n'
+    h += ('      <div class="summary-card">\n        <div class="summary-label">예상 연환산수익률</div>\n'
           '        <div class="summary-value">%s<span class="unit">%%</span></div>\n'
-          '        <div class="summary-sub">W금융일수 %s일 기준</div>\n      </div>\n'
+          '        <div class="summary-sub">가중평균 금융일수 %s일 기준</div>\n      </div>\n'
           % (fx(R['TY'], 2), fx(R['W'], 2)))
     h += '    </div>\n\n'
 
@@ -242,8 +245,8 @@ def result_block(R):
 
     h += ('    <div class="tbl-wrap mb-6">\n      <div class="tbl-head"><h2>현황</h2></div>\n'
           '      <div class="tbl-scroll">\n        <table class="tbl">\n          <thead>\n'
-          '            <tr><th>자산 구분</th><th class="num">금액 (원)</th><th class="num">W금융일수</th>'
-          '<th class="num">S입금부족율</th><th class="num">Ty수익율</th><th class="num">비중</th><th>보관</th></tr>\n'
+          '            <tr><th>자산 구분</th><th class="num">금액 (원)</th><th class="num">가중평균 금융일수</th>'
+          '<th class="num">입금부족률</th><th class="num">예상 연환산수익률</th><th class="num">비중</th><th>보관</th></tr>\n'
           '          </thead>\n          <tbody>\n')
     h += ('            <tr><td><span class="name">투자실행액</span></td><td class="num"><span class="strong">%s</span></td>'
           '<td class="num">%s일</td><td class="num">%s</td><td class="num">%s</td><td class="num">%s%%</td>'
@@ -270,31 +273,35 @@ def result_block(R):
           '        <div class="stat">\n          <div class="summary-label">투자수익</div>\n'
           '          <div class="summary-value">%s<span class="unit">원</span></div>\n        </div>\n'
           % (R['ECD'], FROM, TO, fmt(R['PSA']), fmt(R['PSM'])))
-    h += (('        <div class="stat">\n          <div class="summary-label">Ty수익율</div>\n'
+    h += (('        <div class="stat">\n          <div class="summary-label">연환산수익률</div>\n'
            '          <div class="ty-split">\n'
            '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
-           '<span class="tip-panel">PSMR × 365 ÷ PSD'
-           '<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span>'
-           '<span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span>'
+           '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산수익률 (관찰된 값) · PMR × 365 ÷ PD'
+           '<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = %s%%</span></span>'
+           '<span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · %s원</span></span>'
+           '<span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · %s원</span></span>'
+           '<span class="tip-row"><span>PD</span><span class="tip-green">기간 가중평균 금융일수 · %s일</span></span>'
            + TY4_DM +
            '</span></span></div>\n'
            '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
            '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
-           '<span class="tip-panel">(투자실행금액 대비 × PSA) ÷ (PSA + PSC)'
-           '<span class="tip-row"><span>PSA</span><span class="tip-green">%s원</span></span>'
-           '<span class="tip-row"><span>PSC</span><span class="tip-green">%s원</span></span>'
-           '<span class="tip-row sum"><span>EC %d일 합</span><span>기간 순현금 합계</span></span>'
-           + PEND_ROW +
+           '<span class="tip-panel">PY<sub>t</sub> · 투자자산 대비 연환산수익률 (관찰된 값) · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
+           '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산수익률 (관찰된 값) · %s%%</span></span>'
+           '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">%s원</span></span>'
+           '<span class="tip-row"><span>PEC</span><span class="tip-green">기간 순현금 · %s원</span></span>'
+           '<span class="tip-row sum"><span>EC</span><span>순현금 · %s원 × %d일</span></span>'
+           + PEND5_ROW +
            '</span></span>' + PEND_BADGE + '</div>\n'
            '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
            '          </div>\n        </div>\n      </div>\n    </div>\n\n')
-          % (fx(R['TY4'], 2), fmt(R['PSA']), fmt(R['PSC']), R['ECD'], fx(R['TY5'], 2)))
+          % (fx(R['PSMR'], 6), fmt(R['PSM']), fmt(R['PSA']), fx(R['PSD'], 2), fx(R['TY4'], 2),
+             fx(R['TY4'], 2), fmt(R['AD']), fmt(R['PSC']), fmt(CASH), R['ECD'], fx(R['TY5'], 2)))
 
     h += ('    <div class="tbl-wrap mb-6">\n'
           '      <div class="tbl-head"><div class="left"><h2 class="card-title">일별 투자수익</h2></div></div>\n'
           '      <div class="tbl-scroll">\n        <table class="tbl">\n          <thead>\n'
           '            <tr><th>정산예정일</th><th class="num">상환액</th>' + THIRD_TH +
-          '<th class="num">투자 수익</th><th class="num">W금융일수</th>' + TY_TH + '</tr>\n'
+          '<th class="num">투자 수익</th><th class="num">가중평균 금융일수</th>' + TY_TH + '</tr>\n'
           '          </thead>\n          <tbody>\n')
     for g in R['rows']:
         h += ('            <tr><td class="mono">%s</td><td class="num">%s</td><td class="num">%s</td>'

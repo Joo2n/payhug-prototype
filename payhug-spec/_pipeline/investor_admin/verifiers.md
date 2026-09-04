@@ -8,11 +8,11 @@
 
 | 원천 | 내는 것 | 읽는 검증기 |
 |---|---|---|
-| `daily_ledger.py` → `ledger_facts.json` | 투자실행액·순현금·투자자산·W·Ty·S·로스터 명단·원장 구간·W 범위 가드(`wBound`)·채권 Di 범위 가드(`diBound`)·일별 행값(`tyByDate` = 날짜 → [W, Ty, 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감]) | `verify_identity` · `verify_proto` · `verify_period` · `verify_app` · `verify_rows` · `verify_sync_chain` · `verify_deployed` · `verify_sim` · `verify_0828` · `verify_shortfall` |
+| `daily_ledger.py` → `ledger_facts.json` | 투자실행액·순현금·투자자산·W·Ty·S·로스터 명단·원장 구간·W 범위 가드(`wBound`)·채권 Di 범위 가드(`diBound`)·일별 행값(`tyByDate` = 날짜 → [W, Ty, 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감])·일별 6자리 W(`w6ByDate`) | `verify_identity` · `verify_proto` · `verify_period` · `verify_app` · `verify_rows` · `verify_sync_chain` · `verify_deployed` · `verify_sim` · `verify_0828` · `verify_shortfall` |
 | `sim_facts.py` (`build_app.py` 씨앗 8행·`SIM_DEFAULT`·`SIM_DUR` 을 읽고 `build_sim_static.py` 의 산식을 그대로 부른다) | 투자 시뮬레이션 시나리오 8종의 화면 표기값 | `verify_sim` (`python3 sim_facts.py --json` 을 그 자리에서 돌려 받는다 — 파일이 낡을 자리가 없다) |
 | `roster16_model.py` · `platform_duration.py` | 로스터 원장·플랫폼별 만기 실측 | `verify_crossscreen` |
 | `platform_duration.py` (`MEASURED`·`BOOK_MIX`·`MAU_MIX`·`MAU_W`) · `daily_ledger.RECEIVABLES` · `build_archive.py` 의 `DESC` · 레지스터 `TP-87` | 금액 구성비·MAU 참고값·원장 채권 Σ Ai 플랫폼 구성비·원고 명단 | `verify_weighting` |
-| `shot_rects.json` 의 `capture` 봉인 (`capture_shots.js` 가 찍는다) | 캡처 5장의 촬영 설정(`dsf`·`quality`·뷰포트·크롬 판)과 촬영 시점의 이미지·원본 화면 sha256 | `verify_shots.js` · `gate_glossary.js` |
+| `shot_rects.json` 의 `capture` 봉인 (`capture_shots.js` 가 찍는다) | 캡처 5장의 촬영 설정(`dsf`·`quality`·뷰포트·크롬 판)과 촬영 시점의 이미지·원본 화면 sha256 · 웹폰트 적재 여부(`fontLoaded`) | `verify_shots.js` · `gate_glossary.js` |
 | `settlement_cards_measured.json` + `payhug-admin-web` 원문 | 어드민 선정산 결과 요약 카드 실측 8칸(세트 A)·동결 캡처 자기시험 기준(세트 B). **산식 규칙은 이 JSON 이 아니라 코드에서 읽는다** | `verify_settlement_cards` |
 
 로스터 곳수는 `ledger_facts.json` 의 `merchants` 길이 하나에서 나온다. 검증기에 `16` 을 적지 않는다.
@@ -87,25 +87,25 @@
 | 검증기 | 판정한다 (종료코드에 들어감) | 판정하지 않고 출력만 — 그 이유 |
 |---|---|---|
 | `verify_0828.py` | 32항목 전건 — 32번은 `rd()` 가 빈 문자열로 삼킨 파일 0건 | — |
-| `verify_app.js` | 99건 — `R` 안 `pass` 전수(메뉴·사이드바 구성·상태·값 변화·레이아웃·다운로드·모달·서명 딥링크) + 콘솔 에러 + 죽은 컨트롤 | `a11y` — 원본 어드민의 표 행 `tabIndex` 가 0건이라 「몇 건이어야 하는가」의 근거가 없다. `newtab` — 실물 도달은 `verify_links.py` 가 본다. `scanned`·`menuCount` 는 곳수 보고 |
-| `verify_proto.js` | 135건 — `R` 안 `pass` 전수 + 바깥 통로 5종(형제 문서·금칙 문자열·외부 호스트·화면 문구·스캔 0건) + 모달 곳수 가드 + 콘솔 + 죽은 컨트롤 | `a11y`·`newtab` 위와 같음. `escape.dockOptions` — 도크가 지금 없다(「도크 없음」). `escape.asset`·`hash`·`total` 은 곳수 보고(0건만 판정) |
+| `verify_app.js` | 123건 — `R` 안 `pass` 전수(메뉴·사이드바 구성·상태·값 변화·레이아웃·다운로드·모달·서명 딥링크·⑤ 배선·숫자 불변 17건) + 콘솔 에러 + 죽은 컨트롤 | `a11y` — 원본 어드민의 표 행 `tabIndex` 가 0건이라 「몇 건이어야 하는가」의 근거가 없다. `newtab` — 실물 도달은 `verify_links.py` 가 본다. `scanned`·`menuCount` 는 곳수 보고 |
+| `verify_proto.js` | 119건 — `R` 안 `pass` 전수 + 바깥 통로 5종(형제 문서·금칙 문자열·외부 호스트·화면 문구·스캔 0건) + 모달 곳수 가드 + 「`xls-*`·`invest-sim` 화면 없음」 + 콘솔 + 죽은 컨트롤 | `a11y`·`newtab` 위와 같음. `escape.dockOptions` — 도크가 지금 없다(「도크 없음」). `escape.asset`·`hash`·`total` 은 곳수 보고(0건만 판정) |
 | `verify_sync_chain.js` | 라운드의 `checks` 전건. 사이드바는 곳수가 아니라 **메뉴마다** 판정 — 다른 화면에 세운 뒤 눌러 `body.dataset.active` 가 그 메뉴가 되는지. 외부 링크(`target=_blank`)만 제외 | `http` 응답 바이트·`age`·`cache` — 배포 캐시 상태라 기준값을 댈 수 없다 |
 | `verify_rows.js` | 37건(행 호버·초점·순번 열·건수·잔존·계약기록 잠금 행) + 콘솔 | — |
 | `verify_toast.js` | 25건(실물 바이트 대조 + 프리셋 밖 잠금 + `완료` 토스트 전건이 파일명을 대는가 = D-39) + 콘솔 | — |
 | `verify_links.py` | 링크 전건 200·바이트 + 검사 대상 0건 아님 | `assets/docs`·`assets/xlsx` 참조 곳수 — 몇 건이어야 하는지 근거 없음 |
-| `verify_crossscreen.py` | 48건 전건 `chk()` | — |
-| `verify_identity.js` | 항등식 17건 + 콘솔 에러 (① 잔액=유량x만기 되살림 · 일별 행은 `tyByDate` 와 바이트 대조 · 비중 최대잉여법) | — |
+| `verify_crossscreen.py` | 63건 전건 `chk()` — 월별 Ty 경로 지목 3건 포함(낱장 = 원장 6자리 가중 · 엑셀 = 원장 6자리 가중 · 엑셀이 낸 값 = 2자리 가중 재현값) | ⑤ `ty_asset` · ③ `ty_third` · ⑥ `TY6_PSC` 의 미확정 상태 — 달 버킷 ⑥ 이 `ty5()` 를 거치는 것이 맞는지는 대표 확인 문항 Q1(⑤ 산식 재전달)·Q2(③ 이 현황의 어느 칸)에 걸려 있다. 어느 쪽이 옳은지 댈 근거가 없어 값을 정답으로도 오답으로도 세지 않고 자리만 찍는다 |
+| `verify_identity.js` | 항등식 18건 + 콘솔 에러 (① 잔액=유량x만기 되살림 · 일별 행은 `tyByDate` 와 바이트 대조 · 비중 최대잉여법 · 기간 7종 x 표 4칸의 W·④·⑤ 를 `w6ByDate` 에서 낸 기대값과 **완전일치**) | — |
 | `verify_period.js` | 40건 + 뷰포트 1440×`VIEW_H` + 콘솔 에러 | — |
 | `verify_password.js` | `checks` 75건(정적 대조·지어낸 문구 포함) | `steps`·`expected` — 재현 기록 |
-| `verify_sim.js` | 59건(뷰포트 1440×1200 포함) | — |
+| `verify_sim.js` | 92건(뷰포트 1440×1200 포함) — 상환액은 정의식 `Σ(순지급액 − 차감)` 과 완전일치 · `PA+PM` 과의 갈림은 채권 수 상한 · 나눠떨어지지 않는 순지급액 시나리오(`amtOdd`) 판별력 자기시험 3건 | — |
 | `verify_glossary.js` | 앵커·가로 넘침·본문 링크 대상·층위 칩 곳수·기호 검색 0건·목차·콘솔 | 검색에 걸리는 카드 수 — 내용이 늘면 같이 는다 |
 | `verify_glossary5.js` | 카드 50·5필드·이미지·앵커·마커(크롭 밖·크기 0)·라이트박스(열림·재열림·이미지·마커 좌표·ESC)·검색·가로 넘침·구버전 잔존·콘솔 | `lightbox.backdropCloses` — 배경 클릭 닫힘은 화면이 약속한 적 없는 동작이라 기준을 댈 수 없다(닫기 버튼 라벨은 「닫기 (Esc)」 뿐) |
 | `verify_shotmarks.py` | 마커 곳수·4자 일치·촬영-측정 동기·잉크·앵커 역산 | 잉크 최소·최대 비율 — 판정은 `INK_MIN` 만 |
-| `verify_shots.js` | 53건 — A 명부·봉인 12건(대상 0건 아님 포함) · B 봉인 대조 20건(이미지 sha · 원본 HTML sha · 촬영 순서 · 거울) · C 재현 대조 11건(다시 찍은 바이트 · 문서 크기 · 콘솔) · D 자기시험 8건 · E 판정 건수 1건 | 없음 — 값만 찍는 자리를 두지 않았다. C1 이 FAIL 일 때 붙는 「어긋난 픽셀 n건」은 이미 난 FAIL 의 진단 문구이지 따로 판정하는 항목이 아니다 |
+| `verify_shots.js` | 64건 — A 명부·봉인 13건(대상 0건 아님 포함) · B 봉인 대조 25건(이미지 sha · 원본 HTML sha · 촬영 순서 · 거울 · 봉인 시점 웹폰트 적재) · C 재현 대조 16건(재현 시점 웹폰트 적재 · 다시 찍은 바이트 · 문서 크기 · 콘솔) · D 자기시험 9건 · E 판정 건수 1건 | 없음 — 값만 찍는 자리를 두지 않았다. C1 이 FAIL 일 때 붙는 「어긋난 픽셀 n건」은 이미 난 FAIL 의 진단 문구이지 따로 판정하는 항목이 아니다 |
 | `verify_feasibility.js` | 곳수·등급·가로 넘침·표·필터·검색·문항·SVG·복사 버튼 라벨 곳수·클립보드 실물(첫·끝 문항) + 콘솔 | 클립보드 글자 수·줄 수 — 문항 본문이 바뀌면 같이 바뀐다 |
 | `verify_deployed.py` | 화면 문구 표식·쿠콘 구버전 잔재 | `commentNotes`·`rawBan` — D-22 가 지운 것은 **화면 고지**다. 주석은 화면에 안 뜨므로 FAIL 로 세지 않고, 0 이 아니면 찍어 둔다(화면 고지를 주석으로 옮겨 검사를 피하는 것을 눈에 보이게) |
 | `verify_weighting.js` | 23건 — (가) 원장 금액 가중 5건 · (다) 참고값 보존 6건 · (나) 네 갈래(배포 3주소 렌더된 텍스트 · 배포 3주소 원천 텍스트 · 파이프라인 원고 · 산출 문서) 갈라 적지 않은 자리 0건 + 갈래별 「검사 대상 0건 아님」 + 화면×상태 전건 도달 + 페이지 판독기 자기시험 + PDF 본문 판독 | `검산_투자자어드민_20260901.xlsx` 안의 금지값 — 수정 금지 대상(지시)이라 판정해도 고칠 수 없다. 그 파일은 `audit_xlsx_check.py` 소관이라 곳수와 표식 유무만 찍는다. 범위 밖 `.md` 곳수 — `build_archive.py` 의 `DESC` 가 `원고`·`브리핑` 으로 부르지 않는 작업 기록이다 |
-| `verify_batch_symbols.py` | 144건 — 항목 1 항등식 3층 13건(채권 61,760건 · 하루 180일 · 전 구간) · 항목 2 `SMRD-1`·ty 삼각 대조 49건(화면 2주소 × 3기간 · 엑셀 수식 문언·평가값·화면대조 [2번] 10행 · 용어정의서 2종) · 항목 3 `SDD-1` 가중 29건(원장 180일 · 엑셀 채권 1,280행·일별 27행 · 화면 시뮬·일별·월별) · 항목 4 이름 10건 · 항목 5 클램프 23건(원장·엑셀·화면 행태 시험) · 항목 6 자기시험 17건 + 뷰포트 1440×1200 + 콘솔 | 없음 — 값만 찍는 자리를 두지 않았다. 곳수 보고도 전부 「0건 아님」 또는 「판별력 있음」으로 판정한다 |
+| `verify_batch_symbols.py` | 129건 — 항목 1 항등식 3층 13건(채권 61,760건 · 하루 180일 · 전 구간) · 항목 2 `SMRD-1`·ty 삼각 대조 50건(화면 2주소 × 3기간 · 엑셀 수식 문언·평가값·화면대조 [2번] 10행 · 용어정의서 2종) · 항목 3 `SDD-1` 가중 20건(원장 180일 · 엑셀 채권 1,280행·일별 27행 · 화면 시뮬(원본만)·일별·월별 · 시연본 시뮬 없음) · 항목 4 이름 10건 · 항목 5 클램프 16건(원장·엑셀·원본 화면 행태 시험) · 항목 6 자기시험 17건 + 뷰포트 1440×1200 + 콘솔 | 없음 — 값만 찍는 자리를 두지 않았다. 곳수 보고도 전부 「0건 아님」 또는 「판별력 있음」으로 판정한다 |
 | `verify_shortfall.py` | 82건 — 항목 1 방식 판정 10건(`daily_ledger.shortfall` 행태 시험 · 원장 재계산 · `ledger_facts` 바이트 · 가맹점 전건 · 분모 가중 합성 3축) · 항목 2 표본 구간 21건(원장 · `ledger_facts` · 용어정의서 · 화면 원천 6파일 · 엑셀 산식·수식 꼴 · 화면 툴팁 hover/unhover 2주소) · 항목 3 판별력 14건 · 항목 4 회의 인용 8건 · 항목 5 화면 조작 5건(콘솔 · 다운로드 오염 · 뷰포트 1440x1200) · 항목 6 자기시험 22건 | `delta` — 방식 간 값 차이(raw · %p · 원). 원장이 다시 찍히면 값이 따라 움직여 고정 기대값을 댈 수 없다. 대신 「방식끼리 값이 갈리는가(판별 가능한가)」와 「화면값이 방식1 쪽인가」를 항목 3 이 판정한다 |
 | `verify_settlement_cards.py` | 85건 — 코드 문언 정박 22건(캡션·부호·JSDoc 산식·게이트 실재) + 실측 세트 A 산식 18건 + 앵커·TP-68 34건 + 동결 캡처 자기시험 9건 + 파일 존재 | `⑥'` 부호 규약의 옳고 그름 — 순지급액이 실제수수료 기준인지 대상액이 예상수수료 스냅샷인지는 **백엔드 집계 모집단**이라 화면·코드로 확인할 수 없다(산술 방향은 `⑥` 이 판정). 취소 집계 — 요약 모집단 밖 별도 집계라 어느 카드와도 검산 관계가 없다. 건수 7,103/10 — 행 데이터가 없어 되짚을 원천이 없다. `앵커 결론`·`TP-68` — 결론 문자열은 검사 결과에서 기계로 뽑아 찍기만 한다(판정은 그 재료인 E·F 항목이 한다) |
 | `gate_prototype.js` · `gate_glossary.js` | `check()` 전건. `gate_glossary.js` 는 캡처를 개수로 세는 것에 더해 세 자리를 판정한다 — 배포본 webp sha256 ↔ 촬영 봉인 · `verify_shots.js` 종료코드 · 화면이 실제로 `fetch` 한 이미지 바이트 sha256 ↔ 촬영 봉인(배포 URL 모드에서도 같은 판정) | 링크·자산 참조 총 곳수 |
@@ -146,6 +146,91 @@ FAIL 4건은 기준 노후가 아니라 화면·코드 결함이다. **통과시
 판별 축은 표기 2자리가 아니라 `ledger_facts.sRaw` 6자리다. 이 원장에서 선정산일 축 하루별 평균은
 `0.074430` 으로 방식1 `0.074428` 과 3.30원(0.0000013%p)밖에 안 갈려 **표기 `0.07%` 로는 두 방식이 구별되지 않는다.**
 정산예정일 축으로 자르면 `0.101356` 이라 표기도 `0.10%` 로 뒤집힌다.
+
+### 우연히 통과하던 검사 둘을 되살리며 (2026-09-02)
+
+교차검증에서 **검증기 둘이 판별력 없이 통과하고 있었다.** 값이 맞아서가 아니라
+검사가 그 값을 볼 수 없어서였다.
+
+| 자리 | 옛 기준 | 새 기준 | 사유 |
+|---|---|---|---|
+| `verify_sim.js` 상환액 3곳 | `PB === PA + PM` 완전일치 | 정의식 `PB = Σ(순지급액 − max(0, 미지급금−과지급금))` 완전일치 + `0 ≤ PB − (PA+PM) ≤ 채권 수` | 대표 정의서(`ceo_definitions.md:34`)의 상환액은 한 줄이다. `A + M` 으로 쪼개면 `Ai` 반올림과 채권매입수수료 절사 두 곳에서 채권마다 0원 또는 1원이 남는다(원장 이레 17원 · `dm_0901` 규칙 2). 씨앗 8행이 전부 `금액 × 0.0011` = 정수라 우연히 완전일치했다 — 사용자가 금액을 넣는 화면이라 실사용에서 깨진다 |
+| `verify_sim.js` 시나리오 | 7종 | 8종 — `amtOdd`(기간 내 행 순지급액 5,000,001원) 추가 | 나눠떨어지지 않는 입력이 없으면 위 검사가 다시 우연히 통과한다. 모델이 낸 갈림이 0 이면 「판별력 없음」으로 FAIL 하게 해 두었다 |
+| `verify_identity.js` ④ ⑤ 기대값 | 표에서 읽은 **소수 2자리 W** 를 재가중 → `tySlack`(w=3.11에서 ≈0.09)으로 봐 줌 | `ledger_facts.w6ByDate` 6자리에서 낸 기대값과 **표기값 완전일치** | 화면 ⑤ 2.25 ↔ 기대값 2.24 로 어긋나는데 허용치가 삼켜 통과했다. ⑤ 가 2.24 로 되돌아가도 못 잡는다 — 검사가 무용이었다 |
+| `verify_identity.js` 상환액 행 | `REPAY_GAP_DAY` 20원/일 | 원장 세 칸(`tyByDate` 의 상환액·투자실행금·투자수익)에서 낸 **정확한 갈림**과 완전일치 | 갈림의 크기를 원장이 이미 알고 있다. 봐 줄 자리가 아니었다 |
+| `verify_identity.js` §3 배율 | `worst <= 0.003` 상수 | ④·⑤ 표기값 완전일치 + 배율 허용치를 표기 반올림에서 유도(`(0.005 + k×0.005) ÷ ④`) + 배율이 기간마다 다른지 | 배율은 2자리 표기 둘의 몫이라 잔차가 크다(0.5639 ↔ 정확 0.5625). 그 칸으로는 한 눈금을 가릴 수 없으므로 판정을 갈랐다 |
+| `gate_prototype.js` ⑤ | 툴팁 되짚기 `|⑤ − ④×PA/(PA+PEC)| <= 0.02` | 되짚기 허용치를 표기 반올림에서 유도(`0.005×(1+k)`) + **원장 `weekTy`·`weekTyAsset`·`weekExec`·`weekPsc` 와 완전일치** 3건 | 되짚기의 재료인 ④ 가 표기 2자리라 되짚은 값 자체가 정확하지 않다(want 2.244 ↔ 화면 2.25). 0.02 가 그 차를 삼켜 ⑤ 가 2.24 여도 통과했다. 절대값을 손으로 박는 대신 원장에서 읽는다 |
+| `verify_crossscreen.py` 월 롤업 | `jsrows()` 가 원장 6자리 W 를 `%.2f` 로 잘라 넘겨 **검증기가 스스로 2자리 가중** | `jsraw()` 로 6자리를 그대로 넘긴다(`month_rollup(digits=6)`) | `dm_0901/rounding_rule_0901.md` 규칙 1 이 폐기한 「2자리 값을 다시 씀」 경로를 검증기가 재현하고 있었다. 2026-06 을 4.39 로 내고 화면 4.38 을 틀렸다고 했다 — 화면 결함이 아니라 검증기 노후다 |
+| `verify_crossscreen.py` 월별 Ty | 낱장 ↔ 엑셀 한 줄. 어느 쪽이 틀렸는지 안 적힘 | 「경로 지목」 3건 추가 — 낱장 = 원장 6자리 / 엑셀 = 원장 6자리 / 엑셀이 낸 값 = 2자리 가중 재현값 | 같은 값을 세 곳이 다르게 낼 때 `got/want` 만으로는 정본을 못 가린다. 어긋난 칸이 **정확히 폐기 경로가 낸 값인지**까지 못 박아, 「그냥 다르다」로 끝나지 않게 했다 |
+
+**남는 FAIL 2건은 `build_xlsx.py` 소관이다.** `bucket()` 이 `D(str(r['w']))` 로 2자리 W 를 다시
+가중해 `월별투자수익_2026-03-01_2026-08-27.xlsx` 의 2026-06 Ty 를 `4.39` 로 낸다. 정본은 `4.38`
+(원장 `daily_ledger.month_rollup` · 낱장 `invest-profit--monthly.html`). 이 조의 수정 대상이 아니라
+지목만 한다 — 기대값을 엑셀 쪽으로 옮기지 않았다.
+
+**⑥ 이 `ty5()` 를 거치는 것이 맞는가는 판정하지 않는다.** `TY6_EXPR` 이 `ty5(…, TY6_PSC)` 를 거치고
+`TY6_PSC` 가 0 이라 지금은 ⑥ = ④ 다. 그 0 이 바뀌면 월별 Ty 가 통째로 움직인다. 옳고 그름은
+대표 확인 문항 Q1(⑤ 산식 재전달)·Q2(③ 이 현황의 어느 칸)에 걸린 미확정이라, `verify_crossscreen.py`
+가 자리와 상태만 찍는다(`PENDING_NOTE`).
+
+**`verify_shots.js` FAIL 2건은 캡처 조 소관이다.** `invest-profit.html` 이 촬영 봉인 뒤에 바뀌었다
+(⑤ 2.24 → 2.25 · `PSMR`→`PMR` 등 기호 개명). 낱장을 다시 찍는 `sync_profit_static.py` 가 전종 실행에
+들어 있어 그 변경이 디스크에 드러났다 — 봉인이 붙들고 있던 것이 옛 ⑤ 2.24 였다. 고칠 자리는 봉인이
+아니라 캡처다(위 「캡처 동결을 폐지한다」). `capture_shots.js` 재실행 + `build_glossary.py` 재생성이
+필요하고, `gate_glossary.js` FAIL 1건은 그 종료코드를 물려받은 것이다.
+
+**판별력 시험** — 고친 검사마다 일부러 틀린 값을 심어 잡히는지 확인했다.
+
+| 심은 것 | 어디 | 결과 |
+|---|---|---|
+| `app.html simBond` 의 `B` 를 `A + M` 으로 (옛 규칙 복귀) | 시뮬 | `verify_sim` FAIL 3 — `amtOdd` 자리에서만 걸린다. 씨앗 8행은 두 규칙이 같은 값이라 옛 검사가 왜 무용이었는지 그대로 보인다 |
+| `B` 를 `순지급액 − 차감 + 100원` | 시뮬 | `verify_sim` FAIL 12 |
+| `app.html tyAssetOf` 가 표기 2자리 ④ 를 쓰게 (⑤ 2.25 → 2.24) | 수익 | `verify_identity` FAIL 2 (`week/daily` · 배율 절) |
+| `invest-profit--monthly.html` 2026-06 Ty 4.38 → 4.39 | 낱장 | `verify_crossscreen` FAIL 3. 낱장 ↔ 엑셀 대조는 **통과**한다(둘 다 4.39) — 경로 지목이 없으면 못 잡는 자리다 |
+| `app.html` `DAILY` 2026-06-15 의 `w` 를 3.500000 으로 | 원장 | `verify_crossscreen` FAIL 5 |
+
+### ⑤ 산식 교체 · 툴팁 용어명 · 시연본 축소로 기준을 옮긴 자리 (2026-09-04)
+
+화면 쪽 변경 네 가지가 한 라운드에 들어왔다. 근거는 각 조의 보고(`step7_ty5_report.md` · `step6_tooltip_report.md` ·
+`step7_sim_hide_report.md` · `step7_login_report.md`)와 코드다.
+
+| 변경 | 근거 | 검증기에 닿는 것 |
+|---|---|---|
+| ⑤ `PY_t = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC )` | `daily_ledger.TY5_EXPR = 'ty4 * ad / tot'` · `ty_asset(ty4, ad, psc)` · facts `weekAD`·`fullAD`·`monthAD`·`adByDate` | ⑤ 둘째 인자가 PSA(투자실행금)에서 AD(Σ Ai×Di)로. 기본 기간 ⑤ 2.32 → 3.30 · 비중 0.562460 → 0.799031. 배지 「미확정」 그대로, ⑤ 툴팁 행만 「대표 확인 대기」(`PEND5_ROW`) · ③⑥ 은 「대표 재전달 대기」 |
+| 툴팁 기호 옆 정본 용어명 | `build_app.py` `pfRender`·`simTyTip` · `sync_profit_static.py` `TIP4`·`TIP5` | ④ 툴팁 행 `PMR`·`PM`·`PA`·`PD`, ⑤ 툴팁 행 `PY_a`·`Σ( A_i × D_i )`·`PEC`·`EC`. `PA` 행이 ⑤ 에서 ④ 로 옮겨 갔다 |
+| 시연본에서 투자 시뮬레이션·엑셀 서식 미리보기 제거 | `scripts/sync_prototype.py drop_sim` · `gate_prototype.js PROTO_DROPPED` | 시연본 화면 = 정본 − `['index','invest-sim','xls-assets-status','xls-assets-merchant','xls-profit-status','xls-profit-daily']` · 사이드바 7 |
+| 로그인 화면 실물대로 | `payhug-admin-web/app/login/page.tsx` | 검증기에 로그인 문구 기대값이 없다 — 옮길 자리 0 |
+
+| 자리 | 옛 기준 | 새 기준 | 사유 |
+|---|---|---|---|
+| `verify_app.js` · `verify_sim.js` `[문자열] ⑤ 정의 1곳` | `ty5body = /ty4 \* psa \/ tot/` 1건 | `/ty4 \* ad \/ tot/` 1건 · `hard5` 에 옛 꼴 `psa` 4종과 새 인라인 꼴 `ad + psc) ? ty4` 3종을 다 둔다 | 옛 식이 되살아나도, 새 식을 인라인으로 박아도 잡힌다 |
+| `verify_identity.js` `expectRows`·`tyAssetWant`·§3 배율 | `ty5 = r6(ty4 × ex ÷ (ex + psc))` · 배율 `PSA/(PSA+PSC)` | `ad = Σ adByDate[d]` · `ty5 = r6(ty4 × ad ÷ (ad + psc))` · 배율 `AD/(AD+PEC)` | 기대값 원천은 그대로 원장(`adByDate`). 완전일치 판정은 손대지 않았다 |
+| `verify_proto.js` 9) 툴팁 | `'PA' + psa + '원'` · `'PEC' + psc + '원'` | `'PA기간 투자실행금 · ' + psa + '원'`(④ 툴팁) · `'PEC기간 순현금 · ' + psc + '원'` · `'Σ( Ai × Di )' + weekAD + '원'`(⑤ 툴팁) 3건 | 기호 옆 용어명 + ⑤ 새 행. `<sub>` 는 textContent 에서 글자로 붙는다 |
+| `verify_docnums.py` | `ratio = pa ÷ (pa + pec)` · 못 `PA+PEC`·`PA비중` | `ratio = ad ÷ (ad + pec)` · 못 `AD+PEC`·`AD비중` · 금액 못에 `weekAD`·`fullAD` | 옛 비중 0.562460 이 문서에 남아 있으면 이제 위반이다 |
+| `verify_steps_all.py` `ledger_pairs` | `ty_asset(o4, pa, weekPsc)` | `ty_asset(o4, weekAD, weekPsc)` | 산식 인자 |
+| `audit_xlsx_check.py` facts 대조 · ⑤ 칸 | 「PA·PEC 를 함께 문 수식 셀 하나뿐」(`기간집계!B5`+`B15`) | 「Σ(Ai x Di)·PEC 를 함께 문 수식 셀 하나뿐」(`B9`+`B15`) + **옛 식 `B5`+`B15` 셀 0건** + facts 대조에 `주간 Σ(Ai x Di)`=`weekAD` · `전 구간 Σ(Ai x Di)`=`fullAD` | 행 위치는 라벨(`rowmap`)로 잡아 화면대조 행 밀림과 무관 |
+| `verify_final_terms.py` I26 | 툴팁에 `PA`·`PEC` 값 | 툴팁에 `Σ( A_i × D_i )`(`SAD`)·`PEC` 값 | 137/137 |
+| `sim_facts.py` · `verify_sim.js` [10]·낱장 | `pendRow` 하나로 ⑤·⑥ 판정 | `pend5Row`(⑤ 「대표 확인 대기」) 와 `pendRow`(⑥ 「대표 재전달 대기」)를 갈라 판정 + ⑤ 에 옛 문면 없음 | 두 문면이 갈라졌으니 하나로 보면 어느 쪽이 틀려도 못 잡는다 |
+| `verify_proto.js` 상태 도달·죽은 컨트롤·레이아웃·탈출·오버플로 목록 | `invest-sim` 2상태 · `xls-*` 4화면 포함 | 제외 + 9)-(6) 「시연본에 `xls-*`·`invest-sim` 화면 없음」 판정 추가 | 시연본에 없는 화면을 기대하면 영원히 FAIL. 되살아나면 (6) 이 잡는다 |
+| `verify_proto.js` 9)-(4) 엑셀 미리보기 대조 | 시연본에서 판정 | **`verify_app.js` 9) 로 이관** — 원본 `app.html` 의 `xls-*` 화면에서 같은 검사. (1)~(3)·(5) 는 양쪽 다 | 검사를 지우지 않고 자리를 옮겼다 |
+| `verify_sync_chain.js` | `PROTO_DROPPED = ['index']` · 시연 사이드바 = 정본 8 | `PROTO_DROPPED` 6건 · 시연 사이드바 = 정본 `navList` − 제거 메뉴(목록까지 일치) · 통합 배포본은 8 그대로 | 곳수만 맞고 다른 메뉴가 들어와도 잡힌다 |
+| `verify_batch_symbols.py` 드라이버·3절·5-e | app·proto 양쪽에서 시뮬 3회 실행 | app 만 실행 · proto 는 「시뮬 화면·메뉴·전역 함수 없음」 1건 판정 | 시연본에서 `waitFor` 가 시간 초과로 죽던 자리 |
+| `capture_shots.js` · `verify_shots.js` | `fonts.ready` + 800ms 뒤 촬영 | Noto Sans KR `FontFace.status === 'loaded'` 를 최대 12초 기다리고 봉인에 `fontLoaded` 기록 · 못 받으면 그 화면 실패 · `verify_shots` B5(봉인 시점 적재)·C0(재현 시점 적재)·D4b 자기시험 | 재촬영 1회차가 Google Fonts CSS 가 닿기 전에 찍혀 대체 글꼴 폭으로 문서가 37px 길어졌다(1316 → 1353). `fonts.ready` 는 @font-face 가 0건이면 즉시 풀린다 |
+
+**캡처 5장 재촬영 (2026-09-04)** — `capture_shots.js` 로 다시 찍고 봉인을 갱신했다(거울 `payhug-investor-glossary/assets/shots` 도 같은 바이트).
+`verify_shots.js` 64/64. 그러나 **`build_glossary.py` 는 돌지 못했다** — `glossary_manuscript.md` 의 `[[shot: …]]` 앵커 13건이
+옛 라벨(`th:W금융일수` · `th:S입금부족율#0` · `th:TY수익율` · `div:Ty수익율#0`)이라 `!! 앵커 못 찾음` 으로 멎는다.
+그래서 `glossary.html` 의 `data-mark` 는 옛 좌표 그대로이고 `verify_shotmarks.py` 가 45건 FAIL 로 그것을 잡는다.
+고칠 자리는 검증기가 아니라 원고다 — 원고 앵커를 현행 라벨(`가중평균 금융일수` · `입금부족률` · `연환산수익률`)로 옮기고
+`build_glossary.py` 를 돌리면 닫힌다. 기대값을 옛 그림 쪽으로 되돌리지 않았다.
+
+**옮기지 않은 자리** — 아래는 이 라운드 변경이 아니라 그 전부터 어긋난 것이라 근거 없이 옮기지 않는다.
+
+| 자리 | 상태 |
+|---|---|
+| `verify_app.js:543-544, 577` · `verify_toast.js:114, 116` · `verify_period.js` · `verify_identity.js` 카드↔표 | 기대 기준일 `08-27` ↔ 화면 종료일 `08-26`(`BASE_DATE`). 어느 쪽이 정답인지 결정(D-번호)이 없다 |
+| `sim_facts.py:52` 단언 | `SIM_DEFAULT.to = @@ASOF@@`(08-27) ≠ `build_sim_static.TO`(08-26). 통합본 시뮬과 낱장 시뮬의 기간이 갈린다 — 산출물 쪽 결함. `verify_sim.js` 는 이 단언 때문에 못 돈다 |
+| `verify_glossary.js:93` · `verify_glossary5.js:100,169` · `verify_ceo_quotes.py:247-251` · `verify_crossscreen.py` 용어 해설 3건 · `verify_steps_all.py` D절 | 용어 해설·steps-all 문서가 옛 체계. 문서를 새 체계로 재생성할 때 함께 옮긴다 |
 
 ### 로스터 9건 재생성으로 기준을 옮긴 자리 (2026-08-30)
 

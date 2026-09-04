@@ -45,6 +45,8 @@ import build_sim_static as B
 # 같은 값인지 여기서 확인한다 — 두 곳이 갈리면 기대값이 어느 쪽 기간인지 알 수 없다.
 _SRC = io.open(os.path.join(HERE, 'build_app.py'), encoding='utf-8').read()
 _DEF = re.search(r'var SIM_DEFAULT = \{(.*?)\};', _SRC, re.S).group(1)
+# 통합본은 날짜를 @@WKFROM@@ · @@ASOF@@ 토큰으로 들고 build_app.py 가 daily_ledger 로 메운다 — 같은 값으로 메운다.
+_DEF = _DEF.replace('@@WKFROM@@', B.LG.WEEK[0]).replace('@@ASOF@@', B.LG.ASOF_S)
 _FROM = re.search(r"from:'([\d-]+)'", _DEF).group(1)
 _TO   = re.search(r"to:'([\d-]+)'", _DEF).group(1)
 assert (_FROM, _TO) == (B.FROM, B.TO), (_FROM, _TO, B.FROM, B.TO)
@@ -69,6 +71,11 @@ SCENARIOS = {
     'to0831':    {'var': 'to',     'value': '2026-08-31'},
     'from0825':  {'var': 'from',   'value': '2026-08-25'},
     'amt800m':   {'row': 0, 'field': 'amt', 'value': '800000000'},
+    # 판별력 시험용 — 순지급액 x 할인율이 정수로 떨어지지 않는 금액을 기간 내 행에 넣는다.
+    # 씨앗 8행은 전부 정수로 떨어져 상환액 = 투자실행금 + 투자수익 이 우연히 완전일치했고,
+    # verify_sim.js 가 그 우연을 완전일치로 요구하며 통과하고 있었다(2026-09-02 교차검증).
+    # 5,000,001 x 0.11% = 5,500.0011 이라 A·M 두 floor 가 각자 소수부를 버려 1원이 남는다.
+    'amtOdd':    {'row': 4, 'field': 'amt', 'value': '5000001'},
 }
 # 화면 입력 이름 → build_sim_static 전역 이름·형변환
 _VARMAP = {'r': ('R_RATE', float), 'cash': ('CASH', int), 'unpaid': ('UNPAID', float),
@@ -122,7 +129,7 @@ def snap(R, cash):
         'cardExec':  f(R['EXEC']) + '원',
         'cardCash':  f(cash) + '원',
         'cardTy':    fx(R['TY'], 2) + '%',
-        'cardTySub': 'W금융일수 ' + fx(R['W'], 2) + '일 기준',
+        'cardTySub': '가중평균 금융일수 ' + fx(R['W'], 2) + '일 기준',
         # ── 수익 현황 · 일별 합계 ──
         'psa':       f(R['PSA']),
         'psm':       f(R['PSM']),
@@ -186,8 +193,13 @@ _TAG = re.compile(r'<[^>]+>')
 _LIT = re.compile(r"'([^']*)'")
 _PEND_BADGE_HTML = re.search(r"var PEND_BADGE = '(.*?)';", _SRC).group(1)
 _PEND_ROW_HTML = re.search(r"var PEND_ROW   = '(.*?)';", _SRC).group(1)
+# ⑤ 전용 행 — ⑤ 는 우리 확정안이라 「대표 확인 대기」, ③·⑥ 은 「대표 재전달 대기」 그대로
+# (step7 ⑤ 산식 교체 2026-09-04 · build_app.py PEND5_ROW). 두 문면이 갈라졌으니 따로 뽑는다.
+_PEND5_ROW_HTML = re.search(r"var PEND5_ROW  = '(.*?)';", _SRC).group(1)
 PEND_BADGE_TEXT = _TAG.sub('', _PEND_BADGE_HTML).strip()
 PEND_ROW_TEXT = _TAG.sub('', _PEND_ROW_HTML).strip()
+PEND5_ROW_TEXT = _TAG.sub('', _PEND5_ROW_HTML).strip()
+assert PEND5_ROW_TEXT != PEND_ROW_TEXT, (PEND5_ROW_TEXT, PEND_ROW_TEXT)
 
 # ⑥ 열머리 — tyTh() 안의 문자열 조각을 이어 붙여 화면에 뜰 글자를 만든다.
 _TYTH = re.search(r'function tyTh\(\)\{(.*?)\n\}', _SRC, re.S).group(1)
@@ -195,7 +207,7 @@ _TYTH = _TYTH.replace('PEND_ROW', "'" + _PEND_ROW_HTML + "'")
 _TYTH = _TYTH.replace('PEND_BADGE', "'" + _PEND_BADGE_HTML + "'")
 TY_TH_HTML = ''.join(_LIT.findall(_TYTH))
 TY_TH_TEXT = _TAG.sub('', TY_TH_HTML).strip()
-assert TY_TH_TEXT.startswith('Ty수익율') and PEND_ROW_TEXT in TY_TH_TEXT, TY_TH_TEXT
+assert TY_TH_TEXT.startswith('연환산수익률') and PEND_ROW_TEXT in TY_TH_TEXT, TY_TH_TEXT
 
 # ── 투자자산 규모 · 유휴자금 비율 — 통합본 simApplyScale 과 같은 규칙 ──
 def _split(total, w):
@@ -289,6 +301,7 @@ def facts():
         # 대표 재전달 대기 표기
         'pendBadge': PEND_BADGE_TEXT,
         'pendRow': PEND_ROW_TEXT,
+        'pend5Row': PEND5_ROW_TEXT,
         'tyThText': TY_TH_TEXT,
         # 투자자산 규모 · 유휴자금 비율
         'seedAsset': str(base['EXEC'] + B.CASH),
@@ -331,7 +344,7 @@ if __name__ == '__main__':
           % (b['total'], b['psa'], b['psm'], b['psbText'], b['psd'], b['ty4'], b['ty5']))
     print('           채권 구분 %s' % ' '.join(b['bondKinds']))
     print('           1행 %s' % ' / '.join(b['bond0']))
-    for k in ('rate022', 'cash200m', 'unpaid005', 'unpaid020', 'to0831', 'from0825', 'amt800m'):
+    for k in ('rate022', 'cash200m', 'unpaid005', 'unpaid020', 'to0831', 'from0825', 'amt800m', 'amtOdd'):
         s = F[k]
         print('  %-10s 실행 %15s  S %6s  Ty %7s  PSM %12s  구분 %s'
               % (k, s['exec'], s['s'], s['ty'], s['psm'], ''.join(x[0] for x in s['bondKinds'])))

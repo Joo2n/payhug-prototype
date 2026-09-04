@@ -43,6 +43,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
    Ty = 0.11% x 365 / W 이므로 W 를 0.05 만큼 잘라 낸 오차는 만기가 짧을수록 커진다
    (W 11일대 0.02%p · W 3일대 0.22%p). 상수 하나로는 못 잡아 W 에서 계산한다. */
 const tySlack = w => w ? 0.11 * 365 * 0.05 / (w * (w - 0.05)) + 0.006 : 0.03;
+/* 비율·일수는 소수 6자리 값으로 계산하고 화면에는 2자리만 보인다(dm_0901 규칙 1 · 확정).
+   화면 두 칸으로 되짚으면 W 를 0.005 만큼 잘라 낸 만큼 Ty 가 어긋난다 — 그만큼만 봐 준다. */
+const ty2Slack = w => w ? 0.11 * 365 * 0.005 / (w * (w - 0.005)) + 0.005 : 0.04;
 
 async function main(){
   await new Promise(r => server.listen(PORT, r));
@@ -111,6 +114,67 @@ async function main(){
     var LEDGER_SPAN = ${JSON.stringify(FACTS.ledgerSpan)};
     /* 날짜 -> [W, Ty, 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감] — 원장 사실값 */
     var TYBD = ${JSON.stringify(FACTS.tyByDate)};
+    /* 날짜 -> 6자리 W금융일수. 화면에는 2자리만 보인다(dm_0901 규칙 1).
+       [기준 교체 2026-09-02] 예전엔 표에 찍힌 2자리 W 를 다시 가중해 ④·⑤ 기대값을 만들고,
+       그렇게 생긴 갈림을 tySlack 이 삼켰다 — ⑤ 가 2.25 인데 기대값이 2.24 여도 통과했다.
+       기대값은 원장 6자리에서 낸다. 원장이 정본이다(verifiers.md 기대값 원천 표). */
+    var W6BD = ${JSON.stringify(FACTS.w6ByDate)};
+    /* 날짜 -> Σ( A_i × D_i ) (원·일). ⑤ 의 새 분모 재료 — daily_ledger.facts adByDate.
+       [기준 교체 2026-09-04] ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) 확정안(step7 ⑤ 산식 교체). */
+    var ADBD = ${JSON.stringify(FACTS.adByDate)};
+    var LEDGER_DATES = Object.keys(TYBD).sort();
+    function r6(x){ return Math.round(x * 1e6) / 1e6; }
+    /* 표 한 행이 실제로 덮는 날짜 구간 — 라벨의 구간을 조회 기간·원장 구간으로 자른 것 */
+    function clipSpan(d){
+      var sp = bucketSpan(d), pr = periodRange(), a = sp[0], b = sp[1];
+      if(pr){ if(a < pr[0]) a = pr[0]; if(b > pr[1]) b = pr[1]; }
+      if(a < LEDGER_SPAN[0]) a = LEDGER_SPAN[0];
+      if(b > LEDGER_SPAN[1]) b = LEDGER_SPAN[1];
+      return [a, b];
+    }
+    /* 원장에서 한 구간을 집계한다 — 대표 정의서 PSA·PSM·PSD 그대로.
+       W 는 투자실행금(Ai) 가중평균이고 6자리에서 끊는다(dm_0901 규칙 1 · 화면 r6 와 같은 규칙). */
+    function ledgerAgg(a, b){
+      var ex = 0, pf = 0, rp = 0, fee = 0, ded = 0, wx = 0, ad = 0, nd = 0, i, d, r;
+      for(i = 0; i < LEDGER_DATES.length; i++){
+        d = LEDGER_DATES[i];
+        if(d < a || d > b) continue;
+        r = TYBD[d];
+        ex += r[2]; pf += r[3]; rp += r[4]; fee += r[5]; ded += r[6];
+        wx += Number(W6BD[d]) * r[2]; ad += Number(ADBD[d]); nd += 1;
+      }
+      return {exec:ex, profit:pf, repay:rp, fee:fee, ded:ded, days:nd, ad:ad, w:ex ? r6(wx / ex) : 0};
+    }
+    /* 화면 표의 행 라벨을 그대로 받아 그 표가 말해야 할 값을 원장에서 다시 만든다.
+       버킷 W 를 6자리로 끊고 그 값을 다시 가중하는 두 단계는 화면 rollupBy·tyOfRows 와 같은 순서다 —
+       단계를 한 번으로 줄이면 6번째 자리에서 갈려 표기 한 눈금이 뒤집힐 수 있다. */
+    function expectRows(labels){
+      var bs = labels.map(function(d){ var sp = clipSpan(d); return ledgerAgg(sp[0], sp[1]); });
+      var ex = 0, pf = 0, rp = 0, wx = 0, ad = 0, nd = 0;
+      bs.forEach(function(g){ ex += g.exec; pf += g.profit; rp += g.repay; wx += g.w * g.exec; ad += g.ad; nd += g.days; });
+      var w = ex ? r6(wx / ex) : 0;
+      /* MR(= 투자수익 ÷ 투자실행금 x 100)도 비율이라 6자리에서 끊고 그 값을 다음 계산에 넣는다
+         (dm_0901 규칙 1 · 2026-09-02 기획 지시로 MR·PMR 예외 철회 · daily_ledger.facts 와 같은 순서).
+         지금 원장 180일·기간 8종 어디서도 표기 2자리를 바꾸지 않지만, 생성기와 같은 단계를 밟아
+         나중에 경계에 걸릴 때 검증기가 뒤늦게 갈리지 않게 한다. */
+      var ty4 = (ex && w) ? r6(r6(pf / ex * 100) * 365 / w) : 0;
+      var psc = CASH * nd;
+      /* ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) = ④ × AD ÷ ( AD + PEC ) — 확정안(step7 ⑤ 산식 교체 ·
+         daily_ledger.TY5_EXPR). [기준 교체 2026-09-04] 옛 식 ④ × PSA ÷ (PSA + PSC) 의 PSA 자리가
+         AD(= 기간 Σ Ai×Di · adByDate 합)로 바뀌었다. 화면 tyAssetOf 도 r6 를 거쳐 찍을 때만
+         2자리로 자르므로 여기서도 r6 뒤 r2 로 같은 순서를 밟는다. */
+      var ty5 = (ad + psc) ? r6(ty4 * ad / (ad + psc)) : 0;
+      return {buckets:bs, exec:ex, profit:pf, repay:rp, ecDays:nd, psc:psc, ad:ad,
+              w:w, w2:r2(w), ty4:ty4, ty42:r2(ty4), ty5:ty5, ty52:r2(ty5),
+              /* 행마다 ⑥ = ty5(④행, ③행, TY6_PSC). TY6_PSC 가 0 인 동안 ④ 와 같은 값이다
+                 (daily_ledger.TY6_EXPR). 그 0 이 바뀌면 이 줄도 함께 고칠 자리다. */
+              rowTy:bs.map(function(g){
+                return (g.exec && g.w) ? r2(r6(r6(g.profit / g.exec * 100) * 365 / g.w)) : 0; }),
+              rowW:bs.map(function(g){ return r2(g.w); }),
+              /* 상환액 − (투자실행금 + 투자수익) 의 정확한 갈림. 원장 세 칸에서 그대로 나온다 —
+                 봐 주는 폭이 아니라 기대값이다(예전 REPAY_GAP_DAY 20원/일 자리). */
+              rowGap:bs.map(function(g){ return g.repay - (g.exec + g.profit); })};
+    }
     function ecDaysOf(rs){
       var pr = periodRange(), n = 0;
       rs.forEach(function(x){
@@ -128,9 +192,17 @@ async function main(){
        잔차는 0.11% x 365 x 0.05 / w^2 이라 만기가 짧을수록 커진다 — 상수가 아니라 w 의 함수다. */
     function tyFrom(exec, profit, w){ return (exec && w) ? (profit / exec * 100) * 365 / w : 0; }
     function TY_SLACK(w){ return w ? 0.11 * 365 * 0.05 / (w * (w - 0.05)) + 0.006 : 0.03; }
-    function tyAssetWant(ty4, psa, rs){
-      var psc = CASH * ecDaysOf(rs);
-      return (psa + psc) ? r2(ty4 * psa / (psa + psc)) : 0;
+    /* 표기 W(소수 2자리)로 되짚은 Ty 와 6자리 W 로 낸 Ty 의 갈림 (dm_0901 규칙 1) */
+    function TY2_SLACK(w){ return w ? 0.11 * 365 * 0.005 / (w * (w - 0.005)) + 0.005 : 0.04; }
+    /* 상환액 = 순지급액 − 부족액 한 줄로 낸다(dm_0901 규칙 2 · 확정).
+       투자실행금 + 투자 수익으로 쪼개면 Ai 반올림과 채권매입수수료 절사 두 곳에서
+       원 단위로 끊겨 하루치가 어긋난다. 하루당 봐 주는 폭이다. */
+    var REPAY_GAP_DAY = 20;
+    /* ⑤ 기대값 — 행들의 Σ( A_i × D_i ) 합을 분모 재료로 쓴다 (2026-09-04 · 위 expectRows 와 같은 식) */
+    function adOfLabels(rs){ var a = 0; rs.forEach(function(x){ var sp = clipSpan(x.d); a += ledgerAgg(sp[0], sp[1]).ad; }); return a; }
+    function tyAssetWant(ty4, rs){
+      var psc = CASH * ecDaysOf(rs), ad = adOfLabels(rs);
+      return (ad + psc) ? r2(ty4 * ad / (ad + psc)) : 0;
     }
     function num(t){ return Number(String(t).replace(/[^0-9.\\-]/g, '')); }
     function cells(tr){ return Array.prototype.map.call(tr.children, function(c){ return c.textContent.trim(); }); }
@@ -173,7 +245,7 @@ async function main(){
       if(!m.length) return {err:'ia-merch 행 0'};
       m.forEach(function(x){
         amt += x.amount; rat = Math.round((rat + x.ratio) * 10) / 10;
-        if(x.ty !== tyOf(x.w)) tyBad.push(x.name + ' ' + x.ty + '/' + tyOf(x.w));
+        if(Math.abs(x.ty - tyOf(x.w)) > TY2_SLACK(x.w)) tyBad.push(x.name + ' ' + x.ty + '/' + tyOf(x.w));
       });
       if(st.length < 3) return {err:'ia-status 행 ' + st.length, raw:st, rows:m.length};
       var stExec = num(st[0][1]), stCash = num(st[1][1]), stTot = num(st[2][1]);
@@ -240,8 +312,11 @@ async function main(){
       var f = document.querySelector('[data-mount=pf-tbl] tfoot tr');
       var ft = f ? cells(f) : null;
       var st = document.querySelectorAll('[data-mount=pf-stat] .summary-value');
-      var bad = [], ex = 0, pr = 0, rp = 0, wn = 0, tn = 0;
-      rs.forEach(function(x){
+      /* 기대값은 화면에서 되짚지 않고 원장에서 낸다 — 행 라벨만 화면에서 받는다.
+         [기준 교체 2026-09-02] 표에 찍힌 2자리 W 를 다시 가중해 기대값을 만들던 자리다. */
+      var W = expectRows(rs.map(function(x){ return x.d; }));
+      var bad = [], ex = 0, pr = 0, rp = 0;
+      rs.forEach(function(x, i){
         var isDay = String(x.d).length === 10;
         /* [기준 교체 2026-08-30] 예전엔 수익을 투자실행금에서 되짚어 봤다
            (수익 = floor(그날 Σ순지급액 x 할인율), 순지급액 = 투자실행금 / (1 - 할인율)).
@@ -255,32 +330,38 @@ async function main(){
             bad.push(x.d + ' 수익');
           if(x.profit <= 0 || x.profit - x.exec * RATE / (1 - RATE) > 1.5) bad.push(x.d + ' 수익 상한');
         }
-        if(x.repay !== x.exec + x.profit) bad.push(x.d + ' 상환액');
-        if(Math.abs(x.ty - tyFrom(x.exec, x.profit, x.w)) > (isDay ? 0.005 : TY_SLACK(x.w))) bad.push(x.d + ' Ty');
-        ex += x.exec; pr += x.profit; rp += x.repay; wn += x.w * x.exec; tn += x.ty * x.exec;
+        /* 버킷 행도 원장 집계와 완전일치라야 한다 — 금액 세 칸은 정수 합이라 봐 줄 자리가 없다 */
+        var g = W.buckets[i];
+        if(g.exec !== x.exec || g.profit !== x.profit || g.repay !== x.repay) bad.push(x.d + ' 행 금액');
+        /* 상환액 − (투자실행금 + 투자수익) 의 갈림은 원장이 정확히 알려 준다.
+           [기준 교체 2026-09-02] 예전엔 REPAY_GAP_DAY 20원/일 로 봐 줬다 — 봐 줄 자리가 아니다. */
+        if(x.repay - (x.exec + x.profit) !== W.rowGap[i]) bad.push(x.d + ' 상환액 갈림');
+        /* 표기값끼리 맞댄다 — 허용치 없음 */
+        if(x.w !== W.rowW[i]) bad.push(x.d + ' W ' + x.w + '/' + W.rowW[i]);
+        if(x.ty !== W.rowTy[i]) bad.push(x.d + ' Ty ' + x.ty + '/' + W.rowTy[i]);
+        ex += x.exec; pr += x.profit; rp += x.repay;
       });
       return {rows:rs.length, exec:ex, profit:pr, repay:rp, bad:bad,
               footRepay:ft ? num(ft[1]) : null, footExec:ft ? num(ft[2]) : null, footProfit:ft ? num(ft[3]) : null,
               footW:ft ? num(ft[4]) : null, footTy:ft ? num(ft[5]) : null,
-              wantW:ex ? r1(wn / ex) : 0, wantTy:ex ? r2(tyFrom(ex, pr, wn / ex)) : 0,
+              wantExec:W.exec, wantProfit:W.profit, wantRepay:W.repay,
+              wantW:W.w2, wantTy:W.ty42, wantTyAsset:W.ty52,
               cardExec:num(st[0].textContent), cardProfit:num(st[1].textContent),
               cardTyExec:num(st[2].textContent), cardTyAsset:num(st[3].textContent),
-              ecDays:ecDaysOf(rs), psc:CASH * ecDaysOf(rs),
-              wantTyAsset:ex ? tyAssetWant(tyFrom(ex, pr, wn / ex), ex, rs) : 0};
+              ecDays:W.ecDays, psc:W.psc, wRaw:W.w, ty4Raw:W.ty4, ty5Raw:W.ty5};
     `);
+    /* 전부 표기값 대조라 허용치가 없다. 금액 세 칸은 정수 합이고 W·④·⑤ 는 원장 6자리에서
+       같은 순서로 반올림한 값이라, 한 눈금이라도 밀리면 그대로 FAIL 이다. */
     push('투자수익 항등식 · ' + preset + '/' + gran,
       r.bad.length === 0 && r.footExec === r.exec && r.footProfit === r.profit && r.footRepay === r.repay &&
-      /* 합계 W금융일수는 반올림 전 가중평균에서 나오고, 여기서 되짚는 기대값은 소수 1자리로
-         잘린 행 값에서 나온다. 그래서 표기 한 칸(0.1일)까지는 벌어질 수 있다 —
-         가중평균이 0.05 경계 근처에 앉으면 실제로 한 칸 갈린다. */
-      Math.abs(r.footW - r.wantW) <= 0.1 + 1e-9 && Math.abs(r.footTy - r.wantTy) <= tySlack(r.footW) &&
+      r.exec === r.wantExec && r.profit === r.wantProfit && r.repay === r.wantRepay &&
+      r.footW === r.wantW && r.footTy === r.wantTy &&
       r.cardExec === r.exec && r.cardProfit === r.profit &&
-      /* ⑤ 는 ④ 에 PSA/(PSA+PSC) 를 곱한 값이라 ④ 에 남은 표기 잔차를 그대로 물려받는다.
-         배율이 1 이하이므로 ④ 에 쓰는 허용치를 그대로 쓰면 충분하다. */
-      r.cardTyExec === r.footTy && Math.abs(r.cardTyAsset - r.wantTyAsset) <= tySlack(r.footW), r);
+      r.cardTyExec === r.footTy && r.cardTyAsset === r.wantTyAsset, r);
   }
 
-  /* ── 3) Ty(투자자산 대비) 배율 = PSA/(PSA+PSC) ── */
+  /* ── 3) Ty(투자자산 대비) 배율 = AD/(AD+PEC) · AD = Σ( A_i × D_i ) ──
+     [기준 교체 2026-09-04] 옛 배율 PSA/(PSA+PSC) → AD/(AD+PEC) (step7 ⑤ 산식 교체 · 기본 기간 0.799031) */
   {
     const vals = [];
     for(const [preset, gran] of PERIODS){
@@ -288,19 +369,35 @@ async function main(){
       const r = await P(`
         var st = document.querySelectorAll('[data-mount=pf-stat] .summary-value');
         var rs = rowsOf('[data-mount=pf-tbl]').map(function(c){ return {d:c[0], exec:num(c[2])}; });
-        var ex = 0; rs.forEach(function(x){ ex += x.exec; });
-        var days = ecDaysOf(rs);
+        var W = expectRows(rs.map(function(x){ return x.d; }));
         return {tyExec:num(st[2].textContent), tyAsset:num(st[3].textContent), exec:num(st[0].textContent),
-                ecDays:days, wantK: ex ? Math.round(ex / (ex + CASH * days) * 10000) / 10000 : 0};`);
+                ecDays:W.ecDays, psc:W.psc, ad:W.ad, wantFive:W.ty52, wantFour:W.ty42,
+                wantK: W.ad ? Math.round(W.ad / (W.ad + W.psc) * 10000) / 10000 : 0};`);
       vals.push({preset, gran, ...r, k: r.tyExec ? Math.round(r.tyAsset / r.tyExec * 10000) / 10000 : 0});
     }
-    /* 대표 정의 ⑤ 의 배율은 PSA/(PSA+PSC) 이므로 기간마다 값이 다르다.
+    /* ⑤ 의 배율은 AD/(AD+PEC) (AD = 기간 Σ Ai×Di) 이므로 기간마다 값이 다르다.
        종전 기대식(투자실행액/투자자산 한 값 고정)은 스톡으로 나누던 구식이라 폐기.
-       허용 오차는 표기값을 소수 2자리로 반올림해 나눈 데서 오는 잔차뿐. */
-    const worst = Math.max(...vals.filter(v => v.k).map(v => Math.abs(v.k - v.wantK)));
-    push('Ty(투자자산 대비) 배율 = PSA/(PSA+PSC) — 기간별 대조',
-      worst <= 0.003,
-      {worst:Math.round(worst * 10000) / 10000, vals:vals});
+
+       [기준 교체 2026-09-02] 표기 ⑤ ÷ 표기 ④ 로 낸 배율을 상수 0.003 으로 봐 주던 자리다.
+       배율은 2자리 표기 둘을 나눈 값이라 그 잔차가 실제로 크다(주간 0.5639 ↔ 정확 0.5625) —
+       그래서 이 칸으로는 ⑤ 가 한 눈금 밀린 것을 가릴 수 없다. 판정을 둘로 가른다.
+         (가) ⑤·④ 표기값 자체 — 원장 6자리에서 낸 기대값과 완전일치. 허용치 없음
+         (나) 배율 — 허용치를 상수로 두지 않고 표기 반올림에서 유도한다.
+              ⑤ = r2(④6 x k) · ④ = r2(④6) 이므로 |⑤/④ - k| <= (0.005 + k x 0.005) / ④ 다.
+       (나)가 필요한 이유는 배율이 표기 두 칸의 몫이라 원 자리 반올림이 두 번 들어가서다.
+       판별력은 (가)가 갖는다. */
+    const bad = [];
+    vals.forEach(v => {
+      if(v.tyAsset !== v.wantFive) bad.push(v.preset + '/' + v.gran + ' ⑤ ' + v.tyAsset + ' (기대 ' + v.wantFive + ')');
+      if(v.tyExec !== v.wantFour) bad.push(v.preset + '/' + v.gran + ' ④ ' + v.tyExec + ' (기대 ' + v.wantFour + ')');
+      const lim = v.tyExec ? (0.005 + v.wantK * 0.005) / v.tyExec + 1e-9 : 0;
+      if(Math.abs(v.k - v.wantK) > lim)
+        bad.push(v.preset + '/' + v.gran + ' 배율 ' + v.k + ' (기대 ' + v.wantK + ' · 표기잔차 상한 ' + lim.toFixed(5) + ')');
+    });
+    /* 배율이 기간마다 달라야 한다 — 한 값으로 굳으면 스톡으로 나누던 옛 식으로 되돌아간 것이다 */
+    const ks = [...new Set(vals.map(v => v.wantK))];
+    if(ks.length < 2) bad.push('배율이 기간과 무관하게 한 값 ' + ks.join(','));
+    push('Ty(투자자산 대비) 배율 = AD/(AD+PEC) — 기간별 대조', bad.length === 0, {bad, vals});
   }
 
   /* ── 4) 증명서 ── */
@@ -311,7 +408,8 @@ async function main(){
       var f = document.querySelector('[data-mount=cert-tbl] tfoot tr');
       var ft = cells(f);
       var amt = 0, rat = 0, bad = [];
-      rs.forEach(function(x){ amt += x.amount; rat = Math.round((rat + x.ratio) * 10) / 10; if(x.ty !== tyOf(x.w)) bad.push(x.name); });
+      rs.forEach(function(x){ amt += x.amount; rat = Math.round((rat + x.ratio) * 10) / 10;
+        if(Math.abs(x.ty - tyOf(x.w)) > TY2_SLACK(x.w)) bad.push(x.name); });
       return {rows:rs.length, amountSum:amt, ratioSum:rat, bad:bad,
               footAmount:num(ft[1]), footRatio:num(ft[5]),
               count:document.querySelector('[data-mount=cert-count]').textContent.trim()};`);
@@ -387,36 +485,33 @@ async function main(){
             return {d:c[0], repay:num(c[1]), exec:num(c[2]), profit:num(c[3]), w:num(c[4]), ty:num(c[5])}; });
           var ft = cells(document.querySelector('[data-mount=pf-tbl] tfoot tr'));
           var sv = document.querySelectorAll('[data-mount=pf-stat] .summary-value');
-          var ex = 0, pr = 0, rp = 0, wn = 0;
-          rs.forEach(function(x){ ex += x.exec; pr += x.profit; rp += x.repay; wn += x.w * x.exec; });
+          var ex = 0, pr = 0, rp = 0;
+          rs.forEach(function(x){ ex += x.exec; pr += x.profit; rp += x.repay; });
+          /* [기준 교체 2026-09-02] 기대값을 원장 6자리에서 낸다. 표기 2자리 W 재가중 폐기 */
+          var W = expectRows(rs.map(function(x){ return x.d; }));
           return {rows:rs.length, sumExec:ex, sumProfit:pr, sumRepay:rp,
                   footExec:num(ft[2]), footProfit:num(ft[3]), footRepay:num(ft[1]),
                   footW:num(ft[4]), footTy:num(ft[5]),
                   cardExec:num(sv[0].textContent), cardProfit:num(sv[1].textContent),
                   cardTyExec:num(sv[2].textContent), cardTyAsset:num(sv[3].textContent),
                   cardPeriod:document.querySelector('[data-mount=pf-stat] .summary-sub.mono').textContent.trim(),
-                  wantTy:ex ? r2(tyFrom(ex, pr, wn / ex)) : 0,
-                  wantTyAsset:ex ? tyAssetWant(tyFrom(ex, pr, wn / ex), ex, rs) : 0};`);
+                  wantExec:W.exec, wantProfit:W.profit, wantRepay:W.repay,
+                  wantW:W.w2, wantTy:W.ty42, wantTyAsset:W.ty52};`);
         const tag = label + '/' + gran + (si === 2 ? '(복귀)' : '');
         rows.push({preset:label, gran, step:si, ...r});
         if(r.rows !== want) bad.push(tag + ' 행수 ' + r.rows + ' (기대 ' + want + ')');
         if(r.cardPeriod !== wFrom + ' ~ ' + wTo) bad.push(tag + ' 기간 ' + r.cardPeriod + ' (기대 ' + wFrom + ' ~ ' + wTo + ')');
-        if(r.cardExec !== r.sumExec || r.footExec !== r.sumExec) bad.push(tag + ' 투자실행금');
-        if(r.cardProfit !== r.sumProfit || r.footProfit !== r.sumProfit) bad.push(tag + ' 투자수익');
-        if(r.footRepay !== r.sumRepay) bad.push(tag + ' 상환액');
-        if(r.footRepay !== r.sumRepay) bad.push(tag + ' 상환액');
-        if(r.cardTyExec !== r.footTy || Math.abs(r.footTy - r.wantTy) > tySlack(r.footW)) bad.push(tag + ' ④');
+        if(r.cardExec !== r.sumExec || r.footExec !== r.sumExec || r.sumExec !== r.wantExec) bad.push(tag + ' 투자실행금');
+        if(r.cardProfit !== r.sumProfit || r.footProfit !== r.sumProfit || r.sumProfit !== r.wantProfit) bad.push(tag + ' 투자수익');
+        if(r.footRepay !== r.sumRepay || r.sumRepay !== r.wantRepay) bad.push(tag + ' 상환액');
+        if(r.footW !== r.wantW) bad.push(tag + ' W ' + r.footW + ' (기대 ' + r.wantW + ')');
+        if(r.cardTyExec !== r.footTy || r.footTy !== r.wantTy) bad.push(tag + ' ④ ' + r.footTy + ' (기대 ' + r.wantTy + ')');
+        /* [기준 교체 2026-09-02] ⑤ 도 원장 6자리 기대값과 완전일치로 본다.
+           예전엔 「달 행 하나로 뭉치면 표기 ④ 로 되짚을 수밖에 없다」며 ty2Slack 으로 봐 주고,
+           월별 쪽 기대값은 같은 기간 일별 표에서 빌려 왔다. 원장에서 내면 두 우회가 다 필요 없다. */
+        if(r.cardTyAsset !== r.wantTyAsset) bad.push(tag + ' ⑤ ' + r.cardTyAsset + ' (기대 ' + r.wantTyAsset + ')');
       }
-      /* ⑤ 의 기대값은 일자 해상도에서만 정확히 복원된다 — 달 행 하나로 뭉친 표에서는
-         표기된 ④(소수 2자리)로 되짚을 수밖에 없어 잔차가 남는다.
-         그래서 월별 쪽 기대값은 같은 기간(스냅 기간) 일별 표에서 복원한 값을 쓴다. */
-      const dCell = rows[rows.length - 3], mCell = rows[rows.length - 2], bCell = rows[rows.length - 1];
-      if(dCell.cardTyAsset !== dCell.wantTyAsset)
-        bad.push(label + '/daily ⑤ ' + dCell.cardTyAsset + ' (기대 ' + dCell.wantTyAsset + ')');
-      if(bCell.cardTyAsset !== bCell.wantTyAsset)
-        bad.push(label + '/daily(복귀) ⑤ ' + bCell.cardTyAsset + ' (기대 ' + bCell.wantTyAsset + ')');
-      if(mCell.cardTyAsset !== bCell.wantTyAsset)
-        bad.push(label + '/monthly ⑤ ' + mCell.cardTyAsset + ' (기대 ' + bCell.wantTyAsset + ')');
+      const mCell = rows[rows.length - 2], bCell = rows[rows.length - 1];
       /* 같은 기간이면 집계 단위와 무관하게 카드 5값이 같다 */
       if(mCell.cardExec !== bCell.cardExec || mCell.cardProfit !== bCell.cardProfit ||
          mCell.cardTyExec !== bCell.cardTyExec || mCell.cardTyAsset !== bCell.cardTyAsset ||
@@ -466,9 +561,9 @@ async function main(){
       var tyBad = [];
       DAILY.forEach(function(x){
         var want = Math.round((x.profit / x.exec * 100) * 365 / x.w * 100) / 100;
-        if(x.ty !== want) tyBad.push(x.d + ' ' + x.ty + '!=' + want);
+        if(Math.abs(x.ty - want) > TY2_SLACK(x.w)) tyBad.push(x.d + ' ' + x.ty + '!=' + want);
       });
-      mer.forEach(function(x){ if(x.ty !== tyOf(x.w)) tyBad.push(x.name); });
+      mer.forEach(function(x){ if(Math.abs(x.ty - tyOf(x.w)) > TY2_SLACK(x.w)) tyBad.push(x.name); });
       if(ty !== tyOf(w)) tyBad.push('투자실행액');
       return {stExec:num(execRow[1]), w:w, s:s, ty:ty, tyOfW:tyOf(w),
               merSum:mer.reduce(function(a, x){ return a + x.amount; }, 0),

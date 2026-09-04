@@ -3,6 +3,7 @@
 import io, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import counts
+import daily_ledger as L
 ROOT = '/Users/semi/cursor/payhug-investor-admin'
 
 ICON = {
@@ -206,7 +207,7 @@ HEAD = '''<!doctype html>
       <h1>PayHug <em>투자자 어드민</em> — 화면 설계(안)</h1>
       <p class="sub">투자자용 어드민 UI 기획 · 기존 어드민 디자인시스템 기준</p>
     </div>
-    <span class="hero-date">2026-08-27</span>
+    <span class="hero-date">@@ASOF@@</span>
   </div>
 '''
 
@@ -236,6 +237,27 @@ o.append('''
         <div class="d-desc">대표 정의 45항 &mdash; 그 자리에서 고쳐 저장</div>
       </div>
     </a>
+    <a class="doc-card" href="final-terms.html">
+      <div class="doc-icon">%s</div>
+      <div>
+        <div class="d-name">용어·기호 정리</div>
+        <div class="d-desc">기존 표기 &rarr; 바뀐 기호</div>
+      </div>
+    </a>
+    <a class="doc-card" href="calc.html">
+      <div class="doc-icon">%s</div>
+      <div>
+        <div class="d-name">계산식 하나씩</div>
+        <div class="d-desc">변수 정의 &rarr; 산식 &rarr; 대입 &rarr; 결과</div>
+      </div>
+    </a>
+    <a class="doc-card" href="steps-all.html">
+      <div class="doc-icon">%s</div>
+      <div>
+        <div class="d-name">화면 칸별 중간 계산</div>
+        <div class="d-desc">투자 자산 · 투자 수익 두 화면의 값</div>
+      </div>
+    </a>
     <a class="doc-card" href="capability.html">
       <div class="doc-icon">%s</div>
       <div>
@@ -257,6 +279,13 @@ o.append('''
         <div class="d-desc">확인 문항 5건과 개발·백엔드 부록</div>
       </div>
     </a>
+    <a class="doc-card" href="ceo-questions.html">
+      <div class="doc-icon">%s</div>
+      <div>
+        <div class="d-name">대표님 확인 문항</div>
+        <div class="d-desc">미팅 확인 문항 &mdash; 답을 적어 저장</div>
+      </div>
+    </a>
     <a class="doc-card" href="review.html">
       <div class="doc-icon">%s</div>
       <div>
@@ -273,7 +302,8 @@ o.append('''
     </a>
   </div>
 ''' % (svg('ext'), counts.C['menus'], counts.menu_sentence().replace(' · ', ' &middot; '),
-       svg('doc'), svg('calc'), svg('shield'), svg('trend'), svg('cards'), svg('lock'),
+       svg('doc'), svg('calc'), svg('doc'), svg('calc'), svg('grid'),
+       svg('shield'), svg('trend'), svg('cards'), svg('users'), svg('lock'),
        svg('grid')))
 
 # 화면·상태 수는 MAIN 실측으로 찍는다. 박아 두면 D-34(주별 신설)처럼 화면이 늘 때마다 낡는다.
@@ -305,7 +335,10 @@ o.append('''
 </html>
 ''')
 
-open(os.path.join(ROOT,'index.html'),'w',encoding='utf-8').write(''.join(o))
+# 기준일 — 원천은 daily_ledger.ASOF 한 줄이다.
+_DOC = ''.join(o).replace('@@ASOF@@', L.ASOF_S)
+assert '@@ASOF' not in _DOC, '기준일 토큰 잔여'
+open(os.path.join(ROOT,'index.html'),'w',encoding='utf-8').write(_DOC)
 n_states = sum(len(c[6]) for c in MAIN+SUB)
 assert (len(MAIN)+len(SUB)+1, n_states) == (counts.C['screens'], counts.C['states']), \
     '화면·상태 실측이 갈린다 — 등재 %s/%s vs 파일 %s/%s' % (

@@ -20,8 +20,13 @@ TRACKED = set(subprocess.run(["git", "-C", REPO, "-c", "core.quotepath=false", "
 
 DESC = {
  "index.html":"랜딩 — 전 화면 목록 진입점","app.html":"통합 프로토타입 — 메뉴·버튼이 실제 동작하는 단일 HTML",
- "glossary.html":"계산식 용어 정의 — 화면 기준 매핑표 27행·용어 카드 50건(화면 용어 28·계산 재료 22)·정의 요청 26문항","capability.html":"투자자 뷰·기능 — 할 수 있는 것과 보여줄 수 있는 것",
+ "glossary.html":"계산식 용어 정의 — 화면 기준 매핑표 27행·용어 카드 50건(화면 용어 28·내부 용어 22)·정의 요청 26문항","capability.html":"투자자 뷰·기능 — 할 수 있는 것과 보여줄 수 있는 것",
  "archive.html":"이 페이지 — 작업물 추적","login.html":"로그인",
+ "terms-edit.html":"용어 정의서 편집판 — 대표 정의 45항·그 자리에서 고쳐 저장",
+ "final-terms.html":"용어·기호 정리 — 기존 표기 → 바뀐 기호",
+ "calc.html":"계산식 하나씩 — 변수 정의 → 산식 → 대입 → 결과",
+ "steps-all.html":"화면 칸별 중간 계산 — 투자 자산·투자 수익 두 화면의 값",
+ "ceo-questions.html":"대표님 확인 문항 — 답을 적어 저장",
  "inquiry.html":"대표 확인 요청 — 문항 5건·문항별 평문 복사 + 개발·백엔드 부록",
  "ceo_definitions.md":"대표 정의 원문 — 계산식 용어","ceo_impact.md":"대표 정의 기준 산출물 영향 분석 — 27건",
  "ceo_inquiry.md":"대표 확인 요청 원고 — 문항 5건 + 개발·백엔드 부록","value_lineage.md":"값 계보 추적 — 용어별 소재·신설 목록·이름 충돌표",
@@ -112,9 +117,13 @@ DESC = {
  "ledger_facts.json":"채권 원장 사실값 — 검증기가 읽는 기준 수치",
  "sim_facts.py":"투자 시뮬레이션 기대값 산출기 — build_app.py 씨앗을 읽어 verify_sim.js 기대값을 낸다",
  "sim_facts.json":"투자 시뮬레이션 기대값 — 시나리오 8종의 화면 표기값",
- "platform_duration.py":"플랫폼별 만기·미지급률·과지급률 실측 상수",
+ "platform_duration.py":"플랫폼별 만기·미지급률·과지급률 실측값",
  "apply_duration.py":"플랫폼 만기 실측값 적용기 — 원장·화면·원고 일괄 갱신",
  "build_glossary.py":"용어 해설 생성기 — 원고 → 카드 50건·캡처 오버레이",
+ "read_finaledit.py":"용어기호정리 편집판 HTML 을 원고 꼴로 되읽어 final_terms.json 과 견준다. 차이 목록만 내고 원고에 쓰지 않는다",
+ "read_wordedit.py":"워드에서 고친 용어기호정리를 원고 꼴로 되읽어 final_terms.json 과 견준다. 차이 목록만 내고 원고에 쓰지 않는다",
+ "termsfacts.py":"용어정의서 원고의 {{키}} 자리에 넣을 숫자를 원장 한 곳에서 읽어 온다. 워드판·HTML 편집판이 함께 쓴다",
+ "verify_banned.py":"금지 낱말·어투 기계 검사 — dm_0901/banned_words.md 목록을 읽어 워드·엑셀·화면·원고를 훑는다. 대표 원문 인용·기존 표기 칸·화면 라벨·미확정 표시는 가려낸다",
  "restructure_glossary.py":"용어 원고 재구성기 — 서술 절 → 카드 5필드",
  "glossary_restructure.md":"용어 해설 재구성 설계 — 카드 구조·부록 분리 기준",
  "capture_shots.js":"용어 해설용 화면 캡처기 — 정적 낱장 헤드리스 촬영",
@@ -166,13 +175,32 @@ DESC = {
  "probe_nums.js":"화면 숫자 탐침기 — 렌더 값 수집",
  "probe_cert.js":"증명서 화면 탐침기 — 렌더 값 수집",
  "counts.py":"메뉴·화면·상태·엑셀 개수 실측 — 문서에 적는 개수의 단일 원천",
+ "TODO_0831.md":"할 일 판 — 4차 미팅(2026-09-01) 대비",
+ "alias_table.py":"기존 표기 → 바뀐 기호 대조표 — 원천은 final_terms.json 의 vars[].alias 한 곳",
+ "ceo_definitions.sha256":"대표 정의 원문 잠금 해시 — ceo_definitions.md 변조 감지",
+ "chrome_dl.js":"헤드리스 크롬 내려받기 차단 — 검증기가 다운로드 링크를 눌러도 사용자 폴더에 안 쌓이게",
+ "exec_amount_structures.md":"투자실행액 구조 판정 — 정의서 산식 4개·구조 3개·실측 대조",
+ "final_terms.json":"용어·기호 정리 원고 — 워드·HTML 두 생성기의 단일 원천",
+ "frontend_settlement_cards.md":"어드민 선정산 결과 요약 카드 8개 — 프론트 코드 실사",
+ "settlement_cards_measured.json":"선정산 결과 요약 카드 실측값 — 검증기가 읽는 기준 수치",
+ "frontend_sync_20260831.md":"프론트 레포 최신화 기록 — 두 레포 HEAD·정산 로직 변경 여부",
+ "notation_fix_app.md":"표기 교정 — 아래첨자·「만기」, build_app 계열",
+ "notation_fix_glossary.md":"표기 교정 — 아래첨자·「만기」·Duration, 용어 계통",
+ "notation_fix_xlsx.md":"표기 교정 — 아래첨자·「만기」·조어 약칭, 검산 엑셀",
+ "questions_final_0831.md":"대표 확인 문항 통합본 — 3차 미팅(2026-08-31)",
+ "questions_triage.md":"확인 문항 28건 — 누가 답하는가",
+ "read_ceoq.py":"대표님 확인 문항 답 추출기 — 저장된 판에서 답만 뽑는다",
+ "screen_vs_register_0831.md":"어드민 정산 현황 화면 대 정책 레지스터 대조",
+ "subscript.py":"아래첨자 조판 한 곳 — 원고 마크다운 규약을 화면 표기로",
+ "symbol_notation_audit.md":"기호 표기·조어 감사 — 읽기 전용, 파일 수정 0건",
+ "testcase_table.py":"테스트 케이스 절 — 계산에 넣는 값 → 채권 한 건 풀이 → 하루 합계 → 조회기간 합계 → 화면 표시값 대조",
  "counts.json":"개수 실측값 — 생성기·동기화기가 읽는 기준 수치",
  "sync_counts.py":"개수 표기 동기화기 — 생성기 없는 문서의 개수를 실측으로 덮는다",
  "rescale_decision.md":"예시 데이터 규모 재설계 결정안 — 대표 실측 만기 도수·플랫폼 구성비 채택, 투자자산 1억·로스터 9곳·W 2.75일 재산출과 파급·적용처",
  "terms_briefing_0831.md":"대표 용어·산식 검증 브리핑 — 정산주기와 금융일수 구분, 정의서 1·2번 이미지와 기간 집계 산식 전 항목 원문 대조, 확인 문항 29건",
  "audit_xlsx_check.py":"검산 통합문서 독립 검증기 — 셀 수식을 직접 파싱·계산해 생성기와 코드를 공유하지 않고 값을 낸다",
- "build_audit_xlsx.py":"검산 통합문서 생성기 — 정산주기 실측 도수·구성비, 재설계 결정안 로스터, 대표 정의서 산식, 플랫폼 요율을 읽어 입력·플랫폼·가맹점·채권·일별·기간집계·화면대조·산식 8시트를 전부 엑셀 수식으로 조립. 채권 한 건의 금융일수는 2025년 365일 실측 수열의 연속 슬라이스이고, 미회수 Σ Ai 와 전체 가중평균 금융일수는 정수 해로 목표값에 맞춘다. 스위치 4개(W 모집단·표기 자릿수·가맹점 수·산출 방향)에 따라 화면 값이 갈린다",
- "검산_투자자어드민_20260901.xlsx":"검산 통합문서 — 채권 한 건에서 화면 값까지 중간 매개변수와 중간 산식을 전부 편 대조용. 값이 아니라 수식으로 들어가 있어 입력 시트를 바꾸면 아래가 따라 움직인다. 미팅 작업용이라 화면 다운로드 대상이 아니다",
+ "build_audit_xlsx.py":"검산 통합문서 생성기 — 정산주기 실측 도수·구성비, 재설계 결정안 로스터, 대표 정의서 산식, 플랫폼 요율을 읽어 입력·플랫폼·가맹점·채권·일별·기간집계·화면대조·산식 8시트를 전부 엑셀 수식으로 조립. 채권 한 건의 금융일수는 2025년 365일 실측 수열의 연속 슬라이스이고, 미회수 Σ Ai 와 전체 가중평균 금융일수는 정수 해로 목표값에 맞춘다. 스위치 4개(W 모집단·표기 자릿수·가맹점 수·산출 방향)에 따라 화면 표시값이 갈린다",
+ "검산_투자자어드민_20260901.xlsx":"검산 통합문서 — 채권 한 건에서 화면 표시값까지 중간 매개변수와 중간 산식을 전부 편 대조용. 값이 아니라 수식으로 들어가 있어 입력 시트를 바꾸면 아래가 따라 움직인다. 미팅 작업용이라 화면 다운로드 대상이 아니다",
 }
 def desc(fn):
     if fn in DESC: return DESC[fn]
@@ -180,11 +208,16 @@ def desc(fn):
     if m: return f"{DESC.get(m.group(1)+'.html','화면').split(' —')[0]} · 상태: {m.group(2)}"
     if fn.startswith("xls-"): return "엑셀 산출물 서식 — Figma 임포트 전용, 화면 흐름 진입점 아님"
     if fn.endswith(".xlsx"): return "엑셀 파일 — 다운로드 버튼 연결 대상"
-    if fn.startswith("투자자산증명서_"): return "투자자산 증명서 견본 — certificate.html `PDF 다운로드` 대상"
-    if fn == "정산금채권_재양도_합의서.txt": return "계약서보기 `계약서 원문 열기` 대상"
+    if fn.startswith("투자자산증명서_"): return "투자자산 증명서 견본 — certificate.html 의 PDF 다운로드 대상"
+    if fn == "정산금채권_재양도_합의서.txt": return "계약서보기의 계약서 원문 열기 대상"
     if fn.endswith("_result.json"): return "검증 결과 — " + fn[:-12].replace("verify_", "") + " 실행 산출"
     if fn.startswith("verify_") and fn.endswith((".js", ".py")): return "검증기 — " + fn[7:-3].replace("_", " ")
     if fn.startswith("build_") and fn.endswith(".py"): return "생성기 — " + fn[6:-3].replace("_", " ")
+    # 조각·원고는 짝이 되는 배포 낱장이 뜻을 들고 있다 — 여기서 두 벌로 적지 않는다.
+    if fn.endswith(".fragment.html"):
+        _s = fn[:-14].replace("_", "-") + ".html"
+        return DESC.get(_s, "문서").split(" —")[0] + " — 아티팩트 게시용 조각"
+    if fn.endswith("_seed.json"): return "원고 — " + fn[:-10].replace("_", " ") + " 생성기 입력"
     return ""
 def scan(root, sub=""):
     d=os.path.join(root,sub); out=[]
@@ -224,6 +257,7 @@ TODO=(f'<section id="todo"><h2>작업 목록 <span class="cnt">{_dn}/{len(_td)} 
 
 root=[f for f in scan(REPO) if f["fn"].endswith(".html")]
 docs=[f for f in root if f["fn"] in ("index.html","app.html","glossary.html",
+      "terms-edit.html","final-terms.html","calc.html","steps-all.html","ceo-questions.html",
       "capability.html","feasibility.html","inquiry.html","review.html","archive.html")]
 xls =[f for f in root if f["fn"].startswith("xls-")]
 scr =[f for f in root if f not in docs and f not in xls]

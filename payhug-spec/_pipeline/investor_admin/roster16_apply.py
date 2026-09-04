@@ -16,6 +16,7 @@
 import io, os, re, json, sys
 from decimal import Decimal as D
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import daily_ledger as L
 from roster16_model import (ROSTER, SHARES, EXEC, CASH, TOTAL, W_W, S_W, TY_W,
                             EXEC_SHARE, CASH_SHARE, DAILY, MONTHLY, DSUM, MSUM,
                             AUG_CARD, r1, r2, f)
@@ -203,7 +204,7 @@ def fix_xls_assets_merchant():
     blank = ('            <tr><th class="row-head">%d</th>' + '<td class="c-empty"></td>' * 7 + '</tr>')
     rows.append(blank % (tot + 1))
     rows.append('            <tr><th class="row-head">%d</th><td class="c-note" colspan="7">'
-                '※ 비중은 투자실행액 합계(%s원) 대비 각 가맹점 투자금액의 구성비.</td></tr>' % (tot + 2, f(EXEC)))
+                '※ 비중은 투자실행액 합계(%s원) 대비 각 가맹점 투자실행액의 구성비.</td></tr>' % (tot + 2, f(EXEC)))
     rows.append(blank % (tot + 3))
     rows.append(blank % (tot + 4))
     a = s.index('<tr><th class="row-head">4</th>')
@@ -262,14 +263,14 @@ def fix_xlsx():
             wb['투자수익 현황']['B8'] = float(DSUM['tyAsset']) / 100
         wb.save(os.path.join(base, fn))
     # 6-2 투자자산 현황
-    p = os.path.join(base, '투자자산_현황_20260827.xlsx')
+    p = os.path.join(base, '투자자산_현황_%s.xlsx' % L.ASOF_C)
     wb = openpyxl.load_workbook(p); ws = wb['투자자산 현황']
     ws['B4'] = EXEC; ws['C4'] = float(r1(W_W)); ws['D4'] = float(r2(S_W)) / 100
     ws['E4'] = float(r2(TY_W)) / 100; ws['F4'] = float(EXEC_SHARE) / 100
     ws['F5'] = float(CASH_SHARE) / 100; ws['B6'] = TOTAL
     wb.save(p)
     # 6-3 가맹점별 투자자산 — 8행 → 16행
-    p = os.path.join(base, '가맹점별_투자자산_20260827.xlsx')
+    p = os.path.join(base, '가맹점별_투자자산_%s.xlsx' % L.ASOF_C)
     wb = openpyxl.load_workbook(p); ws = wb['가맹점별 투자자산']
     style = {c: (copy(ws['%s11' % c]._style)) for c in 'ABCDEF'}
     ws.insert_rows(12, 8)
@@ -281,7 +282,7 @@ def fix_xlsx():
         for c in 'ABCDEF': ws['%s%d' % (c, r)]._style = copy(style[c])
     tot = 4 + len(PAIRS)
     ws['B%d' % tot] = EXEC; ws['F%d' % tot] = 1
-    ws['A%d' % (tot + 2)] = '※ 비중은 투자실행액 합계(%s원) 대비 각 가맹점 투자금액의 구성비.' % f(EXEC)
+    ws['A%d' % (tot + 2)] = '※ 비중은 투자실행액 합계(%s원) 대비 각 가맹점 투자실행액의 구성비.' % f(EXEC)
     wb.save(p)
 
 if __name__ == '__main__':

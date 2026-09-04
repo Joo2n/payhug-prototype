@@ -34,8 +34,6 @@
   .pg-size { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-500); }
   .input.sz { padding: 4px 24px 4px 10px; font-size: 12px; height: 28px; border-radius: 8px; }
 </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=block" rel="stylesheet">
-  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-active="invest-assets">
 <div class="page">
@@ -62,10 +60,6 @@
         <a class="nav-item" data-menu="invest-returns" href="invest-profit.html">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
           <span>투자 수익</span>
-        </a>
-        <a class="nav-item" data-menu="invest-sim" href="invest-sim.html">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm3.75-6.75A2.25 2.25 0 0119.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75z"/></svg>
-          <span>투자 시뮬레이션</span>
         </a>
       </div>
 
@@ -143,9 +137,9 @@
         <div class="summary-sub">비중 20.0% · 보관 ㈜쿠콘</div>
       </div>
       <div class="summary-card">
-        <div class="summary-label">Ty수익율</div>
+        <div class="summary-label">예상 연환산수익률</div>
         <div class="summary-value">13.21<span class="unit">%</span></div>
-        <div class="summary-sub">W금융일수 3.04일 기준</div>
+        <div class="summary-sub">가중평균 금융일수 3.04일 기준</div>
       </div>
     </div>
 
@@ -154,7 +148,6 @@
       <div class="tbl-head">
         <h2>현황</h2>
         <div class="actions">
-          <label class="pg-size">보기<select class="input sz" aria-label="보기 갯수"><option value="10" selected>10개</option><option value="20">20개</option><option value="50">50개</option></select></label>
           <a class="btn btn-excel" href="assets/xlsx/투자자산현황_2026-08-27_2026-08-27.xlsx" download>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             엑셀 다운로드
@@ -167,9 +160,9 @@
             <tr>
               <th>자산 구분</th>
               <th class="num">금액 (원)</th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">W금융일수</span><span class="tip-panel">대상정산금채권 전체 (발생 기준)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">S입금부족율</span><span class="tip-panel">선정산일 D-20 ~ D-11 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
-              <th class="num">Ty수익율</th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">가중평균 금융일수</span><span class="tip-panel">대상정산금채권 전체 (발생 기준)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel">선정산일이 기준일 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
+              <th class="num">예상 연환산수익률</th>
               <th class="num">비중</th>
               <th>보관</th>
             </tr>
@@ -212,6 +205,7 @@
       <div class="tbl-head">
         <h2>가맹점별 투자자산</h2>
         <div class="actions">
+          <label class="pg-size">보기<select class="input sz" aria-label="보기 갯수"><option value="10" selected>10개</option><option value="20">20개</option><option value="50">50개</option></select></label>
           <a class="btn btn-excel" href="assets/xlsx/가맹점별투자자산_2026-08-27_2026-08-27.xlsx" download>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             엑셀 다운로드
@@ -227,10 +221,10 @@
           <thead>
             <tr>
               <th>가맹점</th>
-              <th class="num">투자금액 (원)</th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">W금융일수</span><span class="tip-panel">대상정산금채권 전체 (발생 기준)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">S입금부족율</span><span class="tip-panel">선정산일 D-20 ~ D-11 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
-              <th class="num">Ty수익율</th>
+              <th class="num">투자실행액 (원)</th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">가중평균 금융일수</span><span class="tip-panel">대상정산금채권 전체 (발생 기준)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel">선정산일이 기준일 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
+              <th class="num">예상 연환산수익률</th>
               <th class="num">비중</th>
             </tr>
           </thead>
@@ -280,7 +274,7 @@
               <td class="num"><span class="strong">5,624,058</span></td>
               <td class="num">2.70일</td>
               <td class="num">0.05%</td>
-              <td class="num">14.87%</td>
+              <td class="num">14.89%</td>
               <td class="num">7.0%</td>
             </tr>
             <tr>
@@ -288,7 +282,7 @@
               <td class="num"><span class="strong">4,799,968</span></td>
               <td class="num">2.55일</td>
               <td class="num">0.05%</td>
-              <td class="num">15.75%</td>
+              <td class="num">15.72%</td>
               <td class="num">6.0%</td>
             </tr>
             <tr>
@@ -296,14 +290,14 @@
               <td class="num"><span class="strong">3,981,371</span></td>
               <td class="num">2.52일</td>
               <td class="num">0.04%</td>
-              <td class="num">15.93%</td>
+              <td class="num">15.95%</td>
               <td class="num">5.0%</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="pagination with-count">
-        <span class="pg-count"> </span>
+        <span class="pg-count">총 <b class="mono">8</b>건</span>
         <div class="pg-nums">
           <button class="page-arrow" disabled>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>

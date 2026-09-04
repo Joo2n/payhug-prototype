@@ -50,31 +50,88 @@ PROTO_REPO = '/Users/semi/cursor/payhug-investor-prototype'
 XLSX = os.path.join(BASE, '검산_투자자어드민_20260901.xlsx')
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
-# 원문 기호 8개 — 이 목록이 검사 범위다.
-# 전일자 첨자를 대문자로 쓰는지 소문자로 쓰는지는 dm_0831/symbol_rule_0831.md 가 정한다.
-# 여기에 표를 또 두면 규칙이 바뀔 때 두 곳이 어긋난다 — 2026-08-31 에 실제로 그렇게 깨졌다.
-_STEMS = ['B%s-1i', 'A%s-1i', 'M%s-1i', 'D%s-1i', 'SB%s-1', 'SA%s-1', 'SM%s-1', 'SD%s-1']
+# 기호 8개 — 이 목록이 검사 범위다. 표기는 정본 `dm_0901/symbol_rule_0901.md` 가 정한다.
+# 여기에 표를 또 두면 규칙이 바뀔 때 두 곳이 어긋난다 — 2026-08-31 에 그렇게 깨졌고,
+# 2026-09-01 정본 전환 때 `SBd-1` 계열을 이고 있던 이 파일이 또 낡았다. 표는 정본에만 둔다.
+RULE = os.path.join(BASE, 'dm_0901', 'symbol_rule_0901.md')
+ROUND_RULE = os.path.join(BASE, 'dm_0901', 'rounding_rule_0901.md')
+# 아래첨자 → 평문. 정본 「표기 형태」 표 — 평문(엑셀 열머리·코드·DB)은 `Aᵢ` 를 `Ai` 로 적는다.
+_SUBS = {'ᵢ': 'i'}
 
 
-def _date_letter():
-    """규칙 문서의 갈아끼움표에서 전일자 첨자 글자를 읽는다."""
-    path = os.path.join(BASE, 'dm_0831', 'symbol_rule_0831.md')
-    if not os.path.exists(path):
-        raise SystemExit('!! 기호 규칙 문서가 없다 — ' + path)
-    txt = io.open(path, encoding='utf-8').read()
-    m = re.search(r'`SB_\{D-1\}`\s*\|\s*`SB_\{([Dd])-1\}`', txt)
+def _plain(s):
+    for a, b in _SUBS.items():
+        s = s.replace(a, b)
+    return s
+
+
+def _canon():
+    """정본에서 낱개 기호·하루 집계 기호를 읽는다.
+
+    낱개는 「기호 전건」 표의 `낱개` 행, 하루 집계는 「갈아 끼우는 표」의 정본 칸에서 온다.
+    정본이 없거나 표 모양이 바뀌면 조용히 통과시키지 않고 여기서 멎는다.
+    """
+    if not os.path.exists(RULE):
+        raise SystemExit('!! 기호 정본이 없다 — ' + RULE)
+    txt = io.open(RULE, encoding='utf-8').read()
+    one = {}
+    for name, sym in re.findall(r'\|\s*낱개\s*\|\s*([^|]+?)\s*\|\s*`([^`]+)`\s*\|', txt):
+        one[_plain(sym)] = name.strip()
+    m = re.search(r'\|\s*`SB_\{D-1\}`[^|]*\|\s*([^|]+?)\s*\|', txt)
     if not m:
-        raise SystemExit('!! 기호 규칙에서 전일자 첨자 표기를 못 읽었다')
-    return m.group(1)
+        raise SystemExit('!! 정본에서 하루 집계 갈아끼움 줄을 못 읽었다')
+    day = re.findall(r'`([^`]+)`', m.group(1))          # B(d-1) A(d-1) M(d-1) MR(d-1)
+    m = re.search(r'\|\s*`SD_\{D-1\}`[^|]*\|\s*`([^`]+)`\s*\|', txt)
+    if not m:
+        raise SystemExit('!! 정본에서 wD 갈아끼움 줄을 못 읽었다')
+    wd = m.group(1)                                     # wD(d-1)
+    if len(day) != 4:
+        raise SystemExit('!! 하루 집계 정본 표기가 4개가 아니다 — %s' % day)
+    miss = [x for x in ('Bi', 'Ai', 'Mi', 'Di') if x not in one]
+    if miss:
+        raise SystemExit('!! 정본 낱개 표에 없는 기호 — %s' % miss)
+    return one, day, wd
 
 
-DATE_LETTER = _date_letter()
-SYMBOLS = [t % DATE_LETTER for t in _STEMS]
+def _round_digits():
+    """비율·일수를 몇 자리까지 남기는지 정본에서 읽는다 — `dm_0901/rounding_rule_0901.md`."""
+    if not os.path.exists(ROUND_RULE):
+        raise SystemExit('!! 반올림 정본이 없다 — ' + ROUND_RULE)
+    txt = io.open(ROUND_RULE, encoding='utf-8').read()
+    m = re.search(r'비율·일수\s*—\s*소수\s*(\d+)\s*자리', txt)
+    if not m:
+        raise SystemExit('!! 반올림 정본에서 자릿수를 못 읽었다')
+    return int(m.group(1))
+
+
+def _unround(f):
+    """`=IF(X=0,0,ROUND(몸통,N))` 에서 (`=IF(X=0,0,몸통)`, N) 을 돌려준다.
+
+    ROUND 가 없으면 (원문, None). 몸통을 그대로 남기므로 산식이 바뀌면 문언 대조가 잡는다.
+    """
+    s = str(f).replace(' ', '')
+    m = re.match(r'^(=IF\([A-Z]+\d+=0,0,)ROUND\((.+),(\d+)\)\)$', s)
+    if m:
+        return m.group(1) + m.group(2) + ')', int(m.group(3))
+    return s, None
+
+
+def _rnd(v, n):
+    """엑셀 ROUND 와 같은 반올림 — 파이썬 기본은 은행가 반올림이라 .5 에서 갈린다."""
+    if n is None:
+        return v
+    from decimal import Decimal, ROUND_HALF_UP
+    return float(Decimal(repr(v)).quantize(Decimal(1).scaleb(-n), rounding=ROUND_HALF_UP))
+
+
+ONE_NAME, DAY4, WD = _canon()
+RD = _round_digits()
+SYMBOLS = ['Bi', 'Ai', 'Mi', 'Di', DAY4[0], DAY4[1], DAY4[2], WD]
 SYM = dict(zip(['B', 'A', 'M', 'D', 'SB', 'SA', 'SM', 'SD'], SYMBOLS))
-SMR = 'SMR%s-1' % DATE_LETTER
-# 대표 원문은 대문자 평문 표기(SBD-1)다. 기호 규칙은 우리 표기만 소문자로 내렸고
-# 원문 인용은 손대지 않으므로, 원문을 훑을 때만 이 짝을 쓴다.
-CEO_SYMBOLS = [t % 'D' for t in _STEMS]
+SMR = DAY4[3]
+# 대표 원문은 대문자 평문 표기(SBD-1)다. 원문은 sha256 잠금이고 인용을 손대지 않으므로
+# 이 짝은 원문을 훑을 때만 쓴다 — 우리 표기가 바뀌어도 여기는 그대로다.
+CEO_SYMBOLS = ['BD-1i', 'AD-1i', 'MD-1i', 'DD-1i', 'SBD-1', 'SAD-1', 'SMD-1', 'SDD-1']
 CEO_OF = dict(zip(SYMBOLS, CEO_SYMBOLS))
 
 R = []          # {sec, name, pass, detail}
@@ -134,17 +191,24 @@ def day_identity(day_rows, rate, nfloor=1):
 
     nfloor = 그 묶음 안에 든 「하루 수수료 내림」 횟수. 원장은 하루마다 한 번 내림하므로
     하루 행은 1, 여러 날을 합친 전 구간 행은 그 일수다. 내림 한 번이 잔차를 (-1, 0] 만큼
-    남기므로 허용 폭이 일수에 비례한다 — 손으로 고른 값이 아니라 내림 횟수에서 나온다."""
+    남기므로 허용 폭이 일수에 비례한다 — 손으로 고른 값이 아니라 내림 횟수에서 나온다.
+
+    상환액은 순지급액에서 부족액을 한 줄로 뺀 값이다(dm_0901 규칙 2 · 확정).
+      repay  정의식과 원 단위 완전일치를 본다.
+      emit   화면 두 칸(투자실행금 + 투자 수익)을 더한 값과의 어긋남. 쪼개면 Ai 반올림
+             0.5 x n 과 채권매입수수료 내림 nfloor 가 남으므로 0 이 아닌 것이 규칙이고,
+             그 두 자리에서 나올 수 있는 폭을 넘는지만 본다."""
     bad = {'def': [], 'emit': [], 'repay': [], 'profit': []}
     for g in day_rows:
         n = g['n']
         res = D(g['net']) * (D(1) - rate) - D(g['ai'])          # SUM BD - SUM AD - SUM MD
         if abs(res) > D('0.5') * n:
             bad['def'].append((g['d'], str(res), str(D('0.5') * n)))
-        if g['repay'] - g['exec'] - g['profit'] != 0:            # 원장이 실제로 내보낸 정수
-            bad['emit'].append((g['d'], g['repay'] - g['exec'] - g['profit']))
+        gap = D(g['repay'] - g['exec'] - g['profit'])            # 쪼개 더한 값과의 어긋남
+        if abs(gap) > D('0.5') * n + nfloor:
+            bad['emit'].append((g['d'], int(gap), str(D('0.5') * n + nfloor)))
         dr = D(g['repay']) - (D(g['net']) - D(g['ded']))         # 원장 상환액 <-> 정의식
-        if abs(dr) > D('0.5') * n + nfloor:
+        if dr != 0:
             bad['repay'].append((g['d'], str(dr)))
         dp = D(g['profit']) - (D(g['net']) * rate - D(g['ded']))  # 원장 투자수익 <-> 정의식
         if not (D(-nfloor) < dp <= D('0.000001')):
@@ -184,14 +248,20 @@ def clamp_check(fn, cases):
 
 
 def ty_rows_check(rows, days=365):
-    """행마다 ty == round(profit/exec*100*365/w, 2) 인가. rows=[{d,exec,profit,w,ty}]"""
+    """행마다 ty == round(profit/exec*100*365/w, 2) 인가. rows=[{d,exec,profit,w,ty}]
+
+    ty 는 소수 6자리 W 로 내고 화면에는 2자리만 보인다(dm_0901 규칙 1 · 확정).
+    표에 적힌 2자리 W 로 되짚으면 ty 가 |ty| x 0.005 / (W - 0.005) 만큼 어긋난다 —
+    거기에 ty 자신의 표기 반올림 0.005 를 더한 폭까지만 봐 준다.
+    """
     bad = []
     for r in rows:
         if not r['exec'] or not r['w']:
             bad.append((r['d'], 'exec/w 0'))
             continue
         want = float(r2(D(str(r['profit'])) / D(str(r['exec'])) * 100 * D(days) / D(str(r['w']))))
-        if abs(want - r['ty']) > 0.005:
+        slack = abs(r['ty']) * 0.005 / (r['w'] - 0.005) + 0.005
+        if abs(want - r['ty']) > slack:
             bad.append((r['d'], r['ty'], want))
     return bad
 
@@ -405,13 +475,21 @@ async function drive(t, base){
   out.profitMonthly = must((await readProfit()), t.key + ' profitMonthly');
   must(out.profitMonthly.tbl, t.key + ' profitMonthly 표');
 
-  /* 투자 시뮬레이션 — 씨앗 / 클램프 음수 / 클램프 양수 */
-  await evalJS(`location.hash = '#invest-sim'; return 1;`);
-  await waitFor(`document.getElementById('sim-unpaid') && document.querySelector('section.screen[data-screen="invest-sim"] [data-mount="sim-out"]')`,
-                t.key + ' 시뮬레이션 화면');
-  out.simSeed = await runSim('0.08', '0.01');
-  out.simClampNeg = await runSim('0.01', '0.08');
-  out.simClampPos = await runSim('0.20', '0.01');
+  /* 투자 시뮬레이션 — 씨앗 / 클램프 음수 / 클램프 양수.
+     원본(app)만 — 시연본은 투자 시뮬레이션을 뺐다(step7 시뮬 제거 2026-09-04 · PROTO_DROPPED).
+     시연본에서는 그 화면이 없음을 확인만 한다(되살아나면 FAIL 로 잡히게 값을 남긴다). */
+  if(t.key === 'app'){
+    await evalJS(`location.hash = '#invest-sim'; return 1;`);
+    await waitFor(`document.getElementById('sim-unpaid') && document.querySelector('section.screen[data-screen="invest-sim"] [data-mount="sim-out"]')`,
+                  t.key + ' 시뮬레이션 화면');
+    out.simSeed = await runSim('0.08', '0.01');
+    out.simClampNeg = await runSim('0.01', '0.08');
+    out.simClampPos = await runSim('0.20', '0.01');
+  } else {
+    out.simAbsent = await evalJS(`return {section: !!document.querySelector('section.screen[data-screen="invest-sim"]'),
+      nav: !!document.querySelector('.nav-item[data-menu="invest-sim"]'),
+      fn: typeof window.simRun === 'function' || typeof window.SIM !== 'undefined'};`);
+  }
   return out;
 }
 
@@ -527,9 +605,9 @@ def sec1(L):
     bad = day_identity(days, rate)
     chk('1', '하루층 정의식 |SUM BD - SUM AD - SUM MD| <= 0.5 x n',
         not bad['def'], '어긋난 날 %d건 %s' % (len(bad['def']), bad['def'][:3]))
-    chk('1', '하루층 원장 실현값 상환액 - 투자실행금 - 투자수익 = 0 (정수 완전일치)',
+    chk('1', '하루층 |상환액 - 투자실행금 - 투자수익| <= 0.5 x n + 내림횟수',
         not bad['emit'], '어긋난 날 %d건 %s' % (len(bad['emit']), bad['emit'][:3]))
-    chk('1', '하루층 원장 상환액 <-> 정의식 SUM(순지급액 - 차감)',
+    chk('1', '하루층 원장 상환액 <-> 정의식 SUM(순지급액 - 차감) (원 단위 완전일치)',
         not bad['repay'], '어긋난 날 %d건 %s' % (len(bad['repay']), bad['repay'][:3]))
     chk('1', '하루층 원장 투자수익 <-> 정의식 SUM(수수료 - 차감) (내림 1원 이내)',
         not bad['profit'], '어긋난 날 %d건 %s' % (len(bad['profit']), bad['profit'][:3]))
@@ -544,12 +622,12 @@ def sec1(L):
     tres = D(tot['net']) * (D(1) - rate) - D(tot['ai'])
     chk('1', '전 구간 정의식 |SUM BD - SUM AD - SUM MD| <= 0.5 x n',
         not tb['def'], '잔차 %s원 · 한계 %s원 · 채권 %d건' % (tres, D('0.5') * tot['n'], tot['n']))
-    chk('1', '전 구간 원장 실현값 상환액 - 투자실행금 - 투자수익 = 0',
-        not tb['emit'], '차 %d원 (상환 %d · 실행 %d · 수익 %d)'
-        % (tot['repay'] - tot['exec'] - tot['profit'], tot['repay'], tot['exec'], tot['profit']))
-    chk('1', '전 구간 원장 상환액 <-> 정의식', not tb['repay'],
-        '차 %s원 · 한계 %s원' % (D(tot['repay']) - (D(tot['net']) - D(tot['ded'])),
-                               D('0.5') * tot['n'] + len(days)))
+    chk('1', '전 구간 |상환액 - 투자실행금 - 투자수익| <= 0.5 x n + 내림횟수',
+        not tb['emit'], '차 %d원 · 한계 %s원 (상환 %d · 실행 %d · 수익 %d)'
+        % (tot['repay'] - tot['exec'] - tot['profit'], D('0.5') * tot['n'] + len(days),
+           tot['repay'], tot['exec'], tot['profit']))
+    chk('1', '전 구간 원장 상환액 <-> 정의식 (원 단위 완전일치)', not tb['repay'],
+        '차 %s원' % (D(tot['repay']) - (D(tot['net']) - D(tot['ded']))))
     chk('1', '전 구간 원장 투자수익 <-> 정의식', not tb['profit'],
         '차 %s원 · 한계 (-%d, 0] = 하루 수수료 내림 %d회'
         % (D(tot['profit']) - (D(tot['net']) * rate - D(tot['ded'])), len(days), len(days)))
@@ -646,10 +724,12 @@ def sec2(L, drv):
     bk = AX.Book(XLSX)
     ws = bk.wb['일별']
     hdr = [ws.cell(1, c).value for c in range(1, ws.max_column + 1)]
-    col = {}                       # SMD-1 은 정본(E)·참고(F) 두 칸에 걸리므로 처음 자리를 쓴다
+    col = {}                       # M(d-1) 은 정본(E)·참고(F) 두 칸에 걸리므로 처음 자리를 쓴다
+    # 열머리는 「기호 이름」 꼴이라 첫 공백 앞이 기호다. 괄호에서 더 자르면
+    # `B(d-1)` 이 `B` 로 뭉개져 하루 집계와 낱개가 같은 열쇠가 된다.
     for i, h in enumerate(hdr):
         if h:
-            col.setdefault(str(h).split(' ')[0].split('(')[0], i + 1)
+            col.setdefault(str(h).split(' ')[0], i + 1)
     chk('2', '엑셀 일별 열머리에 %s · %s · %s · %s · %s 이 있고 자리가 맞음'
         % (SYM['SB'], SYM['SA'], SYM['SM'], SMR, SYM['SD']),
         col.get(SYM['SB']) == 3 and col.get(SYM['SA']) == 4 and col.get(SYM['SM']) == 5
@@ -661,26 +741,41 @@ def sec2(L, drv):
         if a is None:
             continue
         nrow += 1
-        fg = str(ws.cell(r, 7).value)
-        fi = str(ws.cell(r, 9).value)
-        fh = str(ws.cell(r, 8).value)
-        if fg.replace(' ', '') != '=IF(D%d=0,0,E%d/D%d)' % (r, r, r):
+        fg, fh, fi = (str(ws.cell(r, c).value) for c in (7, 8, 9))
+        # 비율·일수는 정본 반올림 규칙(소수 RD자리)을 걸어도 되고 안 걸어도 된다.
+        # 몸통이 정본 산식인지만 보고, 값 대조는 그 셀이 실제로 선언한 자릿수로 맞춘다 —
+        # 반올림 유무를 값 쪽에서 흘려 주면 산식이 바뀌어도 통과한다.
+        gx, gn = _unround(fg)
+        hx, hn = _unround(fh)
+        ix, ino = _unround(fi)
+        # G 는 백분율 열이다(열머리 「MR(d-1) 투자수익율(%%)」). 정본 산식은 M÷A 라는
+        # 비율이나, 6자리 반올림을 백분율 기준으로 걸어야 원장과 맞는다 —
+        # 원장 daily_ledger 는 r6(pf / ex * 100) 로 끊는다(dm_0901 규칙 1).
+        if gx != '=IF(D%d=0,0,E%d/D%d*100)' % (r, r, r):
             fbad.append(('G%d' % r, fg))
-        if fi.replace(' ', '') != '=IF(H%d=0,0,G%d*연일수/H%d*100)' % (r, r, r):
-            fbad.append(('I%d' % r, fi))
-        if fh.replace(' ', '') != '=IF(D%d=0,0,K%d/D%d)' % (r, r, r):
+        if hx != '=IF(D%d=0,0,K%d/D%d)' % (r, r, r):
             fbad.append(('H%d' % r, fh))
+        # I 는 G 가 이미 백분율이라 *100 을 다시 걸지 않는다.
+        if ix != '=IF(H%d=0,0,G%d*연일수/H%d)' % (r, r, r):
+            fbad.append(('I%d' % r, fi))
         d_, e_, g_, h_, i_ = (bk.cell('일별', 'D%d' % r), bk.cell('일별', 'E%d' % r),
                               bk.cell('일별', 'G%d' % r), bk.cell('일별', 'H%d' % r),
                               bk.cell('일별', 'I%d' % r))
-        if abs(g_ - e_ / d_) > 1e-12:
-            vbad.append(('G%d' % r, g_, e_ / d_))
-        if abs(i_ - g_ * 365 / h_ * 100) > 1e-9:
-            vbad.append(('I%d' % r, i_, g_ * 365 / h_ * 100))
+        if abs(g_ - _rnd(e_ / d_ * 100, gn)) > 1e-12:
+            vbad.append(('G%d' % r, g_, _rnd(e_ / d_ * 100, gn)))
+        if abs(i_ - _rnd(g_ * 365 / h_, ino)) > 1e-9:
+            vbad.append(('I%d' % r, i_, _rnd(g_ * 365 / h_, ino)))
     chk('2', '엑셀 일별 행수 0건 아님', nrow > 0, '%d행' % nrow)
-    chk('2', '엑셀 일별 수식 문언 = SMRD-1 = SMD-1/SAD-1 · ty = SMRD-1 x 365 / SDD-1',
+    chk('2', '엑셀 일별 수식 문언 = %s = %s/%s · ty = %s x 365 / %s' % (SMR, SYM['SM'], SYM['SA'], SMR, SYM['SD']),
         not fbad, '어긋난 셀 %d건 %s' % (len(fbad), fbad[:3]))
     chk('2', '엑셀 일별 평가값이 그 수식과 같음', not vbad, '어긋난 셀 %d건 %s' % (len(vbad), vbad[:3]))
+    # 정본 반올림 — `wD(d-1)` 은 소수 RD자리까지 남긴 값을 다음 계산에 넣는다.
+    # 근거 dm_0901/rounding_rule_0901.md 규칙 1 · symbol_rule_0901.md 「갈림 두 자리」.
+    # 여기서 반올림이 빠지면 기간집계 PwD 가 화면·원장과 갈린다(3.108481 ↔ 3.107588).
+    nord = [('H%d' % r, str(ws.cell(r, 8).value)) for r in range(2, ws.max_row)
+            if ws.cell(r, 1).value is not None and _unround(ws.cell(r, 8).value)[1] != RD]
+    chk('2', '엑셀 일별 %s 이 정본 자릿수(소수 %d자리) 반올림을 걸었음' % (SYM['SD'], RD),
+        nrow > 0 and not nord, '안 건 셀 %d건 %s' % (len(nord), nord[:3]))
 
     # 화면대조 시트 — 출처가 [2번] 인 행 전건 판정
     cw = bk.wb['화면대조']
@@ -699,8 +794,8 @@ def sec2(L, drv):
     row4 = [r for r in tgt if cw.cell(r, 2).value == '주간 ④(%)']
     chk('2', '엑셀 화면대조에 「주간 ④(%)」 행 있음', len(row4) == 1, str(row4))
     x4 = bk.cell('화면대조', 'C%d' % row4[0]) if row4 else None
-    tycards = [c for c in drv['targets']['app']['profitWeek']['cards'] if c['label'] == 'Ty수익율']
-    chk('2', '화면 주간 카드에 Ty수익율 두 칸 있음',
+    tycards = [c for c in drv['targets']['app']['profitWeek']['cards'] if c['label'] == '연환산수익률']
+    chk('2', '화면 주간 카드에 연환산수익률 두 칸 있음',
         len(tycards) == 1 and len(tycards[0]['vals']) == 2, str(tycards))
     scr4 = num(tycards[0]['vals'][0]) if tycards and len(tycards[0]['vals']) == 2 else None
     chk('2', '엑셀 되짚은 주간 ④ = 화면 카드 ④', x4 is not None and scr4 is not None
@@ -716,7 +811,7 @@ def sec2(L, drv):
             'SA': r'SA\s*=\s*([\d,]+)',
             'SMR': r'SMR\s*=\s*[\d,]+\s*(?:÷|/)\s*[\d,]+\s*[\r\n=\s]*([\d.]+)',
             'SD': r'SD\s*=\s*([\d.]+)일',
-            'ty': r'0\.038051%\s*×\s*119\.2810\s*=\s*([\d.]+)%',
+            'ty': r'0\.038051%\s*×\s*119\.416658\s*=\s*([\d.]+)%',
         }
         v = {}
         for k, p in pat.items():
@@ -742,9 +837,13 @@ def sec2(L, drv):
                                  'SD': float(lg[0]), 'ty': float(lg[1])}
     chk('2', '대조 대상 산출물 4곳 모두 값을 냈음', len(got) == 5,
         '%d곳: %s' % (len(got), sorted(got)))
+    # SD 는 화면·원장이 소수 2자리 표기값을, 문서는 6자리 계산값을 싣는다(dm_0901 규칙 1).
+    # 두 자리로 끊었을 때 같은지를 본다 — 글자까지 같기를 요구하면 규칙과 부딪힌다.
     for k in ('SM', 'SA', 'SD', 'ty'):
         vals = dict((s, got[s][k]) for s in got)
-        chk('2', '%s 삼각 대조 — %s' % (DAY, k), len(set(round(x, 4) for x in vals.values())) == 1, str(vals))
+        nd = 2 if k == 'SD' else 4
+        chk('2', '%s 삼각 대조 — %s' % (DAY, k),
+            len(set(round(x, nd) for x in vals.values())) == 1, str(vals))
     smrs = dict((s, round(got[s]['SMR'], 6)) for s in got)
     chk('2', '%s 삼각 대조 — SMRD-1(%%)' % DAY, len(set(smrs.values())) == 1, str(smrs))
     return got
@@ -812,12 +911,13 @@ def sec3(L, drv, s1):
         if ds.cell(r, 1).value is None:
             continue
         nb += 1
-        f = str(ds.cell(r, 8).value).replace(' ', '')
+        f0 = str(ds.cell(r, 8).value)
+        f, _n = _unround(f0)                            # 정본 반올림은 몸통을 감싸기만 한다
         if f != '=IF(D%d=0,0,K%d/D%d)' % (r, r, r):     # D = SUM Ai, B = 건수
-            hbad.append(('H%d' % r, f))
+            hbad.append(('H%d' % r, f0))
         if 'B%d' % r in f:
-            hbad.append(('H%d 건수 참조' % r, f))
-    chk('3', '엑셀 일별 SDD-1 분모가 SAD-1(D열)이며 건수(B열)가 아님',
+            hbad.append(('H%d 건수 참조' % r, f0))
+    chk('3', '엑셀 일별 %s 분모가 %s(D열)이며 건수(B열)가 아님' % (SYM['SD'], SYM['SA']),
         nb > 0 and not hbad, '%d행 · 어긋남 %d건 %s' % (nb, len(hbad), hbad[:3]))
 
     hv = []
@@ -828,15 +928,20 @@ def sec3(L, drv, s1):
         k_ = bk.cell('일별', 'K%d' % r)
         d_ = bk.cell('일별', 'D%d' % r)
         b_ = bk.cell('일별', 'B%d' % r)
-        if abs(h_ - k_ / d_) > 1e-12:
-            hv.append(('H%d' % r, h_, k_ / d_))
-        if abs(h_ - k_ / b_) < 1e-9:                     # 건수 가중과 우연히 같으면 판별 불가
+        _n = _unround(ds.cell(r, 8).value)[1]            # 그 셀이 선언한 자릿수로 맞춘다
+        if abs(h_ - _rnd(k_ / d_, _n)) > 1e-12:
+            hv.append(('H%d' % r, h_, _rnd(k_ / d_, _n)))
+        if abs(h_ - _rnd(k_ / b_, _n)) < 1e-9:           # 건수 가중과 우연히 같으면 판별 불가
             hv.append(('H%d 건수가중과 동일' % r, h_))
-    chk('3', '엑셀 일별 SDD-1 평가값 = SUM(Ai x Di) / SUM Ai · 건수 가중과 다름',
+    chk('3', '엑셀 일별 %s 평가값 = SUM(Ai x Di) / SUM Ai · 건수 가중과 다름' % SYM['SD'],
         not hv, '어긋남 %d건 %s' % (len(hv), hv[:3]))
 
     # 화면 — 시뮬레이션 일별/합계 W 가 금액 가중인가
-    for key in ('app', 'proto'):
+    #   원본(app)만. 시연본은 투자 시뮬레이션을 뺐다(step7 2026-09-04 · PROTO_DROPPED) — 없음을 따로 판정한다.
+    pa_ = drv['targets']['proto'].get('simAbsent') or {}
+    chk('3', '[proto] 투자 시뮬레이션 화면·메뉴·전역 함수 없음 (PROTO_DROPPED)',
+        bool(pa_) and not pa_['section'] and not pa_['nav'] and not pa_['fn'], str(pa_))
+    for key in ('app',):
         sim = drv['targets'][key]['simSeed']
         bonds = [b for b in sim['bonds']['body'] if b[1] == '기간 내']
         chk('3', '[%s] 시뮬레이션 기간 내 채권 0건 아님' % key, len(bonds) > 0, '%d건' % len(bonds))
@@ -993,17 +1098,19 @@ def sec4(L):
     import audit_xlsx_check as AX
     bk = AX.Book(XLSX)
     hit = 0
+    # 열머리 행만 본다. 아무 칸이나 훑으면 `가중치 대조!B3` 「Ai 정의」 같은 산식 설명 줄이
+    # 기호의 이름으로 새어 들어와 출처 대조가 '정의' 로 뭉개진다.
     for wsx in bk.wb.worksheets:
-        for row in wsx.iter_rows():
-            for c in row:
-                v = c.value
-                if not isinstance(v, str) or v.startswith('='):
-                    continue
-                for flat in SYMBOLS:
-                    m = re.match(r'^' + re.escape(flat) + r'\s+([가-힣A-Za-z][가-힣A-Za-z0-9 ]*?)\s*(?:\(|$)', v.strip())
-                    if m:
-                        table[flat]['검산 엑셀'] = norm_name(m.group(1))
-                        hit += 1
+        for c in wsx[1]:
+            v = c.value
+            if not isinstance(v, str) or v.startswith('='):
+                continue
+            for flat in SYMBOLS:
+                m = re.match(r'^' + re.escape(flat) + r'\s+([가-힣A-Za-z][가-힣A-Za-z0-9 ]*?)\s*(?:\(|$)', v.strip())
+                # 곱 열 `Ai x Di` 는 뒤가 이름이 아니라 다른 기호다 — 이름으로 세지 않는다.
+                if m and not any(s in m.group(1) for s in SYMBOLS):
+                    table[flat]['검산 엑셀'] = norm_name(m.group(1))
+                    hit += 1
     chk('4', '검산 엑셀에서 「기호 이름」 꼴 열머리 0건 아님', hit > 0, '%d곳' % hit)
 
     bad = name_check(table)
@@ -1045,15 +1152,19 @@ def sec4(L):
     misuse = []
     for c in range(1, ds.max_column + 1):
         h = str(ds.cell(1, c).value or '')
-        if not h.startswith('SMD-1'):
+        if not h.startswith(SYM['SM']):
             continue
         f2 = str(ds.cell(2, c).value)
         holds_def = '채권!$O$' in f2                      # O = 투자수익 Mi = 수수료 - 차감
         marked = ('참고' in h) or ('차감 제외' in h)
         if not holds_def and not marked:
             misuse.append((ds.cell(1, c).coordinate, h, f2[:50]))
-    chk('4', '엑셀에서 SMD-1 을 머리에 달고 다른 값을 담은 열에 「참고」 표식이 있음',
-        not misuse, str(misuse))
+    # 머리에 그 기호를 단 열이 하나도 없으면 판정이 빈 채로 통과한다 — 그것도 FAIL 로 세운다.
+    marked_cols = [c for c in range(1, ds.max_column + 1)
+                   if str(ds.cell(1, c).value or '').startswith(SYM['SM'])]
+    chk('4', '엑셀에서 %s 을 머리에 달고 다른 값을 담은 열에 「참고」 표식이 있음' % SYM['SM'],
+        bool(marked_cols) and not misuse, '%s 열 %d개 · 표식 없는 오용 %s'
+        % (SYM['SM'], len(marked_cols), misuse))
     return table
 
 
@@ -1164,7 +1275,8 @@ def sec5(L, drv):
         not nz, '0 아닌 행 %d건 %s' % (len(nz), nz[:3]))
 
     # 5-e 화면 행태 시험 — 시뮬레이션 미지급률 < 과지급률
-    for key in ('app', 'proto'):
+    #   원본(app)만 — 시연본은 투자 시뮬레이션을 뺐다(step7 2026-09-04 · PROTO_DROPPED). 3절이 없음을 판정한다.
+    for key in ('app',):
         t = drv['targets'][key]
         neg = t['simClampNeg']['bonds']['body']
         pos = t['simClampPos']['bonds']['body']
@@ -1224,11 +1336,11 @@ def sec6(L, s1):
     d2[3]['profit'] += 1
     b2 = day_identity(d2, rate)
     chk('6', '자기시험 하루층 — 투자수익 +1 을 심으면 잡힌다',
-        bool(b2['emit']) and bool(b2['profit']), str({k: len(v) for k, v in b2.items()}))
+        bool(b2['profit']), str({k: len(v) for k, v in b2.items()}))
     d3 = [dict(g) for g in days]
     d3[10]['repay'] -= 1
     b3 = day_identity(d3, rate)
-    chk('6', '자기시험 하루층 — 상환액 -1 을 심으면 잡힌다', bool(b3['emit']),
+    chk('6', '자기시험 하루층 — 상환액 -1 을 심으면 잡힌다', bool(b3['repay']),
         str({k: len(v) for k, v in b3.items()}))
     lim = int(D('0.5') * s1['total']['n'])
     t2 = dict(s1['total'])

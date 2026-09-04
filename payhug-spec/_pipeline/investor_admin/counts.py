@@ -17,7 +17,9 @@ OUT = os.path.join(HERE, 'counts.json')
 
 # 화면이 아닌 문서 낱장
 DOCS = {'index.html', 'glossary.html', 'capability.html',
-        'feasibility.html', 'inquiry.html', 'review.html', 'archive.html'}
+        'feasibility.html', 'inquiry.html', 'review.html', 'archive.html',
+        'terms-edit.html', 'final-terms.html', 'calc.html', 'steps-all.html',
+        'ceo-questions.html'}
 
 
 def _tpl():

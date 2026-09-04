@@ -18,6 +18,7 @@ base64 로 품고 있다가 원고만 갈아 끼워 새 문서를 만든다. 그
 """
 
 import base64
+import html
 import json
 import os
 import re
@@ -25,6 +26,11 @@ import sys
 from datetime import date
 
 PIPE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, PIPE)
+import alias_table
+import subscript
+import termsfacts
+
 SEED = os.path.join(PIPE, "termsdoc_seed.json")
 REPO = "/Users/semi/cursor/payhug-investor-admin"
 SHOTDIR = os.path.join(REPO, "assets", "shots")
@@ -70,6 +76,20 @@ def js_json(obj):
     # 라 띄어쓰기가 끼고, 그러면 페이지가 만든 문서가 받은 파일과 바이트로 갈린다.
     return json.dumps(obj, ensure_ascii=False,
                       separators=(",", ":")).replace("</", "<\\/")
+
+
+def alias_html():
+    """기존 표기 → 바뀐 기호 대조표. 표만 낸다."""
+    esc = lambda s: html.escape("" if s is None else str(s))
+    o = ['<section class="xr"><h2>%s</h2><div class="xrs"><table><thead><tr>'
+         % esc(alias_table.TITLE)]
+    o += ["<th>%s</th>" % esc(h) for h in alias_table.HEAD]
+    o.append("</tr></thead><tbody>")
+    for old, new, name in alias_table.rows():
+        o.append("<tr><td class='n'>%s</td><td class='n'>%s</td><td>%s</td></tr>"
+                 % (subscript.subs(esc(old)), subscript.subs(esc(new)), esc(name)))
+    o.append("</tbody></table></div></section>")
+    return "".join(o)
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -153,6 +173,19 @@ a{color:var(--accent)}
 .state.bad{color:var(--check)}
 
 /* ── 판짜기 ───────────────────────────────────── */
+.xr{max-width:1160px; margin:0 auto; padding:20px 20px 0}
+.xr h2{margin:0 0 10px; font-family:"Noto Serif KR",serif; font-size:19px; font-weight:700}
+.xrs{overflow-x:auto; border:1px solid var(--rule); border-radius:10px;
+     background:var(--surface); box-shadow:var(--shadow)}
+.xr table{width:100%; border-collapse:collapse; font-size:13px}
+.xr th,.xr td{padding:8px 12px; text-align:left; border-bottom:1px solid var(--rule);
+              vertical-align:top}
+.xr th{background:var(--sunk); font-size:11px; letter-spacing:.04em; color:var(--mute);
+       font-weight:700; white-space:nowrap}
+.xr tr:last-child td{border-bottom:0}
+.xr td.n{font-family:"IBM Plex Mono",ui-monospace,monospace; white-space:nowrap;
+         color:var(--accent)}
+
 .wrap{display:grid; grid-template-columns:236px minmax(0,1fr); gap:34px;
       max-width:1160px; margin:0 auto; padding:26px 20px 120px}
 @media(max-width:900px){.wrap{grid-template-columns:1fr; gap:18px}
@@ -166,7 +199,6 @@ a{color:var(--accent)}
        color:var(--mute); text-decoration:none}
 .toc a:hover{background:var(--accent-soft); color:var(--accent)}
 .toc a .n{font-variant-numeric:tabular-nums; opacity:.65; min-width:1.5em}
-.toc a.wait{color:var(--wait)} .toc a.check{color:var(--check)}
 
 /* ── 머리 ───────────────────────────────────── */
 .head{border-bottom:1px solid var(--rule); padding-bottom:20px; margin-bottom:8px}
@@ -210,12 +242,6 @@ a{color:var(--accent)}
 .card .sym{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px;
            color:var(--accent); background:var(--accent-soft);
            padding:2px 7px; border-radius:5px}
-.pill{font-size:11px; font-weight:700; letter-spacing:.05em; padding:3px 8px;
-      border-radius:20px; border:1px solid currentColor; cursor:pointer;
-      background:none; font-family:inherit; line-height:1.5}
-.pill.s확정{color:var(--mute)}
-.pill.s대기{color:var(--wait); background:var(--wait-soft)}
-.pill.s확인필요{color:var(--check); background:var(--check-soft)}
 .card .ops{margin-left:auto; display:flex; gap:3px; opacity:0; transition:opacity .12s}
 .card:hover .ops, .card:focus-within .ops{opacity:1}
 .ops button{font:inherit; font-size:11px; line-height:1; cursor:pointer; padding:5px 7px;
@@ -319,6 +345,37 @@ var $ = function(s,r){return (r||document).querySelector(s)};
 var esc = function(s){return String(s==null?"":s)
   .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")};
 
+/* 아래첨자 조판 — subscript.py 와 같은 규칙. 고쳐 쓰는 칸에는 걸지 않는다.
+   contenteditable 은 textContent 로 되읽으므로 태그가 들어가면 밑줄표시가 날아간다. */
+var SUBRE = /(^|[^0-9A-Za-z_])(wPY|SMR|PY|wD|MR|SA|SB|SD|SL|SM|EC|Y|A|B|D|L|M|w|[\uAC00-\uD7A3]{2,12})_(?:\{([^{}]{1,24})\}|([iradt]))(?![0-9A-Za-z_])/g;
+var subs = function(s){
+  return String(s==null?"":s).replace(SUBRE, function(m, pre, base, br, one){
+    var body = (br==null?one:br).replace(/-/g,"\u2212").replace(/,/g,",\u2009");
+    return pre + base + "<sub>" + body + "</sub>";
+  });
+};
+var escsub = function(s){ return subs(esc(s)) };
+
+/* 고쳐 쓰는 칸을 되읽는다. 조판된 아래첨자는 원고 표기 `_i` · `_{d−1}` 로 되돌려
+   원고에 담는다. 이 되돌림이 없으면 한 글자만 고쳐도 밑줄 표시가 날아간다. */
+function readField(el){
+  var out = "";
+  (function walk(node){
+    for (var n = node.firstChild; n; n = n.nextSibling){
+      if (n.nodeType === 3){ out += n.nodeValue; continue }
+      if (n.nodeType !== 1) continue;
+      if (n.tagName === "SUB"){
+        var b = n.textContent.replace(/\u2009/g, "");
+        out += (b === "i" || b === "r") ? "_" + b : "_{" + b + "}";
+        continue;
+      }
+      if (n.tagName === "BR"){ out += "\n"; continue }
+      walk(n);
+    }
+  })(el);
+  return out;
+}
+
 /* ── 자기 원본 ───────────────────────────────── */
 function b64dec(s){
   var bin = atob(s), b = new Uint8Array(bin.length);
@@ -387,13 +444,11 @@ function pf(it){
 }
 
 function cardHTML(it, idx){
-  var st = it.status || "확정";
   var h = '<article class="card" id="t'+it.no+'" data-i="'+idx+'">';
 
   h += '<div class="top"><span class="no">'+String(it.no).padStart(2,"0")+'</span>';
-  h += '<h3 contenteditable data-f="term" data-ph="용어">'+esc(it.term)+'</h3>';
-  if (it.symbol) h += '<span class="sym">'+esc(it.symbol)+'</span>';
-  h += '<button class="pill s'+st+'" data-act="st" title="상태 바꾸기">'+st+'</button>';
+  h += '<h3 contenteditable data-f="term" data-ph="용어">'+escsub(it.term)+'</h3>';
+  if (it.symbol) h += '<span class="sym">'+escsub(it.symbol)+'</span>';
   h += '<span class="ops">'
      + '<button data-act="up" title="위로">↑</button>'
      + '<button data-act="down" title="아래로">↓</button>'
@@ -407,7 +462,7 @@ function cardHTML(it, idx){
 
   h += '<div class="body">';
   h += '<p class="plain" contenteditable data-f="plain" data-ph="풀이를 쓰세요">'
-     + esc(it.plain) + '</p>';
+     + escsub(it.plain) + '</p>';
 
   var rows = "", p = pf(it);
   FIELDS.forEach(function(f){
@@ -415,20 +470,20 @@ function cardHTML(it, idx){
       var pv = f[0] === "formula" ? p.formula : p.our_value;
       if (pv == null || pv === "") return;
       rows += '<div class="k">'+f[1]+'</div>'
-            + '<div class="v '+f[2]+'">'+esc(pv)
+            + '<div class="v '+f[2]+'">'+escsub(pv)
             + (p.status ? '<span class="mark">'+esc(p.status)+'</span>' : '')
             + '</div>';
       return;
     }
     if (it[f[0]] == null || it[f[0]] === "") return;
     rows += '<div class="k">'+f[1]+'<button data-act="rmf" data-f="'+f[0]+'" title="이 줄 지우기">×</button></div>'
-          + '<div class="v '+f[2]+'" contenteditable data-f="'+f[0]+'">'+esc(it[f[0]])+'</div>';
+          + '<div class="v '+f[2]+'" contenteditable data-f="'+f[0]+'">'+escsub(it[f[0]])+'</div>';
   });
   (it.extra||[]).forEach(function(x,j){
     rows += '<div class="k"><span contenteditable data-f="xk" data-j="'+j+'" '
           + 'data-ph="이름">'+esc(x.k)+'</span>'
           + '<button data-act="rmx" data-j="'+j+'" title="이 줄 지우기">×</button></div>'
-          + '<div class="v" contenteditable data-f="xv" data-j="'+j+'">'+esc(x.v)+'</div>';
+          + '<div class="v" contenteditable data-f="xv" data-j="'+j+'">'+escsub(x.v)+'</div>';
   });
   if (rows) h += '<div class="rows">'+rows+'</div>';
 
@@ -469,25 +524,15 @@ function render(){
      + '<div><dt>할인율</dt><dd>'+((sc["할인율"]||0)*100)+'%</dd></div>'
      + '<div><dt>항목</dt><dd>'+items.length+'항</dd></div></dl></div>';
 
-  if ((SEED.pending||[]).length){
-    h += '<div class="pend"><h3>미결</h3><ul>';
-    SEED.pending.forEach(function(p,i){
-      h += '<li><b contenteditable data-p="item" data-j="'+i+'">'+esc(p.item)+'</b> · '
-         + '<span contenteditable data-p="who" data-j="'+i+'">'+esc(p.who)+'</span> — '
-         + '<span contenteditable data-p="what" data-j="'+i+'">'+esc(p.what)+'</span></li>';
-    });
-    h += '</ul>';
-    var b = SEED.pending_formula;
-    if (b){
-      var to = [b.no].concat((b.depends||[]).map(function(x){ return x.no }));
-      h += '<div class="pf"><div class="lb">'+esc(b.ref)+' '+esc(b.term)
-         + (pfmark(b) ? ' · '+esc(pfmark(b)) : '')+'</div>'
-         + '<div class="fx" contenteditable data-pf="formula">'+esc(b.formula)+'</div>'
-         + '<div class="to">'+to.map(function(n){ return n+"항" }).join(" · ")
-         + ' · ' + esc((b.depends||[]).map(function(x){
-             return x.ref+" = "+x.formula }).join(" · ")) + '</div></div>';
-    }
-    h += '</div>';
+  var b = SEED.pending_formula;
+  if (b){
+    var to = [b.no].concat((b.depends||[]).map(function(x){ return x.no }));
+    h += '<div class="pend"><div class="pf"><div class="lb">'+esc(b.ref)+' '+esc(b.term)
+       + (pfmark(b) ? ' · '+esc(pfmark(b)) : '')+'</div>'
+       + '<div class="fx" contenteditable data-pf="formula">'+escsub(b.formula)+'</div>'
+       + '<div class="to">'+to.map(function(n){ return n+"항" }).join(" · ")
+       + ' · ' + escsub((b.depends||[]).map(function(x){
+           return x.ref+" = "+x.formula }).join(" · ")) + '</div></div></div>';
   }
 
   var seen = {};
@@ -512,9 +557,8 @@ function toc(){
   SEED.items.forEach(function(it){
     var g = it.image || 1;
     if (!seen[g]){ seen[g]=1; h += '<div class="grp">'+g+'번 이미지</div>' }
-    var cls = it.status === "대기" ? "wait" : it.status === "확인필요" ? "check" : "";
-    h += '<a href="#t'+it.no+'" class="'+cls+'"><span class="n">'
-       + String(it.no).padStart(2,"0")+'</span><span>'+esc(it.term)+'</span></a>';
+    h += '<a href="#t'+it.no+'"><span class="n">'
+       + String(it.no).padStart(2,"0")+'</span><span>'+escsub(it.term)+'</span></a>';
   });
   $("#toc").innerHTML = h;
 }
@@ -522,15 +566,12 @@ function toc(){
 /* ── 고르기 ───────────────────────────────── */
 function filter(){
   var q = ($("#q").value || "").trim().toLowerCase();
-  var only = $("#only").value;
   var n = 0;
   SEED.items.forEach(function(it, i){
     var el = document.querySelector('.card[data-i="'+i+'"]');
     if (!el) return;
-    var okQ = !q || (it.term+" "+it.quote+" "+it.plain+" "+(it.formula||"")+" "+
-                     (it.note||"")+" "+(it.symbol||"")).toLowerCase().indexOf(q) >= 0;
-    var okS = only === "all" || it.status === only;
-    var show = okQ && okS;
+    var show = !q || (it.term+" "+it.quote+" "+it.plain+" "+(it.formula||"")+" "+
+                      (it.note||"")+" "+(it.symbol||"")).toLowerCase().indexOf(q) >= 0;
     el.classList.toggle("hide", !show);
     if (show) n++;
   });
@@ -550,7 +591,7 @@ function idx(el){ var c = el.closest(".card"); return c ? +c.dataset.i : -1 }
 document.addEventListener("input", function(e){
   var el = e.target;
   if (!el.isContentEditable) return;
-  var t = el.textContent;
+  var t = readField(el);
   if (el.dataset.g){ SEED[el.dataset.g] = t; mark(); return }
   if (el.dataset.p){ SEED.pending[+el.dataset.j][el.dataset.p] = t; mark(); return }
   if (el.dataset.pf){ SEED.pending_formula[el.dataset.pf] = t; mark(); return }
@@ -569,7 +610,9 @@ document.addEventListener("paste", function(e){
     (e.clipboardData || window.clipboardData).getData("text/plain"));
 });
 
-var STATES = ["확정","대기","확인필요"];
+/* 새로 만든 항목이 받는 상태값. 원고 스키마가 받는 세 값 가운데 하나이고,
+   화면에는 찍지 않는다 — 상태 배지를 걷어냈다. */
+var STATUS_NEW = "\ud655\uc778\ud544\uc694";
 
 function renumber(){ SEED.items.forEach(function(it,i){ it.no = i+1 }) }
 
@@ -580,13 +623,6 @@ document.addEventListener("click", function(e){
 
   if (act === "zoom"){ zoom(b.dataset.shot); return }
 
-  if (act === "st"){
-    var it = SEED.items[i];
-    it.status = STATES[(STATES.indexOf(it.status||"확정")+1) % 3];
-    b.textContent = it.status;
-    b.className = "pill s"+it.status;
-    toc(); mark(); return;
-  }
   if (act === "up" || act === "down"){
     var j = act === "up" ? i-1 : i+1;
     if (j < 0 || j >= SEED.items.length) return;
@@ -607,7 +643,7 @@ document.addEventListener("click", function(e){
     var img = act === "add" ? (SEED.items[i].image||1)
                             : ((SEED.items[SEED.items.length-1]||{}).image||1);
     SEED.items.splice(at, 0, {no:0, image:img, term:"", quote:"", plain:"",
-                              status:"확인필요", extra:[]});
+                              status:STATUS_NEW, extra:[]});
     renumber(); mark(); render();
     var nel = document.querySelector('.card[data-i="'+at+'"] h3');
     if (nel){ nel.scrollIntoView({block:"center"}); nel.focus() }
@@ -709,7 +745,6 @@ window.addEventListener("keydown", function(e){
 function say(t, cls){ var s = $("#st"); s.textContent = t; s.className = "state "+(cls||"") }
 
 $("#q").addEventListener("input", filter);
-$("#only").addEventListener("change", filter);
 
 $("#save").addEventListener("click", async function(){
   var doc = renderDoc();
@@ -775,17 +810,12 @@ TEMPLATE = """<title>%%TITLE%%</title>
   <h1>%%TITLE%%</h1>
   <span class="sp"></span>
   <input type="search" id="q" placeholder="용어·산식 찾기" aria-label="찾기">
-  <select id="only" class="btn" aria-label="상태로 고르기">
-    <option value="all">전체</option>
-    <option value="확정">확정</option>
-    <option value="대기">대기</option>
-    <option value="확인필요">확인필요</option>
-  </select>
   <span class="state" id="cnt"></span>
   <span class="state" id="st"></span>
   <button class="btn pri" id="save">저장</button>
 </header>
 
+%%ALIAS%%
 <div class="wrap">
   <nav class="toc" id="toc" aria-label="목차"></nav>
   <main id="doc"></main>
@@ -833,6 +863,7 @@ def build(seed, shots):
     raw = (TEMPLATE
            .replace("%%CSS%%", CSS)
            .replace("%%JS%%", JS)
+           .replace("%%ALIAS%%", alias_html())
            .replace("%%TITLE%%", seed.get("title", "용어 정의서")))
 
     cut = raw.index("%%SRC%%")
@@ -850,7 +881,8 @@ def main():
     if not os.path.exists(SEED):
         sys.exit("원고 없음 — %s" % SEED)
     with open(SEED, encoding="utf-8") as f:
-        seed = with_links(json.load(f))
+        # 원고의 `{{키}}` 자리에 원장 값을 끼운다 — 워드판과 같은 표를 쓴다
+        seed = with_links(termsfacts.resolve(json.load(f)))
 
     shots = shots_payload()
     doc = build(seed, shots)

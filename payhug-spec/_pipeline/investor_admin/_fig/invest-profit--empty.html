@@ -33,8 +33,6 @@
     font-size: 12px; line-height: 16px; font-weight: 500;
   }
 </style>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=block" rel="stylesheet">
-  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-active="invest-returns">
 <div class="page">
@@ -61,10 +59,6 @@
         <a class="nav-item" data-menu="invest-returns" href="invest-profit.html">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
           <span>투자 수익</span>
-        </a>
-        <a class="nav-item" data-menu="invest-sim" href="invest-sim.html">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm3.75-6.75A2.25 2.25 0 0119.5 4.5h-15A2.25 2.25 0 002.25 6.75v10.5A2.25 2.25 0 004.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75z"/></svg>
-          <span>투자 시뮬레이션</span>
         </a>
       </div>
 
@@ -130,12 +124,12 @@
       <div class="filter-row">
         <div class="filter-field">
           <label>시작일</label>
-          <span class="input" style="display:inline-flex;align-items:center;box-sizing:border-box;width:148px;height:40px;white-space:nowrap;overflow:hidden;justify-content:space-between;gap:8px;" data-fig-input="date"><span>2026. 02. 01.</span><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="1.9" style="width:15px;height:15px;flex:none;margin-right:1px"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10.5h18M8 3v4M16 3v4" stroke-linecap="round"/></svg></span>
+          <input type="date" class="input" value="2026-02-01">
         </div>
         <div class="filter-tilde">~</div>
         <div class="filter-field">
           <label>종료일</label>
-          <span class="input" style="display:inline-flex;align-items:center;box-sizing:border-box;width:148px;height:40px;white-space:nowrap;overflow:hidden;justify-content:space-between;gap:8px;" data-fig-input="date"><span>2026. 02. 07.</span><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="1.9" style="width:15px;height:15px;flex:none;margin-right:1px"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10.5h18M8 3v4M16 3v4" stroke-linecap="round"/></svg></span>
+          <input type="date" class="input" value="2026-02-07">
         </div>
         <button class="btn btn-primary">검색</button>
         <button class="btn btn-outline">초기화</button>
@@ -172,14 +166,14 @@
           <div class="summary-value">0<span class="unit">원</span></div>
         </div>
         <div class="stat">
-          <div class="summary-label">Ty수익율</div>
+          <div class="summary-label">연환산수익률</div>
           <div class="ty-split">
             <div>
-              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span><span class="tip-panel">PSMR × 365 ÷ PSD<span class="tip-row"><span>PSMR</span><span class="tip-green">투자수익 ÷ 투자실행금</span></span><span class="tip-row"><span>PSD</span><span class="tip-green">투자실행금 가중평균 금융일수</span></span></span></span></div>
+              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span><span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산수익률 (관찰된 값) · PMR × 365 ÷ PD<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = 0%</span></span><span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · 0원</span></span><span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · 0원</span></span><span class="tip-row"><span>PD</span><span class="tip-green">기간 가중평균 금융일수 · 0일</span></span><span class="tip-row"><span>항등식</span><span class="tip-green">할인율 − max(0, 미지급금 − 과지급금) ÷ 투자실행액</span></span><span class="tip-row"><span>부족액 0</span><span class="tip-green">할인율 0.11% ↔ PMR 0.110121% · 미확정</span></span><span class="tip-row sum"><span>대표 DM 16:45</span><span>관찰된 값 · PMR 계통</span></span></span></span></div>
               <div class="summary-value">0.00<span class="unit">%</span></div>
             </div>
             <div>
-              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span><span class="tip-panel">(투자실행금액 대비 × PSA) ÷ (PSA + PSC)<span class="tip-row"><span>PSA</span><span class="tip-green">0원</span></span><span class="tip-row"><span>PSC</span><span class="tip-green">0원</span></span><span class="tip-row sum"><span>EC 0일 합</span><span>기간 순현금 합계</span></span></span></span></div>
+              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span><span class="tip-panel">PY<sub>t</sub> · 투자자산 대비 연환산수익률 (관찰된 값) · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산수익률 (관찰된 값) · 0%</span></span><span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">0원</span></span><span class="tip-row"><span>PEC</span><span class="tip-green">기간 순현금 · 0원</span></span><span class="tip-row sum"><span>EC</span><span>순현금 · 20,000,000원 × 0일</span></span><span class="tip-row sum"><span>미확정</span><span>대표 확인 대기</span></span></span></span> <span class="badge sm badge-amber">미확정</span></div>
               <div class="summary-value">0.00<span class="unit">%</span></div>
             </div>
           </div>
@@ -204,10 +198,10 @@
             <tr>
               <th>정산예정일</th>
               <th class="num">상환액</th>
-              <th class="num">투자실행금</th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span><span class="tip-panel">⑥ 의 ③<span class="tip-row"><span>번호</span><span class="tip-green">상단 현황의 기간 전체 숫자 · 칸 미지목</span></span><span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span></span></span> <span class="badge sm badge-amber">미확정</span></th>
               <th class="num">투자 수익</th>
-              <th class="num">W금융일수</th>
-              <th class="num">Ty수익율</th>
+              <th class="num">가중평균 금융일수</th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산수익률</span><span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤<span class="tip-row"><span>번호</span><span class="tip-green">일별 표 열 ③투자실행금 ④투자 수익 ⑤가중평균 금융일수</span></span><span class="tip-row"><span>행</span><span class="tip-green">정산예정일이 그 날짜인 대상정산금채권 집합</span></span><span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span></span></span> <span class="badge sm badge-amber">미확정</span></th>
             </tr>
           </thead>
           <tbody>

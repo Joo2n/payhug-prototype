@@ -43,6 +43,10 @@ ASSET_NOTE = {
 DOC_NAME = {
     'glossary.html': '용어 해설 — 용어 50건 · 화면 캡처 위치 표시',
     'terms-edit.html': '용어 정의서 편집판 — 대표 정의 45항 · 그 자리에서 고쳐 저장',
+    'final-terms.html': '용어·기호 정리 — 기존 표기 → 바뀐 기호',
+    'calc.html': '계산식 하나씩 — 변수 정의 → 산식 → 대입 → 결과',
+    'steps-all.html': '화면 칸별 중간 계산 — 투자 자산 · 투자 수익 두 화면의 값',
+    'ceo-questions.html': '대표님 확인 문항 — 답을 적어 저장',
     'capability.html': '산출물이 무엇을 말할 수 있나',
     'feasibility.html': '구현 가능성 — 개발 확인 문항',
     'inquiry.html': '대표 확인 요청 — 문항 5건',

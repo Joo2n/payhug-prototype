@@ -25,9 +25,11 @@ FIG = os.path.join(BASE, '_fig')
 MEAS_PATH = os.path.join(BASE, 'fig_meas.json')
 PORT = 8903
 
-# 임포트 대상 35화면. invest-profit--datepicker 는 093a07b 에서 폐기(커스텀 달력 팝오버가 실물에 없음).
+# 임포트 대상 24화면 — 시연본에 있는 화면만. index(화면 갤러리)·coocon(쿠콘은 사이드바 외부 링크로 자동 연결이라 상세 화면 없음)
+# ·invest-sim 2종(시뮬레이션은 통합본 전용)·xls-* 4종(엑셀은 다운로드 버튼으로 바로 내려받고 미리보기 화면이 실물에 없다)·login(로그인은 기존 어드민 프론트 화면 그대로라 별도 프레임을 두지 않는다)은 만들지 않는다.
+# invest-profit--datepicker 는 093a07b 에서 폐기(커스텀 달력 팝오버가 실물에 없음).
 IMPORT = [
-    'invest-assets', 'certificate', 'invest-profit', 'coocon', 'merchants',
+    'invest-assets', 'certificate', 'invest-profit', 'merchants',
     'acquisition', 'acquisition--doc', 'contracts', 'password',
     'invest-assets--download', 'invest-assets--cert-confirm',
     'invest-assets--empty', 'invest-profit--monthly', 'invest-profit--empty',
@@ -35,9 +37,7 @@ IMPORT = [
     'acquisition--confirm', 'acquisition--signing', 'acquisition--done',
     'contracts--all', 'contracts--empty',
     'password--weak', 'password--error', 'password--done',
-    'invest-profit--weekly', 'invest-sim', 'invest-sim--result',
-    'index', 'login',
-    'xls-assets-status', 'xls-assets-merchant', 'xls-profit-status', 'xls-profit-daily',
+    'invest-profit--weekly',
 ]
 HOLD = []
 
@@ -86,6 +86,19 @@ def patch_css():
     return out
 
 
+def patch_nav():
+    """사이드바에서 시연본에 없는 메뉴를 뺀다. 시뮬레이션은 통합본 전용이라 Figma 에 두지 않는다. 멱등."""
+    pat = re.compile(r'\s*<a class="nav-item" data-menu="invest-sim"[^>]*>.*?</a>', re.S)
+    n = 0
+    for f in files():
+        q = os.path.join(FIG, f)
+        s = open(q, encoding='utf-8').read()
+        new, k = pat.subn('', s)
+        if k:
+            open(q, 'w', encoding='utf-8').write(new); n += k
+    return ['사이드바 invest-sim 메뉴 %d곳 제거' % n]
+
+
 def sync():
     if not os.path.isdir(SRC):
         raise SystemExit('원본 레포 없음: %s' % SRC)
@@ -112,7 +125,7 @@ def sync():
         if os.path.isdir(q):
             shutil.copytree(q, os.path.join(FIG, 'assets', d))
     print('동기화 %d화면 · 원본 HEAD %s%s' % (len(files()), head, ' (워킹트리 변경분 포함)' if dirty else ''))
-    for line in patch_css():
+    for line in patch_css() + patch_nav():
         print('  패치 ' + line)
     if HOLD:
         print('  보류 제외: ' + ', '.join(HOLD))

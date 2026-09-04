@@ -208,6 +208,7 @@
 | 표 빈 상태 — 검색어 적용 후 0건 (가맹점) | `검색 결과가 없습니다.` | `payhug-admin-web/app/sales/page.tsx:122` — `{searchQuery ? "검색 결과가 없습니다." : ...}`. 같은 문구가 `app/manage/page.tsx:282` · `app/inquiries/page.tsx:276` · `app/partners/page.tsx:1378` 에도 있다 |
 | 백엔드 응답에 달린 오류 토스트 2종 — 화면에 넣지 않고 산출물 명세 판정표에 원문으로만 인용 | `비밀번호 변경에 실패했습니다.` · `서버 통신 중 오류가 발생했습니다.` | `payhug-merchant-web/app/my-info/change-password/page.tsx:65` · `:69` — `showToast(..., "error")` |
 | 투자자 없음 체크박스 설명 — `feasibility.html:715` 이 재양도 합의서 실재 근거로 인용하는 어드민 원문 | `재양도 합의서가 '투자자 없음' 버전으로 작성됩니다` | `payhug-admin-web/app/merchants/[id]/page.tsx:957` — `<span>투자자 없음 (유동화기관 없이 계약·승인. 재양도 합의서가 &lsquo;투자자 없음&rsquo; 버전으로 작성됩니다)</span>`. 원문의 `&lsquo;`/`&rsquo;` 를 우리 문서는 ASCII 따옴표로 적는다 |
+| 로그인 화면 안내 상자 (`login.html` · `app.html` 로그인 섹션) | `이 페이지는 관리자 전용입니다.` | `payhug-admin-web/app/login/page.tsx:186` — `<strong>안내:</strong> 이 페이지는 관리자 전용입니다.` 로그인 화면을 실물대로 되돌린 자리(2026-09-04) |
 
 예외로 남기는 문구마다 출처를 `파일:라인`으로 병기한다. 출처를 못 대면 예외가 아니라 임의 생성이다.
 

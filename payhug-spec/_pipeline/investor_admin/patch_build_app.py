@@ -100,11 +100,11 @@ rep("{v:pct(m.ty, 2), c:'c-num'}, {v:fx(m.amount / exec * 100, 1) + '%', c:'c-nu
     "{v:pct(m.ty, 2), c:'c-num'}, {v:fx(xRatio[i], 1) + '%', c:'c-num'}, null]});", '시트 가맹점 비중')
 rep("    rows.push({n:12, cls:'r-total', c:[{v:'합계'}, {v:fmt(exec), c:'c-num'}, {v:''}, {v:''}, {v:''}, {v:'100.0%', c:'c-num'}, null]});\n"
     "    rows.push({n:13, c:[null, null, null, null, null, null, null]});\n"
-    "    rows.push({n:14, c:[{v:'※ 비중은 투자실행액 합계(' + fmt(exec) + '원) 대비 각 가맹점 투자금액의 구성비.', c:'c-note', span:7}]});",
+    "    rows.push({n:14, c:[{v:'※ 비중은 투자실행액 합계(' + fmt(exec) + '원) 대비 각 가맹점 투자실행액의 구성비.', c:'c-note', span:7}]});",
     "    var tot = 4 + MERCHANTS.length;\n"
     "    rows.push({n:tot, cls:'r-total', c:[{v:'합계'}, {v:fmt(exec), c:'c-num'}, {v:''}, {v:''}, {v:''}, {v:'100.0%', c:'c-num'}, null]});\n"
     "    rows.push({n:tot + 1, c:[null, null, null, null, null, null, null]});\n"
-    "    rows.push({n:tot + 2, c:[{v:'※ 비중은 투자실행액 합계(' + fmt(exec) + '원) 대비 각 가맹점 투자금액의 구성비.', c:'c-note', span:7}]});",
+    "    rows.push({n:tot + 2, c:[{v:'※ 비중은 투자실행액 합계(' + fmt(exec) + '원) 대비 각 가맹점 투자실행액의 구성비.', c:'c-note', span:7}]});",
     '시트 합계 행번호')
 
 # ── 11) 자체 점검 ────────────────────────────────────────────────

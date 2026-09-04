@@ -10,10 +10,14 @@ import html as H
 import json, os, re, sys
 
 PIPE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, PIPE)
+import subscript
+
 REPO = '/Users/semi/cursor/payhug-investor-admin'
 SRC  = os.path.join(PIPE, 'glossary_manuscript.md')
 RECT = os.path.join(PIPE, 'shot_rects.json')
 OUT  = os.path.join(REPO, 'glossary.html')
+MIRROR = os.path.join(PIPE, 'glossary.html')
 
 RECTS = {s['file'][:-5]: s for s in json.load(open(RECT, encoding='utf-8'))['screens']}
 
@@ -63,23 +67,13 @@ def cap_text(t):
 RAWA = re.compile(r'<a id="([a-zA-Z0-9\-]+)"></a>')
 
 # ── 아래첨자 조판 ──
-#  원고는 마크다운 규약 A_i · A_{d-1,i} · SA_{d-1} 로 쓰고, 화면에는 <sub> 로 낸다.
+#  원고는 마크다운 규약 A_i · A_{d-1,i} · PA_{d-1} 로 쓰고, 화면에는 <sub> 로 낸다.
 #  하이픈은 빼기표 −(U+2212), 쉼표 뒤에는 가는 공백을 넣는다.
-#  대표 원문을 그대로 옮긴 자리는 원고가 평문(AD-1i · SAD-1)이라 이 정규식에 걸리지 않는다.
-#  2026-08-31 기호 규칙 — 아래첨자의 d 는 오늘 날짜라 소문자다. 앞자리 D(금융일수)는 대문자로 남는다.
-SUBRE = re.compile(r'(?<![A-Za-z0-9_])(SMR|SB|SA|SM|SD|SL|A|B|M|D)_(?:\{(d-1,i|d-1|p,i)\}|(i))(?![A-Za-z0-9_])')
-
-
-def subs(t):
-    def one(m):
-        body = (m.group(2) or m.group(3)).replace('-', '\u2212').replace(',', ',&thinsp;')
-        return f'{m.group(1)}<sub>{body}</sub>'
-    return SUBRE.sub(one, t)
-
-
-def flat(t):
-    """alt·검색키처럼 태그를 못 넣는 자리 — 아래첨자 표시만 걷어 낸다."""
-    return SUBRE.sub(lambda m: m.group(1) + (m.group(2) or m.group(3)).replace(',', ''), t)
+#  대표 원문을 그대로 옮긴 자리는 인용 코드펜스로 들어와 subs() 를 타지 않는다.
+#  규칙·기호 범위는 subscript.py 한 곳이다 (정본 dm_0901/symbol_rule_0901.md).
+SUBRE = subscript.SUBRE
+subs = subscript.subs
+flat = subscript.flat
 
 
 # ── 원문 인용 블록 ──
@@ -247,7 +241,7 @@ def shot_html(shot, spec, kind, term):
     yc = (y + h / 2) / Hh
     src = f"assets/shots/{shot}.webp"
     name = SCREEN.get(shot, shot)
-    lab = '이 자리' if kind == 'direct' else '재료 — 이 자리 뒤에 숨는다'
+    lab = '이 자리' if kind == 'direct' else '이 값이 들어간다'
     ctext = cap_text(it['text'])
     cap = f"{name} · {ctext[:40] or it['tag']}"
     alt = f"{name} 화면 캡처 — {flat(term)} 이 표시되는 자리"
@@ -263,7 +257,7 @@ def shot_html(shot, spec, kind, term):
   <span class="zoom">확대</span>
 </button>
 <figcaption><b>{H.escape(name)}</b> · {H.escape(ctext[:56] or it['tag'])}
-<span class="kd {kind}">{'화면에 뜬다' if kind == 'direct' else '화면에 안 뜬다 — 재료'}</span></figcaption>
+<span class="kd {kind}">{'화면에 뜬다' if kind == 'direct' else '화면에 안 뜬다'}</span></figcaption>
 </figure>'''
 
 
@@ -606,7 +600,7 @@ def main():
         '투자실행금 SA': '투자실행금 (일별 배치 · 하루치)', '투자실행금': '투자실행금 (일별 배치 · 하루치)',
         '투자수익 SM': '투자수익 (일별 배치 · 하루치)', '투자수익': '투자수익 (일별 배치 · 하루치)',
         '투자수익율 SMR': '투자수익율 (일별 배치 · 하루치)', '투자수익율': '투자수익율 (일별 배치 · 하루치)',
-        'PSA': '투자실행금 (투자 수익 · 기간 합계)', 'PSM': '투자수익 (투자 수익 · 기간 합계)',
+        'PA': '투자실행금 (투자 수익 · 기간 합계)', 'PM': '투자수익 (투자 수익 · 기간 합계)',
         '순현금 EC': '순현금 (일별 배치 · 자정 시점)', 'EC': '순현금 (일별 배치 · 자정 시점)',
         '채권매입업체': '유동화투자자', '재양도합의서': '정산금채권 재양도 합의서',
         '④': 'ty수익율 › 투자실행금액 대비 (투자 수익 · 기간 합계)',
@@ -643,7 +637,10 @@ def main():
             m = re.match(r'\[`([^`]+)`\]', (f.get('변수') or '').strip())
             if m:
                 sy = f'<span class="sy">{subs(H.escape(m.group(1)))}</span>'
-            key = (term + ' ' + flat(term) + ' ' + (f.get('변수') or '')[:80]).lower()
+            # 자르기 전에 조판 표기를 걷어 낸다 — 잘라 놓고 걷으면 `A_{d-1,i` 처럼
+            # 반토막 난 표기가 검색키에 남는다.
+            key = (flat(term) + ' ' + term + ' '
+                   + flat(f.get('변수') or '')[:80]).lower()
             W(f'<a href="#{ids[term]}" data-t="1" data-k="{H.escape(key, quote=True)}">'
               f'{subs(H.escape(term))}{sy}</a>')
     W('<div class="toc-h">부록</div>')
@@ -667,8 +664,9 @@ def main():
             lv = re.search(r'\*\*층위\*\*\s*`([^`]+)`', meta)
             lab = re.search(r'\*\*화면 표기\*\*\s*`([^`]+)`', meta)
             no = int(tid[1:])
-            key = ' '.join([term, flat(term), lede[:120], (f.get('변수') or '')[:160],
-                            (f.get('화면') or '')[:120]]).lower()
+            key = ' '.join([flat(term), term, flat(lede)[:120],
+                            flat(f.get('변수') or '')[:160],
+                            flat(f.get('화면') or '')[:120]]).lower()
             W(f'<article class="term" id="{tid}" data-k="{H.escape(key, quote=True)}">')
             W('<div class="term-head">'
               f'<span class="term-no">{no:02d}</span>'
@@ -698,7 +696,7 @@ def main():
             fig = shot_html(m.group(1).strip(), m.group(2).strip(), m.group(3).strip(), term)
             rest = blocks(sc[:m.start()] + sc[m.end():], xref, tid)
             fld(4, '화면', '눌러서 확대', fig + rest, 'screen')
-            fld(5, '관련 용어', '재료 · 쓰이는 곳', blocks(f.get('관련 용어', ''), xref, tid), 'rel')
+            fld(5, '관련 용어', '계산에 넣는 값 · 쓰이는 곳', blocks(f.get('관련 용어', ''), xref, tid), 'rel')
 
             W('</article>')
         W('</section>')
@@ -717,8 +715,11 @@ def main():
         raise SystemExit('!! 백틱이 화면 글자로 샌다 %d건 — 인라인 파서가 못 잡은 자리다\n   %s'
                          % (len(ticks), '\n   '.join(ticks[:5])))
     open(OUT, 'w', encoding='utf-8').write(out)
+    # 파이프라인 낱장은 배포본의 거울이다 — verify_ceo_quotes.py 가 바이트로 대조한다.
+    open(MIRROR, 'w', encoding='utf-8').write(out)
     nf = {k: out.count(f'data-field="{k}"') for k in FIELDS}
     print(f'생성 {OUT}  {len(out.encode()):,}B')
+    print(f'거울 {MIRROR}')
     print('카드', out.count('<article class="term"'), '/ 필드', nf)
     print('이미지 참조', len(re.findall(r'assets/shots/', out)))
 

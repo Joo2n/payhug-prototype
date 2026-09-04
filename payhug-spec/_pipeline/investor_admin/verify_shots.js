@@ -91,6 +91,10 @@ function judgeSeal(name, seal, imgBuf, srcBuf, imgMtime, srcMtime, mirrorBuf){
             detail: new Date(imgMtime).toISOString() + ' >= ' + new Date(srcMtime).toISOString()});
   out.push({name: 'B4 ' + name + ' 거울 이미지 = 원본 이미지', pass: sha(mirrorBuf) === iSha,
             detail: sha(mirrorBuf).slice(0, 12) + ' vs ' + iSha.slice(0, 12)});
+  /* 봉인 시점에 웹폰트가 실려 있었는가 — 2026-09-04 capture_shots.js 가 기록하기 시작했다.
+     없이 찍힌 그림은 대체 글꼴 폭이라 재현 대조(C1)가 영원히 안 맞는다. */
+  out.push({name: 'B5 ' + name + ' 봉인 시점 웹폰트 적재', pass: seal.fontLoaded === true,
+            detail: String(seal.fontLoaded)});
   return out;
 }
 
@@ -222,8 +226,20 @@ async function main(){
       try { st = await evalJS('return document.readyState;'); } catch(e){ st = ''; }
       if(st === 'complete') break;
     }
-    try { await evalJS('return document.fonts.ready.then(function(){return 1;});'); } catch(e){}
+    /* 웹폰트(Noto Sans KR)는 외부 CDN · display=swap — fonts.ready 는 「지금 내려받는 중인 것」만 기다린다.
+       Google Fonts CSS 자체가 아직 안 닿았으면 @font-face 가 0건이라 fonts.ready 가 즉시 풀리고 fonts.check 도 true 다.
+       그 순간 찍으면 대체 글꼴 폭으로 줄이 더 접혀 문서가 37px 길어진다(2026-09-04 실측 · invest-assets 1316 → 1353).
+       그래서 실제 FontFace 가 loaded 가 될 때까지 최대 12초 기다리고, 끝내 못 받으면 그 화면은 실패로 센다. */
+    let fontLoaded = false;
+    for(let i = 0; i < 100; i++){
+      try {
+        fontLoaded = await evalJS('return document.fonts.ready.then(function(){ var ok=false; document.fonts.forEach(function(f){ if(/Noto Sans KR/i.test(f.family) && f.status===\'loaded\') ok=true; }); return ok; });');
+      } catch(e){ fontLoaded = false; }
+      if(fontLoaded) break;
+      await sleep(120);
+    }
     await sleep(800);
+    chk('C0 ' + f + ' 웹폰트 Noto Sans KR 적재 뒤 촬영', fontLoaded === true, fontLoaded ? 'loaded' : '12초 안에 안 실림 — 대체 글꼴로 찍으면 문서 높이가 달라진다');
     const D = await evalJS('var de=document.documentElement, bd=document.body;' +
       'return {w: Math.max(de.scrollWidth, bd?bd.scrollWidth:0, de.clientWidth),' +
       ' h: Math.max(de.scrollHeight, bd?bd.scrollHeight:0, de.clientHeight)};');
@@ -247,9 +263,9 @@ async function main(){
   const probe = FILES[0], pv = stored[probe];
   const bImg = pv.imgBuf, bSrc = fs.readFileSync(path.join(REPO, probe));
   const T = 1700000000000;
-  const fake = {shot: 'x', imgSha256: sha(bImg), srcSha256: sha(bSrc), imgMtime: T, srcMtime: T - 1000};
+  const fake = {shot: 'x', imgSha256: sha(bImg), srcSha256: sha(bSrc), imgMtime: T, srcMtime: T - 1000, fontLoaded: true};
   const d0 = judgeSeal(probe, fake, bImg, bSrc, fake.imgMtime, fake.srcMtime, bImg);
-  chk('D0 자기시험 기준선 4건 전건 통과', d0.every(x => x.pass === true),
+  chk('D0 자기시험 기준선 5건 전건 통과', d0.every(x => x.pass === true),
       d0.filter(x => !x.pass).map(x => x.name).join(', '));
 
   const bad = Buffer.from(bImg); bad[bad.length - 1] ^= 0xFF;               /* 1바이트만 흔든다 */
@@ -265,6 +281,8 @@ async function main(){
 
   const d4 = judgeSeal(probe, fake, bImg, bSrc, fake.imgMtime, fake.srcMtime, Buffer.alloc(0));
   chk('D4 거울이 비면 B4 가 잡는다', d4[3].pass === false && d4[0].pass === true);
+  const d4b = judgeSeal(probe, Object.assign({}, fake, {fontLoaded: false}), bImg, bSrc, fake.imgMtime, fake.srcMtime, bImg);
+  chk('D4b 봉인에 폰트 미적재가 적히면 B5 가 잡는다', d4b[4].pass === false && d4b[0].pass === true);
 
   const cut = FILES.slice(0, -1);
   const d5 = judgeRoster(FILES, Object.keys(rectByFile), Object.keys(CAP.files), cut, mirrorNames);

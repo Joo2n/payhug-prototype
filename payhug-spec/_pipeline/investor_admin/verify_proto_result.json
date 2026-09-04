@@ -58,7 +58,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -73,7 +73,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-sim",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -103,7 +103,7 @@
    "visible": true,
    "state": "default",
    "hash": "#acquisition-list",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -118,7 +118,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -133,7 +133,7 @@
    "visible": true,
    "state": "default",
    "hash": "#password",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -200,18 +200,6 @@
    "toast": false,
    "err": null,
    "steps": "nav .nav-item[data-menu=\"invest-returns\"] → change [data-mount=\"pf-from\"] = 2026-02-01 → change [data-mount=\"pf-to\"] = 2026-02-07",
-   "pass": true
-  },
-  {
-   "screen": "invest-sim",
-   "want": "result",
-   "state": "result",
-   "visible": true,
-   "hash": "#invest-sim/result",
-   "modal": null,
-   "toast": false,
-   "err": null,
-   "steps": "nav .nav-item[data-menu=\"invest-sim\"] → click [data-mount=\"sim-go\"] → wait 500ms",
    "pass": true
   },
   {
@@ -380,8 +368,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5711,
-   "srcBytes": 5711,
+   "bytes": 5712,
+   "srcBytes": 5712,
    "pass": true
   },
   {
@@ -393,8 +381,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
-   "bytes": 6090,
-   "srcBytes": 6090,
+   "bytes": 6098,
+   "srcBytes": 6098,
    "pass": true
   },
   {
@@ -419,8 +407,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5855,
-   "srcBytes": 5855,
+   "bytes": 5851,
+   "srcBytes": 5851,
    "pass": true
   },
   {
@@ -432,8 +420,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-01_2026-08-27.xlsx",
-   "bytes": 5466,
-   "srcBytes": 5466,
+   "bytes": 5467,
+   "srcBytes": 5467,
    "pass": true
   },
   {
@@ -445,8 +433,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-01_2026-08-27.xlsx",
-   "bytes": 6728,
-   "srcBytes": 6728,
+   "bytes": 6724,
+   "srcBytes": 6724,
    "pass": true
   },
   {
@@ -458,8 +446,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5463,
-   "srcBytes": 5463,
+   "bytes": 5464,
+   "srcBytes": 5464,
    "pass": true
   },
   {
@@ -471,8 +459,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5751,
-   "srcBytes": 5751,
+   "bytes": 5753,
+   "srcBytes": 5753,
    "pass": true
   },
   {
@@ -484,8 +472,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-08_2026-08-27.xlsx",
-   "bytes": 5465,
-   "srcBytes": 5465,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -497,8 +485,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-06-08_2026-08-27.xlsx",
-   "bytes": 6150,
-   "srcBytes": 6150,
+   "bytes": 6154,
+   "srcBytes": 6154,
    "pass": true
   },
   {
@@ -510,8 +498,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5468,
-   "srcBytes": 5468,
+   "bytes": 5469,
+   "srcBytes": 5469,
    "pass": true
   },
   {
@@ -523,8 +511,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5695,
-   "srcBytes": 5695,
+   "bytes": 5697,
+   "srcBytes": 5697,
    "pass": true
   },
   {
@@ -536,8 +524,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5470,
-   "srcBytes": 5470,
+   "bytes": 5471,
+   "srcBytes": 5471,
    "pass": true
   },
   {
@@ -549,8 +537,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5832,
-   "srcBytes": 5832,
+   "bytes": 5835,
+   "srcBytes": 5835,
    "pass": true
   },
   {
@@ -632,7 +620,7 @@
    "weekRows": 7,
    "weekFoot": [
     "합계",
-    "180,032,094",
+    "180,032,111",
     "179,970,919",
     "61,175",
     "3.11가중평균",
@@ -641,7 +629,7 @@
    "monthPresetRows": 27,
    "monthPresetFoot": [
     "합계",
-    "702,981,435",
+    "702,981,504",
     "702,712,201",
     "269,234",
     "3.03가중평균",
@@ -650,7 +638,7 @@
    "monthlyRows": 6,
    "monthlyFoot": [
     "합계",
-    "4,702,290,720",
+    "4,702,291,078",
     "4,700,503,303",
     "1,787,417",
     "3.03가중평균",
@@ -766,7 +754,7 @@
   "states": 18
  },
  "console": [],
- "scanned": 88,
+ "scanned": 74,
  "a11y": [
   {
    "where": "acquisition-list/default",
@@ -926,7 +914,7 @@
  "layout": [
   {
    "at": "invest-assets/default",
-   "h": 1280,
+   "h": 1284,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -935,7 +923,7 @@
   },
   {
    "at": "invest-assets/download",
-   "h": 1280,
+   "h": 1284,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -944,7 +932,7 @@
   },
   {
    "at": "invest-assets/cert-confirm",
-   "h": 1280,
+   "h": 1284,
    "empties": [],
    "modals": [
     "invest-assets-cert-confirm"
@@ -955,7 +943,7 @@
   },
   {
    "at": "invest-assets/empty",
-   "h": 998,
+   "h": 1002,
    "empties": [
     "ia-size",
     "ia-merch-page"
@@ -995,43 +983,6 @@
    "empties": [
     "pf-from",
     "pf-to"
-   ],
-   "modals": [],
-   "wantModal": null,
-   "barShown": false,
-   "pass": true
-  },
-  {
-   "at": "invest-sim/default",
-   "h": 1109,
-   "empties": [
-    "sim-asset",
-    "sim-idle",
-    "sim-r",
-    "sim-cash",
-    "sim-unpaid",
-    "sim-over",
-    "sim-from",
-    "sim-to",
-    "sim-out"
-   ],
-   "modals": [],
-   "wantModal": null,
-   "barShown": false,
-   "pass": true
-  },
-  {
-   "at": "invest-sim/result",
-   "h": 2529,
-   "empties": [
-    "sim-asset",
-    "sim-idle",
-    "sim-r",
-    "sim-cash",
-    "sim-unpaid",
-    "sim-over",
-    "sim-from",
-    "sim-to"
    ],
    "modals": [],
    "wantModal": null,
@@ -1217,42 +1168,6 @@
    "pass": true
   },
   {
-   "at": "xls-assets-status/default",
-   "h": 549,
-   "empties": [],
-   "modals": [],
-   "wantModal": null,
-   "barShown": false,
-   "pass": true
-  },
-  {
-   "at": "xls-assets-merchant/default",
-   "h": 661,
-   "empties": [],
-   "modals": [],
-   "wantModal": null,
-   "barShown": false,
-   "pass": true
-  },
-  {
-   "at": "xls-profit-status/default",
-   "h": 605,
-   "empties": [],
-   "modals": [],
-   "wantModal": null,
-   "barShown": false,
-   "pass": true
-  },
-  {
-   "at": "xls-profit-daily/default",
-   "h": 437,
-   "empties": [],
-   "modals": [],
-   "wantModal": null,
-   "barShown": false,
-   "pass": true
-  },
-  {
    "at": "login/default",
    "h": 1113,
    "empties": [],
@@ -1302,18 +1217,6 @@
    },
    {
     "where": "invest-profit/empty",
-    "href": "https://www.we-bank.co.kr/main_00100.act",
-    "label": "쿠콘 관리 현금",
-    "target": "_blank"
-   },
-   {
-    "where": "invest-sim/default",
-    "href": "https://www.we-bank.co.kr/main_00100.act",
-    "label": "쿠콘 관리 현금",
-    "target": "_blank"
-   },
-   {
-    "where": "invest-sim/result",
     "href": "https://www.we-bank.co.kr/main_00100.act",
     "label": "쿠콘 관리 현금",
     "target": "_blank"
@@ -1413,30 +1316,6 @@
     "href": "https://www.we-bank.co.kr/main_00100.act",
     "label": "쿠콘 관리 현금",
     "target": "_blank"
-   },
-   {
-    "where": "xls-assets-status/default",
-    "href": "https://www.we-bank.co.kr/main_00100.act",
-    "label": "쿠콘 관리 현금",
-    "target": "_blank"
-   },
-   {
-    "where": "xls-assets-merchant/default",
-    "href": "https://www.we-bank.co.kr/main_00100.act",
-    "label": "쿠콘 관리 현금",
-    "target": "_blank"
-   },
-   {
-    "where": "xls-profit-status/default",
-    "href": "https://www.we-bank.co.kr/main_00100.act",
-    "label": "쿠콘 관리 현금",
-    "target": "_blank"
-   },
-   {
-    "where": "xls-profit-daily/default",
-    "href": "https://www.we-bank.co.kr/main_00100.act",
-    "label": "쿠콘 관리 현금",
-    "target": "_blank"
    }
   ],
   "sibling": [],
@@ -1445,18 +1324,10 @@
    {
     "where": "certificate/default",
     "path": "/assets/docs/%ED%88%AC%EC%9E%90%EC%9E%90%EC%82%B0%EC%A6%9D%EB%AA%85%EC%84%9C_20260827.pdf"
-   },
-   {
-    "where": "xls-assets-status/default",
-    "path": "/assets/xlsx/%ED%88%AC%EC%9E%90%EC%9E%90%EC%82%B0%ED%98%84%ED%99%A9_2026-08-27_2026-08-27.xlsx"
-   },
-   {
-    "where": "xls-assets-merchant/default",
-    "path": "/assets/xlsx/%EA%B0%80%EB%A7%B9%EC%A0%90%EB%B3%84%ED%88%AC%EC%9E%90%EC%9E%90%EC%82%B0_2026-08-27_2026-08-27.xlsx"
    }
   ],
-  "hash": 208,
-  "total": 269,
+  "hash": 166,
+  "total": 213,
   "docText": [],
   "dockOptions": "도크 없음"
  },
@@ -1481,18 +1352,6 @@
   },
   {
    "at": "invest-profit/monthly",
-   "sw": 1434,
-   "cw": 1434,
-   "pass": true
-  },
-  {
-   "at": "invest-sim/default",
-   "sw": 1434,
-   "cw": 1434,
-   "pass": true
-  },
-  {
-   "at": "invest-sim/result",
    "sw": 1434,
    "cw": 1434,
    "pass": true
@@ -1552,30 +1411,6 @@
    "pass": true
   },
   {
-   "at": "xls-assets-status/default",
-   "sw": 1440,
-   "cw": 1440,
-   "pass": true
-  },
-  {
-   "at": "xls-assets-merchant/default",
-   "sw": 1440,
-   "cw": 1440,
-   "pass": true
-  },
-  {
-   "at": "xls-profit-status/default",
-   "sw": 1440,
-   "cw": 1440,
-   "pass": true
-  },
-  {
-   "at": "xls-profit-daily/default",
-   "sw": 1440,
-   "cw": 1440,
-   "pass": true
-  },
-  {
    "at": "login/default",
    "sw": 1440,
    "cw": 1440,
@@ -1604,57 +1439,63 @@
    },
    {
     "name": "기본 기간 ④ 투자실행금액 대비",
-    "want": "3.99%",
+    "want": "4.13%",
     "got": "3.99%",
-    "pass": true
+    "pass": false
    },
    {
     "name": "기본 기간 ⑤ 투자자산 대비",
-    "want": "2.24%",
-    "got": "2.24%",
-    "pass": true
+    "want": "3.30%",
+    "got": "2.25%",
+    "pass": false
    },
    {
-    "name": "기본 기간 PSA",
-    "want": "PSA179,970,919원",
-    "got": "PSA179,970,919원",
-    "pass": true
+    "name": "기본 기간 PA (④ 툴팁)",
+    "want": "PA기간 투자실행금 · 179,916,643원",
+    "got": "PA179,970,919원",
+    "pass": false
    },
    {
-    "name": "기본 기간 PSC",
-    "want": "PSC140,000,000원",
-    "got": "PSC140,000,000원",
-    "pass": true
+    "name": "기본 기간 PEC (⑤ 툴팁)",
+    "want": "PEC기간 순현금 · 140,000,000원",
+    "got": "PEC140,000,000원",
+    "pass": false
+   },
+   {
+    "name": "기본 기간 Σ( Ai × Di ) (⑤ 툴팁)",
+    "want": "Σ( Ai × Di )556,626,436원",
+    "got": "없음",
+    "pass": false
    },
    {
     "name": "일별 표 합계 W",
-    "want": "3.11",
+    "want": "3.09",
     "got": "3.11",
-    "pass": true
+    "pass": false
    },
    {
     "name": "일별 표 합계 Ty",
-    "want": "3.99%",
+    "want": "4.13%",
     "got": "3.99%",
-    "pass": true
+    "pass": false
    },
    {
     "name": "일별 표 날짜↔W↔Ty 7행",
     "want": "전건 원장 일치",
-    "got": "어긋남 0",
-    "pass": true
+    "got": "2026-08-27 원장에 없는 날짜",
+    "pass": false
    },
    {
     "name": "월별 ④ 투자실행금액 대비",
-    "want": "4.57%",
+    "want": "4.58%",
     "got": "4.57%",
-    "pass": true
+    "pass": false
    },
    {
     "name": "월별 ⑤ 투자자산 대비",
-    "want": "2.59%",
+    "want": "3.66%",
     "got": "2.59%",
-    "pass": true
+    "pass": false
    },
    {
     "name": "월별 표 합계 W",
@@ -1664,45 +1505,21 @@
    },
    {
     "name": "월별 표 합계 Ty",
-    "want": "4.57%",
+    "want": "4.58%",
     "got": "4.57%",
-    "pass": true
+    "pass": false
    },
    {
     "name": "월별 표 6행 W·Ty",
-    "want": "2026-03|3.05|4.49% , 2026-04|3.01|4.83% , 2026-05|3.05|4.38% , 2026-06|3.06|4.39% , 2026-07|3.01|4.76% , 2026-08|3.03|4.62%",
-    "got": "2026-03|3.05|4.49% , 2026-04|3.01|4.83% , 2026-05|3.05|4.38% , 2026-06|3.06|4.39% , 2026-07|3.01|4.76% , 2026-08|3.03|4.62%",
-    "pass": true
+    "want": "2026-03|3.05|4.49% , 2026-04|3.01|4.83% , 2026-05|3.05|4.38% , 2026-06|3.06|4.38% , 2026-07|3.01|4.76% , 2026-08|3.03|4.65%",
+    "got": "2026-03|3.05|4.49% , 2026-04|3.01|4.83% , 2026-05|3.05|4.38% , 2026-06|3.06|4.38% , 2026-07|3.01|4.76% , 2026-08|3.03|4.62%",
+    "pass": false
    },
    {
-    "name": "엑셀 일별투자수익 날짜↔W↔Ty 7행",
-    "want": "전건 원장 일치",
-    "got": "어긋남 0",
-    "pass": true
-   },
-   {
-    "name": "엑셀 투자수익현황 ④",
-    "want": "3.99%",
-    "got": "3.99%",
-    "pass": true
-   },
-   {
-    "name": "엑셀 투자수익현황 ⑤",
-    "want": "2.24%",
-    "got": "2.24%",
-    "pass": true
-   },
-   {
-    "name": "엑셀 투자자산현황 W",
-    "want": "3.04",
-    "got": "3.04",
-    "pass": true
-   },
-   {
-    "name": "엑셀 투자자산현황 Ty",
-    "want": "13.21%",
-    "got": "13.21%",
-    "pass": true
+    "name": "(6) 시연본에 xls-*·invest-sim 화면 없음",
+    "want": "0건",
+    "got": "invest-sim,xls-assets-status,xls-assets-merchant,xls-profit-status,xls-profit-daily",
+    "pass": false
    },
    {
     "name": "가맹점별 비중 합",
@@ -1712,15 +1529,15 @@
    }
   ],
   "ratioSum": 100,
-  "fail": 0
+  "fail": 13
  },
  "docs": [
   {
    "label": "증명서 PDF",
    "name": "투자자산증명서_20260827.pdf",
    "saved": "투자자산증명서_20260827.pdf",
-   "bytes": 241111,
-   "srcBytes": 241111,
+   "bytes": 242844,
+   "srcBytes": 242844,
    "pass": true
   }
  ],

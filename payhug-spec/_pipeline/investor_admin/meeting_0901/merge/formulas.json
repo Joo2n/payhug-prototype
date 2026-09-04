@@ -378,7 +378,7 @@
       "name": "W금융일수 — 대상정산금채권 전체",
       "where": "invest-assets 현황 표 투자실행액 행 W금융일수 열",
       "marker": null,
-      "define": "w = Σ_{i ∈ 대상정산금채권} A_i × D_i ÷ Σ_{i ∈ 대상정산금채권} A_i",
+      "define": "w = ( Σ_{i ∈ 대상정산금채권} A_i × D_i ) ÷ ( Σ_{i ∈ 대상정산금채권} A_i )",
       "vars_used": ["A_i", "D_i"],
       "substitute": [
         {"sym": "|대상정산금채권|", "value": "61,760건"},
@@ -400,21 +400,21 @@
       "marker": null,
       "define": "ty = r × 365 ÷ w",
       "vars_used": ["r", "w"],
-      "substitute": [{"sym": "r", "value": "0.11%"}, {"sym": "w", "value": "3.04일 (표기값)"}],
+      "substitute": [{"sym": "r", "value": "0.11%"}, {"sym": "w", "value": "3.039607일 (6자리 값)"}],
       "result": "13.21%",
-      "result_raw": "13.207237%",
+      "result_raw": "13.208944%",
       "depends": ["F-R", "F-WAD-ALL", "F-CONST-365"],
       "kind": "예상치",
       "source": "ceo_definitions.md [1번] 25행 · 대표 DM 2026-08-31 16:27 「365를 w금융일수로 나누면 1년동안 몇 번 굴릴 수 있는가」 · ledger_facts.json ty",
       "pending_rename": {"w": "WAD — 미확정"},
-      "note": "분자가 실적 수익률이 아니라 약속한 할인율이다. 대표 DM 2026-08-31 16:45 — 위는 예상치, 아래는 실제 결과치이고 미지급−과지급이 0이면 두 값이 같아진다. 분모는 raw 가 아니라 표기 w 를 쓴다. raw 3.039607 로 나누면 13.208944% 로, 표기 13.21% 는 같다"
+      "note": "분자가 실적 수익률이 아니라 약속한 할인율이다. 대표 DM 2026-08-31 16:45 — 위는 예상치, 아래는 실제 결과치이고 미지급−과지급이 0이면 두 값이 같아진다. 분모는 표기값이 아니라 6자리 w 3.039607 을 쓴다(dm_0901/rounding_rule_0901.md 규칙 1)"
     },
     {
       "id": "F-S",
       "name": "S입금부족율",
       "where": "invest-assets 현황 표 투자실행액 행 S입금부족율 열",
       "marker": null,
-      "define": "S = Σ_{i ∈ 표본} SL_i ÷ Σ_{i ∈ 표본} SA_i",
+      "define": "S = ( Σ_{i ∈ 표본} SL_i ) ÷ ( Σ_{i ∈ 표본} SA_i )",
       "vars_used": ["SL_i", "SA_i"],
       "substitute": [
         {"sym": "|표본|", "value": "3,200건"},
@@ -546,10 +546,10 @@
     },
     {
       "id": "F-MR-AMT",
-      "name": "가맹점별 · 투자금액",
+      "name": "가맹점별 · 투자실행액",
       "where": "invest-assets 가맹점별 투자자산 표 2열",
       "marker": null,
-      "define": "투자금액_m = Σ_{i ∈ 미회수, 가맹점ID_i = m} A_i",
+      "define": "투자실행액_m = Σ_{i ∈ 미회수, 가맹점ID_i = m} A_i",
       "vars_used": ["A_i", "m"],
       "substitute": [
         {"sym": "|그 가맹점 대상정산금채권|", "value": "7,720건"},
@@ -570,7 +570,7 @@
       "name": "가맹점별 · W금융일수",
       "where": "invest-assets 가맹점별 투자자산 표 3열",
       "marker": null,
-      "define": "w_m = Σ_{i : 가맹점ID_i = m} A_i × D_i ÷ Σ_{i : 가맹점ID_i = m} A_i",
+      "define": "w_m = ( Σ_{i : 가맹점ID_i = m} A_i × D_i ) ÷ ( Σ_{i : 가맹점ID_i = m} A_i )",
       "vars_used": ["A_i", "D_i", "m"],
       "substitute": [
         {"sym": "|그 가맹점 대상정산금채권|", "value": "7,720건"},
@@ -583,14 +583,14 @@
       "kind": "집계",
       "source": "ceo_definitions.md [1번] 13~15행 · ledger_facts.json merchants[0]",
       "pending_rename": {"w_m": "WAD_m — 미확정"},
-      "note": "옆 칸 투자금액과 모집단이 다르다 — 여기는 전체 7,720건, 투자금액은 미회수 280건이다. 행마다 W 가 갈리는 원인은 플랫폼 구성비 하나다(카드 43.93% · 배민 42.28% · 쿠팡이츠 9.37% · 요기요 4.43%)"
+      "note": "옆 칸 투자실행액과 모집단이 다르다 — 여기는 전체 7,720건, 투자실행액은 미회수 280건이다. 행마다 W 가 갈리는 원인은 플랫폼 구성비 하나다(카드 43.93% · 배민 42.28% · 쿠팡이츠 9.37% · 요기요 4.43%)"
     },
     {
       "id": "F-MR-S",
       "name": "가맹점별 · S입금부족율",
       "where": "invest-assets 가맹점별 투자자산 표 4열",
       "marker": null,
-      "define": "S_m = Σ_{i ∈ 표본, 가맹점ID_i = m} SL_i ÷ Σ_{i ∈ 표본, 가맹점ID_i = m} SA_i",
+      "define": "S_m = ( Σ_{i ∈ 표본, 가맹점ID_i = m} SL_i ) ÷ ( Σ_{i ∈ 표본, 가맹점ID_i = m} SA_i )",
       "vars_used": ["SL_i", "SA_i", "m"],
       "substitute": [
         {"sym": "|그 가맹점 표본|", "value": "400건"},
@@ -614,9 +614,9 @@
       "marker": null,
       "define": "ty_m = r × 365 ÷ w_m",
       "vars_used": ["r", "w_m"],
-      "substitute": [{"sym": "r", "value": "0.11%"}, {"sym": "w_m", "value": "3.02일 (표기값)"}],
+      "substitute": [{"sym": "r", "value": "0.11%"}, {"sym": "w_m", "value": "3.020016일 (6자리 값)"}],
       "result": "13.29%",
-      "result_raw": "13.294702%",
+      "result_raw": "13.294632%",
       "depends": ["F-R", "F-MR-WAD", "F-CONST-365"],
       "kind": "예상치",
       "source": "ceo_definitions.md [1번] 25행 · 대표 DM 2026-08-31 16:19 「가맹점별로 볼 때는 평균, 전체 ty수익률(총합) → 다 더한 후에 가중 평균」",
@@ -628,10 +628,10 @@
       "name": "가맹점별 · 비중",
       "where": "invest-assets 가맹점별 투자자산 표 6열",
       "marker": null,
-      "define": "비중_m = 투자금액_m ÷ 투자실행액",
-      "vars_used": ["투자금액_m", "투자실행액"],
+      "define": "비중_m = 투자실행액_m ÷ 투자실행액",
+      "vars_used": ["투자실행액_m", "투자실행액"],
       "substitute": [
-        {"sym": "투자금액_m", "value": "19,334,743원"},
+        {"sym": "투자실행액_m", "value": "19,334,743원"},
         {"sym": "투자실행액", "value": "80,000,000원"},
         {"sym": "눈금 (0.1pp)", "value": "241.684288 → 내림 241 · 남은 5눈금 배분에서 +1"}
       ],
@@ -766,7 +766,7 @@
     {
       "id": "F-SB-D1",
       "name": "상환액 SB_{d−1} · 정의서 경로",
-      "where": "invest-profit 일별 투자수익 표 2열 — 이 경로의 값은 화면에 뜨지 않는다",
+      "where": "invest-profit 일별 투자수익 표 2열",
       "marker": "②",
       "define": "SB_{d−1} = Σ_{i ∈ d−1 집합} B_{d−1,i}",
       "vars_used": ["B_i"],
@@ -782,28 +782,7 @@
       "kind": "하루 실적치",
       "source": "ceo_definitions.md [2번] 33~34·56행",
       "pending_rename": null,
-      "note": "화면 값과 2원 갈린다. 원인은 낱개 A_i·순지급액이 채권마다 반올림되는데 채권매입수수료는 집합에서 한 번 내림되는 것이다 — Σ(순지급액 − A_i) 29,208 과 집합 수수료 29,206 의 차이"
-    },
-    {
-      "id": "F-SB-D1-SCR",
-      "name": "상환액 SB_{d−1} · 화면 경로",
-      "where": "invest-profit 일별 투자수익 표 2열",
-      "marker": "②",
-      "define": "SB_{d−1} = SA_{d−1} + SM_{d−1}",
-      "vars_used": ["SA_{d−1}", "SM_{d−1}"],
-      "substitute": [
-        {"case": "2026-08-27", "sym": "SA_{d−1}", "value": "26,521,983원"},
-        {"case": "2026-08-27", "sym": "SM_{d−1}", "value": "8,761원"},
-        {"case": "2026-08-23", "sym": "SA_{d−1}", "value": "25,179,655원"},
-        {"case": "2026-08-23", "sym": "SM_{d−1}", "value": "8,632원"}
-      ],
-      "result": "26,530,744원 (2026-08-27) · 25,188,287원 (2026-08-23)",
-      "result_raw": null,
-      "depends": ["F-SA-D1", "F-SM-D1", "F-SB-D1"],
-      "kind": "하루 실적치",
-      "source": "daily_ledger.py _daily() repay = ai + p · steps_all.json 칸126·102",
-      "pending_rename": null,
-      "note": "정의서 경로(F-SB-D1)와 하루 2원, 일주일 17원 갈린다. 이 경로를 쓰면 합계 행에서 ΣSB − PSM = PSA 가 원 단위로 닫힌다는 이점이 있다"
+      "note": "③ + ④ 로 되짚으면 26,530,744원 (2026-08-27) · 25,188,287원 (2026-08-23) 로 하루 −5 ~ +7원 갈린다. 원인은 낱개 A_i·순지급액이 채권마다 반올림되는데 채권매입수수료는 집합에서 한 번 내림되는 것이다 — Σ(순지급액 − A_i) 29,208 과 집합 수수료 29,206 의 차이. 금액은 중간에 원 단위로 끊는 횟수를 줄인다(dm_0901/rounding_rule_0901.md 규칙 2)"
     },
     {
       "id": "F-SMR-D1",
@@ -831,12 +810,12 @@
       "name": "W금융일수 SD_{d−1}",
       "where": "invest-profit 일별 투자수익 표 5열",
       "marker": "⑤",
-      "define": "SD_{d−1} = Σ_{i ∈ d−1 집합} A_{d−1,i} × D_{d−1,i} ÷ SA_{d−1}",
+      "define": "SD_{d−1} = ( Σ_{i ∈ d−1 집합} A_{d−1,i} × D_{d−1,i} ) ÷ SA_{d−1}",
       "vars_used": ["A_i", "D_i", "SA_{d−1}"],
       "substitute": [
-        {"case": "2026-08-27", "sym": "Σ A × D", "value": "82,372,046"},
+        {"case": "2026-08-27", "sym": "Σ A_i × D_i", "value": "82,372,046"},
         {"case": "2026-08-27", "sym": "SA_{d−1}", "value": "26,521,983원"},
-        {"case": "2026-08-23", "sym": "Σ A × D", "value": "78,477,301"},
+        {"case": "2026-08-23", "sym": "Σ A_i × D_i", "value": "78,477,301"},
         {"case": "2026-08-23", "sym": "SA_{d−1}", "value": "25,179,655원"}
       ],
       "result": "3.11 (2026-08-27) · 3.12 (2026-08-23)",
@@ -872,17 +851,17 @@
       "vars_used": ["SMR_{d−1}", "SD_{d−1}"],
       "substitute": [
         {"case": "2026-08-27", "sym": "SMR_{d−1}", "value": "0.033032975%"},
-        {"case": "2026-08-27", "sym": "SD_{d−1}", "value": "3.11 (표기값)"},
+        {"case": "2026-08-27", "sym": "SD_{d−1}", "value": "3.105803 (6자리 값)"},
         {"case": "2026-08-23", "sym": "SMR_{d−1}", "value": "0.034281645%"},
-        {"case": "2026-08-23", "sym": "SD_{d−1}", "value": "3.12 (표기값)"}
+        {"case": "2026-08-23", "sym": "SD_{d−1}", "value": "3.116695 (6자리 값)"}
       ],
       "result": "3.88% (2026-08-27) · 4.01% (2026-08-23)",
-      "result_raw": "3.876860% · 4.010513%",
+      "result_raw": "3.882099% · 4.014766%",
       "depends": ["F-SMR-D1", "F-WAD-D1", "F-TY-3", "F-CONST-365"],
       "kind": "하루 실적치",
       "source": "ceo_definitions.md [2번] 44행 「ty수익율 = SMRD-1 x 365 / SDD-1」 · 57행 「⑥ = (④ / ③) x 365 / ⑤」",
       "pending_rename": {"SD_{d−1}": "WAD_{d−1} — 미확정"},
-      "note": "원문 두 줄(44행 · 57행)은 ③ = SA_{d−1} 로 읽을 때만 같은 산식이다. 그 읽기가 미확정이다(F-TY-3). 분모는 raw 가 아니라 표기 SD 를 쓴다. F-TY-1 과 같은 뼈대이고 분자만 약속한 할인율에서 실현 수익률로 바뀐다"
+      "note": "원문 두 줄(44행 · 57행)은 ③ = SA_{d−1} 로 읽을 때만 같은 산식이다. 그 읽기가 미확정이다(F-TY-3). 분모는 표기값이 아니라 6자리 SD 를 쓴다(dm_0901/rounding_rule_0901.md 규칙 1). F-TY-1 과 같은 뼈대이고 분자만 약속한 할인율에서 실현 수익률로 바뀐다"
     },
 
     {
@@ -932,15 +911,15 @@
       "define": "상환액 합계 = Σ_{d−1 ∈ P} SB_{d−1}",
       "vars_used": ["SB_{d−1}", "P"],
       "substitute": [
-        {"sym": "SB_{d−1} 7일치 (화면 경로)", "value": "25,951,644 + 25,375,335 + 25,188,287 + 25,281,442 + 25,602,099 + 26,102,543 + 26,530,744"}
+        {"sym": "SB_{d−1} 7일치", "value": "25,951,644 + 25,375,330 + 25,188,289 + 25,281,449 + 25,602,105 + 26,102,548 + 26,530,746"}
       ],
-      "result": "180,032,094원",
+      "result": "180,032,111원",
       "result_raw": null,
-      "depends": ["F-SB-D1-SCR", "F-P"],
+      "depends": ["F-SB-D1", "F-P"],
       "kind": "기간 실적치",
       "source": "ceo_definitions.md [2번] 56행 · ledger_facts.json weekRepay",
       "pending_rename": null,
-      "note": "검산 — 상환액 합계 − PSM = PSA (180,032,094 − 61,175 = 179,970,919). 정의서 경로(F-SB-D1)로 더하면 180,032,111원으로 17원 갈리고 이 검산이 닫히지 않는다. 합계 행 자체는 스토리보드 S7 에 없던 우리 추가분이다"
+      "note": "③ 합 + ④ 합 (179,970,919 + 61,175 = 180,032,094) 과 17원 갈린다. 합계 행 자체는 스토리보드 S7 에 없던 우리 추가분이다"
     },
     {
       "id": "F-PSMR",
@@ -961,13 +940,13 @@
     {
       "id": "F-PSD",
       "name": "기간 W금융일수 PSD · 정의서 경로",
-      "where": "invest-profit 일별 표 합계 행 5열 — 이 경로의 raw 는 화면이 쓰지 않는다",
+      "where": "invest-profit 일별 표 합계 행 5열",
       "marker": "⑤",
-      "define": "PSD = Σ_{i ∈ P 집합} A_{p,i} × D_{p,i} ÷ PSA",
+      "define": "PSD = ( Σ_{i ∈ P 집합} A_{p,i} × D_{p,i} ) ÷ PSA",
       "vars_used": ["A_i", "D_i", "PSA"],
       "substitute": [
         {"sym": "|P 집합|", "value": "2,240건"},
-        {"sym": "Σ A × D", "value": "559,275,516"},
+        {"sym": "Σ A_i × D_i", "value": "559,275,516"},
         {"sym": "PSA", "value": "179,970,919원"}
       ],
       "result": "3.11",
@@ -976,26 +955,26 @@
       "kind": "기간 실적치",
       "source": "ceo_definitions.md [2번] 51~53행 · 대표 DM 2026-08-31 16:42 「PSD … 위 선택한 기간에 해당하는 w금융일수」",
       "pending_rename": {"PSD": "WAD_P — 미확정"},
-      "note": "채권 단위 가중평균이다. 화면은 이 raw 를 쓰지 않고 F-PSD-SCR 을 쓴다. 표기 3.11 은 두 경로가 같다"
+      "note": "채권 단위 가중평균이다. 화면은 F-PSD-SCR 로 내고 두 경로가 소수 6자리까지 같다"
     },
     {
       "id": "F-PSD-SCR",
       "name": "기간 W금융일수 PSD · 화면 경로",
       "where": "invest-profit 일별 표 합계 행 5열 (가중평균)",
       "marker": "⑤",
-      "define": "PSD = Σ_{d−1 ∈ P} ( SD_{d−1} × SA_{d−1} ) ÷ PSA",
+      "define": "PSD = ( Σ_{d−1 ∈ P} SD_{d−1} × SA_{d−1} ) ÷ PSA",
       "vars_used": ["SD_{d−1}", "SA_{d−1}", "PSA"],
       "substitute": [
-        {"sym": "Σ (표기 SD × SA)", "value": "559,436,155.94"},
+        {"sym": "Σ 6자리 SD × SA", "value": "559,275,539.801174"},
         {"sym": "PSA", "value": "179,970,919원"}
       ],
       "result": "3.11",
-      "result_raw": "3.108481일",
+      "result_raw": "3.107588일",
       "depends": ["F-WAD-D1", "F-SA-D1", "F-PSA"],
       "kind": "기간 실적치",
       "source": "daily_ledger.py facts() wk_wraw · ledger_facts.json weekW · weekWRaw · steps_all.json 칸135",
       "pending_rename": {"PSD": "WAD_P — 미확정"},
-      "note": "일자 단위 가중평균이고 가중되는 SD 가 소수 2자리 표기값이다. 정의서 경로와 raw 0.000893일 갈린다. ④ 가 이 raw 를 분모로 쓴다"
+      "note": "일자 단위 가중평균이고 가중되는 SD 가 소수 6자리 값이다. 정의서 경로(F-PSD)와 소수 6자리까지 같다. ④ 가 이 값을 분모로 쓴다"
     },
     {
       "id": "F-TY-4",
@@ -1004,14 +983,14 @@
       "marker": "④",
       "define": "④ = PSMR × 365 ÷ PSD",
       "vars_used": ["PSMR", "PSD"],
-      "substitute": [{"sym": "PSMR", "value": "0.0339916028%"}, {"sym": "PSD", "value": "3.108481일 (화면 경로 raw)"}],
+      "substitute": [{"sym": "PSMR", "value": "0.0339916028%"}, {"sym": "PSD", "value": "3.107588일"}],
       "result": "3.99%",
-      "result_raw": "3.991318%",
+      "result_raw": "3.992465%",
       "depends": ["F-PSMR", "F-PSD-SCR", "F-CONST-365"],
       "kind": "기간 실적치",
       "source": "ceo_definitions.md [2번] 49~53행 · ledger_facts.json weekTy",
       "pending_rename": {"PSD": "WAD_P — 미확정"},
-      "note": "정의서 경로 PSD(3.107588)로 내면 3.992464% 이고 표기 3.99% 는 같다. 행별 Ty 7개(4.54·4.24·4.01·3.82·3.73·3.74·3.88)의 단순평균이 아니다 — 먼저 더하고 나중에 나눈다. F-TY-1·F-TY-6 과 같은 뼈대이고 범위만 기간이다"
+      "note": "행별 Ty 7개(4.54·4.24·4.01·3.81·3.74·3.73·3.88)의 단순평균이 아니다 — 먼저 더하고 나중에 나눈다. F-TY-1·F-TY-6 과 같은 뼈대이고 범위만 기간이다"
     },
     {
       "id": "F-PSC",
@@ -1053,14 +1032,14 @@
       "define": "⑤ = ④ × PSA ÷ (PSA + PSC)",
       "vars_used": ["④", "PSA", "PSC"],
       "substitute": [
-        {"sym": "④", "value": "3.991318% (반올림 전 값)"},
+        {"sym": "④", "value": "3.992465% (반올림 전 값)"},
         {"sym": "PSA", "value": "179,970,919원"},
         {"sym": "PSC", "value": "140,000,000원 (자리표시자)"},
         {"sym": "PSA + PSC", "value": "319,970,919원"},
         {"sym": "투자실행금 몫", "value": "0.562460"}
       ],
-      "result": "2.24%",
-      "result_raw": "2.244958%",
+      "result": "2.25%",
+      "result_raw": "2.245603%",
       "depends": ["F-TY-4", "F-PSA", "F-PSC-FILL"],
       "kind": "기간 실적치 · 미확정",
       "source": "ceo_definitions.md [2번] 54~55행 · 2026-08-31 회의 「수식 오류, 새로 작성해 전달」 · ledger_facts.json weekTyAsset",

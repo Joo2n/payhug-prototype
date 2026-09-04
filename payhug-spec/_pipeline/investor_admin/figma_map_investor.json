@@ -3,12 +3,12 @@
  "page_node_id": "3066:328",
  "page_name": "[투자자 어드민] 제안서 첨부용",
  "source_repo": "/Users/semi/cursor/payhug-investor-admin",
- "source_commit": "1f5c6a4ae8cc590ed82140d9badac0fc15f79b1d",
- "source_commit_short": "1f5c6a4",
- "prev_source_commit": "c606f34",
+ "source_commit": "1693bd351b7e5174f5c589f871660fd0260b5a71",
+ "source_commit_short": "1693bd3",
+ "prev_source_commit": "1f5c6a4",
  "staging_copy": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/_fig",
  "staging_css_patch": "prep_fig.py patch_css() 자동 적용 — ① --font-mono 를 Figma 내장 'Roboto Mono' 로 교체(원본 스택은 Chrome 에서 Menlo 로 해석되는데 Figma 에 Menlo 가 없어 hasMissingFont 가 되고 숫자 셀이 말줄임된다) ② sheet.css text-overflow:ellipsis 2곳 제거. 스테이징 사본 전용, 원본 레포 무변경",
- "frame_count": 33,
+ "frame_count": 24,
  "grid": {
   "columns_x": [
    0,
@@ -55,72 +55,95 @@
   "runner": "_pipeline/investor_admin/run_import_0828.sh",
   "font_gate": "prep_fig.py fontgate",
   "method": "generate_figma_design(DOM 전송) 네이티브 레이어. 래스터 캡처 이미지 0건",
-  "chunk_size": 4
+  "chunk_size": 3,
+  "reissued_capture_ids": {
+   "note": "1회차 3건은 서버 8903 이 preflight 의 measure 내장 서버와 충돌해 apply 가 돌지 않은 사본(capture.js 미주입)으로 열려 제출 0건. 재발급 후 성공",
+   "ids": [
+    "cc536bda-c576-413a-8ff1-697f829788bd",
+    "015a1922-8879-481f-8a54-368f352846be",
+    "ed946260-4400-4c49-bd12-13e8bedb41d1"
+   ]
+  }
  },
  "verification": {
-  "frames_on_page": 33,
-  "width_1440": 33,
-  "clips_content_true": 33,
+  "checked_at": "2026-09-04",
+  "frames_on_page": 24,
+  "width_1440": 24,
+  "clips_content_true": 24,
   "duplicate_names": 0,
+  "forbidden_names": 0,
+  "forbidden_name_patterns": [
+   "갤러리",
+   "쿠콘 관리 현금",
+   "시뮬레이션",
+   "엑셀 산출물",
+   "로그인"
+  ],
+  "texts": 1751,
   "has_missing_font": 0,
   "text_truncation_ending": 0,
-  "stale_value_hits": 0,
-  "stale_value_detail": "가맹점 곳수 조회 결과 33프레임 전건에서 로스터와 어긋나는 값 0건. 01-c 투자 자산 — 증명서 발급 확인의 대상은 가맹점 8개로 로스터 8곳과 같다",
-  "clip_overrun": "가로 넘침 4건 — 11·12·13·14 의 파일명(.xlsx). 파일 이름 칸 폭(300~324px)이 이름보다 좁아 원본 브라우저에서도 잘리는 자리이며, 스테이징에서 말줄임 표식을 뺀 만큼 '…' 대신 곧바로 잘린다. 숫자 잘림 0건. 세로 넘침 27건은 06-d 계약서 상자(안쪽 높이 340px 스크롤 영역)로 화면과 동일한 표현이다"
+  "old_labels_in_replaced_9": {
+   "W금융일수": 0,
+   "S입금부족율": 0,
+   "Ty수익율": 0
+  },
+  "new_labels_in_replaced_9": "가중평균 금융일수·입금부족률·예상 연환산수익률·연환산수익률 전건 존재(투자 수익 계열은 입금부족률·예상 연환산수익률 비노출 화면)",
+  "invest_profit_5": "3.30% (3404:2)",
+  "hidden_tooltip_panel_leak": 0,
+  "sidebar_menus": 7,
+  "sidebar_note": "2026-09-04 24프레임 사이드바에서 「투자 시뮬레이션」 항목 삭제 (Navigation > Container(투자) > Link). 텍스트 전수 0건. 스테이징은 prep_fig.py patch_nav() 가 같은 항목을 뺀다"
  },
  "not_imported": [
   "app.html",
   "archive.html",
   "capability.html",
+  "coocon.html",
   "feasibility.html",
   "glossary.html",
+  "index.html",
   "inquiry.html",
-  "review.html"
+  "invest-sim--result.html",
+  "invest-sim.html",
+  "login.html",
+  "review.html",
+  "xls-assets-merchant.html",
+  "xls-assets-status.html",
+  "xls-profit-daily.html",
+  "xls-profit-status.html"
  ],
  "frames": [
   {
    "file": "invest-assets.html",
    "frame_name": "01 투자 자산",
-   "node_id": "3337:2",
+   "node_id": "3405:2",
    "x": 0,
    "y": 0,
    "w": 1440,
    "h": 1317,
-   "capture_id": "1299c377-0a57-4e34-9200-941846cf0910",
-   "replaced_node_id": "3304:2"
+   "capture_id": "2f4be661-1c5f-487e-9dcf-0be55208fa8b",
+   "replaced_node_id": "3337:2"
   },
   {
    "file": "certificate.html",
    "frame_name": "02 투자자산 증명서",
-   "node_id": "3343:2",
+   "node_id": "3403:2",
    "x": 1600,
    "y": 0,
    "w": 1440,
    "h": 1168,
-   "capture_id": "2e809ab7-9fe8-4b33-a633-cae4c1ec97b3",
-   "replaced_node_id": "3303:2"
+   "capture_id": "0cbaad96-04e9-4708-8d32-e43b5f226014",
+   "replaced_node_id": "3343:2"
   },
   {
    "file": "invest-profit.html",
    "frame_name": "03 투자 수익",
-   "node_id": "3342:2",
+   "node_id": "3404:2",
    "x": 3200,
    "y": 0,
    "w": 1440,
-   "h": 1267,
-   "capture_id": "ea83e592-7816-4fbd-b679-912433828c69",
-   "replaced_node_id": "3254:2"
-  },
-  {
-   "file": "coocon.html",
-   "frame_name": "04 쿠콘 관리 현금",
-   "node_id": "3341:2",
-   "x": 4800,
-   "y": 0,
-   "w": 1440,
-   "h": 571,
-   "capture_id": "449b0328-eb41-4c71-b012-8469b6d839d7",
-   "note": "직전 노드가 파일에서 사라져 같은 좌표·이름으로 다시 세운 자리"
+   "h": 1272,
+   "capture_id": "4967d16b-01cf-45ad-9e33-1e818fe6b86e",
+   "replaced_node_id": "3342:2"
   },
   {
    "file": "merchants.html",
@@ -169,68 +192,68 @@
   {
    "file": "invest-assets--download.html",
    "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
-   "node_id": "3350:2",
+   "node_id": "3409:2",
    "x": 1600,
    "y": 5226,
    "w": 1440,
    "h": 1317,
-   "capture_id": "3b5ce043-438c-49cd-b27f-6f64926d8eb3",
-   "replaced_node_id": "3305:2"
+   "capture_id": "1fed9bc3-8c9e-4621-968c-9deec28e0c95",
+   "replaced_node_id": "3350:2"
   },
   {
    "file": "invest-assets--cert-confirm.html",
    "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
-   "node_id": "3389:2",
+   "node_id": "3407:2",
    "x": 3200,
    "y": 5226,
    "w": 1440,
    "h": 1317,
-   "capture_id": "ac21ba7a-6ca0-4eb3-8d8c-dc5c17dd3edb",
-   "replaced_node_id": "3348:2"
+   "capture_id": "89f3a46f-9678-412f-8782-0a548f2fc164",
+   "replaced_node_id": "3389:2"
   },
   {
    "file": "invest-assets--empty.html",
    "frame_name": "01-d 투자 자산 — 데이터 없음",
-   "node_id": "3349:2",
+   "node_id": "3408:2",
    "x": 4800,
    "y": 5226,
    "w": 1440,
    "h": 1059,
-   "capture_id": "f46eae38-8c5d-4d9a-a257-dfdc81150195",
-   "replaced_node_id": "3270:2"
+   "capture_id": "97994e79-1ce9-44fc-86d6-b0168e6cfab3",
+   "replaced_node_id": "3349:2"
   },
   {
    "file": "invest-profit--monthly.html",
    "frame_name": "03-a 투자 수익 — 월별",
-   "node_id": "3353:2",
+   "node_id": "3410:2",
    "x": 0,
    "y": 7839,
    "w": 1440,
-   "h": 1222,
-   "capture_id": "dbfefb09-f5f5-4b06-89b5-22bc61a90572",
-   "replaced_node_id": "3269:2"
+   "h": 1227,
+   "capture_id": "adc429c7-6ea8-4c17-b05d-ae3ac7008f15",
+   "replaced_node_id": "3353:2"
   },
   {
    "file": "invest-profit--empty.html",
    "frame_name": "03-b 투자 수익 — 결과 없음",
-   "node_id": "3354:2",
+   "node_id": "3412:2",
    "x": 1600,
    "y": 7839,
    "w": 1440,
-   "h": 1044,
-   "capture_id": "d85edc2c-a92a-4c48-949b-b3409d45941b",
-   "replaced_node_id": "3268:2"
+   "h": 1049,
+   "capture_id": "7fd23da2-791d-47a8-8a2d-7a08672cc9ae",
+   "replaced_node_id": "3354:2"
   },
   {
    "file": "invest-profit--weekly.html",
    "frame_name": "03-c 투자 수익 — 주별",
-   "node_id": "3358:2",
+   "node_id": "3411:2",
    "x": 3200,
    "y": 7839,
    "w": 1440,
-   "h": 1132,
-   "capture_id": "3444d37e-d668-4ce4-b8a2-00d5b143758a",
-   "replaced_node_id": "3292:2"
+   "h": 1137,
+   "capture_id": "a1f33f1c-90d8-48a8-8a4d-1d913af643cc",
+   "replaced_node_id": "3358:2"
   },
   {
    "file": "merchants--filtered.html",
@@ -352,94 +375,6 @@
    "h": 630,
    "capture_id": "9a74258b-14bf-458b-9efc-a135245cb508",
    "replaced_node_id": "3284:2"
-  },
-  {
-   "file": "index.html",
-   "frame_name": "09 화면 갤러리",
-   "node_id": "3373:2",
-   "x": 4800,
-   "y": 18291,
-   "w": 1440,
-   "h": 1863,
-   "capture_id": "7a3026d3-f561-48ff-b8db-037554d92e5c",
-   "note": "직전 노드가 파일에서 사라져 같은 좌표·이름으로 다시 세운 자리"
-  },
-  {
-   "file": "login.html",
-   "frame_name": "10 로그인",
-   "node_id": "3371:2",
-   "x": 0,
-   "y": 20904,
-   "w": 1440,
-   "h": 505,
-   "capture_id": "187ec37e-393b-4f3c-a7dd-ba25b1624a49",
-   "replaced_node_id": "3282:2"
-  },
-  {
-   "file": "xls-assets-status.html",
-   "frame_name": "11 엑셀 산출물 서식 — 투자자산 현황",
-   "node_id": "3370:2",
-   "x": 1600,
-   "y": 20904,
-   "w": 1440,
-   "h": 613,
-   "capture_id": "539fc5a8-f634-49a1-99c2-cc451ece2b1c",
-   "replaced_node_id": "3311:2"
-  },
-  {
-   "file": "xls-assets-merchant.html",
-   "frame_name": "12 엑셀 산출물 서식 — 가맹점별 투자자산",
-   "node_id": "3372:2",
-   "x": 3200,
-   "y": 20904,
-   "w": 1440,
-   "h": 781,
-   "capture_id": "e3ec8522-e500-44cb-b96f-0c1703796703",
-   "replaced_node_id": "3312:2"
-  },
-  {
-   "file": "xls-profit-status.html",
-   "frame_name": "13 엑셀 산출물 서식 — 투자수익 현황",
-   "node_id": "3375:2",
-   "x": 4800,
-   "y": 20904,
-   "w": 1440,
-   "h": 669,
-   "capture_id": "26960381-07d4-40da-9590-d6f24cf561c2",
-   "replaced_node_id": "3314:2"
-  },
-  {
-   "file": "xls-profit-daily.html",
-   "frame_name": "14 엑셀 산출물 서식 — 일별 투자수익",
-   "node_id": "3377:2",
-   "x": 0,
-   "y": 23517,
-   "w": 1440,
-   "h": 753,
-   "capture_id": "8716922d-b8cb-4bce-bd34-74cc5a8dbde1",
-   "replaced_node_id": "3313:2"
-  },
-  {
-   "file": "invest-sim.html",
-   "frame_name": "15 투자 시뮬레이션",
-   "node_id": "3376:2",
-   "x": 1600,
-   "y": 23517,
-   "w": 1440,
-   "h": 1123,
-   "capture_id": "dbe2f116-3cc0-4415-a069-3bcf410b4355",
-   "replaced_node_id": "3310:2"
-  },
-  {
-   "file": "invest-sim--result.html",
-   "frame_name": "15-a 투자 시뮬레이션 — 실행 결과",
-   "node_id": "3378:2",
-   "x": 3200,
-   "y": 23517,
-   "w": 1440,
-   "h": 2541,
-   "capture_id": "e0395ac9-c9c7-47c4-a4b7-2161b63260d6",
-   "replaced_node_id": "3308:2"
   }
  ],
  "retired": [
@@ -470,6 +405,78 @@
    "deleted_node_id": "3279:2",
    "status": "삭제 완료",
    "reason": "원본 낱장이 저장소에 없어 캡처 자체가 불가능하다. 남겨두면 갱신되지 않는 옛 숫자만 남는다"
+  },
+  {
+   "file": "coocon.html",
+   "frame_name": "04 쿠콘 관리 현금",
+   "deleted_node_id": "3341:2",
+   "status": "삭제 완료",
+   "reason": "쿠콘은 사이드바 외부 링크로 자동 연결이라 상세 화면이 없다. 사용자 지시로 만들지 않는다",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "index.html",
+   "frame_name": "09 화면 갤러리",
+   "deleted_node_id": "3373:2",
+   "status": "삭제 완료",
+   "reason": "시연본에 없는 화면 갤러리. 사용자 지시로 만들지 않는다",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "invest-sim.html",
+   "frame_name": "15 투자 시뮬레이션",
+   "deleted_node_id": "3376:2",
+   "status": "삭제 완료",
+   "reason": "시뮬레이션은 통합본 전용. 시연본·Figma 에 두지 않는다 (사용자 지시)",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "invest-sim--result.html",
+   "frame_name": "15-a 투자 시뮬레이션 — 실행 결과",
+   "deleted_node_id": "3378:2",
+   "status": "삭제 완료",
+   "reason": "시뮬레이션은 통합본 전용. 시연본·Figma 에 두지 않는다 (사용자 지시)",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "xls-assets-status.html",
+   "frame_name": "11 엑셀 산출물 서식 — 투자자산 현황",
+   "deleted_node_id": "3370:2",
+   "status": "삭제 완료",
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "xls-assets-merchant.html",
+   "frame_name": "12 엑셀 산출물 서식 — 가맹점별 투자자산",
+   "deleted_node_id": "3372:2",
+   "status": "삭제 완료",
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "xls-profit-status.html",
+   "frame_name": "13 엑셀 산출물 서식 — 투자수익 현황",
+   "deleted_node_id": "3375:2",
+   "status": "삭제 완료",
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "xls-profit-daily.html",
+   "frame_name": "14 엑셀 산출물 서식 — 일별 투자수익",
+   "deleted_node_id": "3377:2",
+   "status": "삭제 완료",
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)",
+   "deleted_at": "2026-09-04 착수 시점 get_metadata 에서 이미 조회되지 않음 · 이 라운드 삭제 실행 없음"
+  },
+  {
+   "file": "login.html",
+   "frame_name": "10 로그인",
+   "deleted_node_id": "3371:2",
+   "status": "삭제 완료",
+   "reason": "로그인은 기존 어드민 프론트 화면 그대로. 임의로 바꾼 프레임이라 지운다 (사용자 지시)",
+   "deleted_at": "2026-09-04 · 이 라운드에서 삭제"
   }
  ],
  "lost_nodes": [
@@ -495,6 +502,7 @@
   "3189:16460",
   "3189:16726"
  ],
- "source_commit_note": "캡처 기준 = 1f5c6a4, 워킹트리 변경 0건. 임포트 대상 33화면 중 32화면의 원본 파일은 c606f34 와 1f5c6a4 에서 바이트 동일이고, 차이는 invest-assets--cert-confirm.html 의 증명서 발급 대상 곳수 한 줄뿐이라 33프레임 전건이 1f5c6a4 기준으로 선다. 예시 데이터는 1억 규모·금액 가중 기준 — 투자자산 100,000,000 · 투자실행액 80,000,000 · 순현금 20,000,000 · 비중 80.0/20.0 · 로스터 8곳 · W금융일수 3.04일 · Ty수익율 13.21% · S입금부족율 0.07% · 주간 PSA 179,970,919 · PSM 61,175 · PSD 3.11 · 투자실행금액 대비 3.99% · 투자자산 대비 2.24%",
- "head_at_completion": "1f5c6a4"
+ "source_commit_note": "캡처 기준 = 1693bd3 + 워킹트리(2026-09-04). 교체 9화면 라벨은 가중평균 금융일수·입금부족률·예상 연환산수익률·연환산수익률이고, 03 투자 수익 ⑤(투자자산 대비)는 3.30% · 미확정 뱃지. 툴팁 앵커(점선 밑줄)는 투자 자산 계열 가중평균 금융일수·입금부족률, 투자 수익 계열 투자실행금액 대비·투자자산 대비·투자실행금·연환산수익률. 예시 데이터는 1억 규모·금액 가중 기준 — 투자자산 100,000,000 · 투자실행액 80,000,000 · 순현금 20,000,000 · 비중 80.0/20.0 · 로스터 8곳 · 가중평균 금융일수 3.04일 · 예상 연환산수익률 13.21% · 입금부족률 0.07%",
+ "head_at_completion": "1693bd3 (워킹트리 미커밋 변경 있음)",
+ "source_commit_state": "워킹트리 미커밋 변경 포함. 교체 9화면(invest-assets 4종·certificate·invest-profit 4종)은 HEAD 1693bd3 대비 워킹트리에서 수정된 상태(9 files · +147/−147)이며 프레임은 그 워킹트리 사본을 담는다. 나머지 15화면과 assets/base.css·sheet.css·logo-icon.png·template.html 은 워킹트리·1f5c6a4..1693bd3 모두 diff 0"
 }

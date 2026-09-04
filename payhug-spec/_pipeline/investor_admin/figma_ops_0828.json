@@ -99,26 +99,6 @@
    "delta": 0
   },
   {
-   "file": "coocon",
-   "frame_name": "04 쿠콘 관리 현금",
-   "old_node_id": "3341:2",
-   "x": 4800,
-   "y": 0,
-   "old_h": 571,
-   "vh": 571,
-   "delta": 0
-  },
-  {
-   "file": "index",
-   "frame_name": "09 화면 갤러리",
-   "old_node_id": "3373:2",
-   "x": 4800,
-   "y": 18291,
-   "old_h": 1863,
-   "vh": 1863,
-   "delta": 0
-  },
-  {
    "file": "invest-assets",
    "frame_name": "01 투자 자산",
    "old_node_id": "3337:2",
@@ -165,8 +145,8 @@
    "x": 3200,
    "y": 0,
    "old_h": 1267,
-   "vh": 1267,
-   "delta": 0
+   "vh": 1272,
+   "delta": 5
   },
   {
    "file": "invest-profit--empty",
@@ -175,8 +155,8 @@
    "x": 1600,
    "y": 7839,
    "old_h": 1044,
-   "vh": 1044,
-   "delta": 0
+   "vh": 1049,
+   "delta": 5
   },
   {
    "file": "invest-profit--monthly",
@@ -185,8 +165,8 @@
    "x": 0,
    "y": 7839,
    "old_h": 1222,
-   "vh": 1222,
-   "delta": 0
+   "vh": 1227,
+   "delta": 5
   },
   {
    "file": "invest-profit--weekly",
@@ -195,38 +175,8 @@
    "x": 3200,
    "y": 7839,
    "old_h": 1132,
-   "vh": 1132,
-   "delta": 0
-  },
-  {
-   "file": "invest-sim",
-   "frame_name": "15 투자 시뮬레이션",
-   "old_node_id": "3376:2",
-   "x": 1600,
-   "y": 23517,
-   "old_h": 1123,
-   "vh": 1123,
-   "delta": 0
-  },
-  {
-   "file": "invest-sim--result",
-   "frame_name": "15-a 투자 시뮬레이션 — 실행 결과",
-   "old_node_id": "3378:2",
-   "x": 3200,
-   "y": 23517,
-   "old_h": 2541,
-   "vh": 2541,
-   "delta": 0
-  },
-  {
-   "file": "login",
-   "frame_name": "10 로그인",
-   "old_node_id": "3371:2",
-   "x": 0,
-   "y": 20904,
-   "old_h": 505,
-   "vh": 505,
-   "delta": 0
+   "vh": 1137,
+   "delta": 5
   },
   {
    "file": "merchants",
@@ -297,46 +247,6 @@
    "old_h": 637,
    "vh": 637,
    "delta": 0
-  },
-  {
-   "file": "xls-assets-merchant",
-   "frame_name": "12 엑셀 산출물 서식 — 가맹점별 투자자산",
-   "old_node_id": "3372:2",
-   "x": 3200,
-   "y": 20904,
-   "old_h": 781,
-   "vh": 781,
-   "delta": 0
-  },
-  {
-   "file": "xls-assets-status",
-   "frame_name": "11 엑셀 산출물 서식 — 투자자산 현황",
-   "old_node_id": "3370:2",
-   "x": 1600,
-   "y": 20904,
-   "old_h": 613,
-   "vh": 613,
-   "delta": 0
-  },
-  {
-   "file": "xls-profit-daily",
-   "frame_name": "14 엑셀 산출물 서식 — 일별 투자수익",
-   "old_node_id": "3377:2",
-   "x": 0,
-   "y": 23517,
-   "old_h": 753,
-   "vh": 753,
-   "delta": 0
-  },
-  {
-   "file": "xls-profit-status",
-   "frame_name": "13 엑셀 산출물 서식 — 투자수익 현황",
-   "old_node_id": "3375:2",
-   "x": 4800,
-   "y": 20904,
-   "old_h": 669,
-   "vh": 669,
-   "delta": 0
   }
  ],
  "keep": [],
@@ -369,6 +279,69 @@
    "old_node_id": "3279:2",
    "done": true,
    "reason": "원본 낱장이 저장소에 없어 캡처 자체가 불가능하다. 남겨두면 갱신되지 않는 옛 숫자만 남는다"
+  },
+  {
+   "file": "coocon.html",
+   "frame_name": "04 쿠콘 관리 현금",
+   "old_node_id": "3341:2",
+   "done": true,
+   "reason": "쿠콘은 사이드바 외부 링크로 자동 연결이라 상세 화면이 없다. 사용자 지시로 만들지 않는다"
+  },
+  {
+   "file": "index.html",
+   "frame_name": "09 화면 갤러리",
+   "old_node_id": "3373:2",
+   "done": true,
+   "reason": "시연본에 없는 화면 갤러리. 사용자 지시로 만들지 않는다"
+  },
+  {
+   "file": "invest-sim.html",
+   "frame_name": "15 투자 시뮬레이션",
+   "old_node_id": "3376:2",
+   "done": true,
+   "reason": "시뮬레이션은 통합본 전용. 시연본·Figma 에 두지 않는다 (사용자 지시)"
+  },
+  {
+   "file": "invest-sim--result.html",
+   "frame_name": "15-a 투자 시뮬레이션 — 실행 결과",
+   "old_node_id": "3378:2",
+   "done": true,
+   "reason": "시뮬레이션은 통합본 전용. 시연본·Figma 에 두지 않는다 (사용자 지시)"
+  },
+  {
+   "file": "xls-assets-status.html",
+   "frame_name": "11 엑셀 산출물 서식 — 투자자산 현황",
+   "old_node_id": "3370:2",
+   "done": true,
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)"
+  },
+  {
+   "file": "xls-assets-merchant.html",
+   "frame_name": "12 엑셀 산출물 서식 — 가맹점별 투자자산",
+   "old_node_id": "3372:2",
+   "done": true,
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)"
+  },
+  {
+   "file": "xls-profit-status.html",
+   "frame_name": "13 엑셀 산출물 서식 — 투자수익 현황",
+   "old_node_id": "3375:2",
+   "done": true,
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)"
+  },
+  {
+   "file": "xls-profit-daily.html",
+   "frame_name": "14 엑셀 산출물 서식 — 일별 투자수익",
+   "old_node_id": "3377:2",
+   "done": true,
+   "reason": "엑셀은 다운로드 버튼으로 바로 내려받는다. 미리보기 화면이 실물 프론트에 없다 (사용자 지시)"
+  },
+  {
+   "file": "login.html",
+   "frame_name": "10 로그인",
+   "old_node_id": "3371:2",
+   "done": true,
+   "reason": "로그인은 기존 어드민 프론트 화면 그대로. 임의로 바꾼 프레임이라 지운다 (사용자 지시)"
   }
  ],
  "new": [],

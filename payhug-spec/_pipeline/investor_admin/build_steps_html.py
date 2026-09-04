@@ -10,6 +10,7 @@ meeting_0901/steps_all.json 을 읽어 HTML 한 장으로 편다. 값은 전부 
 """
 
 import html
+import re
 import importlib.util
 import io
 import json
@@ -17,6 +18,10 @@ import os
 import sys
 
 PIPE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, PIPE)
+import alias_table
+import subscript
+
 SRC = os.path.join(PIPE, "meeting_0901", "steps_all.json")
 REPO = "/Users/semi/cursor/payhug-investor-admin"
 
@@ -26,8 +31,19 @@ _spec.loader.exec_module(_bt)
 full = _bt.full
 
 e = lambda s: html.escape("" if s is None else str(s))
+# 글자로 보이는 자리 — 아래첨자를 조판하고 백틱을 <code> 로 바꾼다.
+#   백틱이 글자 그대로 찍히면 마크다운 표시가 화면에 남는다. 속성값에는 쓰지 않는다.
+_TICK = re.compile(r"`([^`\n]+)`")
+es = lambda s: _TICK.sub(r"<code>\1</code>", subscript.subs(e(s)))
+# 검색키 — 태그를 못 넣으므로 평문 괄호 표기로 돌린다. 원고 표기도 같이 담아 둘 다 걸린다.
+fl = lambda s: subscript.flat("" if s is None else str(s))
 
-SCREEN_NAME = {"invest-assets": "투자 자산", "invest-profit": "투자 수익",
+# 기호·용어·산식 칸을 대시 하나로 채우지 않는다. 없는 것은 빈 칸으로 둔다.
+# 값 칸의 `-` 는 배포 화면이 실제로 찍는 글자라 이 갈래에 넣지 않는다.
+_EMPTY = ("—", "–", "―", "ㅡ")
+nd = lambda v: None if isinstance(v, str) and v.strip() in _EMPTY else v
+
+SCREEN_NAME ={"invest-assets": "투자 자산", "invest-profit": "투자 수익",
                "invest-assets · invest-profit": "투자 자산 · 투자 수익"}
 
 CSS = """
@@ -124,6 +140,14 @@ ol.steps .d{display:block;font-family:"IBM Plex Mono",ui-monospace,monospace;fon
 .foot .v{background:var(--surface);padding:7px 11px;font-size:12.5px;min-width:0;
  word-break:break-word}
 .foot .v.x{color:var(--hide);font-weight:600}
+.xr{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;margin:12px 0;
+ background:var(--surface);box-shadow:var(--shadow)}
+.xr table{width:100%;border-collapse:collapse;font-size:13px}
+.xr th,.xr td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+.xr th{background:var(--sunk);font-size:11px;letter-spacing:.04em;color:var(--mute);
+ font-weight:700;white-space:nowrap}
+.xr tr:last-child td{border-bottom:0}
+.xr td.n{font-family:"IBM Plex Mono",ui-monospace,monospace;white-space:nowrap;color:var(--accent)}
 @media print{.bar{display:none}details.cell{break-inside:avoid;box-shadow:none}
  details.cell>summary{cursor:default}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -134,21 +158,23 @@ def cell_html(c, idx):
     steps = c.get("steps") or []
     nsh = sum(1 for s in steps if not s.get("visible"))
     nox = not c.get("xlsx")
-    blob = " ".join(str(c.get(k) or "") for k in
-                    ("label", "term", "symbol", "formula", "value", "xlsx", "source")) \
+    raw = " ".join(str(c.get(k) or "") for k in
+                   ("label", "term", "symbol", "formula", "value", "xlsx", "source")) \
         + " " + " ".join((s.get("what") or "") + " " + (s.get("detail") or "") for s in steps)
+    # 찾기용 — 속성값이라 태그를 못 넣는다. 평문 괄호 표기(Ai · wD(d-1))로 돌린다
+    blob = fl(raw)
 
     o = ['<details class="cell" data-i="%d" data-screen="%s" data-table="%s" '
          'data-nox="%d" data-q="%s">' % (idx, e(c.get("screen")), e(c.get("table")),
                                          1 if nox else 0, e(blob.lower()))]
     o.append("<summary>")
-    o.append('<span><span class="lbl">%s</span>' % e(c.get("label")))
+    o.append('<span><span class="lbl">%s</span>' % es(c.get("label")))
     if c.get("marker"):
-        o.append('<span class="sym">%s</span>' % e(c["marker"]))
-    if c.get("symbol"):
-        o.append('<span class="sym">%s</span>' % e(c["symbol"]))
+        o.append('<span class="sym">%s</span>' % es(c["marker"]))
+    if nd(c.get("symbol")):
+        o.append('<span class="sym">%s</span>' % es(c["symbol"]))
     o.append("</span>")
-    o.append('<span class="val">%s</span>' % e(c.get("value")))
+    o.append('<span class="val">%s</span>' % es(c.get("value")))
     o.append('<span class="sub"><span>단계 %d · 화면 밖 <b>%d</b></span>' % (len(steps), nsh))
     if nox:
         o.append('<span class="tag nox">엑셀 자리 없음</span>')
@@ -157,30 +183,42 @@ def cell_html(c, idx):
     o.append("</span></summary>")
 
     o.append('<div class="bd">')
-    if c.get("formula"):
-        o.append('<div class="fx">%s</div>' % e(c["formula"]))
+    if nd(c.get("formula")):
+        o.append('<div class="fx">%s</div>' % es(c["formula"]))
     if steps:
         o.append("<ol class='steps'>")
         for s in steps:
             cls = " class='on'" if s.get("visible") else ""
-            o.append("<li%s data-n='%s'>%s" % (cls, e(s.get("n")), e(s.get("what"))))
+            o.append("<li%s data-n='%s'>%s" % (cls, e(s.get("n")), es(s.get("what"))))
             if s.get("detail"):
-                o.append('<span class="d">%s</span>' % e(s["detail"]))
+                o.append('<span class="d">%s</span>' % es(s["detail"]))
             o.append("</li>")
         o.append("</ol>")
     rows = []
-    if c.get("term"):
-        rows.append(("용어", e(c["term"]), ""))
+    if nd(c.get("term")):
+        rows.append(("용어", es(c["term"]), ""))
     if c.get("hidden"):
-        rows.append(("화면 밖", " · ".join(e(h) for h in c["hidden"]), ""))
-    rows.append(("엑셀", e(c["xlsx"]) if c.get("xlsx") else "자리 없음",
+        rows.append(("화면 밖", " · ".join(es(h) for h in c["hidden"]), ""))
+    rows.append(("엑셀", es(c["xlsx"]) if c.get("xlsx") else "자리 없음",
                  "" if c.get("xlsx") else " x"))
     if c.get("source"):
-        rows.append(("근거", e(c["source"]), ""))
+        rows.append(("근거", es(c["source"]), ""))
     o.append('<div class="foot">')
     for k, v, kls in rows:
         o.append('<div class="k">%s</div><div class="v%s">%s</div>' % (k, kls, v))
     o.append("</div></div></details>")
+    return "".join(o)
+
+
+def alias_html():
+    """기존 표기 → 바뀐 기호 대조표. 표만 낸다."""
+    o = ['<h3 class="grp">%s</h3><div class="xr"><table><thead><tr>' % e(alias_table.TITLE)]
+    o += ["<th>%s</th>" % e(h) for h in alias_table.HEAD]
+    o.append("</tr></thead><tbody>")
+    for old, new, name in alias_table.rows():
+        o.append("<tr><td class='n'>%s</td><td class='n'>%s</td><td>%s</td></tr>"
+                 % (es(old), es(new), e(name)))
+    o.append("</tbody></table></div>")
     return "".join(o)
 
 
@@ -220,13 +258,14 @@ def build(d):
              '<div><dt>개명 대기 칸</dt><dd>%d</dd></div></dl>'
              % (cnt["칸"], cnt["단계"], cnt["화면에_안뜨는_단계"], cnt["단계"],
                 cnt["엑셀자리_없는_칸"], cnt["개명대기_칸"]))
+    o.append(alias_html())
 
     idx = 0
     for s, t in tables:
         grp = [c for c in cells if c.get("screen") == s and c.get("table") == t]
         nsh = sum(1 for c in grp for st in (c.get("steps") or []) if not st.get("visible"))
         o.append('<h3 class="grp">%s · %s<span class="t">칸 %d · 화면 밖 단계 %d</span></h3>'
-                 % (e(SCREEN_NAME.get(s, s)), e(t), len(grp), nsh))
+                 % (e(SCREEN_NAME.get(s, s)), es(t), len(grp), nsh))
         for c in grp:
             o.append(cell_html(c, idx))
             idx += 1

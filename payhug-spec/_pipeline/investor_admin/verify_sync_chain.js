@@ -67,8 +67,11 @@ const NUMS = [FACTS.exec, FACTS.cash, FACTS.total].map(v => Number(v).toLocaleSt
              .concat(['100.0%']);
 const ROSTER_ROWS = FACTS.merchants.length;   /* 가맹점 로스터 건수 — 현재 corpus 판정에서 참조하지 않는다 */
 
-/* 정본 대비 시연본이 의도적으로 덜어 내는 화면 — 이 둘만 빠져도 정상 */
-const PROTO_DROPPED = ['index'];
+/* 정본 대비 시연본이 의도적으로 덜어 내는 화면 — 이것들만 빠져야 정상.
+   [기준 교체 2026-09-04] 시연본에서 투자 시뮬레이션과 엑셀 서식 미리보기(xls-*)를 뺐다
+   (step7 시뮬 제거 · sync_prototype.py drop_sim · gate_prototype.js PROTO_DROPPED 와 같은 목록).
+   사이드바도 그만큼 준다 — invest-sim 메뉴 1건. 정본·통합 배포본은 그대로 8 이다. */
+const PROTO_DROPPED = ['index', 'invest-sim', 'xls-assets-status', 'xls-assets-merchant', 'xls-profit-status', 'xls-profit-daily'];
 
 /* 시연본 selfcheck 대조에서 뺄 항목 — 의도적 축소로 반드시 달라진다 */
 const SELFCHECK_SKIP = ['screens', 'states'];
@@ -78,6 +81,8 @@ const SELF_LINK_OK = ['index.html'];
 /* 사이드바 메뉴 수는 박지 않는다 — 정본 app.html 을 계측해 채운다(canonApp.navMenus).
    정본을 재지 못했을 때만 아래 기본값을 쓴다. */
 let SIDEBAR_MENUS = 8;
+/* 시연본 사이드바 = 정본 메뉴 목록에서 PROTO_DROPPED 에 든 메뉴(invest-sim)를 뺀 것. 정본 실측에서 채운다. */
+let PROTO_MENUS = SIDEBAR_MENUS - 1;
 const PERIOD_GRAN = 3;       /* 기간 3단 토글 */
 
 /* ══════════════ 도구 ══════════════ */
@@ -323,6 +328,7 @@ async function round(n) {
     add('C 정본 glossary.html 계측', !!(canonGloss && canonGloss.cards > 0),
       canonGloss ? '카드 ' + canonGloss.cards + ' · 본문 ' + canonGloss.textLen + '자' : 'null');
     if (canonApp && canonApp.navMenus > 0) SIDEBAR_MENUS = canonApp.navMenus;   /* 실측이 기준 */
+    if (canonApp && canonApp.navList) PROTO_MENUS = canonApp.navList.filter(m => PROTO_DROPPED.indexOf(m) < 0).length;
     R.canon = { app: canonApp && { screens: canonApp.screens, states: canonApp.states, selfcheck: canonApp.selfcheck, corpusLen: canonApp.corpusLen, nav: canonApp.navMenus, gran: canonApp.granCount },
                 gloss: canonGloss && { cards: canonGloss.cards, textLen: canonGloss.textLen, title: canonGloss.title } };
     /* 정본 자체 표식 — 여기서 빠지면 배포 탓이 아니다 */
@@ -385,7 +391,11 @@ async function round(n) {
             numDiff.length ? numDiff.map(k => k + ': 정본 ' + JSON.stringify(cf[k]) + ' ≠ 시연 ' + JSON.stringify(df[k])).join(' / ')
                            : Object.keys(df).filter(k => SELFCHECK_SKIP.indexOf(k) < 0).map(k => k + '=' + JSON.stringify(df[k])).join(' '));
         }
-        add('D 사이드바 메뉴 ' + SIDEBAR_MENUS + '개', d.navMenus === SIDEBAR_MENUS, d.navMenus + '개 ' + JSON.stringify(d.navList));
+        /* 시연본은 정본 − PROTO_DROPPED 메뉴. 목록까지 맞춘다 — 곳수만 맞고 다른 메뉴가 들어와도 잡힌다. */
+        const wantNav = canonApp && canonApp.navList ? canonApp.navList.filter(m => PROTO_DROPPED.indexOf(m) < 0) : null;
+        add('D 사이드바 메뉴 ' + PROTO_MENUS + '개 (정본 − ' + JSON.stringify(PROTO_DROPPED.filter(x => canonApp && canonApp.navList && canonApp.navList.indexOf(x) >= 0)) + ')',
+          d.navMenus === PROTO_MENUS && (!wantNav || JSON.stringify(wantNav) === JSON.stringify(d.navList)),
+          d.navMenus + '개 ' + JSON.stringify(d.navList) + (wantNav ? ' (기대 ' + JSON.stringify(wantNav) + ')' : ''));
         add('D 기간 ' + PERIOD_GRAN + '단 토글', d.granCount === PERIOD_GRAN, d.granCount + '개 ' + JSON.stringify(d.granLabels));
         add('D 보기 갯수 select', d.sizeSelectors > 0 && d.sizeOptions.indexOf('10개') >= 0,
           'select ' + d.sizeSelectors + '개 ' + JSON.stringify(d.sizeOptions));
@@ -420,7 +430,9 @@ async function round(n) {
            화면을 안 바꿔도 되는 것은 (1) 새 창으로 나가는 외부 링크 (2) 누르기 전에 이미 그 화면인 것. */
         const navBefore = await cdp.ev("return document.body.dataset.view||document.body.dataset.active;");
         const navStuck = [];
-        for (let i = 0; i < SIDEBAR_MENUS; i++) {
+        /* 실클릭은 시연본에 실제로 걸린 메뉴 전건을 돈다 — 기대 곳수(PROTO_MENUS)로 돌면 초과분이 검사 밖으로 샌다.
+           곳수·목록의 옳고 그름은 위 「D 사이드바 메뉴」 가 따로 판정한다. */
+        for (let i = 0; i < Math.max(d.navMenus || 0, PROTO_MENUS); i++) {
           const meta = await cdp.ev(`var e=document.querySelectorAll('.sidebar .nav-item[data-menu]')[${i}];
             return e ? {menu:e.dataset.menu, blank:e.getAttribute('target')==='_blank'} : null;`);
           if (!meta) { navStuck.push('#' + i + ' 메뉴 없음'); continue; }
@@ -440,7 +452,7 @@ async function round(n) {
           if (active !== meta.menu) navStuck.push(meta.menu + ' (' + before + ' → active=' + active + ')');
         }
         add('D 사이드바 실클릭 전환 — 안 움직인 SPA 메뉴 0', navStuck.length === 0,
-          navStuck.length ? JSON.stringify(navStuck) : SIDEBAR_MENUS + '개 전건 반응 (시작 ' + navBefore + ' · 외부 링크는 제외)');
+          navStuck.length ? JSON.stringify(navStuck) : (d.navMenus || PROTO_MENUS) + '개 전건 반응 (시작 ' + navBefore + ' · 외부 링크는 제외)');
         await cdp.ev("go('invest-profit','default');");
         const granRes = await cdp.ev(`var g=document.querySelectorAll('[data-act="pf-gran"]');var o=[];
           for(var i=0;i<g.length;i++){g[i].click();o.push({v:g[i].dataset.gran||g[i].textContent.trim(),

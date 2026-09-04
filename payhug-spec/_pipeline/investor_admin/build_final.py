@@ -7,7 +7,7 @@
      _pipeline/investor_admin/final_terms.fragment.html
      payhug-investor-admin/final-terms.html
 """
-import html, importlib.util, io, json, os
+import html, importlib.util, io, json, os, sys
 from datetime import date
 from docx import Document
 from docx.oxml import OxmlElement
@@ -15,12 +15,17 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 PIPE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, PIPE)
+import alias_table, subscript, testcase_table
+from subscript import subs
 SEED = os.path.join(PIPE, "final_terms.json")
 REPO = "/Users/semi/cursor/payhug-investor-admin"
 OUT = os.path.expanduser("~/Downloads/payhug_용어정의서")
 HAN, MONO = "맑은 고딕", "D2Coding"
 INK, MUTE, ACC, WARN = RGBColor(0x1A,0x1A,0x1A), RGBColor(0x6B,0x6B,0x6B), RGBColor(0x2C,0x44,0x70), RGBColor(0x9C,0x62,0x12)
 e = lambda s: html.escape("" if s is None else str(s))
+# 워드에는 마크다운 백틱을 그대로 찍지 않는다 — HTML 쪽은 replace("`","") 로 이미 뗀다.
+bare = lambda s: ("" if s is None else str(s)).replace("`", "")
 
 def font(run, name=HAN, size=None, bold=None, color=None):
     run.font.name = name
@@ -33,10 +38,18 @@ def font(run, name=HAN, size=None, bold=None, color=None):
     if color is not None: run.font.color.rgb = color
     return run
 
+def write(p, t, name=HAN, size=None, bold=None, color=None):
+    """마크다운 아래첨자를 run 으로 쪼개 넣는다 — `_{d−1}` 는 subscript run 이 된다."""
+    for chunk, sub in subscript.runs(t):
+        if not chunk: continue
+        r = font(p.add_run(chunk), name, size, bold, color)
+        if sub: r.font.subscript = True
+    return p
+
 def para(doc, t="", size=10.5, bold=False, color=INK, name=HAN, before=0, after=4, line=1.55):
     p = doc.add_paragraph(); pf = p.paragraph_format
     pf.space_before, pf.space_after, pf.line_spacing = Pt(before), Pt(after), line
-    if t: font(p.add_run(t), name, size, bold, color)
+    if t: write(p, t, name, size, bold, color)
     return p
 
 def shade(c, hx):
@@ -47,7 +60,7 @@ def cell(c, t, size=9.5, bold=False, color=INK, name=HAN):
     c.text = ""; p = c.paragraphs[0]
     p.paragraph_format.space_before = p.paragraph_format.space_after = Pt(2)
     p.paragraph_format.line_spacing = 1.3
-    font(p.add_run(t), name, size, bold, color)
+    write(p, t, name, size, bold, color)
 
 def table(doc, head, rows, widths, monos=()):
     t = doc.add_table(rows=1, cols=len(head)); t.style = "Table Grid"
@@ -58,7 +71,7 @@ def table(doc, head, rows, widths, monos=()):
         rr = t.add_row()
         for i,v in enumerate(r):
             rr.cells[i].width = Cm(widths[i])
-            cell(rr.cells[i], v or "-", 9.5, name=(MONO if i in monos else HAN))
+            cell(rr.cells[i], v or "", 9.5, name=(MONO if i in monos else HAN))
     para(doc, "", after=8)
 
 def docx(d, path):
@@ -72,32 +85,44 @@ def docx(d, path):
     para(doc, d["title"], 20, True, after=2)
     para(doc, d["basis"] + " · " + d["asof"], 10, color=MUTE, after=16)
 
-    para(doc, "1. 이름 짓는 규칙", 15, True, before=6, after=6)
+    para(doc, "1. " + alias_table.TITLE, 15, True, before=6, after=6)
+    table(doc, list(alias_table.HEAD), [list(r) for r in alias_table.rows()],
+          [5.5, 3.5, 8.0], monos=(0, 1))
+
+    para(doc, "2. " + alias_table.BRANCH_TITLE, 15, True, before=10, after=6)
+    table(doc, list(alias_table.BRANCH_HEAD), [list(r) for r in alias_table.branch_rows()],
+          [2.8, 3.6, 2.4, 2.4, 5.8], monos=(1, 2, 3, 4))
+
+    para(doc, "3. 이름 짓는 규칙", 15, True, before=6, after=6)
     for r in d["rules"]:
         para(doc, "%d. %s" % (r["n"], r["head"]), 11, True, after=2)
-        para(doc, r["body"], 10, color=MUTE, after=8)
+        para(doc, bare(r["body"]), 10, color=MUTE, after=8)
 
-    para(doc, "2. 범위", 15, True, before=10, after=6)
-    table(doc, ["표시","이름","무엇"], [[s["mark"],s["name"],s["def"]] for s in d["scopes"]], [2.2,2.4,12.4], monos=(0,))
+    para(doc, "4. 범위", 15, True, before=10, after=6)
+    table(doc, ["표시","이름","무엇"], [[s["mark"],s["name"],bare(s["def"])] for s in d["scopes"]], [2.2,2.4,12.4], monos=(0,))
 
-    para(doc, "3. 용어와 기호", 15, True, before=10, after=6)
-    for kind in ("상수","개념","낱개","집계"):
-        vs = [v for v in d["vars"] if v["kind"] == kind]
-        if not vs: continue
-        para(doc, kind, 11.5, True, color=ACC, before=6, after=4)
-        for v in vs:
-            p = doc.add_paragraph(); p.paragraph_format.space_before = Pt(6); p.paragraph_format.space_after = Pt(2)
-            font(p.add_run(v["term"] + "  "), size=11.5, bold=True)
-            font(p.add_run(v["sym"]), MONO, 11, True, ACC)
-            if v.get("formula"):
-                para(doc, v["formula"], 9.5, name=MONO, color=ACC, after=2)
-            para(doc, v["plain"], 10, color=MUTE, after=4)
+    # 5절은 갈래 제목 없이 vars 차례대로 낸다 — 대표 원문에 갈래를 부르는 말이 없다.
+    para(doc, "5. 용어와 기호", 15, True, before=10, after=6)
+    for v in d["vars"]:
+        p = doc.add_paragraph(); p.paragraph_format.space_before = Pt(6); p.paragraph_format.space_after = Pt(2)
+        font(p.add_run(v["term"] + "  "), size=11.5, bold=True)
+        write(p, v["sym"], MONO, 11, True, ACC)
+        if v.get("formula"):
+            para(doc, v["formula"], 9.5, name=MONO, color=ACC, after=2)
+        para(doc, bare(v["plain"]), 10, color=MUTE, after=4)
 
-    para(doc, "4. 계산 예시", 15, True, before=12, after=4)
+    para(doc, "6. 계산 예시", 15, True, before=12, after=4)
     para(doc, d["calc"]["기준"], 10, color=MUTE, after=6)
     table(doc, ["단계","값"], [[a,b] for a,b in d["calc"]["steps"]], [10.6,6.4], monos=(1,))
     para(doc, "금액으로 되돌린 검산", 11.5, True, before=6, after=4)
     table(doc, ["단계","값"], [[a,b] for a,b in d["calc"]["검산"]], [10.6,6.4], monos=(1,))
+
+    doc.add_page_break()
+    para(doc, "7. " + testcase_table.TITLE, 15, True, before=0, after=6)
+    for s in testcase_table.sections():
+        para(doc, "%d) %s" % (s["no"], s["title"]), 11.5, True, color=ACC, before=8, after=4)
+        for t in s["tables"]:
+            table(doc, t["head"], t["rows"], t["w"], monos=t["mono"])
 
     doc.save(path)
 
@@ -149,42 +174,91 @@ td.n{font-family:"IBM Plex Mono",ui-monospace,monospace;white-space:nowrap}
 @media print{.rule,.v{break-inside:avoid;box-shadow:none}}
 """
 
+def alias_html():
+    """기존 표기 → 바뀐 기호 대조표. 표만 낸다."""
+    o = ["<div class='scroll'><table><thead><tr>"]
+    o += ["<th>%s</th>" % e(h) for h in alias_table.HEAD]
+    o.append("</tr></thead><tbody>")
+    for old, new, name in alias_table.rows():
+        o.append("<tr><td class='n'>%s</td><td class='n'>%s</td><td>%s</td></tr>"
+                 % (subs(e(old)), subs(e(new)), e(name)))
+    o.append("</tbody></table></div>")
+    return "".join(o)
+
+
+def branch_html():
+    """같은 용어의 범위별 기호. 표만 낸다. 빈 칸은 비운다."""
+    o = ["<div class='scroll'><table><thead><tr>"]
+    o += ["<th>%s</th>" % e(h) for h in alias_table.BRANCH_HEAD]
+    o.append("</tr></thead><tbody>")
+    for r in alias_table.branch_rows():
+        o.append("<tr><td>%s</td>" % subs(e(r[0])))
+        o += ["<td class='n'>%s</td>" % subs(e(c)) for c in r[1:]]
+        o.append("</tr>")
+    o.append("</tbody></table></div>")
+    return "".join(o)
+
+
+def testcase_html():
+    """테스트 케이스 절 — 표만 낸다. 원천은 testcase_table 한 곳이다."""
+    o = []
+    for s in testcase_table.sections():
+        o.append("<h3>%d) %s</h3>" % (s["no"], e(s["title"])))
+        for t in s["tables"]:
+            o.append("<div class='scroll'><table><thead><tr>")
+            o += ["<th>%s</th>" % subs(e(h)) for h in t["head"]]
+            o.append("</tr></thead><tbody>")
+            for r in t["rows"]:
+                o.append("<tr>" + "".join(
+                    "<td%s>%s</td>" % (" class='n'" if i in t["mono"] else "", subs(e(c)))
+                    for i, c in enumerate(r)) + "</tr>")
+            o.append("</tbody></table></div>")
+    return "".join(o)
+
+
 def html_doc(d):
     o = ['<title>%s</title>' % e(d["title"]),
       '<style>@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap");',
       CSS, "</style>", '<div class="wrap">']
     o.append('<h1>%s</h1><p class="meta">%s · %s</p>' % (e(d["title"]), e(d["basis"]), e(d["asof"])))
 
-    o.append("<h2>1. 이름 짓는 규칙</h2>")
+    o.append("<h2>1. %s</h2>" % e(alias_table.TITLE))
+    o.append(alias_html())
+
+    o.append("<h2>2. %s</h2>" % e(alias_table.BRANCH_TITLE))
+    o.append(branch_html())
+
+    o.append("<h2>3. 이름 짓는 규칙</h2>")
     for r in d["rules"]:
         o.append('<div class="rule"><b>%d. %s</b><span>%s</span></div>'
-                 % (r["n"], e(r["head"]), e(r["body"]).replace("`","")))
+                 % (r["n"], e(r["head"]), subs(e(r["body"]).replace("`",""))))
 
-    o.append("<h2>2. 범위</h2><div class='scroll'><table><thead><tr><th>표시</th><th>이름</th><th>무엇</th></tr></thead><tbody>")
+    o.append("<h2>4. 범위</h2><div class='scroll'><table><thead><tr><th>표시</th><th>이름</th><th>무엇</th></tr></thead><tbody>")
     for s in d["scopes"]:
-        o.append("<tr><td class='n'>%s</td><td>%s</td><td>%s</td></tr>" % (e(s["mark"]), e(s["name"]), e(s["def"]).replace("`","")))
+        o.append("<tr><td class='n'>%s</td><td>%s</td><td>%s</td></tr>"
+                 % (subs(e(s["mark"])), e(s["name"]), subs(e(s["def"]).replace("`",""))))
     o.append("</tbody></table></div>")
 
-    o.append("<h2>3. 용어와 기호</h2>")
-    for kind in ("상수","개념","낱개","집계"):
-        vs = [v for v in d["vars"] if v["kind"] == kind]
-        if not vs: continue
-        o.append("<h3>%s</h3>" % kind)
-        for v in vs:
-            o.append('<div class="v"><div class="hd"><span class="t">%s</span><span class="s">%s</span></div>'
-                     % (e(v["term"]), e(v["sym"])))
-            if v.get("formula"): o.append('<div class="f">%s</div>' % e(v["formula"]))
-            o.append('<p class="p">%s</p></div>' % e(v["plain"]).replace("`",""))
+    # 5절은 갈래 제목 없이 vars 차례대로 낸다 — 대표 원문에 갈래를 부르는 말이 없다.
+    o.append("<h2>5. 용어와 기호</h2>")
+    for v in d["vars"]:
+        o.append('<div class="v"><div class="hd"><span class="t">%s</span><span class="s">%s</span></div>'
+                 % (e(v["term"]), subs(e(v["sym"]))))
+        if v.get("formula"): o.append('<div class="f">%s</div>' % subs(e(v["formula"])))
+        o.append('<p class="p">%s</p></div>' % subs(e(v["plain"]).replace("`","")))
 
-    o.append("<h2>4. 계산 예시</h2><p class='meta'>%s</p>" % e(d["calc"]["기준"]))
+    o.append("<h2>6. 계산 예시</h2><p class='meta'>%s</p>" % e(d["calc"]["기준"]))
     o.append("<div class='scroll'><table><thead><tr><th>단계</th><th>값</th></tr></thead><tbody>")
     for a,b in d["calc"]["steps"]:
-        o.append("<tr><td>%s</td><td class='n'>%s</td></tr>" % (e(a), e(b)))
+        o.append("<tr><td>%s</td><td class='n'>%s</td></tr>" % (subs(e(a)), subs(e(b))))
     o.append("</tbody></table></div><h3>금액으로 되돌린 검산</h3>")
     o.append("<div class='scroll'><table><thead><tr><th>단계</th><th>값</th></tr></thead><tbody>")
     for a,b in d["calc"]["검산"]:
-        o.append("<tr><td>%s</td><td class='n'>%s</td></tr>" % (e(a), e(b)))
+        o.append("<tr><td>%s</td><td class='n'>%s</td></tr>" % (subs(e(a)), subs(e(b))))
     o.append("</tbody></table></div>")
+
+    o.append("<h2>7. %s</h2>" % e(testcase_table.TITLE))
+    o.append(testcase_html())
 
     o.append("</div>")
     return "".join(o)
@@ -200,10 +274,13 @@ def main():
     bt = importlib.util.module_from_spec(spec); spec.loader.exec_module(bt)
     fp = os.path.join(PIPE, "final_terms.fragment.html")
     hp = os.path.join(REPO, "final-terms.html")
+    # 워드와 HTML 을 같은 이름·같은 시각으로 짝지어 Downloads 에도 낸다.
+    dh = os.path.join(OUT, "용어기호정리_%s.html" % stamp)
     io.open(fp,"w",encoding="utf-8").write(frag)
     io.open(hp,"w",encoding="utf-8").write(bt.full(frag))
+    io.open(dh,"w",encoding="utf-8").write(bt.full(frag))
     for p in (dp, fp, hp): print("%s  %.0fKB" % (p, os.path.getsize(p)/1024))
-    print("  규칙 %d · 범위 %d · 용어 %d · 확인대기 %d"
-          % (len(d["rules"]), len(d["scopes"]), len(d["vars"]), len(d["pending"])))
+    print("  규칙 %d · 범위 %d · 용어 %d · 대조표 %d줄"
+          % (len(d["rules"]), len(d["scopes"]), len(d["vars"]), len(alias_table.rows())))
 
 main()

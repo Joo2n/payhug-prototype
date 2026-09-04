@@ -6,9 +6,9 @@
 모든 셀은 엑셀 수식이다. 파이썬이 낸 값을 박아 넣는 자리는 셋뿐이다.
   ① 입력 시트의 가정값 (근거 자료에서 읽는다)
   ② 채권 시트의 금융일수 Di — 정산주기.xlsx N6:Q370 (2025년 365일 실측)의 40일 슬라이스
-  ③ 화면대조 시트의 화면 값 — ledger_facts.json 에서 읽는다
+  ③ 화면대조 시트의 화면 표시값 — ledger_facts.json 에서 읽는다
 
-화면 값의 출처 키 — 원장 재생성 뒤 갈아 끼우는 자리는 SEED 하나뿐이다.
+화면 표시값의 출처 키 — 원장 재생성 뒤 갈아 끼우는 자리는 SEED 하나뿐이다.
   SEED 딕셔너리가 '이 통합문서가 쓰는 숫자 = ledger_facts.json 의 어느 키' 를 1:1로 적는다.
   W · Ty · 곳수 같은 값을 코드 본문에 손으로 적지 않는다.
 
@@ -20,7 +20,7 @@ w금융일수의 가중치는 금액(Ai)이다 — 2026-08-31 사용자 결정.
 근거 자료 (전부 읽기 전용)
   ~/Downloads/정산주기.xlsx     금융일수 도수 · 플랫폼 평균 금융일수 · MAU · 배달앱/전체 0.35
   ~/Downloads/용어 정의.docx    산식 원문 (ceo_definitions.md 로 옮겨 적은 것)
-  ledger_facts.json            화면 값 전량 — 이 통합문서가 대조하는 유일한 기준
+  ledger_facts.json            화면 표시값 전량 — 이 통합문서가 대조하는 유일한 기준
   platform_duration.py         금액 실측 MEASURED · BOOK_MIX · 참고 MAU_MIX · 미지급/과지급률
   daily_ledger.py              로스터 BOOKROWS · 규모 BOOK/CASH · 기준일 ASOF
   roster16_model.py            비중 최대잉여법 규칙 · 서명 대기 큐 SIGN_PENDING
@@ -31,8 +31,6 @@ from datetime import date, timedelta
 from decimal import Decimal as D, ROUND_HALF_UP, ROUND_FLOOR
 
 import openpyxl
-from openpyxl.cell.rich_text import CellRichText, TextBlock
-from openpyxl.cell.text import InlineFont
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.workbook.defined_name import DefinedName
@@ -48,7 +46,7 @@ ORDER = ('card', 'bm', 'cpe', 'yo')
 LABEL = {'card': '카드사', 'bm': '배달의민족', 'cpe': '쿠팡이츠', 'yo': '요기요'}
 WINDOW = 40                       # 선정산일 축 길이(일)
 
-# ── 화면 값 ↔ ledger_facts.json 키 대응 ─────────────────────────────
+# ── 화면 표시값 ↔ ledger_facts.json 키 대응 ─────────────────────────────
 #   왼쪽이 이 통합문서 안의 이름, 오른쪽이 ledger_facts.json 의 키다.
 #   원장을 다시 만들면 JSON 만 바뀌고 이 파일은 그대로 둔다.
 SEED = {
@@ -60,17 +58,19 @@ SEED = {
     '원장 일수':         'ledgerDays',      '원장 구간':         'ledgerSpan',
     '채권 건수':         'receivables',     '미회수 채권 건수':  'openReceivables',
     '채권 Di 범위':      'diRange',         '일별 W 범위':       'wRange',
-    '주간 PSA':          'weekExec',        '주간 PSM':          'weekProfit',
+    '주간 PA':          'weekExec',        '주간 PM':          'weekProfit',
     '주간 상환액':       'weekRepay',       '주간 일수':         'weekDays',
-    '주간 PSD 표기':     'weekW',           '주간 PSD raw':      'weekWRaw',
-    '주간 ④':            'weekTy',          '주간 PSC':          'weekPsc',
-    '주간 ⑤':            'weekTyAsset',     '전 구간 PSA':       'fullExec',
-    '전 구간 PSM':       'fullProfit',      '전 구간 PSD 표기':  'fullW',
-    '전 구간 ④':         'fullTy',          '전 구간 PSC':       'fullPsc',
+    '주간 PwD 표기':     'weekW',           '주간 PwD raw':      'weekWRaw',
+    '주간 ④':            'weekTy',          '주간 PEC':          'weekPsc',
+    '주간 Σ(Ai x Di)':   'weekAD',
+    '주간 ⑤':            'weekTyAsset',     '전 구간 PA':       'fullExec',
+    '전 구간 PM':       'fullProfit',      '전 구간 PwD 표기':  'fullW',
+    '전 구간 ④':         'fullTy',          '전 구간 PEC':       'fullPsc',
+    '전 구간 Σ(Ai x Di)': 'fullAD',
     '전 구간 ⑤':         'fullTyAsset',     '가맹점별 값':       'merchants',
     '일자별 값':         'tyByDate',
 }
-#   merchants 원소 = [상호, 투자금액, W, S, Ty, 규모구간, flow]
+#   merchants 원소 = [상호, 투자실행액, W, S, Ty, 규모구간, flow]
 MCOL = dict(name=0, amount=1, w=2, s=3, ty=4, tier=5, flow=6)
 #   tyByDate 원소 = [W, ty(%), 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감]
 DCOL = dict(w=0, ty=1, exec=2, profit=3, repay=4, fee=5, ded=6)
@@ -109,6 +109,28 @@ def read_book():
     rows = [dict(mid=m[0], name=m[1], bizno=m[2], ceo=m[3], biz=m[4], item=m[5],
                  contract=m[6], tier=m[7], flow=int(m[8]), b=m[9]) for m in L.BOOKROWS]
     return rows, L.ASOF, int(L.BOOK), int(L.CASH)
+
+
+def read_ledger_w6():
+    """일자별 W금융일수의 6자리 값 — daily_ledger.LEDGER 그대로 읽는다(읽기 전용).
+
+    기간 PwD 는 이 6자리 값을 금액가중해 낸다(dm_0901/rounding_rule_0901.md 규칙 1).
+    ledger_facts.json 의 `tyByDate` 는 표기 2자리만 싣는다.
+    """
+    sys.path.insert(0, BASE)
+    import daily_ledger as L
+    return {r['d']: D(str(r['w6'])) for r in L.LEDGER}
+
+
+def read_merchant_w6():
+    """가맹점별 W금융일수의 6자리 값 — daily_ledger.MERCHANTS 그대로 읽는다(읽기 전용).
+
+    화면 가맹점 Ty 는 표기 2자리가 아니라 이 6자리 값에서 나온다
+    (dm_0901/rounding_rule_0901.md 규칙 1). ledger_facts.json 은 2자리만 싣는다.
+    """
+    sys.path.insert(0, BASE)
+    import daily_ledger as L
+    return {m['name']: str(m['w6']) for m in L.MERCHANTS}
 
 
 def read_plat():
@@ -165,7 +187,7 @@ def read_word_lines(n=(4, 5, 6)):
     return [(i, items[i - 1]) for i in n]
 
 
-# ── 화면 값 — ledger_facts.json 이 유일한 출처 ──────────────────────
+# ── 화면 표시값 — ledger_facts.json 이 유일한 출처 ──────────────────────
 def read_facts():
     """원장이 낸 사실값. 여기 없는 화면 숫자는 이 통합문서에 쓰지 않는다."""
     p = os.path.join(BASE, 'ledger_facts.json')
@@ -176,7 +198,7 @@ def read_facts():
 
 
 def S(f, name):
-    """SEED 이름으로 화면 값을 꺼낸다 — 숫자를 손으로 적지 않게 하는 통로."""
+    """SEED 이름으로 화면 표시값을 꺼낸다 — 숫자를 손으로 적지 않게 하는 통로."""
     return f[SEED[name]]
 
 
@@ -184,18 +206,23 @@ def fsrc(name):
     return 'ledger_facts.json %s' % SEED[name]
 
 
-def facts_rollup(f, frm, to):
-    """tyByDate 를 기간으로 접는다 — 주간·프리셋 화면 값의 재료."""
+def facts_rollup(f, frm, to, dw6=None):
+    """tyByDate 를 기간으로 접는다 — 주간·프리셋 화면 표시값이 여기서 나온다.
+
+    PwD 는 일별 W 의 6자리 값을 금액가중해 낸 뒤 다시 6자리로 끊는다.
+    """
     ks = sorted(k for k in S(f, '일자별 값') if frm <= k <= to)
     g = S(f, '일자별 값')
+    dw6 = dw6 or {}
     ex = sum(g[k][DCOL['exec']] for k in ks)
-    wx = sum(float(g[k][DCOL['w']]) * g[k][DCOL['exec']] for k in ks)
+    wx = sum(dw6.get(k, D(g[k][DCOL['w']])) * D(g[k][DCOL['exec']]) for k in ks)
     return dict(days=len(ks), span=(ks[0], ks[-1]),
                 exec_=ex, profit=sum(g[k][DCOL['profit']] for k in ks),
                 repay=sum(g[k][DCOL['repay']] for k in ks),
                 fee=sum(g[k][DCOL['fee']] for k in ks),
                 ded=sum(g[k][DCOL['ded']] for k in ks),
-                wraw=(wx / ex if ex else 0.0))
+                wraw=((wx / D(ex)).quantize(D('0.000001'),
+                                           rounding=ROUND_HALF_UP) if ex else D(0)))
 
 
 def ratios(amounts, base):
@@ -332,7 +359,7 @@ def _spread(head, tail, rnd, dsum_target, lam=2.0):
     """머리 27건 배치.
 
     ① 정산예정일 13..39 를 한 건씩 채워 일별 표의 하루 건수를 고르게 한다
-    ② 그 구간에 든 채권의 금융일수 합을 27 x 플랫폼 평균 금융일수에 맞춰 PSD 쏠림을 없앤다
+    ② 그 구간에 든 채권의 금융일수 합을 27 x 플랫폼 평균 금융일수에 맞춰 PwD 쏠림을 없앤다
     """
     tcnt = [0] * 80
     tsum = 0
@@ -509,49 +536,14 @@ D8 = '0.00000000'
 P2 = '0.00'
 DT = 'yyyy-mm-dd'
 
-# ── 아래첨자 표기 ──────────────────────────────────────────────────
-#   이 openpyxl(3.1.5)은 CellRichText + InlineFont(vertAlign='subscript') 로
-#   셀 안 일부 글자만 아래첨자로 내릴 수 있다. 그래서 괄호 규약이 아니라 서식으로 간다.
-#   글자열 자체는 바꾸지 않는다 — 평문으로 읽으면 지금과 같은 글자다.
-#   (본체, 아래첨자) 로만 가른다. 평문으로 읽으면 `SBd-1` 처럼 붙어 있다.
-#   수식 문자열(`=`로 시작)·시트 이름·이름정의에는 쓸 수 없어 그 자리는 평문으로 둔다.
-#   대문자 `D` 는 금융일수, 소문자 `d` 는 오늘 날짜다 (dm_0831/symbol_rule_0831.md).
+# ── 기호 표기 — 평문 괄호 규약 (dm_0901/symbol_rule_0901.md 「표기 형태」) ──
+#   엑셀 열머리·시트명·라벨은 `Ai` · `wD(d-1)` 처럼 괄호로 적는다. 아래첨자 조판은 넣지 않는다.
+#   대문자 `D` 는 금융일수, 소문자 `d` 는 오늘 날짜다.
 #   `d-1` 은 「어제 날짜」가 아니라 「정산예정일이 어제인 대상정산금채권 집합」이다.
-#   `산식` 시트 B열의 대표 정의서 원문만 옛 표기(`D-1`)를 그대로 둔다 — 인용이라 손대지 않는다.
-SUBSCRIPT = [
-    ('SMRd-1', 'SMR', 'd-1'), ('SBd-1', 'SB', 'd-1'), ('SAd-1', 'SA', 'd-1'),
-    ('SMd-1', 'SM', 'd-1'), ('SDd-1', 'SD', 'd-1'),
-    ('Bd-1i', 'B', 'd-1i'), ('Ad-1i', 'A', 'd-1i'), ('Md-1i', 'M', 'd-1i'),
-    ('Dd-1i', 'D', 'd-1i'),
-    ('SLi', 'SL', 'i'), ('SAi', 'SA', 'i'),
-    ('Api', 'A', 'pi'), ('Dpi', 'D', 'pi'),
-    ('Ai', 'A', 'i'), ('Di', 'D', 'i'),
-]
-SUBMAP = {k: (b, s) for k, b, s in SUBSCRIPT}
-SUBRE = re.compile(r'(?<![A-Za-z0-9])(%s)(?![A-Za-z0-9])'
-                   % '|'.join(re.escape(k) for k, _, _ in SUBSCRIPT))
-
-
+#   `산식` 시트 B열의 대표 정의서 원문만 옛 표기를 그대로 둔다 — 인용이라 손대지 않는다.
 def rich(s, bold=False, white=False):
-    """라벨 문자열의 기호를 아래첨자 런으로 가른다. 기호가 없으면 원래 문자열 그대로."""
-    if not isinstance(s, str) or not s or s.startswith('='):
-        return s
-    col = 'FFFFFF' if white else None
-    base = InlineFont(sz=10, b=bold, color=col)
-    low = InlineFont(sz=10, b=bold, color=col, vertAlign='subscript')
-    parts, pos = [], 0
-    for m in SUBRE.finditer(s):
-        head_, tail = SUBMAP[m.group(1)]
-        if m.start() > pos:
-            parts.append(TextBlock(base, s[pos:m.start()]))
-        parts.append(TextBlock(base, head_))
-        parts.append(TextBlock(low, tail))
-        pos = m.end()
-    if not parts:
-        return s
-    if pos < len(s):
-        parts.append(TextBlock(base, s[pos:]))
-    return CellRichText(parts)
+    """평문 규약이라 글자열을 그대로 돌려준다."""
+    return s
 
 
 def head(ws, row, labels, start=1, fill=HEAD):
@@ -603,12 +595,13 @@ def build(idle=None, tag=''):
     fx = read_facts()
     sign = read_sign_pending()
     presets = read_presets()
+    w6 = read_merchant_w6()
 
-    # 화면 값 — 전부 ledger_facts.json 에서 온다(SEED 대응표).
-    scr_exec = S(fx, '투자실행액')            # 화면대조 블록이 쓰는 배포 화면 값
+    # 화면 표시값 — 전부 ledger_facts.json 에서 온다(SEED 대응표).
+    scr_exec = S(fx, '투자실행액')            # 화면대조 블록이 쓰는 배포 화면 표시값
     scr_cash = S(fx, '순현금')
     total_asset = S(fx, '투자자산')
-    assert (scr_exec, scr_cash) == (book, cashv), '원장 상수와 화면 값이 어긋난다'
+    assert (scr_exec, scr_cash) == (book, cashv), '원장 상수와 화면 표시값이 어긋난다'
     assert scr_exec + scr_cash == total_asset, '투자실행액 + 순현금 != 투자자산'
     if idle is None:
         idle_ratio = float(D(scr_cash) / D(total_asset))
@@ -626,8 +619,11 @@ def build(idle=None, tag=''):
     assert set(SCR) == set(r['name'] for r in roster), '로스터 상호가 화면과 다르다'
     _ord = {m[MCOL['name']]: i for i, m in enumerate(scr_m)}      # 화면 표 순서(금액 내림차순)
     roster.sort(key=lambda r: _ord[r['name']])
-    week = facts_rollup(fx, '2026-08-21', '2026-08-27')
-    full = facts_rollup(fx, *S(fx, '원장 구간'))
+    dw6 = read_ledger_w6()
+    week = facts_rollup(fx, fx['weekFrom'], fx['weekTo'], dw6)
+    full = facts_rollup(fx, *S(fx, '원장 구간'), dw6=dw6)
+    assert str(week['wraw']) == S(fx, '주간 PwD raw'), \
+        '주간 PwD 가 화면 표시값과 다르다: %s != %s' % (week['wraw'], S(fx, '주간 PwD raw'))
     _n = len(roster)
     avg_daily = int(round(sum(r['flow'] for r in roster) / _n))
 
@@ -679,12 +675,12 @@ def build(idle=None, tag=''):
         ('산식', '③ 지시 대상 (미확정)', None, '원',
          'ceo_definitions.md [2번] 이미지의 ③ — 「상단 현황의 기간 전체 숫자」까지만 좁혀짐. '
          '칸 미확정 (U-03 · F-23)'),
-        #   ⑤ 는 대표가 수식을 새로 써서 다시 주기로 했다(A-01). 새 수식이 오면 이 한 칸만 고친다.
-        #   지금 들어 있는 것은 대표 정의서 원문 산식이다. 실제 수식은 기간집계 행이 정해진 뒤
-        #   되돌아 적는다(아래 「⑤ 산식 되돌아 적기」).
+        #   ⑤ 는 대표 정의서 원문 산식이 「수식 오류」로 닫혀(A-01) 우리 확정안이 들어 있다 —
+        #   ⑤ = PM x 365 / (Σ(Ai x Di) + PEC). 산식을 바꿀 때 이 한 칸만 고친다. 실제 수식은
+        #   기간집계 행이 정해진 뒤 되돌아 적는다(아래 「⑤ 산식 되돌아 적기」).
         ('산식', '⑤ 산식 (미확정 · 대표 재작성 대기)', None, '%',
-         'ceo_definitions.md [2번] 이미지의 ⑤ — 이 칸 하나만 갈아 끼우면 기간집계 ⑤ 와 '
-         '⑥ 이 따라온다. 대표 재작성 대기 (A-01)'),
+         '⑤ = PM x 365 / (Σ(Ai x Di) + PEC) · daily_ledger.TY5_EXPR — 이 칸 하나만 갈아 끼우면 '
+         '기간집계 ⑤ 와 ⑥ 이 따라온다. 대표 확인 대기 (A-01)'),
     ]
     fmts = [D8, P2, M0, M0, '0.0%', M0, M0, M0, DT, DT, DT, DT, DT, DT, DT, DT, M0, P2]
     keys = ['할인율', '할인율퍼센트', '연일수', '총투자자산', '유휴비율',
@@ -793,7 +789,7 @@ def build(idle=None, tag=''):
     name('배달앱비중', '입력', '$B$%d' % MAD)
 
     RT = MAD + 2                              # 로스터 표 머리 행
-    head(ws, RT, ['순번', '사업자ID', '상호', '업종', '품목', '계약일', 'flow 상수',
+    head(ws, RT, ['순번', '사업자ID', '상호', '업종', '품목', '계약일', 'flow 하루 선정산액',
                   '배달 의존도 b', '하루 선정산액(방향 B)', '계약 상태', '계약 생성일'],
          fill=SUB)
     for i, r0 in enumerate(roster):
@@ -893,13 +889,15 @@ def build(idle=None, tag=''):
 
     head(ws, 15, ['항목', '값', '산식'], fill=SUB)
     pf = [('구성비 합', '=SUM(구성비범위)', 'SUM(구성비)', D8),
-          ('W금융일수 (구성비 x 평균 금융일수)', '=SUMPRODUCT(구성비범위,평균금융일수범위)',
-           'Σ 구성비 x 평균 금융일수', D8),
+          ('W금융일수 (구성비 x 평균 금융일수)',
+           '=ROUND(SUMPRODUCT(구성비범위,평균금융일수범위),6)',
+           'ROUND(Σ 구성비 x 평균 금융일수, 6)', D8),
           ('대표 엑셀 MAU 시장 평균 참고값 H41', cyc['wavg'], '%s 정산주기 H41' % cyc['src_xlsx'], D8),
           ('차', '=B17-B18', 'B17 - B18', '0.00E+00'),
           ('가중 E[d²]', '=SUMPRODUCT(구성비범위,Ed2범위)', 'Σ 구성비 x E[d²]', D8),
-          ('미회수 이론 W', '=B20/B17', '가중 E[d²] / W', D6),
-          ('Ty수익율(%) — 구성비 W 기준', '=할인율퍼센트*연일수/ROUND(B17,SW_자릿수)',
+          ('미회수 이론 W', '=ROUND(B20/B17,6)', 'ROUND(가중 E[d²] / W, 6)', D6),
+          ('Ty수익율(%) — 구성비 W 기준',
+           '=ROUND(할인율퍼센트*연일수/ROUND(B17,SW_자릿수),6)',
            '할인율 x 365 / 표기 W', P2)]
     for i, (lab, val, f, fmt) in enumerate(pf):
         r = 16 + i
@@ -910,9 +908,9 @@ def build(idle=None, tag=''):
 
     # ── 가맹점 ──────────────────────────────────────────────────
     ws = wb.create_sheet('가맹점')
-    cols = ['순번', '사업자ID', '상호', '업종', '품목', '계약일', '사용', 'flow 상수',
+    cols = ['순번', '사업자ID', '상호', '업종', '품목', '계약일', '사용', 'flow 하루 선정산액',
             '배달 의존도 b', '카드', '배민', '쿠팡이츠', '요기요', '구성비 합',
-            '가맹점 w금융일수', '하루 선정산액', '하루 Ai', '투자금액', '비중 raw', '표기 W',
+            '가맹점 w금융일수', '하루 선정산액', '하루 Ai', '투자실행액', '비중 raw', '표기 W',
             '가중 미지급률', '가중 과지급률', 'S입금부족율(%)', 'Ty수익율(%)', '구간',
             '비중 내림(pp)', '잔차(pp)', '잔차 순위', '비중 표기(%)', '계약 상태']
     head(ws, 1, cols)
@@ -942,15 +940,15 @@ def build(idle=None, tag=''):
         put(ws, r, 17, '=P%d*(1-할인율)' % r, M0)
         put(ws, r, 18, '=P{0}*(1-할인율)*O{0}'.format(r), M0)
         put(ws, r, 19, '=IF($R$%d=0,0,R%d/$R$%d)' % (last, r, last), '0.0%')
-        put(ws, r, 20, '=IF(G%d=0,"",ROUND(O%d,SW_자릿수))' % (r, r))
+        put(ws, r, 20, '=IF(G%d=0,"",ROUND(ROUND(O%d,6),SW_자릿수))' % (r, r))
         put(ws, r, 21, '=' + '+'.join('%s%d*INDEX(미지급률범위,%d)' % (get_column_letter(10 + j),
                                                                      r, j + 1)
                                       for j in range(4)), D8)
         put(ws, r, 22, '=' + '+'.join('%s%d*INDEX(과지급률범위,%d)' % (get_column_letter(10 + j),
                                                                      r, j + 1)
                                       for j in range(4)), D8)
-        put(ws, r, 23, '=IF(G%d=0,"",(U%d-V%d)/(1-할인율)*100)' % (r, r, r), P2)
-        put(ws, r, 24, '=IF(G%d=0,"",할인율퍼센트*연일수/T%d)' % (r, r), P2)
+        put(ws, r, 23, '=IF(G%d=0,"",ROUND((U%d-V%d)/(1-할인율)*100,6))' % (r, r, r), P2)
+        put(ws, r, 24, '=IF(G%d=0,"",ROUND(할인율퍼센트*연일수/ROUND(O%d,6),6))' % (r, r), P2)
         put(ws, r, 25, '=IF(G%d=0,"",IF(P%d>=5000000,"고액",IF(P%d>=2000000,"평범","소액")))'
             % (r, r, r))
         # 비중 표기 — 최대잉여법(roster16_model.ratios 와 같은 규칙).
@@ -970,7 +968,7 @@ def build(idle=None, tag=''):
     put(ws, last, 3, '합계', bold=True)
     put(ws, last, 15, '=IF(P%d=0,0,SUMPRODUCT(P2:P%d,O2:O%d)/P%d)' % (last, last - 1, last - 1,
                                                                       last), D8, bold=True)
-    put(ws, last, 20, '=ROUND(O%d,SW_자릿수)' % last, bold=True)
+    put(ws, last, 20, '=ROUND(ROUND(O%d,6),SW_자릿수)' % last, bold=True)
     put(ws, last, 26, '=SUM(Z2:Z%d)' % (last - 1), '0.0', bold=True)
     put(ws, last, 29, '=SUM(AC2:AC%d)' % (last - 1), '0.0', bold=True, fill=CHK)
     put(ws, last, 30, '=COUNTIF(AD2:AD%d,"서명 대기")&"건 대기"' % (last - 1), bold=True)
@@ -1027,7 +1025,7 @@ def build(idle=None, tag=''):
     ws = wb.create_sheet('채권')
     ch = ['번호', '가맹점', '플랫폼', '가맹점#', '플랫폼#', '선정산일', '정산예정일',
           '금융일수 Di', '순지급액', 'Ai', '채권매입수수료', '미지급액', '과지급액',
-          '차감액', '투자수익 Md-1i', '상환액 Bd-1i', '미회수', '만기 도래', 'Ai x Di',
+          '차감액', '투자수익 Mi', '상환액 Bi', '미회수', '만기 도래', 'Ai x Di',
           'S표본', '조회기간']
     head(ws, 1, ch)
     recs = []
@@ -1073,11 +1071,11 @@ def build(idle=None, tag=''):
 
     # ── 일별 ────────────────────────────────────────────────────
     ws = wb.create_sheet('일별')
-    #   E열이 화면 값이다 — Md-1i = 채권매입수수료 - max(0, 미지급금 - 과지급금).
+    #   E열이 화면 표시값이다 — Mi = 채권매입수수료 - max(0, 미지급금 - 과지급금).
     #   F열(차감 제외)은 대조용으로만 둔다.
-    head(ws, 1, ['정산예정일', '건수', 'SBd-1 상환액', 'SAd-1 투자실행금',
-                 'SMd-1 투자수익 (화면 값)', 'SMd-1 투자수익(차감 제외 · 참고)',
-                 'SMRd-1 투자수익율', 'SDd-1 W금융일수', 'ty수익율(%)',
+    head(ws, 1, ['정산예정일', '건수', 'B(d-1) 상환액', 'A(d-1) 투자실행금',
+                 'M(d-1) 투자수익 (화면 표시값)', 'M(d-1) 투자수익(차감 제외 · 참고)',
+                 'MR(d-1) 투자수익율(%)', 'wD(d-1) W금융일수', 'ty수익율(%)',
                  'EC 순현금 (미확정)',
                  'Σ(Ai x Di)', '부족액 차감', '차감/수수료(%)'])
     NDAY = 27
@@ -1089,9 +1087,10 @@ def build(idle=None, tag=''):
         put(ws, r, 4, '=SUMIFS(%s,%s,$A%d)' % (RNG['J'], RNG['G'], r), M0)
         put(ws, r, 5, '=SUMIFS(%s,%s,$A%d)' % (RNG['O'], RNG['G'], r), M0)
         put(ws, r, 6, '=SUMIFS(%s,%s,$A%d)' % (RNG['K'], RNG['G'], r), M0)
-        put(ws, r, 7, '=IF(D%d=0,0,E%d/D%d)' % (r, r, r), D8)
-        put(ws, r, 8, '=IF(D%d=0,0,K%d/D%d)' % (r, r, r), D6)
-        put(ws, r, 9, '=IF(H%d=0,0,G%d*연일수/H%d*100)' % (r, r, r), P2)
+        # MR(d-1) 도 백분율 표기 기준 6자리에서 끊고 그 값을 ty 에 넣는다 (dm_0901 규칙 1).
+        put(ws, r, 7, '=IF(D%d=0,0,ROUND(E%d/D%d*100,6))' % (r, r, r), D6)
+        put(ws, r, 8, '=IF(D%d=0,0,ROUND(K%d/D%d,6))' % (r, r, r), D6)
+        put(ws, r, 9, '=IF(H%d=0,0,ROUND(G%d*연일수/H%d,6))' % (r, r, r), P2)
         put(ws, r, 10, '=순현금', M0)
         put(ws, r, 11, '=SUMIFS(%s,%s,$A%d)' % (RNG['S'], RNG['G'], r), M0)
         put(ws, r, 12, '=SUMIFS(%s,%s,$A%d)' % (RNG['N'], RNG['G'], r), M0)
@@ -1104,7 +1103,7 @@ def build(idle=None, tag=''):
     put(ws, DL + 1, 13, '=IF(F%d=0,0,L%d/F%d*100)' % (DL + 1, DL + 1, DL + 1), P2, bold=True)
     #   EC 열이 %d칸 전부 같은 값인 까닭을 열머리 옆에 남긴다. 값은 바꾸지 않는다.
     ECN = ('미확정 — EC 는 전일자 마감시점(자정) 잔액. 일별 EC 원장이 없어 J2:J%d %d칸 전부 '
-           '조회시점 순현금(입력 C%d)을 그대로 놓았다. 그래서 PSC 는 순현금 x 조회 일수다.'
+           '조회시점 순현금(입력 C%d)을 그대로 놓았다. 그래서 PEC 는 순현금 x 조회 일수다.'
            % (DL, NDAY, IR['cash']))
     c = put(ws, 1, 14, ECN)
     c.alignment = Alignment(wrap_text=True, vertical='top')
@@ -1122,63 +1121,67 @@ def build(idle=None, tag=''):
     #   ⑤ 는 대표가 회의에서 수식을 새로 써서 다시 주기로 했다(2026-08-31 · A-01).
     #   산식이 실체로 들어 있는 자리는 `입력` 시트 한 칸(C%d)뿐이고 여기는 그 칸을 참조만 한다.
     #   ⑥ 은 그 ⑤ 셀과 ③ 칸을 참조한다. ③ 칸이 비어 있는 동안 `미확정` 을 낸다.
-    MARK = {'PSM 투자수익 (정의 · 차감 반영)': '정본',
-            'PSM 투자수익 (차감 제외)': '참고',
-            'PSMR (정의)': '정본', 'PSMR (차감 제외)': '참고',
+    MARK = {'PM 투자수익 (정의 · 차감 반영)': '정본',
+            'PM 투자수익 (차감 제외)': '참고',
+            'PMR (정의)(%)': '정본', 'PMR (차감 제외)(%)': '참고',
             '④ 투자실행금액 대비 ty수익율 (정의)': '정본', '④ (차감 제외)': '참고',
-            '⑤ 투자자산 대비 ty수익율 (정의)': '미확정',
+            '⑤ wPYMR 투자자산 대비 연환산수익률 (정의)': '미확정',
             '⑥ 투자실행금액 대비 ty수익율 (정의)': '미확정',
             '평균순현금': '미확정',
-            'PSA 투자실행금': '정본', 'PSD': '정본', 'PSC 순현금 합': '정본',
+            'PA 투자실행금': '정본', 'PwD': '정본', 'PEC 순현금 합': '정본',
             '② 상환액': '정본', '부족액 차감 합': '정본'}
     per_rows = [
         ('조회기간 시작', '=조회시작', '입력', DT, ''),
         ('조회기간 종료', '=조회종료', '입력', DT, ''),
         ('조회 일수', '=조회종료-조회시작+1', '종료 - 시작 + 1', M0, ''),
-        ('PSA 투자실행금', '=SUMIFS(%s,%s)' % (DRG['D'], crit), 'Σ SAd-1', M0,
-         'ceo_definitions.md [2번] 투자 실행금(PSA)'),
-        ('PSM 투자수익 (정의 · 차감 반영)', '=SUMIFS(%s,%s)' % (DRG['E'], crit),
-         'Σ SMd-1 = Σ(수수료 - max(0,미지급-과지급))', M0,
-         'ceo_definitions.md [2번] Md-1i'),
-        ('PSM 투자수익 (차감 제외)', '=SUMIFS(%s,%s)' % (DRG['F'], crit), 'Σ 채권매입수수료',
+        ('PA 투자실행금', '=SUMIFS(%s,%s)' % (DRG['D'], crit), 'Σ A(d-1)', M0,
+         'ceo_definitions.md [2번] 투자 실행금(PA)'),
+        ('PM 투자수익 (정의 · 차감 반영)', '=SUMIFS(%s,%s)' % (DRG['E'], crit),
+         'Σ M(d-1) = Σ(수수료 - max(0,미지급-과지급))', M0,
+         'ceo_definitions.md [2번] Mi'),
+        ('PM 투자수익 (차감 제외)', '=SUMIFS(%s,%s)' % (DRG['F'], crit), 'Σ 채권매입수수료',
          M0, '현행 daily_ledger.py:298'),
-        ('② 상환액', '=SUMIFS(%s,%s)' % (DRG['C'], crit), 'Σ SBd-1', M0,
+        ('② 상환액', '=SUMIFS(%s,%s)' % (DRG['C'], crit), 'Σ B(d-1)', M0,
          'ceo_definitions.md [2번] 이미지의 ②'),
         ('Σ(Ai x Di)', '=SUMIFS(%s,%s)' % (DRG['K'], crit), 'Σ 일별 Σ(Ai x Di)', M0, ''),
-        ('PSMR (정의)', '=IF(B5=0,0,B6/B5)', 'PSM / PSA', D8,
-         'ceo_definitions.md [2번] PSMR'),
-        ('PSMR (차감 제외)', '=IF(B5=0,0,B7/B5)', 'PSM(차감 제외) / PSA', D8, ''),
-        ('PSD', '=IF(B5=0,0,B9/B5)', 'Σ(Api x Dpi) / PSA', D6,
-         'ceo_definitions.md [2번] PSD'),
-        ('④ 투자실행금액 대비 ty수익율 (정의)', '=IF(B12=0,0,B10*연일수/B12*100)',
-         'PSMR x 365 / PSD', P2, 'ceo_definitions.md [2번] 이미지의 ④'),
-        ('④ (차감 제외)', '=IF(B12=0,0,B11*연일수/B12*100)', 'PSMR(차감 제외) x 365 / PSD',
-         P2, ''),
-        ('PSC 순현금 합', '=SUMIFS(%s,%s)' % (DRG['J'], crit), 'Σ EC', M0,
-         'ceo_definitions.md [2번] PSC'),
+        #   PMR 도 백분율 표기 기준 소수 6자리에서 끊고 그 값을 ④ 에 넣는다
+        #   (dm_0901/rounding_rule_0901.md 규칙 1 · 원장 daily_ledger.TY6_EXPR 과 같은 꼴).
+        #   비율 그대로 끊으면 백분율로 4자리만 남아 ④ 가 2자리 표기에서 밀린다.
+        ('PMR (정의)(%)', '=IF(B5=0,0,ROUND(B6/B5*100,6))', 'ROUND(PM / PA x 100, 6)', D6,
+         'ceo_definitions.md [2번] PMR'),
+        ('PMR (차감 제외)(%)', '=IF(B5=0,0,ROUND(B7/B5*100,6))',
+         'ROUND(PM(차감 제외) / PA x 100, 6)', D6, ''),
+        ('PwD', '=IF(B5=0,0,ROUND(B9/B5,6))', 'ROUND(Σ(Ai x Di) / PA, 6)', D6,
+         'ceo_definitions.md [2번] PwD'),
+        ('④ 투자실행금액 대비 ty수익율 (정의)', '=IF(B12=0,0,ROUND(B10*연일수/B12,6))',
+         'ROUND(PMR(%) x 365 / PwD, 6)', P2, 'ceo_definitions.md [2번] 이미지의 ④'),
+        ('④ (차감 제외)', '=IF(B12=0,0,ROUND(B11*연일수/B12,6))',
+         'ROUND(PMR(차감 제외)(%) x 365 / PwD, 6)', P2, ''),
+        ('PEC 순현금 합', '=SUMIFS(%s,%s)' % (DRG['J'], crit), 'Σ EC', M0,
+         'ceo_definitions.md [2번] PEC'),
         #   워드 [2번] 첫 줄이 배치 산출 7종의 하나로 이름을 부르는데 정의 줄이 따로 없다.
         #   칸만 두고 값을 만들지 않는다 — 일별 EC 원장이 없어 평균을 낼 수 없다.
         ('평균순현금', None, '미확정 — 워드에 이름만 있고 정의 없음', M0,
          'ceo_definitions.md [2번] 첫 줄'),
         #   ⑤ · ⑥ 의 수식 문자열은 per_rows 를 다 세운 뒤 행 번호를 알고 나서 되돌아 적는다.
-        ('⑤ 투자자산 대비 ty수익율 (정의)', '', '', P2,
+        ('⑤ wPYMR 투자자산 대비 연환산수익률 (정의)', '', '', P2,
          'ceo_definitions.md [2번] 이미지의 ⑤ — 대표 재작성 대기 (A-01)'),
         ('⑥ 투자실행금액 대비 ty수익율 (정의)', '', '', P2,
          'ceo_definitions.md [2번] 이미지의 ⑥ — 대표 주석 「계산식 다시 확인해볼것」 '
          '(TP-66 · F-23)'),
         ('부족액 차감 합', '=SUMIFS(%s,%s)' % (DRG['L'], crit),
-         'Σ max(0, 미지급금 - 과지급금)', M0, 'ceo_definitions.md [2번] Md-1i'),
+         'Σ max(0, 미지급금 - 과지급금)', M0, 'ceo_definitions.md [2번] Mi'),
         #   부족액 차감 합을 무는 네 줄은 행 번호를 안 뒤 되돌아 적는다(아래 LATE).
         ('차감 / 채권매입수수료(%)', '', '부족액 차감 합 / Σ 수수료', P2, ''),
-        ('검산 — 수수료 - 차감 - PSM(정의)', '', '0 이면 정의대로다', M0, ''),
+        ('검산 — 수수료 - 차감 - PM(정의)', '', '0 이면 정의대로다', M0, ''),
         #   대표 DM 2026-08-31 16:45 의 식을 이 통합문서 값으로 재 본다.
         #   (가) 대표 근사식과 (나) 원식은 분모가 달라 1/(1-할인율) 배만큼 갈린다.
         #   어느 쪽이 정본인지는 대표 확인 대기라 판정하지 않는다. 두 값을 나란히 둔다.
         ('DM 16:45 (가) 대표 근사식(%)', '',
-         '(할인율 - Σ max(0, 미지급금-과지급금) / PSA) x 100', D6,
+         '(할인율 - Σ max(0, 미지급금-과지급금) / PA) x 100', D6,
          '대표 DM 2026-08-31 16:45'),
-        ('DM 16:45 (나) 원식 PSMR(%)', '=B10*100',
-         'PSM / PSA x 100 — 분모가 투자실행액이라 순지급액 기준보다 1/(1-할인율) 배', D6,
+        ('DM 16:45 (나) 원식 PMR(%)', '=B10',
+         'PM / PA x 100 — 분모가 투자실행액이라 순지급액 기준보다 1/(1-할인율) 배', D6,
          '대표 DM 2026-08-31 16:45'),
         ('DM 16:45 (나) - (가) (%p)', '', '두 식의 차', D8,
          '대표 DM 2026-08-31 16:45'),
@@ -1199,18 +1202,18 @@ def build(idle=None, tag=''):
     #   행 번호가 정해진 뒤에야 쓸 수 있는 수식을 되돌아 적는다.
     PER = {lab: 2 + i for i, (lab, *_) in enumerate(per_rows)}
     #   위 리터럴이 그대로 쓰는 자리는 B5·B6·B7·B10·B12 다. 자리가 밀리면 죽는다.
-    assert (PER['PSA 투자실행금'], PER['PSM 투자수익 (정의 · 차감 반영)'],
-            PER['PSM 투자수익 (차감 제외)'], PER['PSMR (정의)'], PER['PSD'],
-            PER['④ 투자실행금액 대비 ty수익율 (정의)'], PER['PSC 순현금 합'],
+    assert (PER['PA 투자실행금'], PER['PM 투자수익 (정의 · 차감 반영)'],
+            PER['PM 투자수익 (차감 제외)'], PER['PMR (정의)(%)'], PER['PwD'],
+            PER['④ 투자실행금액 대비 ty수익율 (정의)'], PER['PEC 순현금 합'],
             PER['평균순현금']) == (5, 6, 7, 10, 12, 13, 15, 16), PER
-    R5, R6 = (PER['⑤ 투자자산 대비 ty수익율 (정의)'],
+    R5, R6 = (PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'],
               PER['⑥ 투자실행금액 대비 ty수익율 (정의)'])
-    RGA, RWN = PER['DM 16:45 (가) 대표 근사식(%)'], PER['DM 16:45 (나) 원식 PSMR(%)']
+    RGA, RWN = PER['DM 16:45 (가) 대표 근사식(%)'], PER['DM 16:45 (나) 원식 PMR(%)']
     RDF, RRT = PER['DM 16:45 (나) - (가) (%p)'], PER['DM 16:45 (나) / (가) (배)']
     RDD = PER['부족액 차감 합']
     LATE = {
         #   ⑤ 는 계산하지 않는다. `입력` 시트의 ⑤ 산식 칸 하나를 가져다 쓴다.
-        '⑤ 투자자산 대비 ty수익율 (정의)': ('=입력!C%d' % IR['f5'], '입력 C%d' % IR['f5']),
+        '⑤ wPYMR 투자자산 대비 연환산수익률 (정의)': ('=입력!C%d' % IR['f5'], '입력 C%d' % IR['f5']),
         #   ⑥ 은 그 ⑤ 셀과 ③ 칸을 실제로 참조한다. ③ 칸이 비면 「미확정」.
         '⑥ 투자실행금액 대비 ty수익율 (정의)': (
             '=IF(COUNT(입력!C%d)=0,"미확정",B%d/입력!C%d*연일수/B%d)'
@@ -1222,10 +1225,10 @@ def build(idle=None, tag=''):
         #   부족액 차감 합을 무는 네 줄 — 평균순현금 칸이 끼어 자리가 밀려도 따라온다.
         '차감 / 채권매입수수료(%)': ('=IF(B7=0,0,B%d/B7*100)' % RDD,
                                      '부족액 차감 합 / Σ 수수료'),
-        '검산 — 수수료 - 차감 - PSM(정의)': ('=B7-B%d-B6' % RDD, '0 이면 정의대로다'),
+        '검산 — 수수료 - 차감 - PM(정의)': ('=B7-B%d-B6' % RDD, '0 이면 정의대로다'),
         'DM 16:45 (가) 대표 근사식(%)': (
             '=(할인율-IF(B5=0,0,B%d/B5))*100' % RDD,
-            '(할인율 - Σ max(0, 미지급금-과지급금) / PSA) x 100'),
+            '(할인율 - Σ max(0, 미지급금-과지급금) / PA) x 100'),
         'DM 16:45 차감합': ('=B%d' % RDD,
                             'Σ max(0, 미지급금-과지급금). 0 이면 (가) 가 할인율 그대로다'),
     }
@@ -1248,48 +1251,52 @@ def build(idle=None, tag=''):
     bal = [
         ('대상정산금채권 Σ Ai', '=SUM(%s)' % RNG['J'], 'Σ Ai (선정산일 축 전량)', M0, ''),
         ('대상정산금채권 Σ(Ai x Di)', '=SUM(%s)' % RNG['S'], 'Σ Ai x Di', M0, ''),
-        ('W금융일수 — 대상정산금채권 전체', '=B%d/B%d' % (b1 + 2, b1 + 1),
-         'Σ(Ai x Di) / Σ Ai', D8, 'ceo_definitions.md [1번] w금융일수'),
+        ('W금융일수 — 대상정산금채권 전체', '=ROUND(B%d/B%d,6)' % (b1 + 2, b1 + 1),
+         'ROUND(Σ(Ai x Di) / Σ Ai, 6)', D8, 'ceo_definitions.md [1번] w금융일수'),
         # 「만기 도래분」은 우리 분석 조어다. 원문은 정산예정일이 전일자(D-1)인 하루치만 쓰고
         #   기준일까지 누적해 도래한 모집단을 부르는 낱말이 없다. 출처 칸에 조어임을 남긴다.
         ('만기 도래분 Σ Ai', '=SUMPRODUCT(%s,%s)' % (RNG['J'], RNG['R']), 'Σ Ai x 도래', M0,
          '조어 — 원문 대응 낱말 없음'),
         ('만기 도래분 Σ(Ai x Di)', '=SUMPRODUCT(%s,%s)' % (RNG['S'], RNG['R']), '', M0,
          '조어 — 원문 대응 낱말 없음'),
-        ('W금융일수 — 만기 도래분만', '=IF(B%d=0,0,B%d/B%d)' % (b1 + 4, b1 + 5, b1 + 4),
+        ('W금융일수 — 만기 도래분만',
+         '=IF(B%d=0,0,ROUND(B%d/B%d,6))' % (b1 + 4, b1 + 5, b1 + 4),
          '', D8, '조어 — 원문 대응 낱말 없음'),
         ('미회수 Σ Ai', '=SUMPRODUCT(%s,%s)' % (RNG['J'], RNG['Q']), 'Σ Ai x 미회수', M0,
          'ceo_definitions.md [1번] 투자 실행액'),
         ('미회수 Σ(Ai x Di)', '=SUMPRODUCT(%s,%s)' % (RNG['S'], RNG['Q']), '', M0, ''),
-        ('W금융일수 — 미회수 잔량만', '=IF(B%d=0,0,B%d/B%d)' % (b1 + 7, b1 + 8, b1 + 7),
+        ('W금융일수 — 미회수 잔량만',
+         '=IF(B%d=0,0,ROUND(B%d/B%d,6))' % (b1 + 7, b1 + 8, b1 + 7),
          '', D8, ''),
         ('W금융일수 raw (스위치 ① 적용)',
          '=IF(SW_모집단="미회수 잔량만",B%d,IF(SW_모집단="만기 도래분만",B%d,B%d))'
          % (b1 + 9, b1 + 6, b1 + 3), '스위치 ①', D8, ''),
         ('W금융일수 표기 (스위치 ② 적용)', '=ROUND(B%d,SW_자릿수)' % (b1 + 10), '스위치 ②',
          'General', ''),
-        ('Ty수익율(%)', '=할인율퍼센트*연일수/B%d' % (b1 + 11), '할인율 x 365 / 표기 W', P2,
-         'ceo_definitions.md [1번] ty수익율'),
+        ('Ty수익율(%)', '=ROUND(할인율퍼센트*연일수/B%d,6)' % (b1 + 11),
+         'ROUND(할인율 x 365 / 표기 W, 6)', P2, 'ceo_definitions.md [1번] ty수익율'),
         ('투자실행액', '=B%d' % (b1 + 7), '미회수 Σ Ai', M0, ''),
         ('순현금', '=순현금', '입력', M0, 'ceo_definitions.md [1번] 순현금'),
         ('투자자산', '=B%d+B%d' % (b1 + 13, b1 + 14), '투자실행액 + 순현금', M0, ''),
         ('투자실행액 비중', '=B%d/B%d' % (b1 + 13, b1 + 15), '', '0.0%', ''),
         ('순현금 비중', '=B%d/B%d' % (b1 + 14, b1 + 15), '', '0.0%', ''),
         ('S표본 Σ(미지급-과지급)', '=SUMPRODUCT(%s-%s,%s)' % (RNG['L'], RNG['M'], RNG['T']),
-         'Σ SLi', M0, 'ceo_definitions.md [1번] SLi'),
-        ('S표본 Σ Ai', '=SUMPRODUCT(%s,%s)' % (RNG['J'], RNG['T']), 'Σ SAi', M0, ''),
-        ('S입금부족율(%)', '=IF(B%d=0,0,B%d/B%d*100)' % (b1 + 19, b1 + 18, b1 + 19),
-         'Σ SLi / Σ SAi', P2, 'ceo_definitions.md [1번] S입금부족율'),
+         'Σ Li', M0, 'ceo_definitions.md [1번] Li'),
+        ('S표본 Σ Ai', '=SUMPRODUCT(%s,%s)' % (RNG['J'], RNG['T']), 'Σ Ai', M0, ''),
+        ('S입금부족율(%)', '=IF(B%d=0,0,ROUND(B%d/B%d*100,6))'
+         % (b1 + 19, b1 + 18, b1 + 19),
+         'ROUND(Σ Li / Σ Ai, 6)', P2, 'ceo_definitions.md [1번] S입금부족율'),
         ('미회수 건수', '=SUM(%s)' % RNG['Q'], '', M0, ''),
         ('채권 건수', '=COUNT(%s)' % RNG['H'], '', M0, ''),
         # 스위치 ① 를 돌리지 않고도 세 모집단의 Ty 를 나란히 본다.
-        ('Ty — 대상정산금채권 전체(%)', '=할인율퍼센트*연일수/ROUND(B%d,SW_자릿수)' % (b1 + 3),
+        ('Ty — 대상정산금채권 전체(%)',
+         '=ROUND(할인율퍼센트*연일수/ROUND(B%d,SW_자릿수),6)' % (b1 + 3),
          '할인율 x 365 / ROUND(W전체)', P2, ''),
         ('Ty — 만기 도래분만(%)',
-         '=IF(B%d=0,0,할인율퍼센트*연일수/ROUND(B%d,SW_자릿수))' % (b1 + 6, b1 + 6),
+         '=IF(B%d=0,0,ROUND(할인율퍼센트*연일수/ROUND(B%d,SW_자릿수),6))' % (b1 + 6, b1 + 6),
          '할인율 x 365 / ROUND(W도래)', P2, '조어 — 원문 대응 낱말 없음'),
         ('Ty — 미회수 잔량만(%)',
-         '=IF(B%d=0,0,할인율퍼센트*연일수/ROUND(B%d,SW_자릿수))' % (b1 + 9, b1 + 9),
+         '=IF(B%d=0,0,ROUND(할인율퍼센트*연일수/ROUND(B%d,SW_자릿수),6))' % (b1 + 9, b1 + 9),
          '할인율 x 365 / ROUND(W미회수)', P2, ''),
         #   대표 DM 2026-08-31 16:27 — ty수익률에 연 환산·일 환산 두 갈래가 있다.
         #   위 `Ty수익율(%)` 이 연 환산이다. 회전수와 일 환산을 그 옆에 세운다.
@@ -1299,7 +1306,8 @@ def build(idle=None, tag=''):
          '대표 DM 2026-08-31 16:27'),
         ('Ty수익율 — 일 환산(%)', '=할인율퍼센트/B%d' % (b1 + 11), '할인율 / 표기 W', D6,
          '대표 DM 2026-08-31 16:27'),
-        ('검산 — 일 환산 x 365 = 연 환산', '=할인율퍼센트/B%d*연일수-B%d' % (b1 + 11, b1 + 12),
+        ('검산 — 일 환산 x 365 = 연 환산',
+         '=ROUND(할인율퍼센트/B%d*연일수,6)-B%d' % (b1 + 11, b1 + 12),
          '0 이면 두 갈래가 같은 값에서 갈린다', D8, '대표 DM 2026-08-31 16:27'),
     ]
     for i, (lab, val, f, fmt, src) in enumerate(bal):
@@ -1368,7 +1376,8 @@ def build(idle=None, tag=''):
     put(ws, TS + 1, 2, 'Σ 구성비 x 평균 금융일수')
     for col in (3, 4, 5):
         L = get_column_letter(col)
-        put(ws, TS + 1, col, '=SUMPRODUCT(평균금융일수범위,%s%d:%s%d)' % (L, T0 + 1, L, T0 + 4),
+        put(ws, TS + 1, col,
+            '=ROUND(SUMPRODUCT(평균금융일수범위,%s%d:%s%d),6)' % (L, T0 + 1, L, T0 + 4),
             D6, bold=True, fill=CHK)
     put(ws, TS + 1, 6, '=C%d-D%d' % (TS + 1, TS + 1), D6, fill=CHK)
     put(ws, TS + 1, 7, '=E%d-C%d' % (TS + 1, TS + 1), '0.00E+00', fill=CHK)
@@ -1381,20 +1390,21 @@ def build(idle=None, tag=''):
     put(ws, TS + 3, 2, '할인율 x 365 / 표기 W')
     for col in (3, 4, 5):
         L = get_column_letter(col)
-        put(ws, TS + 3, col, '=할인율퍼센트*연일수/%s%d' % (L, TS + 2), P2, bold=True, fill=CHK)
+        put(ws, TS + 3, col, '=ROUND(할인율퍼센트*연일수/%s%d,6)' % (L, TS + 2),
+            P2, bold=True, fill=CHK)
     put(ws, TS + 3, 6, '=C%d-D%d' % (TS + 3, TS + 3), P2, fill=CHK)
     put(ws, TS + 3, 7, '=E%d-C%d' % (TS + 3, TS + 3), P2, fill=CHK)
     put(ws, TS + 4, 1, '미회수 잔량 W', bold=True)
     put(ws, TS + 4, 2, 'Σ 구성비 x E[d²] / W')
     for col in (3, 4, 5):
         L = get_column_letter(col)
-        put(ws, TS + 4, col, '=SUMPRODUCT(Ed2범위,%s%d:%s%d)/%s%d'
+        put(ws, TS + 4, col, '=ROUND(SUMPRODUCT(Ed2범위,%s%d:%s%d)/%s%d,6)'
             % (L, T0 + 1, L, T0 + 4, L, TS + 1), D6, bold=True)
     put(ws, TS + 5, 1, '미회수 잔량 Ty(%)', bold=True)
     put(ws, TS + 5, 2, '할인율 x 365 / ROUND(미회수 W)')
     for col in (3, 4, 5):
         L = get_column_letter(col)
-        put(ws, TS + 5, col, '=할인율퍼센트*연일수/ROUND(%s%d,SW_자릿수)' % (L, TS + 4),
+        put(ws, TS + 5, col, '=ROUND(할인율퍼센트*연일수/ROUND(%s%d,SW_자릿수),6)' % (L, TS + 4),
             P2, bold=True)
     WROW = dict(mix=T0 + 1, sum=TS, w=TS + 1, wr=TS + 2, ty=TS + 3,
                 openw=TS + 4, openty=TS + 5)
@@ -1434,10 +1444,11 @@ def build(idle=None, tag=''):
         put(ws, r, 2, '=1-$A%d' % r, D8)
         for j in range(3):
             put(ws, r, 3 + j, '=$A%d*INDEX(MAU배분범위,%d)' % (r, j + 1), D8)
-        put(ws, r, 6, '=' + '+'.join('%s%d*INDEX(평균금융일수범위,%d)'
-                                     % (get_column_letter(2 + j), r, j + 1) for j in range(4)),
+        put(ws, r, 6, '=ROUND(' + '+'.join('%s%d*INDEX(평균금융일수범위,%d)'
+                                           % (get_column_letter(2 + j), r, j + 1)
+                                           for j in range(4)) + ',6)',
             D6, bold=True)
-        put(ws, r, 7, '=할인율퍼센트*연일수/ROUND(F%d,SW_자릿수)' % r, P2, bold=True)
+        put(ws, r, 7, '=ROUND(할인율퍼센트*연일수/ROUND(F%d,SW_자릿수),6)' % r, P2, bold=True)
         put(ws, r, 8, '=TEXT(F%d-$F$%d,"0.0000")&"일 · "&TEXT(G%d-$G$%d,"0.00")&"%%p"'
             % (r, V0 + 2, r, V0 + 2))
         put(ws, r, 9, vlab[i])
@@ -1451,7 +1462,7 @@ def build(idle=None, tag=''):
 
     # ── 화면대조 ────────────────────────────────────────────────
     ws = wb.create_sheet('화면대조')
-    head(ws, 1, ['구분', '항목', '엑셀 값', '산출 경로', '화면 값', '차이', '판정', '출처'])
+    head(ws, 1, ['구분', '항목', '엑셀 값', '산출 경로', '화면 표시값', '차이', '판정', '출처'])
 
     def A(k):
         return '기간집계!B%d' % AGG[k]
@@ -1462,9 +1473,9 @@ def build(idle=None, tag=''):
     def G(k):
         return '가맹점!B%d' % MB[k]
 
-    # ── 블록 0 — 화면 값 원본 (ledger_facts.json) ────────────────
+    # ── 블록 0 — 화면 표시값 원본 (ledger_facts.json) ────────────────
     #   이 블록은 배포된 화면이 실제로 띄우는 값이다. 유휴 비율을 돌린 벌에서도 여기는
-    #   화면 값 그대로 둔다 — 모델이 화면과 어디서 갈라지는지가 판정 칸에 드러나야 한다.
+    #   화면 표시값 그대로 둔다 — 모델이 화면과 어디서 갈라지는지가 판정 칸에 드러나야 한다.
     r1_ = float(D(repr(scr_exec / (scr_exec + scr_cash) * 100)).quantize(
         D('0.1'), rounding=ROUND_HALF_UP))
     r2_ = float(D(repr(scr_cash / (scr_exec + scr_cash) * 100)).quantize(
@@ -1494,25 +1505,27 @@ def build(idle=None, tag=''):
         ('로스터 건수', len(scr_m), M0, fsrc('가맹점별 값') + ' 길이'),
         ('서명 대기 건수', len(sign), M0, 'roster16_model.py SIGN_PENDING'),
         ('주간 일수', S(fx, '주간 일수'), M0, fsrc('주간 일수')),
-        ('주간 PSA', S(fx, '주간 PSA'), M0, fsrc('주간 PSA')),
-        ('주간 PSM', S(fx, '주간 PSM'), M0, fsrc('주간 PSM')),
+        ('주간 PA', S(fx, '주간 PA'), M0, fsrc('주간 PA')),
+        ('주간 PM', S(fx, '주간 PM'), M0, fsrc('주간 PM')),
         ('주간 상환액', S(fx, '주간 상환액'), M0, fsrc('주간 상환액')),
         ('주간 채권매입수수료', week['fee'], M0, fsrc('일자별 값') + ' [5] 합'),
         ('주간 부족액 차감', week['ded'], M0, fsrc('일자별 값') + ' [6] 합'),
-        ('주간 PSD raw', float(S(fx, '주간 PSD raw')), D6, fsrc('주간 PSD raw')),
-        ('주간 PSD 표기', float(S(fx, '주간 PSD 표기')), '0.00', fsrc('주간 PSD 표기')),
-        ('주간 PSC', S(fx, '주간 PSC'), M0, fsrc('주간 PSC')),
+        ('주간 PwD raw', float(S(fx, '주간 PwD raw')), D6, fsrc('주간 PwD raw')),
+        ('주간 PwD 표기', float(S(fx, '주간 PwD 표기')), '0.00', fsrc('주간 PwD 표기')),
+        ('주간 PEC', S(fx, '주간 PEC'), M0, fsrc('주간 PEC')),
+        ('주간 Σ(Ai x Di)', S(fx, '주간 Σ(Ai x Di)'), M0, fsrc('주간 Σ(Ai x Di)')),
         ('주간 ④(%)', float(S(fx, '주간 ④')), P2, fsrc('주간 ④')),
         ('주간 ⑤(%)', float(S(fx, '주간 ⑤')), P2, fsrc('주간 ⑤')),
-        ('전 구간 PSA', S(fx, '전 구간 PSA'), M0, fsrc('전 구간 PSA')),
-        ('전 구간 PSM', S(fx, '전 구간 PSM'), M0, fsrc('전 구간 PSM')),
+        ('전 구간 PA', S(fx, '전 구간 PA'), M0, fsrc('전 구간 PA')),
+        ('전 구간 PM', S(fx, '전 구간 PM'), M0, fsrc('전 구간 PM')),
         ('전 구간 채권매입수수료', full['fee'], M0, fsrc('일자별 값') + ' [5] 합'),
         ('전 구간 부족액 차감', full['ded'], M0, fsrc('일자별 값') + ' [6] 합'),
         ('전 구간 차감/수수료(%)', ded_pct, P2, fsrc('일자별 값') + ' [6] 합 ÷ [5] 합'),
-        ('전 구간 PSD raw', round(full['wraw'], 6), D6,
-         fsrc('일자별 값') + ' Σ([0] x [2]) ÷ Σ[2]'),
-        ('전 구간 PSD 표기', float(S(fx, '전 구간 PSD 표기')), '0.00', fsrc('전 구간 PSD 표기')),
-        ('전 구간 PSC', S(fx, '전 구간 PSC'), M0, fsrc('전 구간 PSC')),
+        ('전 구간 PwD raw', float(full['wraw']), D6,
+         'daily_ledger.py LEDGER w6 · exec — Σ(w6 x 투자실행금) ÷ Σ 투자실행금'),
+        ('전 구간 PwD 표기', float(S(fx, '전 구간 PwD 표기')), '0.00', fsrc('전 구간 PwD 표기')),
+        ('전 구간 PEC', S(fx, '전 구간 PEC'), M0, fsrc('전 구간 PEC')),
+        ('전 구간 Σ(Ai x Di)', S(fx, '전 구간 Σ(Ai x Di)'), M0, fsrc('전 구간 Σ(Ai x Di)')),
         ('전 구간 ④(%)', float(S(fx, '전 구간 ④')), P2, fsrc('전 구간 ④')),
         ('전 구간 ⑤(%)', float(S(fx, '전 구간 ⑤')), P2, fsrc('전 구간 ⑤')),
     ]
@@ -1520,26 +1533,36 @@ def build(idle=None, tag=''):
     SV, SVF = {}, {}
     for (lab, val, fmt, s0) in sv_rows:
         r += 1
-        put(ws, r, 1, '화면 값 원본')
+        put(ws, r, 1, '화면 표시값 원본')
         put(ws, r, 2, lab, bold=True)
         put(ws, r, 4, s0)
         put(ws, r, 5, val, fmt, fill=CHK)
-        put(ws, r, 8, 'ledger_facts.json')
+        put(ws, r, 8, 'daily_ledger.py' if s0.startswith('daily_ledger.py')
+            else 'ledger_facts.json')
         SV[lab] = r
         SVF[lab] = '$E$%d' % r
     for i, m in enumerate(scr_m):
-        for key, val, fmt in [('투자금액', m[MCOL['amount']], M0),
-                              ('W', float(m[MCOL['w']]), '0.00'),
-                              ('Ty수익율(%)', float(m[MCOL['ty']]), P2),
-                              ('S입금부족율(%)', float(m[MCOL['s']]), P2),
-                              ('비중(%)', float(scr_share[i]), '0.0')]:
+        nm0 = m[MCOL['name']]
+        LG = 'daily_ledger.py MERCHANTS w6'
+        for key, val, fmt, s0, org in [
+                ('투자실행액', m[MCOL['amount']], M0, fsrc('가맹점별 값') + '[%d]' % i,
+                 'ledger_facts.json'),
+                ('W', float(m[MCOL['w']]), '0.00', fsrc('가맹점별 값') + '[%d]' % i,
+                 'ledger_facts.json'),
+                ('W raw', float(w6[nm0]), D6, LG, 'daily_ledger.py'),
+                ('Ty수익율(%)', float(m[MCOL['ty']]), P2,
+                 fsrc('가맹점별 값') + '[%d]' % i, 'ledger_facts.json'),
+                ('S입금부족율(%)', float(m[MCOL['s']]), P2,
+                 fsrc('가맹점별 값') + '[%d]' % i, 'ledger_facts.json'),
+                ('비중(%)', float(scr_share[i]), '0.0',
+                 fsrc('가맹점별 값') + '[%d]' % i, 'ledger_facts.json')]:
             r += 1
-            lab = '%s — %s' % (m[MCOL['name']], key)
-            put(ws, r, 1, '화면 값 원본')
+            lab = '%s — %s' % (nm0, key)
+            put(ws, r, 1, '화면 표시값 원본')
             put(ws, r, 2, lab, bold=True)
-            put(ws, r, 4, fsrc('가맹점별 값') + '[%d]' % i)
+            put(ws, r, 4, s0)
             put(ws, r, 5, val, fmt, fill=CHK)
-            put(ws, r, 8, 'ledger_facts.json')
+            put(ws, r, 8, org)
             SV[lab] = r
             SVF[lab] = '$E$%d' % r
 
@@ -1548,7 +1571,7 @@ def build(idle=None, tag=''):
 
     # ── 블록 1 — 불변식 · 엑셀 모델이 구성으로 맞추는 자리 ────────
     r += 1
-    head(ws, r, ['구분', '항목', '엑셀 값', '산출 경로', '화면 값', '차이', '판정', '출처'],
+    head(ws, r, ['구분', '항목', '엑셀 값', '산출 경로', '화면 표시값', '차이', '판정', '출처'],
          fill=SUB)
     cmp_rows = [
         ('항등식', '좌변 — 투자실행액 (채권 미회수 Σ Ai)', '=' + A('미회수 Σ Ai'),
@@ -1636,9 +1659,9 @@ def build(idle=None, tag=''):
         put(ws, r, 7, '=IFERROR(IF(ABS(F%d)<=%s,"일치","차이"),"")' % (r, repr(tol)))
         put(ws, r, 8, s0)
 
-    # ── 블록 2 — 화면 값 자체 정합 (화면 값끼리 산식으로 되짚는다) ─
+    # ── 블록 2 — 화면 표시값 자체 정합 (화면 표시값끼리 산식으로 되짚는다) ─
     r += 1
-    head(ws, r, ['구분', '항목', '산식으로 되짚은 값', '산식', '화면 값', '차이', '판정',
+    head(ws, r, ['구분', '항목', '산식으로 되짚은 값', '산식', '화면 표시값', '차이', '판정',
                  '출처'], fill=SUB)
     self_rows = [
         ('투자자산', '=%s+%s' % (V('투자실행액'), V('순현금')), '투자실행액 + 순현금',
@@ -1657,49 +1680,53 @@ def build(idle=None, tag=''):
          'ceo_definitions.md [1번] ty수익율'),
         ('S입금부족율 표기(%)', '=ROUND(%s,2)' % V('S입금부족율 raw(%)'), 'ROUND(S raw, 2)',
          V('S입금부족율 표기(%)'), P2, 0.005, '9-C 표기 규칙'),
-        ('주간 PSM = 수수료 - 차감', '=%s-%s' % (V('주간 채권매입수수료'), V('주간 부족액 차감')),
-         'Σ 채권매입수수료 - Σ max(0, 미지급-과지급)', V('주간 PSM'), M0, 0.5,
-         'ceo_definitions.md [2번] Md-1i'),
-        ('주간 상환액 - PSM = PSA', '=%s-%s' % (V('주간 상환액'), V('주간 PSM')),
-         'Σ Bd-1i - Σ Md-1i = Σ Ad-1i', V('주간 PSA'), M0, 0.5,
-         'ceo_definitions.md [2번] Bd-1i · Md-1i · Ad-1i'),
-        ('주간 PSC', '=%s*%s' % (V('순현금'), V('주간 일수')), '순현금 x 조회 일수',
-         V('주간 PSC'), M0, 0.5, 'ceo_definitions.md [2번] PSC'),
-        ('주간 PSD 표기', '=ROUND(%s,2)' % V('주간 PSD raw'), 'ROUND(PSD raw, 2)',
-         V('주간 PSD 표기'), '0.00', 0.0005, '9-C 표기 규칙'),
-        ('주간 ④(%)', '=ROUND(%s/%s*100*연일수/%s,2)'
-         % (V('주간 PSM'), V('주간 PSA'), V('주간 PSD raw')), 'PSMR x 365 / PSD',
+        ('주간 PM = 수수료 - 차감', '=%s-%s' % (V('주간 채권매입수수료'), V('주간 부족액 차감')),
+         'Σ 채권매입수수료 - Σ max(0, 미지급-과지급)', V('주간 PM'), M0, 0.5,
+         'ceo_definitions.md [2번] Mi'),
+        ('주간 PEC', '=%s*%s' % (V('순현금'), V('주간 일수')), '순현금 x 조회 일수',
+         V('주간 PEC'), M0, 0.5, 'ceo_definitions.md [2번] PEC'),
+        ('주간 PwD 표기', '=ROUND(%s,2)' % V('주간 PwD raw'), 'ROUND(PwD raw, 2)',
+         V('주간 PwD 표기'), '0.00', 0.0005, '9-C 표기 규칙'),
+        ('주간 ④(%)', '=ROUND(ROUND(ROUND(%s/%s*100,6)*연일수/%s,6),2)'
+         % (V('주간 PM'), V('주간 PA'), V('주간 PwD raw')),
+         'ROUND(PMR(%) x 365 / PwD, 6) 뒤 표기 2자리',
          V('주간 ④(%)'), P2, 0.005, 'ceo_definitions.md [2번] 이미지의 ④'),
-        ('전 구간 PSM = 수수료 - 차감',
+        ('전 구간 PM = 수수료 - 차감',
          '=%s-%s' % (V('전 구간 채권매입수수료'), V('전 구간 부족액 차감')),
-         'Σ 채권매입수수료 - Σ 차감', V('전 구간 PSM'), M0, 0.5,
-         'ceo_definitions.md [2번] Md-1i'),
+         'Σ 채권매입수수료 - Σ 차감', V('전 구간 PM'), M0, 0.5,
+         'ceo_definitions.md [2번] Mi'),
         ('전 구간 차감/수수료(%)', '=ROUND(%s/%s*100,2)'
          % (V('전 구간 부족액 차감'), V('전 구간 채권매입수수료')), 'Σ 차감 / Σ 수수료',
-         V('전 구간 차감/수수료(%)'), P2, 0.005, 'ceo_definitions.md [2번] Md-1i'),
-        ('전 구간 PSC', '=%s*%s' % (V('순현금'), V('원장 일수')), '순현금 x 원장 일수',
-         V('전 구간 PSC'), M0, 0.5, 'ceo_definitions.md [2번] PSC'),
-        ('전 구간 PSD 표기', '=ROUND(%s,2)' % V('전 구간 PSD raw'), 'ROUND(PSD raw, 2)',
-         V('전 구간 PSD 표기'), '0.00', 0.0005, '9-C 표기 규칙'),
-        ('전 구간 ④(%)', '=ROUND(%s/%s*100*연일수/%s,2)'
-         % (V('전 구간 PSM'), V('전 구간 PSA'), V('전 구간 PSD raw')), 'PSMR x 365 / PSD',
+         V('전 구간 차감/수수료(%)'), P2, 0.005, 'ceo_definitions.md [2번] Mi'),
+        ('전 구간 PEC', '=%s*%s' % (V('순현금'), V('원장 일수')), '순현금 x 원장 일수',
+         V('전 구간 PEC'), M0, 0.5, 'ceo_definitions.md [2번] PEC'),
+        ('전 구간 PwD 표기', '=ROUND(%s,2)' % V('전 구간 PwD raw'), 'ROUND(PwD raw, 2)',
+         V('전 구간 PwD 표기'), '0.00', 0.0005, '9-C 표기 규칙'),
+        ('전 구간 ④(%)', '=ROUND(ROUND(%s/%s*100*연일수/%s,6),2)'
+         % (V('전 구간 PM'), V('전 구간 PA'), V('전 구간 PwD raw')),
+         'ROUND(PMR x 365 / PwD, 6) 뒤 표기 2자리',
          V('전 구간 ④(%)'), P2, 0.005, 'ceo_definitions.md [2번] 이미지의 ④'),
-        ('하루 평균 투자실행금', '=ROUND(%s/%s,0)' % (V('전 구간 PSA'), V('원장 일수')),
-         '전 구간 PSA / 원장 일수', V('하루 평균 투자실행금'), M0, 0.5,
+        ('하루 평균 투자실행금', '=ROUND(%s/%s,0)' % (V('전 구간 PA'), V('원장 일수')),
+         '전 구간 PA / 원장 일수', V('하루 평균 투자실행금'), M0, 0.5,
          'roster16_model.py DAY_AVG'),
-        ('가맹점 투자금액 합', '=' + '+'.join(V('%s — 투자금액' % m[MCOL['name']])
+        ('가맹점 투자실행액 합', '=' + '+'.join(V('%s — 투자실행액' % m[MCOL['name']])
                                               for m in scr_m),
-         'Σ 가맹점별 투자금액', V('투자실행액'), M0, 0.5, 'roster16_model.py EXEC'),
+         'Σ 가맹점별 투자실행액', V('투자실행액'), M0, 0.5, 'roster16_model.py EXEC'),
         ('가맹점 비중 합(%)', '=' + '+'.join(V('%s — 비중(%%)' % m[MCOL['name']])
                                              for m in scr_m),
          'Σ 가맹점별 비중 (최대잉여법)', 100.0, '0.0', 0.005, 'roster16_model.py ratios'),
     ]
     for i, m in enumerate(scr_m):
+        nm = m[MCOL['name']]
         self_rows.append(
-            ('%s — Ty = 할인율 x 365 / W' % m[MCOL['name']],
-             '=ROUND(%s*연일수/%s,2)' % (V('할인율(%)'), V('%s — W' % m[MCOL['name']])),
-             '할인율 x 365 / 표기 W', V('%s — Ty수익율(%%)' % m[MCOL['name']]), P2, 0.005,
-             'ceo_definitions.md [1번] ty수익율'))
+            ('%s — W 표기 = ROUND(W raw, 2)' % nm,
+             '=ROUND(%s,2)' % V('%s — W raw' % nm), 'ROUND(W raw, 2)',
+             V('%s — W' % nm), '0.00', 0.0005, '9-C 표기 규칙'))
+        self_rows.append(
+            ('%s — Ty = 할인율 x 365 / W raw' % nm,
+             '=ROUND(%s*연일수/%s,2)' % (V('할인율(%)'), V('%s — W raw' % nm)),
+             '할인율 x 365 / W raw(6자리)', V('%s — Ty수익율(%%)' % nm), P2, 0.005,
+             'ceo_definitions.md [1번] ty수익율 · dm_0901/rounding_rule_0901.md 규칙 1'))
     for (lab, val, f, ref, fmt, tol, s0) in self_rows:
         r += 1
         put(ws, r, 1, '화면 정합')
@@ -1714,13 +1741,16 @@ def build(idle=None, tag=''):
 
     # ── 블록 3 — 모델 재현 잔차 (0 이 아닌 자리와 그 이유) ────────
     r += 2
-    head(ws, r, ['구분', '항목', '엑셀 값', '산출 경로', '화면 값', '차이', '잔차율(%)',
+    head(ws, r, ['구분', '항목', '엑셀 값', '산출 경로', '화면 표시값', '차이', '잔차율(%)',
                  '사유'], fill=SUB)
     TILT = ('화면 원장은 요일·주차 규모 계수(SIZE)와 배달 의존도 틸트(TILT)로 하루치가 흔들리고, '
             '미회수 앵커가 기준일에 걸린다. 이 통합문서는 하루치가 평평한 40일 창 모델이다.')
     ROUNDUP = ('화면 원장은 채권을 정산예정일 버킷까지 쪼개 건당 금액이 작다. 미지급·과지급을 원 단위로 '
                '반올림하면 작은 건에서 차가 커진다. 이 통합문서는 (가맹점 x 플랫폼 x 선정산일) '
                '한 건이라 반올림 영향이 거의 없다.')
+    ONELINE = ('상환액은 순지급액 - max(0, Li) 한 줄로 낸다. 투자실행금은 반올림(순지급액 x (1-r)), '
+               '채권매입수수료는 절사(순지급액 x r) 이라 둘을 더하면 건당 0~1원이 모자란다. '
+               '투자실행금 + 투자수익으로 되짚으면 그만큼 어긋난다.')
     SCOPE = ('모집단이 다르다. 이 통합문서는 선정산일 40일 x %d곳 x 4플랫폼 = %d건, '
              '화면 원장은 193일 x %d곳 x 4플랫폼 x 정산예정일 버킷 = %s건.'
              % (n, n * 4 * WINDOW, n, format(S(fx, '채권 건수'), ',')))
@@ -1728,21 +1758,27 @@ def build(idle=None, tag=''):
         ('하루 평균 투자실행금', '=' + G('하루 선정산액 합계 (적용)') + '*(1-할인율)',
          '가맹점 B%d x (1-r)' % MB['하루 선정산액 합계 (적용)'], V('하루 평균 투자실행금'),
          M0, TILT),
-        ('조회기간 PSA', '=' + P('PSA 투자실행금'), '기간집계 B%d' % PER['PSA 투자실행금'],
-         V('주간 PSA'), M0, TILT),
-        ('조회기간 PSD', '=' + P('PSD'), '기간집계 B%d' % PER['PSD'], V('주간 PSD raw'),
+        ('조회기간 PA', '=' + P('PA 투자실행금'), '기간집계 B%d' % PER['PA 투자실행금'],
+         V('주간 PA'), M0, TILT),
+        ('조회기간 PwD', '=' + P('PwD'), '기간집계 B%d' % PER['PwD'], V('주간 PwD raw'),
          D6, TILT),
-        ('조회기간 PSM (차감 반영)', '=' + P('PSM 투자수익 (정의 · 차감 반영)'),
-         '기간집계 B%d' % PER['PSM 투자수익 (정의 · 차감 반영)'], V('주간 PSM'), M0,
+        ('조회기간 PM (차감 반영)', '=' + P('PM 투자수익 (정의 · 차감 반영)'),
+         '기간집계 B%d' % PER['PM 투자수익 (정의 · 차감 반영)'], V('주간 PM'), M0,
          TILT + ' ' + ROUNDUP),
         ('조회기간 ④(%)', '=' + P('④ 투자실행금액 대비 ty수익율 (정의)'),
          '기간집계 B%d' % PER['④ 투자실행금액 대비 ty수익율 (정의)'], V('주간 ④(%)'), P2,
          TILT + ' ' + ROUNDUP),
-        ('조회기간 ⑤(%)', '=' + P('⑤ 투자자산 대비 ty수익율 (정의)'),
-         '기간집계 B%d' % PER['⑤ 투자자산 대비 ty수익율 (정의)'], V('주간 ⑤(%)'), P2,
+        ('조회기간 ⑤(%)', '=' + P('⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'),
+         '기간집계 B%d' % PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'], V('주간 ⑤(%)'), P2,
          TILT + ' ' + ROUNDUP),
-        ('조회기간 PSC', '=' + P('PSC 순현금 합'), '기간집계 B%d' % PER['PSC 순현금 합'],
-         V('주간 PSC'), M0, '조회 일수가 같으면 차가 0 이다.'),
+        ('조회기간 PEC', '=' + P('PEC 순현금 합'), '기간집계 B%d' % PER['PEC 순현금 합'],
+         V('주간 PEC'), M0, '조회 일수가 같으면 차가 0 이다.'),
+        ('조회기간 Σ(Ai x Di)', '=' + P('Σ(Ai x Di)'), '기간집계 B%d' % PER['Σ(Ai x Di)'],
+         V('주간 Σ(Ai x Di)'), M0, TILT),
+        ('주간 상환액 - (PA + PM)',
+         '=%s-%s-%s' % (V('주간 상환액'), V('주간 PA'), V('주간 PM')),
+         '화면대조 E%d - E%d - E%d'
+         % (SV['주간 상환액'], SV['주간 PA'], SV['주간 PM']), 0, M0, ONELINE),
         ('차감 / 수수료(%)', '=' + P('차감 / 채권매입수수료(%)'),
          '기간집계 B%d' % PER['차감 / 채권매입수수료(%)'], V('전 구간 차감/수수료(%)'), P2,
          ROUNDUP),
@@ -1757,8 +1793,8 @@ def build(idle=None, tag=''):
     ]
     for i, m in enumerate(scr_m):
         nm = m[MCOL['name']]
-        res_rows.append(('%s — 투자금액' % nm, '=가맹점!R%d' % (2 + i),
-                         '가맹점 R%d' % (2 + i), V('%s — 투자금액' % nm), M0, TILT))
+        res_rows.append(('%s — 투자실행액' % nm, '=가맹점!R%d' % (2 + i),
+                         '가맹점 R%d' % (2 + i), V('%s — 투자실행액' % nm), M0, TILT))
     for i, m in enumerate(scr_m):
         nm = m[MCOL['name']]
         res_rows.append(('%s — 비중 표기(%%)' % nm, '=가맹점!AC%d' % (2 + i),
@@ -1773,7 +1809,7 @@ def build(idle=None, tag=''):
         put(ws, r, 2, lab, bold=True)
         put(ws, r, 3, val, fmt, fill=CHK)
         put(ws, r, 4, path)
-        put(ws, r, 5, '=' + ref, fmt)
+        put(ws, r, 5, ('=' + ref) if isinstance(ref, str) else ref, fmt)
         put(ws, r, 6, '=IFERROR(C%d-E%d,"")' % (r, r), fmt)
         put(ws, r, 7, '=IFERROR(IF(E%d=0,"",F%d/E%d*100),"")' % (r, r, r), P2)
         c = put(ws, r, 8, why)
@@ -1802,8 +1838,8 @@ def build(idle=None, tag=''):
         ('각 정산금채권의 ID', '채권 D·E·F열'),
         ('플랫폼ID', '입력 A%d:A%d' % (PL0, PLS - 1)),
         #   원문은 `D` 를 현재일자로 쓴다. 이 통합문서는 `d` 로 쓴다 —
-        #   `D` 는 금융일수 (dm_0831/symbol_rule_0831.md · 이서준 지시 2026-08-31).
-        ('D = 현재일자', '입력 C%d — 이 통합문서 표기는 `d`. `D` 는 금융일수 (채권 H열)'
+        #   `D` 는 금융일수 (dm_0901/symbol_rule_0901.md · 이서준 지시 2026-08-31).
+        ('D = 현재일자', '입력 C%d — 이 통합문서 표기는 소문자 d 다. 대문자 D는 금융일수다 (채권 H열)'
          % IR['asof']),
         ('비중', '기간집계 B%d · B%d' % (AGG['투자실행액 비중'], AGG['순현금 비중'])),
         ('매일 자정일 지나면', '일별 시트 전 행 · 평균순현금은 기간집계 B%d '
@@ -1829,20 +1865,20 @@ def build(idle=None, tag=''):
         ('DD-1i =', '채권 H열'),
         ('전일자(D-1) 대상정산금채권의 ty수익율', '일별 I열'),
         ('전일자(D-1) 순현금 (EC)', '일별 J열'),
-        ('투자 실행금(PSA)', '기간집계 B%d' % PER['PSA 투자실행금']),
+        ('투자 실행금(PSA)', '기간집계 B%d' % PER['PA 투자실행금']),
         ('투자수익(PSM)', '기간집계 B%d · B%d'
-         % (PER['PSM 투자수익 (정의 · 차감 반영)'], PER['PSM 투자수익 (차감 제외)'])),
+         % (PER['PM 투자수익 (정의 · 차감 반영)'], PER['PM 투자수익 (차감 제외)'])),
         ('투자실행금액 대비 ty수익율(이미지의 ④)', '기간집계 B%d · B%d'
          % (PER['④ 투자실행금액 대비 ty수익율 (정의)'], PER['④ (차감 제외)'])),
-        ('PSMR =', '기간집계 B%d · B%d' % (PER['PSMR (정의)'], PER['PSMR (차감 제외)'])),
-        ('PSD =', '기간집계 B%d' % PER['PSD']),
+        ('PSMR =', '기간집계 B%d · B%d' % (PER['PMR (정의)(%)'], PER['PMR (차감 제외)(%)'])),
+        ('PSD =', '기간집계 B%d' % PER['PwD']),
         ('Api :', '채권 J열 x U열'),
         ('Dpi:', '채권 H열'),
         ('투자자산 대비 ty수익율 (이미지의 ⑤)',
          '기간집계 B%d ← 입력 C%d (⑤ 산식 칸 · 미확정 · 대표 재작성 대기 A-01). '
          '통합문서 안에서 ⑤ 를 계산하는 자리는 그 한 칸뿐이다'
-         % (PER['⑤ 투자자산 대비 ty수익율 (정의)'], IR['f5'])),
-        ('PSC =', '기간집계 B%d' % PER['PSC 순현금 합']),
+         % (PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'], IR['f5'])),
+        ('PSC =', '기간집계 B%d' % PER['PEC 순현금 합']),
         ('상환액 (이미지의 ②)', '기간집계 B%d · 일별 C열' % PER['② 상환액']),
         #   ⑥ 은 ④·⑤ 를 실제로 참조한다. ③ 만 지시 대상이 정해지지 않아 입력 칸을 비워 두었고,
         #   그동안 ⑥ 셀은 「미확정」을 낸다(레지스터 TP-66 · 확인 문항 F-23 · U-03).
@@ -1851,7 +1887,7 @@ def build(idle=None, tag=''):
          '비어 있고 그동안 「미확정」. 대표 주석 「계산식 다시 확인해볼것」'
          % (PER['⑥ 투자실행금액 대비 ty수익율 (정의)'],
             PER['④ 투자실행금액 대비 ty수익율 (정의)'], IR['n3'],
-            PER['⑤ 투자자산 대비 ty수익율 (정의)'], IR['n3'])),
+            PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'], IR['n3'])),
     ]
     r = 1
     for sec, line in defs:
@@ -1874,13 +1910,14 @@ def build(idle=None, tag=''):
     put(_in, SWH + 2, 4, '기간집계 B%d' % AGG['W금융일수 표기 (스위치 ② 적용)'])
 
     # ── ⑤ 산식 되돌아 적기 — 통합문서에서 ⑤ 를 계산하는 유일한 칸 ──
-    #   지금 들어 있는 것은 대표 정의서 원문 산식 `(④ x PSA) / (PSA + PSC)` 다.
-    #   대표가 새 수식을 주면 이 한 칸만 갈아 끼운다. 기간집계 ⑤ 와 ⑥ 이 따라 움직인다.
+    #   ⑤ = PM x 365 / (Σ(Ai x Di) + PEC) = ④ x AD / (AD + PEC). AD = 기간집계 Σ(Ai x Di) 행(일별 K열 합).
+    #   원장 daily_ledger.TY5_EXPR 과 같은 식이다. 산식을 바꿀 때 이 한 칸만 갈아 끼운다 —
+    #   기간집계 ⑤ 와 ⑥ 이 따라 움직인다.
     F5 = ('=IF(기간집계!B%d+기간집계!B%d=0,0,'
-          '기간집계!B%d*기간집계!B%d/(기간집계!B%d+기간집계!B%d))'
-          % (PER['PSA 투자실행금'], PER['PSC 순현금 합'],
-             PER['④ 투자실행금액 대비 ty수익율 (정의)'], PER['PSA 투자실행금'],
-             PER['PSA 투자실행금'], PER['PSC 순현금 합']))
+          'ROUND(기간집계!B%d*기간집계!B%d/(기간집계!B%d+기간집계!B%d),6))'
+          % (PER['Σ(Ai x Di)'], PER['PEC 순현금 합'],
+             PER['④ 투자실행금액 대비 ty수익율 (정의)'], PER['Σ(Ai x Di)'],
+             PER['Σ(Ai x Di)'], PER['PEC 순현금 합']))
     put(_in, IR['f5'], 3, F5, P2, fill=CHK)
 
     # ── 읽는 법 ─────────────────────────────────────────────────
@@ -1892,9 +1929,9 @@ def build(idle=None, tag=''):
     # ── 화면 ↔ 엑셀 갈림 — 통합문서를 열면 첫 시트 맨 위에 온다 ──
     #   값·까닭 전부 `화면대조` 모델 잔차 행을 물어 온다. 여기서 다시 재지 않는다.
     T0 = 1
-    head(ws, T0, ['#', '화면 ↔ 엑셀 갈림', '까닭', '화면대조 행', '엑셀 값', '화면 값',
+    head(ws, T0, ['#', '화면 ↔ 엑셀 갈림', '까닭', '화면대조 행', '엑셀 값', '화면 표시값',
                   '차이'])
-    gap = ['조회기간 ④(%)', '조회기간 ⑤(%)', '조회기간 PSA', '조회기간 PSD',
+    gap = ['조회기간 ④(%)', '조회기간 ⑤(%)', '조회기간 PA', '조회기간 PwD',
            'S입금부족율 raw(%)', '채권 건수']
     for i, lab in enumerate(gap):
         rr, fmt = RES[lab]
@@ -1910,7 +1947,7 @@ def build(idle=None, tag=''):
     T0L = T0 + len(gap)
     GH = T0L + 2
     guide = [
-        ('읽는 법', '화면 ↔ 엑셀 갈림 %d줄 · 시트 차례 · 화면 값 되짚는 경로 3줄 · '
+        ('읽는 법', '화면 ↔ 엑셀 갈림 %d줄 · 시트 차례 · 화면 표시값 되짚는 경로 3줄 · '
                      '시뮬레이션 입력 칸 · 기호 규칙 · 대표 DM 2026-08-31' % len(gap),
          'A%d:G%d · 이 시트' % (T0, T0L)),
         ('입력', '가정값 %d칸 · 스위치 4칸 · 플랫폼 구성비 · 금액 실측 · 대표 엑셀 MAU 참고값 · '
@@ -1919,7 +1956,7 @@ def build(idle=None, tag=''):
          % (IR['rate'], IR['sto'], SWH + 1, SWH + 4, PL0, PLS - 1, RT + 1, R9)),
         ('플랫폼', '금융일수 도수분포(1~13일) · 평균 금융일수 · 구성비 가중 W금융일수',
          'C2:O5 · D9:D12 · B17'),
-        ('가맹점', '로스터 %d곳의 플랫폼 배분 · 하루 선정산액 · 투자금액 · W · S · Ty · '
+        ('가맹점', '로스터 %d곳의 플랫폼 배분 · 하루 선정산액 · 투자실행액 · W · S · Ty · '
                    '비중(최대잉여법)' % len(roster),
          'J2:M%d · O2:O%d · P2:P%d · AC2:AC%d' % (last - 1, last - 1, last - 1, last - 1)),
         ('채권', '(가맹점 x 플랫폼 x 선정산일 %d일) %s건 원장 — 값 셀은 금융일수 Di 하나뿐'
@@ -1930,13 +1967,13 @@ def build(idle=None, tag=''):
         ('기간집계', '조회기간 집계 2~%d행 · 모집단별 W·Ty·S %d~%d행'
                      % (1 + len(per_rows), b1 + 1, b1 + len(bal)),
          'B%d · B%d · B%d · %s · %s · B%d'
-         % (PER['PSA 투자실행금'], PER['④ 투자실행금액 대비 ty수익율 (정의)'],
-            PER['⑤ 투자자산 대비 ty수익율 (정의)'], RG, RW, AGG['S입금부족율(%)'])),
+         % (PER['PA 투자실행금'], PER['④ 투자실행금액 대비 ty수익율 (정의)'],
+            PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'], RG, RW, AGG['S입금부족율(%)'])),
         ('가중치 대조', '금액 실측 · 대표 엑셀 MAU · 로스터 금액가중 세 기준을 나란히',
          'C%d:E%d · C%d:E%d' % (WROW['w'], WROW['w'], WROW['ty'], WROW['ty'])),
-        ('화면대조', '화면 값 원본 %d행 · 불변식 · 화면 정합 %d행 · 모델 잔차 %d행'
+        ('화면대조', '화면 표시값 원본 %d행 · 불변식 · 화면 정합 %d행 · 모델 잔차 %d행'
                      % (len(sv_rows), LASTC - 1, RESL - RES0 + 1),
-         'E열 화면 값 · G열 판정 · %d~%d행 모델 잔차' % (RES0, RESL)),
+         'E열 화면 표시값 · G열 판정 · %d~%d행 모델 잔차' % (RES0, RESL)),
         ('산식', '대표 정의서 %d줄 ↔ 이 통합문서의 셀' % len(defs), 'C열'),
     ]
     head(ws, GH, ['순서', '시트', '무엇', '주요 칸'])
@@ -1950,7 +1987,7 @@ def build(idle=None, tag=''):
     G1 = GH + len(guide)
 
     T1 = G1 + 2
-    head(ws, T1, ['#', '화면 값', '값', '되짚는 경로'], fill=SUB)
+    head(ws, T1, ['#', '화면 표시값', '값', '되짚는 경로'], fill=SUB)
     trace = [
         ('투자실행액', '=화면대조!E%d' % SV['투자실행액'], M0,
          '입력 C%d → 가맹점 B%d → 가맹점 P2:P%d → 채권 J2:J%d (Q열=1) → 기간집계 B%d → B%d'
@@ -1980,7 +2017,7 @@ def build(idle=None, tag=''):
         ('입력 C%d' % IR['idle'], '유휴 비율', '=유휴비율', '0.0%',
          '입력 C%d · C%d → 기간집계 B%d · B%d · B%d(⑤)'
          % (IR['exec'], IR['cash'], AGG['투자실행액 비중'], AGG['순현금 비중'],
-            PER['⑤ 투자자산 대비 ty수익율 (정의)'])),
+            PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'])),
         ('입력 B%d' % (SWH + 1), '스위치 ① W금융일수 모집단', '=SW_모집단', 'General',
          '기간집계 %s · %s · B%d' % (RG, RW, AGG['Ty수익율(%)'])),
         ('입력 B%d' % (SWH + 2), '스위치 ② W 표기 자릿수', '=SW_자릿수', M0,
@@ -2001,7 +2038,7 @@ def build(idle=None, tag=''):
          % PER['⑥ 투자실행금액 대비 ty수익율 (정의)']),
         ('입력 C%d' % IR['f5'], '⑤ 산식 (미확정 · 대표 재작성 대기)', '=산식5', P2,
          '기간집계 B%d(⑤) → 기간집계 B%d(⑥) → 화면대조 모델 잔차 「조회기간 ⑤(%%)」'
-         % (PER['⑤ 투자자산 대비 ty수익율 (정의)'],
+         % (PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'],
             PER['⑥ 투자실행금액 대비 ty수익율 (정의)'])),
         ('입력 B%d' % MAD, '배달앱/전체 (대표 엑셀 MAU 쪽 계산)', '=배달앱비중', D8,
          "'가중치 대조' D%d · D%d — 참고값 계열" % (WROW['w'], WROW['ty'])),
@@ -2015,43 +2052,73 @@ def build(idle=None, tag=''):
         put(ws, r, 5, moves)
     T2L = T2 + len(sim)
 
-    # ── 기호 규칙 — 2026-08-31 확정 (dm_0831/symbol_rule_0831.md) ──
+    # ── 기호 규칙 — 정본 dm_0901/symbol_rule_0901.md ──────────────
+    #   표기는 평문 괄호 규약이다 — `Ai` · `wD(d-1)`. 아래첨자 조판은 넣지 않는다.
     T3 = T2L + 2
-    head(ws, T3, ['#', '기호', '뜻', '이 통합문서의 자리', '출처'], fill=SUB)
+    head(ws, T3, ['#', '기호', '갈래', '뜻', '이 통합문서의 자리', '출처'], fill=SUB)
+    SYMSRC = 'dm_0901/symbol_rule_0901.md'
     sym = [
-        ('D', '금융일수 (대문자)', '채권 H열 Di · 기간집계 %s' % RG,
-         '이서준 지시 2026-08-31'),
-        ('d', '오늘 날짜 (소문자)', '입력 C%d 기준일 d' % IR['asof'],
-         '이서준 지시 2026-08-31 · 대표 DM 15:15'),
-        ('d-1', '정산예정일이 어제인 대상정산금채권 집합. 날짜가 아니라 조건이다',
-         '일별 시트 한 줄 = 정산예정일 하루치 집합', '대표 DM 2026-08-31 15:15'),
-        ('S', 'Sum 또는 Sample. 표본으로 쓸 때는 d-20 ~ d-11',
-         '입력 C%d:C%d · 채권 T열' % (IR['sfrom'], IR['sto']),
-         '대표 DM 2026-08-31 15:15'),
-        ('P', '기간(period). 정산예정일이 선택한 기간에 드는 것들의 합계',
-         '기간집계 2~%d행' % (1 + len(per_rows)), '대표 DM 2026-08-31 15:15'),
-        ('R', '비율', '기간집계 B%d PSMR' % PER['PSMR (정의)'],
-         '대표 DM 2026-08-31 15:15'),
-        ('M', '투자 수익', '채권 O열 Md-1i · 일별 E열',
-         '대표 DM 2026-08-31 15:15'),
-        ('L', '입금부족액 (미지급금 - 환급금)', '채권 L열 - M열 · 기간집계 B%d'
-         % AGG['S표본 Σ(미지급-과지급)'], '대표 DM 2026-08-31 15:15'),
-        ('i', '채권번호. 특정 가맹점 · 특정 날짜 · 특정 플랫폼의 정산금채권번호',
-         '채권 A열', '대표 DM 2026-08-31 14:45'),
-        ('w', '가중(weight). w금융일수 = 가중평균금융일수',
-         '기간집계 %s · %s' % (RG, RW), '대표 DM 2026-08-31 16:41'),
-        ('원문 표기 (대문자)', '대표 정의서 원문은 현재일자를 대문자로 쓴다. '
-                                '인용이라 산식 시트 B열에만 그대로 남는다',
-         '산식 B열', 'ceo_definitions.md'),
+        ('d', '', '현재일자', '입력 C%d 기준일 d' % IR['asof']),
+        ('r', '', '유동화투자자의 할인율', '입력 C%d · C%d' % (IR['rate'], IR['ratep'])),
+        ('D', '개념', '금융일수', '채권 H열'),
+        #   개념 갈래는 산식에 홀로 나오지 않고 채권 한 건·하루·기간으로 나뉘어서만 선다.
+        ('Y', '개념', '연환산수익률. Yr · YMR(d-1) · PYMR · wPYMR 로 갈린다',
+         '기간집계 B%d · 일별 I열 · 기간집계 B%d · B%d'
+         % (AGG['Ty수익율(%)'], PER['④ 투자실행금액 대비 ty수익율 (정의)'],
+            PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'])),
+        ('i', 'ID가 i인 대상정산금채권', '채권번호. 가맹점ID & 플랫폼ID & 매출일자', '채권 A열'),
+        ('Di', 'ID가 i인 대상정산금채권', 'ID가 i인 대상정산금채권의 금융일수', '채권 H열'),
+        ('Ai', 'ID가 i인 대상정산금채권', 'ID가 i인 대상정산금채권의 투자 실행액 = 순지급액 x (1 - r)', '채권 J열'),
+        ('Li', 'ID가 i인 대상정산금채권', 'ID가 i인 대상정산금채권의 입금부족액 = 미지급금 - 과지급금', '채권 L열 - M열'),
+        ('Mi', 'ID가 i인 대상정산금채권', 'ID가 i인 대상정산금채권의 투자수익 = 채권매입수수료 - max(0, Li)', '채권 O열'),
+        ('Bi', 'ID가 i인 대상정산금채권', 'ID가 i인 대상정산금채권의 상환액 = 순지급액 - max(0, Li)', '채권 P열'),
+        ('Σ Ai', '집계', '투자 실행액 (i 는 미회수 대상정산금채권)',
+         '기간집계 B%d' % AGG['투자실행액']),
+        ('wD', '집계', '가중평균 금융일수 = Σ(Ai x Di) / Σ Ai', '기간집계 %s · %s' % (RG, RW)),
+        ('EC', '집계', '순현금', '입력 C%d · 일별 J열' % IR['cash']),
+        ('Σ Ai + EC', '집계', '투자자산', '기간집계 B%d' % AGG['투자자산']),
+        ('LR', '집계', '입금부족률 = Σ Li / Σ Ai (i 는 선정산일 d-20 ~ d-11)',
+         '기간집계 B%d · 채권 T열' % AGG['S입금부족율(%)']),
+        ('Yr', '집계', '예상 연환산수익률 = r x 365 / wD',
+         '기간집계 B%d' % AGG['Ty수익율(%)']),
+        ('P', '범위', '기간. 정산예정일이 고른 기간에 드는 것들',
+         '기간집계 2~%d행' % (1 + len(per_rows))),
+        ('d-1', '범위', '하루. 정산예정일이 그 날인 대상정산금채권. 날짜가 아니라 조건이다',
+         '일별 시트 한 줄'),
+        ('B(d-1)', '집계', '하루 상환액 = Σ Bi (i ∈ d-1)', '일별 C열'),
+        ('A(d-1)', '집계', '하루 투자실행금 = Σ Ai (i ∈ d-1)', '일별 D열'),
+        ('M(d-1)', '집계', '하루 투자수익 = Σ Mi (i ∈ d-1)', '일별 E열'),
+        ('MR(d-1)', '집계', '하루 투자수익율 = M(d-1) / A(d-1)', '일별 G열'),
+        ('wD(d-1)', '집계', '하루 가중평균 금융일수 = Σ(Ai x Di) / A(d-1)', '일별 H열'),
+        ('YMR(d-1)', '집계', '일별 연환산수익률 = MR(d-1) x 365 / wD(d-1)', '일별 I열'),
+        ('EC(d-1)', '집계', '하루 순현금', '일별 J열'),
+        ('PA', '집계', '기간 투자실행금 = Σ A(d-1)',
+         '기간집계 B%d' % PER['PA 투자실행금']),
+        ('PB', '집계', '기간 상환액 = Σ B(d-1)', '기간집계 B%d' % PER['② 상환액']),
+        ('PM', '집계', '기간 투자수익 = Σ M(d-1)',
+         '기간집계 B%d' % PER['PM 투자수익 (정의 · 차감 반영)']),
+        ('PMR', '집계', '기간 투자수익율 = PM / PA', '기간집계 B%d' % PER['PMR (정의)(%)']),
+        ('PwD', '집계', '기간 가중평균 금융일수 = Σ(Ai x Di) / PA (i ∈ P)',
+         '기간집계 B%d' % PER['PwD']),
+        ('PEC', '집계', '기간 순현금 = Σ EC(d-1)', '기간집계 B%d' % PER['PEC 순현금 합']),
+        ('PYMR', '집계', '투자실행금액 대비 연환산수익률(④) = PMR x 365 / PwD',
+         '기간집계 B%d' % PER['④ 투자실행금액 대비 ty수익율 (정의)']),
+        ('wPYMR', '집계', '투자자산 대비 연환산수익률(⑤) = PM x 365 / (Σ(Ai x Di) + PEC) '
+         '= PYMR x Σ(Ai x Di) / (Σ(Ai x Di) + PEC)',
+         '기간집계 B%d ← 입력 C%d'
+         % (PER['⑤ wPYMR 투자자산 대비 연환산수익률 (정의)'], IR['f5'])),
+        ('원문 표기', '인용', '대표 정의서 원문은 옛 표기를 쓴다. 인용이라 그대로 둔다',
+         '산식 B열'),
     ]
-    for i, (k, mean, where, s0) in enumerate(sym):
+    for i, (k, kind, mean, where) in enumerate(sym):
         r = T3 + 1 + i
         put(ws, r, 1, i + 1, M0)
         put(ws, r, 2, k, bold=True)
-        c = put(ws, r, 3, mean)
+        put(ws, r, 3, kind)
+        c = put(ws, r, 4, mean)
         c.alignment = Alignment(wrap_text=True, vertical='top')
-        put(ws, r, 4, where)
-        put(ws, r, 5, s0)
+        put(ws, r, 5, where)
+        put(ws, r, 6, SYMSRC)
     T3L = T3 + len(sym)
 
     # ── 대표 DM 2026-08-31 — 인용은 원문 그대로 ──────────────────
@@ -2063,11 +2130,11 @@ def build(idle=None, tag=''):
          'ty수익률이 위는 할인율, 아래는 투자수익률 smr인 이유는 위는 예상치 아래는 실제 '
          '결과치라서 실제로 얻은 수익률(할인율)을 나타내는 것.',
          '위 = 기간집계 B%d Ty수익율(할인율 기준 예상치) · '
-         '아래 = 기간집계 B%d PSMR(실적치)' % (AGG['Ty수익율(%)'], PER['PSMR (정의)']), ''),
+         '아래 = 기간집계 B%d PMR(실적치)' % (AGG['Ty수익율(%)'], PER['PMR (정의)(%)']), ''),
         ('2026-08-31 16:45',
          '투자수익률은 할인율 -max(0, 미지급금-과지급금)/투자실행액 이므로 미지급-과지급이 '
          '0이면 할인율이 되므로 같다.',
-         '기간집계 B%d (가) 대표 근사식(%%) · B%d (나) 원식 PSMR(%%) · B%d 차 · '
+         '기간집계 B%d (가) 대표 근사식(%%) · B%d (나) 원식 PMR(%%) · B%d 차 · '
          'B%d 실측 갈림 배수 · B%d 이론 1/(1-할인율) · B%d 차감합 · '
          'B%d·B%d 차감합 0 일 때 두 값. '
          '두 식은 분모가 달라 갈린다 — 어느 쪽이 정본인지는 대표 확인 대기'

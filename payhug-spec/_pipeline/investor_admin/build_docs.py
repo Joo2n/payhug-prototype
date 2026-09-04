@@ -128,7 +128,7 @@ h3 { font-size: 10pt; margin: 4.5mm 0 1.5mm; font-weight: 700; color: #1B2537; }
 p { margin: 0 0 2.4mm; }
 .sheet table { width: 100%; border-collapse: collapse; margin: 2mm 0 3mm; font-size: 9pt; }
 .sheet th, .sheet td { border: 1px solid #C9CFDA; padding: 2mm 2.4mm; vertical-align: top; }
-.sheet th { background: #F2F4F8; font-weight: 600; text-align: left; }
+.sheet th { background: #F2F4F8; word-break: keep-all; font-weight: 600; text-align: left; }
 .sheet td.n, .sheet th.n { text-align: right; font-variant-numeric: tabular-nums; }
 .sheet td.c, .sheet th.c { text-align: center; }
 .sheet tr.tot td { background: #F7F8FB; font-weight: 700; }
@@ -209,8 +209,8 @@ def build_certificate(cert):
 <table>
   <colgroup><col><col style="width:32mm"><col style="width:22mm"><col style="width:24mm">
     <col style="width:22mm"><col style="width:18mm"></colgroup>
-  <thead><tr><th>가맹점</th><th class="n">투자금액 (원)</th><th class="n">W금융일수</th>
-    <th class="n">S입금부족율</th><th class="n">Ty수익율</th><th class="n">비중</th></tr></thead>
+  <thead><tr><th>가맹점</th><th class="n">투자실행액 (원)</th><th class="n">가중평균 금융일수</th>
+    <th class="n">입금부족률</th><th class="n">예상 연환산수익률</th><th class="n">비중</th></tr></thead>
   <tbody>{rows}{total_row}</tbody>
 </table>
 <h2>서명 및 검증</h2>

@@ -1,43 +1,43 @@
 {
- "finishedAt": "2026-08-31T13:02:27.616Z",
+ "finishedAt": "2026-09-04T13:44:57.547Z",
  "rounds": [
   {
    "round": 1,
-   "at": "2026-08-31T13:01:58.007Z",
+   "at": "2026-09-04T13:44:27.397Z",
    "http": {
     "proto": {
-     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788181318007",
+     "url": "https://payhug-investor-prototype.vercel.app/?vsc=1788529467397",
      "status": 200,
      "bytes": 212906,
-     "ms": 104,
+     "ms": 108,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "35479",
+     "age": "14868",
      "cache": "HIT",
      "md5": "9dc611d2986d24b6d839413d72f11c89"
     },
     "gloss": {
-     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788181318112",
+     "url": "https://payhug-investor-glossary.vercel.app/?vsc=1788529467506",
      "status": 200,
      "bytes": 380947,
-     "ms": 79,
+     "ms": 78,
      "mitigated": "",
      "challenge": false,
      "title": "용어 해설 — 투자자 어드민",
-     "age": "64531",
+     "age": "14867",
      "cache": "HIT",
      "md5": "eccbfce095bf4ba57bc1e7e695c40610"
     },
     "demo": {
-     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788181318191",
+     "url": "https://payhug-investor-demo.vercel.app/?vsc=1788529467586",
      "status": 200,
      "bytes": 23958,
-     "ms": 59,
+     "ms": 68,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug 투자자 어드민 — 화면 설계(안)",
-     "age": "35258",
+     "age": "170007",
      "cache": "HIT",
      "md5": "c6dcaab7ff02954e3e88725d78e67530"
     },
@@ -45,11 +45,11 @@
      "url": "https://payhug-investor-demo.vercel.app/app.html",
      "status": 200,
      "bytes": 218171,
-     "ms": 29,
+     "ms": 30,
      "mitigated": "",
      "challenge": false,
      "title": "PayHug Admin — 통합 프로토타입",
-     "age": "35359",
+     "age": "5405",
      "cache": "HIT",
      "md5": "379a7a6f0eefd74e0784dd4ab0cd28c3"
     },
@@ -57,11 +57,11 @@
      "url": "https://payhug-investor-demo.vercel.app/glossary.html",
      "status": 200,
      "bytes": 380865,
-     "ms": 36,
+     "ms": 30,
      "mitigated": "",
      "challenge": false,
      "title": "투자자 어드민 용어 해설",
-     "age": "35331",
+     "age": "193",
      "cache": "HIT",
      "md5": "323c50b26e3cfc5607010ad61d984bf9"
     }
@@ -70,17 +70,17 @@
     {
      "name": "A proto 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=212906 age=35479s cache=HIT"
+     "detail": "code=200 bytes=212906 age=14868s cache=HIT"
     },
     {
      "name": "A gloss 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=380947 age=64531s cache=HIT"
+     "detail": "code=200 bytes=380947 age=14867s cache=HIT"
     },
     {
      "name": "A demo 익명 200",
      "pass": true,
-     "detail": "code=200 bytes=23958 age=35258s cache=HIT"
+     "detail": "code=200 bytes=23958 age=170007s cache=HIT"
     },
     {
      "name": "A demo/app.html",
@@ -95,12 +95,12 @@
     {
      "name": "C 정본 app.html 계측",
      "pass": true,
-     "detail": "15화면 · 상태합 33 · 본문 29790자"
+     "detail": "15화면 · 상태합 33 · 본문 31316자"
     },
     {
      "name": "C 정본 glossary.html 계측",
      "pass": true,
-     "detail": "카드 100 · 본문 88836자"
+     "detail": "카드 100 · 본문 89277자"
     },
     {
      "name": "C 정본 app 표식",
@@ -145,7 +145,7 @@
     {
      "name": "C 시연 화면 구성",
      "pass": true,
-     "detail": "정본 15 → 시연 14 (의도적 제거 [\"index\"])"
+     "detail": "정본 15 → 시연 14 (의도적 제거 [\"index\",\"invest-sim\",\"xls-assets-status\",\"xls-assets-merchant\",\"xls-profit-status\",\"xls-profit-daily\"])"
     },
     {
      "name": "C 시연 상태 구성",
@@ -154,13 +154,13 @@
     },
     {
      "name": "C 시연 selfcheck 일치",
-     "pass": true,
-     "detail": "merchantSum=80000000 assetExecRow=80000000 execMatch=true assetTotal=100000000 ratioSum=100 ledgerDays=180 ledgerProfitSum=1787417 monthRollupSum=1787417 rollupMatchesLedger=true contracts=8 signQueue=3"
+     "pass": false,
+     "detail": "ledgerDays: 정본 179 ≠ 시연 180 / ledgerProfitSum: 정본 1778656 ≠ 시연 1787417 / monthRollupSum: 정본 1778656 ≠ 시연 1787417"
     },
     {
-     "name": "D 사이드바 메뉴 8개",
-     "pass": true,
-     "detail": "8개 [\"invest-assets\",\"invest-returns\",\"invest-sim\",\"merchants\",\"receivables\",\"contracts\",\"kcoon\",\"password\"]"
+     "name": "D 사이드바 메뉴 7개 (정본 − [\"invest-sim\"])",
+     "pass": false,
+     "detail": "8개 [\"invest-assets\",\"invest-returns\",\"invest-sim\",\"merchants\",\"receivables\",\"contracts\",\"kcoon\",\"password\"] (기대 [\"invest-assets\",\"invest-returns\",\"merchants\",\"receivables\",\"contracts\",\"kcoon\",\"password\"])"
     },
     {
      "name": "D 기간 3단 토글",
@@ -200,7 +200,7 @@
     {
      "name": "D 사이드바 실클릭 전환 — 안 움직인 SPA 메뉴 0",
      "pass": true,
-     "detail": "8개 전건 반응 (시작 invest-assets · 외부 링크는 제외)"
+     "detail": "7개 전건 반응 (시작 invest-assets · 외부 링크는 제외)"
     },
     {
      "name": "D 기간 토글 실클릭",
@@ -230,7 +230,7 @@
     {
      "name": "C 용어 본문 길이 근사",
      "pass": false,
-     "detail": "정본 88836 ↔ 배포 84124 (차 4712)"
+     "detail": "정본 89277 ↔ 배포 84124 (차 5153)"
     },
     {
      "name": "B 통합 표식",
@@ -249,8 +249,8 @@
     },
     {
      "name": "C 통합 selfcheck = 정본",
-     "pass": true,
-     "detail": "OK"
+     "pass": false,
+     "detail": "ledgerDays: 정본 179 ≠ 배포 180 / ledgerProfitSum: 정본 1778656 ≠ 배포 1787417 / monthRollupSum: 정본 1778656 ≠ 배포 1787417"
     },
     {
      "name": "C 통합 화면 전건",
@@ -279,8 +279,11 @@
     }
    ],
    "fails": [
+    "C 시연 selfcheck 일치 — ledgerDays: 정본 179 ≠ 시연 180 / ledgerProfitSum: 정본 1778656 ≠ 시연 1787417 / monthRollupSum: 정본 1778656 ≠ 시연 1787417",
+    "D 사이드바 메뉴 7개 (정본 − [\"invest-sim\"]) — 8개 [\"invest-assets\",\"invest-returns\",\"invest-sim\",\"merchants\",\"receivables\",\"contracts\",\"kcoon\",\"password\"] (기대 [\"invest-assets\",\"invest-returns\",\"merchants\",\"receivables\",\"contracts\",\"kcoon\",\"password\"])",
     "C 시연 가맹점별 투자자산 총 건수 = 정본 — 정본 [\"총 8건\"] ↔ 시연 []",
-    "C 용어 본문 길이 근사 — 정본 88836 ↔ 배포 84124 (차 4712)"
+    "C 용어 본문 길이 근사 — 정본 89277 ↔ 배포 84124 (차 5153)",
+    "C 통합 selfcheck = 정본 — ledgerDays: 정본 179 ≠ 배포 180 / ledgerProfitSum: 정본 1778656 ≠ 배포 1787417 / monthRollupSum: 정본 1778656 ≠ 배포 1787417"
    ],
    "canon": {
     "app": {
@@ -372,22 +375,22 @@
       "execMatch": true,
       "assetTotal": 100000000,
       "ratioSum": 100,
-      "ledgerDays": 180,
-      "ledgerProfitSum": 1787417,
-      "monthRollupSum": 1787417,
+      "ledgerDays": 179,
+      "ledgerProfitSum": 1778656,
+      "monthRollupSum": 1778656,
       "rollupMatchesLedger": true,
       "contracts": 8,
       "signQueue": 3,
       "screens": 15,
       "states": 18
      },
-     "corpusLen": 29790,
+     "corpusLen": 31316,
      "nav": 8,
      "gran": 3
     },
     "gloss": {
      "cards": 100,
-     "textLen": 88836,
+     "textLen": 89277,
      "title": "투자자 어드민 용어 해설"
     }
    },
@@ -397,7 +400,7 @@
      "12주": 5,
      "계약서보기": 30,
      "하나인증서": 28,
-     "3.11": 4,
+     "3.09": 13,
      "10개": 14
     },
     "leaked": {

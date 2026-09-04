@@ -19,12 +19,12 @@
   "(나0) 전체(demo) 화면 × 상태 전건 도달 (33건)",
   "(나0) 시연(prototype) 화면 × 상태 전건 도달 (32건)",
   "(나0) 페이지 판독기 자기시험 — 갈라 적지 않은 1건만 잡는다 — {\"caught\":1,\"left\":0}",
-  "(나0) 검사 대상 0건 아님 — 렌더 — 109화면·상태",
-  "(나0) 검사 대상 0건 아님 — 저장소 원천 — 56파일",
+  "(나0) 검사 대상 0건 아님 — 렌더 — 113화면·상태",
+  "(나0) 검사 대상 0건 아님 — 저장소 원천 — 60파일",
   "(나0) 검사 대상 0건 아님 — 원고 — 7건: capability_manuscript.md, ceo_inquiry.md, feasibility.md, glossary_manuscript.md, new_screens_manuscript.md, symbol_glossary.md, terms_briefing_0831.md",
   "(나0) 검사 대상 0건 아님 — 산출 문서 — 2건: 정산금채권_재양도_합의서.txt, 투자자산증명서_20260827.pdf",
-  "(나) 배포 3주소 렌더된 텍스트 — 갈라 적지 않은 자리 0건 (109곳 검사)",
-  "(나) 배포 3주소 원천 텍스트 — 갈라 적지 않은 자리 0건 (56곳 검사)",
+  "(나) 배포 3주소 렌더된 텍스트 — 갈라 적지 않은 자리 0건 (113곳 검사)",
+  "(나) 배포 3주소 원천 텍스트 — 갈라 적지 않은 자리 0건 (60곳 검사)",
   "(나) 파이프라인 원고 — 갈라 적지 않은 자리 0건 (7곳 검사)",
   "(나) 산출 문서 — 갈라 적지 않은 자리 0건 (2곳 검사)",
   "(나) 산출 문서 PDF 본문 판독 — PyMuPDF 로 전건 판독"
@@ -42,8 +42,8 @@
    "skipped": []
   },
   "counted": {
-   "render": 109,
-   "repo": 56,
+   "render": 113,
+   "repo": 60,
    "manuscript": 7,
    "doc": 2
   },
@@ -63,6 +63,7 @@
    "terms_briefing_0831.md"
   ],
   "mdOutOfScope": [
+   "NEXT_SESSION.md",
    "TODO_0831.md",
    "app_build_notes.md",
    "app_build_result.md",
@@ -121,17 +122,7 @@
    "wiring_final.md"
   ],
   "mdNoDesc": [
-   "TODO_0831.md",
-   "exec_amount_structures.md",
-   "frontend_settlement_cards.md",
-   "frontend_sync_20260831.md",
-   "notation_fix_app.md",
-   "notation_fix_glossary.md",
-   "notation_fix_xlsx.md",
-   "questions_final_0831.md",
-   "questions_triage.md",
-   "screen_vs_register_0831.md",
-   "symbol_notation_audit.md"
+   "NEXT_SESSION.md"
   ],
   "xlsx": [
    {

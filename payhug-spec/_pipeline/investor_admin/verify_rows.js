@@ -45,7 +45,19 @@ const PROBE = (sel, idx) => `
 `;
 
 let cur=null;
-async function goto(url){ if(cur!==url){ await send('Page.navigate',{url:url}); await sleep(900); cur=url; } }
+/* 고정 900ms 대기는 app.html(245KB) 초기화와 경주한다 — 2026-09-04 전종 실행에서 `psz is not defined`
+   로 한 번 죽고 재실행에서 통과했다. 앱 전역(go·psz)이 실제로 잡힐 때까지 기다린다(최대 8초). */
+async function goto(url){
+  if(cur===url) return;
+  await send('Page.navigate',{url:url});
+  for(let i=0;i<80;i++){
+    await sleep(100);
+    let ok=false;
+    try{ ok=await ev("return typeof go==='function' && typeof psz==='function' && !!document.querySelector('section.screen');"); }catch(e){ ok=false; }
+    if(ok) break;
+  }
+  await sleep(300); cur=url;
+}
 
 async function probeRow(label, url, sel, idx){
   await goto(url);

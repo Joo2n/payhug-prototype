@@ -29,7 +29,7 @@ from decimal import Decimal as D, ROUND_HALF_UP
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from roster16_model import (ROSTER, SHARES, EXEC, CASH, TOTAL, W_W, S_W, TY_W,
                             EXEC_SHARE, CASH_SHARE, DAILY, DSUM, MSUM, ty_asset,
-                            r1, r2, ty, f)
+                            r1, r2, r6, ty, f)
 import daily_ledger
 
 import openpyxl
@@ -121,7 +121,7 @@ def save(wb, filename):
 
 # ── 주·달 버킷 ────────────────────────────────────────────────────
 #   화면의 rollupBy 와 같은 산식이다. 원장은 daily_ledger 하나뿐이고 여기서 묶기만 한다.
-#   W금융일수 = 투자실행금 가중평균.
+#   W금융일수 = Σ(Ai x Di) / Σ Ai — 채권 경로. 비율·일수는 6자리에서 끊고 그 값을 다음 계산에 넣는다.
 #   Ty수익율  = SMR x 365 / SD  (대표 정의서).  일자별 ty 를 다시 가중평균하지 않는다 —
 #              그러면 같은 행에 적힌 W 로 되짚을 수 없다(ty_bucket_fix.md).
 def _mon_start(d):
@@ -135,9 +135,14 @@ def bucket(rows, label):
     ex = sum(r['exec'] for r in rows)
     pf = sum(r['profit'] for r in rows)
     rp = sum(r['repay'] for r in rows)
-    w  = sum(D(str(r['w'])) * D(r['exec']) for r in rows) / D(ex)
-    t  = (D(pf) / D(ex) * D(100)) * D(365) / w
-    return dict(d=label, repay=rp, exec=ex, profit=pf, w=w, ty=t)
+    # PwD = Σ(Ai x Di) / PA — 채권 경로. 묶음 안 채권을 한 뭉치로 모아 한 번에 낸다.
+    #   행에 적힌 W 를 다시 가중하지 않는다(dm_0901/rounding_rule_0901.md 1-1).
+    wx = sum(D(r['wx']) for r in rows)
+    w  = r6(wx / D(ex))
+    # PMR = PM / PA 도 백분율 표기 기준 6자리에서 끊고 그 값을 다음 계산에 넣는다
+    #   (dm_0901 규칙 1 · 원장 daily_ledger.TY6_EXPR 과 같은 꼴).
+    t  = r6(r6(D(pf) / D(ex) * D(100)) * D(365) / w)
+    return dict(d=label, repay=rp, exec=ex, profit=pf, w=w, ty=t, wx=wx)
 
 
 def rollup(frm, to, keyf, labelf):
@@ -157,7 +162,8 @@ def rollup(frm, to, keyf, labelf):
 #   통합본 build_app.py 의 PRESET_RANGE · PRESET_GRAN · PRESET_LABEL 과 같은 값이다.
 #   종료일은 전부 기준일에서 끊는다 — 마지막 버킷이 기준일 뒤 빈 날짜를 이고 있으면
 #   같은 크기의 앞 버킷들과 나란히 놓였을 때 급락으로 읽힌다.
-BASE_DATE = '2026-08-27'
+ASOF_DATE = daily_ledger.ASOF_S     # 화면·시트 머리글의 「기준일」
+BASE_DATE = daily_ledger.facts()['lastDue']   # 프리셋 끝날짜 — 일별 표 마지막 행
 INVESTOR  = '㈜테스트인베스트'
 
 
@@ -207,8 +213,16 @@ def preset_rows(gran, frm, to):
     if gran == 'monthly':
         return rollup(frm, to, lambda d: d[:7], lambda d: d[:7])
     return [dict(d=r['d'], repay=r['repay'], exec=r['exec'], profit=r['profit'],
-                 w=D(str(r['w'])), ty=D(str(r['ty'])))
+                 w=D(str(r['w6'])), ty=D(str(r['ty'])), wx=r['wx'])
             for r in daily_ledger.LEDGER if frm <= r['d'] <= to]
+
+
+def assets_status_file():
+    return '투자자산현황_%s_%s.xlsx' % (ASOF_DATE, ASOF_DATE)
+
+
+def assets_merchant_file():
+    return '가맹점별투자자산_%s_%s.xlsx' % (ASOF_DATE, ASOF_DATE)
 
 
 def profit_file(gran, frm, to):
@@ -223,7 +237,7 @@ def put_bucket_sheet(title, headline, colhead, rows, filename, w0=21.5):
     wb = openpyxl.Workbook()
     ws = new_sheet(wb, title, headline, 6, [w0, 16.5, 16.5, 12.5, 12.5, 11.5], 'A4')
     put_notice(ws, 6)
-    put_header(ws, [colhead, '상환액', '투자실행금', '투자 수익', 'W금융일수', 'Ty수익율'])
+    put_header(ws, [colhead, '상환액', '투자실행금', '투자 수익', '가중평균 금융일수', '연환산수익률'])
     r = 4
     for x in rows:
         put_row(ws, r, [(x['d'], None, None), (x['repay'], FMT_AMT, None), (x['exec'], FMT_AMT, None),
@@ -241,10 +255,10 @@ def put_bucket_sheet(title, headline, colhead, rows, filename, w0=21.5):
 # ── 1) 투자자산현황 ───────────────────────────────────────────────
 def build_assets_status():
     wb = openpyxl.Workbook()
-    ws = new_sheet(wb, '투자자산 현황', '투자자산 현황 — 기준일 2026-08-27 / ㈜테스트인베스트',
+    ws = new_sheet(wb, '투자자산 현황', '투자자산 현황 — 기준일 %s / %s' % (ASOF_DATE, INVESTOR),
                    7, [18.5, 16.5, 12.5, 14.5, 11.5, 11.5, 13.5], 'A4')
     put_notice(ws, 7)
-    put_header(ws, ['자산 구분', '금액 (원)', 'W금융일수', 'S입금부족율', 'Ty수익율', '비중', '보관'])
+    put_header(ws, ['자산 구분', '금액 (원)', '가중평균 금융일수', '입금부족률', '예상 연환산수익률', '비중', '보관'])
     put_row(ws, 4, [('투자실행액', None, None), (EXEC, FMT_AMT, None),
                     (float(r2(W_W)), FMT_DAY, None), (pct(r2(S_W)), FMT_PCT2, None),
                     (pct(r2(TY_W)), FMT_PCT2, None), (pct(EXEC_SHARE), FMT_PCT1, None),
@@ -254,16 +268,16 @@ def build_assets_status():
     put_row(ws, 6, [('합계 (투자자산)', None, None), (TOTAL, FMT_AMT, None), None, None, None,
                     (1, FMT_PCT1, None), None], total=True)
     put_note(ws, 8, '※ 합계(투자자산) = 투자실행액 + 순현금. '
-                    'W금융일수·S입금부족율·Ty수익율은 투자실행액에만 산정.')
-    return save(wb, '투자자산현황_2026-08-27_2026-08-27.xlsx')
+                    '가중평균 금융일수·입금부족률·예상 연환산수익률은 투자실행액에만 산정.')
+    return save(wb, assets_status_file())
 
 # ── 2) 가맹점별투자자산 ───────────────────────────────────────────
 def build_assets_merchant():
     wb = openpyxl.Workbook()
-    ws = new_sheet(wb, '가맹점별 투자자산', '가맹점별 투자자산 — 기준일 2026-08-27 / ㈜테스트인베스트',
+    ws = new_sheet(wb, '가맹점별 투자자산', '가맹점별 투자자산 — 기준일 %s / %s' % (ASOF_DATE, INVESTOR),
                    6, [20.5, 16.5, 12.5, 14.5, 11.5, 11.5], 'A4')
     put_notice(ws, 6)
-    put_header(ws, ['가맹점', '투자금액 (원)', 'W금융일수', 'S입금부족율', 'Ty수익율', '비중'])
+    put_header(ws, ['가맹점', '투자실행액 (원)', '가중평균 금융일수', '입금부족률', '예상 연환산수익률', '비중'])
     r = 4
     for (name, amount, w, s, *_), share in zip(ROSTER, SHARES):
         put_row(ws, r, [(name, None, None), (amount, FMT_AMT, None), (float(w), FMT_DAY, None),
@@ -272,8 +286,8 @@ def build_assets_merchant():
         r += 1
     put_row(ws, r, [('합계', None, None), (EXEC, FMT_AMT, None), None, None, None,
                     (1, FMT_PCT1, None)], total=True)
-    put_note(ws, r + 2, '※ 비중은 투자실행액 합계(%s원) 대비 각 가맹점 투자금액의 구성비.' % f(EXEC))
-    return save(wb, '가맹점별투자자산_2026-08-27_2026-08-27.xlsx')
+    put_note(ws, r + 2, '※ 비중은 투자실행액 합계(%s원) 대비 각 가맹점 투자실행액의 구성비.' % f(EXEC))
+    return save(wb, assets_merchant_file())
 
 # ── 3) 투자수익현황 — 집계 단위 3벌(일별·주별·월별) ────────────────
 #   화면의 `수익 현황` 카드 한 장이 곧 이 시트다. 카드가 4주를 말하는데 파일이 일주일이면
@@ -281,16 +295,17 @@ def build_assets_merchant():
 #   머리글의 `기준일`은 문서를 낸 날(BASE_DATE)이고, 조회 구간은 `검색대상기간` 행이 진다.
 def put_status_sheet(label, frm, to, ex, pf, ty4, ty5, filename):
     wb = openpyxl.Workbook()
-    ws = new_sheet(wb, '투자수익 현황', '투자수익 현황 — 기준일 2026-08-27 / ㈜테스트인베스트',
+    ws = new_sheet(wb, '투자수익 현황', '투자수익 현황 — 기준일 %s / %s' % (ASOF_DATE, INVESTOR),
                    2, [31.5, 35.5], None)
     put_notice(ws, 2)
     put_header(ws, ['항목', '값'])
     put_row(ws, 4, [('검색대상기간', None, None), ('%s (%s ~ %s)' % (label, frm, to), None, RIGHT)])
     put_row(ws, 5, [('투자실행금', None, None), (ex, FMT_AMT, None)])
     put_row(ws, 6, [('투자수익', None, None), (pf, FMT_AMT, None)])
-    put_row(ws, 7, [('Ty수익율 (투자실행금액 대비)', None, None), (pct(ty4), FMT_PCT2, None)])
-    # ⑤ = (④ × PSA) / (PSA + PSC) — 분모는 기간 유량끼리. roster16_model.ty_asset 산출.
-    put_row(ws, 8, [('Ty수익율 (투자자산 대비)', None, None), (pct(ty5), FMT_PCT2, None)])
+    put_row(ws, 7, [('연환산수익률 (투자실행금액 대비)', None, None), (pct(ty4), FMT_PCT2, None)])
+    # ⑤ PY_t = PM × 365 / (Σ(Ai x Di) + PEC) = ④ × AD / (AD + PEC) — 분모는 기간 유량끼리.
+    #   AD 는 표의 wx 합(PwD 의 분자). roster16_model.ty_asset 산출.
+    put_row(ws, 8, [('연환산수익률 (투자자산 대비)', None, None), (pct(ty5), FMT_PCT2, None)])
     put_note(ws, 10, '')
     return save(wb, filename)
 
@@ -311,7 +326,7 @@ def build_profit_preset(gran, label, frm, to):
         '%s 투자수익 — %s ~ %s / %s' % (GRAN_NAME[gran], frm, to, INVESTOR),
         GRAN_COL[gran], rows, profit_file(gran, frm, to), GRAN_WIDTH[gran])
     status = put_status_sheet(label, frm, to, tot['exec'], tot['profit'],
-                              r2(tot['ty']), ty_asset(tot['ty'], tot['exec'], _ec_days(frm, to)),
+                              r2(tot['ty']), ty_asset(tot['ty'], tot['wx'], _ec_days(frm, to)),
                               status_file(frm, to))
     return [table, status]
 
@@ -324,18 +339,20 @@ def build_profit_all():
 
 # ── 미리보기 파일바 동기화 ────────────────────────────────────────
 # 화면 : (미리보기 HTML, 엑셀 파일명)
-PREVIEW = [('xls-assets-status.html',   '투자자산현황_2026-08-27_2026-08-27.xlsx'),
-           ('xls-assets-merchant.html', '가맹점별투자자산_2026-08-27_2026-08-27.xlsx'),
-           ('xls-profit-status.html',   '투자수익현황_2026-08-21_2026-08-27.xlsx'),
-           ('xls-profit-daily.html',    '일별투자수익_2026-08-21_2026-08-27.xlsx')]
+_WK = PRESETS[0]           # 일주일 — 화면 기본 조회 기간과 같은 묶음
+PREVIEW = [('xls-assets-status.html',   assets_status_file()),
+           ('xls-assets-merchant.html', assets_merchant_file()),
+           ('xls-profit-status.html',   status_file(_WK[3], _WK[4])),
+           ('xls-profit-daily.html',    profit_file(_WK[1], _WK[3], _WK[4]))]
 
-LEGACY = ['투자자산_현황_20260827.xlsx', '가맹점별_투자자산_20260827.xlsx',
-          '투자수익_현황_20260827.xlsx', '일별_투자수익_20260827.xlsx']
+_C = daily_ledger.ASOF_C   # 붙임형 날짜 — 옛 판 파일명 규칙
+LEGACY = ['투자자산_현황_%s.xlsx' % _C, '가맹점별_투자자산_%s.xlsx' % _C,
+          '투자수익_현황_%s.xlsx' % _C, '일별_투자수익_%s.xlsx' % _C]
 
 
 def wanted():
     """이번 판이 내는 파일 이름 전량 — 여기 없는 .xlsx 는 옛 기간의 잔존물이라 지운다."""
-    names = ['투자자산현황_2026-08-27_2026-08-27.xlsx', '가맹점별투자자산_2026-08-27_2026-08-27.xlsx']
+    names = [assets_status_file(), assets_merchant_file()]
     for _key, gran, _label, frm, to in PRESETS:
         names += [profit_file(gran, frm, to), status_file(frm, to)]
     return names

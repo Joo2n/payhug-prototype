@@ -169,7 +169,7 @@ def main():
     s2 = json.loads(json.dumps(seed))
     s2["items"][0]["plain"] = "고친 풀이"
     s2["items"].append({"no": 3, "image": 2, "term": "다", "quote": "",
-                        "plain": "덧붙임", "status": "확인필요"})
+                        "plain": "덧붙임", "status": "미확정"})
     g2 = regen(raw1, s2, h1, bt.js_json, bt.full)
     raw2, sd2, h2 = unpack(g2)
     chk_true("2세대 · 뼈대가 닳지 않음", raw2 == raw1)
@@ -229,7 +229,7 @@ def main():
         chk("원고 · 풀이가 빈 항", sum(1 for i in items if not (i.get("plain") or "").strip()), 0)
         chk("원고 · 인용이 빈 항", sum(1 for i in items if not (i.get("quote") or "").strip()), 0)
         chk("원고 · 모르는 상태값",
-            sorted({i.get("status") for i in items} - {"확정", "대기", "확인필요"}), [])
+            sorted({i.get("status") for i in items} - {"확정", "대기", "미확정"}), [])
 
         if os.path.exists(CEO):
             ceo = re.sub(r"\s+", " ", load(CEO))

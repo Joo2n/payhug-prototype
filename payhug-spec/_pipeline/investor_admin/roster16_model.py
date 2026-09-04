@@ -22,7 +22,7 @@ from decimal import Decimal as D, ROUND_HALF_UP, ROUND_FLOOR
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from platform_duration import DURATION, ORDER, LABEL, FLOOR, CEIL, duration, w_of, MEASURED_W
 import daily_ledger as L
-from daily_ledger import (BOOK, CASH, TIER_NAME, TIER_CUT, SAMPLE, ASOF, r1, r2, fl, ty_of,
+from daily_ledger import (BOOK, CASH, TIER_NAME, TIER_CUT, SAMPLE, ASOF, r1, r2, r6, fl, ty_of,
                           RECEIVABLES, OPEN, MERCHANTS as _M, W_RAW, W_BOOK, TY_BOOK, S_RAW,
                           DAY_AVG, LEDGER, month_rollup, shortfall, wavg)
 
@@ -30,7 +30,12 @@ R    = D('0.0011')
 RPCT = D('0.11')
 DAYS = D('365')
 
-def ty(w):  return ty_of(w)
+# 화면 표기 W(소수 2자리) -> 계산에 쓰는 6자리 W. 소비자가 표기값으로 불러도 계산은
+# 6자리 값으로 한다(dm_0901 규칙 1). 로스터의 표기 W 는 서로 겹치지 않는다.
+W6_OF = {str(x['w']): x['w6'] for x in _M}
+assert len(W6_OF) == len(_M), '표기 W 가 겹친다 — 6자리 값을 되짚을 수 없다'
+
+def ty(w):  return ty_of(W6_OF.get(str(w), w))
 def f(n):   return format(n, ',')
 
 # 종전 소비자가 그대로 쓰던 이름들 — 원장에서 되짚어 채운다.
@@ -104,8 +109,8 @@ AMTS = [x[1] for x in ROSTER]
 # 두 값의 모집단이 서로 다르다 — W 는 발생분 전체, S 는 선정산일 D-20~D-11 표본이다.
 W_W  = W_RAW
 S_W  = S_RAW
-# ty = 할인율 x 365 / W. 화면에 뜨는 W(소수2자리)에서 낸 값이라 보는 사람이 화면 두 칸으로
-# 되짚을 수 있다. 가맹점별 행도 같은 규칙이다(ty_of(x['w'])).
+# ty = 할인율 x 365 / W. W 는 6자리 값을 넣고 화면에만 2자리로 보인다(dm_0901 규칙 1).
+# 가맹점별 행도 같은 규칙이다(ty_of(x['w6'])).
 TY_W = TY_BOOK
 TY_W_ROWAVG = wavg_pairs([ty(x[2]) for x in ROSTER], AMTS)   # 참고값 — 화면에는 쓰지 않는다
 
@@ -113,39 +118,45 @@ EXEC_SHARE = r1(D(EXEC) / D(TOTAL) * 100)
 CASH_SHARE = r1(D(CASH) / D(TOTAL) * 100)
 
 # ── 일별·월별 투자수익 — 원장 롤업 그대로 ─────────────────────────
-WEEK = ('2026-08-21', '2026-08-27')        # 기본 조회 기간(일주일)
+WEEK = L.WEEK                              # 기본 조회 기간(일주일) — 원천 daily_ledger.ASOF
 #   w 는 화면 표기 그대로 문자열로 담는다 — 정적 낱장·엑셀·통합본이 같은 자리를 대조한다.
+#   계산에 쓰는 6자리 값은 x['w6'] 에 그대로 남는다(dm_0901 규칙 1).
 def _srow(r):
     x = dict(r); x['w'] = str(x['w']); return x
 DAILY   = [_srow(r) for r in LEDGER if WEEK[0] <= r['d'] <= WEEK[1]]
-MONTHLY = [_srow(r) for r in month_rollup(LEDGER)]
+# 달 행에도 PwD 의 분자 wx = Σ(Ai x Di) 를 실어 둔다 — 합계 행이 채권 경로로 PwD 를 낸다.
+MONTHLY = [dict(_srow(r), wx=sum(x['wx'] for x in LEDGER if x['d'][:7] == r['d']))
+           for r in month_rollup(LEDGER)]
 DAILY_W = [(r['d'], r['exec'], str(r['w'])) for r in DAILY]
 MON_W   = [(r['d'], r['exec'], str(r['w'])) for r in MONTHLY]
 
-# ── 투자자산 대비 ty수익율(현황 ⑤) — 대표 정의서 기준 ──────────────
-# ⑤ = (④ x PSA) / (PSA + PSC).  PSA = 기간 투자실행금 합(유량),
+# ── 투자자산 대비 ty수익율(현황 ⑤) ─────────────────────────────────
+# ⑤ = PM x 365 / (Σ(Ai x Di) + PEC) = ④ x AD / (AD + PSC).  AD = 기간 Σ(Ai x Di) — 행 wx 의 합(PwD 의 분자),
 # PSC = 기간 동안 EC(전일자 순현금)들의 합(유량). EC 예시값은 순현금 잔액 CASH 로 고정한다.
 EC_DAILY_WEEK = len(DAILY)
 EC_MONTHLY_ALL = len(LEDGER)
 EC_MONTH_AUG = sum(1 for r in LEDGER if r['d'].startswith('2026-08'))
 
-def ty_asset(ty4, psa, ec_days):
+def ty_asset(ty4, ad, ec_days):
     """⑤ 산식은 daily_ledger.ty_asset 한 곳에 있다 — 여기는 EC 일수를 PSC 로 바꿔 넘기는 껍질이다."""
-    return r2(L.ty_asset(D(str(ty4)), D(psa), D(CASH) * D(ec_days)))
+    return r2(r6(L.ty_asset(D(str(ty4)), D(ad), D(CASH) * D(ec_days))))
 
 def agg(rs, ec_days):
-    # 합계 행의 Ty = PSMR x 365 / PSD (대표 정의서). PSD 는 반올림 전 가중평균을 쓴다.
+    # 합계 행의 Ty = PSMR x 365 / PSD (대표 정의서).
+    #   PSD = Σ(Ai x Di) / PA — 채권 경로. 6자리로 끊은 행 W 를 다시 가중하지 않는다.
+    #   PSMR 도 백분율 소수 여섯째 자리에서 끊고 그 값을 넣는다(dm_0901 규칙 1).
     # 통합본 build_app.py 의 tyOfRows·rollupBy 와 같은 규칙이라 화면과 파일이 갈리지 않는다.
     ex = sum(r['exec'] for r in rs); pr = sum(r['profit'] for r in rs); rp = sum(r['repay'] for r in rs)
-    wv = wavg_pairs([r['w'] for r in rs], [r['exec'] for r in rs])
-    tv = (D(pr) / D(ex) * D(100)) * DAYS / wv
-    return dict(exec=ex, profit=pr, repay=rp, w=r2(wv), wraw=wv, ty=r2(tv), tyraw=tv,
-                ecDays=ec_days, psc=CASH * ec_days, tyAsset=ty_asset(tv, ex, ec_days))
+    ad = sum(r['wx'] for r in rs)
+    wv = r6(D(ad) / D(ex))
+    tv = r6(r6(D(pr) / D(ex) * D(100)) * DAYS / wv)
+    return dict(exec=ex, profit=pr, repay=rp, w=r2(wv), wraw=wv, ty=r2(tv), tyraw=tv, ad=ad,
+                ecDays=ec_days, psc=CASH * ec_days, tyAsset=ty_asset(tv, ad, ec_days))
 
 DSUM, MSUM = agg(DAILY, EC_DAILY_WEEK), agg(MONTHLY, EC_MONTHLY_ALL)
 AUG = MONTHLY[-1]
 AUG_CARD = dict(exec=AUG['exec'], profit=AUG['profit'], ty=AUG['ty'], ecDays=EC_MONTH_AUG,
-                tyAsset=ty_asset(AUG['ty'], AUG['exec'], EC_MONTH_AUG))
+                tyAsset=ty_asset(AUG['ty6'], AUG['wx'], EC_MONTH_AUG))
 
 # ── 규모 구간 요약 ────────────────────────────────────────────────
 def tier_table():

@@ -121,7 +121,7 @@ def card_spec():
         '투자자산':   (f(TOTAL), '원', None),
         '투자실행액': (f(EXEC),  '원', '비중 %s%% · 보관 ㈜페이허그' % EXEC_SHARE),
         '순현금':     (f(CASH),  '원', '비중 %s%% · 보관 ㈜쿠콘' % CASH_SHARE),
-        'Ty수익율':   (TY_ROW,   '%', 'W금융일수 %s일 기준' % W_ROW),
+        '예상 연환산수익률': (TY_ROW, '%', '가중평균 금융일수 %s일 기준' % W_ROW),
     }
 
 
@@ -178,34 +178,26 @@ def status_table(s):
 #   W금융일수·S입금부족율·옆 칸 금액이 각자 다른 집합에서 나온다. 행을 금액으로 가중평균해도
 #   현황표의 두 칸과 맞아떨어지지 않는 자리라, 열머리가 자기 모집단을 스스로 말한다.
 #   마크업은 통합본 build_app.py 의 popTh() 와 같다.
-# 대표 재전달 대기 표기 — 통합본 build_app.py 의 PEND_BADGE · PEND_ROW 와 같은 마크업이다.
-PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
-PEND_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>'
-# 소문자 d 표기는 잠정이다 — 대표 DM 15:15 는 금융일수 쪽 글자를 바꾸라고 했고 우리는 날짜 쪽을
-# 내렸다(dm_0831/symbol_rule_0831.md). 4차 미팅 확인 전까지 표기에 미확정을 단다.
-POP = (('W금융일수', '대상정산금채권 전체 (발생 기준)', POP_N_W, 0),
-       ('S입금부족율', '선정산일 d-20 ~ d-11 표본', POP_N_S, 1))
+POP = (('가중평균 금융일수', '대상정산금채권 전체 (발생 기준)', POP_N_W),
+       ('입금부족률', '선정산일이 기준일 20일 전 ~ 11일 전인 표본', POP_N_S))
 
 
-def pop_th(label, of, n, pend):
+def pop_th(label, of, n):
     return ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">%s</span>'
             '<span class="tip-panel">%s'
             '<span class="tip-row"><span>채권 건수</span><span class="tip-green">%s건</span></span>'
-            '%s</span></span>%s</th>'
-            % (label, of, f(n),
-               ('<span class="tip-row"><span>표기 d</span><span>미확정</span></span>' + PEND_ROW)
-               if pend else '',
-               PEND_BADGE if pend else ''))
+            '</span></span></th>'
+            % (label, of, f(n)))
 
 
 def pop_heads(s):
     """현황표·가맹점별 표의 두 열머리를 툴팁 붙은 것으로. 이미 붙어 있으면 통째로 갈아 끼운다."""
-    for label, of, n, pend in POP:
+    for label, of, n in POP:
         pat = re.compile(
             r'<th class="num">(?:%s|<span class="tooltip wide"><span class="tip-anchor">%s</span>'
             r'.*?</span></span>(?: <span class="badge sm badge-amber">[^<]*</span>)?)</th>'
             % (re.escape(label), re.escape(label)), re.S)
-        s, k = pat.subn(lambda _m: pop_th(label, of, n, pend), s)
+        s, k = pat.subn(lambda _m: pop_th(label, of, n), s)
         assert k == 2, '열머리 `%s` %d건 — 현황표·가맹점별 표 2건이라야 한다' % (label, k)
     return s
 

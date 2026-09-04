@@ -1,0 +1,176 @@
+[
+ {
+  "sec": "A",
+  "name": "기호·용어·산식 자리 대시 0건",
+  "pass": true,
+  "detail": "0건 []"
+ },
+ {
+  "sec": "A",
+  "name": "값 자리 `-` = 배포 화면이 찍는 수와 같음",
+  "pass": true,
+  "detail": "JSON 7 · invest-assets.html 7"
+ },
+ {
+  "sec": "A",
+  "name": "배포 .sym 단독 대시 0건",
+  "pass": true,
+  "detail": "0건"
+ },
+ {
+  "sec": "A",
+  "name": "배포 .val 단독 대시 0건",
+  "pass": true,
+  "detail": "0건"
+ },
+ {
+  "sec": "A",
+  "name": "배포 근거·용어 줄 단독 대시 0건",
+  "pass": true,
+  "detail": "0건"
+ },
+ {
+  "sec": "B",
+  "name": "「몫」 0건",
+  "pass": true,
+  "detail": "0건 []"
+ },
+ {
+  "sec": "B",
+  "name": "배포 HTML 「몫」 0건",
+  "pass": true,
+  "detail": "0"
+ },
+ {
+  "sec": "B",
+  "name": "「재료」 0건",
+  "pass": true,
+  "detail": "0건 []"
+ },
+ {
+  "sec": "B",
+  "name": "배포 HTML 「재료」 0건",
+  "pass": true,
+  "detail": "0"
+ },
+ {
+  "sec": "B",
+  "name": "「낱건」 0건",
+  "pass": true,
+  "detail": "0건 []"
+ },
+ {
+  "sec": "B",
+  "name": "배포 HTML 「낱건」 0건",
+  "pass": true,
+  "detail": "0"
+ },
+ {
+  "sec": "C",
+  "name": "세로줄 표기 0건",
+  "pass": true,
+  "detail": "0건 []"
+ },
+ {
+  "sec": "D",
+  "name": "우리 서술에 폐기 기호 0건",
+  "pass": true,
+  "detail": "0건 []"
+ },
+ {
+  "sec": "D",
+  "name": "인용(source) 자리는 남는다",
+  "pass": true,
+  "detail": "52건"
+ },
+ {
+  "sec": "D",
+  "name": "화면 라벨 자리는 남는다",
+  "pass": true,
+  "detail": "59건"
+ },
+ {
+  "sec": "E",
+  "name": "source 의 대표 원문 기호가 원문에 그대로 있음",
+  "pass": true,
+  "detail": "어긋난 것 0 []"
+ },
+ {
+  "sec": "E",
+  "name": "source 에 우리 조판(`_{` · `_i`) 0건",
+  "pass": true,
+  "detail": "0건 []"
+ },
+ {
+  "sec": "F",
+  "name": "배포 HTML 리터럴 `_{` 0건",
+  "pass": true,
+  "detail": "0건"
+ },
+ {
+  "sec": "F",
+  "name": "배포 HTML <sub> 조판",
+  "pass": true,
+  "detail": "515건"
+ },
+ {
+  "sec": "G",
+  "name": "screen_map 「몫」 0건",
+  "pass": true,
+  "detail": "0"
+ },
+ {
+  "sec": "G",
+  "name": "screen_map 「재료」 0건",
+  "pass": true,
+  "detail": "0"
+ },
+ {
+  "sec": "G",
+  "name": "screen_map 「낱건」 0건",
+  "pass": true,
+  "detail": "0"
+ },
+ {
+  "sec": "G",
+  "name": "screen_map 세로줄 표기 0건",
+  "pass": true,
+  "detail": ""
+ },
+ {
+  "sec": "H",
+  "name": "④ 칸이 원장 weekTyRaw 를 그대로 쓴다",
+  "pass": true,
+  "detail": "기대 3.992511 · 칸 2 · 어긋난 것 []"
+ },
+ {
+  "sec": "H",
+  "name": "⑤ 칸이 원장 weekTyAssetRaw 를 그대로 쓴다",
+  "pass": true,
+  "detail": "기대 2.245629 · 칸 1 · 어긋난 것 []"
+ },
+ {
+  "sec": "H",
+  "name": "④ 칸의 PMR 이 원장 weekMR 6자리다",
+  "pass": true,
+  "detail": "기대 0.033992 · 어긋난 것 []"
+ },
+ {
+  "sec": "H",
+  "name": "일별 ⑥ 7행이 원장 w6ByDate·⑥ 6자리와 같다",
+  "pass": true,
+  "detail": "행 7 · 어긋난 것 []"
+ },
+ {
+  "sec": "H",
+  "name": "규칙 이전 경로 값 잔량 0건",
+  "pass": true,
+  "detail": "대조한 값 9 · 잔량 []"
+ },
+ {
+  "sec": "H",
+  "name": "사다리가 자기 숫자로 닫힌다",
+  "pass": true,
+  "detail": "대조한 줄 37 · 안 닫힌 것 []"
+ }
+]

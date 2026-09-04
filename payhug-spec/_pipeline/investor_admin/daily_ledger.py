@@ -63,6 +63,12 @@ CASH = 20000000                    # 순현금 — 쿠콘 가상계좌 현금잔
                                    #          원장이 만들지 않고 그대로 받는 입력이다(불변식).
 
 ASOF      = date(2026, 8, 27)      # 기준일 d (오늘 날짜). 금융일수 D 와 다른 글자다
+                                   # 기준일을 옮길 때 고치는 자리는 이 한 줄이다.
+                                   # 화면·엑셀·문서·검증기는 아래 파생을 읽고 날짜를 손으로 적지 않는다.
+ASOF_S    = ASOF.isoformat()                        # '2026-08-27' 화면·문서·파일명이 쓰는 문자열
+ASOF_C    = ASOF.strftime('%Y%m%d')                 # '20260827'   증명서 PDF 등 붙임형 파일명
+LAST_DUE  = ASOF - timedelta(days=1)   # 일별 표 마지막 행. 기준일 당일 채권은 배치 전이라 DB 에 없다
+WEEK      = ((LAST_DUE - timedelta(days=6)).isoformat(), LAST_DUE.isoformat())   # 기본 조회 기간(일주일)
 FIRST_DUE = date(2026, 3, 1)       # 일별 표 첫 행(정산예정일)
 FIRST_ADV = FIRST_DUE - timedelta(days=DI_MAX)     # 첫 행을 채우는 가장 이른 선정산일
 SAMPLE    = (ASOF - timedelta(days=20), ASOF - timedelta(days=11))   # S 표본집합 구간 d-20 ~ d-11
@@ -129,17 +135,27 @@ TILT = ((0.120, 13.0, 10),      # 주 단위 배달 쏠림
 UNIT = D(1)
 
 
+# 반올림 자리 — 확정 규칙(dm_0901/rounding_rule_0901.md)
+#   비율·일수는 소수 일곱째 자리에서 반올림해 여섯째 자리까지 남기고(r6), 다음 계산에는
+#   그 6자리 값을 넣는다. 화면 표기만 소수 2자리(r2)로 자른다.
+#   금액은 원 단위다 — 6자리 규칙을 적용하지 않고, 중간에 원 단위로 끊는 횟수를 줄인다.
 def r1(x):  return D(x).quantize(D('0.1'), rounding=ROUND_HALF_UP)
 def r2(x):  return D(x).quantize(D('0.01'), rounding=ROUND_HALF_UP)
+def r6(x):
+    # 숫자형을 고정하지 않는다 — 원장은 Decimal, 시뮬 낱장(build_sim_static)은 float 로 같은
+    # 식(TY6_EXPR)을 쓴다. 들어온 형을 그대로 돌려줘야 뒤이은 `/ w` 에서 형이 섞이지 않는다.
+    v = D(x).quantize(D('0.000001'), rounding=ROUND_HALF_UP)
+    return float(v) if isinstance(x, float) else v
 def fl(x):  return int(D(x).quantize(D('1'), rounding=ROUND_FLOOR))
 def ri(x):  return int(D(x).quantize(D('1'), rounding=ROUND_HALF_UP))
-def ty_of(w): return r2(RPCT * DAYS / D(str(w)))
+def ty_raw(w): return r6(RPCT * DAYS / D(str(w)))   # ty수익율 — 계산에 쓰는 6자리 값
+def ty_of(w):  return r2(ty_raw(w))                 # 화면 표기 2자리. 인자 w 는 6자리 값이다
 def ymd(d): return d.strftime('%Y-%m-%d')
 
 
 # ══ ③④⑤⑥ 단일 원천 — 대표 정의서 [2번 이미지] 번호 ═══════════════
 #     ④ = PSMR x 365 / PSD
-#     ⑤ = (④ x PSA) / (PSA + PSC)
+#     ⑤ = PM x 365 / (Σ(Ai x Di) + PEC) = ④ x Σ(Ai x Di) / (Σ(Ai x Di) + PEC)
 #     ⑥ = (④ ÷ ③) x 365 ÷ ⑤
 #   화면(build_app.py) · 시뮬 낱장(build_sim_static.py) · 수익 낱장(roster16_model.ty_asset)
 #   · 내려받는 엑셀(build_xlsx.py) 이 전부 아래 함수를 거쳐 값을 받는다.
@@ -150,21 +166,24 @@ def ymd(d): return d.strftime('%Y-%m-%d')
 TY_PENDING = '미확정'          # 화면 배지에 쓰는 낱말. 새 문구를 짓지 않는다.
 
 # ── ⑤ 투자자산 대비 Ty수익율 ──────────────────────────────────────
-#   미확정 · 대표 재전달 대기. 2026-08-31 회의에서 ⑤ 는 「수식 오류, 새로 작성해 전달」로 닫혔다
-#   (meeting_0831/ceo_definitions_20260831.txt). 아래 식은 대표 정의서 [2번 이미지] 원문 그대로다 —
+#   미확정 · 대표 확인 대기. 2026-08-31 회의에서 대표 정의서 [2번 이미지] 원문
 #     「투자자산 대비 ty수익율 (이미지의 ⑤) = (이미지의 ④ x PSA) / (PSA + PSC)」
-#   새 수식이 오면 고칠 자리는 아래 TY5_EXPR 한 줄이다. 파이썬(ty_asset)과 화면(TY5_JS)이
+#   은 「수식 오류」로 닫혔다(meeting_0831/ceo_definitions_20260831.txt). 아래 식은 우리 확정안이다 —
+#     ⑤ = PM x 365 / (Σ(Ai x Di) + PEC) = ④ x Σ(Ai x Di) / (Σ(Ai x Di) + PEC)
+#   ④ = PM x 365 / PD 이고 PD = Σ(Ai x Di) / PA 라 PM x 365 = ④ x Σ(Ai x Di) 다. 분자 Σ(Ai x Di)
+#   는 PD 의 분자이며 일별 원장 행의 wx(=ad)를 기간만큼 더한 값이다(i 는 정산예정일이 P 안인 채권).
+#   고칠 자리는 아래 TY5_EXPR 한 줄이다. 파이썬(ty_asset)과 화면(TY5_JS)이
 #   그 한 줄을 같이 쓴다 — 두 벌로 갈릴 자리를 없애려고 식을 문자열로 둔다.
 #   식은 파이썬·자바스크립트 양쪽에서 같은 뜻으로 읽히는 꼴만 쓴다.
 TY5_STATUS = TY_PENDING
-TY5_SOURCE = 'ceo_definitions.md [2번 이미지] · 대표 재전달 대기'
+TY5_SOURCE = '⑤ = PM x 365 / (Σ(Ai x Di) + PEC) · 대표 확인 대기'
 
-TY5_EXPR = 'ty4 * psa / tot'      # ⑤ — 대표 재전달 대기. 새 산식이 오면 이 한 줄만 고친다.
+TY5_EXPR = 'ty4 * ad / tot'       # ⑤ — 대표 확인 대기. 산식을 바꿀 때 이 한 줄만 고친다.
 
 
-def ty_asset(ty4, psa, psc):
-    """⑤ = (④ x PSA) / (PSA + PSC).  PSA = 기간 투자실행금 합, PSC = 기간 EC 합."""
-    tot = psa + psc
+def ty_asset(ty4, ad, psc):
+    """⑤ = ④ x AD / (AD + PSC).  AD = 기간 Σ(Ai x Di) (PD 의 분자), PSC = 기간 EC 합."""
+    tot = ad + psc
     if not tot:
         return 0
     # Decimal 은 기본 28자리에서 끊긴다. 중간 곱을 넉넉히 잡아 PSC 가 0 일 때
@@ -193,10 +212,14 @@ def ty_third(execu):
 # ── ⑥ 행 Ty수익율 ────────────────────────────────────────────────
 #   행 하나 = 정산예정일이 그 날짜인 대상정산금채권 집합이다. 「그날」이 아니라 그 집합이다.
 #   ③·④·⑤ 를 일별 표 세 열(③투자실행금 ④투자 수익 ⑤W금융일수)로 읽는다 — 읽기 미확정.
-#   나온 값은 ⑤ 함수 ty_asset() 을 거친다. 일별 EC 원장이 없어 TY6_PSC 가 0 이고,
+#   나온 값은 ⑤ 함수 ty_asset() 을 거친다. ⑤ 의 AD 자리에는 그 행의 Σ(Ai x Di) = ③ x W 가 들어가고,
+#   PEC 자리에는 그 행 하루의 EC 가 들어간다. 일별 EC 원장이 없어 TY6_PSC 가 0 이고,
 #   0 인 동안 ⑥ 은 ④ 와 같은 값이다. ty_asset() 을 고치면 ⑥ 이 따라 움직인다.
 TY6_PSC = 0
-TY6_EXPR = 'ty5((profit / third * 100) * 365 / w, third, TY6_PSC)'   # ⑥ — 이 한 줄만 고친다
+#   MR(d-1) = M(d-1) / A(d-1) 도 비율이라 6자리에서 끊고 그 값을 다음 계산에 넣는다
+#   (dm_0901 규칙 1 · 2026-09-02 기획 지시로 MR·PMR 예외를 철회). r6 은 파이썬(daily_ledger)과
+#   화면(build_app.py:1262) 양쪽에 같은 이름으로 있어 식 한 줄이 두 곳에서 같은 뜻으로 읽힌다.
+TY6_EXPR = 'ty5(r6(profit / third * 100) * 365 / w, third * w, TY6_PSC)'   # ⑥ — 이 한 줄만 고친다
 
 # 식 한 줄이 파이썬·자바스크립트 양쪽에서 같은 뜻으로 읽히게 이름을 맞춘다.
 ty3 = ty_third
@@ -212,8 +235,9 @@ def ty_row(profit, execu, w):
 
 
 def day_ty_raw(profit, execu, w):
-    """일별 행 ty수익율 — 통합본 rollupBy·엑셀 bucket 과 같은 규칙(⑥)."""
-    return ty_row(D(profit), D(execu), D(str(w)))
+    """일별 행 ty수익율 — 통합본 rollupBy·엑셀 bucket 과 같은 규칙(⑥).
+    인자 w 는 6자리 값이고, 나온 값도 6자리에서 끊는다(dm_0901 규칙 1)."""
+    return r6(ty_row(D(profit), D(execu), D(str(w))))
 def day_ty(profit, execu, w): return r2(day_ty_raw(profit, execu, w))
 
 
@@ -221,7 +245,7 @@ def day_ty(profit, execu, w): return r2(day_ty_raw(profit, execu, w))
 #   build_app.py 가 @@TY3JS@@ · @@TY5JS@@ · @@TY6JS@@ 로 받아 app.html 에 그대로 넣는다.
 #   식 본문은 위 TY3_EXPR · TY5_EXPR · TY6_EXPR 그대로다 — 여기 두 번째 산식이 없다.
 TY3_JS = 'return ' + TY3_EXPR + ';'
-TY5_JS = 'var tot = psa + psc;\n  return tot ? ' + TY5_EXPR + ' : 0;'
+TY5_JS = 'var tot = ad + psc;\n  return tot ? ' + TY5_EXPR + ' : 0;'
 TY6_JS = ('var third = ty3(execu);\n'
           '  if(!(third && w)) return 0;\n'
           '  return ' + TY6_EXPR + ';')
@@ -326,10 +350,11 @@ def wavg(rows):
 
 
 W_RAW = wavg(RECEIVABLES)                        # w금융일수 — 대상정산금채권 전체 (발생 기준)
-W_BOOK = r2(W_RAW)
-# ty수익율은 화면 표기 W(소수 2자리)에서 낸다. 40.15 / 3.04 = 13.21 이라 화면 두 칸(W·할인율)
-# 으로 정확히 되짚어진다. 가맹점별 행도 같은 규칙이다(ty_of(x['w'])).
-TY_BOOK = ty_of(W_BOOK)
+W6 = r6(W_RAW)                                   # 계산에 쓰는 값 (dm_0901 규칙 1)
+W_BOOK = r2(W6)                                  # 화면 표기
+# ty수익율은 6자리 W 에서 낸다 — 40.15 / 3.039607 = 13.21.
+# 가맹점별 행도 같은 규칙이다(ty_of(x['w6'])).
+TY_BOOK = ty_of(W6)
 assert FLOOR <= W_RAW <= CEIL, 'w금융일수가 현실 범위 밖이다: %s' % W_RAW
 
 # ── 가맹점별 ────────────────────────────────────────────────────
@@ -353,13 +378,14 @@ for m in BOOKROWS:
         tier=m[7], tierName=TIER_NAME[m[7]], flow=m[8], b=m[9],
         mix=tuple(str(v.quantize(D('0.000001'))) for v in mix_of(m[9])),
         amount=sum(r['ai'] for r in myopen),
-        wraw=wavg(mine), w=r2(wavg(mine)),
+        wraw=wavg(mine), w6=r6(wavg(mine)), w=r2(r6(wavg(mine))),
         sraw=shortfall([r for r in _SAMPLE if r['mid'] == mid]),
         dayflow=sum(r['ai'] for r in mine) // len(ADV_DAYS)))
 MERCHANTS.sort(key=lambda x: -x['amount'])
 for x in MERCHANTS:
-    x['ty'] = ty_of(x['w'])
-    x['s'] = r2(x['sraw'])
+    x['ty'] = ty_of(x['w6'])
+    x['s6'] = r6(x['sraw'])
+    x['s'] = r2(x['s6'])
 assert sum(x['amount'] for x in MERCHANTS) == BOOK
 assert len(MERCHANTS) == len(BOOKROWS)
 
@@ -376,7 +402,7 @@ S_RAW = shortfall(_SAMPLE)
 def _daily():
     agg = {}
     for r in RECEIVABLES:
-        if not (FIRST_DUE <= r['due'] <= ASOF):
+        if not (FIRST_DUE <= r['due'] <= LAST_DUE):
             continue
         g = agg.setdefault(r['due'], dict(ai=0, net=0, wx=0, ded=0))
         g['ai'] += r['ai']; g['net'] += r['net']; g['wx'] += r['ai'] * r['di']
@@ -384,19 +410,26 @@ def _daily():
     out = []
     for d in sorted(agg):
         g = agg[d]
-        w = r2(D(g['wx']) / D(g['ai']))
+        w6 = r6(D(g['wx']) / D(g['ai']))    # 계산에 쓰는 값
+        w = r2(w6)                          # 화면 표기
         fee = fl(D(g['net']) * RATE)        # 채권매입수수료 = 순지급액 x 할인율 (D-31 앵커)
         # M(d-1)i = 채권매입수수료 - max(0, 미지급금 - 과지급금)  (대표 정의서 [2번 이미지])
-        # B(d-1)i = 순지급액       - max(0, 미지급금 - 과지급금)  = Ai + M(d-1)i
+        # B(d-1)i = 순지급액       - max(0, 미지급금 - 과지급금)
+        # 상환액은 순지급액에서 부족액을 한 번에 뺀다 — Ai + M(d-1)i 로 쪼개면 반올림(Ai)과
+        # 절사(채권매입수수료) 두 곳에서 원 단위로 끊겨 하루 최대 7원이 어긋난다(dm_0901 규칙 2).
         # 한 행 = 정산예정일이 그 날짜인 대상정산금채권 집합이다.
         p = fee - g['ded']
-        out.append(dict(d=ymd(d), repay=g['ai'] + p, exec=g['ai'], profit=p, w=w,
-                        fee=fee, ded=g['ded'], ty=day_ty(p, g['ai'], w)))
+        # wx = Σ (Ai x Di) — 끊지 않은 분자. 기간 PwD 를 채권 경로로 내는 재료다.
+        # PwD = Σ(Ai x Di) / PA 는 조회기간 안 채권 전부를 한 뭉치로 모아 한 번에 낸다.
+        # 날짜별 wx 를 더한 값이 곧 그 뭉치의 분자라 일자별 6자리 wD(d-1) 을 다시 가중하지 않는다.
+        # ad 는 같은 수다 — ⑤ 의 AD(기간 Σ(Ai x Di)) 를 화면·롤업이 이 이름으로 더한다.
+        out.append(dict(d=ymd(d), repay=g['net'] - g['ded'], exec=g['ai'], profit=p, w=w, w6=w6,
+                        wx=g['wx'], ad=g['wx'], fee=fee, ded=g['ded'], ty=day_ty(p, g['ai'], w6)))
     return out
 
 
 LEDGER = _daily()
-assert LEDGER[0]['d'] == ymd(FIRST_DUE) and LEDGER[-1]['d'] == ymd(ASOF)
+assert LEDGER[0]['d'] == ymd(FIRST_DUE) and LEDGER[-1]['d'] == ymd(LAST_DUE)
 assert all(FLOOR <= r['w'] <= CEIL for r in LEDGER)
 
 DAY_AVG = ri(D(sum(r['exec'] for r in LEDGER)) / D(len(LEDGER)))   # 하루 평균 투자실행금(유량)
@@ -405,14 +438,14 @@ DAY_AVG = ri(D(sum(r['exec'] for r in LEDGER)) / D(len(LEDGER)))   # 하루 평�
 # 화면 자바스크립트(Math.round·2진 부동소수)가 다른 값을 낸다. 예시 데이터가 그 자리에
 # 앉지 않게 막는다 — W 4.4일이 실제로 걸렸다(40.15/4.4 = 9.125).
 def _ty_safe(w):
-    return (D(str(ty_of(w))) - RPCT * DAYS / D(str(w))).copy_abs() != D('0.005')
+    return (D(str(ty_of(w))) - ty_raw(w)).copy_abs() != D('0.005')
 
 
-for _w in sorted({W_BOOK} | {x['w'] for x in MERCHANTS}):
+for _w in sorted({W6} | {x['w6'] for x in MERCHANTS}):
     assert _ty_safe(_w), 'ty 반올림 경계에 걸린 W금융일수: %s' % _w
 
 for _r in LEDGER:
-    _raw = day_ty_raw(_r['profit'], _r['exec'], _r['w'])
+    _raw = day_ty_raw(_r['profit'], _r['exec'], _r['w6'])
     assert (D(str(_r['ty'])) - _raw).copy_abs() != D('0.005'), \
         'ty 반올림 경계에 걸린 일자: %s (W %s)' % (_r['d'], _r['w'])
 
@@ -420,9 +453,11 @@ for _r in LEDGER:
 def js_array(indent='  '):
     out = []
     for r in LEDGER:
-        out.append("%s{d:'%s', repay:%d, exec:%d, profit:%d, w:%s, ty:%s}" %
+        # W 는 6자리 값을 싣는다 — 화면은 fx(r.w, 2) 로 2자리만 보이고 합계·롤업은 6자리로 센다.
+        # ad = 그 행의 Σ(Ai x Di) — ⑤ 의 AD 를 화면이 rows 의 ad 합으로 낸다.
+        out.append("%s{d:'%s', repay:%d, exec:%d, profit:%d, w:%s, ty:%s, ad:%d}" %
                    (indent, r['d'], r['repay'], r['exec'], r['profit'],
-                    format(r['w'], 'f'), format(r['ty'], 'f')))
+                    format(r['w6'], 'f'), format(r['ty'], 'f'), r['ad']))
     return ',\n'.join(out)
 
 
@@ -432,40 +467,48 @@ def month_rollup(rows):
         k = r['d'][:7]
         g = agg.setdefault(k, dict(d=k, repay=0, exec=0, profit=0, wx=D(0), n=0))
         g['repay'] += r['repay']; g['exec'] += r['exec']; g['profit'] += r['profit']
-        g['wx'] += r['w'] * D(r['exec']); g['n'] += 1
+        g['wx'] += D(r['wx']); g['n'] += 1
     out = []
     for k in sorted(agg):
         g = agg[k]
-        raw = g['wx'] / D(g['exec'])
-        # 달 행은 집계 행이다. ty = PSMR x 365 / PSD 를 반올림 전 가중평균에서 되짚는다 —
-        # 통합본 build_app.py 의 rollupBy·엑셀 build_xlsx.bucket 과 같은 규칙이다.
-        ty = r2((D(g['profit']) / D(g['exec']) * D(100)) * DAYS / raw)
+        # PwD = Σ(Ai x Di) / PA — 채권 경로. 달에 속한 채권을 한 뭉치로 모아 한 번에 낸다.
+        raw = r6(g['wx'] / D(g['exec']))
+        # 달 행은 집계 행이다. ty = PMR x 365 / PwD.
+        # PMR = PM / PA 도 6자리에서 끊고 그 값을 넣는다(dm_0901 규칙 1).
+        ty6v = r6(r6(D(g['profit']) / D(g['exec']) * D(100)) * DAYS / raw)
         out.append(dict(d=k, repay=g['repay'], exec=g['exec'], profit=g['profit'],
-                        w=r2(raw), wraw=raw, ty=ty, n=g['n']))
+                        w=r2(raw), w6=raw, wraw=raw, ty=r2(ty6v), ty6=ty6v, n=g['n'],
+                        ad=int(g['wx'])))
     return out
 
 
 def facts():
     """검증기가 읽는 원장 사실값 — 검증기에 숫자를 손으로 적지 않게 한다."""
-    wk = [r for r in LEDGER if '2026-08-21' <= r['d'] <= '2026-08-27']
+    wk = [r for r in LEDGER if WEEK[0] <= r['d'] <= WEEK[1]]
     # 기본 조회 기간(일주일) 집계 — 수익 화면 카드 4/5 와 표 합계 행이 여기서 나온다.
-    #   4 투자실행금액 대비 Ty = PSMR x 365 / PSD  (PSD = 투자실행금 가중평균 W, 반올림 전)
-    #   5 투자자산   대비 Ty = ty_asset() — PSC = 순현금 x 조회 일수(유량). 산식은 그 함수 한 곳이다
+    #   4 투자실행금액 대비 Ty = PMR x 365 / PwD
+    #   5 투자자산   대비 Ty = ty_asset() — AD = 기간 Σ(Ai x Di), PEC = 순현금 x 조회 일수(유량).
+    #     산식은 그 함수 한 곳이다
     # build_app.py 의 tyOfRows()·tyAssetOf() 와 같은 규칙이다. 검증기가 이 값을 손으로 적지 않게 한다.
     wk_ex = sum(r['exec'] for r in wk)
     wk_pf = sum(r['profit'] for r in wk)
-    wk_wraw = sum(r['w'] * D(r['exec']) for r in wk) / D(wk_ex)
-    wk_ty = (D(wk_pf) / D(wk_ex) * D(100)) * DAYS / wk_wraw
+    wk_ad = sum(r['ad'] for r in wk)
+    # 비율·일수는 한 단계마다 6자리에서 끊고 그 값을 다음 계산에 넣는다(dm_0901 규칙 1).
+    #   PwD = Σ(Ai x Di) / PA — 채권 경로. 기간 안 채권을 한 뭉치로 모아 중간에 끊지 않고 낸다.
+    #   PMR = PM / PA 도 6자리에서 끊는다 — 2026-09-02 기획 지시로 MR·PMR 예외를 철회했다.
+    wk_wraw = r6(D(wk_ad) / D(wk_ex))
+    wk_ty = r6(r6(D(wk_pf) / D(wk_ex) * D(100)) * DAYS / wk_wraw)
     wk_psc = D(CASH) * D(len(wk))
-    wk_ty5 = ty_asset(wk_ty, D(wk_ex), wk_psc)
-    # 월별 화면(기본 6개월 = 원장 전 구간)의 같은 집계. 일별 표와 달리 달 행의 W 는 달 안에서
-    # 다시 가중평균한 값이라 일별 행과 짝이 맞지 않는다 — 달 행은 month_rollup 값으로 대조한다.
+    wk_ty5 = r6(ty_asset(wk_ty, D(wk_ad), wk_psc))
+    # 월별 화면(기본 6개월 = 원장 전 구간)의 같은 집계. 달 행의 W 는 그 달 채권을 한 뭉치로
+    # 모아 낸 값이라 일별 행과 짝이 맞지 않는다 — 달 행은 month_rollup 값으로 대조한다.
     fu_ex = sum(r['exec'] for r in LEDGER)
     fu_pf = sum(r['profit'] for r in LEDGER)
-    fu_wraw = sum(r['w'] * D(r['exec']) for r in LEDGER) / D(fu_ex)
-    fu_ty = (D(fu_pf) / D(fu_ex) * D(100)) * DAYS / fu_wraw
+    fu_ad = sum(r['ad'] for r in LEDGER)
+    fu_wraw = r6(D(fu_ad) / D(fu_ex))
+    fu_ty = r6(r6(D(fu_pf) / D(fu_ex) * D(100)) * DAYS / fu_wraw)
     fu_psc = D(CASH) * D(len(LEDGER))
-    fu_ty5 = ty_asset(fu_ty, D(fu_ex), fu_psc)
+    fu_ty5 = r6(ty_asset(fu_ty, D(fu_ad), fu_psc))
     # 일별 표의 날짜 -> [W금융일수, Ty수익율, 투자실행금, 투자수익, 상환액, 채권매입수수료, 부족액 차감].
     #   W 하나에 Ty 하나로 접을 수 없다 — 투자수익에서 부족액(max(0, 미지급-과지급))을 빼면
     #   Ty 가 W 만의 함수가 아니게 된다(대표 정의서 [2번 이미지] M(d-1)i). 날짜로 잡는다.
@@ -473,12 +516,20 @@ def facts():
     #   행 단위로 맞춰 보게 한다.
     ty_by_date = dict((r['d'], [str(r['w']), str(r['ty']), r['exec'], r['profit'],
                                 r['repay'], r['fee'], r['ded']]) for r in LEDGER)
+    # 날짜 -> 6자리 W금융일수. tyByDate 의 첫 칸은 화면 표기 2자리라 그것을 다시 가중하면
+    # 원장과 갈린다 — 그 갈림을 허용치로 삼키면 ⑤ 가 한 눈금 밀려도 검증기가 통과한다
+    # (2026-09-02 교차검증). 임의 기간의 PSD·④·⑤ 를 원장에서 정확히 되짚게 6자리를 따로 싣는다.
+    # 화면(build_app.py js_array)이 DAILY 에 심는 값과 같은 수다.
+    w6_by_date = dict((r['d'], str(r['w6'])) for r in LEDGER)
     for r in LEDGER:
-        assert r['ty'] == day_ty(r['profit'], r['exec'], r['w']), r['d']
+        assert r['ty'] == day_ty(r['profit'], r['exec'], r['w6']), r['d']
     return dict(
+        # 기준일과 그 파생 — 소비처가 날짜를 손으로 적지 않게 한다(원천 ASOF 한 줄).
+        asof=ASOF_S, asofCompact=ASOF_C, lastDue=LAST_DUE.isoformat(),
+        weekFrom=WEEK[0], weekTo=WEEK[1],
         exec=EXEC, cash=CASH, total=EXEC + CASH,
-        wRaw=str(W_RAW.quantize(D('0.000001'))), w=str(W_BOOK), ty=str(TY_BOOK),
-        sRaw=str(S_RAW.quantize(D('0.000001'))), s=str(r2(S_RAW)),
+        wRaw=str(W6), w=str(W_BOOK), ty=str(TY_BOOK),
+        sRaw=str(r6(S_RAW)), s=str(r2(r6(S_RAW))),
         rate=str(RPCT), dayAvg=DAY_AVG, ledgerDays=len(LEDGER),
         ledgerSpan=[LEDGER[0]['d'], LEDGER[-1]['d']],
         receivables=len(RECEIVABLES), openReceivables=len(OPEN),
@@ -493,13 +544,22 @@ def facts():
         wBound=[str(FLOOR), str(CEIL)], diBound=[DI_MIN, DI_MAX],
         weekExec=sum(r['exec'] for r in wk), weekProfit=sum(r['profit'] for r in wk),
         weekRepay=sum(r['repay'] for r in wk), weekDays=len(wk),
-        weekW=str(r2(wk_wraw)), weekWRaw=str(wk_wraw.quantize(D('0.000001'))),
-        weekTy=str(r2(wk_ty)), weekPsc=int(wk_psc), weekTyAsset=str(r2(wk_ty5)),
-        tyByDate=ty_by_date,
+        weekW=str(r2(wk_wraw)), weekWRaw=str(wk_wraw),
+        weekTy=str(r2(wk_ty)), weekPsc=int(wk_psc), weekAD=int(wk_ad), weekTyAsset=str(r2(wk_ty5)),
+        # 6자리 값 — 문서가 저마다 다시 계산하면 PMR 을 끊는 단계가 빠져 갈린다.
+        # 원장이 낸 값 하나를 그대로 읽어 쓰게 여기서 내보낸다(dm_0901 규칙 1).
+        weekMR=str(r6(D(wk_pf) / D(wk_ex) * D(100))),
+        weekTyRaw=str(wk_ty), weekTyAssetRaw=str(wk_ty5),
+        tyByDate=ty_by_date, w6ByDate=w6_by_date,
         fullExec=fu_ex, fullProfit=fu_pf, fullW=str(r2(fu_wraw)),
-        fullTy=str(r2(fu_ty)), fullPsc=int(fu_psc), fullTyAsset=str(r2(fu_ty5)),
+        fullTy=str(r2(fu_ty)), fullPsc=int(fu_psc), fullAD=int(fu_ad), fullTyAsset=str(r2(fu_ty5)),
+        fullMR=str(r6(D(fu_pf) / D(fu_ex) * D(100))),
+        fullTyRaw=str(fu_ty), fullTyAssetRaw=str(fu_ty5),
         monthTy=[[g['d'], str(g['w']), str(g['ty'])] for g in month_rollup(LEDGER)],
         monthExec=[[g['d'], g['exec']] for g in month_rollup(LEDGER)],
+        # 달별 Σ(Ai x Di) — 월별·주별 롤업이 ⑤ 의 AD 를 행의 ad 합으로 낸다. 날짜별 값은 adByDate.
+        monthAD=[[g['d'], g['ad']] for g in month_rollup(LEDGER)],
+        adByDate=dict((r['d'], r['ad']) for r in LEDGER),
         merchants=[[x['name'], x['amount'], str(x['w']), str(x['s']), str(x['ty']), x['tierName'],
                     x['flow']] for x in MERCHANTS])
 
@@ -538,7 +598,7 @@ if __name__ == '__main__':
           % (f(sum(r['fee'] for r in LEDGER)), f(sum(r['ded'] for r in LEDGER)),
              (D(sum(r['ded'] for r in LEDGER)) / D(sum(r['fee'] for r in LEDGER)) * 100).quantize(D('0.01')),
              f(sum(r['profit'] for r in LEDGER))))
-    wk = [r for r in LEDGER if '2026-08-21' <= r['d'] <= '2026-08-27']
+    wk = [r for r in LEDGER if WEEK[0] <= r['d'] <= WEEK[1]]
     print('  기본 일주일 실행 %s · 수익 %s · %d건'
           % (f(sum(x['exec'] for x in wk)), f(sum(x['profit'] for x in wk)), len(wk)))
     print('  일자 투자실행금 %s ~ %s · W %s ~ %s'

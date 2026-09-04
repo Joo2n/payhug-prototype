@@ -1,0 +1,229 @@
+<title>대표 수정 검토</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FBFAF8; --paper:#FFF; --sunk:#F4F1EC;
+  --ink:#1C1B19; --mute:#6E6A63;
+  --rule:#E3DFD8; --rule-hard:#CFC8BC;
+  --ok:#2F6B4F; --ok-bg:#2F6B4F14;
+  --no:#A63D2F; --no-bg:#A63D2F14;
+  --ask:#8A5A12; --ask-bg:#8A5A1214;
+  --pick:#2C4470; --pick-bg:#2C447012;
+  --shadow:0 1px 2px #1c1b1910, 0 10px 28px #1c1b190a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#15161A; --paper:#1C1E23; --sunk:#22252B;
+  --ink:#ECE9E4; --mute:#9C978E;
+  --rule:#2C3038; --rule-hard:#3B404A;
+  --ok:#6FBF93; --ok-bg:#6FBF9320; --no:#E08573; --no-bg:#E0857320;
+  --ask:#E0B26A; --ask-bg:#E0B26A20;
+  --pick:#93AEE0; --pick-bg:#93AEE01C;
+  --shadow:0 1px 2px #00000050, 0 10px 28px #00000038;
+}}
+:root[data-theme="dark"]{
+  --bg:#15161A; --paper:#1C1E23; --sunk:#22252B;
+  --ink:#ECE9E4; --mute:#9C978E;
+  --rule:#2C3038; --rule-hard:#3B404A;
+  --ok:#6FBF93; --ok-bg:#6FBF9320; --no:#E08573; --no-bg:#E0857320;
+  --ask:#E0B26A; --ask-bg:#E0B26A20;
+  --pick:#93AEE0; --pick-bg:#93AEE01C;
+  --shadow:0 1px 2px #00000050, 0 10px 28px #00000038;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+  font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 20px 100px}
+code,.sym{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+h1{font-family:"Noto Serif KR",serif;font-size:30px;font-weight:700;letter-spacing:-.02em;margin:0 0 26px}
+h2{font-family:"Noto Serif KR",serif;font-size:20px;font-weight:700;margin:44px 0 10px;padding-top:22px;border-top:2px solid var(--rule-hard)}
+h3{font-size:14px;font-weight:700;margin:26px 0 8px}
+p{margin:0 0 12px}
+.scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;margin:12px 0;background:var(--paper);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+th{background:var(--sunk);font-size:11px;font-weight:700;color:var(--mute);letter-spacing:.05em;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.n{font-family:"IBM Plex Mono",monospace;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.f{font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.65}
+tbody tr:hover{background:var(--sunk)}
+.sym{background:var(--sunk);border:1px solid var(--rule);border-radius:4px;padding:1px 6px;font-size:12px;white-space:nowrap;display:inline-block}
+.pill{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.p-ok{background:var(--ok-bg);color:var(--ok)}
+.p-no{background:var(--no-bg);color:var(--no)}
+.p-ask{background:var(--ask-bg);color:var(--ask)}
+.del{color:var(--no);text-decoration:line-through;opacity:.8}
+.ins{color:var(--pick);font-weight:600}
+.formula{background:var(--sunk);border-radius:8px;padding:12px 15px;margin:10px 0;font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.85;white-space:pre-wrap;overflow-x:auto;border-left:3px solid var(--rule-hard)}
+.formula .ok{color:var(--ok);font-weight:600}
+.formula .hi{color:var(--no);font-weight:600}
+sub{font-size:.72em}
+.note{font-size:12.5px;color:var(--mute);margin:8px 0 0}
+</style>
+
+<div class="wrap">
+
+<h1>대표 수정 검토</h1>
+
+<h2>대표님이 고치신 자리 13곳</h2>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:5%">#</th><th style="width:14%">자리</th><th style="width:26%">우리 표기</th><th style="width:30%">대표님 수정</th><th style="width:8%">판정</th><th>근거</th></tr></thead>
+<tbody>
+<tr><td class="n">1</td><td>첨자 <span class="sym">r</span> 의미</td>
+    <td>예상 <span class="del">연환산</span>수익률을 나타낼 때 쓴다</td>
+    <td>예상 수익률을 나타낼 때 쓴다<br><span class="ins">Y<sub>r</sub>는 연환산예상수익율을 의미. (Y는 연환산을 의미하기 때문)</span></td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>Y 가 이미 연환산을 뜻하니 첨자 설명에서 중복을 뺀 것</td></tr>
+<tr><td class="n">2</td><td>첨자 <span class="sym">a</span> 의미</td>
+    <td>투자실행금 기준 <span class="del">연환산수익률</span>을 나타낼 때 쓴다</td>
+    <td>투자실행금 기준 <span class="ins">관찰된 값</span>을 나타낼 때 쓴다<br><span class="ins">PY<sub>a</sub>는 표본에서 관찰된 투자실행금 기준 연환산수익율을 의미. (P는 표본으로 선택된 기간을 의미하고, Y는 연환산을 의미하기 때문)</span></td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>「관찰된」= 실적. 예상(<span class="sym">r</span>)과 갈린다</td></tr>
+<tr><td class="n">3</td><td>첨자 <span class="sym">t</span> 의미</td>
+    <td>투자자산 기준 <span class="del">연환산수익률</span>을 나타낼 때 쓴다</td>
+    <td>투자자산 기준 <span class="ins">관찰된 값</span>을 나타낼 때 쓴다<br><span class="ins">PY<sub>t</sub>는 표본에서 관찰된 투자자산 기준 연환산수익율을 의미. (같은 까닭)</span></td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>2번과 같은 꼴</td></tr>
+<tr><td class="n">4</td><td><span class="sym">r</span> 용어 이름</td>
+    <td><span class="del">유동화투자자의</span> 할인율</td>
+    <td><span class="ins">계약된</span> 할인율</td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>뜻이 같다. 원문 11행은 「유동화투자자의 할인율」</td></tr>
+<tr><td class="n">5</td><td><span class="sym">L</span> 용어 이름</td>
+    <td>입금부족</td>
+    <td>입금부족<span class="ins">액</span></td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>낱건 <span class="sym">L<sub>i</sub></span> 가 「입금부족액」이라 개념도 같은 이름</td></tr>
+<tr><td class="n">6</td><td><span class="sym">Y</span> 용어 이름</td>
+    <td>연환산<span class="del">수익률</span></td>
+    <td>연환산<br><span class="ins">접두어로 이동 필요</span></td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td><span class="sym">Y</span> 는 값이 아니라 「연환산한다」는 표시. <span class="sym">P</span> 처럼 접두어 자리로 옮기라는 뜻. 이미 <span class="sym">PY<sub>a</sub></span> 에서 앞에 서 있다</td></tr>
+<tr><td class="n">7</td><td><span class="sym">Σ A<sub>i</sub></span> 용어 이름</td>
+    <td>투자 실행액</td>
+    <td><span class="ins">조회대상기간 중</span> 투자 실행액 <span class="ins">누계</span></td>
+    <td><span class="pill p-no">틀림</span></td>
+    <td>이 칸은 투자 자산 화면의 값이다. 조회기간이 없고 기준일 하나로 거른다. 「조회대상기간 중 누계」는 <span class="sym">PA</span> 의 뜻이다</td></tr>
+<tr><td class="n">8</td><td><span class="sym">EC</span> 산식</td>
+    <td><span class="del">d 시점</span> 쿠콘 가상계좌의 현금 잔액</td>
+    <td><span class="ins">조회대상기간에 속하는 각 일자의 마감</span>시점 쿠콘 가상계좌의 현금 잔액</td>
+    <td><span class="pill p-ask">반</span></td>
+    <td>「마감시점」은 원문 45행 그대로라 맞다. 「조회대상기간 각 일자」는 <span class="sym">PEC</span> 의 뜻이다. 투자 자산 화면의 <span class="sym">EC</span> 는 기준일 하루치다</td></tr>
+<tr><td class="n">9</td><td><span class="sym">Σ A<sub>i</sub> + EC</span> 산식</td>
+    <td>i 는 정산예정일이 d 보다 뒤인 채권</td>
+    <td>i 는 정산예정일이 d 보다 뒤인 <span class="ins">대상정산금</span>채권</td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>원문 16행 낱말</td></tr>
+<tr><td class="n">10</td><td><span class="sym">D</span> 산식</td>
+    <td>i 는 대상정산금채권 전체</td>
+    <td>i 는 <span class="ins">표본에 속하는</span> 대상정산금채권 전체</td>
+    <td><span class="pill p-ask">확인</span></td>
+    <td>「표본」이 무엇이냐에 따라 값이 바뀐다. 아래 표</td></tr>
+<tr><td class="n">11</td><td><span class="sym">PA</span> 산식</td>
+    <td><span class="del">i 는 정산예정일이 P 안에 든 채권</span></td>
+    <td><span class="ins">i ∈ P</span></td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>줄여 쓴 것. 뜻 같다</td></tr>
+<tr><td class="n">12</td><td><span class="sym">PM</span> <span class="sym">PB</span> 산식</td>
+    <td>i ∈ P</td>
+    <td>i ∈ P <span class="ins">i ∈ P</span></td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>같은 표기가 겹쳐 들어간 것. 하나만 남기면 된다</td></tr>
+<tr><td class="n">13</td><td>변경내역 제목</td>
+    <td>연환산수익률 기호 변경</td>
+    <td><span class="ins">관찰된</span> 연환산수익률 기호 변경</td>
+    <td><span class="pill p-ok">맞음</span></td>
+    <td>2·3번과 맞춘 것</td></tr>
+</tbody></table></div>
+
+<h2>대표님께 되물을 것 셋</h2>
+
+<h3>7번 · Σ A<sub>i</sub> 는 조회기간 누계가 아니다</h3>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:18%">기호</th><th style="width:22%">화면</th><th style="width:30%">거르는 것</th><th class="n">값</th></tr></thead>
+<tbody>
+<tr><td><span class="sym">Σ A<sub>i</sub></span></td><td>투자 자산</td><td class="f">정산예정일 &gt; 기준일 d</td><td class="n">80,000,000</td></tr>
+<tr><td><span class="sym">PA</span></td><td>투자 수익</td><td class="f">정산예정일 ∈ 조회기간 P</td><td class="n">179,916,643</td></tr>
+</tbody></table></div>
+
+<p>두 값은 겹치는 채권이 없다. 앞은 정산예정일 08-28 이후 2,240건, 뒤는 08-20 ~ 08-26 인 2,240건이다.
+건수가 같은 것은 우연이다. 대표님이 적으신 「조회대상기간 중 누계」는 아랫줄 <span class="sym">PA</span> 의 뜻이다.</p>
+
+<h3>8번 · EC 와 PEC 가 한 칸에 섞였다</h3>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:18%">기호</th><th style="width:40%">뜻</th><th class="n">값</th><th>원문</th></tr></thead>
+<tbody>
+<tr><td><span class="sym">EC</span></td><td>기준일 마감시점(자정) 잔액. 하루치 하나</td><td class="n">20,000,000</td><td class="f">45행</td></tr>
+<tr><td><span class="sym">PEC</span></td><td>조회기간 각 날의 EC 를 더한 값</td><td class="n">140,000,000</td><td class="f">55행 PSC = 위 선택한 기간의 EC들의 합</td></tr>
+</tbody></table></div>
+
+<p>대표님이 <span class="sym">EC</span> 칸에 「조회대상기간에 속하는 각 일자의」라고 쓰신 것은 <span class="sym">PEC</span> 를 정의하신 셈이다.
+「마감시점」만 <span class="sym">EC</span> 에 남기고 「각 일자」는 <span class="sym">PEC</span> 로 보내면 된다.</p>
+
+<h3>10번 · D 의 「표본」이 무엇인가</h3>
+
+<p>대표님 워드 안에서 「표본」이 두 자리에 나온다.</p>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:26%">어디</th><th>대표님이 쓰신 말</th></tr></thead>
+<tbody>
+<tr><td>첨자 <span class="sym">a</span> 설명</td><td class="f">P는 표본으로 선택된 기간</td></tr>
+<tr><td>원문 22행</td><td class="f">표본집합: 선정산일이 D-20부터 D-11인 기간에 속하는 대상정산금채권들의 집합</td></tr>
+</tbody></table></div>
+
+<p>어느 쪽이냐에 따라 투자 자산 화면의 W금융일수와 Ty수익율이 바뀐다.</p>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:40%">D 를 어느 채권으로 내나</th><th class="n" style="width:12%">건수</th><th class="n" style="width:14%">D</th><th class="n">Y<sub>r</sub></th></tr></thead>
+<tbody>
+<tr><td>대상정산금채권 전체 &nbsp;<span class="pill p-ok">지금 화면</span></td><td class="n">61,760</td><td class="n">3.039607</td><td class="n">13.21%</td></tr>
+<tr><td>원문 22행 표본집합 · 선정산일 d−20 ~ d−11</td><td class="n">3,200</td><td class="n">3.075487</td><td class="n">13.05%</td></tr>
+<tr><td>조회기간 P 안 · 정산예정일 08-20 ~ 08-26</td><td class="n">2,240</td><td class="n">3.093802</td><td class="n">12.98%</td></tr>
+</tbody></table></div>
+
+<p class="note">투자 자산 화면에는 조회기간 칸이 없다. 「표본」이 조회기간 P 를 뜻한다면 그 화면에서는 정할 수 없는 값이 된다.
+원문 13행은 w금융일수를 Σ Ai × Di / Σ Ai 로만 적고 모집단 조건이 없다.</p>
+
+<h2>PEC 가 왜 순현금 × 일수인가</h2>
+
+<p><span class="sym">EC</span> 는 날짜마다 하나씩 있는 값이다. 원문이 그렇게 적었고 대표님 수정 8번도 같은 말을 한다.</p>
+
+<div class="formula">원문 32행   매일 자정일 지나면, 배치 작업으로 … <span class="ok">평균순현금</span> 산출해 DB 업데이트
+원문 45행   전일자(D-1) 순현금 (EC) = 전일자 <span class="ok">마감시점(자정)</span> 현재 … 현금 잔액
+원문 55행   PSC = 위 선택한 기간의 <span class="ok">EC들의 합</span></div>
+
+<div class="formula">PEC = EC<sub>08-20</sub> + EC<sub>08-21</sub> + EC<sub>08-22</sub> + EC<sub>08-23</sub> + EC<sub>08-24</sub> + EC<sub>08-25</sub> + EC<sub>08-26</sub>
+    = 20,000,000 × 7 = 140,000,000        예시 원장은 잔액이 매일 같다고 두었다</div>
+
+<p>「그냥 순현금」은 <span class="sym">EC</span> 하나다. <span class="sym">PEC</span> 는 그것을 조회기간만큼 더한 것이다.
+실제 서비스에서는 날마다 잔액이 달라 곱셈이 아니라 덧셈이 된다.</p>
+
+<h2>Σ 가 어디에 있나</h2>
+
+<p>④와 ⑤ 둘 다 Σ 가 있다. 재료를 만드는 줄에만 있고 산식 줄에는 이름으로 감춰져 있다.</p>
+
+<div class="formula">재료  PA  = Σ A<sub>i</sub>              i ∈ P          179,916,643
+      PM  = Σ M<sub>i</sub>              i ∈ P               62,977
+      PD  = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ PA   i ∈ P             3.093802
+      PEC = Σ EC<sub>d</sub>             d ∈ P          140,000,000
+
+④    PY<sub>a</sub> = ( PM ÷ PA × 100 ) × 365 ÷ PD                   4.129577%
+⑤    PY<sub>t</sub> = PY<sub>a</sub> × PA ÷ ( PA + PEC )                  2.322416%</div>
+
+<p>⑤ 줄에서 채권 2,240건은 이미 <span class="sym">PA</span> 하나로 뭉쳐 있다.
+「이 채권 대 순현금」을 2,240번 하는 것이 아니라, 채권 덩어리 대 현금 덩어리를 한 번 나눈다.</p>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:24%">어떻게 아나</th><th style="width:36%">배치가 매일 DB 에 적는 것</th><th>조회 때 하는 것</th></tr></thead>
+<tbody>
+<tr><td><span class="sym">PA</span></td><td class="f">그 날 도래한 채권의 투자실행금 합 (원문 32행 SAD-1)</td><td>조회기간 7일치를 더한다 (원문 47행)</td></tr>
+<tr><td><span class="sym">PEC</span></td><td class="f">그 날 자정 계좌 잔액 (원문 45행 EC)</td><td>조회기간 7일치를 더한다 (원문 55행)</td></tr>
+</tbody></table></div>
+
+<p class="note">순현금은 「채권을 다 더하고 남은 나머지」가 아니다. 채권과 별개로 계좌에서 읽는 값이다.
+두 값이 서로 반대로 움직이는 것은 채권이 만기되면 현금으로 들어오기 때문이지, 한쪽을 다른 쪽에서 빼서가 아니다.</p>
+
+</div>
