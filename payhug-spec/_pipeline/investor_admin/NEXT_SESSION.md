@@ -49,6 +49,7 @@
 | 11 | **Figma 상호작용 프레임 추가** — 메뉴·드롭다운·토글을 눌렀을 때 상태 (사용자 요청 2026-09-04). 후보·캡처 방법은 `session_0904/survey/step8_interaction_map.md` | `_fig/` 상태 주입 → `run_import_0828.sh` | 실물 프론트에 없는 상호작용은 만들지 않는다 |
 | 12 | 통합본 `app.html` 의 `BASE_DATE`(08-26) 와 기준일(08-27) 갈림 — `#xls-profit-status` 직접 진입 시 기간 라벨·다운로드 잠김 | `build_app.py:1285·1940` | QA `session_0904/reports/` 참고. 통합본 전용 |
 | 13 | 툴팁 ④ 「항등식」「부족액 0」 라벨이 낱자로 꺾임 (앞 라운드부터) | `assets/base.css` `.tip-row` 첫 span 규칙은 넣었음. 문안 길이 조정 | 가독 |
+| 14 | ④ 툴팁 「대표 DM 16:45」 행 값이 「실적치 · SMR 계통」에서 「관찰된 값 · PMR 계통」으로 바뀜 (라벨 교체 때). DM 원문은 「예상치 / 실제 결과치 smr」이라 직접 인용은 아니나 대표 말 요약 행이므로 되돌릴지 확인 | `build_app.py` ④ 툴팁 · `sync_profit_static.py` `TIP4` | `session_0904/reports/xcheck_A.md` 4번 |
 
 ## 재개 명령
 

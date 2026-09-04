@@ -3,7 +3,7 @@
  "page_node_id": "3066:328",
  "page_name": "[투자자 어드민] 제안서 첨부용",
  "source_repo": "/Users/semi/cursor/payhug-investor-admin",
- "source_commit": "1693bd351b7e5174f5c589f871660fd0260b5a71",
+ "source_commit": "b4f41b3",
  "source_commit_short": "1693bd3",
  "prev_source_commit": "1f5c6a4",
  "staging_copy": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/_fig",
@@ -502,7 +502,7 @@
   "3189:16460",
   "3189:16726"
  ],
- "source_commit_note": "캡처 기준 = 1693bd3 + 워킹트리(2026-09-04). 교체 9화면 라벨은 가중평균 금융일수·입금부족률·예상 연환산수익률·연환산수익률이고, 03 투자 수익 ⑤(투자자산 대비)는 3.30% · 미확정 뱃지. 툴팁 앵커(점선 밑줄)는 투자 자산 계열 가중평균 금융일수·입금부족률, 투자 수익 계열 투자실행금액 대비·투자자산 대비·투자실행금·연환산수익률. 예시 데이터는 1억 규모·금액 가중 기준 — 투자자산 100,000,000 · 투자실행액 80,000,000 · 순현금 20,000,000 · 비중 80.0/20.0 · 로스터 8곳 · 가중평균 금융일수 3.04일 · 예상 연환산수익률 13.21% · 입금부족률 0.07%",
+ "source_commit_note": "payhug-investor-admin main b4f41b3 (2026-09-04). 교체 9프레임은 이 커밋과 같은 워킹트리에서 캡처",
  "head_at_completion": "1693bd3 (워킹트리 미커밋 변경 있음)",
  "source_commit_state": "워킹트리 미커밋 변경 포함. 교체 9화면(invest-assets 4종·certificate·invest-profit 4종)은 HEAD 1693bd3 대비 워킹트리에서 수정된 상태(9 files · +147/−147)이며 프레임은 그 워킹트리 사본을 담는다. 나머지 15화면과 assets/base.css·sheet.css·logo-icon.png·template.html 은 워킹트리·1f5c6a4..1693bd3 모두 diff 0"
 }
