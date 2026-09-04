@@ -16,7 +16,7 @@
 | 화면 라벨 | 입금부족률 · 가중평균 금융일수 · 예상 연환산수익률(투자 자산) · 연환산수익률(투자 수익) | `reports/step5_builder_report.md` |
 | 툴팁 | ④⑤ 툴팁의 기호마다 용어명·값. ⑤ 툴팁 「미확정 · 대표 확인 대기」 배지 유지 | `reports/step6_tooltip_report.md`·`step7_ty5_report.md` |
 | 시연본 범위 | 사이드바 7메뉴 · 화면 9 · 상태 17. 시뮬레이션·엑셀 미리보기·화면 갤러리는 통합본 전용 | `scripts/sync_prototype.py` `drop_sim()`·`drop_xls_preview()` · `gate_prototype.js` |
-| Figma 3066:328 | 직계 24프레임. 쿠콘·시뮬 2·엑셀 서식 4·로그인 은 만들지 않는다. **24프레임 사이드바에서 「투자 시뮬레이션」 항목 삭제** (스테이징은 `prep_fig.py` `patch_nav()`) | `figma_map_investor.json` `frames`·`retired`·`verification` · `prep_fig.py` IMPORT 24 · `session_0904/qa/figma_nav/` 24장 |
+| Figma 3066:328 | 직계 **37프레임** = 화면 24 + 상태 13(메뉴 그룹 접힘·기간 역전 오류·정산채권 행 선택·서명 후·비밀번호 입력 완료·툴팁 열림 8). 쿠콘·시뮬 2·엑셀 서식 4·로그인 은 만들지 않는다. 사이드바에서 「투자 시뮬레이션」 항목 삭제 (스테이징은 `prep_fig.py` `patch_nav()`, 상태 동결은 `freeze_app.js`·`prep_fig.py freeze`) | `figma_map_investor.json` `frames` 37·`state_frames`·`retired`·`verification` · `prep_fig.py` IMPORT 37 · `session_0904/qa/figma_nav/` 24장 · `qa/figma_states/` 13장 |
 | 로그인 | 기존 어드민 프론트 `app/login/page.tsx` 그대로 | `reports/step7_login_report.md` |
 | 대표님 수정 13곳 | 채택 11 · 유지 2 (7번 Σ A_i 「조회대상기간 누계」는 PA 의 뜻 · 10번 D 「표본」은 확인) | `survey/step1_apply_map.md` |
 
@@ -30,7 +30,8 @@
 | 원고 | `final_terms.json` (⑤·PD·개념 6행 새 산식) · 검사기 `verify_final_terms.py` 137건 |
 | 원장 | `daily_ledger.py` `TY5_EXPR = 'ty4 * ad / tot'` · `ledger_facts.json` |
 | 배포 | 전체본 https://payhug-investor-demo.vercel.app/ (`Joo2n/payhug-investor-admin` main `b4f41b3`) · 시연본 https://payhug-investor-prototype.vercel.app/ (`Joo2n/payhug-investor-prototype` main `75bc47b`). 배포 실물 교차검증 `session_0904/reports/xcheck_A.md`·`xcheck_B.md` |
-| 세션 보고서 | `session_0904/reports/` (빌더·검사기·QA·지시 이행·문서 검토) · 조사 `session_0904/survey/` · 검증 `session_0904/verify/` · 캡처 `session_0904/qa/` |
+| 세션 보고서 | `session_0904/reports/` (빌더·검사기·QA·지시 이행·문서 검토·교차검증 A/B) · 조사 `session_0904/survey/` · 검증 `session_0904/verify/` · 캡처 `session_0904/qa/` |
+| 지라 PAYHUG-229 9/4 기록 (붙여넣기용) | `~/Downloads/payhug_용어정의서/PAYHUG-229_진행상황_20260904.html` · 사본 `session_0904/reports/`. 대표님 DM 9/4 21:50(⑤ 산식 문제)·기획 채널 23:01(1차 최종 공유) 반영 |
 
 ## 남은 작업 (우선순위)
 
@@ -46,7 +47,7 @@
 | 8 | 순현금 EC 상수(2천만) 대 날짜별 합 — 원문 45·55행은 날짜별 | `daily_ledger.py:62 CASH` | 날짜별 역산 표 `survey/step0_ty5_impact.md` |
 | 9 | `archive.html` 재생성 (`login.html` 행 옛 크기·시각) | `build_archive.py` | 전 파일 행이 바뀌므로 따로 |
 | 10 | 시뮬레이션 화면(통합본 전용)의 ⑤ 툴팁·값은 이미 새 산식. 시뮬 종료일 결정은 6번과 함께 | | |
-| 11 | **Figma 상호작용 프레임 추가** — 메뉴·드롭다운·토글을 눌렀을 때 상태 (사용자 요청 2026-09-04). 후보·캡처 방법은 `session_0904/survey/step8_interaction_map.md` | `_fig/` 상태 주입 → `run_import_0828.sh` | 실물 프론트에 없는 상호작용은 만들지 않는다 |
+| 11 | Figma 상태 프레임 13 은 추가됨. **03-e 「기간 역전 오류」 확인** — 통합본은 역전 범위에서 결과 0건이 되어 「결과 없음」 배지·빈 표가 같이 찍힘(실물은 직전 결과 유지). 선택 19(프리셋·직접입력·비밀번호 표시 등)는 미추가 | `session_0904/survey/step8_interaction_map.md` · `reports/step8_frames_report.md` | 실물 프론트에 없는 상호작용(드롭다운 열림·달력·프로필 메뉴)은 만들지 않는다 |
 | 12 | 통합본 `app.html` 의 `BASE_DATE`(08-26) 와 기준일(08-27) 갈림 — `#xls-profit-status` 직접 진입 시 기간 라벨·다운로드 잠김 | `build_app.py:1285·1940` | QA `session_0904/reports/` 참고. 통합본 전용 |
 | 13 | 툴팁 ④ 「항등식」「부족액 0」 라벨이 낱자로 꺾임 (앞 라운드부터) | `assets/base.css` `.tip-row` 첫 span 규칙은 넣었음. 문안 길이 조정 | 가독 |
 | 14 | ④ 툴팁 「대표 DM 16:45」 행 값이 「실적치 · SMR 계통」에서 「관찰된 값 · PMR 계통」으로 바뀜 (라벨 교체 때). DM 원문은 「예상치 / 실제 결과치 smr」이라 직접 인용은 아니나 대표 말 요약 행이므로 되돌릴지 확인 | `build_app.py` ④ 툴팁 · `sync_profit_static.py` `TIP4` | `session_0904/reports/xcheck_A.md` 4번 |
@@ -59,7 +60,7 @@ python3 daily_ledger.py            # 원장 → ledger_facts.json
 python3 build_app.py               # 통합본 app.html
 python3 sync_assets_static.py && python3 sync_profit_static.py && python3 build_sim_static.py
 python3 build_xlsx.py && python3 build_audit_xlsx.py && python3 build_docs.py
-python3 prep_fig.py sync           # Figma 용 사본 (IMPORT 24)
+python3 prep_fig.py sync           # Figma 용 사본 (IMPORT 37 = 화면 24 + 상태 13, 상태는 prep_fig.py freeze 로 동결)
 python3 verify_final_terms.py      # 원고 검사기
 bash sync_prototype.sh --dry-run   # 시연본 변환·게이트 (push 없이)
 bash sync_prototype.sh             # 시연본 push (Joo2n/payhug-investor-prototype)

@@ -8,11 +8,11 @@
  "invest-profit.html": {
   "ins": [
    {
-    "w": 154.0,
+    "w": 148.0,
     "h": 40.0
    },
    {
-    "w": 154.0,
+    "w": 148.0,
     "h": 40.0
    }
   ]
@@ -158,6 +158,103 @@
   ]
  },
  "invest-profit--weekly.html": {
+  "ins": [
+   {
+    "w": 148.0,
+    "h": 40.0
+   },
+   {
+    "w": 148.0,
+    "h": 40.0
+   }
+  ]
+ },
+ "invest-assets--nav-collapsed.html": {
+  "ins": []
+ },
+ "invest-profit--range-error.html": {
+  "ins": [
+   {
+    "w": 148.0,
+    "h": 40.0
+   },
+   {
+    "w": 148.0,
+    "h": 40.0
+   }
+  ]
+ },
+ "acquisition--selected.html": {
+  "ins": []
+ },
+ "acquisition--after-sign.html": {
+  "ins": []
+ },
+ "password--valid.html": {
+  "ins": [
+   {
+    "w": 366.0,
+    "h": 24.0
+   },
+   {
+    "w": 366.0,
+    "h": 24.0
+   },
+   {
+    "w": 366.0,
+    "h": 24.0
+   }
+  ]
+ },
+ "invest-assets--tip-wavg.html": {
+  "ins": []
+ },
+ "invest-assets--tip-shortfall.html": {
+  "ins": []
+ },
+ "invest-assets--tip-exec.html": {
+  "ins": []
+ },
+ "invest-assets--tip-yield.html": {
+  "ins": []
+ },
+ "invest-profit--tip-py-exec.html": {
+  "ins": [
+   {
+    "w": 148.0,
+    "h": 40.0
+   },
+   {
+    "w": 148.0,
+    "h": 40.0
+   }
+  ]
+ },
+ "invest-profit--tip-py-asset.html": {
+  "ins": [
+   {
+    "w": 148.0,
+    "h": 40.0
+   },
+   {
+    "w": 148.0,
+    "h": 40.0
+   }
+  ]
+ },
+ "invest-profit--tip-exec.html": {
+  "ins": [
+   {
+    "w": 148.0,
+    "h": 40.0
+   },
+   {
+    "w": 148.0,
+    "h": 40.0
+   }
+  ]
+ },
+ "invest-profit--tip-yield.html": {
   "ins": [
    {
     "w": 148.0,

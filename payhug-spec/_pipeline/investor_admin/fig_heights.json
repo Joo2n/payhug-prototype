@@ -1,122 +1,195 @@
 {
  "invest-assets": {
   "content": 1316,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1316
  },
  "certificate": {
   "content": 1168,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1168
  },
  "invest-profit": {
   "content": 1272,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1272
  },
  "merchants": {
   "content": 770,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 770
  },
  "acquisition": {
   "content": 653,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 653
  },
  "acquisition--doc": {
   "content": 653,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 653
  },
  "contracts": {
   "content": 730,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 730
  },
  "password": {
   "content": 629,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 629
  },
  "invest-assets--download": {
   "content": 1317,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1317
  },
  "invest-assets--cert-confirm": {
   "content": 1317,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1317
  },
  "invest-assets--empty": {
   "content": 1059,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1059
  },
  "invest-profit--monthly": {
   "content": 1227,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1227
  },
  "invest-profit--empty": {
   "content": 1049,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1049
  },
  "merchants--filtered": {
   "content": 425,
-  "sidebar": 571,
-  "vh": 571
+  "sidebar": 533,
+  "vh": 533
  },
  "merchants--empty": {
   "content": 471,
-  "sidebar": 571,
-  "vh": 571
+  "sidebar": 533,
+  "vh": 533
  },
  "acquisition--confirm": {
   "content": 653,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 653
  },
  "acquisition--signing": {
   "content": 653,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 653
  },
  "acquisition--done": {
   "content": 505,
-  "sidebar": 571,
-  "vh": 571
+  "sidebar": 533,
+  "vh": 533
  },
  "contracts--all": {
   "content": 730,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 730
  },
  "contracts--empty": {
   "content": 386,
-  "sidebar": 571,
-  "vh": 571
+  "sidebar": 533,
+  "vh": 533
  },
  "password--weak": {
   "content": 637,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 637
  },
  "password--error": {
   "content": 630,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 630
  },
  "password--done": {
   "content": 630,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 630
  },
  "invest-profit--weekly": {
   "content": 1137,
-  "sidebar": 571,
+  "sidebar": 533,
   "vh": 1137
+ },
+ "invest-assets--nav-collapsed": {
+  "content": 1317,
+  "sidebar": 341,
+  "vh": 1317
+ },
+ "invest-profit--range-error": {
+  "content": 1073,
+  "sidebar": 531,
+  "vh": 1073
+ },
+ "acquisition--selected": {
+  "content": 652,
+  "sidebar": 531,
+  "vh": 652
+ },
+ "acquisition--after-sign": {
+  "content": 504,
+  "sidebar": 531,
+  "vh": 531
+ },
+ "password--valid": {
+  "content": 629,
+  "sidebar": 531,
+  "vh": 629
+ },
+ "invest-assets--tip-wavg": {
+  "content": 1317,
+  "sidebar": 533,
+  "vh": 1317,
+  "tip_bottom": 412
+ },
+ "invest-assets--tip-shortfall": {
+  "content": 1317,
+  "sidebar": 533,
+  "vh": 1317,
+  "tip_bottom": 412
+ },
+ "invest-assets--tip-exec": {
+  "content": 1303,
+  "sidebar": 531,
+  "vh": 1303,
+  "tip_bottom": 269
+ },
+ "invest-assets--tip-yield": {
+  "content": 1303,
+  "sidebar": 531,
+  "vh": 1303,
+  "tip_bottom": 330
+ },
+ "invest-profit--tip-py-exec": {
+  "content": 1272,
+  "sidebar": 533,
+  "vh": 1272,
+  "tip_bottom": 693
+ },
+ "invest-profit--tip-py-asset": {
+  "content": 1272,
+  "sidebar": 533,
+  "vh": 1272,
+  "tip_bottom": 654
+ },
+ "invest-profit--tip-exec": {
+  "content": 1272,
+  "sidebar": 533,
+  "vh": 1272,
+  "tip_bottom": 716
+ },
+ "invest-profit--tip-yield": {
+  "content": 1272,
+  "sidebar": 533,
+  "vh": 1272,
+  "tip_bottom": 753
  }
 }

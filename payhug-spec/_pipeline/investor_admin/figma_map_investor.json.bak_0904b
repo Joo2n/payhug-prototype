@@ -8,7 +8,7 @@
  "prev_source_commit": "1f5c6a4",
  "staging_copy": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/_fig",
  "staging_css_patch": "prep_fig.py patch_css() 자동 적용 — ① --font-mono 를 Figma 내장 'Roboto Mono' 로 교체(원본 스택은 Chrome 에서 Menlo 로 해석되는데 Figma 에 Menlo 가 없어 hasMissingFont 가 되고 숫자 셀이 말줄임된다) ② sheet.css text-overflow:ellipsis 2곳 제거. 스테이징 사본 전용, 원본 레포 무변경",
- "frame_count": 37,
+ "frame_count": 24,
  "grid": {
   "columns_x": [
    0,
@@ -18,54 +18,34 @@
   ],
   "row_pitch_y": 2613,
   "frame_width": 1440,
-  "frame_height": "화면별 콘텐츠 높이(531~1317)",
+  "frame_height": "화면별 콘텐츠 높이(505~2541)",
   "empty_cells": [
    [
-    4800,
-    0
-   ],
-   [
-    3200,
-    10452
-   ],
-   [
-    4800,
-    10452
-   ],
-   [
-    1600,
-    15678
-   ],
-   [
-    4800,
-    15678
-   ],
-   [
-    3200,
-    20904
-   ],
-   [
-    4800,
-    20904
-   ],
-   [
     0,
-    23517
+    5226
    ],
    [
     1600,
-    23517
+    15678
    ],
    [
-    3200,
-    23517
+    4800,
+    7839
+   ],
+   [
+    4800,
+    10452
+   ],
+   [
+    4800,
+    15678
    ],
    [
     4800,
     23517
    ]
   ],
-  "empty_cells_note": "한 부모 화면의 상태 프레임을 같은 행에 모으는 배치라 남는 칸이다. y=23517 행은 비어 있고 툴팁 8은 26130(투자 자산)·28743(투자 수익) 행에 4개씩 있다"
+  "empty_cells_note": "한 부모 화면의 상태 프레임을 같은 행에 모으는 배치라 남는 칸이다"
  },
  "capture": {
   "script": "_pipeline/investor_admin/figcap_ia.sh",
@@ -86,10 +66,10 @@
   }
  },
  "verification": {
-  "checked_at": "2026-09-04 (상태 프레임 13 추가 후)",
-  "frames_on_page": 37,
-  "width_1440": 37,
-  "clips_content_true": 37,
+  "checked_at": "2026-09-04",
+  "frames_on_page": 24,
+  "width_1440": 24,
+  "clips_content_true": 24,
   "duplicate_names": 0,
   "forbidden_names": 0,
   "forbidden_name_patterns": [
@@ -99,7 +79,7 @@
    "엑셀 산출물",
    "로그인"
   ],
-  "texts": "24프레임 1,751 (직전 검사) + 상태 프레임 13 1,489 = 3,240",
+  "texts": 1751,
   "has_missing_font": 0,
   "text_truncation_ending": 0,
   "old_labels_in_replaced_9": {
@@ -110,31 +90,8 @@
   "new_labels_in_replaced_9": "가중평균 금융일수·입금부족률·예상 연환산수익률·연환산수익률 전건 존재(투자 수익 계열은 입금부족률·예상 연환산수익률 비노출 화면)",
   "invest_profit_5": "3.30% (3404:2)",
   "hidden_tooltip_panel_leak": 0,
-  "sidebar_menus": "12프레임 7 · 01-e(3434:2)는 가맹점·관리 그룹 접힘이라 보이는 항목 2(투자 자산·투자 수익) — 접힌 항목은 display:none 이라 캡처에 실리지 않음",
-  "sidebar_note": "2026-09-04 24프레임 사이드바에서 「투자 시뮬레이션」 항목 삭제 (Navigation > Container(투자) > Link). 텍스트 전수 0건. 스테이징은 prep_fig.py patch_nav() 가 같은 항목을 뺀다",
-  "old_labels_in_state_13": {
-   "W금융일수": 1,
-   "S입금부족율": 0,
-   "Ty수익율": 0,
-   "note": "1건은 01-i(3447:2) 툴팁 본문의 대표 DM 16:27 인용 「365 ÷ W금융일수 = 1년 회전수」(build_app.py 예상 연환산수익률 툴팁) — 화면 라벨이 아니라 인용문이며 원본을 손대지 않는다"
-  },
-  "tooltip_frames_exception": {
-   "frames": [
-    "3440:2",
-    "3443:2",
-    "3445:2",
-    "3447:2",
-    "3449:2",
-    "3451:2",
-    "3452:2",
-    "3456:2"
-   ],
-   "rule": "툴팁 프레임 8은 패널 1개(폭 256)가 의도적으로 보인다. 숨은 패널 누출 검사(hidden_tooltip_panel_leak)는 이 8프레임에서 보이는 패널 1개를 정상으로 본다. 03-e(3435:2)의 폭 256 프레임 1개는 일별 표 「연환산수익률」 열머리 셀이며 패널이 아니다",
-   "z_order": "임포트 직후 패널이 뒤에 오는 카드·표 행에 가려져(Figma 는 형제 순서가 z 순서, CSS 는 z-index:50) 패널 노드를 프레임 최상위 자식(마지막)으로 옮겨 같은 절대 좌표에 두었다. 부모는 auto-layout 없음(layoutMode NONE)이라 나머지 배치는 그대로다"
-  },
-  "sim_label_in_state_13": 0,
-  "text_outside_frame_state_13": 0,
-  "fonts_state_13": "Noto Sans KR(Bold/Medium/Regular/Light) + Roboto Mono(Regular/Medium/Bold) · 누락 0"
+  "sidebar_menus": 7,
+  "sidebar_note": "2026-09-04 24프레임 사이드바에서 「투자 시뮬레이션」 항목 삭제 (Navigation > Container(투자) > Link). 텍스트 전수 0건. 스테이징은 prep_fig.py patch_nav() 가 같은 항목을 뺀다"
  },
  "not_imported": [
   "app.html",
@@ -418,149 +375,6 @@
    "h": 630,
    "capture_id": "9a74258b-14bf-458b-9efc-a135245cb508",
    "replaced_node_id": "3284:2"
-  },
-  {
-   "file": "invest-assets--nav-collapsed.html",
-   "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
-   "node_id": "3434:2",
-   "x": 0,
-   "y": 5226,
-   "w": 1440,
-   "h": 1317,
-   "capture_id": "788b921d-f171-43b7-816a-3062b62dd0cb",
-   "state_source": "낱장 패치 — 가맹점·관리 그룹 class collapsed + CSS 2줄"
-  },
-  {
-   "file": "invest-profit--range-error.html",
-   "frame_name": "03-e 투자 수익 — 기간 역전 오류",
-   "node_id": "3435:2",
-   "x": 4800,
-   "y": 7839,
-   "w": 1440,
-   "h": 1073,
-   "capture_id": "5ea9a1f5-559d-4afd-a26d-f67160149677",
-   "state_source": "통합본 동결 — PF.from=2026-08-27 · PF.to=2026-08-20 · refresh"
-  },
-  {
-   "file": "acquisition--selected.html",
-   "frame_name": "06-e 정산채권 양수 — 행 선택",
-   "node_id": "3436:2",
-   "x": 0,
-   "y": 20904,
-   "w": 1440,
-   "h": 652,
-   "capture_id": "d27e8d6d-81ff-48cd-8764-12daa646726b",
-   "state_source": "통합본 동결 — AQ.sel=[true,true,false] · refresh"
-  },
-  {
-   "file": "acquisition--after-sign.html",
-   "frame_name": "06-f 정산채권 양수 — 서명 후 목록",
-   "node_id": "3437:2",
-   "x": 1600,
-   "y": 20904,
-   "w": 1440,
-   "h": 531,
-   "capture_id": "7d8b8330-0efd-48b9-a3f0-48f0c3193a0d",
-   "state_source": "통합본 동결 — go(acquisition-list, done) → ACT[aq-done-ok]"
-  },
-  {
-   "file": "password--valid.html",
-   "frame_name": "08-d 비밀번호 변경 — 입력 완료",
-   "node_id": "3439:2",
-   "x": 4800,
-   "y": 18291,
-   "w": 1440,
-   "h": 629,
-   "capture_id": "7377c796-031f-48fc-8258-af5e51e197cb",
-   "state_source": "통합본 동결 — PW.cur/nw/cfm 입력 · blurred · refresh (마스킹 ● 유지)"
-  },
-  {
-   "file": "invest-assets--tip-wavg.html",
-   "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
-   "node_id": "3440:2",
-   "x": 0,
-   "y": 26130,
-   "w": 1440,
-   "h": 1317,
-   "capture_id": "7b8a4b7c-480f-4738-96bc-9efdd82d3ccc",
-   "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block"
-  },
-  {
-   "file": "invest-assets--tip-shortfall.html",
-   "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
-   "node_id": "3443:2",
-   "x": 1600,
-   "y": 26130,
-   "w": 1440,
-   "h": 1317,
-   "capture_id": "b6e64378-78f8-47d4-8f21-c6fe1fb5029b",
-   "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block"
-  },
-  {
-   "file": "invest-assets--tip-exec.html",
-   "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
-   "node_id": "3445:2",
-   "x": 3200,
-   "y": 26130,
-   "w": 1440,
-   "h": 1303,
-   "capture_id": "902cc7a0-2c71-40ae-9b3a-3408d3f42565",
-   "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block"
-  },
-  {
-   "file": "invest-assets--tip-yield.html",
-   "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
-   "node_id": "3447:2",
-   "x": 4800,
-   "y": 26130,
-   "w": 1440,
-   "h": 1303,
-   "capture_id": "f936535b-6512-4085-8746-88435eb7fac6",
-   "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block"
-  },
-  {
-   "file": "invest-profit--tip-py-exec.html",
-   "frame_name": "03-f 투자 수익 — 툴팁 ④ 투자실행금액 대비",
-   "node_id": "3449:2",
-   "x": 0,
-   "y": 28743,
-   "w": 1440,
-   "h": 1272,
-   "capture_id": "3be9d49a-736e-435d-8ab3-5d31712954eb",
-   "state_source": "낱장 패치 — 수익 현황 패널 id=fig-tip display:block"
-  },
-  {
-   "file": "invest-profit--tip-py-asset.html",
-   "frame_name": "03-g 투자 수익 — 툴팁 ⑤ 투자자산 대비",
-   "node_id": "3451:2",
-   "x": 1600,
-   "y": 28743,
-   "w": 1440,
-   "h": 1272,
-   "capture_id": "7cb0d8d2-e530-4786-8e39-b3cb30f6b233",
-   "state_source": "낱장 패치 — 수익 현황 패널 id=fig-tip display:block"
-  },
-  {
-   "file": "invest-profit--tip-exec.html",
-   "frame_name": "03-h 투자 수익 — 툴팁 ③ 투자실행금 열머리",
-   "node_id": "3452:2",
-   "x": 3200,
-   "y": 28743,
-   "w": 1440,
-   "h": 1272,
-   "capture_id": "62f3d6ea-adc2-48ea-b42f-ab17c28f0e02",
-   "state_source": "낱장 패치 — 일별 표 열머리 패널 id=fig-tip display:block"
-  },
-  {
-   "file": "invest-profit--tip-yield.html",
-   "frame_name": "03-i 투자 수익 — 툴팁 ⑥ 연환산수익률 열머리",
-   "node_id": "3456:2",
-   "x": 4800,
-   "y": 28743,
-   "w": 1440,
-   "h": 1272,
-   "capture_id": "dea97bac-170a-48a6-8c63-41549d560f07",
-   "state_source": "낱장 패치 — 일별 표 열머리 패널 id=fig-tip display:block"
   }
  ],
  "retired": [
@@ -690,12 +504,5 @@
  ],
  "source_commit_note": "payhug-investor-admin main b4f41b3 (2026-09-04). 교체 9프레임은 이 커밋과 같은 워킹트리에서 캡처",
  "head_at_completion": "1693bd3 (워킹트리 미커밋 변경 있음)",
- "source_commit_state": "워킹트리 미커밋 변경 포함. 교체 9화면(invest-assets 4종·certificate·invest-profit 4종)은 HEAD 1693bd3 대비 워킹트리에서 수정된 상태(9 files · +147/−147)이며 프레임은 그 워킹트리 사본을 담는다. 나머지 15화면과 assets/base.css·sheet.css·logo-icon.png·template.html 은 워킹트리·1f5c6a4..1693bd3 모두 diff 0",
- "state_frames": {
-  "count": 13,
-  "method": "원본 레포에 낱장이 없는 상태는 스테이징에서 만든다 — prep_fig.py freeze (freeze_app.js · 헤드리스 크롬 + CDP 로 app.html 을 열어 go()·상태 변수·ACT[] 로 상태를 만든 뒤 DOM 을 낱장으로 저장, value/checked/selected 속성 동기화 · 스크립트·숨은 section·모달·주석 제거) + 낱장 패치(툴팁 패널 1개 id=fig-tip display:block · 메뉴 그룹 class collapsed)",
-  "spec": "prep_fig.py FREEZE · TIP · NAV_COLLAPSED",
-  "title_badge": "새 상태 5건은 build_app.py STATE_META 에 없어 제목 옆 상태 배지가 없다. 03-e 는 역전 범위로 결과가 0건이라 DERIVE 가 empty 를 내어 「결과 없음」 배지가 붙는다",
-  "pagination_note": "통합본 동결본(03-e·06-e·06-f·08-d·01-h·01-i)은 1쪽이면 페이지 버튼을 그리지 않고 낱장은 「1」 버튼을 그린다 — 원본 두 갈래의 표기 차이"
- }
+ "source_commit_state": "워킹트리 미커밋 변경 포함. 교체 9화면(invest-assets 4종·certificate·invest-profit 4종)은 HEAD 1693bd3 대비 워킹트리에서 수정된 상태(9 files · +147/−147)이며 프레임은 그 워킹트리 사본을 담는다. 나머지 15화면과 assets/base.css·sheet.css·logo-icon.png·template.html 은 워킹트리·1f5c6a4..1693bd3 모두 diff 0"
 }

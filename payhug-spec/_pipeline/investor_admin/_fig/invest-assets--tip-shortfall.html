@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=1440">
-<title>PayHug Admin — 투자 자산 (데이터 없음)</title>
+<title>PayHug Admin — 투자 자산</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -28,13 +28,13 @@
     background: var(--gray-50); border-top: 1px solid var(--gray-100);
     font-weight: 700; color: var(--gray-900);
   }
-
-  /* ── 상태 뱃지 (제안서 화면 구분용) ── */
-  .page-title .state-badge {
-    vertical-align: middle; position: relative; top: -2px; margin-left: 8px;
-    font-size: 12px; line-height: 16px; font-weight: 500;
-  }
+  .pagination.with-count { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+  .pagination.with-count .pg-count { justify-self: start; font-size: 12px; color: var(--gray-500); }
+  .pagination.with-count .pg-nums { display: flex; align-items: center; gap: 4px; justify-self: center; }
+  .pg-size { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-500); }
+  .input.sz { padding: 4px 24px 4px 10px; font-size: 12px; height: 28px; border-radius: 8px; }
 </style>
+  <style>#fig-tip{display:block}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=block" rel="stylesheet">
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
@@ -117,7 +117,7 @@
   <main class="content">
     <div class="page-header row-between">
       <div>
-        <h1 class="page-title">투자 자산 <span class="badge badge-gray state-badge">데이터 없음</span></h1>
+        <h1 class="page-title">투자 자산</h1>
       </div>
       <div class="base-date">기준일 <span class="mono">2026-08-27</span></div>
     </div>
@@ -126,23 +126,23 @@
     <div class="summary-grid">
       <div class="summary-card highlight">
         <div class="summary-label">투자자산</div>
-        <div class="summary-value">0<span class="unit">원</span></div>
+        <div class="summary-value">100,000,000<span class="unit">원</span></div>
         <div class="summary-sub">투자실행액 + 순현금</div>
       </div>
       <div class="summary-card">
         <div class="summary-label">투자실행액</div>
-        <div class="summary-value">0<span class="unit">원</span></div>
-        <div class="summary-sub">비중 0.0% · 보관 ㈜페이허그</div>
+        <div class="summary-value">80,000,000<span class="unit">원</span></div>
+        <div class="summary-sub">비중 80.0% · 보관 ㈜페이허그</div>
       </div>
       <div class="summary-card">
         <div class="summary-label">순현금</div>
-        <div class="summary-value">0<span class="unit">원</span></div>
-        <div class="summary-sub">비중 0.0% · 보관 ㈜쿠콘</div>
+        <div class="summary-value">20,000,000<span class="unit">원</span></div>
+        <div class="summary-sub">비중 20.0% · 보관 ㈜쿠콘</div>
       </div>
       <div class="summary-card">
         <div class="summary-label">예상 연환산수익률</div>
-        <div class="summary-value">0.00<span class="unit">%</span></div>
-        <div class="summary-sub">가중평균 금융일수 집계 대상 없음</div>
+        <div class="summary-value">13.21<span class="unit">%</span></div>
+        <div class="summary-sub">가중평균 금융일수 3.04일 기준</div>
       </div>
     </div>
 
@@ -151,10 +151,10 @@
       <div class="tbl-head">
         <h2>현황</h2>
         <div class="actions">
-          <button class="btn btn-excel" disabled>
+          <a class="btn btn-excel" href="assets/xlsx/투자자산현황_2026-08-27_2026-08-27.xlsx" download>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             엑셀 다운로드
-          </button>
+          </a>
         </div>
       </div>
       <div class="tbl-scroll">
@@ -164,7 +164,7 @@
               <th>자산 구분</th>
               <th class="num">금액 (원)</th>
               <th class="num"><span class="tooltip wide"><span class="tip-anchor">가중평균 금융일수</span><span class="tip-panel">대상정산금채권 전체 (발생 기준)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel">선정산일이 기준일 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel" id="fig-tip">선정산일이 기준일 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
               <th class="num">예상 연환산수익률</th>
               <th class="num">비중</th>
               <th>보관</th>
@@ -172,7 +172,31 @@
           </thead>
           <tbody>
             <tr>
-              <td colspan="7" class="empty">조회 결과가 없습니다.</td>
+              <td><span class="name">투자실행액</span></td>
+              <td class="num"><span class="strong">80,000,000</span></td>
+              <td class="num">3.04일</td>
+              <td class="num">0.07%</td>
+              <td class="num">13.21%</td>
+              <td class="num">80.0%</td>
+              <td>㈜페이허그</td>
+            </tr>
+            <tr>
+              <td><span class="name">순현금</span></td>
+              <td class="num"><span class="strong">20,000,000</span></td>
+              <td class="num"><span class="none">-</span></td>
+              <td class="num"><span class="none">-</span></td>
+              <td class="num"><span class="none">-</span></td>
+              <td class="num">20.0%</td>
+              <td>㈜쿠콘</td>
+            </tr>
+            <tr class="total-row">
+              <td>합계 (투자자산)</td>
+              <td class="num">100,000,000</td>
+              <td class="num"><span class="none">-</span></td>
+              <td class="num"><span class="none">-</span></td>
+              <td class="num"><span class="none">-</span></td>
+              <td class="num">100.0%</td>
+              <td><span class="none">-</span></td>
             </tr>
           </tbody>
         </table>
@@ -184,14 +208,15 @@
       <div class="tbl-head">
         <h2>가맹점별 투자자산</h2>
         <div class="actions">
-          <button class="btn btn-excel" disabled>
+          <label class="pg-size">보기<select class="input sz" aria-label="보기 갯수"><option value="10" selected>10개</option><option value="20">20개</option><option value="50">50개</option></select></label>
+          <a class="btn btn-excel" href="assets/xlsx/가맹점별투자자산_2026-08-27_2026-08-27.xlsx" download>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             엑셀 다운로드
-          </button>
-          <button class="btn btn-outline" disabled>
+          </a>
+          <a class="btn btn-outline" href="invest-assets--cert-confirm.html">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             증명서 다운로드
-          </button>
+          </a>
         </div>
       </div>
       <div class="tbl-scroll">
@@ -207,9 +232,85 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td colspan="6" class="empty">조회 결과가 없습니다.</td></tr>
+            <tr>
+              <td><span class="name">김성호떡볶이 본점</span></td>
+              <td class="num"><span class="strong">19,334,743</span></td>
+              <td class="num">3.02일</td>
+              <td class="num">0.07%</td>
+              <td class="num">13.29%</td>
+              <td class="num">24.2%</td>
+            </tr>
+            <tr>
+              <td><span class="name">초록치킨 서초점</span></td>
+              <td class="num"><span class="strong">18,070,801</span></td>
+              <td class="num">3.45일</td>
+              <td class="num">0.10%</td>
+              <td class="num">11.64%</td>
+              <td class="num">22.6%</td>
+            </tr>
+            <tr>
+              <td><span class="name">김밥나라</span></td>
+              <td class="num"><span class="strong">11,827,388</span></td>
+              <td class="num">3.27일</td>
+              <td class="num">0.09%</td>
+              <td class="num">12.28%</td>
+              <td class="num">14.8%</td>
+            </tr>
+            <tr>
+              <td><span class="name">골목냉면</span></td>
+              <td class="num"><span class="strong">9,286,833</span></td>
+              <td class="num">3.09일</td>
+              <td class="num">0.08%</td>
+              <td class="num">12.99%</td>
+              <td class="num">11.6%</td>
+            </tr>
+            <tr>
+              <td><span class="name">달빛곱창 홍대점</span></td>
+              <td class="num"><span class="strong">7,074,838</span></td>
+              <td class="num">2.84일</td>
+              <td class="num">0.06%</td>
+              <td class="num">14.14%</td>
+              <td class="num">8.8%</td>
+            </tr>
+            <tr>
+              <td><span class="name">청춘포차 신촌점</span></td>
+              <td class="num"><span class="strong">5,624,058</span></td>
+              <td class="num">2.70일</td>
+              <td class="num">0.05%</td>
+              <td class="num">14.89%</td>
+              <td class="num">7.0%</td>
+            </tr>
+            <tr>
+              <td><span class="name">바다마루 횟집</span></td>
+              <td class="num"><span class="strong">4,799,968</span></td>
+              <td class="num">2.55일</td>
+              <td class="num">0.05%</td>
+              <td class="num">15.72%</td>
+              <td class="num">6.0%</td>
+            </tr>
+            <tr>
+              <td><span class="name">한강커피 잠원점</span></td>
+              <td class="num"><span class="strong">3,981,371</span></td>
+              <td class="num">2.52일</td>
+              <td class="num">0.04%</td>
+              <td class="num">15.95%</td>
+              <td class="num">5.0%</td>
+            </tr>
           </tbody>
         </table>
+      </div>
+      <div class="pagination with-count">
+        <span class="pg-count">총 <b class="mono">8</b>건</span>
+        <div class="pg-nums">
+          <button class="page-arrow" disabled>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="page-btn active">1</button>
+          <button class="page-arrow" disabled>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <span></span>
       </div>
     </div>
 

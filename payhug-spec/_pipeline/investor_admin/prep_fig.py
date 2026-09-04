@@ -2,12 +2,14 @@
 """투자자 어드민 Figma 임포트용 스테이징 사본 전처리.
 
   sync     레포 → _fig 동기화 + CSS 패치(모노 폰트 교체 · 시트 말줄임 제거)
+  freeze   상태 프레임 낱장 생성 — 통합본 app.html 을 헤드리스로 열어 상태를 만든 뒤 DOM 저장
+           (freeze_app.js · CDP) + 낱장 사본 패치(툴팁 패널 열림 · 메뉴 그룹 접힘). sync 뒤 measure 앞
   measure  _fig 렌더 → value 필드 기하 측정 → fig_meas.json
   apply    capture.js 주입 + 폰트 링크 주입 + value 보유 input → 텍스트 노드 치환
   verify   스테이징 사본이 캡처 준비 상태인지 확인
   fontgate --font-mono 가 Roboto Mono 로 해석되는지 실측 (캡처 배치 직전 필수)
   heights  프레임 높이 산출 → fig_heights.json (캡처 직전 필수)
-  all      sync → measure → apply
+  all      sync → freeze → measure → apply
 
 원본 레포는 읽기만 한다. 쓰기는 _fig/ 안에서만 일어난다.
 
@@ -38,8 +40,55 @@ IMPORT = [
     'contracts--all', 'contracts--empty',
     'password--weak', 'password--error', 'password--done',
     'invest-profit--weekly',
+    # 누르거나 hover 했을 때의 상태 13 — 원본 레포에 낱장이 없어 freeze 가 스테이징에서 만든다
+    'invest-assets--nav-collapsed', 'invest-profit--range-error',
+    'acquisition--selected', 'acquisition--after-sign', 'password--valid',
+    'invest-assets--tip-wavg', 'invest-assets--tip-shortfall',
+    'invest-assets--tip-exec', 'invest-assets--tip-yield',
+    'invest-profit--tip-py-exec', 'invest-profit--tip-py-asset',
+    'invest-profit--tip-exec', 'invest-profit--tip-yield',
 ]
 HOLD = []
+
+# ── 상태 프레임 13 의 만드는 법 ──────────────────────────────────────────
+# 통합본 동결 — app.html 을 헤드리스로 열어 go()·상태 변수·ACT[] 로 상태를 만든 뒤 DOM 을 낱장으로 저장.
+# (파일명, 화면 id, 씨앗 상태, 상태 주입 JS, 제목 라벨)
+FREEZE = [
+    ('invest-profit--range-error', 'invest-profit', 'default',
+     "PF.from='2026-08-27'; PF.to='2026-08-20'; refresh('invest-profit');", '투자 수익'),
+    ('acquisition--selected', 'acquisition-list', 'default',
+     "AQ.sel=[true,true,false]; refresh('acquisition-list');", '정산채권 양수'),
+    ('acquisition--after-sign', 'acquisition-list', 'done',
+     "ACT['aq-done-ok']();", '정산채권 양수'),
+    ('password--valid', 'password', 'default',
+     "PW.cur='12345678'; PW.nw='payhug!2026'; PW.cfm='payhug!2026'; PW.blurred=true; refresh('password');",
+     '비밀번호 변경'),
+    # 요약카드 툴팁 앵커는 통합본에만 있다 — 기본 상태를 동결한 뒤 아래 TIP 이 패널을 연다
+    ('invest-assets--tip-exec',  'invest-assets', 'default', '', '투자 자산'),
+    ('invest-assets--tip-yield', 'invest-assets', 'default', '', '투자 자산'),
+]
+# 툴팁 패널 열림 — 파일명 → (원본 낱장 이름 · None 이면 위 동결본 자기 자신, 앵커 라벨).
+# 라벨이 처음 나오는 .tip-panel 하나에 id="fig-tip" 을 달고 display:block 으로 고정한다. hover 는 정적 캡처에 실리지 않는다.
+TIP = {
+    'invest-assets--tip-wavg':      ('invest-assets', '가중평균 금융일수'),
+    'invest-assets--tip-shortfall': ('invest-assets', '입금부족률'),
+    'invest-assets--tip-exec':      (None, '투자실행액'),
+    'invest-assets--tip-yield':     (None, '예상 연환산수익률'),
+    'invest-profit--tip-py-exec':   ('invest-profit', '투자실행금액 대비'),
+    'invest-profit--tip-py-asset':  ('invest-profit', '투자자산 대비'),
+    'invest-profit--tip-exec':      ('invest-profit', '투자실행금'),
+    'invest-profit--tip-yield':     ('invest-profit', '연환산수익률'),
+}
+TIP_CSS = '#fig-tip{display:block}'
+# 메뉴 그룹 접힘 — 파일명 → (원본 낱장 이름, 접을 그룹). 낱장 사이드바는 스크립트가 없어 class 와 CSS 로 만든다
+# (통합본 build_app.py 의 .nav-group.collapsed 규칙과 같은 두 줄).
+NAV_COLLAPSED = {
+    'invest-assets--nav-collapsed': ('invest-assets', ['merchant', 'manage']),
+}
+NAV_CSS = ('.nav-group.collapsed .nav-group-label svg{transform:rotate(-90deg)}'
+           '.nav-group.collapsed .nav-item{display:none}')
+# 원본 레포에 없고 freeze 가 만드는 파일 — sync 는 이들을 복사하지 않는다
+DERIVED = [n for n, _s, _st, _js, _lb in FREEZE] + [n for n in TIP if TIP[n][0]] + list(NAV_COLLAPSED)
 
 ASSET_DIRS = ['docs', 'xlsx', 'shots']
 ASSET_FILES = ['base.css', 'sheet.css', 'logo-icon.png', 'template.html']
@@ -86,12 +135,15 @@ def patch_css():
     return out
 
 
-def patch_nav():
-    """사이드바에서 시연본에 없는 메뉴를 뺀다. 시뮬레이션은 통합본 전용이라 Figma 에 두지 않는다. 멱등."""
+def patch_nav(names=None):
+    """사이드바에서 시연본에 없는 메뉴를 뺀다. 시뮬레이션은 통합본 전용이라 Figma 에 두지 않는다. 멱등.
+    names 를 주면 그 파일만(freeze 가 만든 낱장), 없으면 _fig 에 있는 임포트 대상 전부."""
     pat = re.compile(r'\s*<a class="nav-item" data-menu="invest-sim"[^>]*>.*?</a>', re.S)
     n = 0
-    for f in files():
+    for f in ([x + '.html' for x in names] if names else files()):
         q = os.path.join(FIG, f)
+        if not os.path.exists(q):
+            continue
         s = open(q, encoding='utf-8').read()
         new, k = pat.subn('', s)
         if k:
@@ -111,6 +163,8 @@ def sync():
         q = os.path.join(FIG, f)
         shutil.rmtree(q) if os.path.isdir(q) else os.remove(q)
     for f in files():
+        if f[:-5] in DERIVED:
+            continue                       # freeze 가 만든다
         src = os.path.join(SRC, f)
         if not os.path.exists(src):
             raise SystemExit('원본에 없음: %s' % f)
@@ -124,12 +178,66 @@ def sync():
         q = os.path.join(SRC, 'assets', d)
         if os.path.isdir(q):
             shutil.copytree(q, os.path.join(FIG, 'assets', d))
-    print('동기화 %d화면 · 원본 HEAD %s%s' % (len(files()), head, ' (워킹트리 변경분 포함)' if dirty else ''))
+    print('동기화 %d화면 (+ freeze 대상 %d) · 원본 HEAD %s%s'
+          % (len(files()) - len(DERIVED), len(DERIVED), head, ' (워킹트리 변경분 포함)' if dirty else ''))
     for line in patch_css() + patch_nav():
         print('  패치 ' + line)
     if HOLD:
         print('  보류 제외: ' + ', '.join(HOLD))
     return head
+
+
+# ---------------------------------------------------------------- freeze
+def _open_tip(s, label):
+    """라벨이 처음 나오는 툴팁 패널에 id 를 달고 display:block 스타일을 head 에 넣는다."""
+    pat = re.compile(r'(<span class="tip-anchor">' + re.escape(label) + r'</span><span class="tip-panel")')
+    new, k = pat.subn(r'\1 id="fig-tip"', s, count=1)
+    if k != 1:
+        raise SystemExit('툴팁 앵커를 찾지 못했다: %s' % label)
+    if 'id="fig-tip"' in s:
+        raise SystemExit('fig-tip 이 이미 있다 — 원본 낱장이 아니라 패치본을 읽었다')
+    return new.replace('</head>', '  <style>' + TIP_CSS + '</style>\n</head>', 1)
+
+
+def freeze():
+    """상태 프레임 낱장 생성. sync 뒤 · measure 앞. 원본 레포는 정적 서빙(읽기)만 한다."""
+    spec = [{'name': n, 'screen': s, 'state': st, 'js': js, 'label': lb} for n, s, st, js, lb in FREEZE]
+    r = subprocess.run(['node', os.path.join(BASE, 'freeze_app.js'), SRC],
+                       input=json.dumps(spec), capture_output=True, text=True, timeout=180)
+    if r.returncode != 0:
+        raise SystemExit('동결 실패\n' + r.stderr[-3000:])
+    out = json.loads(r.stdout)
+    for n, screen, state, _js, _lb in FREEZE:
+        o = out.get(n)
+        if not o:
+            raise SystemExit('동결 결과 없음: %s' % n)
+        if o['view'] != screen:
+            raise SystemExit('%s: 화면이 %s 가 아니라 %s' % (n, screen, o['view']))
+        if not o['toastHidden'] or o['visibleModals']:
+            raise SystemExit('%s: 토스트/모달이 열려 있다 (toastHidden=%s, modals=%d)' % (n, o['toastHidden'], o['visibleModals']))
+        # 통합본의 HTML 주석·CSS 주석은 뺀다 — 화면에 실리지 않지만 시연본에 없는 화면 이름(시뮬레이션·엑셀 서식)이 적혀 있다
+        html = re.sub(r'<!--.*?-->', '', o['html'], flags=re.S)
+        html = re.sub(r'/\*.*?\*/', '', html, flags=re.S)
+        open(os.path.join(FIG, n + '.html'), 'w', encoding='utf-8').write(html)
+        print('  동결 %-30s 화면 %s · 상태 %s · %d bytes' % (n, o['view'], o['state'], len(html)))
+    for n, (src, label) in TIP.items():
+        base = os.path.join(FIG, (src or n) + '.html')
+        s = open(base, encoding='utf-8').read()
+        open(os.path.join(FIG, n + '.html'), 'w', encoding='utf-8').write(_open_tip(s, label))
+        print('  툴팁 %-30s ← %s · 「%s」 패널 열림' % (n, src or '(동결본)', label))
+    for n, (src, groups) in NAV_COLLAPSED.items():
+        s = open(os.path.join(FIG, src + '.html'), encoding='utf-8').read()
+        for g in groups:
+            tag = '<div class="nav-group" data-group="%s">' % g
+            if tag not in s:
+                raise SystemExit('메뉴 그룹 없음: %s' % g)
+            s = s.replace(tag, '<div class="nav-group collapsed" data-group="%s">' % g, 1)
+        s = s.replace('</head>', '  <style>' + NAV_CSS + '</style>\n</head>', 1)
+        open(os.path.join(FIG, n + '.html'), 'w', encoding='utf-8').write(s)
+        print('  접힘 %-30s ← %s · 그룹 %s' % (n, src, '·'.join(groups)))
+    for line in patch_nav(DERIVED):
+        print('  패치(동결본) ' + line)
+    print('상태 프레임 낱장 %d개 생성' % len(DERIVED))
 
 
 # ---------------------------------------------------------------- measure
@@ -293,6 +401,21 @@ def verify():
     left = [f for f in files() if INPUT.search(open(os.path.join(FIG, f), encoding='utf-8').read())]
     print('미치환 value input %d건 %s' % (len(left), left or ''))
     ok &= not left
+    # 상태 프레임 낱장 — 툴팁 패널 1개만 열림 · 접힌 그룹 2 · 동결본에 스크립트·숨은 화면 없음
+    bad = [n for n in TIP if open(os.path.join(FIG, n + '.html'), encoding='utf-8').read().count('id="fig-tip"') != 1]
+    print('툴팁 낱장 패널 표시 이상 %d건 %s' % (len(bad), bad or ''))
+    ok &= not bad
+    bad = [n for n in NAV_COLLAPSED
+           if open(os.path.join(FIG, n + '.html'), encoding='utf-8').read().count('class="nav-group collapsed"') != len(NAV_COLLAPSED[n][1])]
+    print('접힌 그룹 수 이상 %d건 %s' % (len(bad), bad or ''))
+    ok &= not bad
+    bad = []
+    for n, _s, _st, _js, _lb in FREEZE:
+        s = open(os.path.join(FIG, n + '.html'), encoding='utf-8').read()
+        if re.search(r'<script(?![^>]*capture\.js)', s) or 'section class="screen" data-screen' in s and s.count('<section class="screen"') != 1:
+            bad.append(n)
+    print('동결본 스크립트·숨은 화면 잔존 %d건 %s' % (len(bad), bad or ''))
+    ok &= not bad
     print('판정: %s' % ('통과' if ok else '미통과'))
     return ok
 
@@ -368,13 +491,15 @@ function next(){
  fr.style.cssText='width:1440px;height:200px;border:0;position:absolute;left:-9999px';
  fr.src=f+'.html';
  fr.onload=function(){
-  let h=0,sb=0;
+  let h=0,sb=0,tb=0;
   try{const d=fr.contentDocument;
    h=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight);
    const s=d.querySelector('.sidebar');
    if(s){const keep=s.style.height;s.style.height='auto';sb=s.scrollHeight;s.style.height=keep;}
+   const t=d.getElementById('fig-tip');
+   if(t){tb=Math.ceil(t.getBoundingClientRect().bottom+(fr.contentWindow.scrollY||0))+24;}
   }catch(e){h=-1;}
-  new Image().src='/H_'+encodeURIComponent(f)+'_'+h+'_'+sb+'_x.gif?q='+Date.now();
+  new Image().src='/H_'+encodeURIComponent(f)+'_'+h+'_'+sb+'_'+tb+'_x.gif?q='+Date.now();
   fr.remove();setTimeout(next,100);
  };
  fr.onerror=function(){fr.remove();setTimeout(next,100);};
@@ -390,15 +515,18 @@ def heights():
     """캡처 직전 프레임 높이 산출. 프레임 높이 = max(문서 높이, 사이드바 높이).
     사이드바는 position:fixed · height:100% 라 문서 높이에 안 잡히고 뷰포트를 그대로
     따라간다. 측정 때만 height:auto 로 풀어 고유 콘텐츠 높이를 읽는다(≈533).
-    사이드바가 없는 login·index 는 이 바닥이 붙지 않는다."""
+    사이드바가 없는 login·index 는 이 바닥이 붙지 않는다.
+    툴팁 열림 프레임(#fig-tip)은 패널이 절대배치라 문서 높이에 안 잡히므로 패널 바닥+24 도 후보에 넣는다."""
     raw = _probe(HEIGHTPROBE % json.dumps(IMPORT), 'HDONE', wait=120)
     out = {}
-    for name, h, sb in re.findall(r'H_([^_\s]+)_(-?\d+)_(\d+)_x', raw):
+    for name, h, sb, tb in re.findall(r'H_([^_\s]+)_(-?\d+)_(\d+)_(\d+)_x', raw):
         name = urllib.parse.unquote(name)
-        h, sb = int(h), int(sb)
+        h, sb, tb = int(h), int(sb), int(tb)
         if h < 0:
             raise SystemExit('높이 측정 실패: %s' % name)
-        out[name] = {'content': h, 'sidebar': sb, 'vh': max(h, sb)}
+        out[name] = {'content': h, 'sidebar': sb, 'vh': max(h, sb, tb)}
+        if tb:
+            out[name]['tip_bottom'] = tb
     missing = [n for n in IMPORT if n not in out]
     if missing:
         raise SystemExit('미측정: %s' % ', '.join(missing))
@@ -414,6 +542,8 @@ if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'all'
     if cmd == 'sync':
         sync()
+    elif cmd == 'freeze':
+        freeze()
     elif cmd == 'measure':
         measure()
     elif cmd == 'apply':
@@ -425,6 +555,6 @@ if __name__ == '__main__':
     elif cmd == 'heights':
         heights()
     elif cmd == 'all':
-        sync(); measure(); apply(); print(); verify()
+        sync(); freeze(); measure(); apply(); print(); verify()
     else:
         raise SystemExit(__doc__)

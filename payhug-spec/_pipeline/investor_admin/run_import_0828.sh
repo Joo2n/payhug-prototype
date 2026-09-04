@@ -27,6 +27,9 @@ preflight)
   echo "── 2~3. 스테이징 동기화 + CSS 패치"
   python3 prep_fig.py sync || exit 1
   echo
+  echo "── 3b. 상태 프레임 낱장 생성 (통합본 동결 · 툴팁 열림 · 메뉴 그룹 접힘)"
+  python3 prep_fig.py freeze || exit 1
+  echo
   echo "── 4. value 필드 기하 측정 + 치환"
   python3 prep_fig.py measure || exit 1
   python3 prep_fig.py apply || exit 1

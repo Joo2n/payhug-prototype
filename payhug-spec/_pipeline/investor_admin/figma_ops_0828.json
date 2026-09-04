@@ -19,6 +19,16 @@
    "delta": 0
   },
   {
+   "file": "acquisition--after-sign",
+   "frame_name": "06-f 정산채권 양수 — 서명 후 목록",
+   "old_node_id": "3437:2",
+   "x": 1600,
+   "y": 20904,
+   "old_h": 531,
+   "vh": 531,
+   "delta": 0
+  },
+  {
    "file": "acquisition--confirm",
    "frame_name": "06-a 정산채권 양수 — 서명 확인",
    "old_node_id": "3357:2",
@@ -45,7 +55,17 @@
    "x": 3200,
    "y": 13065,
    "old_h": 571,
-   "vh": 571,
+   "vh": 533,
+   "delta": -38
+  },
+  {
+   "file": "acquisition--selected",
+   "frame_name": "06-e 정산채권 양수 — 행 선택",
+   "old_node_id": "3436:2",
+   "x": 0,
+   "y": 20904,
+   "old_h": 652,
+   "vh": 652,
    "delta": 0
   },
   {
@@ -61,7 +81,7 @@
   {
    "file": "certificate",
    "frame_name": "02 투자자산 증명서",
-   "old_node_id": "3343:2",
+   "old_node_id": "3403:2",
    "x": 1600,
    "y": 0,
    "old_h": 1168,
@@ -95,13 +115,13 @@
    "x": 3200,
    "y": 15678,
    "old_h": 571,
-   "vh": 571,
-   "delta": 0
+   "vh": 533,
+   "delta": -38
   },
   {
    "file": "invest-assets",
    "frame_name": "01 투자 자산",
-   "old_node_id": "3337:2",
+   "old_node_id": "3405:2",
    "x": 0,
    "y": 0,
    "old_h": 1317,
@@ -111,7 +131,7 @@
   {
    "file": "invest-assets--cert-confirm",
    "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
-   "old_node_id": "3389:2",
+   "old_node_id": "3407:2",
    "x": 3200,
    "y": 5226,
    "old_h": 1317,
@@ -121,7 +141,7 @@
   {
    "file": "invest-assets--download",
    "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
-   "old_node_id": "3350:2",
+   "old_node_id": "3409:2",
    "x": 1600,
    "y": 5226,
    "old_h": 1317,
@@ -131,7 +151,7 @@
   {
    "file": "invest-assets--empty",
    "frame_name": "01-d 투자 자산 — 데이터 없음",
-   "old_node_id": "3349:2",
+   "old_node_id": "3408:2",
    "x": 4800,
    "y": 5226,
    "old_h": 1059,
@@ -139,44 +159,144 @@
    "delta": 0
   },
   {
+   "file": "invest-assets--nav-collapsed",
+   "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
+   "old_node_id": "3434:2",
+   "x": 0,
+   "y": 5226,
+   "old_h": 1317,
+   "vh": 1317,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets--tip-exec",
+   "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
+   "old_node_id": "3445:2",
+   "x": 3200,
+   "y": 26130,
+   "old_h": 1303,
+   "vh": 1303,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets--tip-shortfall",
+   "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
+   "old_node_id": "3443:2",
+   "x": 1600,
+   "y": 26130,
+   "old_h": 1317,
+   "vh": 1317,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets--tip-wavg",
+   "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
+   "old_node_id": "3440:2",
+   "x": 0,
+   "y": 26130,
+   "old_h": 1317,
+   "vh": 1317,
+   "delta": 0
+  },
+  {
+   "file": "invest-assets--tip-yield",
+   "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
+   "old_node_id": "3447:2",
+   "x": 4800,
+   "y": 26130,
+   "old_h": 1303,
+   "vh": 1303,
+   "delta": 0
+  },
+  {
    "file": "invest-profit",
    "frame_name": "03 투자 수익",
-   "old_node_id": "3342:2",
+   "old_node_id": "3404:2",
    "x": 3200,
    "y": 0,
-   "old_h": 1267,
+   "old_h": 1272,
    "vh": 1272,
-   "delta": 5
+   "delta": 0
   },
   {
    "file": "invest-profit--empty",
    "frame_name": "03-b 투자 수익 — 결과 없음",
-   "old_node_id": "3354:2",
+   "old_node_id": "3412:2",
    "x": 1600,
    "y": 7839,
-   "old_h": 1044,
+   "old_h": 1049,
    "vh": 1049,
-   "delta": 5
+   "delta": 0
   },
   {
    "file": "invest-profit--monthly",
    "frame_name": "03-a 투자 수익 — 월별",
-   "old_node_id": "3353:2",
+   "old_node_id": "3410:2",
    "x": 0,
    "y": 7839,
-   "old_h": 1222,
+   "old_h": 1227,
    "vh": 1227,
-   "delta": 5
+   "delta": 0
+  },
+  {
+   "file": "invest-profit--range-error",
+   "frame_name": "03-e 투자 수익 — 기간 역전 오류",
+   "old_node_id": "3435:2",
+   "x": 4800,
+   "y": 7839,
+   "old_h": 1073,
+   "vh": 1073,
+   "delta": 0
+  },
+  {
+   "file": "invest-profit--tip-exec",
+   "frame_name": "03-h 투자 수익 — 툴팁 ③ 투자실행금 열머리",
+   "old_node_id": "3452:2",
+   "x": 3200,
+   "y": 28743,
+   "old_h": 1272,
+   "vh": 1272,
+   "delta": 0
+  },
+  {
+   "file": "invest-profit--tip-py-asset",
+   "frame_name": "03-g 투자 수익 — 툴팁 ⑤ 투자자산 대비",
+   "old_node_id": "3451:2",
+   "x": 1600,
+   "y": 28743,
+   "old_h": 1272,
+   "vh": 1272,
+   "delta": 0
+  },
+  {
+   "file": "invest-profit--tip-py-exec",
+   "frame_name": "03-f 투자 수익 — 툴팁 ④ 투자실행금액 대비",
+   "old_node_id": "3449:2",
+   "x": 0,
+   "y": 28743,
+   "old_h": 1272,
+   "vh": 1272,
+   "delta": 0
+  },
+  {
+   "file": "invest-profit--tip-yield",
+   "frame_name": "03-i 투자 수익 — 툴팁 ⑥ 연환산수익률 열머리",
+   "old_node_id": "3456:2",
+   "x": 4800,
+   "y": 28743,
+   "old_h": 1272,
+   "vh": 1272,
+   "delta": 0
   },
   {
    "file": "invest-profit--weekly",
    "frame_name": "03-c 투자 수익 — 주별",
-   "old_node_id": "3358:2",
+   "old_node_id": "3411:2",
    "x": 3200,
    "y": 7839,
-   "old_h": 1132,
+   "old_h": 1137,
    "vh": 1137,
-   "delta": 5
+   "delta": 0
   },
   {
    "file": "merchants",
@@ -195,8 +315,8 @@
    "x": 1600,
    "y": 10452,
    "old_h": 571,
-   "vh": 571,
-   "delta": 0
+   "vh": 533,
+   "delta": -38
   },
   {
    "file": "merchants--filtered",
@@ -205,8 +325,8 @@
    "x": 0,
    "y": 10452,
    "old_h": 571,
-   "vh": 571,
-   "delta": 0
+   "vh": 533,
+   "delta": -38
   },
   {
    "file": "password",
@@ -236,6 +356,16 @@
    "y": 18291,
    "old_h": 630,
    "vh": 630,
+   "delta": 0
+  },
+  {
+   "file": "password--valid",
+   "frame_name": "08-d 비밀번호 변경 — 입력 완료",
+   "old_node_id": "3439:2",
+   "x": 4800,
+   "y": 18291,
+   "old_h": 629,
+   "vh": 629,
    "delta": 0
   },
   {
