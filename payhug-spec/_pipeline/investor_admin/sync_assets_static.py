@@ -221,9 +221,6 @@ def yr_card_tip(w, ty_):
             '<span class="tip-row"><span>r</span><span class="tip-green">계약된 할인율 · %s%%</span></span>'
             '<span class="tip-row"><span>D</span><span class="tip-green">가중평균 금융일수 · %s</span></span>'
             '<span class="tip-row"><span>연 환산</span><span class="tip-green">%s%%</span></span>'
-            '<span class="tip-row"><span>일 환산</span><span>미확정</span></span>'
-            '<span class="tip-row"><span>대표 DM 16:27</span><span class="tip-green">365 ÷ W금융일수 = 1년 회전수</span></span>'
-            '<span class="tip-row sum"><span>대표 DM 16:45</span><span>예상치 · 할인율 계통</span></span>'
             '</span></span>'
             % (YR_LABEL, YR_HEAD, YR_ROW, RPCT, '집계 대상 없음' if w is None else '%s일' % w, ty_))
 
@@ -247,6 +244,18 @@ def yr_th():
 def yr_heads(s):
     s, k = th_pat(YR_LABEL).subn(lambda _m: yr_th(), s)
     assert k == 2, '열머리 `%s` %d건 — 현황표·가맹점별 표 2건이라야 한다' % (YR_LABEL, k)
+    return s
+
+# ── 수익 산정 기준 카드 — 화면에 싣지 않는다(build_app.py SHOW_FORMULA 와 같은 상태) ──
+FORMULA_CARD = re.compile(
+    r'\n[ \t]*(?:<!--[^\n]*-->\n[ \t]*)?<div class="card">\n[ \t]*<h2 class="card-title">수익 산정 기준</h2>\n'
+    r'.*?\n(?=\n[ \t]*</main>)', re.S)
+
+
+def drop_formula(s):
+    s, n = FORMULA_CARD.subn('', s, count=1)
+    assert n <= 1 and '수익 산정 기준' not in s and '수수료 배분형' not in s and '조달이자형' not in s, \
+        '수익 산정 기준 카드가 남아 있다'
     return s
 
 
@@ -427,6 +436,7 @@ def total_count(s):
 
 # ── 낱장별 재생성 ─────────────────────────────────────────────────
 def build_assets(s):
+    s = drop_formula(s)
     s = summary_cards(yr_card_strip(s))
     s = yr_card(s, W_ROW, TY_ROW)
     s = pop_heads(s)
@@ -459,6 +469,7 @@ def build_certificate(s):
 
 
 def build_assets_empty(s):
+    s = drop_formula(s)
     s = yr_card(yr_card_strip(s), None, '%.2f' % 0)
     return yr_heads(pop_heads(s))
 

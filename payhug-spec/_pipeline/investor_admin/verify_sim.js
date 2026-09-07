@@ -618,19 +618,19 @@ async function main(){
   R.selfcheck = keep;
 
 
-  /* ── 10) 미확정 표기 — ⑤ 「대표 확인 대기」 · ⑥ 「대표 재전달 대기」 ──
-     [기준 교체 2026-09-04] ⑤ 는 우리 확정안(PM × 365 ÷ ( Σ Ai×Di + PEC ))이라 툴팁 행이 PEND5_ROW
-     「대표 확인 대기」로 갈라졌다(step7 ⑤ 산식 교체 · build_app.py PEND5_ROW). ⑥ 열머리는 PEND_ROW 그대로. */
-  console.log('\n[10] 미확정 표기 (⑤ 확인 대기 · ⑥ 재전달 대기)');
+  /* ── 10) 내부 검토 표기 0건 — ⑤ 카드·⑥ 열머리에 배지가 없고 툴팁에 「미확정」·「대기」 행이 없다 ──
+     투자자에게 나가는 화면이라 검토 표시를 싣지 않는다. 문구가 있으면 FAIL. */
+  const NO_MARK = function(t){ return ['미확정', '대기', '대표 DM', '관찰된 값', '항등식', '부족액 0', '일 환산']
+    .every(function(w){ return String(t).indexOf(w) < 0; }); };
+  console.log('\n[10] 내부 검토 표기 0건 (⑤ 배지 없음 · ⑥ 열머리 배지 없음)');
   await evalJS("go('invest-sim','result'); return 1;");
   const pend = await evalJS(`
     return {ty5:window.__S.ty5Label(), ty5Badge:window.__S.ty5Badge(),
             th:window.__S.dailyTh(), thBadge:window.__S.dailyThBadge()};`);
-  P('⑤ 투자 자산 대비 — 값은 두고 ' + SF.pendBadge + ' 배지 · 「' + SF.pend5Row + '」 행',
-    pend.ty5Badge === SF.pendBadge && pend.ty5.indexOf(SF.pend5Row) >= 0
-    && pend.ty5.indexOf(SF.pendRow) < 0, pend.ty5);
-  P('⑥ 일별 연환산 수익률 열머리 — 배지 + 어느 읽기인지 툴팁',
-    pend.thBadge === SF.pendBadge && pend.th === SF.tyThText, pend.th);
+  P('⑤ 투자 자산 대비 — 배지 없음 · 툴팁에 검토 문구 없음',
+    pend.ty5Badge === null && NO_MARK(pend.ty5), pend.ty5);
+  P('⑥ 일별 연환산 수익률 열머리 — 배지 없음 · 툴팁 글자 = tyTh()',
+    pend.thBadge === null && pend.th === SF.tyThText && NO_MARK(pend.th), pend.th);
   const pendPf = await evalJS(`
     go('invest-profit','default');
     var sec = document.querySelector('section.screen[data-screen="invest-profit"]');
@@ -641,11 +641,10 @@ async function main(){
             th:th[th.length-1].textContent.trim(),
             values:Array.prototype.map.call(sec.querySelectorAll('.ty-split .summary-value'),
                      function(e){ return e.textContent.trim(); })};`);
-  P('투자 수익 화면도 같은 표기 — ⑤ 배지·확인 대기 행 · ⑥ 열머리',
-    pendPf.ty5Badge === SF.pendBadge && pendPf.ty5.indexOf(SF.pend5Row) >= 0
-    && pendPf.ty5.indexOf(SF.pendRow) < 0
+  P('투자 수익 화면도 같다 — ⑤ 배지 없음 · 검토 문구 없음 · ⑥ 열머리 = tyTh()',
+    pendPf.ty5Badge === '' && NO_MARK(pendPf.ty5)
     && pendPf.th === SF.tyThText, {ty5:pendPf.ty5Badge, th:pendPf.th});
-  P('표기를 붙여도 ⑤ 값 자체는 그대로 뜬다',
+  P('⑤ 값은 그대로 뜬다',
     pendPf.values.length === 2 && /^\d+\.\d\d%$/.test(pendPf.values[1]), pendPf.values);
 
   /* ── 11) 실행 게이트 — 각 칸의 min/max 를 실제로 본다 ── */
@@ -889,9 +888,8 @@ async function main(){
     JSON.stringify(leaf2.status) === JSON.stringify(b.status), {낱장:leaf2.status[0], 통합본:b.status[0]});
   P('낱장 일별 합계행 = 통합본 합계행',
     JSON.stringify(leaf2.foot) === JSON.stringify(b.foot), {낱장:leaf2.foot, 통합본:b.foot});
-  P('낱장도 ⑤ 확인 대기 · ⑥ 재전달 대기 같은 표기',
-    leaf2.ty5Badge === SF.pendBadge && leaf2.ty5.indexOf(SF.pend5Row) >= 0
-    && leaf2.ty5.indexOf(SF.pendRow) < 0
+  P('낱장도 ⑤ 배지 없음 · 검토 문구 없음 · ⑥ 열머리 = tyTh()',
+    leaf2.ty5Badge === '' && NO_MARK(leaf2.ty5)
     && leaf2.dailyTh === SF.tyThText, {ty5:leaf2.ty5Badge, th:leaf2.dailyTh});
 
   /* ── 15) 콘솔 ── */

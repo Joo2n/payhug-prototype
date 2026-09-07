@@ -252,17 +252,6 @@ if _TYX != _TY6:
 
 chk('app.html PAGE_SIZE', re.search(r'var PAGE_SIZE = (\d+);', app).group(1), '10')
 
-# ── ⑥(일별·버킷 행 Ty수익율)이 ⑤ 함수를 거치는 자리 — 미확정 표시 ────
-#   판정하지 않는다. 달 버킷 ⑥ 이 ty5() 를 거치는 것이 맞는지는 대표 확인 문항
-#   Q1(⑤ 산식 재전달)·Q2(③ 이 현황의 어느 칸인가)에 걸려 있다. 어느 쪽이 옳은지 대는 근거가
-#   지금 없으므로 값을 정답으로도 오답으로도 세지 않고, 「미확정에 걸린 자리」로 적어 둔다.
-#   지금 TY6_PSC 가 0 이라 ⑥ 은 ④ 와 같은 값이다 — 그 0 이 바뀌면 월별 Ty 가 통째로 움직인다.
-import daily_ledger as _DL
-_PEND = [('⑤ ty_asset', _DL.TY5_STATUS, _DL.TY5_SOURCE),
-         ('③ ty_third', _DL.TY3_STATUS, _DL.TY3_SOURCE),
-         ('⑥ TY6_PSC', str(_DL.TY6_PSC), 'ty5() 를 거친다 · PSC 0 인 동안 ④ 와 같은 값')]
-PENDING_NOTE = [{'자리': a, '상태': b, '출처': c} for a, b, c in _PEND]
-
 # ── W금융일수 현실 범위 — 조현준 슬랙 2026-08-28 실측 2.0 ~ 6.2일 ──
 from platform_duration import FLOOR, CEIL
 from decimal import Decimal as _DD
@@ -384,9 +373,6 @@ chk('W·S 모집단 건수가 서로 다르다', POP_W_N != POP_S_N, True)
 chk('금액 칸 모집단(미회수)과도 다르다',
     len({len(_LG.RECEIVABLES), _LG.facts()['sampleReceivables'], len(_LG.OPEN)}), 3)
 
-print('== 미확정에 걸린 자리 (판정하지 않는다 · 대표 확인 문항 Q1 ⑤ 산식 · Q2 ③ 이 어느 칸) ==')
-for _r in PENDING_NOTE:
-    print('  · %s — %s (%s)' % (_r['자리'], _r['상태'], _r['출처']))
 print('== 화면 간 정합 %d건 · 불일치 %d ==' % (len(rows_out), fails))
 for name, ok, got, want in rows_out:
     print(('  PASS ' if ok else '  FAIL ') + name)

@@ -10,7 +10,7 @@ SHOW_FORMULA = False 로 두고 돌리면 정적 화면 9종에서도 수익 산
 import io, os, re, sys
 
 ROOT = '/Users/semi/cursor/payhug-investor-admin'
-SHOW_FORMULA = True
+SHOW_FORMULA = False
 
 SCREENS = [
     'acquisition.html', 'acquisition--confirm.html', 'acquisition--signing.html', 'acquisition--done.html',

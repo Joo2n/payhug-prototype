@@ -56,7 +56,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -101,7 +101,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgba(127, 225, 65, 1)",
+   "bg": "rgb(127, 225, 65)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -351,8 +351,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5725,
-   "srcBytes": 5725,
+   "bytes": 5727,
+   "srcBytes": 5727,
    "pass": true
   },
   {
@@ -364,8 +364,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
-   "bytes": 6107,
-   "srcBytes": 6107,
+   "bytes": 6109,
+   "srcBytes": 6109,
    "pass": true
   },
   {
@@ -377,8 +377,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5464,
-   "srcBytes": 5464,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -390,8 +390,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5871,
-   "srcBytes": 5871,
+   "bytes": 5873,
+   "srcBytes": 5873,
    "pass": true
   },
   {
@@ -403,8 +403,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-01_2026-08-27.xlsx",
-   "bytes": 5465,
-   "srcBytes": 5465,
+   "bytes": 5467,
+   "srcBytes": 5467,
    "pass": true
   },
   {
@@ -416,8 +416,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-01_2026-08-27.xlsx",
-   "bytes": 6743,
-   "srcBytes": 6743,
+   "bytes": 6745,
+   "srcBytes": 6745,
    "pass": true
   },
   {
@@ -429,8 +429,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5463,
-   "srcBytes": 5463,
+   "bytes": 5465,
+   "srcBytes": 5465,
    "pass": true
   },
   {
@@ -442,8 +442,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5774,
-   "srcBytes": 5774,
+   "bytes": 5776,
+   "srcBytes": 5776,
    "pass": true
   },
   {
@@ -455,8 +455,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-08_2026-08-27.xlsx",
-   "bytes": 5465,
-   "srcBytes": 5465,
+   "bytes": 5467,
+   "srcBytes": 5467,
    "pass": true
   },
   {
@@ -468,8 +468,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-06-08_2026-08-27.xlsx",
-   "bytes": 6172,
-   "srcBytes": 6172,
+   "bytes": 6174,
+   "srcBytes": 6174,
    "pass": true
   },
   {
@@ -481,8 +481,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5468,
-   "srcBytes": 5468,
+   "bytes": 5470,
+   "srcBytes": 5470,
    "pass": true
   },
   {
@@ -494,8 +494,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5717,
-   "srcBytes": 5717,
+   "bytes": 5719,
+   "srcBytes": 5719,
    "pass": true
   },
   {
@@ -507,8 +507,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5468,
-   "srcBytes": 5468,
+   "bytes": 5470,
+   "srcBytes": 5470,
    "pass": true
   },
   {
@@ -520,8 +520,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5855,
-   "srcBytes": 5855,
+   "bytes": 5857,
+   "srcBytes": 5857,
    "pass": true
   },
   {
@@ -897,7 +897,7 @@
  "layout": [
   {
    "at": "invest-assets/default",
-   "h": 1278,
+   "h": 987,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -906,7 +906,7 @@
   },
   {
    "at": "invest-assets/download",
-   "h": 1278,
+   "h": 987,
    "empties": [],
    "modals": [],
    "wantModal": null,
@@ -915,7 +915,7 @@
   },
   {
    "at": "invest-assets/cert-confirm",
-   "h": 1278,
+   "h": 987,
    "empties": [],
    "modals": [
     "invest-assets-cert-confirm"
@@ -926,7 +926,7 @@
   },
   {
    "at": "invest-assets/empty",
-   "h": 996,
+   "h": 742,
    "empties": [
     "ia-size",
     "ia-merch-page"
@@ -938,7 +938,7 @@
   },
   {
    "at": "invest-profit/default",
-   "h": 1252,
+   "h": 957,
    "empties": [
     "pf-from",
     "pf-to"
@@ -950,7 +950,7 @@
   },
   {
    "at": "invest-profit/monthly",
-   "h": 1207,
+   "h": 912,
    "empties": [
     "pf-from",
     "pf-to"
@@ -962,7 +962,7 @@
   },
   {
    "at": "invest-profit/empty",
-   "h": 992,
+   "h": 734,
    "empties": [
     "pf-from",
     "pf-to"
@@ -1317,8 +1317,8 @@
  "overflow": [
   {
    "at": "invest-assets/default",
-   "sw": 1434,
-   "cw": 1434,
+   "sw": 1440,
+   "cw": 1440,
    "pass": true
   },
   {
@@ -1329,14 +1329,14 @@
   },
   {
    "at": "invest-profit/default",
-   "sw": 1434,
-   "cw": 1434,
+   "sw": 1440,
+   "cw": 1440,
    "pass": true
   },
   {
    "at": "invest-profit/monthly",
-   "sw": 1434,
-   "cw": 1434,
+   "sw": 1440,
+   "cw": 1440,
    "pass": true
   },
   {

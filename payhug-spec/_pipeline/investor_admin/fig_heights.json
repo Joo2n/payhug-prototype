@@ -1,18 +1,18 @@
 {
  "invest-assets": {
-  "content": 1314,
+  "content": 1084,
   "sidebar": 533,
-  "vh": 1314
+  "vh": 1084
  },
  "certificate": {
-  "content": 1168,
+  "content": 1167,
   "sidebar": 533,
-  "vh": 1168
+  "vh": 1167
  },
  "invest-profit": {
-  "content": 1272,
+  "content": 1037,
   "sidebar": 533,
-  "vh": 1272
+  "vh": 1037
  },
  "merchants": {
   "content": 770,
@@ -40,29 +40,29 @@
   "vh": 629
  },
  "invest-assets--download": {
-  "content": 1315,
+  "content": 1085,
   "sidebar": 533,
-  "vh": 1315
+  "vh": 1085
  },
  "invest-assets--cert-confirm": {
-  "content": 1315,
+  "content": 1085,
   "sidebar": 533,
-  "vh": 1315
+  "vh": 1085
  },
  "invest-assets--empty": {
-  "content": 1057,
+  "content": 827,
   "sidebar": 533,
-  "vh": 1057
+  "vh": 827
  },
  "invest-profit--monthly": {
-  "content": 1227,
+  "content": 992,
   "sidebar": 533,
-  "vh": 1227
+  "vh": 992
  },
  "invest-profit--empty": {
-  "content": 1049,
+  "content": 814,
   "sidebar": 533,
-  "vh": 1049
+  "vh": 814
  },
  "merchants--filtered": {
   "content": 425,
@@ -115,19 +115,19 @@
   "vh": 630
  },
  "invest-profit--weekly": {
-  "content": 1137,
+  "content": 902,
   "sidebar": 533,
-  "vh": 1137
+  "vh": 902
  },
  "invest-assets--nav-collapsed": {
-  "content": 1315,
+  "content": 1085,
   "sidebar": 341,
-  "vh": 1315
+  "vh": 1085
  },
  "invest-profit--range-error": {
-  "content": 1073,
+  "content": 838,
   "sidebar": 531,
-  "vh": 1073
+  "vh": 838
  },
  "acquisition--selected": {
   "content": 652,
@@ -145,51 +145,51 @@
   "vh": 629
  },
  "invest-assets--tip-wavg": {
-  "content": 1315,
+  "content": 1085,
   "sidebar": 533,
-  "vh": 1315,
+  "vh": 1085,
   "tip_bottom": 410
  },
  "invest-assets--tip-shortfall": {
-  "content": 1315,
+  "content": 1085,
   "sidebar": 533,
-  "vh": 1315,
+  "vh": 1085,
   "tip_bottom": 410
  },
  "invest-assets--tip-exec": {
-  "content": 1301,
+  "content": 1071,
   "sidebar": 531,
-  "vh": 1301,
-  "tip_bottom": 267
+  "vh": 1071,
+  "tip_bottom": 217
  },
  "invest-assets--tip-yield": {
-  "content": 1301,
+  "content": 1071,
   "sidebar": 531,
-  "vh": 1301,
-  "tip_bottom": 365
+  "vh": 1071,
+  "tip_bottom": 295
  },
  "invest-profit--tip-py-exec": {
-  "content": 1272,
+  "content": 1037,
   "sidebar": 533,
-  "vh": 1272,
-  "tip_bottom": 730
+  "vh": 1037,
+  "tip_bottom": 627
  },
  "invest-profit--tip-py-asset": {
-  "content": 1272,
+  "content": 1037,
   "sidebar": 533,
-  "vh": 1272,
-  "tip_bottom": 691
+  "vh": 1037,
+  "tip_bottom": 648
  },
  "invest-profit--tip-exec": {
-  "content": 1272,
+  "content": 1037,
   "sidebar": 533,
-  "vh": 1272,
-  "tip_bottom": 716
+  "vh": 1037,
+  "tip_bottom": 683
  },
  "invest-profit--tip-yield": {
-  "content": 1272,
+  "content": 1037,
   "sidebar": 533,
-  "vh": 1272,
-  "tip_bottom": 753
+  "vh": 1037,
+  "tip_bottom": 720
  }
 }

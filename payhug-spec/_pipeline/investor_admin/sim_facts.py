@@ -188,26 +188,15 @@ def bound_probe(b):
     return ('%g' % (b['max'] + 1)) if b['max'] is not None else '-5000000'
 
 
-# ── 대표 재전달 대기 표기 — 통합본 마크업에서 글자만 뽑는다 ────────
+# ── ⑥ 열머리 — 통합본 tyTh() 안의 문자열 조각을 이어 붙여 화면에 뜰 글자를 만든다 ──
+#   열머리에 배지·툴팁 대기 행이 없어야 한다(투자자 화면에 내부 검토 표시 0건).
 _TAG = re.compile(r'<[^>]+>')
 _LIT = re.compile(r"'([^']*)'")
-_PEND_BADGE_HTML = re.search(r"var PEND_BADGE = '(.*?)';", _SRC).group(1)
-_PEND_ROW_HTML = re.search(r"var PEND_ROW   = '(.*?)';", _SRC).group(1)
-# ⑤ 전용 행 — ⑤ 는 우리 확정안이라 「대표 확인 대기」, ③·⑥ 은 「대표 재전달 대기」 그대로
-# (step7 ⑤ 산식 교체 2026-09-04 · build_app.py PEND5_ROW). 두 문면이 갈라졌으니 따로 뽑는다.
-_PEND5_ROW_HTML = re.search(r"var PEND5_ROW  = '(.*?)';", _SRC).group(1)
-PEND_BADGE_TEXT = _TAG.sub('', _PEND_BADGE_HTML).strip()
-PEND_ROW_TEXT = _TAG.sub('', _PEND_ROW_HTML).strip()
-PEND5_ROW_TEXT = _TAG.sub('', _PEND5_ROW_HTML).strip()
-assert PEND5_ROW_TEXT != PEND_ROW_TEXT, (PEND5_ROW_TEXT, PEND_ROW_TEXT)
-
-# ⑥ 열머리 — tyTh() 안의 문자열 조각을 이어 붙여 화면에 뜰 글자를 만든다.
 _TYTH = re.search(r'function tyTh\(\)\{(.*?)\n\}', _SRC, re.S).group(1)
-_TYTH = _TYTH.replace('PEND_ROW', "'" + _PEND_ROW_HTML + "'")
-_TYTH = _TYTH.replace('PEND_BADGE', "'" + _PEND_BADGE_HTML + "'")
 TY_TH_HTML = ''.join(_LIT.findall(_TYTH))
 TY_TH_TEXT = _TAG.sub('', TY_TH_HTML).strip()
-assert TY_TH_TEXT.startswith('연환산 수익률') and PEND_ROW_TEXT in TY_TH_TEXT, TY_TH_TEXT
+assert TY_TH_TEXT.startswith('연환산 수익률') and 'badge' not in TY_TH_HTML \
+    and '미확정' not in TY_TH_TEXT and '대기' not in TY_TH_TEXT, TY_TH_TEXT
 
 # ── 투자자산 규모 · 유휴자금 비율 — 통합본 simApplyScale 과 같은 규칙 ──
 def _split(total, w):
@@ -298,10 +287,7 @@ def facts():
         'bounds': [dict(b, msg=bound_msg(b), probe=bound_probe(b)) for b in BOUNDS],
         'rangeMsg': '시작일은 종료일보다 이후일 수 없습니다.',
         'amtMsg': '순지급액 범위 0 이상',
-        # 대표 재전달 대기 표기
-        'pendBadge': PEND_BADGE_TEXT,
-        'pendRow': PEND_ROW_TEXT,
-        'pend5Row': PEND5_ROW_TEXT,
+        # ⑥ 열머리 글자(배지 없음)
         'tyThText': TY_TH_TEXT,
         # 투자자산 규모 · 유휴자금 비율
         'seedAsset': str(base['EXEC'] + B.CASH),
