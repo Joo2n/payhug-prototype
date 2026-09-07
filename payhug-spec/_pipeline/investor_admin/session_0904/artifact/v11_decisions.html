@@ -1,0 +1,272 @@
+<title>V1.1 고칠 자리 결정표</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#FBFAF8; --paper:#FFF; --sunk:#F4F1EC;
+  --ink:#1C1B19; --mute:#6E6A63; --faint:#938E86;
+  --rule:#E3DFD8; --rule-hard:#CFC8BC;
+  --ok:#2F6B4F; --ok-bg:#2F6B4F14;
+  --no:#A63D2F; --no-bg:#A63D2F14;
+  --pick:#2C4470; --pick-bg:#2C447012;
+  --amber:#8A5A00; --amber-bg:#8A5A0014;
+  --shadow:0 1px 2px #1c1b1910, 0 10px 28px #1c1b190a;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#15161A; --paper:#1C1E23; --sunk:#22252B;
+  --ink:#ECE9E4; --mute:#9C978E; --faint:#7A756D;
+  --rule:#2C3038; --rule-hard:#3B404A;
+  --ok:#6FBF93; --ok-bg:#6FBF9320; --no:#E08573; --no-bg:#E0857320;
+  --pick:#93AEE0; --pick-bg:#93AEE01C; --amber:#E0B060; --amber-bg:#E0B06020;
+  --shadow:0 1px 2px #00000050, 0 10px 28px #00000038;
+}}
+:root[data-theme="dark"]{
+  --bg:#15161A; --paper:#1C1E23; --sunk:#22252B;
+  --ink:#ECE9E4; --mute:#9C978E; --faint:#7A756D;
+  --rule:#2C3038; --rule-hard:#3B404A;
+  --ok:#6FBF93; --ok-bg:#6FBF9320; --no:#E08573; --no-bg:#E0857320;
+  --pick:#93AEE0; --pick-bg:#93AEE01C; --amber:#E0B060; --amber-bg:#E0B06020;
+  --shadow:0 1px 2px #00000050, 0 10px 28px #00000038;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+  font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:40px 20px 100px}
+code,.sym,.f{font-family:"IBM Plex Mono",ui-monospace,monospace}
+h1{font-family:"Noto Serif KR",serif;font-size:30px;font-weight:700;letter-spacing:-.02em;margin:0 0 8px}
+.lead{color:var(--mute);margin:0 0 30px;max-width:70ch}
+h2{font-family:"Noto Serif KR",serif;font-size:21px;font-weight:700;margin:52px 0 6px;padding-top:24px;border-top:2px solid var(--rule-hard);display:flex;gap:12px;align-items:baseline}
+h2 .k{display:inline-block;min-width:38px;height:38px;line-height:38px;text-align:center;border-radius:8px;
+  background:var(--pick);color:#fff;font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:600}
+h3{font-size:14px;font-weight:700;margin:22px 0 8px;color:var(--mute);letter-spacing:.04em}
+.where{font-size:13px;color:var(--mute);margin:0 0 14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
+.box .cap{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--mute);margin-bottom:8px}
+.box.now .cap{color:var(--no)} .box.next .cap{color:var(--ok)}
+.row{font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.75;white-space:pre-wrap;
+  background:var(--sunk);border-radius:6px;padding:9px 12px;margin:6px 0}
+.row b{font-weight:600}
+del{color:var(--no);text-decoration:line-through;text-decoration-thickness:1.5px}
+ins{color:var(--ok);text-decoration:none;font-weight:600;background:var(--ok-bg);border-radius:3px;padding:0 3px}
+.why{border-left:3px solid var(--rule-hard);padding:6px 14px;margin:12px 0;color:var(--ink)}
+.why q{font-style:normal;color:var(--pick);quotes:"「" "」"}
+.why q::before{content:open-quote}.why q::after{content:close-quote}
+.opt{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.opt span{display:inline-block;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;border:1.5px solid var(--rule-hard);background:var(--paper)}
+.opt span.rec{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+.sub{margin:26px 0 0;padding:0 0 0 14px;border-left:2px solid var(--rule)}
+.sub h4{margin:0 0 6px;font-size:14px}
+.sub h4 .n{font-family:"IBM Plex Mono",monospace;color:var(--pick);margin-right:8px}
+.tip{display:inline-block;background:#1f2937;color:#fff;border-radius:6px;padding:8px 12px;font-size:12px;line-height:1.7;max-width:420px}
+.tip .g{color:#86efac}
+.tip .h{display:block;margin-bottom:4px}
+.tip .r{display:flex;justify-content:space-between;gap:16px}
+.badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:700;background:var(--amber-bg);color:var(--amber);margin:0 3px}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--paper)}
+th,td{padding:7px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule)}
+th{background:var(--sunk);font-size:11px;color:var(--mute);letter-spacing:.05em}
+.scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;margin:10px 0}
+.howto{background:var(--pick-bg);border:1px solid var(--pick);border-radius:10px;padding:14px 18px;margin:36px 0 0}
+</style>
+
+<div class="wrap">
+
+<h1>V1.1 고칠 자리 결정표</h1>
+<p class="lead">기호정리표 V1.1 워드와 화면에서 결정이 필요한 자리마다 <b>지금 문구</b>와 <b>바꾸면 이렇게 되는 문구</b>를 나란히 두었습니다. 붉은 취소선은 빠지는 말, 초록은 들어가는 말입니다. 맨 아래 「답하는 법」대로 글자만 적어 주시면 됩니다.</p>
+
+<!-- ───────────── A ───────────── -->
+<h2><span class="k">A</span> 내부 용어 ↔ 투자자 화면 용어를 문서 앞에서 정하고, 본문에 병기</h2>
+<p class="where">워드 표 1 「이름 짓는 규칙」 · 표 2 「전체 기호」 3행 · 표 4</p>
+
+<div class="why">말씀하신 것 — <q>분명히 대상정산금채권을 내부용어로 사용하고 외부용어로 보유 채권으로 하기로 했는데 그런 정리 내용도 없고 병기도 없는데</q>. 지금은 맨 뒤 표 4 에 「대상정산금채권 → 보유 채권」 한 줄만 있고, 앞쪽 규칙과 본문 병기가 없습니다.</div>
+
+<div class="two">
+<div class="box now"><div class="cap">지금 (V1.1)</div>
+<div class="row">표 1 · 첨자 i | 대상정산금채권 하나의 ID | A_i D_i</div>
+<div class="row">표 2 · 투자자산 | Σ A_i + EC
+i 는 선정산일이 d 전날 이전이고 정산예정일이 d 이후인 대상정산금채권 …</div>
+<div class="row">표 2 · D | i 는 대상정산금채권 전체 (회수된 것 포함)</div>
+<div class="row">표 4 · 대상정산금채권 | 보유 채권 | …</div>
+</div>
+<div class="box next"><div class="cap">바꾸면</div>
+<div class="row">표 1 · <ins>내부 용어 | 이 표는 내부 용어로 쓴다. 투자자 화면 용어는 표 4 | 대상정산금채권 → 보유 채권</ins>   ← 행 추가</div>
+<div class="row">표 1 · 첨자 i | 대상정산금채권<ins>(보유 채권)</ins> 하나의 ID | A_i D_i</div>
+<div class="row">표 2 · 투자자산 | Σ A_i + EC
+i 는 … 정산예정일이 d 이후인 대상정산금채권<ins>(보유 채권)</ins> …</div>
+<div class="row">표 2 · D | i 는 대상정산금채권<ins>(보유 채권)</ins> 전체 …</div>
+<div class="row">표 4 · 그대로</div>
+</div>
+</div>
+<div class="opt"><span class="rec">A 이대로</span><span>A 문구 다르게 (문구 적어 주세요)</span><span>A 안 함</span></div>
+
+<!-- ───────────── J ───────────── -->
+<h2><span class="k">J</span> EC(순현금) 정의에서 날짜를 뺀다</h2>
+<p class="where">워드 표 2 「EC」 행 · 「Σ A_i + EC」 행 · 표 3 「EC 시점」 행</p>
+
+<div class="why">말씀하신 것 — <q>EC가 전날 마감 자산이라고만 하면 이게 일자별에서 문제되지 않아? P가 붙었을 때도 조회시점 또는 특정일자라는 개념이 아니게 되잖아</q>. EC 정의에 「d 전날」을 박아 두면 EC 는 오늘에 매인 값 하나가 되어, 일별 표의 각 날짜 행이나 PEC(「P 안 각 날 마감시점 EC 를 더한 값」)에서 「그날의 EC」가 성립하지 않습니다. 정의에는 날짜를 두지 않고, 어느 날인지는 쓰는 자리가 정합니다. A_i(채권 한 건)와 D(날짜 없이 정의)에 이미 쓰고 있는 방식입니다.</div>
+
+<div class="two">
+<div class="box now"><div class="cap">지금 (V1.1)</div>
+<div class="row">표 2 · EC | 순현금 | <del>d 전날 마감시점</del> 쿠콘 가상계좌의 현금 잔액</div>
+<div class="row">표 2 · Σ A_i + EC | 투자자산 | Σ A_i + EC
+i 는 선정산일이 d 전날 이전이고 정산예정일이 d 이후인 대상정산금채권 (d 전날 마감까지 회수되지 않은 채권)
+<del>d 전날 마감 시점의 자산</del></div>
+<div class="row">표 3 · EC 시점 | d 마감시점 | <del>d 전날 마감시점</del></div>
+<div class="row">표 2 · PEC | P 안 각 날 마감시점 EC 를 더한 값   (그대로)</div>
+</div>
+<div class="box next"><div class="cap">바꾸면</div>
+<div class="row">표 2 · EC | 순현금 | <ins>그날 마감시점</ins> 쿠콘 가상계좌의 현금 잔액</div>
+<div class="row">표 2 · Σ A_i + EC | 투자자산 | Σ A_i + EC
+i 는 선정산일이 d 전날 이전이고 정산예정일이 d 이후인 대상정산금채권(보유 채권)
+<ins>EC 는 d 전날의 값</ins></div>
+<div class="row">표 3 · EC 시점 | d 마감시점 | <ins>날짜 없이 「그날 마감시점」. 어느 날인지는 쓰는 자리가 정한다 (투자 자산 화면은 d 전날, PEC 는 P 안 각 날)</ins></div>
+<div class="row">표 2 · PEC | P 안 각 날 마감시점 EC 를 더한 값   (그대로. EC 가 「그날 값」이 되어 뜻이 선다)</div>
+</div>
+</div>
+<div class="opt"><span class="rec">J 진행</span><span>J 문구 다르게</span><span>J 보류</span></div>
+
+<!-- ───────────── M ───────────── -->
+<h2><span class="k">M</span> 사용자 결정에 없던 변경 12곳 — 하나씩 유지/삭제</h2>
+<p class="where">V1.0 과 V1.1 을 줄 단위로 대조해 「정한 것에서 나오지 않은」 문구를 골라낸 것</p>
+
+<div class="why">말씀하신 것 — <q>1.1버전에 내가 썼던 말투와 그 내용구조로 적은 게 맞아?</q>. 아래 12곳은 d 를 오늘로 바꾸는 과정에서 점검 조가 「이 문장이 없으면 다르게 읽힌다」고 해서 제가 넣은 설명이거나, 표를 새로 만들며 제 문장으로 쓴 것입니다. 각각 유지할지 지울지 정해 주시면 그대로 반영합니다.</div>
+
+<div class="sub"><h4><span class="n">M1</span>표 2 · Σ A_i 행의 괄호 설명</h4>
+<div class="row">Σ A_i
+i 는 선정산일이 d 전날 이전이고 정산예정일이 d 이후인 채권 <del>(d 전날 마감까지 회수되지 않은 채권)</del></div>
+<p>조건 문장을 쉬운 말로 되풀이한 것. 없어도 뜻은 같습니다.</p>
+<div class="opt"><span>유지</span><span>삭제</span></div></div>
+
+<div class="sub"><h4><span class="n">M2</span>표 2 · Σ A_i + EC 행의 괄호 설명</h4>
+<div class="row">i 는 선정산일이 d 전날 이전이고 정산예정일이 d 이후인 대상정산금채권 <del>(d 전날 마감까지 회수되지 않은 채권)</del></div>
+<p>M1 과 같은 문장. M1 과 같이 정하면 됩니다.</p>
+<div class="opt"><span>유지</span><span>삭제</span></div></div>
+
+<div class="sub"><h4><span class="n">M3</span>표 2 · Σ A_i + EC 행의 셋째 줄 「d 전날 마감 시점의 자산」</h4>
+<div class="row"><del>d 전날 마감 시점의 자산</del>  →  J 에서 「EC 는 d 전날의 값」으로 바뀜</div>
+<p>J 를 진행하면 자동으로 정리됩니다.</p>
+<div class="opt"><span>J 따름</span></div></div>
+
+<div class="sub"><h4><span class="n">M4</span>표 2 · EC 행의 「d 전날 마감시점」</h4>
+<div class="row"><del>d 전날 마감시점</del> 쿠콘 가상계좌의 현금 잔액  →  J</div>
+<div class="opt"><span>J 따름</span></div></div>
+
+<div class="sub"><h4><span class="n">M5</span>표 3 · 「EC 시점」 행 (V1.0 에 없던 행)</h4>
+<div class="row">EC 시점 | d 마감시점 | d 전날 마감시점  →  J 에서 문구 교체, 또는 행 삭제</div>
+<div class="opt"><span>J 문구로 유지</span><span>행 삭제</span></div></div>
+
+<div class="sub"><h4><span class="n">M6</span>표 3 · 「미회수 조건」 행 (V1.0 에 없던 행) 과 그 괄호</h4>
+<div class="row">미회수 조건 | 정산예정일이 d 보다 뒤 | 선정산일이 d 전날 이전이고 정산예정일이 d 이후 <del>(d 당일 정산예정 채권은 그날 밤 배치 전이라 미회수)</del></div>
+<p>V1.0→V1.1 에서 조건이 바뀐 것을 변경내역표에 적은 행입니다. 괄호는 「오늘 정산예정 채권을 왜 미회수로 세는가」 설명.</p>
+<div class="opt"><span>행 유지·괄호 유지</span><span>행 유지·괄호 삭제</span><span>행 삭제</span></div></div>
+
+<div class="sub"><h4><span class="n">M7</span>표 3 · 「PEC 표기」 행 (V1.0 에 없던 행)</h4>
+<div class="row">PEC 표기 | Σ EC   d ∈ P | P 안 각 날 마감시점 EC 를 더한 값 (문장)</div>
+<p>V1.0 의 「Σ EC d ∈ P」를 문장으로 바꾼 것을 변경내역에 적은 행.</p>
+<div class="opt"><span>유지</span><span>삭제</span></div></div>
+
+<div class="sub"><h4><span class="n">M8</span>표 2 · D(투자 자산) 행의 「(회수된 것 포함)」</h4>
+<div class="row">i 는 대상정산금채권 전체 <del>(회수된 것 포함)</del></div>
+<p>V1.0 은 「전체」까지였습니다. 「전체」가 미회수만으로 읽힐 수 있다는 점검 의견으로 덧붙였고, 화면 툴팁(「보유 채권 전체 (회수된 것 포함)」)도 같은 문구입니다. 지우면 화면 툴팁도 「보유 채권 전체」로 같이 줄입니다.</p>
+<div class="opt"><span>유지</span><span>삭제 (화면 툴팁도)</span></div></div>
+
+<div class="sub"><h4><span class="n">M9</span>표 2 · LR 행의 셋째 줄</h4>
+<div class="row">LR = Σ L_i ÷ Σ A_i
+i 는 선정산일이 d 의 20일 전부터 11일 전까지인 채권
+<del>분모 Σ A_i 는 같은 표본의 투자 실행액 합</del></div>
+<p>분모의 Σ A_i 가 투자 자산 화면의 「투자실행액 8천만」으로 읽히지 않게 넣은 문장.</p>
+<div class="opt"><span>유지</span><span>삭제</span></div></div>
+
+<div class="sub"><h4><span class="n">M10</span>표 4 · 「보유 채권」 행의 툴팁 칸</h4>
+<div class="row">대상정산금채권 | 보유 채권 | <del>보유 채권 전체 (회수된 것 포함)</del></div>
+<p>화면에서 이 문구는 「가중평균 금융일수」 열머리 툴팁에 있고, 「보유 채권」이라는 라벨 자체의 툴팁은 아닙니다. M8 과 같이 정하면 됩니다.</p>
+<div class="opt"><span>유지</span><span>삭제</span><span>「가중평균 금융일수 툴팁」으로 자리 표기</span></div></div>
+
+<div class="sub"><h4><span class="n">M11</span>표 4 · 「예상 연환산 수익률」 행의 툴팁 칸 → B 에서 결정</h4>
+<div class="row">예상 ty수익률 (Y_r) | 예상 연환산 수익률 | <del>계약된 할인율 기준 예상치</del></div>
+<div class="opt"><span>B 따름</span></div></div>
+
+<div class="sub"><h4><span class="n">M12</span>표 2 아래 각주의 첫 문장 · 표 4 마지막 행 괄호</h4>
+<div class="row"><del>「i ∈ P」는 정산예정일이 P 안인 채권이다.</del> 일별 표의 한 행은 P 가 1일인 경우다. 주별은 7일, 월별은 그 달의 일수다.</div>
+<div class="row">PA PM PB PMR PD PEC PY_a | 화면에 쓰지 않음 | 툴팁에서만 <del>(투자 수익 카드 ④ 투자실행금액 대비 연환산 수익률 = PY_a)</del></div>
+<p>각주 첫 문장은 「i ∈ P」가 어느 날짜 기준인지 적은 것(회수일). 표 4 괄호는 예시.</p>
+<div class="opt"><span>둘 다 유지</span><span>각주 유지·괄호 삭제</span><span>둘 다 삭제</span></div></div>
+
+<!-- ───────────── B ───────────── -->
+<h2><span class="k">B</span> 표 4 툴팁 칸이 화면 툴팁과 다르다</h2>
+<p class="where">워드 표 4 「예상 연환산 수익률」 행 · 투자 자산 화면 「예상 연환산 수익률」 카드·열머리 툴팁</p>
+
+<div class="two">
+<div class="box now"><div class="cap">워드 표 4</div>
+<div class="row">예상 ty수익률 (Y_r) | 예상 연환산 수익률 | 계약된 할인율 기준 예상치</div>
+</div>
+<div class="box now"><div class="cap">화면 툴팁 (실제)</div>
+<span class="tip"><span class="h">Y<sub>r</sub> · 예상 연환산 수익률 · r × 365 ÷ D</span><span class="r"><span>연환산</span><span class="g">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span></span>
+</div>
+</div>
+<p>「계약된 할인율 기준 예상치」라는 문장은 화면 어디에도 없습니다. 둘 중 하나로 맞춰야 합니다.</p>
+<div class="opt"><span class="rec">B1 표 4 를 화면 문구로 (「Y_r · r × 365 ÷ D + 연환산 행」)</span><span>B2 화면 툴팁에 「계약된 할인율 기준 예상치」 행 추가</span><span>B3 표 4 툴팁 칸 비움</span></div>
+
+<!-- ───────────── C ───────────── -->
+<h2><span class="k">C</span> 일별 표 열머리 툴팁에 회의 메모와 ①~⑥ 번호가 남아 있다</h2>
+<p class="where">투자 수익 화면 · 일별 표 열머리 「투자실행금」·「연환산 수익률」 툴팁 (전체본·시연본·Figma 03-h·03-i)</p>
+
+<div class="why">QA 최상위 결함. 「칸 미지목」은 8/31 회의 메모이고, ③④⑤⑥ 은 대표 정의서의 번호 체계라 투자자에게는 뜻이 없습니다. 검토 표시를 뺄 때 이 두 툴팁은 문구가 달라 걸리지 않았습니다.</div>
+
+<div class="two">
+<div class="box now"><div class="cap">지금 (실제 화면)</div>
+<span class="tip"><span class="h">⑥ 의 ③</span><span class="r"><span>번호</span><span class="g">상단 현황의 기간 전체 숫자 · 칸 미지목</span></span></span>
+<div style="height:8px"></div>
+<span class="tip"><span class="h">(④ ÷ ③) × 365 ÷ ⑤</span><span class="r"><span>번호</span><span class="g">일별 표 열 ③투자실행금 ④투자 수익 ⑤가중평균 금융일수</span></span><span class="r"><span>행</span><span class="g">정산예정일이 그 날짜인 보유 채권</span></span></span>
+</div>
+<div class="box next"><div class="cap">C1 · V1.1 기호로 바꾸면</div>
+<span class="tip"><span class="h">PA · 투자실행금 · Σ A<sub>i</sub></span><span class="r"><span>행</span><span class="g">정산예정일이 그 날짜인 보유 채권</span></span></span>
+<div style="height:8px"></div>
+<span class="tip"><span class="h">PY<sub>a</sub> · 연환산 수익률 · PMR × 365 ÷ PD</span><span class="r"><span>연환산</span><span class="g">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span><span class="r"><span>행</span><span class="g">정산예정일이 그 날짜인 보유 채권 (P 가 1일)</span></span></span>
+</div>
+</div>
+<div class="opt"><span class="rec">C1 기호로 바꿈</span><span>C2 두 툴팁 뺌</span></div>
+
+<!-- ───────────── D ───────────── -->
+<h2><span class="k">D</span> 화면 제목 옆 상태 배지</h2>
+<p class="where">통합본·시연본 모든 화면 h1 옆 (실제 어드민 프론트에는 없음)</p>
+<p>상태를 보여 주려고 붙인 배지입니다. 예:
+<span class="badge">주별</span><span class="badge">월별</span><span class="badge">검색 적용</span><span class="badge">결과 없음</span><span class="badge">데이터 없음</span><span class="badge">엑셀 다운로드 완료</span><span class="badge">증명서 발급 확인</span><span class="badge">서명 진행</span><span class="badge">규칙 미충족</span><span class="badge">변경 완료</span></p>
+<p>실제 프론트에는 이런 배지가 없어 QA 가 「임의생성」으로 잡았습니다. 시연본은 대표님·투자자가 보는 것이라 빼는 쪽을 권합니다.</p>
+<div class="opt"><span class="rec">D1 전부 뺌 (통합본·시연본·Figma)</span><span>D2 시연본만 뺌</span><span>D3 유지</span></div>
+
+<!-- ───────────── H ───────────── -->
+<h2><span class="k">H</span> 문서 페이지 8종과 용어 해설 단독 배포에 남은 검토 표시</h2>
+<p class="where">통합본 전용 문서(용어 해설·capability·inquiry·steps-all·terms-edit·feasibility·ceo-questions·archive) · 공개 URL https://payhug-investor-glossary.vercel.app/</p>
+<div class="scroll"><table>
+<thead><tr><th>페이지</th><th>「미확정」</th><th>「대표 DM」</th><th>「조달이자형」</th><th>비고</th></tr></thead>
+<tbody>
+<tr><td>용어 해설 glossary</td><td>36</td><td>25</td><td>4</td><td>단독 배포 URL 도 같은 내용, 공개</td></tr>
+<tr><td>capability</td><td>22</td><td>—</td><td>1</td><td></td></tr>
+<tr><td>steps-all</td><td>19</td><td>27</td><td>2</td><td></td></tr>
+<tr><td>terms-edit</td><td>12</td><td>22</td><td>0</td><td></td></tr>
+<tr><td>feasibility</td><td>10</td><td>—</td><td>—</td><td></td></tr>
+<tr><td>ceo-questions · inquiry · archive</td><td>3 · — · 1</td><td>—</td><td>— · 6 · —</td><td></td></tr>
+</tbody></table></div>
+<p>이 페이지들은 내용 자체가 「무엇이 미정인가」를 다루는 내부 문서라 낱말만 지우면 뜻이 깨집니다. 옛 기호 체계(wD·PwD·PY_MR)도 함께 남아 있어 원고를 다시 써야 합니다. 시연본에는 없습니다.</p>
+<div class="opt"><span class="rec">H1 용어 해설 단독 배포를 내림 (Vercel 일시정지), 원고는 다음 라운드</span><span>H2 8종 원고 재작성 (긴 작업)</span><span>H3 그대로 둠</span></div>
+
+<!-- ───────────── 결정 없이 고칠 것 ───────────── -->
+<h2><span class="k">—</span> 결정 없이 고칠 것</h2>
+<div class="scroll"><table>
+<thead><tr><th style="width:8%">#</th><th>무엇</th><th>어디</th></tr></thead>
+<tbody>
+<tr><td>K</td><td>원고 <code>final_terms.json</code> 을 V1.1 본문과 맞추고(⑤ 전개 전문·「가중치」→「비중」·용어 이름), 검사기가 V1.1 워드·HTML 실물을 읽게 한다. 지금 「151건 통과」는 원고만 본 것</td><td>파이프라인</td></tr>
+<tr><td>E</td><td>투자 수익 날짜 칸에 키보드로 날짜를 치면 빈 값이 되어 180일 전체가 조회됨. 실제 프론트는 친 값이 남음</td><td>통합본·시연본</td></tr>
+<tr><td>F</td><td>증명서 제목이 세 군데 다름(화면 h1 「가맹점별 투자자산 증명서」 · 문서 「투자자산 현황」 · PDF 「투자자산 증명서 (견본)」)과 PDF 에만 「견본 · 계약 효력 없음」 띠</td><td>증명서 화면·PDF</td></tr>
+<tr><td>L</td><td>Figma 레이어 이름 3개가 옛 띄어쓰기(「예상 연환산수익률 카드」 등). 화면 글자는 맞음</td><td>Figma</td></tr>
+</tbody></table></div>
+
+<div class="howto">
+<b>답하는 법</b> — 글자만 적어 주시면 됩니다. 예: <code>A 이대로 · J 진행 · M1 삭제 M2 삭제 M6 행 유지 괄호 삭제 M7 유지 M8 유지 M9 유지 M10 삭제 M12 둘 다 유지 · B1 · C1 · D1 · H1</code><br>
+정해 주시면 순서는 ① 워드·HTML·아티팩트·원고·검사기(A·J·M·B·K) → ② 화면 재생성·배포·Figma 교체(C·D·E·F·L) → ③ H 입니다.
+</div>
+
+</div>
