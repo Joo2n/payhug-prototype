@@ -15,8 +15,8 @@
 | ⑤ 투자 자산 대비 연환산 수익률 | `PY_t = PY_a × 채권 비중 + 0 × 순현금 비중 = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC )`, i 는 정산예정일이 P 안인 채권. 채권 비중 = Σ(A_i×D_i) ÷ (Σ(A_i×D_i)+PEC). 기호표 ⑤ 칸에 전개 전문(순현금 수익률 0 항·PMR·PD 대입·약분) | 교차검증 `session_0904/verify/xv_*.md` · 잔액 하루씩 7일 합 564,855,018 ≈ Σ(A_i×D_i) 559,275,516 (경계 채권 1%) |
 | 기본 조회기간 값 | 투자실행금 179,970,919 · 투자수익 61,175 · PD 3.11 · ④ **3.99%** · Σ(A_i×D_i) 559,275,516 · PEC 140,000,000 · ⑤ **3.19%** | `ledger_facts.json` `weekExec`·`weekProfit`·`weekTy`·`weekAD`·`weekPsc`·`weekTyAsset` |
 | 표기 규칙 셋 | 정의 줄은 `이름 = Σ 낱건, 범위` · 조립 산식은 이름으로만 · 한 산식 안에서 풀기/접기 혼용 금지 | `session_0904/reports/step7_notation_report.md` |
-| 낱말 | 「비중」으로 통일(가중치 낱말 안 씀). 띄어쓰기 「보유 채권」「연환산 수익률」「예상 연환산 수익률」「투자 자산 대비」, 「투자실행금액 대비」는 붙임 | 기호표 표 4 · `verify_final_terms.py` S6·S7 |
-| 내부 용어 ↔ 투자자 화면 (표 4) | 대상정산금채권 → 보유 채권 · ty수익률 → 연환산 수익률(툴팁 「일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률」) · 오늘(d) → 표시하지 않음 · 조회기간(P) → 검색대상기간 | 대표님 DM 9/7 합의 · `final_terms.json` `screen_terms` |
+| 낱말 | 「비중」으로 통일(가중치 낱말 안 씀). 띄어쓰기 「보유 채권」「연환산 수익률」「예상 연환산 수익률」「투자 자산 대비」, 「투자실행금액 대비」는 붙임 | 기호표 V1.1 본문. 단 원고 `final_terms.json` 에는 「가중치」 3건이 남아 있고 검사기 S6·S7 은 띄어쓰기만 본다 (다음 라운드 K) |
+| 내부 용어 ↔ 투자자 화면 (표 4) | 대상정산금채권 → 보유 채권 · ty수익률 → 연환산 수익률(툴팁 「일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률」) · 오늘(d) → 표시하지 않음 · 조회기간(P) → 검색대상기간 | 대표님 DM 9/7 합의(워드 변경 추적본에는 없음 — 추적본은 첨자 d·EC_d·⑤ 되돌림뿐) · `final_terms.json` `screen_terms` |
 | 대표님 워드 변경 판정 | 채택: 보유 채권 · 연환산 수익률 툴팁 · 내부/화면 분리. 비채택: 첨자 d 규칙 · 상수 d 행 삭제 · `EC_d`·`Σ EC_d` · ⑤ `PM ÷ (PA + PEC)` 되돌림 | `/Users/semi/Downloads/투자자어드민 기호정리표_V1.0.docx`(변경 추적본) · 메모리 `feedback_confirmed_doc_is_baseline.md` |
 | 화면 라벨·툴팁 | 투자 자산: 「기준일」 알약 없음 · 열머리 가중평균 금융일수(툴팁 「보유 채권 전체 (회수된 것 포함)」)·입금부족률(툴팁 「선정산일이 오늘 기준 20일 전 ~ 11일 전」)·예상 연환산 수익률(툴팁 Y_r 머리 + 「연환산」 행, 카드·현황표·가맹점별). 투자 수익: ④ 투자실행금액 대비 · ⑤ 투자 자산 대비, 툴팁 기호마다 용어명·값·「연환산」 행. **검토 표시 0건**(「미확정」「대표 확인 대기」「대표 재전달」「대표 DM」「(관찰된 값)」「항등식」「부족액 0」「일 환산」) · 「수익 산정 기준」 구역 없음(`build_app.py` `SHOW_FORMULA = False`, 낱장은 `sync_*_static.py` `drop_formula()`) | `build_app.py` `YR_TIP_HEAD`·`YR_TIP_ROW`·`yrTh()`·`tyTh`·`thirdTh` · `sync_assets_static.py`·`sync_profit_static.py` · 빌더 `session_0904/reports/step11_builder_report.md` · QA `step10_qa_report.md`·`step11_qa_report.md` · 메모리 `feedback_no_internal_marks_in_investor_ui.md` |
 | 시연본 범위 | 사이드바 7메뉴 · 화면 9 · 상태 17. 시뮬레이션·엑셀 미리보기·화면 갤러리는 통합본 전용 | `scripts/sync_prototype.py` `drop_sim()`·`drop_xls_preview()` · `gate_prototype.js` |
@@ -70,6 +70,9 @@
 | G | 사용자 결정 15개 대 V1.1·화면 감사 결과 반영 | `scratchpad/audit_0907_decisions.md`(감사 조 진행 중이었음. 없으면 다시 돌린다) | 대기 |
 | H | 문서 페이지 8종·용어 해설 단독 배포 잔존(위 3·6번) | | 결정 필요 |
 | I | 표 1 「관찰된 값」 낱말 유지 여부 | 표 1 첨자 a·t | 확인 필요 |
+| K | **원고 `final_terms.json` 을 V1.1 본문과 맞추고 검사기가 V1.1 실물(html·docx)을 읽게** — 지금 검사기는 JSON 만 보고 151/151 이라 V1.1 통과가 아님. JSON 에 ⑤ 전개 전문 없음(`:273`)·「가중치」 3건(`:13,175`)·w 규칙 잔존·term 이름 「기간 …」 vs 문서 「조회대상기간의 …」 | `final_terms.json` · `verify_final_terms.py` · 감사 `session_0904/reports/audit_0907_decisions.md` | A·J 와 함께 |
+| L | Figma 레이어 이름 3건 옛 띄어쓰기(「예상 연환산수익률 카드」 3711:2 · 「투자자산 대비」 3723:2 · 「연환산수익률 열머리」 3724:2). 텍스트는 맞음 | `use_figma` 이름만 변경 · `figma_map_investor.json` frame_name | 사소 |
+| M | V1.1 에서 **사용자 결정에 없는 변경 12곳** — 조건 문장 괄호 설명 3 · EC·투자자산 「d 전날 마감」 3 · D 「(회수된 것 포함)」 · LR 「분모 …」 · 표 3 신설 3행 · 표 4 툴팁 R1·R3·R10 · 「i ∈ P」 각주. 각각 유지/삭제를 사용자가 정한다 | `audit_0907_decisions.md` 「어시스턴트가 지어 넣은 문장」 표 | 결정 필요 |
 | J | **EC 정의에서 날짜 제거** — 표 2 EC 「d 전날 마감시점 …」 → 「그날 마감시점 쿠콘 가상계좌의 현금 잔액」(날짜는 쓰는 자리의 조건이 정함), 투자자산 `Σ A_i + EC` 행에 「EC 는 d 전날의 값」, PEC 「P 안 각 날의 EC 를 더한 값」 그대로. 사용자 지적(9/7): EC 에 d 전날을 박으면 일별 행·PEC 의 「그날 EC」가 성립하지 않음. A 와 함께 워드·HTML·아티팩트 재발행, `verify_final_terms.py` S5 의 EC plain 기대값 갱신, 슬랙 초안 EC 문장 한 줄 수정 | `ceo_review.html` EC 행·투자자산 행 · `final_terms.json` vars.EC · `verify_final_terms.py:1032` | 진행 확인 대기 |
 
 ## 재개 명령
