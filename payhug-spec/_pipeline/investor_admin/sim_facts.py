@@ -207,7 +207,7 @@ _TYTH = _TYTH.replace('PEND_ROW', "'" + _PEND_ROW_HTML + "'")
 _TYTH = _TYTH.replace('PEND_BADGE', "'" + _PEND_BADGE_HTML + "'")
 TY_TH_HTML = ''.join(_LIT.findall(_TYTH))
 TY_TH_TEXT = _TAG.sub('', TY_TH_HTML).strip()
-assert TY_TH_TEXT.startswith('연환산수익률') and PEND_ROW_TEXT in TY_TH_TEXT, TY_TH_TEXT
+assert TY_TH_TEXT.startswith('연환산 수익률') and PEND_ROW_TEXT in TY_TH_TEXT, TY_TH_TEXT
 
 # ── 투자자산 규모 · 유휴자금 비율 — 통합본 simApplyScale 과 같은 규칙 ──
 def _split(total, w):

@@ -124,12 +124,12 @@ def run():
 PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
 PEND_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>'
 PEND5_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 확인 대기</span></span>'
-TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산수익률</span>'
+TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span>'
          '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
          '<span class="tip-row"><span>번호</span><span class="tip-green">'
          '일별 표 열 ③투자실행금 ④투자 수익 ⑤가중평균 금융일수</span></span>'
          '<span class="tip-row"><span>행</span><span class="tip-green">'
-         '정산예정일이 그 날짜인 대상정산금채권 집합</span></span>'
+         '정산예정일이 그 날짜인 보유 채권</span></span>'
          + PEND_ROW +
          '</span></span>' + PEND_BADGE + '</th>')
 # ③ 열머리 — 통합본 build_app.py 의 thirdTh() 와 같은 마크업이다.
@@ -222,7 +222,7 @@ def result_block(R):
           '        <div class="summary-value">%s<span class="unit">원</span></div>\n'
           '        <div class="summary-sub">비중 %s%% · 보관 ㈜쿠콘</div>\n      </div>\n'
           % (fmt(CASH), fx(R['SH'][1], 1)))
-    h += ('      <div class="summary-card">\n        <div class="summary-label">예상 연환산수익률</div>\n'
+    h += ('      <div class="summary-card">\n        <div class="summary-label">예상 연환산 수익률</div>\n'
           '        <div class="summary-value">%s<span class="unit">%%</span></div>\n'
           '        <div class="summary-sub">가중평균 금융일수 %s일 기준</div>\n      </div>\n'
           % (fx(R['TY'], 2), fx(R['W'], 2)))
@@ -246,7 +246,7 @@ def result_block(R):
     h += ('    <div class="tbl-wrap mb-6">\n      <div class="tbl-head"><h2>현황</h2></div>\n'
           '      <div class="tbl-scroll">\n        <table class="tbl">\n          <thead>\n'
           '            <tr><th>자산 구분</th><th class="num">금액 (원)</th><th class="num">가중평균 금융일수</th>'
-          '<th class="num">입금부족률</th><th class="num">예상 연환산수익률</th><th class="num">비중</th><th>보관</th></tr>\n'
+          '<th class="num">입금부족률</th><th class="num">예상 연환산 수익률</th><th class="num">비중</th><th>보관</th></tr>\n'
           '          </thead>\n          <tbody>\n')
     h += ('            <tr><td><span class="name">투자실행액</span></td><td class="num"><span class="strong">%s</span></td>'
           '<td class="num">%s일</td><td class="num">%s</td><td class="num">%s</td><td class="num">%s%%</td>'
@@ -273,10 +273,11 @@ def result_block(R):
           '        <div class="stat">\n          <div class="summary-label">투자수익</div>\n'
           '          <div class="summary-value">%s<span class="unit">원</span></div>\n        </div>\n'
           % (R['ECD'], FROM, TO, fmt(R['PSA']), fmt(R['PSM'])))
-    h += (('        <div class="stat">\n          <div class="summary-label">연환산수익률</div>\n'
+    h += (('        <div class="stat">\n          <div class="summary-label">연환산 수익률</div>\n'
            '          <div class="ty-split">\n'
            '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
-           '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산수익률 (관찰된 값) · PMR × 365 ÷ PD'
+           '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산 수익률 (관찰된 값) · PMR × 365 ÷ PD'
+           '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
            '<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = %s%%</span></span>'
            '<span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · %s원</span></span>'
            '<span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · %s원</span></span>'
@@ -284,9 +285,10 @@ def result_block(R):
            + TY4_DM +
            '</span></span></div>\n'
            '              <div class="summary-value">%s<span class="unit">%%</span></div>\n            </div>\n'
-           '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
-           '<span class="tip-panel">PY<sub>t</sub> · 투자자산 대비 연환산수익률 (관찰된 값) · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
-           '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산수익률 (관찰된 값) · %s%%</span></span>'
+           '            <div>\n              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span>'
+           '<span class="tip-panel">PY<sub>t</sub> · 투자 자산 대비 연환산 수익률 (관찰된 값) · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
+           '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
+           '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산 수익률 (관찰된 값) · %s%%</span></span>'
            '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">%s원</span></span>'
            '<span class="tip-row"><span>PEC</span><span class="tip-green">기간 순현금 · %s원</span></span>'
            '<span class="tip-row sum"><span>EC</span><span>순현금 · %s원 × %d일</span></span>'

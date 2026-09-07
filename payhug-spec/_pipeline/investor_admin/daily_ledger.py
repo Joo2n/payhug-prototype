@@ -7,7 +7,7 @@
       Ai = 순지급액 x (1 - 할인율 0.11%)
       Di = 정산예정일 - 선정산일            (한편넣기 · 정수 · 1~13일)
 
-    미회수 채권 = 정산예정일 > 기준일.
+    미회수 채권 = 정산예정일 > ASOF(어제 마감).  즉 정산예정일 >= 오늘.
     투자실행액       = 미회수 Sum Ai
     가맹점별 투자금액 = 그 가맹점 미회수 채권의 Sum Ai
     w금융일수        = 대상정산금채권 Sum (Ai x Di) / Sum Ai
@@ -59,19 +59,19 @@ RATE = D('0.0011')                 # 유동화투자자의 할인율
 RPCT = D('0.11')
 DAYS = D('365')
 BOOK = 80000000                    # 투자실행액 — 규모 기준(불변식)
-CASH = 20000000                    # 순현금 — 쿠콘 가상계좌 현금잔액. 채권과 무관한 별개 스톡이라
-                                   #          원장이 만들지 않고 그대로 받는 입력이다(불변식).
+CASH = 20000000                    # 순현금 — 쿠콘 가상계좌의 어제(ASOF) 마감 잔액. 채권과 무관한
+                                   #          별개 스톡이라 원장이 만들지 않고 그대로 받는 입력이다(불변식).
 
-ASOF      = date(2026, 8, 27)      # 기준일 d (오늘 날짜). 금융일수 D 와 다른 글자다
-                                   # 기준일을 옮길 때 고치는 자리는 이 한 줄이다.
+ASOF      = date(2026, 8, 27)      # 어제. 마감 스냅샷 날짜. 오늘(화면을 보는 날)은 ASOF + 1 이고
+                                   # 화면에 표시하지 않는다. 날짜를 옮길 때 고치는 자리는 이 한 줄이다.
                                    # 화면·엑셀·문서·검증기는 아래 파생을 읽고 날짜를 손으로 적지 않는다.
 ASOF_S    = ASOF.isoformat()                        # '2026-08-27' 화면·문서·파일명이 쓰는 문자열
 ASOF_C    = ASOF.strftime('%Y%m%d')                 # '20260827'   증명서 PDF 등 붙임형 파일명
-LAST_DUE  = ASOF - timedelta(days=1)   # 일별 표 마지막 행. 기준일 당일 채권은 배치 전이라 DB 에 없다
+LAST_DUE  = ASOF                   # 일별 표 마지막 행. 어제 정산예정 채권은 어젯밤 배치로 회수됨
 WEEK      = ((LAST_DUE - timedelta(days=6)).isoformat(), LAST_DUE.isoformat())   # 기본 조회 기간(일주일)
 FIRST_DUE = date(2026, 3, 1)       # 일별 표 첫 행(정산예정일)
 FIRST_ADV = FIRST_DUE - timedelta(days=DI_MAX)     # 첫 행을 채우는 가장 이른 선정산일
-SAMPLE    = (ASOF - timedelta(days=20), ASOF - timedelta(days=11))   # S 표본집합 구간 d-20 ~ d-11
+SAMPLE    = (ASOF + timedelta(days=1 - 20), ASOF + timedelta(days=1 - 11))   # S 표본집합 구간 — 오늘(ASOF + 1) 기준 d-20 ~ d-11
 
 TIER_NAME = {'H': '고액', 'M': '평범', 'L': '소액'}
 TIER_CUT  = (5000000, 2000000)     # 고액 / 평범 경계 — 일일 선정산 규모
@@ -338,7 +338,7 @@ def _build():
 
 
 RECEIVABLES = _build()
-OPEN = [r for r in RECEIVABLES if r['due'] > ASOF]
+OPEN = [r for r in RECEIVABLES if r['due'] > ASOF]   # 어제 마감까지 회수되지 않은 채권
 EXEC = sum(r['ai'] for r in OPEN)
 assert EXEC == BOOK, '미회수 Σ Ai %s != %s' % (EXEC, BOOK)
 assert all(DI_MIN <= r['di'] <= DI_MAX for r in RECEIVABLES)
@@ -524,7 +524,7 @@ def facts():
     for r in LEDGER:
         assert r['ty'] == day_ty(r['profit'], r['exec'], r['w6']), r['d']
     return dict(
-        # 기준일과 그 파생 — 소비처가 날짜를 손으로 적지 않게 한다(원천 ASOF 한 줄).
+        # 어제(ASOF)와 그 파생 — 소비처가 날짜를 손으로 적지 않게 한다(원천 ASOF 한 줄).
         asof=ASOF_S, asofCompact=ASOF_C, lastDue=LAST_DUE.isoformat(),
         weekFrom=WEEK[0], weekTo=WEEK[1],
         exec=EXEC, cash=CASH, total=EXEC + CASH,
@@ -574,7 +574,7 @@ def dump_facts(path=None):
 
 if __name__ == '__main__':
     f = lambda n: format(n, ',')
-    print('채권 %s건 · 선정산일 %s ~ %s · 기준일 %s'
+    print('채권 %s건 · 선정산일 %s ~ %s · 어제(마감) %s'
           % (f(len(RECEIVABLES)), ymd(ADV_DAYS[0]), ymd(ADV_DAYS[-1]), ymd(ASOF)))
     print('미회수 %s건 · 투자실행액 %s · w금융일수 %s(raw %s) · ty %s%%'
           % (f(len(OPEN)), f(EXEC), W_BOOK, W_RAW.quantize(D('0.000001')), TY_BOOK))

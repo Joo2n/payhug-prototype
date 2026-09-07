@@ -151,7 +151,7 @@ CARD = re.compile(
     r'<span class="unit">원</span></div>.*?'
     r'투자실행금액 대비.*?<div class="summary-value">)[\d.]*('
     r'<span class="unit">%</span>.*?'
-    r'투자자산 대비.*?<div class="summary-value">)[\d.]*('
+    r'투자 자산 대비.*?<div class="summary-value">)[\d.]*('
     r'<span class="unit">%</span>)', re.S)
 
 
@@ -161,7 +161,8 @@ TY_LABEL = re.compile(r'<div class="ty-label">.*?</div>', re.S)
 # 대표 DM 2026-08-31 16:45 두 줄 — 통합본과 같은 마크업. 항등식은 근사식이라 두 값을 나란히 둔다.
 _R = float(RM.RPCT)
 TIP4 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
-        '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산수익률 (관찰된 값) · PMR × 365 ÷ PD'
+        '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산 수익률 (관찰된 값) · PMR × 365 ÷ PD'
+        '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
         '<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = %(pmr)s%%</span></span>'
         '<span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · %(pm)s원</span></span>'
         '<span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · %(pa)s원</span></span>'
@@ -179,12 +180,12 @@ TIP4_FIX = dict(r='%.2f' % _R, pmr0='%.6f' % (_R / (1 - _R / 100.0)))
 PEND_BADGE = ' <span class="badge sm badge-amber">미확정</span>'
 PEND_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 재전달 대기</span></span>'
 PEND5_ROW = '<span class="tip-row sum"><span>미확정</span><span>대표 확인 대기</span></span>'
-TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산수익률</span>'
+TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span>'
          '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
          '<span class="tip-row"><span>번호</span><span class="tip-green">'
          '일별 표 열 ③투자실행금 ④투자 수익 ⑤가중평균 금융일수</span></span>'
          '<span class="tip-row"><span>행</span><span class="tip-green">'
-         '정산예정일이 그 날짜인 대상정산금채권 집합</span></span>'
+         '정산예정일이 그 날짜인 보유 채권</span></span>'
          + PEND_ROW +
          '</span></span>' + PEND_BADGE + '</th>')
 # ③ 열머리 — 통합본 build_app.py 의 thirdTh() 와 같은 마크업이다.
@@ -194,9 +195,10 @@ THIRD_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor"
             '상단 현황의 기간 전체 숫자 · 칸 미지목</span></span>'
             + PEND_ROW +
             '</span></span>' + PEND_BADGE + '</th>')
-TIP5 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자자산 대비</span>'
-        '<span class="tip-panel">PY<sub>t</sub> · 투자자산 대비 연환산수익률 (관찰된 값) · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
-        '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산수익률 (관찰된 값) · %(ty4)s%%</span></span>'
+TIP5 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span>'
+        '<span class="tip-panel">PY<sub>t</sub> · 투자 자산 대비 연환산 수익률 (관찰된 값) · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
+        '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
+        '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산 수익률 (관찰된 값) · %(ty4)s%%</span></span>'
         '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">%(ad)s원</span></span>'
         '<span class="tip-row"><span>PEC</span><span class="tip-green">기간 순현금 · %(pec)s원</span></span>'
         '<span class="tip-row sum"><span>EC</span><span>순현금 · %(ec)s원 × %(ecd)d일</span></span>'
@@ -208,10 +210,10 @@ def put_ty_th(s):
     """⑥ 열머리 — 통합본 tyTh() 와 같은 자리·같은 마크업. 이미 갈아 끼운 낱장은 그대로 둔다.
 
     열머리 안쪽을 통째로 잡으므로 여러 번 돌려도 겹쳐 붙지 않는다."""
-    out, n = re.subn(r'<th class="num">연환산수익률</th>|'
-                     r'<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산수익률</span>.*?</th>',
+    out, n = re.subn(r'<th class="num">연환산 수익률</th>|'
+                     r'<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span>.*?</th>',
                      lambda _m: TY_TH, s, flags=re.S)
-    assert n == 1, '연환산수익률 열머리 %d건 — 1건이라야 한다' % n
+    assert n == 1, '연환산 수익률 열머리 %d건 — 1건이라야 한다' % n
     return out
 
 

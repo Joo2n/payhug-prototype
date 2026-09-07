@@ -881,7 +881,7 @@ async function main(){
     go('invest-profit','default');
     var tv = SECQ('invest-profit','.ty-split .summary-value');
     add('기본 기간 ④ 투자실행금액 대비', F.weekTy + '%',      tv[0] ? tv[0].textContent.trim() : '없음');
-    add('기본 기간 ⑤ 투자자산 대비',   F.weekTyAsset + '%', tv[1] ? tv[1].textContent.trim() : '없음');
+    add('기본 기간 ⑤ 투자 자산 대비',   F.weekTyAsset + '%', tv[1] ? tv[1].textContent.trim() : '없음');
     var tip = Array.prototype.map.call(SECQ('invest-profit','.ty-split .tip-row'), function(e){ return e.textContent.trim(); });
     /* 툴팁 기호 옆에 정본 용어명(step6) · ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) (step7 ⑤ 산식 교체).
        PA 행은 ④ 툴팁에 「기간 투자실행금」, ⑤ 툴팁은 Σ( Ai × Di ) 행. <sub> 는 textContent 에서 글자로 붙는다. */
@@ -912,7 +912,7 @@ async function main(){
     go('invest-profit','monthly');
     var mv = SECQ('invest-profit','.ty-split .summary-value');
     add('월별 ④ 투자실행금액 대비', F.fullTy + '%',      mv[0] ? mv[0].textContent.trim() : '없음');
-    add('월별 ⑤ 투자자산 대비',   F.fullTyAsset + '%', mv[1] ? mv[1].textContent.trim() : '없음');
+    add('월별 ⑤ 투자 자산 대비',   F.fullTyAsset + '%', mv[1] ? mv[1].textContent.trim() : '없음');
     var mft = Array.prototype.map.call(SECQ('invest-profit','.tbl tfoot td'), function(td){ return td.textContent.replace('가중평균','').trim(); });
     add('월별 표 합계 W',  F.fullW,        mft[4] || '없음');
     add('월별 표 합계 Ty', F.fullTy + '%', mft[5] || '없음');
@@ -934,8 +934,8 @@ async function main(){
     go('xls-profit-status','default');
     var xps = {};
     Array.prototype.map.call(SECQ('xls-profit-status','table tr'), cells).forEach(function(c){ if(c[1]) xps[c[1]] = c[2]; });
-    add('엑셀 투자수익현황 ④', F.weekTy + '%',      xps['연환산수익률 (투자실행금액 대비)'] || '없음');  /* 라벨 확정 2026-09-04 */
-    add('엑셀 투자수익현황 ⑤', F.weekTyAsset + '%', xps['연환산수익률 (투자자산 대비)'] || '없음');
+    add('엑셀 투자수익현황 ④', F.weekTy + '%',      xps['연환산 수익률 (투자실행금액 대비)'] || '없음');  /* 라벨 확정 2026-09-04 */
+    add('엑셀 투자수익현황 ⑤', F.weekTyAsset + '%', xps['연환산 수익률 (투자 자산 대비)'] || '없음');
 
     go('xls-assets-status','default');
     var xasExec = Array.prototype.map.call(SECQ('xls-assets-status','table tr'), cells)

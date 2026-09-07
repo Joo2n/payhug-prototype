@@ -600,7 +600,7 @@ const EXTRACT=`
     return {label:txt(d.querySelector('.tip-anchor')), value:txt(d.querySelector('.summary-value')),
             vis:vis(d.querySelector('.summary-value'))};});
   return {w:innerWidth,h:innerHeight,cards:cards,tables:tables,split:split,
-          title:document.title};`;
+          title:document.title,body:(document.body.innerText||'')};`;
 (async()=>{
   const prof=fs.mkdtempSync(path.join(os.tmpdir(),'ft-'));
   const ch=spawn(CHROME,['--headless=new','--remote-debugging-port='+DPORT,
@@ -626,17 +626,17 @@ const EXTRACT=`
     await send('Page.navigate',{url:BASE+'/'+p}); await sleep(900);
     out.pages[p]=await ev(EXTRACT);
   }
-  // 실제 조작 — 투자자산 대비 툴팁을 hover 해서 PSA·PSC 가 화면에 뜨는지 본다
+  // 실제 조작 — 투자 자산 대비 툴팁을 hover 해서 PSA·PSC 가 화면에 뜨는지 본다
   await send('Page.navigate',{url:BASE+'/invest-profit.html'}); await sleep(900);
   const box=await ev(`var a=[].filter.call(document.querySelectorAll('.tip-anchor'),
-      function(x){return x.textContent.indexOf('투자자산 대비')>=0;})[0];
+      function(x){return x.textContent.indexOf('투자 자산 대비')>=0;})[0];
     if(!a) return null; var r=a.getBoundingClientRect();
     return {x:r.left+r.width/2,y:r.top+r.height/2};`);
   if(box){
     await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:box.x,y:box.y});
     await sleep(500);
     out.hover=await ev(`var a=[].filter.call(document.querySelectorAll('.tip-anchor'),
-        function(x){return x.textContent.indexOf('투자자산 대비')>=0;})[0];
+        function(x){return x.textContent.indexOf('투자 자산 대비')>=0;})[0];
       var p=a.parentNode.querySelector('.tip-panel'); var r=p.getBoundingClientRect();
       return {text:(p.innerText||p.textContent).replace(/\\s+/g,' ').trim(),
               w:r.width,h:r.height,opacity:getComputedStyle(p).opacity,
@@ -696,11 +696,11 @@ def sec_I():
         '화면 순현금 = EC', '%s ↔ %s' % (ca['순현금']['value'], L.CASH))
     chk('I6', only(ca['투자자산']['value']) == str(SUM_A_OPEN + L.CASH),
         '화면 투자자산 = Σ A_i + EC', ca['투자자산']['value'])
-    chk('I7', only(ca['예상 연환산수익률']['value']) == FACTS['ty'],
-        '화면 예상 연환산수익률 = Yr', '%s ↔ %s' % (ca['예상 연환산수익률']['value'], FACTS['ty']))
-    chk('I8', FACTS['w'] in (ca['예상 연환산수익률']['sub'] or ''),
+    chk('I7', only(ca['예상 연환산 수익률']['value']) == FACTS['ty'],
+        '화면 예상 연환산 수익률 = Yr', '%s ↔ %s' % (ca['예상 연환산 수익률']['value'], FACTS['ty']))
+    chk('I8', FACTS['w'] in (ca['예상 연환산 수익률']['sub'] or ''),
         '화면 Ty 부제가 표기 wD 를 댄다 (Yr 분모가 표기 갈래임을 화면이 스스로 적는다)',
-        ca['예상 연환산수익률']['sub'])
+        ca['예상 연환산 수익률']['sub'])
     hdr = pa['tables'][0]['head']
     chk('I9', any('가중평균 금융일수' in h for h in hdr),
         '투자 자산 현황표에 가중평균 금융일수 열이 있다', str(hdr))
@@ -720,13 +720,13 @@ def sec_I():
     st = MS['calc']['steps']
     chk('I15', only(sp['투자실행금액 대비']['value']) == str(nums(st[6][1])[1]),
         '화면 ③ = 원고 「화면 3.99%」', '%s ↔ %s' % (sp['투자실행금액 대비']['value'], nums(st[6][1])[1]))
-    chk('I16', only(sp['투자자산 대비']['value']) == str(nums(st[8][1])[1]),
+    chk('I16', only(sp['투자 자산 대비']['value']) == str(nums(st[8][1])[1]),
         '화면 ⑤ = 원고 계산 예시의 화면 표기',
-        '%s ↔ %s' % (sp['투자자산 대비']['value'], nums(st[8][1])[1]))
-    chk('I17', only(sp['투자자산 대비']['value']) == str(q(WPYMR_DAY, 2)),
+        '%s ↔ %s' % (sp['투자 자산 대비']['value'], nums(st[8][1])[1]))
+    chk('I17', only(sp['투자 자산 대비']['value']) == str(q(WPYMR_DAY, 2)),
         '화면 ⑤ = 원고 산식 PY_a × Σ( A_i × D_i ) ÷ ( Σ( A_i × D_i ) + PEC ) 로 계산한 값',
         '화면 %s ↔ 원고산식 %s (두 자리로 끊으면 %s)'
-        % (sp['투자자산 대비']['value'], q(WPYMR_DAY, 2), q(WPYMR_2DP, 2)))
+        % (sp['투자 자산 대비']['value'], q(WPYMR_DAY, 2), q(WPYMR_2DP, 2)))
 
     tb = [t for t in pp['tables'] if t['body'] and len(t['body'][0]) == 6]
     chk('I18', tb and len(tb[0]['body']) == len(WEEK_DAYS),
@@ -762,12 +762,42 @@ def sec_I():
 
     h = out.get('hover')
     chk('I25', h and h['w'] > 0 and h['h'] > 0 and h['vis'] != 'hidden',
-        'hover — 투자자산 대비 툴팁이 실제로 열린다', str(h)[:160] if h else 'None')
+        'hover — 투자 자산 대비 툴팁이 실제로 열린다', str(h)[:160] if h else 'None')
     # [기준 교체 2026-09-04] ⑤ 툴팁이 PA 대신 Σ( A_i × D_i ) 를 댄다 (step7 ⑤ 산식 교체 ·
     # build_app.py pfRender ⑤ 행 `Σ( A_i × D_i ) | 값원`). PA 행은 ④ 툴팁으로 옮겨 갔다.
     chk('I26', h and format(SAD, ',') in h['text'] and format(PEC, ',') in h['text'],
         'hover 툴팁이 Σ( A_i × D_i ) · PEC 를 그대로 댄다',
         (h or {}).get('text', '')[:220])
+
+    # ── 표 4 (screen_terms) 화면 칸 ↔ 렌더된 라벨
+    labels, splits = set(), set()
+    for pg in (pa, pp):
+        labels |= set(c['label'] for c in pg['cards'] if c['label'])
+        labels |= set(hh for t in pg['tables'] for hh in t['head'] if hh)
+        splits |= set(x['label'] for x in pg['split'] if x['label'])
+    st_rows = MS.get('screen_terms') or []
+    want, miss = [], []
+    for r in st_rows:
+        sc = r['screen']
+        if sc in ('같음',):
+            want += [n.strip() for n in r['internal'].split('·')]
+        elif sc in ('화면에 쓰지 않음', '표시하지 않음'):
+            continue
+        elif sc == '보유 채권':
+            continue                                   # 툴팁 안 낱말 — 라벨이 아니다
+        else:
+            want.append(sc)
+    for w in want:
+        if w in labels or w in splits or any(w.startswith(x) for x in splits):
+            continue
+        miss.append(w)
+    chk('I27', st_rows and want and not miss,
+        '표 4 화면 용어가 렌더된 카드·표 머리·분할 라벨에 있다 (「같음」 행은 내부 용어 그대로)',
+        '대상 %d · 없는 것 %s' % (len(want), ', '.join(miss) or '0건'))
+    body_txt = (pa.get('body') or '') + (pp.get('body') or '')
+    chk('I28', st_rows and '기준일' not in body_txt,
+        '표 4 「오늘 (d) → 표시하지 않음」 — 두 화면 본문에 「기준일」 0건',
+        '「기준일」 %d건' % body_txt.count('기준일'))
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -932,6 +962,109 @@ def sec_K():
 
 
 # ══════════════════════════════════════════════════════════════════
+# S. 표 4 내부 용어 ↔ 투자자 화면 용어 · 오늘(d) 문면 — V1.1
+#    screen_terms 는 값이 아니라 짜임과 문면을 본다. 화면 칸이 vars term 과
+#    같은 글자인가, 괄호 안 기호가 실재하는가, d 를 오늘로 둔 조건 문장이
+#    산식 칸에 들어 있는가, 옛 표기가 남아 있지 않은가.
+# ══════════════════════════════════════════════════════════════════
+OLD_WORDS = ('기준일', '연환산수익률', '투자자산 대비', '투자자산 기준', 'd 마감시점', 'EC_d', '첨자 d')
+
+
+def sec_S():
+    st = MS.get('screen_terms')
+    ok0 = (isinstance(st, list) and len(st) >= 11
+           and all(set(r) == {'internal', 'screen', 'tooltip'} for r in st)
+           and all(r['internal'].strip() and r['screen'].strip() for r in st))
+    chk('S0', ok0, 'screen_terms 대상 0건 아님 · 키 internal·screen·tooltip · 내부 용어·화면 칸 빈 곳 없음',
+        '%d행' % (len(st) if isinstance(st, list) else 0))
+    if not ok0:
+        return
+    v = dict((x['sym'], x) for x in MS['vars'])
+    terms = set(x['term'] for x in MS['vars'])
+    marks = set(s['mark'] for s in MS['scopes'])
+
+    yr = [r for r in st if '(Y_r)' in r['internal']]
+    pt = [r for r in st if '(PY_t)' in r['internal']]
+    chk('S1', yr and pt and yr[0]['screen'] == v['Y_r']['term'] and pt[0]['screen'] == v['PY_t']['term'],
+        '표 4 (Y_r)·(PY_t) 행의 화면 용어 = vars term',
+        '%s ↔ %s · %s ↔ %s' % ((yr or [{}])[0].get('screen'), v['Y_r']['term'],
+                               (pt or [{}])[0].get('screen'), v['PY_t']['term']))
+
+    ghost, n_sym = [], 0
+    for r in st:
+        inner = [m for m in re.findall(r'\(([^)]*)\)', r['internal']) if not re.search(r'[가-힣]', m)]
+        toks = [t for m in inner for t in m.replace('Σ ', 'Σ').split()] if inner else []
+        if not inner and not re.search(r'[가-힣]', r['internal']):
+            toks = r['internal'].replace('Σ ', 'Σ').split()
+        for t in toks:
+            if t in ('…', '원'):
+                continue
+            s = t.replace('Σ', 'Σ ')
+            n_sym += 1
+            if s not in v and s not in marks:
+                ghost.append('%s → %s' % (r['internal'], s))
+    chk('S2', n_sym > 0 and not ghost,
+        '표 4 내부 용어의 기호(괄호 안 · 기호만 든 행)가 vars 또는 scopes 에 실재한다',
+        '기호 %d개 · 없는 것 %s' % (n_sym, '; '.join(ghost) or '0건'))
+
+    same = [r for r in st if r['screen'] == '같음']
+    names = [n.strip() for r in same for n in r['internal'].split('·')]
+    chk('S3', same and names and all(n in terms for n in names),
+        '표 4 「같음」 행의 내부 용어가 vars term 에 실재한다',
+        '%s · 없는 것 %s' % (', '.join(names), ', '.join(n for n in names if n not in terms) or '0건'))
+
+    by_screen = dict((r['screen'], r) for r in st)
+    chk('S4', all(k in by_screen for k in ('투자실행액 (원)', '검색대상기간', '표시하지 않음'))
+        and by_screen['투자실행액 (원)']['internal'].startswith('투자 실행액')
+        and by_screen['검색대상기간']['internal'].startswith('조회기간')
+        and by_screen['표시하지 않음']['internal'].startswith('오늘'),
+        '표 4 화면 문면 행 — 투자실행액 (원) · 검색대상기간 · 표시하지 않음 (build_app.py:1814 · 1981)',
+        ', '.join('%s ← %s' % (k, by_screen.get(k, {}).get('internal')) for k in ('투자실행액 (원)', '검색대상기간', '표시하지 않음')))
+    bo = [r for r in st if r['screen'] == '보유 채권']
+    chk('S4b', bo and '회수된 것 포함' in bo[0]['tooltip'],
+        '표 4 「보유 채권」 행 툴팁이 회수분 포함을 적는다', (bo or [{}])[0].get('tooltip'))
+
+    cond = lambda f: '선정산일이 d 전날 이전' in f and '정산예정일이 d 이후' in f and 'd 전날 마감까지 회수되지 않은' in f and '어제' not in f and '오늘' not in f
+    pyt = v['PY_t']['formula'] or ''
+    lines = pyt.split('\n')
+    chk('S5', v['d']['term'] == '오늘'
+        and '화면을 보는 날' in v['d']['plain'] and 'P 는 d 전날까지' in v['d']['plain']
+        and v['EC']['formula'] is None and v['EC']['plain'].startswith('어제 마감시점')
+        and cond(v['Σ A_i']['formula'] or '') and cond(v['Σ A_i + EC']['formula'] or '')
+        and '회수된 것 포함' in (v['D']['formula'] or '')
+        and '분모 Σ A_i 는 같은 표본' in (v['LR']['formula'] or '')
+        and v['PEC']['formula'] == 'P 안 각 날 마감시점 EC 를 더한 값'
+        and len(lines) == 2 and all('Σ( A_i × D_i ) + PEC' in x for x in lines)
+        and lines[0].startswith('PY_t = PM × 365') and lines[1].strip().startswith('= PY_a ×'),
+        'd 오늘 · EC 어제 마감(설명) · Σ A_i·투자자산 조건 문장 d 표기(어제·오늘 0) · D 회수 포함 · LR 분모 · PEC 문장 · PY_t 두 줄',
+        'd=%s · EC=%s · PEC=%s · PY_t %d줄' % (v['d']['term'], v['EC']['plain'][:12], v['PEC']['formula'], len(lines)))
+
+    chk('S6', v['Y_r']['term'] == '예상 연환산 수익률'
+        and v['PY_a']['term'] == '투자실행금액 대비 연환산 수익률'
+        and v['PY_t']['term'] == '투자 자산 대비 연환산 수익률'
+        and v['PY_t'].get('note') == '투자 자산 대비',
+        'term 띄어쓰기 — 예상 연환산 수익률 · 투자실행금액 대비 연환산 수익률 · 투자 자산 대비 연환산 수익률',
+        ' / '.join((v['Y_r']['term'], v['PY_a']['term'], v['PY_t']['term'], str(v['PY_t'].get('note')))))
+
+    hay = []
+    for r in MS['rules']:
+        hay.append(('rules.%d' % r['n'], r['head'] + ' ' + r['body']))
+    for s_ in MS['scopes']:
+        hay.append(('scopes.%s' % s_['mark'], s_['name'] + ' ' + s_['def']))
+    for x in MS['vars']:                                   # alias 는 대표 원문 표기라 뺀다
+        hay.append(('vars.%s' % x['sym'], ' '.join(str(x.get(k) or '') for k in ('term', 'formula', 'plain', 'note'))))
+    for r in st:
+        hay.append(('screen.%s' % r['internal'], ' '.join(r.values())))
+    hay.append(('calc.기준', MS['calc']['기준']))
+    for a, b in MS['calc']['steps'] + MS['calc']['검산']:
+        hay.append(('calc', a + ' ' + b))
+    found = [(k, w) for k, t in hay for w in OLD_WORDS if w in t]
+    chk('S7', hay and not found,
+        '옛 표기 0건 — %s (alias 제외)' % ' · '.join(OLD_WORDS),
+        '%d자리 검사 · 남은 것 %s' % (len(hay), '; '.join('%s「%s」' % x for x in found) or '0건'))
+
+
+# ══════════════════════════════════════════════════════════════════
 # J. 판별력 자기시험 — 원고 사본을 틀리게 만들면 종료코드 1 이 나는가
 # ══════════════════════════════════════════════════════════════════
 def run_child(path):
@@ -974,6 +1107,12 @@ def sec_J():
             'formula', 'D = 투자실행금으로 가중평균한 금융일수'), 'K0'),
         ('겹침.투자실행액', lambda m: [v for v in m['vars'] if v['sym'] == 'PA'][0].__setitem__(
             'plain', _plain('PA').replace('80,000,000', '80,000,001')), 'K7'),
+        ('screen_terms.Y_r', lambda m: [r for r in m['screen_terms'] if '(Y_r)' in r['internal']][0].__setitem__(
+            'screen', '예상 연환산수익률'), 'S1'),
+        ('vars.d기준일', lambda m: [v for v in m['vars'] if v['sym'] == 'd'][0].__setitem__(
+            'term', '기준일'), 'S5'),
+        ('vars.PEC첨자', lambda m: [v for v in m['vars'] if v['sym'] == 'PEC'][0].__setitem__(
+            'formula', 'PEC = Σ EC_d      d ∈ P'), 'S7'),
     ]
     caught = 0
     for name, mut, expect in cases:
@@ -1005,6 +1144,7 @@ def main():
     section('G', sec_G)
     section('H', sec_H)
     section('K', sec_K)
+    section('S', sec_S)
     if not NOSCREEN:
         section('I', sec_I)
     if not CHILD and not NOSCREEN:
@@ -1013,7 +1153,7 @@ def main():
     fails = [x for x in R if not x[1]]
     if '--json' not in sys.argv:
         print('원고 %s' % MANUSCRIPT)
-        print('원장 채권 %s건 · 일자 %d일 · 기준일 %s'
+        print('원장 채권 %s건 · 일자 %d일 · 어제 마감 %s'
               % (format(len(L.RECEIVABLES), ','), len(DAYROWS), L.ymd(ASOF)))
         print('')
         for cid, ok, title, detail in R:

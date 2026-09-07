@@ -176,7 +176,7 @@ def page(title, body):
 
 
 def foot(base_date):
-    return f"<div class=\"foot\">기준일 {base_date} · {ISSUER}</div>"
+    return f"<div class=\"foot\">{base_date} 마감 기준 · {ISSUER}</div>"
 
 
 def build_certificate(cert):
@@ -193,7 +193,7 @@ def build_certificate(cert):
                  + "".join(f"<td class=\"n\">{v}</td>" for v in t) + "</tr>") if t else ""
     return page("투자자산 증명서 (견본)", f"""
 <h1>투자자산 증명서</h1>
-<p class="docno">가맹점별 투자자산 · 기준일 {cert['made']} · 대상 가맹점 {len(cert['rows'])}개</p>
+<p class="docno">가맹점별 투자자산 · {cert['made']} 마감 기준 · 대상 가맹점 {len(cert['rows'])}개</p>
 
 <table>
   <colgroup><col style="width:32mm"><col><col style="width:32mm"><col></colgroup>
@@ -210,7 +210,7 @@ def build_certificate(cert):
   <colgroup><col><col style="width:32mm"><col style="width:22mm"><col style="width:24mm">
     <col style="width:22mm"><col style="width:18mm"></colgroup>
   <thead><tr><th>가맹점</th><th class="n">투자실행액 (원)</th><th class="n">가중평균 금융일수</th>
-    <th class="n">입금부족률</th><th class="n">예상 연환산수익률</th><th class="n">비중</th></tr></thead>
+    <th class="n">입금부족률</th><th class="n">예상 연환산 수익률</th><th class="n">비중</th></tr></thead>
   <tbody>{rows}{total_row}</tbody>
 </table>
 <h2>서명 및 검증</h2>

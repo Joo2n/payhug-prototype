@@ -327,12 +327,12 @@ async function main(){
     var st = window.__S.statusRows(), ft = window.__S.dailyFoot();
     return {status:st, foot:ft,
       summary:{자산:window.__S.card('투자자산'), 실행:window.__S.card('투자실행액'),
-               현금:window.__S.card('순현금'), ty:window.__S.card('예상 연환산수익률')},
+               현금:window.__S.card('순현금'), ty:window.__S.card('예상 연환산 수익률')},
       bonds:window.__S.bondRows().map(function(b){ return b.cells; }),
       daily:window.__S.dailyRows(),
       실행금:window.__S.stat('투자실행금'), 수익:window.__S.stat('투자수익'),
       기간:window.__S.stat('검색대상기간'),
-      tyStat:window.__S.stat('연환산수익률')};`);
+      tyStat:window.__S.stat('연환산 수익률')};`);
   R.baseline = base;
   const st = base.status;
   P('현황 · 투자실행액 행', st[0][0] === '투자실행액' && st[0][1] === B.exec
@@ -392,7 +392,7 @@ async function main(){
 
   await reset();
   await apply('cash200m'); await run();
-  const c2 = await evalJS("var s=window.__S.statusRows(); return {cash:s[1][1], tot:s[2][1], sh:[s[0][5],s[1][5],s[2][5]], ty5:window.__S.stat('연환산수익률')};");  /* 라벨 확정 2026-09-04 — 시뮬 수익 카드 `Ty수익율` → `연환산수익률` */
+  const c2 = await evalJS("var s=window.__S.statusRows(); return {cash:s[1][1], tot:s[2][1], sh:[s[0][5],s[1][5],s[2][5]], ty5:window.__S.stat('연환산 수익률')};");  /* 라벨 확정 2026-09-04 — 시뮬 수익 카드 `Ty수익율` → `연환산수익률` */
   P('순현금 ' + B.cash + ' → ' + SF.cash200m.cash + ' : 순현금 · 투자자산 · 비중 · ⑤ 가 함께 움직인다',
     c2.cash === SF.cash200m.cash && c2.tot === SF.cash200m.total
     && c2.sh[2] === SF.cash200m.shareSum
@@ -468,7 +468,7 @@ async function main(){
   const neg = await evalJS(`
     var b = window.__S.bondRows(), f = window.__S.dailyFoot();
     return {S:window.__S.statusRows()[0][3], M:b[0].cells[8], profit:window.__S.stat('투자수익'),
-            foot:f, ty:window.__S.stat('연환산수익률'),  /* 라벨 확정 2026-09-04 — Ty수익율 → 연환산수익률 */
+            foot:f, ty:window.__S.stat('연환산 수익률'),  /* 라벨 확정 2026-09-04 — Ty수익율 → 연환산수익률 */
             bonds:b.map(function(x){ return x.cells; }),
             negCls:!!window.__S.out().querySelector('.summary-value.neg')};`);
   P('S ' + SF.unpaid020.s + ' > 할인율 ' + SF.defaults.rate + '% → 채권 투자수익 음수',
@@ -626,10 +626,10 @@ async function main(){
   const pend = await evalJS(`
     return {ty5:window.__S.ty5Label(), ty5Badge:window.__S.ty5Badge(),
             th:window.__S.dailyTh(), thBadge:window.__S.dailyThBadge()};`);
-  P('⑤ 투자자산 대비 — 값은 두고 ' + SF.pendBadge + ' 배지 · 「' + SF.pend5Row + '」 행',
+  P('⑤ 투자 자산 대비 — 값은 두고 ' + SF.pendBadge + ' 배지 · 「' + SF.pend5Row + '」 행',
     pend.ty5Badge === SF.pendBadge && pend.ty5.indexOf(SF.pend5Row) >= 0
     && pend.ty5.indexOf(SF.pendRow) < 0, pend.ty5);
-  P('⑥ 일별 연환산수익률 열머리 — 배지 + 어느 읽기인지 툴팁',
+  P('⑥ 일별 연환산 수익률 열머리 — 배지 + 어느 읽기인지 툴팁',
     pend.thBadge === SF.pendBadge && pend.th === SF.tyThText, pend.th);
   const pendPf = await evalJS(`
     go('invest-profit','default');

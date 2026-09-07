@@ -10,14 +10,6 @@
 <link rel="stylesheet" href="assets/base.css">
 <style>
   /* 화면 전용 보조 스타일 — 색상은 base.css 변수만 사용 */
-  .page-header.row-between { align-items: flex-start; }
-  .base-date {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 12px; background: #fff;
-    border: 1px solid var(--gray-200); border-radius: 8px;
-    font-size: 14px; line-height: 20px; color: var(--secondary); white-space: nowrap;
-  }
-  .base-date .mono { color: var(--gray-700); font-weight: 500; }
   .tbl-head {
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
     padding: 16px 20px; border-bottom: 1px solid var(--gray-100);
@@ -115,11 +107,8 @@
 
   <!-- ═══════════ 콘텐츠 영역 ═══════════ -->
   <main class="content">
-    <div class="page-header row-between">
-      <div>
-        <h1 class="page-title">투자 자산</h1>
-      </div>
-      <div class="base-date">기준일 <span class="mono">2026-08-27</span></div>
+    <div class="page-header">
+      <h1 class="page-title">투자 자산</h1>
     </div>
 
     <!-- 요약 지표 카드 -->
@@ -140,7 +129,7 @@
         <div class="summary-sub">비중 20.0% · 보관 ㈜쿠콘</div>
       </div>
       <div class="summary-card">
-        <div class="summary-label">예상 연환산수익률</div>
+        <div class="summary-label">예상 연환산 수익률</div>
         <div class="summary-value">13.21<span class="unit">%</span></div>
         <div class="summary-sub">가중평균 금융일수 3.04일 기준</div>
       </div>
@@ -163,9 +152,9 @@
             <tr>
               <th>자산 구분</th>
               <th class="num">금액 (원)</th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">가중평균 금융일수</span><span class="tip-panel" id="fig-tip">대상정산금채권 전체 (발생 기준)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel">선정산일이 기준일 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
-              <th class="num">예상 연환산수익률</th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">가중평균 금융일수</span><span class="tip-panel" id="fig-tip">보유 채권 전체 (회수된 것 포함)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel">선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
+              <th class="num">예상 연환산 수익률</th>
               <th class="num">비중</th>
               <th>보관</th>
             </tr>
@@ -225,9 +214,9 @@
             <tr>
               <th>가맹점</th>
               <th class="num">투자실행액 (원)</th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">가중평균 금융일수</span><span class="tip-panel">대상정산금채권 전체 (발생 기준)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel">선정산일이 기준일 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
-              <th class="num">예상 연환산수익률</th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">가중평균 금융일수</span><span class="tip-panel">보유 채권 전체 (회수된 것 포함)<span class="tip-row"><span>채권 건수</span><span class="tip-green">61,760건</span></span></span></span></th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">입금부족률</span><span class="tip-panel">선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본<span class="tip-row"><span>채권 건수</span><span class="tip-green">3,200건</span></span></span></span></th>
+              <th class="num">예상 연환산 수익률</th>
               <th class="num">비중</th>
             </tr>
           </thead>

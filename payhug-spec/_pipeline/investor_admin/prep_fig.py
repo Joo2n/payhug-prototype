@@ -73,11 +73,11 @@ TIP = {
     'invest-assets--tip-wavg':      ('invest-assets', '가중평균 금융일수'),
     'invest-assets--tip-shortfall': ('invest-assets', '입금부족률'),
     'invest-assets--tip-exec':      (None, '투자실행액'),
-    'invest-assets--tip-yield':     (None, '예상 연환산수익률'),
+    'invest-assets--tip-yield':     (None, '예상 연환산 수익률'),
     'invest-profit--tip-py-exec':   ('invest-profit', '투자실행금액 대비'),
-    'invest-profit--tip-py-asset':  ('invest-profit', '투자자산 대비'),
+    'invest-profit--tip-py-asset':  ('invest-profit', '투자 자산 대비'),
     'invest-profit--tip-exec':      ('invest-profit', '투자실행금'),
-    'invest-profit--tip-yield':     ('invest-profit', '연환산수익률'),
+    'invest-profit--tip-yield':     ('invest-profit', '연환산 수익률'),
 }
 TIP_CSS = '#fig-tip{display:block}'
 # 메뉴 그룹 접힘 — 파일명 → (원본 낱장 이름, 접을 그룹). 낱장 사이드바는 스크립트가 없어 class 와 CSS 로 만든다

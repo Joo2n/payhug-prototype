@@ -46,7 +46,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
 
 APP_REPO = '/Users/semi/cursor/payhug-investor-admin'
-PROTO_REPO = '/Users/semi/cursor/payhug-investor-prototype'
+PROTO_REPO = os.environ.get('PROTO_REPO', '/Users/semi/cursor/payhug-investor-prototype')
 XLSX = os.path.join(BASE, '검산_투자자어드민_20260901.xlsx')
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
@@ -794,8 +794,8 @@ def sec2(L, drv):
     row4 = [r for r in tgt if cw.cell(r, 2).value == '주간 ④(%)']
     chk('2', '엑셀 화면대조에 「주간 ④(%)」 행 있음', len(row4) == 1, str(row4))
     x4 = bk.cell('화면대조', 'C%d' % row4[0]) if row4 else None
-    tycards = [c for c in drv['targets']['app']['profitWeek']['cards'] if c['label'] == '연환산수익률']
-    chk('2', '화면 주간 카드에 연환산수익률 두 칸 있음',
+    tycards = [c for c in drv['targets']['app']['profitWeek']['cards'] if c['label'] == '연환산 수익률']
+    chk('2', '화면 주간 카드에 연환산 수익률 두 칸 있음',
         len(tycards) == 1 and len(tycards[0]['vals']) == 2, str(tycards))
     scr4 = num(tycards[0]['vals'][0]) if tycards and len(tycards[0]['vals']) == 2 else None
     chk('2', '엑셀 되짚은 주간 ④ = 화면 카드 ④', x4 is not None and scr4 is not None

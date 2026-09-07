@@ -1,8 +1,8 @@
 {
  "invest-assets": {
-  "content": 1316,
+  "content": 1314,
   "sidebar": 533,
-  "vh": 1316
+  "vh": 1314
  },
  "certificate": {
   "content": 1168,
@@ -40,19 +40,19 @@
   "vh": 629
  },
  "invest-assets--download": {
-  "content": 1317,
+  "content": 1315,
   "sidebar": 533,
-  "vh": 1317
+  "vh": 1315
  },
  "invest-assets--cert-confirm": {
-  "content": 1317,
+  "content": 1315,
   "sidebar": 533,
-  "vh": 1317
+  "vh": 1315
  },
  "invest-assets--empty": {
-  "content": 1059,
+  "content": 1057,
   "sidebar": 533,
-  "vh": 1059
+  "vh": 1057
  },
  "invest-profit--monthly": {
   "content": 1227,
@@ -120,9 +120,9 @@
   "vh": 1137
  },
  "invest-assets--nav-collapsed": {
-  "content": 1317,
+  "content": 1315,
   "sidebar": 341,
-  "vh": 1317
+  "vh": 1315
  },
  "invest-profit--range-error": {
   "content": 1073,
@@ -145,40 +145,40 @@
   "vh": 629
  },
  "invest-assets--tip-wavg": {
-  "content": 1317,
+  "content": 1315,
   "sidebar": 533,
-  "vh": 1317,
-  "tip_bottom": 412
+  "vh": 1315,
+  "tip_bottom": 410
  },
  "invest-assets--tip-shortfall": {
-  "content": 1317,
+  "content": 1315,
   "sidebar": 533,
-  "vh": 1317,
-  "tip_bottom": 412
+  "vh": 1315,
+  "tip_bottom": 410
  },
  "invest-assets--tip-exec": {
-  "content": 1303,
+  "content": 1301,
   "sidebar": 531,
-  "vh": 1303,
-  "tip_bottom": 269
+  "vh": 1301,
+  "tip_bottom": 267
  },
  "invest-assets--tip-yield": {
-  "content": 1303,
+  "content": 1301,
   "sidebar": 531,
-  "vh": 1303,
-  "tip_bottom": 330
+  "vh": 1301,
+  "tip_bottom": 365
  },
  "invest-profit--tip-py-exec": {
   "content": 1272,
   "sidebar": 533,
   "vh": 1272,
-  "tip_bottom": 693
+  "tip_bottom": 730
  },
  "invest-profit--tip-py-asset": {
   "content": 1272,
   "sidebar": 533,
   "vh": 1272,
-  "tip_bottom": 654
+  "tip_bottom": 691
  },
  "invest-profit--tip-exec": {
   "content": 1272,

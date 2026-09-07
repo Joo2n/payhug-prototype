@@ -89,7 +89,7 @@ sub{font-size:.72em}
     <td><span class="sym">Y<sub>r</sub></span></td></tr>
 <tr><td>첨자 <span class="sym">a</span></td><td>투자실행금 기준 관찰된 값을 나타낼 때 쓴다. PY<sub>a</sub> 는 조회기간에서 관찰된 투자실행금 기준 연환산 수익률 (P 는 조회기간)</td>
     <td><span class="sym">PY<sub>a</sub></span></td></tr>
-<tr><td>첨자 <span class="sym">t</span></td><td>투자자산 기준 관찰된 값을 나타낼 때 쓴다. PY<sub>t</sub> 는 조회기간에서 관찰된 투자자산 기준 연환산 수익률</td>
+<tr><td>첨자 <span class="sym">t</span></td><td>투자 자산 기준 관찰된 값을 나타낼 때 쓴다. PY<sub>t</sub> 는 조회기간에서 관찰된 투자 자산 기준 연환산 수익률</td>
     <td><span class="sym">PY<sub>t</sub></span></td></tr>
 </tbody></table></div>
 
@@ -100,7 +100,7 @@ sub{font-size:.72em}
     <th style="width:24%">용어 이름</th><th>산식</th></tr></thead>
 <tbody>
 <tr><td></td><td><span class="sym new">d</span></td><td><span class="sym old">D</span></td>
-    <td>기준일</td><td></td></tr>
+    <td>오늘</td><td class="f">화면을 보는 날. 조회기간 P 는 d 전날까지</td></tr>
 <tr><td></td><td><span class="sym">r</span></td><td></td><td>계약된 할인율</td>
     <td class="f">0.11% 예정</td></tr>
 <tr><td></td><td><span class="sym new">D</span></td><td><span class="sym old">wD</span></td>
@@ -126,17 +126,17 @@ sub{font-size:.72em}
     <td class="f">B<sub>i</sub> = 순지급액<sub>i</sub> − max(0, L<sub>i</sub>)</td></tr>
 
 <tr><td>투자 자산</td><td><span class="sym">Σ A<sub>i</sub></span></td><td></td><td>투자 실행액</td>
-    <td class="f">Σ A<sub>i</sub><br>i 는 정산예정일이 d 보다 뒤인 채권</td></tr>
+    <td class="f">Σ A<sub>i</sub><br>i 는 선정산일이 d 전날 이전이고 정산예정일이 d 이후인 채권 (d 전날 마감까지 회수되지 않은 채권)</td></tr>
 <tr><td>투자 자산</td><td><span class="sym">EC</span></td><td></td><td>순현금</td>
-    <td class="f">d 마감시점 쿠콘 가상계좌의 현금 잔액</td></tr>
-<tr><td>투자 자산</td><td><span class="sym">Σ A<sub>i</sub> + EC</span></td><td></td><td>조회시점의 투자자산</td>
-    <td class="f">Σ A<sub>i</sub> + EC<br>i 는 정산예정일이 d 보다 뒤인 대상정산금채권</td></tr>
+    <td class="f">d 전날 마감시점 쿠콘 가상계좌의 현금 잔액</td></tr>
+<tr><td>투자 자산</td><td><span class="sym">Σ A<sub>i</sub> + EC</span></td><td></td><td>투자자산</td>
+    <td class="f">Σ A<sub>i</sub> + EC<br>i 는 선정산일이 d 전날 이전이고 정산예정일이 d 이후인 대상정산금채권 (d 전날 마감까지 회수되지 않은 채권)<br>d 전날 마감 시점의 자산</td></tr>
 <tr><td>투자 자산</td><td><span class="sym new">D</span></td><td><span class="sym old">wD</span></td>
     <td>가중평균 금융일수</td>
-    <td class="f">i 는 대상정산금채권 전체</td></tr>
+    <td class="f">i 는 대상정산금채권 전체 (회수된 것 포함)</td></tr>
 <tr><td>투자 자산</td><td><span class="sym">LR</span></td><td></td><td>입금부족률</td>
-    <td class="f">LR = Σ L<sub>i</sub> ÷ Σ A<sub>i</sub><br>i 는 선정산일이 d 의 20일 전부터 11일 전까지인 채권</td></tr>
-<tr><td>투자 자산</td><td><span class="sym">Y<sub>r</sub></span></td><td></td><td>예상 연환산수익률</td>
+    <td class="f">LR = Σ L<sub>i</sub> ÷ Σ A<sub>i</sub><br>i 는 선정산일이 d 의 20일 전부터 11일 전까지인 채권<br>분모 Σ A<sub>i</sub> 는 같은 표본의 투자 실행액 합</td></tr>
+<tr><td>투자 자산</td><td><span class="sym">Y<sub>r</sub></span></td><td></td><td>예상 연환산 수익률</td>
     <td class="f">Y<sub>r</sub> = r × 365 ÷ D</td></tr>
 
 <tr><td>투자 수익</td><td><span class="sym">PA</span></td><td></td><td>조회대상기간의 투자실행금</td>
@@ -151,16 +151,16 @@ sub{font-size:.72em}
     <td>조회대상기간의 가중평균 금융일수</td>
     <td class="f">PD = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ Σ A<sub>i</sub> &nbsp; i ∈ P</td></tr>
 <tr><td>투자 수익</td><td><span class="sym">PEC</span></td><td></td><td>조회대상기간의 누적 순현금</td>
-    <td class="f">PEC = Σ EC &nbsp; d ∈ P</td></tr>
+    <td class="f">P 안 각 날 마감시점 EC 를 더한 값</td></tr>
 <tr><td>투자 수익</td><td><span class="sym new">PY<sub>a</sub></span></td><td><span class="sym old">PY<sub>MR</sub></span></td>
-    <td>조회대상기간의 투자실행금액 대비 연환산수익률</td>
+    <td>조회대상기간의 투자실행금액 대비 연환산 수익률</td>
     <td class="f">PY<sub>a</sub> = PMR × 365 ÷ PD</td></tr>
 <tr><td>투자 수익</td><td><span class="sym new">PY<sub>t</sub></span></td><td><span class="sym old">wPY<sub>MR</sub></span></td>
-    <td>조회대상기간의 투자자산 대비 연환산수익률</td>
-    <td class="f">PY<sub>t</sub> = PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC ) &nbsp; i ∈ P<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= PY<sub>a</sub> × Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )</td></tr>
+    <td>조회대상기간의 투자 자산 대비 연환산 수익률</td>
+    <td class="f">PY<sub>t</sub> = PY<sub>a</sub> × 채권 비중 + 순현금 수익률 × 순현금 비중<br>채권 비중 = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC ) &nbsp; i ∈ P<br>순현금 비중 = PEC ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )<br>순현금 수익률 = 0 (계좌에 둔 돈은 수익을 만들지 않는다)<br>PY<sub>a</sub> = PMR × 365 ÷ PD = ( PM ÷ PA ) × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ PA ) = PM × 365 ÷ Σ( A<sub>i</sub> × D<sub>i</sub> )<br>PY<sub>t</sub> = PM × 365 ÷ Σ( A<sub>i</sub> × D<sub>i</sub> ) × Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC ) + 0 × PEC ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )</td></tr>
 </tbody></table></div>
 
-<p class="note">일별 표의 한 행은 P 가 1일인 경우다. 주별은 7일, 월별은 그 달의 일수다.</p>
+<p class="note">「i ∈ P」는 정산예정일이 P 안인 채권이다. 일별 표의 한 행은 P 가 1일인 경우다. 주별은 7일, 월별은 그 달의 일수다.</p>
 
 <h2>기호 변경내역</h2>
 
@@ -180,13 +180,40 @@ sub{font-size:.72em}
     <td>조회기간 <span class="sym new">P</span> 를 1일로 잡아 대신한다</td></tr>
 <tr><td><span class="sym">d</span> 재정의</td>
     <td><span class="sym old">D</span> 현재일자 · <span class="sym old">D−1</span> 전일자</td>
-    <td><span class="sym new">d</span> 기준일 하나</td></tr>
-<tr><td>관찰된 연환산수익률 기호 변경</td>
+    <td><span class="sym new">d</span> 오늘 하나. 산식에는 조건 문장으로만</td></tr>
+<tr><td>미회수 조건</td>
+    <td>정산예정일이 d 보다 뒤</td>
+    <td>선정산일이 d 전날 이전이고 정산예정일이 d 이후 (d 당일 정산예정 채권은 그날 밤 배치 전이라 미회수)</td></tr>
+<tr><td><span class="sym">EC</span> 시점</td>
+    <td>d 마감시점</td>
+    <td>d 전날 마감시점</td></tr>
+<tr><td><span class="sym">PEC</span> 표기</td>
+    <td><span class="sym old">Σ EC &nbsp; d ∈ P</span></td>
+    <td>P 안 각 날 마감시점 EC 를 더한 값 (문장)</td></tr>
+<tr><td>관찰된 연환산 수익률 기호 변경</td>
     <td><span class="sym old">PY<sub>MR</sub></span> <span class="sym old">wPY<sub>MR</sub></span></td>
     <td><span class="sym new">PY<sub>a</sub></span> <span class="sym new">PY<sub>t</sub></span></td></tr>
 <tr><td>⑤ 분모</td>
     <td><span class="sym old">PA + PEC</span></td>
     <td><span class="sym new">Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC</span> PEC 는 P 안 각 날의 EC 를 더한 값이고 Σ( A<sub>i</sub> × D<sub>i</sub> ) 는 P 에 정산된 채권마다 투자실행액 × 금융일수를 더한 값이라 둘 다 금액 × 일수다</td></tr>
+</tbody></table></div>
+
+<h2>내부 용어와 투자자 화면 용어</h2>
+
+<div class="scroll"><table>
+<thead><tr><th style="width:34%">내부 용어</th><th style="width:26%">투자자 화면</th><th>툴팁</th></tr></thead>
+<tbody>
+<tr><td>대상정산금채권</td><td>보유 채권</td><td>보유 채권 전체 (회수된 것 포함)</td></tr>
+<tr><td>ty수익률 (연환산 수익률)</td><td>연환산 수익률</td><td>일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</td></tr>
+<tr><td>예상 ty수익률 (<span class="sym">Y<sub>r</sub></span>)</td><td>예상 연환산 수익률</td><td>계약된 할인율 기준 예상치</td></tr>
+<tr><td>투자 자산 대비 ty수익률 (<span class="sym">PY<sub>t</sub></span>)</td><td>투자 자산 대비 연환산 수익률</td><td></td></tr>
+<tr><td>오늘 (<span class="sym">d</span>)</td><td>표시하지 않음</td><td></td></tr>
+<tr><td>조회기간 (<span class="sym">P</span>)</td><td>검색대상기간</td><td></td></tr>
+<tr><td>투자 실행액 (<span class="sym">Σ A<sub>i</sub></span>)</td><td>투자실행액 (원)</td><td></td></tr>
+<tr><td>순현금 · 투자자산 · 가중평균 금융일수 · 입금부족률</td><td>같음</td><td></td></tr>
+<tr><td>채권매입수수료 · 입금부족액 (<span class="sym">L</span>)</td><td>화면에 쓰지 않음</td><td></td></tr>
+<tr><td><span class="sym">PA</span> <span class="sym">PM</span> <span class="sym">PB</span> <span class="sym">PMR</span> <span class="sym">PD</span> <span class="sym">PEC</span> <span class="sym">PY<sub>a</sub></span></td><td>화면에 쓰지 않음</td><td>툴팁에서만 (투자 수익 카드 ④ 투자실행금액 대비 연환산 수익률 = PY<sub>a</sub>)</td></tr>
+<tr><td>기호 (<span class="sym">A<sub>i</sub></span> <span class="sym">PA</span> <span class="sym">PD</span> <span class="sym">PY<sub>a</sub></span> …)</td><td>화면에 쓰지 않음</td><td>툴팁에서만</td></tr>
 </tbody></table></div>
 
 </div>

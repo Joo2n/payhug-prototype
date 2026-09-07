@@ -161,7 +161,7 @@ chk('xls-profit-status 카드',
     (n(re.search(r'투자실행금</td><td class="c-num">([\d,]+)', sp).group(1)),
      n(re.search(r'>투자수익</td><td class="c-num">([\d,]+)', sp).group(1)),
      re.search(r'투자실행금액 대비\)</td><td class="c-num">([\d.]+)%', sp).group(1),
-     re.search(r'투자자산 대비\)</td><td class="c-num">([\d.]+)%', sp).group(1)),
+     re.search(r'투자 자산 대비\)</td><td class="c-num">([\d.]+)%', sp).group(1)),
     (DSUM['exec'], DSUM['profit'], str(DSUM['ty']), str(DSUM['tyAsset'])))
 
 # ── app.html 데이터셋 ────────────────────────────────────────────
@@ -358,8 +358,8 @@ POP_TIP = re.compile(r'<span class="tip-anchor">(가중평균 금융일수|입�
                      r'<span class="tip-panel">([^<]+)'
                      r'<span class="tip-row"><span>채권 건수</span>'
                      r'<span class="tip-green">([\d,]+)건</span>')
-POP_WANT = [('가중평균 금융일수', '대상정산금채권 전체 (발생 기준)', POP_W_N),
-            ('입금부족률', '선정산일이 기준일 20일 전 ~ 11일 전인 표본', POP_S_N)]
+POP_WANT = [('가중평균 금융일수', '보유 채권 전체 (회수된 것 포함)', POP_W_N),
+            ('입금부족률', '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본', POP_S_N)]
 # 기준일 d 는 확정이라 열머리 두 곳 어디에도 `미확정` 배지가 없다.
 PEND_TH = re.compile(r'<span class="tip-anchor">(가중평균 금융일수|입금부족률)</span>.*?'
                      r'</span></span>( <span class="badge sm badge-amber">미확정</span>)?</th>', re.S)
@@ -374,8 +374,8 @@ for _p in ('invest-assets.html', 'invest-assets--download.html',
 _app = rd('app.html')
 chk('app.html 열머리 모집단 재료',
     re.findall(r"var (POP_[WS]) = \{of:'([^']+)',\s*n:'([\d,]+)건'(, pend:1)?\}", _app),
-    [('POP_W', '대상정산금채권 전체 (발생 기준)', POP_W_N, ''),
-     ('POP_S', '선정산일이 기준일 20일 전 ~ 11일 전인 표본', POP_S_N, '')])
+    [('POP_W', '보유 채권 전체 (회수된 것 포함)', POP_W_N, ''),
+     ('POP_S', '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본', POP_S_N, '')])
 chk('app.html 두 표가 같은 popTh 를 쓴다', _app.count("popTh('가중평균 금융일수', POP_W)"), 2)
 chk('app.html 두 표가 같은 popTh 를 쓴다 (S)', _app.count("popTh('입금부족률', POP_S)"), 2)
 # 모집단이 다르다는 사실 자체 — 두 건수가 같으면 툴팁을 달 이유가 없다

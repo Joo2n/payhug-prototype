@@ -822,7 +822,7 @@ async function main(){
     go('invest-profit','default');
     var tv = SECQ('invest-profit','.ty-split .summary-value');
     add('기본 기간 ④ 투자실행금액 대비', F.weekTy + '%',      tv[0] ? tv[0].textContent.trim() : '없음');
-    add('기본 기간 ⑤ 투자자산 대비',   F.weekTyAsset + '%', tv[1] ? tv[1].textContent.trim() : '없음');
+    add('기본 기간 ⑤ 투자 자산 대비',   F.weekTyAsset + '%', tv[1] ? tv[1].textContent.trim() : '없음');
     var tip = Array.prototype.map.call(SECQ('invest-profit','.ty-split .tip-row'), function(e){ return e.textContent.trim(); });
     /* [기준 교체 2026-09-04] (1) 툴팁 기호 옆에 정본 용어명이 붙었다(step6 툴팁 용어명 · build_app.py pfRender).
        (2) ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) 로 바뀌어(step7 ⑤ 산식 교체) ⑤ 툴팁의 PA 행이
@@ -859,7 +859,7 @@ async function main(){
     go('invest-profit','monthly');
     var mv = SECQ('invest-profit','.ty-split .summary-value');
     add('월별 ④ 투자실행금액 대비', F.fullTy + '%',      mv[0] ? mv[0].textContent.trim() : '없음');
-    add('월별 ⑤ 투자자산 대비',   F.fullTyAsset + '%', mv[1] ? mv[1].textContent.trim() : '없음');
+    add('월별 ⑤ 투자 자산 대비',   F.fullTyAsset + '%', mv[1] ? mv[1].textContent.trim() : '없음');
     var mft = Array.prototype.map.call(SECQ('invest-profit','.tbl tfoot td'), function(td){ return td.textContent.replace('가중평균','').trim(); });
     add('월별 표 합계 W',  F.fullW,        mft[4] || '없음');
     add('월별 표 합계 Ty', F.fullTy + '%', mft[5] || '없음');

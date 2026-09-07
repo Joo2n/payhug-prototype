@@ -7,34 +7,34 @@
   "quality": 70,
   "format": "webp",
   "chrome": "Google Chrome 152.0.7977.77",
-  "capturedAt": "2026-09-04T13:36:04.279Z",
+  "capturedAt": "2026-09-07T03:58:59.974Z",
   "files": {
    "invest-assets.html": {
     "shot": "assets/shots/invest-assets.webp",
     "fontLoaded": true,
-    "imgSha256": "efa99cfa4b50de8169058f988183925295ce976350d8478a71c7eae9173bf41c",
-    "imgBytes": 127100,
-    "imgMtime": 1788528959567,
-    "srcSha256": "0fc6cb743fa40bca7b73f63c086a4cdb22f5270cff5dadc053f4a0d3e1394eb0",
-    "srcBytes": 20046,
-    "srcMtime": 1788512985290
+    "imgSha256": "ee5c3a38e6618d092da2148fb7cba72fe533ae028bdadaab6a44aaefb9992330",
+    "imgBytes": 127198,
+    "imgMtime": 1788753535265,
+    "srcSha256": "8bd0d0591a3bfd3f634bc05688bf349452e2190035402e493bc52cde3b305d3e",
+    "srcBytes": 21159,
+    "srcMtime": 1788750690471
    },
    "invest-profit.html": {
     "shot": "assets/shots/invest-profit.webp",
     "fontLoaded": true,
-    "imgSha256": "82de1ce5bb5603c801d5e8d88b89dcac61e2626787eb6bdfd2450705c13570e6",
-    "imgBytes": 111130,
-    "imgMtime": 1788528960761,
-    "srcSha256": "0465d0f007d12c638a4a895146eb37dd8e4270ebc93291864d8750a0186556f2",
-    "srcBytes": 19700,
-    "srcMtime": 1788526705143
+    "imgSha256": "732ae73c0d246bc8e554983ba6314a3564241301c7213b344053a1c5f3ee1e9a",
+    "imgBytes": 110726,
+    "imgMtime": 1788753536455,
+    "srcSha256": "f457f3b4e07329dcf29d8537f07599a3682c7e4c602c5f81a21e7655184bd586",
+    "srcBytes": 20047,
+    "srcMtime": 1788748604087
    },
    "merchants.html": {
     "shot": "assets/shots/merchants.webp",
     "fontLoaded": true,
     "imgSha256": "ab4012afae2b13fab77919d22ba6c14a1ca376b5f1b5e8552a0d8a1512ded587",
     "imgBytes": 93050,
-    "imgMtime": 1788528961929,
+    "imgMtime": 1788753537623,
     "srcSha256": "83665c485b07273c3167aaa8af4aeb4cc6757155b4c0b9aba3704558b9c185c1",
     "srcBytes": 13062,
     "srcMtime": 1788115003379
@@ -44,7 +44,7 @@
     "fontLoaded": true,
     "imgSha256": "9f1ea1ee9122c06ccce0718838f35d46efa874ffdad064c47ee6ca5a0734b430",
     "imgBytes": 67140,
-    "imgMtime": 1788528963091,
+    "imgMtime": 1788753538789,
     "srcSha256": "afd3f0aa87b2fc03fb6dc5a302f86da3f959d4b2a6f3ecb026bfc5f39682b08f",
     "srcBytes": 15391,
     "srcMtime": 1788114997269
@@ -54,7 +54,7 @@
     "fontLoaded": true,
     "imgSha256": "ce2628e721966d93a55f4ad67eb4750475791798c825c5a465d38ca0c9e217e0",
     "imgBytes": 30842,
-    "imgMtime": 1788528964248,
+    "imgMtime": 1788753539944,
     "srcSha256": "61b93c614a67dcb782884da279ac53b3f685b3553f729b0e8994b9d2d63a6a4a",
     "srcBytes": 7680,
     "srcMtime": 1787916536739
@@ -66,9 +66,9 @@
    "file": "invest-assets.html",
    "shot": "assets/shots/invest-assets.webp",
    "docW": 1440,
-   "docH": 1316,
+   "docH": 1314,
    "imgW": 2880,
-   "imgH": 2632,
+   "imgH": 2628,
    "scrollers": [],
    "items": [
     {
@@ -188,28 +188,8 @@
      "kind": "header",
      "x": 272,
      "y": 32,
-     "w": 95,
+     "w": 1136,
      "h": 32
-    },
-    {
-     "sel": "div.base-date:nth-of-type(2)",
-     "text": "기준일 2026-08-27",
-     "tag": "div",
-     "kind": "header",
-     "x": 1253.1,
-     "y": 32,
-     "w": 154.9,
-     "h": 34
-    },
-    {
-     "sel": "span.mono",
-     "text": "2026-08-27",
-     "tag": "span",
-     "kind": "header",
-     "x": 1310.7,
-     "y": 39,
-     "w": 84.3,
-     "h": 20
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th:nth-of-type(1)",
@@ -217,8 +197,8 @@
      "tag": "th",
      "kind": "th",
      "x": 273,
-     "y": 296,
-     "w": 183.9,
+     "y": 294,
+     "w": 183.1,
      "h": 40.5
     },
     {
@@ -226,9 +206,9 @@
      "text": "금액 (원)",
      "tag": "th",
      "kind": "th",
-     "x": 456.9,
-     "y": 296,
-     "w": 185.3,
+     "x": 456.1,
+     "y": 294,
+     "w": 184.5,
      "h": 40.5
     },
     {
@@ -236,9 +216,9 @@
      "text": "가중평균 금융일수",
      "tag": "th",
      "kind": "th",
-     "x": 642.2,
-     "y": 296,
-     "w": 183.8,
+     "x": 640.6,
+     "y": 294,
+     "w": 183,
      "h": 40.5
     },
     {
@@ -246,19 +226,19 @@
      "text": "입금부족률",
      "tag": "th",
      "kind": "th",
-     "x": 826,
-     "y": 296,
-     "w": 129.6,
+     "x": 823.6,
+     "y": 294,
+     "w": 129,
      "h": 40.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(3) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(5)",
-     "text": "예상 연환산수익률",
+     "text": "예상 연환산 수익률",
      "tag": "th",
      "kind": "th",
-     "x": 955.6,
-     "y": 296,
-     "w": 183.8,
+     "x": 952.6,
+     "y": 294,
+     "w": 187.9,
      "h": 40.5
     },
     {
@@ -266,9 +246,9 @@
      "text": "비중",
      "tag": "th",
      "kind": "th",
-     "x": 1139.3,
-     "y": 296,
-     "w": 122.7,
+     "x": 1140.5,
+     "y": 294,
+     "w": 122.2,
      "h": 40.5
     },
     {
@@ -276,9 +256,9 @@
      "text": "보관",
      "tag": "th",
      "kind": "th",
-     "x": 1262,
-     "y": 296,
-     "w": 145,
+     "x": 1262.7,
+     "y": 294,
+     "w": 144.3,
      "h": 40.5
     },
     {
@@ -287,8 +267,8 @@
      "tag": "th",
      "kind": "th",
      "x": 273,
-     "y": 568,
-     "w": 237.3,
+     "y": 566,
+     "w": 236.1,
      "h": 40.5
     },
     {
@@ -296,9 +276,9 @@
      "text": "투자실행액 (원)",
      "tag": "th",
      "kind": "th",
-     "x": 510.3,
-     "y": 568,
-     "w": 198.6,
+     "x": 509.1,
+     "y": 566,
+     "w": 197.6,
      "h": 40.5
     },
     {
@@ -306,9 +286,9 @@
      "text": "가중평균 금융일수",
      "tag": "th",
      "kind": "th",
-     "x": 708.9,
-     "y": 568,
-     "w": 211.2,
+     "x": 706.7,
+     "y": 566,
+     "w": 210.2,
      "h": 40.5
     },
     {
@@ -316,19 +296,19 @@
      "text": "입금부족률",
      "tag": "th",
      "kind": "th",
-     "x": 920.2,
-     "y": 568,
-     "w": 148.9,
+     "x": 916.9,
+     "y": 566,
+     "w": 148.2,
      "h": 40.5
     },
     {
      "sel": "div.tbl-wrap.mb-6:nth-of-type(4) > div.tbl-scroll:nth-of-type(2) > table.tbl > thead > tr > th.num:nth-of-type(5)",
-     "text": "예상 연환산수익률",
+     "text": "예상 연환산 수익률",
      "tag": "th",
      "kind": "th",
-     "x": 1069.1,
-     "y": 568,
-     "w": 211.2,
+     "x": 1065.1,
+     "y": 566,
+     "w": 215.9,
      "h": 40.5
     },
     {
@@ -336,9 +316,9 @@
      "text": "비중",
      "tag": "th",
      "kind": "th",
-     "x": 1280.3,
-     "y": 568,
-     "w": 126.7,
+     "x": 1281,
+     "y": 566,
+     "w": 126,
      "h": 40.5
     },
     {
@@ -347,8 +327,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 336.5,
-     "w": 183.9,
+     "y": 334.5,
+     "w": 183.1,
      "h": 45
     },
     {
@@ -357,8 +337,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 381.5,
-     "w": 183.9,
+     "y": 379.5,
+     "w": 183.1,
      "h": 45
     },
     {
@@ -367,8 +347,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 426.5,
-     "w": 183.9,
+     "y": 424.5,
+     "w": 183.1,
      "h": 44.5
     },
     {
@@ -377,8 +357,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 608.5,
-     "w": 237.3,
+     "y": 606.5,
+     "w": 236.1,
      "h": 45
     },
     {
@@ -387,8 +367,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 653.5,
-     "w": 237.3,
+     "y": 651.5,
+     "w": 236.1,
      "h": 45
     },
     {
@@ -397,8 +377,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 698.5,
-     "w": 237.3,
+     "y": 696.5,
+     "w": 236.1,
      "h": 45
     },
     {
@@ -407,8 +387,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 743.5,
-     "w": 237.3,
+     "y": 741.5,
+     "w": 236.1,
      "h": 45
     },
     {
@@ -417,8 +397,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 788.5,
-     "w": 237.3,
+     "y": 786.5,
+     "w": 236.1,
      "h": 45
     },
     {
@@ -427,8 +407,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 833.5,
-     "w": 237.3,
+     "y": 831.5,
+     "w": 236.1,
      "h": 45
     },
     {
@@ -437,8 +417,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 878.5,
-     "w": 237.3,
+     "y": 876.5,
+     "w": 236.1,
      "h": 45
     },
     {
@@ -447,8 +427,8 @@
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 923.5,
-     "w": 237.3,
+     "y": 921.5,
+     "w": 236.1,
      "h": 44.5
     },
     {
@@ -457,8 +437,18 @@
      "tag": "div",
      "kind": "card",
      "x": 272,
-     "y": 90,
+     "y": 88,
      "w": 1136,
+     "h": 116
+    },
+    {
+     "sel": "div.summary-card.highlight:nth-of-type(1)",
+     "text": "투자자산 100,000,000원 투자실행액 + 순현금",
+     "tag": "div",
+     "kind": "card",
+     "x": 272,
+     "y": 88,
+     "w": 272,
      "h": 116
     },
     {
@@ -467,7 +457,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 293,
-     "y": 111,
+     "y": 109,
      "w": 230,
      "h": 16
     },
@@ -477,7 +467,7 @@
      "tag": "span",
      "kind": "card-text",
      "x": 427.5,
-     "y": 143,
+     "y": 141,
      "w": 12.1,
      "h": 16
     },
@@ -487,109 +477,9 @@
      "tag": "div",
      "kind": "card-text",
      "x": 293,
-     "y": 169,
+     "y": 167,
      "w": 230,
      "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(2) > div.summary-label:nth-of-type(1)",
-     "text": "투자실행액",
-     "tag": "div",
-     "kind": "card-text",
-     "x": 581,
-     "y": 111,
-     "w": 230,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(2) > div.summary-value:nth-of-type(2) > span.unit",
-     "text": "원",
-     "tag": "span",
-     "kind": "card-text",
-     "x": 703.4,
-     "y": 143,
-     "w": 12.1,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(2) > div.summary-sub:nth-of-type(3)",
-     "text": "비중 80.0% · 보관 ㈜페이허그",
-     "tag": "div",
-     "kind": "card-text",
-     "x": 581,
-     "y": 169,
-     "w": 230,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(3) > div.summary-label:nth-of-type(1)",
-     "text": "순현금",
-     "tag": "div",
-     "kind": "card-text",
-     "x": 869,
-     "y": 111,
-     "w": 230,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(3) > div.summary-value:nth-of-type(2) > span.unit",
-     "text": "원",
-     "tag": "span",
-     "kind": "card-text",
-     "x": 991.4,
-     "y": 143,
-     "w": 12.1,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(3) > div.summary-sub:nth-of-type(3)",
-     "text": "비중 20.0% · 보관 ㈜쿠콘",
-     "tag": "div",
-     "kind": "card-text",
-     "x": 869,
-     "y": 169,
-     "w": 230,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(4) > div.summary-label:nth-of-type(1)",
-     "text": "예상 연환산수익률",
-     "tag": "div",
-     "kind": "card-text",
-     "x": 1157,
-     "y": 111,
-     "w": 230,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(4) > div.summary-value:nth-of-type(2) > span.unit",
-     "text": "%",
-     "tag": "span",
-     "kind": "card-text",
-     "x": 1219.2,
-     "y": 143,
-     "w": 8.4,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card:nth-of-type(4) > div.summary-sub:nth-of-type(3)",
-     "text": "가중평균 금융일수 3.04일 기준",
-     "tag": "div",
-     "kind": "card-text",
-     "x": 1157,
-     "y": 169,
-     "w": 230,
-     "h": 16
-    },
-    {
-     "sel": "div.summary-card.highlight:nth-of-type(1)",
-     "text": "투자자산 100,000,000원 투자실행액 + 순현금",
-     "tag": "div",
-     "kind": "card",
-     "x": 272,
-     "y": 90,
-     "w": 272,
-     "h": 116
     },
     {
      "sel": "div.summary-card.highlight:nth-of-type(1) > div.summary-value:nth-of-type(2)",
@@ -597,7 +487,7 @@
      "tag": "div",
      "kind": "card",
      "x": 293,
-     "y": 135,
+     "y": 133,
      "w": 230,
      "h": 30
     },
@@ -607,9 +497,39 @@
      "tag": "div",
      "kind": "card",
      "x": 560,
-     "y": 90,
+     "y": 88,
      "w": 272,
      "h": 116
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2) > div.summary-label:nth-of-type(1)",
+     "text": "투자실행액",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 581,
+     "y": 109,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "원",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 703.4,
+     "y": 141,
+     "w": 12.1,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(2) > div.summary-sub:nth-of-type(3)",
+     "text": "비중 80.0% · 보관 ㈜페이허그",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 581,
+     "y": 167,
+     "w": 230,
+     "h": 16
     },
     {
      "sel": "div.summary-card:nth-of-type(2) > div.summary-value:nth-of-type(2)",
@@ -617,7 +537,7 @@
      "tag": "div",
      "kind": "card",
      "x": 581,
-     "y": 135,
+     "y": 133,
      "w": 230,
      "h": 30
     },
@@ -627,9 +547,39 @@
      "tag": "div",
      "kind": "card",
      "x": 848,
-     "y": 90,
+     "y": 88,
      "w": 272,
      "h": 116
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3) > div.summary-label:nth-of-type(1)",
+     "text": "순현금",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 869,
+     "y": 109,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "원",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 991.4,
+     "y": 141,
+     "w": 12.1,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(3) > div.summary-sub:nth-of-type(3)",
+     "text": "비중 20.0% · 보관 ㈜쿠콘",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 869,
+     "y": 167,
+     "w": 230,
+     "h": 16
     },
     {
      "sel": "div.summary-card:nth-of-type(3) > div.summary-value:nth-of-type(2)",
@@ -637,19 +587,59 @@
      "tag": "div",
      "kind": "card",
      "x": 869,
-     "y": 135,
+     "y": 133,
      "w": 230,
      "h": 30
     },
     {
      "sel": "div.summary-card:nth-of-type(4)",
-     "text": "예상 연환산수익률 13.21% 가중평균 금융일수 3.04일 기준",
+     "text": "예상 연환산 수익률 13.21% 가중평균 금융일수 3.04일 기준",
      "tag": "div",
      "kind": "card",
      "x": 1136,
-     "y": 90,
+     "y": 88,
      "w": 272,
      "h": 116
+    },
+    {
+     "sel": "div.summary-label:nth-of-type(1) > span.tooltip.wide > span.tip-anchor:nth-of-type(1)",
+     "text": "예상 연환산 수익률",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1157,
+     "y": 108,
+     "w": 95,
+     "h": 18
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4) > div.summary-value:nth-of-type(2) > span.unit",
+     "text": "%",
+     "tag": "span",
+     "kind": "card-text",
+     "x": 1219.2,
+     "y": 141,
+     "w": 8.4,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4) > div.summary-sub:nth-of-type(3)",
+     "text": "가중평균 금융일수 3.04일 기준",
+     "tag": "div",
+     "kind": "card-text",
+     "x": 1157,
+     "y": 167,
+     "w": 230,
+     "h": 16
+    },
+    {
+     "sel": "div.summary-card:nth-of-type(4) > div.summary-label:nth-of-type(1)",
+     "text": "예상 연환산 수익률",
+     "tag": "div",
+     "kind": "card",
+     "x": 1157,
+     "y": 109,
+     "w": 230,
+     "h": 16
     },
     {
      "sel": "div.summary-card:nth-of-type(4) > div.summary-value:nth-of-type(2)",
@@ -657,7 +647,7 @@
      "tag": "div",
      "kind": "card",
      "x": 1157,
-     "y": 135,
+     "y": 133,
      "w": 230,
      "h": 30
     },
@@ -667,7 +657,7 @@
      "tag": "div",
      "kind": "card",
      "x": 272,
-     "y": 1054,
+     "y": 1052,
      "w": 1136,
      "h": 229.5
     },
@@ -677,7 +667,7 @@
      "tag": "h2",
      "kind": "card",
      "x": 297,
-     "y": 1079,
+     "y": 1077,
      "w": 1086,
      "h": 21
     },
@@ -687,7 +677,7 @@
      "tag": "div",
      "kind": "card",
      "x": 297,
-     "y": 1116,
+     "y": 1114,
      "w": 535,
      "h": 142.5
     },
@@ -697,7 +687,7 @@
      "tag": "span",
      "kind": "card-text",
      "x": 322,
-     "y": 1129,
+     "y": 1127,
      "w": 89.6,
      "h": 24
     },
@@ -707,7 +697,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 322,
-     "y": 1190.5,
+     "y": 1188.5,
      "w": 92.8,
      "h": 16.5
     },
@@ -717,7 +707,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 322,
-     "y": 1209,
+     "y": 1207,
      "w": 92.8,
      "h": 24
     },
@@ -727,7 +717,7 @@
      "tag": "span",
      "kind": "card-text",
      "x": 426.8,
-     "y": 1197.8,
+     "y": 1195.8,
      "w": 14,
      "h": 28
     },
@@ -737,7 +727,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 452.8,
-     "y": 1190.5,
+     "y": 1188.5,
      "w": 58.9,
      "h": 16.5
     },
@@ -747,7 +737,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 452.8,
-     "y": 1209,
+     "y": 1207,
      "w": 58.9,
      "h": 24
     },
@@ -757,7 +747,7 @@
      "tag": "span",
      "kind": "card-text",
      "x": 523.7,
-     "y": 1197.8,
+     "y": 1195.8,
      "w": 22,
      "h": 28
     },
@@ -767,7 +757,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 557.7,
-     "y": 1182,
+     "y": 1180,
      "w": 48.9,
      "h": 16.5
     },
@@ -777,7 +767,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 557.7,
-     "y": 1200.5,
+     "y": 1198.5,
      "w": 48.9,
      "h": 24
     },
@@ -787,7 +777,7 @@
      "tag": "div",
      "kind": "card-text",
      "x": 557.7,
-     "y": 1226.5,
+     "y": 1224.5,
      "w": 48.9,
      "h": 15
     },
@@ -797,7 +787,7 @@
      "tag": "div",
      "kind": "card",
      "x": 848,
-     "y": 1116,
+     "y": 1114,
      "w": 535,
      "h": 142.5
     },
@@ -807,7 +797,7 @@
      "tag": "label",
      "kind": "label",
      "x": 994.2,
-     "y": 518,
+     "y": 516,
      "w": 109.1,
      "h": 28
     }
@@ -949,7 +939,7 @@
      "kind": "th",
      "x": 273,
      "y": 570,
-     "w": 183.5,
+     "w": 182.6,
      "h": 42.5
     },
     {
@@ -957,9 +947,9 @@
      "text": "상환액",
      "tag": "th",
      "kind": "th",
-     "x": 456.5,
+     "x": 455.6,
      "y": 570,
-     "w": 196.8,
+     "w": 195.9,
      "h": 42.5
     },
     {
@@ -967,9 +957,9 @@
      "text": "투자실행금 미확정",
      "tag": "th",
      "kind": "th",
-     "x": 653.3,
+     "x": 651.5,
      "y": 570,
-     "w": 205.4,
+     "w": 204.5,
      "h": 42.5
     },
     {
@@ -977,9 +967,9 @@
      "text": "투자 수익",
      "tag": "th",
      "kind": "th",
-     "x": 858.7,
+     "x": 856,
      "y": 570,
-     "w": 130.3,
+     "w": 129.7,
      "h": 42.5
     },
     {
@@ -987,89 +977,89 @@
      "text": "가중평균 금융일수",
      "tag": "th",
      "kind": "th",
-     "x": 989,
+     "x": 985.6,
      "y": 570,
-     "w": 195.2,
+     "w": 194.3,
      "h": 42.5
     },
     {
      "sel": "table.tbl th.num:nth-of-type(6)",
-     "text": "연환산수익률 미확정",
+     "text": "연환산 수익률 미확정",
      "tag": "th",
      "kind": "th",
-     "x": 1184.1,
+     "x": 1179.9,
      "y": 570,
-     "w": 222.9,
+     "w": 227.1,
      "h": 42.5
     },
     {
      "sel": "table.tbl tr:nth-of-type(1) > td.mono:nth-of-type(1)",
-     "text": "2026-08-20",
-     "tag": "td",
-     "kind": "row-head",
-     "x": 273,
-     "y": 612.5,
-     "w": 183.5,
-     "h": 45
-    },
-    {
-     "sel": "table.tbl tr:nth-of-type(2) > td.mono:nth-of-type(1)",
      "text": "2026-08-21",
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 657.5,
-     "w": 183.5,
+     "y": 612.5,
+     "w": 182.6,
      "h": 45
     },
     {
-     "sel": "table.tbl tr:nth-of-type(3) > td.mono:nth-of-type(1)",
+     "sel": "table.tbl tr:nth-of-type(2) > td.mono:nth-of-type(1)",
      "text": "2026-08-22",
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 702.5,
-     "w": 183.5,
+     "y": 657.5,
+     "w": 182.6,
      "h": 45
     },
     {
-     "sel": "table.tbl tr:nth-of-type(4) > td.mono:nth-of-type(1)",
+     "sel": "table.tbl tr:nth-of-type(3) > td.mono:nth-of-type(1)",
      "text": "2026-08-23",
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 747.5,
-     "w": 183.5,
+     "y": 702.5,
+     "w": 182.6,
      "h": 45
     },
     {
-     "sel": "table.tbl tr:nth-of-type(5) > td.mono:nth-of-type(1)",
+     "sel": "table.tbl tr:nth-of-type(4) > td.mono:nth-of-type(1)",
      "text": "2026-08-24",
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 792.5,
-     "w": 183.5,
+     "y": 747.5,
+     "w": 182.6,
      "h": 45
     },
     {
-     "sel": "table.tbl tr:nth-of-type(6) > td.mono:nth-of-type(1)",
+     "sel": "table.tbl tr:nth-of-type(5) > td.mono:nth-of-type(1)",
      "text": "2026-08-25",
      "tag": "td",
      "kind": "row-head",
      "x": 273,
-     "y": 837.5,
-     "w": 183.5,
+     "y": 792.5,
+     "w": 182.6,
      "h": 45
     },
     {
-     "sel": "table.tbl tr:nth-of-type(7) > td.mono:nth-of-type(1)",
+     "sel": "table.tbl tr:nth-of-type(6) > td.mono:nth-of-type(1)",
      "text": "2026-08-26",
      "tag": "td",
      "kind": "row-head",
      "x": 273,
+     "y": 837.5,
+     "w": 182.6,
+     "h": 45
+    },
+    {
+     "sel": "table.tbl tr:nth-of-type(7) > td.mono:nth-of-type(1)",
+     "text": "2026-08-27",
+     "tag": "td",
+     "kind": "row-head",
+     "x": 273,
      "y": 882.5,
-     "w": 183.5,
+     "w": 182.6,
      "h": 45
     },
     {
@@ -1079,12 +1069,12 @@
      "kind": "row-head",
      "x": 273,
      "y": 927.5,
-     "w": 183.5,
+     "w": 182.6,
      "h": 56.5
     },
     {
      "sel": "div.card.mb-6:nth-of-type(3)",
-     "text": "수익 현황 엑셀 다운로드 검색대상기간 일주일 2026-08-20 ~ 2026-08-26 투자실행금 179,916,643원 투자수익 62,977…",
+     "text": "수익 현황 엑셀 다운로드 검색대상기간 일주일 2026-08-21 ~ 2026-08-27 투자실행금 179,970,919원 투자수익 61,175…",
      "tag": "div",
      "kind": "card",
      "x": 272,
@@ -1124,7 +1114,7 @@
     },
     {
      "sel": "div.stat-grid:nth-of-type(2)",
-     "text": "검색대상기간 일주일 2026-08-20 ~ 2026-08-26 투자실행금 179,916,643원 투자수익 62,977원 연환산수익률 투자실행금…",
+     "text": "검색대상기간 일주일 2026-08-21 ~ 2026-08-27 투자실행금 179,970,919원 투자수익 61,175원 연환산 수익률 투자실행…",
      "tag": "div",
      "kind": "card",
      "x": 297,
@@ -1134,7 +1124,7 @@
     },
     {
      "sel": "div.stat:nth-of-type(1)",
-     "text": "검색대상기간 일주일 2026-08-20 ~ 2026-08-26",
+     "text": "검색대상기간 일주일 2026-08-21 ~ 2026-08-27",
      "tag": "div",
      "kind": "card",
      "x": 297,
@@ -1154,7 +1144,7 @@
     },
     {
      "sel": "div.summary-sub.mono:nth-of-type(3)",
-     "text": "2026-08-20 ~ 2026-08-26",
+     "text": "2026-08-21 ~ 2026-08-27",
      "tag": "div",
      "kind": "card-text",
      "x": 297,
@@ -1164,7 +1154,7 @@
     },
     {
      "sel": "div.stat:nth-of-type(2)",
-     "text": "투자실행금 179,916,643원",
+     "text": "투자실행금 179,970,919원",
      "tag": "div",
      "kind": "card",
      "x": 538.3,
@@ -1194,7 +1184,7 @@
     },
     {
      "sel": "div.stat:nth-of-type(2) > div.summary-value:nth-of-type(2)",
-     "text": "179,916,643원",
+     "text": "179,970,919원",
      "tag": "div",
      "kind": "card",
      "x": 563.3,
@@ -1204,7 +1194,7 @@
     },
     {
      "sel": "div.stat:nth-of-type(3)",
-     "text": "투자수익 62,977원",
+     "text": "투자수익 61,175원",
      "tag": "div",
      "kind": "card",
      "x": 790.6,
@@ -1234,7 +1224,7 @@
     },
     {
      "sel": "div.stat:nth-of-type(3) > div.summary-value:nth-of-type(2)",
-     "text": "62,977원",
+     "text": "61,175원",
      "tag": "div",
      "kind": "card",
      "x": 815.6,
@@ -1244,7 +1234,7 @@
     },
     {
      "sel": "div.stat:nth-of-type(4)",
-     "text": "연환산수익률 투자실행금액 대비 4.13% 투자자산 대비 미확정 3.30%",
+     "text": "연환산 수익률 투자실행금액 대비 3.99% 투자 자산 대비 미확정 3.19%",
      "tag": "div",
      "kind": "card",
      "x": 1010,
@@ -1254,7 +1244,7 @@
     },
     {
      "sel": "div.stat:nth-of-type(4) > div.summary-label:nth-of-type(1)",
-     "text": "연환산수익률",
+     "text": "연환산 수익률",
      "tag": "div",
      "kind": "card",
      "x": 1035,
@@ -1264,7 +1254,7 @@
     },
     {
      "sel": "div:nth-of-type(1) > div.summary-value:nth-of-type(2)",
-     "text": "4.13%",
+     "text": "3.99%",
      "tag": "div",
      "kind": "card",
      "x": 1035,
@@ -1284,12 +1274,12 @@
     },
     {
      "sel": "div.ty-split:nth-of-type(2) > div:nth-of-type(2) > div.summary-value:nth-of-type(2)",
-     "text": "3.30%",
+     "text": "3.19%",
      "tag": "div",
      "kind": "card",
      "x": 1160.1,
      "y": 425,
-     "w": 106.5,
+     "w": 109.6,
      "h": 30
     },
     {

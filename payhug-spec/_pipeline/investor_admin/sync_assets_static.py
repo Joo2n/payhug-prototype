@@ -38,7 +38,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from roster16_model import (ROSTER, SHARES, EXEC, CASH, TOTAL, W_W, S_W, TY_W,   # noqa: E402
-                            EXEC_SHARE, CASH_SHARE, ty, r2, f,
+                            EXEC_SHARE, CASH_SHARE, RPCT, ty, r2, f,
                             contract_signed, contract_default_sel)
 import daily_ledger as LG                                                       # noqa: E402
 
@@ -121,7 +121,7 @@ def card_spec():
         '투자자산':   (f(TOTAL), '원', None),
         '투자실행액': (f(EXEC),  '원', '비중 %s%% · 보관 ㈜페이허그' % EXEC_SHARE),
         '순현금':     (f(CASH),  '원', '비중 %s%% · 보관 ㈜쿠콘' % CASH_SHARE),
-        '예상 연환산수익률': (TY_ROW, '%', '가중평균 금융일수 %s일 기준' % W_ROW),
+        '예상 연환산 수익률': (TY_ROW, '%', '가중평균 금융일수 %s일 기준' % W_ROW),
     }
 
 
@@ -178,8 +178,8 @@ def status_table(s):
 #   W금융일수·S입금부족율·옆 칸 금액이 각자 다른 집합에서 나온다. 행을 금액으로 가중평균해도
 #   현황표의 두 칸과 맞아떨어지지 않는 자리라, 열머리가 자기 모집단을 스스로 말한다.
 #   마크업은 통합본 build_app.py 의 popTh() 와 같다.
-POP = (('가중평균 금융일수', '대상정산금채권 전체 (발생 기준)', POP_N_W),
-       ('입금부족률', '선정산일이 기준일 20일 전 ~ 11일 전인 표본', POP_N_S))
+POP = (('가중평균 금융일수', '보유 채권 전체 (회수된 것 포함)', POP_N_W),
+       ('입금부족률', '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본', POP_N_S))
 
 
 def pop_th(label, of, n):
@@ -190,15 +190,63 @@ def pop_th(label, of, n):
             % (label, of, f(n)))
 
 
+def th_pat(label):
+    return re.compile(
+        r'<th class="num">(?:%s|<span class="tooltip wide"><span class="tip-anchor">%s</span>'
+        r'.*?</span></span>(?: <span class="badge sm badge-amber">[^<]*</span>)?)</th>'
+        % (re.escape(label), re.escape(label)), re.S)
+
+
 def pop_heads(s):
     """현황표·가맹점별 표의 두 열머리를 툴팁 붙은 것으로. 이미 붙어 있으면 통째로 갈아 끼운다."""
     for label, of, n in POP:
-        pat = re.compile(
-            r'<th class="num">(?:%s|<span class="tooltip wide"><span class="tip-anchor">%s</span>'
-            r'.*?</span></span>(?: <span class="badge sm badge-amber">[^<]*</span>)?)</th>'
-            % (re.escape(label), re.escape(label)), re.S)
-        s, k = pat.subn(lambda _m: pop_th(label, of, n), s)
+        s, k = th_pat(label).subn(lambda _m: pop_th(label, of, n), s)
         assert k == 2, '열머리 `%s` %d건 — 현황표·가맹점별 표 2건이라야 한다' % (label, k)
+    return s
+
+
+# ── 2-2) 예상 연환산 수익률 툴팁 ─────────────────────────────────
+YR_LABEL = '예상 연환산 수익률'
+YR_HEAD = 'Y<sub>r</sub> · 예상 연환산 수익률 · r × 365 ÷ D'
+YR_ROW = ('<span class="tip-row"><span>연환산</span><span class="tip-green">'
+          '일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>')
+YR_PLAIN = '<div class="summary-label">%s</div>' % YR_LABEL
+YR_CARD_TIP = re.compile(
+    r'<div class="summary-label"><span class="tooltip wide"><span class="tip-anchor">%s</span>'
+    r'.*?</span></span></div>' % re.escape(YR_LABEL), re.S)
+
+
+def yr_card_tip(w, ty_):
+    return ('<span class="tooltip wide"><span class="tip-anchor">%s</span><span class="tip-panel">%s%s'
+            '<span class="tip-row"><span>r</span><span class="tip-green">계약된 할인율 · %s%%</span></span>'
+            '<span class="tip-row"><span>D</span><span class="tip-green">가중평균 금융일수 · %s</span></span>'
+            '<span class="tip-row"><span>연 환산</span><span class="tip-green">%s%%</span></span>'
+            '<span class="tip-row"><span>일 환산</span><span>미확정</span></span>'
+            '<span class="tip-row"><span>대표 DM 16:27</span><span class="tip-green">365 ÷ W금융일수 = 1년 회전수</span></span>'
+            '<span class="tip-row sum"><span>대표 DM 16:45</span><span>예상치 · 할인율 계통</span></span>'
+            '</span></span>'
+            % (YR_LABEL, YR_HEAD, YR_ROW, RPCT, '집계 대상 없음' if w is None else '%s일' % w, ty_))
+
+
+def yr_card_strip(s):
+    return YR_CARD_TIP.sub(YR_PLAIN, s)
+
+
+def yr_card(s, w, ty_):
+    s, k = re.subn(re.escape(YR_PLAIN),
+                   lambda _m: '<div class="summary-label">%s</div>' % yr_card_tip(w, ty_), s)
+    assert k == 1, '요약 카드 `%s` %d건 — 1건이라야 한다' % (YR_LABEL, k)
+    return s
+
+
+def yr_th():
+    return ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">%s</span>'
+            '<span class="tip-panel">%s%s</span></span></th>' % (YR_LABEL, YR_HEAD, YR_ROW))
+
+
+def yr_heads(s):
+    s, k = th_pat(YR_LABEL).subn(lambda _m: yr_th(), s)
+    assert k == 2, '열머리 `%s` %d건 — 현황표·가맹점별 표 2건이라야 한다' % (YR_LABEL, k)
     return s
 
 
@@ -379,8 +427,10 @@ def total_count(s):
 
 # ── 낱장별 재생성 ─────────────────────────────────────────────────
 def build_assets(s):
-    s = summary_cards(s)
+    s = summary_cards(yr_card_strip(s))
+    s = yr_card(s, W_ROW, TY_ROW)
     s = pop_heads(s)
+    s = yr_heads(s)
     s = status_table(s)
     s = place_page_tools(s)
     s = page_count(s)
@@ -406,6 +456,11 @@ def build_certificate(s):
              lambda mm: mm.group(1) + str(EXEC_SHARE + CASH_SHARE) + mm.group(2), '증명서 합계 비중')
     return sub1(s, r'(<span class="k">대상 가맹점</span><span class="v">)\d+(개</span>)',
                 r'\g<1>%d\g<2>' % N_ROSTER, '대상 가맹점 N개')
+
+
+def build_assets_empty(s):
+    s = yr_card(yr_card_strip(s), None, '%.2f' % 0)
+    return yr_heads(pop_heads(s))
 
 
 def build_cert_confirm(s):
@@ -514,8 +569,7 @@ PLAN = [
     ('invest-assets.html',              build_assets),
     ('invest-assets--download.html',    build_assets),
     ('invest-assets--cert-confirm.html', build_cert_confirm),
-    # 빈 상태 낱장은 표에 행이 없어 본문을 다시 그릴 것이 없다 — 열머리만 같은 자리에 둔다.
-    ('invest-assets--empty.html',       pop_heads),
+    ('invest-assets--empty.html',       build_assets_empty),
     ('certificate.html',                build_certificate),
     ('xls-assets-status.html',          lambda s: sheet(s, xls_status_make)),
     ('xls-assets-merchant.html',        lambda s: sheet(s, xls_merchant_make)),

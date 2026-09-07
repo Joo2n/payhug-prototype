@@ -469,7 +469,7 @@ async function main(){
     go('invest-assets','default');
     var adKey=Object.keys(got).filter(function(k){ return k.indexOf('Σ')===0; })[0];
     return {four:four, five:five, ad:got[adKey], psc:got['PEC'],
-            label:c1.textContent.indexOf('투자자산 대비')>=0};
+            label:c1.textContent.indexOf('투자 자산 대비')>=0};
   `);
   const tyK = (ty && ty.ad + ty.psc) ? ty.ad / (ty.ad + ty.psc) : NaN;
   const tyWant = ty.four * tyK;
@@ -478,17 +478,17 @@ async function main(){
      이 자리에 허용치가 남는 이유는 재료인 ④ 가 이미 2자리로 잘려 있어서다(원 자리 반올림 2회).
      판별력은 바로 아래 원장 대조가 갖는다 — 그쪽에는 허용치가 없다. */
   const tyLim = 0.005 * (1 + (isNaN(tyK) ? 1 : tyK)) + 1e-9;
-  check('연환산수익률 ⑤ = ④ x Σ(Ai×Di)/(Σ(Ai×Di)+PEC) — 툴팁 표기값으로 되짚기',
+  check('연환산 수익률 ⑤ = ④ x Σ(Ai×Di)/(Σ(Ai×Di)+PEC) — 툴팁 표기값으로 되짚기',
         !ty.err && ty.label === true && ty.four > 0 && ty.five > 0 && ty.five <= ty.four &&
         Math.abs(ty.five - tyWant) <= tyLim,
         JSON.stringify(ty) + ' want=' + (isNaN(tyWant) ? 'NaN' : tyWant.toFixed(3)) +
         ' lim=' + tyLim.toFixed(5));
   /* 원장 대조 — 기본 기간(일주일)의 ④·⑤ 표기값과 완전일치. 허용치 없음 */
-  check('연환산수익률 ④ ⑤ = 원장 weekTy · weekTyAsset (기본 기간 일주일)',
+  check('연환산 수익률 ④ ⑤ = 원장 weekTy · weekTyAsset (기본 기간 일주일)',
         !ty.err && ty.four === Number(FACTS.weekTy) && ty.five === Number(FACTS.weekTyAsset),
         '④ ' + ty.four + '/' + FACTS.weekTy + ' · ⑤ ' + ty.five + '/' + FACTS.weekTyAsset);
   /* 툴팁 Σ(Ai×Di)·PEC 도 원장 기대값과 맞대 본다 — 카드와 툴팁이 다른 기간을 말하면 여기서 걸린다 */
-  check('연환산수익률 툴팁 Σ(Ai×Di) · PEC = 원장 weekAD · weekPsc',
+  check('연환산 수익률 툴팁 Σ(Ai×Di) · PEC = 원장 weekAD · weekPsc',
         ty.ad === FACTS.weekAD && ty.psc === FACTS.weekPsc,
         'Σ(Ai×Di) ' + ty.ad + '/' + FACTS.weekAD + ' · PEC ' + ty.psc + '/' + FACTS.weekPsc);
   check('콘솔 에러 0', consoleErrors.length === 0, consoleErrors.slice(0, 3).join(' | '));

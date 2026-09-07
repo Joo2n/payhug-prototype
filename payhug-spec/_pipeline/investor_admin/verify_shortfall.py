@@ -52,7 +52,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
 
 APP_REPO = '/Users/semi/cursor/payhug-investor-admin'
-PROTO_REPO = '/Users/semi/cursor/payhug-investor-prototype'
+PROTO_REPO = os.environ.get('PROTO_REPO', '/Users/semi/cursor/payhug-investor-prototype')
 XLSX = os.path.join(BASE, '검산_투자자어드민_20260901.xlsx')
 MEETING = os.path.join(BASE, 'meeting_0831', 'meeting_20260831_raw.txt')
 CEO = os.path.join(BASE, 'ceo_definitions.md')
@@ -76,7 +76,7 @@ RATIO_SENTENCE = 'S입금부족율 = Σ SLi / Σ SAi'
 # 화면 툴팁이 말해야 하는 모집단 문언. 건수는 원장에서 읽는다 — 여기 적지 않는다.
 # 2026-08-31 기호 규칙 — 날짜 쪽은 소문자 d 다 (dm_0831/symbol_rule_0831.md).
 # 바로 위 SAMPLE_SENTENCE 는 대표 원문 인용이라 대문자 그대로 둔다.
-POP_S_TEXT = '선정산일이 기준일 20일 전 ~ 11일 전인 표본'
+POP_S_TEXT = '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본'
 
 # macOS 함정 — --window-size=1440,H 의 실제 뷰포트는 1440x(H-87). 87 을 더해 창을 띄운다.
 # --screenshot 플래그를 붙이면 편차가 0 이 되어 보정이 사라진 것처럼 오판한다. 붙이지 않는다.
@@ -486,12 +486,13 @@ def sec2(L, s1, drv):
     rows = s1['rows']
     lo, hi = dl.SAMPLE
 
+    # D = 오늘 = 어제 마감(dl.ASOF) + 1
     chk('2', 'SAMPLE 시작 = D-%d' % SAMPLE_FROM,
-        lo == dl.ASOF - timedelta(days=SAMPLE_FROM),
-        '%s · 기준일 %s' % (lo, dl.ASOF))
+        lo == dl.ASOF + timedelta(days=1) - timedelta(days=SAMPLE_FROM),
+        '%s · 어제 마감 %s' % (lo, dl.ASOF))
     chk('2', 'SAMPLE 끝 = D-%d' % SAMPLE_TO,
-        hi == dl.ASOF - timedelta(days=SAMPLE_TO),
-        '%s · 기준일 %s' % (hi, dl.ASOF))
+        hi == dl.ASOF + timedelta(days=1) - timedelta(days=SAMPLE_TO),
+        '%s · 어제 마감 %s' % (hi, dl.ASOF))
     chk('2', '구간 폭 = 열흘 (회의 00:22:30)',
         (hi - lo).days + 1 == SAMPLE_DAYS, '%d일' % ((hi - lo).days + 1))
 
@@ -752,7 +753,7 @@ def sec6(L, s1, s2, s3, drv):
     nstr = s2['nstr']
     tampered = 0
     for path, t in s2['files']:
-        bad = t.replace(POP_S_TEXT, '선정산일이 기준일 20일 전 ~ 10일 전인 표본')
+        bad = t.replace(POP_S_TEXT, '선정산일이 오늘 기준 20일 전 ~ 10일 전인 표본')
         if POP_S_TEXT not in bad:
             tampered += 1
     chk('6', '툴팁 판독기가 D-10 치환본을 전건 잡는다',
