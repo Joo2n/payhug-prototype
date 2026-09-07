@@ -8,21 +8,13 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 
 ## 검증기 전종
 
-`/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/` 에서 실행.
+명부는 `_pipeline/investor_admin/verifiers.md` 하나다. 여기에 검증기 이름·항목 수를 옮겨 적지 않는다 —
+검사가 늘거나 항목 수가 바뀌면 이 파일이 먼저 낡는다. 실행 전에 그 명부를 읽는다.
 
-| 검증기 | 무엇 |
-|---|---|
-| `verify_0828.py` | 미팅 결론 26항목 |
-| `verify_app.js` | 죽은 컨트롤·상태 도달·레이아웃·콘솔 |
-| `verify_rows.js` | 표 행·순번·선택 |
-| `verify_toast.js` | 다운로드 토스트 ↔ 실물 바이트 |
-| `verify_links.py` | 링크·자산 전건 200 |
-| `verify_crossscreen.py` | 화면 간 숫자 일치 |
-| `verify_identity.js` | 항등식 |
-| `verify_period.js` | 기간·집계 조작 |
-| `verify_password.js` | 비밀번호 실물 대조 |
-| `verify_glossary5.js` | 용어 카드 5필드 |
-| `gate_prototype.js` · `gate_glossary.js` | 배포 게이트 |
+명부가 갖는 것 — 검증기별 대상·보는 것 · 판정하는 것과 출력만 하는 것의 구분 · 기대값 원천
+(`ledger_facts.json` · `sim_facts.py` · `roster16_model.py` · `platform_duration.py`) · 기준을 옮긴 자리와 사유 · 폐지 목록.
+
+전부 `/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/` 에서 실행한다.
 
 ## 기준이 낡으면 고친다 — 다만 조건이 있다
 
@@ -47,4 +39,4 @@ FAIL 건마다 — 무엇이 FAIL인가 / 화면 결함인가 기준 노후인�
 
 ## 문체
 
-`입니다`·`습니다` 종결 0건. 수행보고체 금지. 수치와 사실만.
+수행보고체 금지. 수치와 사실만. 종결어미는 전역 지침을 따른다.
