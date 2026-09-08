@@ -4,21 +4,21 @@
 
 ## 지금 상태 한 줄
 
-기호 정리표 **V1.3**(대표님 V1.2 수정안 골격: 첨자 d = 기준일 · EC_d · PEC = Σ EC_d, ⑤ 만 우리 산식, 용어 하나로 보유 채권·연환산 수익률·검색대상기간, 표 4 = 기호·화면·툴팁)이 확정본이고 대표님과의 논의는 종결됐다. 화면(전체본·시연본)·Figma 37프레임·원고·검사기가 V1.3 과 툴팁 규칙(첫 줄 「기호 = 산식」 표 2 그대로 · 둘째 줄부터 「기호 | 값」 · 조건 「i | …」 · 연환산 행 맨 아래)으로 배포돼 있다. 투자자 화면에는 내부 검토 표시(「미확정」 배지·「대표 확인 대기」·「대표 DM」·「항등식」 등)가 0건이고 「수익 산정 기준」 구역(수수료 배분형·조달이자형)은 대표 스토리보드에 없는 것이라 없다. 대표님 승인이 남은 자리는 ⑤ 산식 하나이며 승인 상태는 화면이 아니라 이 문서에서만 추적한다.
+기호 정리표 **V1.3**(대표님 V1.2 수정안 골격: 첨자 d = 기준일 · EC_d · PEC = Σ EC_d, ⑤ 만 우리 산식, 용어 하나로 보유 채권·연환산 수익률·검색대상기간, 표 4 = 기호·화면·툴팁)이 확정본이고 대표님과의 논의는 종결됐다. 화면(전체본·시연본)·Figma 37프레임·원고·검사기가 V1.3 과 툴팁 규칙(첫 줄 「기호 = 산식」 표 2 그대로 · 둘째 줄부터 「기호 | 값」 · 조건 「i | …」 · 연환산 행 맨 아래)으로 배포돼 있다. 투자자 화면에는 내부 검토 표시(「미확정」 배지·「대표 확인 대기」·「대표 DM」·「항등식」 등)가 0건이고 「수익 산정 기준」 구역(수수료 배분형·조달이자형)은 대표 스토리보드에 없는 것이라 없다. 대표님과의 기호·산식 논의는 2026-09-08 종결(대표님 V1.2 수정안 반영 = V1.3).
 
 ## 확정된 것
 
 | 항목 | 값 | 근거 |
 |---|---|---|
-| `d` | 오늘(화면을 보는 날). 첨자 아님. 산식에는 조건 문장으로만: 「선정산일이 d 전날 이전이고 정산예정일이 d 이후」「d 전날 마감 잔액」「P 는 d 전날까지」「선정산일이 d 의 20일 전부터 11일 전까지」. 투자자 화면에 표시하지 않음 | `session_0904/V11_SPEC.md` · `final_terms.json` vars.d · 점검 `session_0904/verify/xv_d_A.md`·`xv_d_B.md`·`xv_v11_A.md`·`xv_v11_B.md` |
+| `d` (V1.3) | 표 1 첨자 규칙 「하나의 일 (d = 기준일, d−1 = 기준일의 전일, d−2 = 기준일의 전전일)」. 첨자는 잔액 `EC_d` 에만, 채권은 조건 문장(「정산예정일이 d 보다 뒤인 채권」·「정산예정일이 기준일(d) 보다 뒤인 보유 채권」). 기준일 = 마감이 끝난 날이라 오늘 보면 어제. 투자자 화면에 d 표시 없음. LR 표본 「선정산일이 오늘(d 의 다음 날) 기준 20일 전부터 11일 전까지」. PEC = Σ EC_d, d ∈ P | V1.3 표 1·표 2 · `final_terms.json` · (V1.1 의 d = 오늘 안은 폐기, `session_0904/V11_SPEC.md` 는 이력) |
 | 원장 시점 | `ASOF` 08-27 = **어제(마감 스냅샷 날)**. 오늘은 08-28 이고 화면에 없다. `LAST_DUE = ASOF`, 일별 표에 08-27 행, 기본 조회기간 **08-21~08-27**, 입금부족률 표본 08-08~08-17 | `daily_ledger.py:62-71` · `ledger_facts.json` |
 | ⑤ 투자 자산 대비 연환산 수익률 | `PY_t = PY_a × 채권 비중 + 0 × 순현금 비중 = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC )`, i 는 정산예정일이 P 안인 채권. 채권 비중 = Σ(A_i×D_i) ÷ (Σ(A_i×D_i)+PEC). 기호표 ⑤ 칸에 전개 전문(순현금 수익률 0 항·PMR·PD 대입·약분) | 교차검증 `session_0904/verify/xv_*.md` · 잔액 하루씩 7일 합 564,855,018 ≈ Σ(A_i×D_i) 559,275,516 (경계 채권 1%) |
 | 기본 조회기간 값 | 투자실행금 179,970,919 · 투자수익 61,175 · PD 3.11 · ④ **3.99%** · Σ(A_i×D_i) 559,275,516 · PEC 140,000,000 · ⑤ **3.19%** | `ledger_facts.json` `weekExec`·`weekProfit`·`weekTy`·`weekAD`·`weekPsc`·`weekTyAsset` |
 | 표기 규칙 셋 | 정의 줄은 `이름 = Σ 낱건, 범위` · 조립 산식은 이름으로만 · 한 산식 안에서 풀기/접기 혼용 금지 | `session_0904/reports/step7_notation_report.md` |
-| 낱말 | 「비중」으로 통일(가중치 낱말 안 씀). 띄어쓰기 「보유 채권」「연환산 수익률」「예상 연환산 수익률」「투자 자산 대비」, 「투자실행금액 대비」는 붙임 | 기호표 V1.1 본문. 단 원고 `final_terms.json` 에는 「가중치」 3건이 남아 있고 검사기 S6·S7 은 띄어쓰기만 본다 (다음 라운드 K) |
-| 내부 용어 ↔ 투자자 화면 (표 4) | 대상정산금채권 → 보유 채권 · ty수익률 → 연환산 수익률(툴팁 「일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률」) · 오늘(d) → 표시하지 않음 · 조회기간(P) → 검색대상기간 | 대표님 DM 9/7 합의(워드 변경 추적본에는 없음 — 추적본은 첨자 d·EC_d·⑤ 되돌림뿐) · `final_terms.json` `screen_terms` |
-| 대표님 워드 변경 판정 | 채택: 보유 채권 · 연환산 수익률 툴팁 · 내부/화면 분리. 비채택: 첨자 d 규칙 · 상수 d 행 삭제 · `EC_d`·`Σ EC_d` · ⑤ `PM ÷ (PA + PEC)` 되돌림 | `/Users/semi/Downloads/투자자어드민 기호정리표_V1.0.docx`(변경 추적본) · 메모리 `feedback_confirmed_doc_is_baseline.md` |
-| 화면 라벨·툴팁 | 투자 자산: 「기준일」 알약 없음 · 열머리 가중평균 금융일수(툴팁 「보유 채권 전체 (회수된 것 포함)」)·입금부족률(툴팁 「선정산일이 오늘 기준 20일 전 ~ 11일 전」)·예상 연환산 수익률(툴팁 Y_r 머리 + 「연환산」 행, 카드·현황표·가맹점별). 투자 수익: ④ 투자실행금액 대비 · ⑤ 투자 자산 대비, 툴팁 기호마다 용어명·값·「연환산」 행. **검토 표시 0건**(「미확정」「대표 확인 대기」「대표 재전달」「대표 DM」「(관찰된 값)」「항등식」「부족액 0」「일 환산」) · 「수익 산정 기준」 구역 없음(`build_app.py` `SHOW_FORMULA = False`, 낱장은 `sync_*_static.py` `drop_formula()`) | `build_app.py` `YR_TIP_HEAD`·`YR_TIP_ROW`·`yrTh()`·`tyTh`·`thirdTh` · `sync_assets_static.py`·`sync_profit_static.py` · 빌더 `session_0904/reports/step11_builder_report.md` · QA `step10_qa_report.md`·`step11_qa_report.md` · 메모리 `feedback_no_internal_marks_in_investor_ui.md` |
+| 낱말 | 「비중」으로 통일(가중치 낱말 안 씀). 띄어쓰기 「보유 채권」「연환산 수익률」「예상 연환산 수익률」「투자 자산 대비」, 「투자실행금액 대비」는 붙임. 「투자실행액」(투자 자산)·「투자실행금」(투자 수익)은 화면 라벨 그대로 | V1.3 본문 · `final_terms.json` · `verify_final_terms.py` S7 |
+| 용어 하나로 (V1.3) | 내부/외부 용어를 나누지 않음(대표님 9/8 판단). 대상정산금채권 → 보유 채권 · ty수익률 → 연환산 수익률 · 조회기간·조회대상기간 → 검색대상기간 · 조회시점의 투자자산 → 투자자산. 표 4 는 「기호 · 화면 · 툴팁」 15행 | 대표님 V1.2 수정안(`session_0904/artifact/…_V1.2_대표님수정안.docx`) · 표 4 AS-IS/TO-BE https://claude.ai/code/artifact/95990a7c-d41d-411d-90bb-78ee155f790a · `final_terms.json` `screen_terms` |
+| 대표님 워드 변경 판정 (최종) | 채택: 첨자 d 규칙 · 상수 d 행 삭제 · `EC_d`·`PEC = Σ EC_d` · 「d 일 마감시점」·「기준일(d) 보다 뒤」 · 용어 하나로. 비채택: ⑤ `PM ÷ (PA + PEC)`(365 없음, 비중 재료 PA) → `PY_t = PY_a × 채권 비중 … = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC )` 유지 | 대표님 V1.0 추적본(첨자 d)·V1.2 수정안(용어 통일) · 메모리 `feedback_confirmed_doc_is_baseline.md` |
+| 화면 라벨·툴팁 (규칙) | 툴팁 첫 줄은 「기호 = 산식」(표 2 산식 칸 그대로, 이름 없음), 조립 산식은 이름으로(⑤ 는 `PY_t = PY_a × 채권 비중 + 순현금 수익률 × 순현금 비중` 다음 줄 `= PM × 365 ÷ ( Σ( A_i × D_i ) + PEC )`), Σ 는 정의 줄에만, 둘째 줄부터 「기호 \| 값」, 조건 「i \| 조건 · 건수」, 「연환산 \| 일부 기간의 …」 행 맨 아래. 8곳: 투자실행액 카드 `Σ A_i` · 예상 연환산 수익률 `Y_r = r × 365 ÷ D` · 가중평균 금융일수 `D = Σ( A_i × D_i ) ÷ Σ A_i` + `i \| 보유 채권 전체 · 61,760건` · 입금부족률 `LR = Σ L_i ÷ Σ A_i` + `i \| 선정산일이 오늘 기준 20일 전 ~ 11일 전 · 3,200건` · ④ `PY_a = PMR × 365 ÷ PD` · ⑤ 위 · 열머리 투자실행금 `PA = Σ A_i` + `i \| 정산예정일이 그 날짜인 보유 채권` · 열머리 연환산 수익률 `PY_a = PMR × 365 ÷ PD`. 열머리 안 패널은 대문자 변환 해제(`base.css`). 검토 표시 0건 · 「수익 산정 기준」 구역 없음 · 「기준일」 알약 없음 | `build_app.py` `YR_TIP_HEAD`·`yrTh`·`popTh`·`tyTh`·`thirdTh` · `sync_assets_static.py`·`sync_profit_static.py`·`build_sim_static.py` · `session_0904/reports/step13_builder_report.md`·`step13_qa_report.md` · 전후 비교 https://claude.ai/code/artifact/2783782a-a759-4e3b-b022-60173f4db89b |
 | 시연본 범위 | 사이드바 7메뉴 · 화면 9 · 상태 17. 시뮬레이션·엑셀 미리보기·화면 갤러리는 통합본 전용 | `scripts/sync_prototype.py` `drop_sim()`·`drop_xls_preview()` · `gate_prototype.js` |
 | Figma 3066:328 | 직계 **37프레임** = 화면 24 + 상태 13. 원천 커밋 `d7ce377`(투자 자산 9·투자 수익 9 는 이 판, 나머지 19 는 `e019d5a` 판이나 화면 내용 같음). 툴팁 열린 상태 프레임 8장은 패널을 최상위 마지막 자식 + ABSOLUTE 로 올린 후처리가 있음. 37프레임 텍스트 전수에서 검토 표시·수익 산정 기준·투자 시뮬레이션·기준일·W금융일수 0건. 쿠콘·시뮬 2·엑셀 서식 4·로그인 은 만들지 않는다 | `figma_map_investor.json` `frames` 37 · `source_commit` · `verification` · `session_0904/reports/step10_figma_report.md`·`step11_figma_report.md` · 캡처 `session_0904/qa/figma_0907/`·`figma_0907b/` |
 | 로그인 | 기존 어드민 프론트 `app/login/page.tsx` 그대로 | `reports/step7_login_report.md` |
@@ -35,28 +35,8 @@
 | 원장 | `daily_ledger.py` (`ASOF` 어제 · `TY5_EXPR = 'ty4 * ad / tot'`) · `ledger_facts.json` |
 | 배포 | 전체본 https://payhug-investor-demo.vercel.app/ (`Joo2n/payhug-investor-admin` main `d7ce377`) · 시연본 https://payhug-investor-prototype.vercel.app/ (`Joo2n/payhug-investor-prototype` main `19c1440`) · 용어 해설 https://payhug-investor-glossary.vercel.app/ (`Joo2n/payhug-investor-glossary` main `3ddc511`). GitHub Actions 「배포 동기화 검사」는 **수동 실행 전용**(`workflow_dispatch`) — push 마다 돌면 로컬 동기화 전 8분 재시도 끝에 실패 메일이 나가서 뺐다. push 뒤 `sync_prototype.sh`·`sync_glossary.sh` 가 대상 레포·배포면을 스스로 확인한다 |
 | 대표님 슬랙 초안 | `~/Downloads/payhug_용어정의서/대표님_슬랙_V1.3_20260908.txt` (대표님과는 이미 종결, 참고용) |
-| 세션 보고서 | `session_0904/reports/` (step5~step11 · xcheck_A/B · orders_mid/final/0907/0907b) · 조사 `session_0904/survey/` · 검증 `session_0904/verify/` · 캡처 `session_0904/qa/` (figma_nav 24 · figma_states 13 · figma_0907 22 · figma_0907b 5) |
+| 세션 보고서 | `session_0904/reports/` (step5~step13 · xcheck_A/B · xcheck_0908_A/B · orders_mid/final/0907/0907b/0908 · audit_0907_decisions) · 조사 `session_0904/survey/` · 검증 `session_0904/verify/` · 캡처 `session_0904/qa/` (figma_nav 24 · figma_states 13 · figma_0907 22 · figma_0907b 5 · figma_0908b 10 · screen_ab_0908) |
 | 지라 PAYHUG-229 9/4 기록 (붙여넣기용) | `~/Downloads/payhug_용어정의서/PAYHUG-229_진행상황_20260904.html` · 사본 `session_0904/reports/` |
-
-## 남은 작업 (우선순위)
-
-| # | 할 일 | 어디 | 비고 |
-|---|---|---|---|
-| 1 | **⑤ 대표님 승인** — 화면에는 배지가 없으므로 승인 여부는 여기서만 추적. 승인이 다르게 나면 `daily_ledger.py` `TY5_EXPR` 과 기호표 ⑤ 칸을 함께 고친다 | 슬랙 초안 `~/Downloads/payhug_용어정의서/대표님_슬랙_V1.1_20260907.txt` | |
-| 2 | 대표님께 보낼 것 — V1.1 워드 · ⑤ 산식(PD 가 Σ D_i 가 아닌 이유는 `PA × PD = Σ( A_i × D_i )` 항등식으로) · 7번(Σ A_i 누계)·10번(D 표본) | `session_0904/artifact/ceo_edit_review.html` · 슬랙 초안은 V1.1 기호(PA·PD·PEC·PY_a·PY_t)로만 | 값은 `survey/step0_ty5_impact.md` |
-| 3 | 통합본 전용 문서 페이지 8종에 남은 검토 표시·「조달이자형」 — capability 46 · inquiry 14 · glossary 113 · steps-all 101 · terms-edit 51 · feasibility 14 · ceo-questions 8 · archive 3 (건수는 `step11_builder_report.md` §6 · `orders_0907b.md`). 시연본에는 없음. **용어 해설 단독 배포 https://payhug-investor-glossary.vercel.app/ 는 glossary 와 같은 내용이 공개 상태**이고 통합본 `index.html` 이 8종에 링크한다 — 원고 재작성 전까지 내릴지(Vercel 프로젝트 일시정지) 사용자 결정 | 각 원고(`capability_manuscript.md`·`ceo_inquiry.md`·`glossary_manuscript.md`·`steps_all.json`·`termsdoc_seed.json`) → 생성기 | 7·8번과 함께 |
-| 4 | 증명서 화면 — 「작성일자 2026-08-27」이 마감일(어제)과 같음. 발급 버튼을 오늘 누른 문서의 작성일자가 어제인 셈. 미리보기에 「마감 기준」이 없고 PDF 머리에만 있음 | `certificate.html:153·258` · `app.html` 증명서 · `build_docs.py:179` | 「작성일자」를 「기준(마감)」으로 바꿀지, 값을 오늘로 할지 결정 필요. QA `step10_qa_report.md` (마) ①② |
-| 5 | 순현금 시점 — 대표 원문 12행 「조회시점 현재」 vs 45행 「전일자 마감」. V1.1 은 어제 마감 | `ceo_definitions.md` 읽기만 | 대표 확인 |
-| 6 | 용어 해설 `glossary.html` — `build_glossary.py` 가 원고 앵커에서 멎음(31개 중 안 잡히는 것 8 + 「수익 산정 기준」 제거로 사라진 `invest-assets / div:0.11%`·`h2:수익 산정 기준` 2). 9/7 띄어쓰기 3건 미반영. `verify_shotmarks.py` FAIL 45 · `verify_crossscreen.py` 불일치 3 · `verify_docnums.py` 24 는 전부 이 문서 페이지 대상 | `glossary_manuscript.md` 앵커 재지정 → `build_glossary.py` → `verify_shotmarks.py` → `sync_glossary.sh` | 3·7번과 함께 |
-| 7 | 문서 화면 5종 재작성 (옛 체계 `wD`·`PwD`·`PY_MR`·하루 갈래) | `glossary.html`·`steps-all.html`·`calc.html`·`terms-edit.html`·`final-terms.html` ← `build_calc.py`·`steps_all.json`·`glossary_manuscript.md`·`termsdoc_seed.json` | 잔존 `survey/step4_ui_terms.md` §4 |
-| 8 | 시드·원고 11개에 ⑤ 산식 동기화 | `termsdoc_seed.json` · `dm_0901/symbol_rule_0901.md` · `meeting_0901/testcase.json` · `meeting_0901/steps_all.json` · `symbol_glossary.json` · `glossary_manuscript.md` · `ceo_inquiry.md` · `feasibility.md` · `capability_manuscript.md` · `ceoq_seed.json` | 자리 목록 `survey/step0_ty5_impact.md` (가) |
-| 9 | 용어기호정리 워드·HTML 재생성 (`final_terms.json` 을 읽는 다른 문서, 09-02 판에 멈춤) | `build_final.py` — `meeting_0901/testcase.json` 옛 기간 고정 | 8번과 함께 |
-| 10 | `build_symreview.py` 가 읽는 원고 경로를 스크래치패드에서 `session_0904/artifact/ceo_review.html` 로 | `build_symreview.py:29–31` | 스크래치패드는 세션이 끝나면 사라진다 |
-| 11 | `build_archive.py --check` 실패 — 설명 공란 6건 (`NEXT_SESSION.md` · `freeze_app.js` · `figma_map_investor.json.bak_0904`·`.bak_0904b` · `gate_prototype.js.bak_0904` · `prep_fig.py.bak_0904`). `.bak` 4건은 지우고 둘은 설명을 넣어 `archive.html` 재생성 | `build_archive.py` | 전 파일 행이 바뀌므로 따로 |
-| 12 | 검사기 FAIL 정리 — 기간 이동 잔재(`verify_period.js`·`verify_docnums.py`·`verify_links.py`) · 시뮬 종료일 ASOF ↔ 정적 낱장 WEEK (`sim_facts.py:52`) | `session_0904/reports/step7_verifier_report.md` (다) | |
-| 13 | 순현금 EC 상수(2천만) 대 날짜별 합 | `daily_ledger.py:62 CASH` | 날짜별 역산 표 `survey/step0_ty5_impact.md` |
-| 14 | 통합본 `app.html` 날짜 입력 역전 시 카드가 0원/0.00% 로 감(실물은 직전 결과 유지) · `min/max` 속성 없음 · 파일바 「생성일시」에 빌드 시각 노출 | `app.html:3851-3862` · `:686·691` · `:1709~` | QA `step10_qa_report.md` (마) ④⑤⑥ |
-| 15 | 툴팁 ④ 「항등식」「부족액 0」 라벨 꺾임 · 「대표 DM 16:45」 행 요약이 「관찰된 값 · PMR 계통」으로 바뀐 것 되돌릴지 | `build_app.py` ④ 툴팁 · `sync_profit_static.py` `TIP4` · `assets/base.css` `.tip-row` | `session_0904/reports/xcheck_A.md` 4번 |
 
 ## 남은 작업 (2026-09-08 마감 시점)
 
@@ -72,6 +52,9 @@
 | H | `build_archive.py --check` 설명 공란 6건(.bak 4 · NEXT_SESSION.md · freeze_app.js) · `archive.html` 재생성 | | 정리 |
 | I | 순현금 시점(대표 원문 12행 「조회시점 현재」 vs V1.3 EC_d 「d 일 마감시점」) · 증명서 「작성일자 2026-08-27」 의미 · 시드·원고 11개 ⑤ 동기화 · `build_final.py` 옛 기간 | | 기존 항목 |
 | J | 표 2 Σ A_i 「정산예정일이 d 보다 뒤인 채권」 vs 투자자산 「기준일(d) 보다 뒤인 보유 채권」 두 문장 · 산문의 EC(첨자 없음) vs 기호 EC_d | V1.3 본문 | 확인 필요 (원고 조 지적) |
+| K | 통합본 날짜 입력 역전 시 카드가 0원/0.00% 로 감(실물은 직전 결과 유지) · 키보드 입력 시 빈 값 · `min/max` 없음 · 파일바 「생성일시」 빌드 시각 노출 | `app.html` `change`→`refresh()` · `:686·691` · `:1709~` | 낮음 |
+| L | 기간 이동 잔재 FAIL(`verify_period.js`·`verify_docnums.py`·`verify_links.py`) · 시뮬 종료일 ASOF ↔ 낱장 WEEK(`sim_facts.py:52`) · 순현금 EC 상수(2천만) 대 날짜별 합(`daily_ledger.py:62`) | | 기존 항목 |
+| M | 「d」 관련 옛 명세 `session_0904/V11_SPEC.md`·`verify/xv_d_*.md`·`xv_v11_*.md` 는 V1.1 이력이라 V1.3 과 다름 — 읽을 때 주의 | | 참고 |
 
 ## 재개 명령
 
