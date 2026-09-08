@@ -3,9 +3,9 @@
  "page_node_id": "3066:328",
  "page_name": "[투자자 어드민] 제안서 첨부용",
  "source_repo": "/Users/semi/cursor/payhug-investor-admin",
- "source_commit": "0b6ab0d",
- "source_commit_short": "0b6ab0d",
- "prev_source_commit": "9972f0b",
+ "source_commit": "d7ce377",
+ "source_commit_short": "d7ce377",
+ "prev_source_commit": "0b6ab0d",
  "staging_copy": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/_fig",
  "staging_css_patch": "prep_fig.py patch_css() 자동 적용 — ① --font-mono 를 Figma 내장 'Roboto Mono' 로 교체(원본 스택은 Chrome 에서 Menlo 로 해석되는데 Figma 에 Menlo 가 없어 hasMissingFont 가 되고 숫자 셀이 말줄임된다) ② sheet.css text-overflow:ellipsis 2곳 제거. 스테이징 사본 전용, 원본 레포 무변경",
  "frame_count": 37,
@@ -77,12 +77,12 @@
   "method": "generate_figma_design(DOM 전송) 네이티브 레이어. 래스터 캡처 이미지 0건",
   "chunk_size": 3,
   "reissued_capture_ids": {
-   "note": "2026-09-08 0908 라운드(18장 교체): 재발급 0 · 폰트 미로드 0 · 폴링 고정 1(01 투자 자산 e5e92486 — processing 고정, 페이지 노드 3750:2 존재로 채택). figmadelay 5000 으로 캡처. 직전 라운드(9972f0b 판 18장) 기록은 session_0904/reports/step11_figma_report.md",
+   "note": "2026-09-08 0908b 라운드(18장 교체): 재발급 0 · 폰트 미로드 0 · 폴링 고정 0 · 18/18 completed 응답으로 노드 id 수신. figmadelay 5000 으로 캡처. 직전 라운드(0b6ab0d 판 18장) 기록은 scratchpad/step12_figma_report.md",
    "ids": []
   }
  },
  "verification": {
-  "checked_at": "2026-09-08 (0b6ab0d 판 18 교체 후)",
+  "checked_at": "2026-09-08 (d7ce377 판 18 교체 후)",
   "frames_on_page": 37,
   "width_1440": 37,
   "clips_content_true": 37,
@@ -108,6 +108,8 @@
    "(④ ÷ ③)": 0,
    "기간 순현금": 0,
    "대상정산금채권": 0,
+   "투자 실행액": 0,
+   "연 환산": 0,
    "미확정": 0,
    "대표 확인": 0,
    "대표 DM": 0,
@@ -120,23 +122,33 @@
    "투자 시뮬레이션": 0,
    "기준일": 0,
    "W금융일수": 0,
-   "조회기간": 0
+   "조회기간": 0,
+   "· 예상 연환산 수익률 ·": 0,
+   "· 투자실행금 ·": 0,
+   "· 투자 자산 대비 연환산 수익률 ·": 0,
+   "· 연환산 수익률 ·": 0,
+   "· 투자실행금액 대비 연환산 수익률 ·": 0
   },
-  "forbidden_texts_scope": "교체 18 + 비대상 19 = 37프레임 전건 0",
+  "forbidden_texts_scope": "교체 18 + 비대상 19 = 37프레임 전건 0 (21종 + 툴팁 첫 줄 가운뎃점 나열 5종)",
+  "tooltip_rule": "첫 줄 「기호 = 산식」 · 둘째 줄부터 「기호 | 값」 · 조건 「i | …」 · 「연환산」 행 맨 아래",
   "new_phrases": {
-   "01-f 3754:2": "보유 채권 전체 (「회수된 것 포함」 없음)",
-   "03-h 3767:2": "PA · 투자실행금 · Σ Ai · 정산예정일이 그 날짜인 보유 채권",
-   "03-i 3770:2": "PYa · 연환산 수익률 · PMR × 365 ÷ PD · 일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률",
-   "03-g 3769:2": "PEC · 검색대상기간의 누적 순현금 · 140,000,000원",
-   "03-f 3771:2": "PYa · 투자실행금액 대비 연환산 수익률 · PMR × 365 ÷ PD"
+   "01-i 3798:2": "Yr = r × 365 ÷ D · r | 0.11% · D | 3.04일 · 연환산 행 맨 아래",
+   "01-f 3797:2": "D = Σ( Ai × Di ) ÷ Σ Ai · i | 보유 채권 전체 · 61,760건",
+   "01-g 3796:2": "LR = Σ Li ÷ Σ Ai · i | 선정산일이 오늘 기준 20일 전 ~ 11일 전 · 3,200건",
+   "01-h 3799:2": "Σ Ai · Ai | 순지급액i × (1 − r) · r | 0.11%",
+   "03-f 3805:2": "PYa = PMR × 365 ÷ PD · PMR | 0.033992% · PM | 61,175원 · PA | 179,970,919원 · PD | 3.11일 · 연환산 행 맨 아래",
+   "03-g 3808:2": "PYt = PYa × 채권 비중 + 순현금 수익률 × 순현금 비중 ⏎ = PM × 365 ÷ ( Σ( Ai × Di ) + PEC ) · PYa | 3.99% · Σ( Ai × Di ) | 559,275,516원 · PEC | 140,000,000원 · EC | 20,000,000원 × 7일 · 연환산 행 맨 아래",
+   "03-h 3809:2": "PA = Σ Ai · i | 정산예정일이 그 날짜인 보유 채권",
+   "03-i 3810:2": "PYa = PMR × 365 ÷ PD · i | 정산예정일이 그 날짜인 보유 채권 · 연환산 행 맨 아래"
   },
-  "subscript_case": "툴팁 패널 텍스트 textCase ORIGINAL — Σ Ai · PYa · PYt 소문자 첨자(대문자 Σ A_I · PY_A 0건). base.css .tooltip .tip-panel text-transform:none 반영",
+  "subscript_case": "툴팁 패널 텍스트 8프레임 전건 textCase ORIGINAL — Σ Ai · Li · Di · PYa · PYt · Yr 소문자 첨자",
   "sidebar_menus": "7 (01-e 메뉴 그룹 접힘은 메뉴 항목 2 — 투자 자산·투자 수익)",
-  "values": "투자 자산 계열: 100,000,000 ×2 · 80,000,000 ×2 · 20,000,000 ×2 · 13.21 ×2(01-i 는 ×3) · 3.04 ×2(01-i 는 ×3) (01-d 데이터 없음 제외) · 투자 수익 계열: 3.99 ×2(03-g 는 ×3) · 3.19 ×1 · 2026-08-21 ×2 · 2026-08-27 ×2 (03·03-f·03-g·03-h·03-i) · 03-e 는 08-27·08-20",
-  "invest_assets_01": "3750:2 — 텍스트 121 · 사이드바 7 · 「수익 산정 기준」 구역 없음",
-  "invest_profit_03": "3760:2 — 검색대상기간 2026-08-21 ~ 2026-08-27 · ④ 3.99% · ⑤ 3.19% 「투자 자산 대비」",
-  "tooltip_frames": "8 — 패널(폭 256) 각 1개. 임포트 직후 뒤 요소에 가려져 프레임 최상위 마지막 자식으로 옮기고 layoutPositioning ABSOLUTE 로 원 좌표 복원 (frames[].tooltip_panel). 패널 높이 01-h 61 · 03-h 61 · 03-g 214 · 03-i 98 (직전 판 대비 툴팁 문구 변경분)",
-  "screenshots": "before 4(01-f·03-g·03-h·03-i 구 노드) · after 6(01-f·03-g·03-h·03-i·01·03 신 노드) — scratchpad/shots0908",
+  "values": "투자 자산 계열: 100,000,000 ×2 · 80,000,000 ×2 · 20,000,000 ×2 · 13.21 ×2 · 3.04 ×2(01-i 는 ×3) (01-d 데이터 없음 제외 · 01-b/01-c 는 2026-08-27 ×2) · 투자 수익 계열: 3.99 ×2(03-g 는 ×3) · 3.19 ×1 · 2026-08-21 ×2 · 2026-08-27 ×2 (03·03-f·03-g·03-h·03-i) · 03-a/03-c 는 08-27 ×1 · 03-e 는 08-27·08-20",
+  "invest_assets_01": "3800:2 — 텍스트 121 · 사이드바 7 · 「가중평균 금융일수 3.04일 기준」 · 「수익 산정 기준」 구역 없음",
+  "invest_profit_03": "3802:2 — 검색대상기간 2026-08-21 ~ 2026-08-27 · ④ 3.99% 「투자실행금액 대비」 · ⑤ 3.19% 「투자 자산 대비」",
+  "tooltip_frames": "8 — 패널(폭 256) 각 1개. 임포트 직후 뒤 요소에 가려져 프레임 최상위 마지막 자식으로 옮기고 layoutPositioning ABSOLUTE 로 원 좌표 복원 (frames[].tooltip_panel). 패널 높이 01-f 61 · 01-g 78 · 01-h 86 · 01-i 119 · 03-f 160 · 03-g 214 · 03-h 61 · 03-i 98",
+  "screenshots": "after 10(01·03·01-f·01-g·01-h·01-i·03-f·03-g·03-h·03-i 신 노드) — scratchpad/shots0908b",
+  "metadata_crosscheck": "get_metadata 덤프 들여쓰기 2칸 파싱 직계 37 · use_figma 37 과 id·이름·좌표·크기 전건 일치",
   "layer_name_note": "01-i·03-g·03-i 레이어 이름의 「연환산수익률」「투자자산 대비」는 맵 frame_name 승계값(텍스트 아님)"
  },
  "not_imported": [
@@ -161,13 +173,13 @@
   {
    "file": "invest-assets.html",
    "frame_name": "01 투자 자산",
-   "node_id": "3750:2",
+   "node_id": "3800:2",
    "x": 0,
    "y": 0,
    "w": 1440,
    "h": 1085,
-   "capture_id": "e5e92486-0c55-4083-921b-62a0f894b309",
-   "replaced_node_id": "3702:2"
+   "capture_id": "980efb28-9c12-4777-8d85-4a5d23bbd497",
+   "replaced_node_id": "3750:2"
   },
   {
    "file": "certificate.html",
@@ -183,13 +195,13 @@
   {
    "file": "invest-profit.html",
    "frame_name": "03 투자 수익",
-   "node_id": "3760:2",
+   "node_id": "3802:2",
    "x": 3200,
    "y": 0,
    "w": 1440,
    "h": 1037,
-   "capture_id": "409b2279-19c7-46a6-808e-548b25a385b8",
-   "replaced_node_id": "3716:2"
+   "capture_id": "41722ac1-a053-461d-aa4f-2c4683b6d824",
+   "replaced_node_id": "3760:2"
   },
   {
    "file": "merchants.html",
@@ -238,68 +250,68 @@
   {
    "file": "invest-assets--download.html",
    "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
-   "node_id": "3748:2",
+   "node_id": "3792:2",
    "x": 1600,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "3c4de5d6-7b6f-492b-9d8a-ea3b737cfdab",
-   "replaced_node_id": "3704:2"
+   "capture_id": "3afcf9f8-f17c-4330-b0cd-68317415b512",
+   "replaced_node_id": "3748:2"
   },
   {
    "file": "invest-assets--cert-confirm.html",
    "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
-   "node_id": "3749:2",
+   "node_id": "3793:2",
    "x": 3200,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "0178d164-f6a1-4632-aae9-7b7598b767c8",
-   "replaced_node_id": "3703:2"
+   "capture_id": "2ea3b32a-4df4-46b0-9a01-c92f5f8d1447",
+   "replaced_node_id": "3749:2"
   },
   {
    "file": "invest-assets--empty.html",
    "frame_name": "01-d 투자 자산 — 데이터 없음",
-   "node_id": "3753:2",
+   "node_id": "3794:2",
    "x": 4800,
    "y": 5226,
    "w": 1440,
    "h": 827,
-   "capture_id": "ec1ca999-0faf-4f20-b953-e4041246b238",
-   "replaced_node_id": "3707:2"
+   "capture_id": "06bec39c-9deb-4472-9164-58faf2fe5e0f",
+   "replaced_node_id": "3753:2"
   },
   {
    "file": "invest-profit--monthly.html",
    "frame_name": "03-a 투자 수익 — 월별",
-   "node_id": "3761:2",
+   "node_id": "3804:2",
    "x": 0,
    "y": 7839,
    "w": 1440,
    "h": 992,
-   "capture_id": "c5a77177-9682-4058-8126-c97c74b25921",
-   "replaced_node_id": "3715:2"
+   "capture_id": "18b97a44-032d-46e8-b954-75916dda734f",
+   "replaced_node_id": "3761:2"
   },
   {
    "file": "invest-profit--empty.html",
    "frame_name": "03-b 투자 수익 — 결과 없음",
-   "node_id": "3762:2",
+   "node_id": "3801:2",
    "x": 1600,
    "y": 7839,
    "w": 1440,
    "h": 814,
-   "capture_id": "a54ea3d2-ea45-41cd-b088-17a762c764e7",
-   "replaced_node_id": "3714:2"
+   "capture_id": "cd11397e-45a3-454a-bc2b-a92d2d40fe22",
+   "replaced_node_id": "3762:2"
   },
   {
    "file": "invest-profit--weekly.html",
    "frame_name": "03-c 투자 수익 — 주별",
-   "node_id": "3766:2",
+   "node_id": "3807:2",
    "x": 3200,
    "y": 7839,
    "w": 1440,
    "h": 902,
-   "capture_id": "9a7a5e3d-706f-43ab-ac69-5beeb10dc1d9",
-   "replaced_node_id": "3719:2"
+   "capture_id": "5887806b-1a45-48d9-84cc-62631195755b",
+   "replaced_node_id": "3766:2"
   },
   {
    "file": "merchants--filtered.html",
@@ -425,25 +437,25 @@
   {
    "file": "invest-assets--nav-collapsed.html",
    "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
-   "node_id": "3752:2",
+   "node_id": "3795:2",
    "x": 0,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "7ffe5345-2327-486d-88c7-fa24f44b1a5c",
-   "replaced_node_id": "3706:2",
+   "capture_id": "ef632b2f-b0ff-4ff6-b576-bc7232de25b2",
+   "replaced_node_id": "3752:2",
    "state_source": "낱장 패치 — 가맹점·관리 그룹 class collapsed + CSS 2줄"
   },
   {
    "file": "invest-profit--range-error.html",
    "frame_name": "03-e 투자 수익 — 기간 역전 오류",
-   "node_id": "3765:2",
+   "node_id": "3806:2",
    "x": 4800,
    "y": 7839,
    "w": 1440,
    "h": 838,
-   "capture_id": "2df8a727-e495-44a1-8de9-1ca840825cbe",
-   "replaced_node_id": "3718:2",
+   "capture_id": "e97de547-89ca-4a0a-ab4f-36dd0f449e57",
+   "replaced_node_id": "3765:2",
    "state_source": "통합본 동결 — PF.from=2026-08-27 · PF.to=2026-08-20 · refresh"
   },
   {
@@ -485,18 +497,20 @@
   {
    "file": "invest-assets--tip-wavg.html",
    "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
-   "node_id": "3754:2",
+   "node_id": "3797:2",
    "x": 0,
    "y": 26130,
    "w": 1440,
    "h": 1085,
-   "capture_id": "bcc92bcc-cdbe-4488-be25-cb90f6144546",
-   "replaced_node_id": "3709:2",
+   "capture_id": "01f61132-b793-46e2-a2ea-273767bc121e",
+   "replaced_node_id": "3754:2",
    "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3754:99",
+    "node_id": "3797:99",
     "x": 551,
     "y": 329,
+    "w": 256,
+    "h": 61,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -504,18 +518,20 @@
   {
    "file": "invest-assets--tip-shortfall.html",
    "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
-   "node_id": "3757:2",
+   "node_id": "3796:2",
    "x": 1600,
    "y": 26130,
    "w": 1440,
    "h": 1085,
-   "capture_id": "4dcb9ba8-f8d2-41c8-aa2c-c0955e37fd04",
-   "replaced_node_id": "3710:2",
+   "capture_id": "688e967d-f492-421d-8381-bf47014857e2",
+   "replaced_node_id": "3757:2",
    "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3757:104",
+    "node_id": "3796:104",
     "x": 681,
     "y": 329,
+    "w": 256,
+    "h": 78,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -523,18 +539,20 @@
   {
    "file": "invest-assets--tip-exec.html",
    "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
-   "node_id": "3756:2",
+   "node_id": "3799:2",
    "x": 3200,
    "y": 26130,
    "w": 1440,
    "h": 1071,
-   "capture_id": "2c6c837e-729d-4064-828a-795421f8245b",
-   "replaced_node_id": "3705:2",
+   "capture_id": "1cb860df-539d-4291-9c15-89bd42303a64",
+   "replaced_node_id": "3756:2",
    "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3756:33",
+    "node_id": "3799:33",
     "x": 380,
     "y": 131,
+    "w": 256,
+    "h": 86,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -542,18 +560,20 @@
   {
    "file": "invest-assets--tip-yield.html",
    "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
-   "node_id": "3758:2",
+   "node_id": "3798:2",
    "x": 4800,
    "y": 26130,
    "w": 1440,
    "h": 1071,
-   "capture_id": "113aac16-6edb-4a26-bb53-2a055ae14db4",
-   "replaced_node_id": "3711:2",
+   "capture_id": "40f8af04-878e-46ed-ab08-d171497fcffb",
+   "replaced_node_id": "3758:2",
    "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3758:65",
+    "node_id": "3798:65",
     "x": 996,
     "y": 131,
+    "w": 256,
+    "h": 119,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -561,18 +581,20 @@
   {
    "file": "invest-profit--tip-py-exec.html",
    "frame_name": "03-f 투자 수익 — 툴팁 ④ 투자실행금액 대비",
-   "node_id": "3771:2",
+   "node_id": "3805:2",
    "x": 0,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "bbd8ccc8-0f0f-4965-b504-e95df6324570",
-   "replaced_node_id": "3722:2",
+   "capture_id": "e748fbe6-f51b-47b8-86d7-65aabcd7e6f0",
+   "replaced_node_id": "3771:2",
    "state_source": "낱장 패치 — 수익 현황 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3771:124",
+    "node_id": "3805:124",
     "x": 863,
     "y": 426,
+    "w": 256,
+    "h": 160,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -580,18 +602,20 @@
   {
    "file": "invest-profit--tip-py-asset.html",
    "frame_name": "03-g 투자 수익 — 툴팁 ⑤ 투자자산 대비",
-   "node_id": "3769:2",
+   "node_id": "3808:2",
    "x": 1600,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "935f9abe-5efb-4cc8-a6fb-d1bf5179958e",
-   "replaced_node_id": "3723:2",
+   "capture_id": "88600755-0aea-4c50-8f16-e4fa8a0ffa52",
+   "replaced_node_id": "3769:2",
    "state_source": "낱장 패치 — 수익 현황 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3769:137",
+    "node_id": "3808:137",
     "x": 971,
     "y": 426,
+    "w": 256,
+    "h": 214,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -599,18 +623,20 @@
   {
    "file": "invest-profit--tip-exec.html",
    "frame_name": "03-h 투자 수익 — 툴팁 ③ 투자실행금 열머리",
-   "node_id": "3767:2",
+   "node_id": "3809:2",
    "x": 3200,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "b7603241-6f09-44ce-b0d0-683d216a5abf",
-   "replaced_node_id": "3720:2",
+   "capture_id": "ac95b80f-bf44-4ace-a4c7-8856729ea192",
+   "replaced_node_id": "3767:2",
    "state_source": "낱장 패치 — 일별 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3767:173",
+    "node_id": "3809:173",
     "x": 616,
     "y": 602,
+    "w": 256,
+    "h": 61,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -618,18 +644,20 @@
   {
    "file": "invest-profit--tip-yield.html",
    "frame_name": "03-i 투자 수익 — 툴팁 ⑥ 연환산수익률 열머리",
-   "node_id": "3770:2",
+   "node_id": "3810:2",
    "x": 4800,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "ebf66b74-55c5-4c41-b0fe-89b498d86a27",
-   "replaced_node_id": "3724:2",
+   "capture_id": "f7afca2b-3656-472c-af91-852f7e3ec19f",
+   "replaced_node_id": "3770:2",
    "state_source": "낱장 패치 — 일별 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3770:184",
+    "node_id": "3810:184",
     "x": 1135,
     "y": 602,
+    "w": 256,
+    "h": 98,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    }
@@ -1059,6 +1087,168 @@
    "status": "삭제 완료",
    "reason": "0b6ab0d 판으로 교체 — 구 노드(9972f0b 판) 삭제",
    "deleted_at": "2026-09-08 0908 라운드"
+  },
+  {
+   "file": "invest-assets.html",
+   "frame_name": "01 투자 자산",
+   "deleted_node_id": "3750:2",
+   "replaced_by": "3800:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit.html",
+   "frame_name": "03 투자 수익",
+   "deleted_node_id": "3760:2",
+   "replaced_by": "3802:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--download.html",
+   "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
+   "deleted_node_id": "3748:2",
+   "replaced_by": "3792:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--cert-confirm.html",
+   "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
+   "deleted_node_id": "3749:2",
+   "replaced_by": "3793:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--empty.html",
+   "frame_name": "01-d 투자 자산 — 데이터 없음",
+   "deleted_node_id": "3753:2",
+   "replaced_by": "3794:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--monthly.html",
+   "frame_name": "03-a 투자 수익 — 월별",
+   "deleted_node_id": "3761:2",
+   "replaced_by": "3804:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--empty.html",
+   "frame_name": "03-b 투자 수익 — 결과 없음",
+   "deleted_node_id": "3762:2",
+   "replaced_by": "3801:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--weekly.html",
+   "frame_name": "03-c 투자 수익 — 주별",
+   "deleted_node_id": "3766:2",
+   "replaced_by": "3807:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--nav-collapsed.html",
+   "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
+   "deleted_node_id": "3752:2",
+   "replaced_by": "3795:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--range-error.html",
+   "frame_name": "03-e 투자 수익 — 기간 역전 오류",
+   "deleted_node_id": "3765:2",
+   "replaced_by": "3806:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--tip-wavg.html",
+   "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
+   "deleted_node_id": "3754:2",
+   "replaced_by": "3797:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--tip-shortfall.html",
+   "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
+   "deleted_node_id": "3757:2",
+   "replaced_by": "3796:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--tip-exec.html",
+   "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
+   "deleted_node_id": "3756:2",
+   "replaced_by": "3799:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets--tip-yield.html",
+   "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
+   "deleted_node_id": "3758:2",
+   "replaced_by": "3798:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--tip-py-exec.html",
+   "frame_name": "03-f 투자 수익 — 툴팁 ④ 투자실행금액 대비",
+   "deleted_node_id": "3771:2",
+   "replaced_by": "3805:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--tip-py-asset.html",
+   "frame_name": "03-g 투자 수익 — 툴팁 ⑤ 투자자산 대비",
+   "deleted_node_id": "3769:2",
+   "replaced_by": "3808:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--tip-exec.html",
+   "frame_name": "03-h 투자 수익 — 툴팁 ③ 투자실행금 열머리",
+   "deleted_node_id": "3767:2",
+   "replaced_by": "3809:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-profit--tip-yield.html",
+   "frame_name": "03-i 투자 수익 — 툴팁 ⑥ 연환산수익률 열머리",
+   "deleted_node_id": "3770:2",
+   "replaced_by": "3810:2",
+   "status": "삭제 완료",
+   "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
+   "deleted_at": "2026-09-08 0908b 라운드"
   }
  ],
  "lost_nodes": [
@@ -1084,9 +1274,9 @@
   "3189:16460",
   "3189:16726"
  ],
- "source_commit_note": "payhug-investor-admin main 0b6ab0d (2026-09-08). 투자 자산 9·투자 수익 9 = 18프레임은 0b6ab0d 내용(기호정리표 V1.3 툴팁 3곳 — 가중평균 금융일수 「보유 채권 전체」 · ③ 「PA · 투자실행금 · Σ A_i」 · ⑥ 「PY_a · 연환산 수익률 · PMR × 365 ÷ PD」+연환산 행 · ⑤ 「PEC · 검색대상기간의 누적 순현금」 · 열머리 툴팁 패널 대문자 해제). 나머지 19프레임은 e019d5a 캡처본 그대로 — 그 뒤 커밋에서 해당 HTML 변경 없음",
- "head_at_completion": "0b6ab0d (원본 워킹트리 깨끗 — html/css/js 변경 0건)",
- "source_commit_state": "캡처 시점 HEAD 0b6ab0d · 워킹트리 변경 0. 원본 레포는 읽기만 했다(커밋·수정 0)",
+ "source_commit_note": "payhug-investor-admin main d7ce377 (2026-09-08). 투자 자산 9·투자 수익 9 = 18프레임은 d7ce377 내용(툴팁 「기호 = 산식」 규칙 — 첫 줄 Y_r = r × 365 ÷ D · D = Σ( A_i × D_i ) ÷ Σ A_i · LR = Σ L_i ÷ Σ A_i · PY_a = PMR × 365 ÷ PD · PY_t = PY_a × 채권 비중 + 순현금 수익률 × 순현금 비중 + = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) · PA = Σ A_i, 둘째 줄부터 「기호 | 값」, 조건 「i | …」, 「연환산」 행 맨 아래). 나머지 19프레임은 e019d5a 캡처본 그대로 — 그 뒤 커밋에서 해당 HTML 변경 없음",
+ "head_at_completion": "d7ce377 (원본 워킹트리 깨끗 — html/css/js 변경 0건)",
+ "source_commit_state": "캡처 시점 HEAD d7ce377 · 워킹트리 변경 0. 원본 레포는 읽기만 했다(커밋·수정 0)",
  "state_frames": {
   "count": 13,
   "method": "원본 레포에 낱장이 없는 상태는 스테이징에서 만든다 — prep_fig.py freeze (freeze_app.js · 헤드리스 크롬 + CDP 로 app.html 을 열어 go()·상태 변수·ACT[] 로 상태를 만든 뒤 DOM 을 낱장으로 저장, value/checked/selected 속성 동기화 · 스크립트·숨은 section·모달·주석 제거) + 낱장 패치(툴팁 패널 1개 id=fig-tip display:block · 메뉴 그룹 class collapsed)",
@@ -1094,7 +1284,7 @@
   "title_badge": "새 상태 5건은 build_app.py STATE_META 에 없어 제목 옆 상태 배지가 없다. 03-e 는 역전 범위로 결과가 0건이라 DERIVE 가 empty 를 내어 「결과 없음」 배지가 붙는다",
   "pagination_note": "통합본 동결본(03-e·06-e·06-f·08-d·01-h·01-i)은 1쪽이면 페이지 버튼을 그리지 않고 낱장은 「1」 버튼을 그린다 — 원본 두 갈래의 표기 차이"
  },
- "staging_copy_note": "_fig 는 preflight(sync→freeze→measure→apply→verify→fontgate→heights) 로 0b6ab0d 기준 37화면 재생성. 캡처 스크립트(cap3c.sh)는 capture.js 태그가 없으면 중단",
+ "staging_copy_note": "_fig 는 preflight(sync→freeze→measure→apply→verify→fontgate→heights) 로 d7ce377 기준 37화면 재생성. 캡처 스크립트(cap3d.sh)는 capture.js 태그가 없으면 중단",
  "deleted_0907": {
   "old_37": [
    "3340:2",
@@ -1230,5 +1420,28 @@
    "3724:2"
   ],
   "note": "0b6ab0d 판 교체로 삭제한 9972f0b 판 18 노드 (retired 에 replaced_by 와 함께 기록)"
+ },
+ "deleted_0908b": {
+  "replaced_old_18": [
+   "3750:2",
+   "3760:2",
+   "3748:2",
+   "3749:2",
+   "3753:2",
+   "3761:2",
+   "3762:2",
+   "3766:2",
+   "3752:2",
+   "3765:2",
+   "3754:2",
+   "3757:2",
+   "3756:2",
+   "3758:2",
+   "3771:2",
+   "3769:2",
+   "3767:2",
+   "3770:2"
+  ],
+  "note": "d7ce377 판 교체로 삭제한 0b6ab0d 판 18 노드 (retired 에 replaced_by 와 함께 기록)"
  }
 }

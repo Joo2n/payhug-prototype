@@ -148,31 +148,31 @@
   "content": 1085,
   "sidebar": 533,
   "vh": 1085,
-  "tip_bottom": 410
+  "tip_bottom": 415
  },
  "invest-assets--tip-shortfall": {
   "content": 1085,
   "sidebar": 533,
   "vh": 1085,
-  "tip_bottom": 410
+  "tip_bottom": 431
  },
  "invest-assets--tip-exec": {
   "content": 1071,
   "sidebar": 531,
   "vh": 1071,
-  "tip_bottom": 217
+  "tip_bottom": 241
  },
  "invest-assets--tip-yield": {
   "content": 1071,
   "sidebar": 531,
   "vh": 1071,
-  "tip_bottom": 295
+  "tip_bottom": 274
  },
  "invest-profit--tip-py-exec": {
   "content": 1037,
   "sidebar": 533,
   "vh": 1037,
-  "tip_bottom": 627
+  "tip_bottom": 610
  },
  "invest-profit--tip-py-asset": {
   "content": 1037,
