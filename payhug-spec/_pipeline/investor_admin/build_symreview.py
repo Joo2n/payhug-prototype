@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """기호 정리표 — 워드와 HTML 두 벌.
 
-원고는 아티팩트 HTML(ceo_review.html) 한 곳이다. 그 파일을 파싱해 같은 차례·같은
+원고는 아티팩트 HTML(session_0904/artifact/ceo_review.html) 한 곳이다. 그 파일을 파싱해 같은 차례·같은
 표로 워드를 짜고, HTML 은 머리를 씌워 그대로 낸다. 두 산출물이 같은 말을 한다.
 
 산출 ~/Downloads/payhug_용어정의서/기호정리표_YYYYMMDD_HHMM.docx
@@ -27,8 +27,7 @@ sys.path.insert(0, PIPE)
 import subscript
 
 SRC = os.environ.get("SYMREVIEW_SRC") or os.path.join(
-    "/private/tmp/claude-501/-Users-semi-cursor-payhug",
-    "9aed3429-fc00-4785-9abd-c254e437cf03/scratchpad/ceo_review.html")
+    PIPE, "session_0904", "artifact", "ceo_review.html")
 OUT = os.path.expanduser("~/Downloads/payhug_용어정의서")
 HAN, MONO = "맑은 고딕", "D2Coding"
 INK = RGBColor(0x1C, 0x1B, 0x19)

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """확정 원고 `final_terms.json` 의 산식·값 전건 재계산 검증기.
 
-대상   payhug-spec/_pipeline/investor_admin/final_terms.json  (vars 30항 · calc 9단계 + 검산 4줄)
+대상   payhug-spec/_pipeline/investor_admin/final_terms.json
+       (rules 8행 · vars 27항 · changes 5행 · screen_terms 15행 · footnote · calc 9단계 + 검산 4줄)
 원천   daily_ledger.py  →  ledger_facts.json   (값의 단일 원천)
+확정본 session_0904/artifact/투자자어드민 기호정리표_V1.3.html · .docx  (표 1~4 를 행마다 글자 단위로 대조 — T 절)
 화면   payhug-investor-admin/invest-assets.html · invest-profit.html  (헤드리스 크롬 실렌더)
 
 이 검증기가 보는 것은 이름이 아니라 숫자다. 두 축을 따로 판정한다.
@@ -209,7 +211,7 @@ def sec_A():
         '%s ↔ %s (2자리로 끊어 가중하면 %s)' % (PWD_DAY, FACTS['weekWRaw'], q(PWD_2DP, 6)))
     chk('A5', SUM_A_OPEN == FACTS['exec'] == L.BOOK, 'Σ A_i(미회수) = facts.exec = BOOK',
         '%s' % format(SUM_A_OPEN, ','))
-    chk('A6', str(q(WD_ALL, 6)) == FACTS['wRaw'], 'wD(대상정산금채권 전체) = facts.wRaw',
+    chk('A6', str(q(WD_ALL, 6)) == FACTS['wRaw'], 'D(보유 채권 전체) = facts.wRaw',
         '%s ↔ %s' % (q(WD_ALL, 6), FACTS['wRaw']))
     chk('A7', str(q(LR, 6)) == FACTS['sRaw'], 'LR = facts.sRaw',
         '%s ↔ %s' % (q(LR, 6), FACTS['sRaw']))
@@ -437,8 +439,8 @@ def sec_F():
             'wD(d−1) = Σ(A_iD_i) ÷ A(d−1) — 여섯 자리로 남기고 화면은 두 자리',
             '여섯 자리 %s · 화면 %s ↔ 화면원천 %s' % (w6, wdisp, tb[0]))
         chk('F.%s.EC' % k, L.CASH * 1 == L.CASH,
-            'EC(d−1) = 전일자 자정 잔액 — 원장에 일별 EC 원장이 없어 상수 %s 로 선다' % format(L.CASH, ','),
-            '원고도 formula 없음(정의 문장만) · 기간 합 PEC 만 화면에 뜬다')
+            'EC_d = d 일 마감시점 잔액 — 원장에 일별 EC 원장이 없어 상수 %s 로 선다' % format(L.CASH, ','),
+            '원고 산식 칸은 정의 문장(V1.3) · 기간 합 PEC 만 화면에 뜬다')
         chk('F.%s.YMR' % k, str(q(ymr6, 2)) == tb[1],
             'Y(MR,d−1) = MR × 365 ÷ wD(d−1) — 분모는 여섯 자리 값',
             '여섯자리wD %s%% (표기 %s) · 두자리wD %s%% (표기 %s) ↔ 화면원천 %s'
@@ -476,9 +478,9 @@ def sec_G():
     v = dict((x['sym'], x) for x in MS['vars'])
     chk('G2', 'D' in v and v['D']['formula'], 'wD 산식 존재', v['D']['formula'])
     wtxt = (v['D']['formula'] or '') + ' ' + (v['D'].get('plain') or '')
-    chk('G3', ('전체' in wtxt) or ('발생 기준' in wtxt),
-        'wD 항이 모집단을 「대상정산금채권 전체 (발생 기준)」로 적는가 — 화면 열머리 툴팁이 대는 문언',
-        '원고 wD 항 전문: %s' % wtxt.strip())
+    chk('G3', ('보유 채권 전체' in wtxt),
+        'D 항이 모집단을 「보유 채권 전체」로 적는가 — V1.3 표 2 D 산식 칸 · 표 4 D 툴팁이 대는 문언',
+        '원고 D 항 전문: %s' % wtxt.strip())
     chk('G4', str(q(WD_OPEN, 6)) != FACTS['wRaw'],
         'wD — 미회수만 세면 화면 wD 가 안 나온다 (원고 scopes 가 칸마다 모집단이 다르다고 적은 근거)',
         '미회수 %s (표기 %s) ↔ 화면 %s (표기 %s) · 차 %s일'
@@ -775,28 +777,25 @@ def sec_I():
         labels |= set(c['label'] for c in pg['cards'] if c['label'])
         labels |= set(hh for t in pg['tables'] for hh in t['head'] if hh)
         splits |= set(x['label'] for x in pg['split'] if x['label'])
+    # V1.3 표 4 화면 칸은 「투자 자산 · 투자실행액」 꼴 — 화면 이름을 떼고 라벨만 찾는다.
     st_rows = MS.get('screen_terms') or []
     want, miss = [], []
     for r in st_rows:
         sc = r['screen']
-        if sc in ('같음',):
-            want += [n.strip() for n in r['internal'].split('·')]
-        elif sc in ('화면에 쓰지 않음', '표시하지 않음'):
+        if sc in ('화면에 쓰지 않음', '표시하지 않음'):
             continue
-        elif sc == '보유 채권':
-            continue                                   # 툴팁 안 낱말 — 라벨이 아니다
-        else:
-            want.append(sc)
+        want.append(_label(sc))
     for w in want:
-        if w in labels or w in splits or any(w.startswith(x) for x in splits):
+        if (w in labels or w in splits or any(w.startswith(x) for x in splits)
+                or any(x.startswith(w + ' (') for x in labels)):
             continue
         miss.append(w)
     chk('I27', st_rows and want and not miss,
-        '표 4 화면 용어가 렌더된 카드·표 머리·분할 라벨에 있다 (「같음」 행은 내부 용어 그대로)',
+        '표 4 화면 칸의 라벨이 렌더된 카드·표 머리·분할 라벨에 있다 (단위 괄호 「(원)」 는 라벨 뒤 허용)',
         '대상 %d · 없는 것 %s' % (len(want), ', '.join(miss) or '0건'))
     body_txt = (pa.get('body') or '') + (pp.get('body') or '')
     chk('I28', st_rows and '기준일' not in body_txt,
-        '표 4 「오늘 (d) → 표시하지 않음」 — 두 화면 본문에 「기준일」 0건',
+        '표 4 「d → 표시하지 않음」 — 두 화면 본문에 「기준일」 0건',
         '「기준일」 %d건' % body_txt.count('기준일'))
 
 
@@ -835,16 +834,12 @@ def sec_K():
             keys.setdefault(got[0], {}).setdefault(got[1], []).append(v['sym'])
     # 개념 항목 산식 — 첨자·범위를 뗀 일반형 (A = 순지급액 × ( 1 − r )). 재료는 원고에 실재하는
     # 기호와 기초 항목뿐이라 설명 문장이 들어오면 재료 아닌 낱말로 잡힌다. 첨자는 Σ 안에서만 선다.
-    # 접두 Y(연환산) 는 값이 아니라 산식을 두지 않는다.
+    # 접두 Y(연환산)·첨자 d 는 V1.3 표 1 규칙 행이라 vars 에 두지 않는다 (S5 가 본다).
     GEN_BASE = {'순지급액', '미지급금', '과지급금', '채권매입수수료', 'max', 'Σ', '0', '1', '365'}
     allsym = set(x['sym'] for x in V)
     badf = []
     for v in conc:
         f = v.get('formula')
-        if v['sym'] == 'Y':
-            if f:
-                badf.append('Y → 접두에 산식 %r' % f)
-            continue
         if not f:
             badf.append('%s → 산식 없음' % v['sym'])
             continue
@@ -861,17 +856,21 @@ def sec_K():
         if '_' in rhs and 'Σ' not in rhs:
             badf.append('%s → Σ 없이 첨자 %r' % (v['sym'], rhs))
     chk('K0', len(conc) > 0 and not badf,
-        '개념 항목 대상 0건 아님 · 개념 항목 산식이 첨자·범위 없는 일반형이고 재료가 실재 기호뿐이다 (접두 Y 는 산식 없음)',
+        '개념 항목 대상 0건 아님 · 개념 항목 산식이 첨자·범위 없는 일반형이고 재료가 실재 기호뿐이다',
         '; '.join(badf) or '%d항 — %s' % (len(conc), ' · '.join(
             '%s %s' % (v['sym'], v.get('formula') or '(없음)') for v in conc)))
 
-    need = sorted(k for k in keys if k not in bare)
-    have = sorted(v['sym'] for v in conc)
-    chk('K1', need and set(need) <= set(have),
-        '홀로 서지 않는 갈래 글자가 전건 개념 항목에 있다',
-        '갈래 글자 %s · 홀로 서는 것 %s · 개념 항목 %s'
+    # V1.3 — Y 는 표 2 개념 행이 아니라 표 1 「접두 Y」 규칙 행이다. EC 는 표 2 에 개념 행이 없고
+    # 순현금 정의를 EC_d 행 하나가 진다 (표 3 「잔액 EC_d 만 첨자 d 를 둔다」). 그래서 EC 만 예외다.
+    prefixes = set(r['head'].split()[-1] for r in MS['rules'] if r['head'].startswith('접두'))
+    NO_CONCEPT_ROW = {'EC'}
+    need = sorted(k for k in keys if k not in bare and k not in NO_CONCEPT_ROW)
+    have = sorted(set(v['sym'] for v in conc) | prefixes)
+    chk('K1', need and set(need) <= set(have) and 'EC' in keys and 'EC' not in bare,
+        '홀로 서지 않는 갈래 글자가 전건 개념 항목 또는 표 1 접두 규칙에 있다 (EC 는 V1.3 표 2 에 개념 행이 없어 EC_d 행이 진다)',
+        '갈래 글자 %s · 홀로 서는 것 %s · 개념 항목+접두 %s · 예외 %s'
         % (', '.join(sorted(keys)), ', '.join(sorted(set(keys) & bare)) or '없음',
-           ', '.join(have) or '없음'))
+           ', '.join(have) or '없음', ', '.join(sorted(NO_CONCEPT_ROW))))
 
     miss = []
     for v in conc:
@@ -929,9 +928,14 @@ def sec_K():
         'W금융일수 두 값 — 두 항이 서로를 가리키고 일수가 원장과 같다',
         'wD %s일 (발생 전체 %s건) ↔ PwD %s일 (조회기간 만기)'
         % (FACTS['w'], format(FACTS['receivables'], ','), FACTS['weekW']))
-    chk('K10', format(FACTS['receivables'], ',') in (_var('D', kind='집계').get('formula') or ''),
-        'wD 산식이 모집단 건수를 원장과 같이 적는다',
-        '%s ↔ 원장 %s건' % (_var('D', kind='집계').get('formula'), format(FACTS['receivables'], ',')))
+    # V1.3 표 2 D(투자 자산) 산식 칸은 「i 는 보유 채권 전체」 한 줄이라 건수는 설명 문장이 진다.
+    chk('K10', _var('D', kind='집계').get('formula') == 'i 는 보유 채권 전체'
+        and format(FACTS['receivables'], ',') in w1,
+        'D 산식 칸이 V1.3 「i 는 보유 채권 전체」 그대로이고 모집단 건수는 설명 문장이 원장과 같이 적는다',
+        '%s · 설명 문장 건수 %s ↔ 원장 %s건'
+        % (_var('D', kind='집계').get('formula'),
+           format(FACTS['receivables'], ',') if format(FACTS['receivables'], ',') in w1 else '없음',
+           format(FACTS['receivables'], ',')))
 
     # ── 겹침 (다) 수익율 두 층
     m1, m2 = _plain('PMR'), _plain('PY_a')
@@ -947,121 +951,357 @@ def sec_K():
         'Y_r %s%% (할인율 분자) ↔ PY_{MR} %s%% (실적 분자)' % (FACTS['ty'], FACTS['weekTy']))
 
     # ── 순현금 한 시점 ↔ 기간 합
-    ec = _plain('EC')
+    ec = _plain('EC_d')
     chk('K13', format(L.CASH, ',') in ec and format(PEC, ',') in ec and '`PEC`' in ec,
-        '순현금 — 한 시점 잔액과 기간 합을 같은 항에서 가른다',
-        'EC %s원 × %d일 = PEC %s원' % (format(L.CASH, ','), len(WEEK_DAYS), format(PEC, ',')))
+        '순현금 — 한 시점 잔액 EC_d 와 기간 합 PEC 를 같은 항에서 가른다',
+        'EC_d %s원 × %d일 = PEC %s원' % (format(L.CASH, ','), len(WEEK_DAYS), format(PEC, ',')))
 
     # ── 「비중」 두 분모
-    tot = _plain('Σ A_i + EC')
+    tot = _plain('Σ A_i + EC_d')
     s1 = str(q(D(SUM_A_OPEN) / D(SUM_A_OPEN + L.CASH) * 100, 1))
     s2 = str(q(D(L.CASH) / D(SUM_A_OPEN + L.CASH) * 100, 1))
     chk('K14', s1 in tot and s2 in tot and '비중' in tot and '비중' in _plain('D', kind='집계'),
-        '「비중」 — 화면 열과 wD 가중치가 같은 낱말이라는 것을 두 항이 적는다',
-        '현황표 %s%% · %s%% (분모 투자자산) ↔ wD 가중치 A_i ÷ Σ A_i' % (s1, s2))
+        '「비중」 — 화면 열과 D 산식의 A_i ÷ Σ A_i 가 같은 낱말이라는 것을 두 항이 적는다',
+        '현황표 %s%% · %s%% (분모 투자자산) ↔ D 산식 비중 A_i ÷ Σ A_i' % (s1, s2))
 
 
 # ══════════════════════════════════════════════════════════════════
-# S. 표 4 내부 용어 ↔ 투자자 화면 용어 · 오늘(d) 문면 — V1.1
-#    screen_terms 는 값이 아니라 짜임과 문면을 본다. 화면 칸이 vars term 과
-#    같은 글자인가, 괄호 안 기호가 실재하는가, d 를 오늘로 둔 조건 문장이
-#    산식 칸에 들어 있는가, 옛 표기가 남아 있지 않은가.
+# S. 표 4 기호 ↔ 투자자 화면 라벨 · d 첨자 문면 — V1.3
+#    screen_terms 는 값이 아니라 짜임과 문면을 본다. 화면 칸의 라벨이 vars term 과
+#    같은 글자인가, 기호 칸의 낱말이 실재하는가, d 가 표 1 첨자 규칙으로만 서고
+#    표 2 조건 문장이 V1.3 문면인가, 옛 표기가 남아 있지 않은가.
 # ══════════════════════════════════════════════════════════════════
-OLD_WORDS = ('기준일', '연환산수익률', '투자자산 대비', '투자자산 기준', 'd 마감시점', 'EC_d', '첨자 d')
+OLD_WORDS = ('연환산수익률', '투자자산 대비', '투자자산 기준',
+             '대상정산금채권', '조회기간', '조회대상기간', '조회시점', '투자 실행액', '가중치',
+             '회수된 것 포함', 'd 전날', 'd 0시')
+
+
+def _label(screen):
+    """표 4 화면 칸 → 라벨. 「투자 자산 · 투자실행액」 → 투자실행액 · 「상환액 (일별 표)」 → 상환액"""
+    s = screen.split(' · ', 1)[-1]
+    return re.sub(r'\s*\(일별 표\)$', '', s).strip()
+
+
+def _strip_p(term):
+    return term.replace('검색대상기간의 ', '', 1)
+
+
+def tnorm(s):
+    """공백만 접는다 — 줄바꿈·nbsp·연속 공백을 하나로. 그 밖의 글자는 전부 남긴다."""
+    return ' '.join((s or '').replace('\xa0', ' ').split())
 
 
 def sec_S():
     st = MS.get('screen_terms')
-    ok0 = (isinstance(st, list) and len(st) >= 11
-           and all(set(r) == {'internal', 'screen', 'tooltip'} for r in st)
-           and all(r['internal'].strip() and r['screen'].strip() for r in st))
-    chk('S0', ok0, 'screen_terms 대상 0건 아님 · 키 internal·screen·tooltip · 내부 용어·화면 칸 빈 곳 없음',
+    ok0 = (isinstance(st, list) and len(st) == 15
+           and all(set(r) == {'sym', 'screen', 'tooltip'} for r in st)
+           and all(r['sym'].strip() and r['screen'].strip() for r in st))
+    chk('S0', ok0, 'screen_terms 15행 · 키 sym·screen·tooltip (V1.3 표 4 「기호 | 화면 | 툴팁」) · 기호·화면 칸 빈 곳 없음',
         '%d행' % (len(st) if isinstance(st, list) else 0))
     if not ok0:
         return
-    v = dict((x['sym'], x) for x in MS['vars'])
+    v = dict((x['sym'], x) for x in MS['vars'])           # D 는 집계 행이 덮는다
     terms = set(x['term'] for x in MS['vars'])
     marks = set(s['mark'] for s in MS['scopes'])
+    rl = dict((r['head'], r) for r in MS['rules'])
+    letters = set(r['head'].split()[-1] for r in MS['rules'] if r['head'].startswith(('접두', '첨자')))
+    by = dict((r['sym'], r) for r in st)
 
-    yr = [r for r in st if '(Y_r)' in r['internal']]
-    pt = [r for r in st if '(PY_t)' in r['internal']]
-    chk('S1', yr and pt and yr[0]['screen'] == v['Y_r']['term'] and pt[0]['screen'] == v['PY_t']['term'],
-        '표 4 (Y_r)·(PY_t) 행의 화면 용어 = vars term',
-        '%s ↔ %s · %s ↔ %s' % ((yr or [{}])[0].get('screen'), v['Y_r']['term'],
-                               (pt or [{}])[0].get('screen'), v['PY_t']['term']))
+    s1 = (all(k in by and k in v and _label(by[k]['screen']) == _strip_p(v[k]['term'])
+              for k in ('Y_r', 'PY_a', 'PY_t'))
+          and by.get('Y_r', {}).get('screen', '').startswith('투자 자산 · ')
+          and by.get('PY_a', {}).get('screen', '').startswith('투자 수익 · ')
+          and by.get('PY_t', {}).get('screen', '').startswith('투자 수익 · '))
+    chk('S1', s1, '표 4 Y_r·PY_a·PY_t 행의 화면 = 「화면 이름 · 라벨」 이고 라벨 = vars term (검색대상기간의 를 뗀 것)',
+        ' · '.join('%s ↔ %s' % (by.get(k, {}).get('screen'), v.get(k, {}).get('term')) for k in ('Y_r', 'PY_a', 'PY_t')))
 
     ghost, n_sym = [], 0
     for r in st:
-        inner = [m for m in re.findall(r'\(([^)]*)\)', r['internal']) if not re.search(r'[가-힣]', m)]
-        toks = [t for m in inner for t in m.replace('Σ ', 'Σ').split()] if inner else []
-        if not inner and not re.search(r'[가-힣]', r['internal']):
-            toks = r['internal'].replace('Σ ', 'Σ').split()
-        for t in toks:
-            if t in ('…', '원'):
-                continue
-            s = t.replace('Σ', 'Σ ')
+        s_ = r['sym']
+        if s_ in v or s_ in marks or s_ in letters:
             n_sym += 1
-            if s not in v and s not in marks:
-                ghost.append('%s → %s' % (r['internal'], s))
+            continue
+        for t in s_.split():
+            n_sym += 1
+            if not (t in v or t in marks or t in letters or t in terms):
+                ghost.append('%s → %s' % (s_, t))
     chk('S2', n_sym > 0 and not ghost,
-        '표 4 내부 용어의 기호(괄호 안 · 기호만 든 행)가 vars 또는 scopes 에 실재한다',
-        '기호 %d개 · 없는 것 %s' % (n_sym, '; '.join(ghost) or '0건'))
+        '표 4 기호 칸의 낱말이 vars 기호 · scopes 표시 · 표 1 접두/첨자 글자 · vars 용어 이름에 실재한다',
+        '낱말 %d개 · 없는 것 %s' % (n_sym, '; '.join(ghost) or '0건'))
 
-    same = [r for r in st if r['screen'] == '같음']
-    names = [n.strip() for r in same for n in r['internal'].split('·')]
-    chk('S3', same and names and all(n in terms for n in names),
-        '표 4 「같음」 행의 내부 용어가 vars term 에 실재한다',
-        '%s · 없는 것 %s' % (', '.join(names), ', '.join(n for n in names if n not in terms) or '0건'))
+    bad, n3 = [], 0
+    for r in st:
+        if r['screen'] in ('표시하지 않음', '화면에 쓰지 않음'):
+            continue
+        lab = _label(r['screen'])
+        if r['sym'] in v:
+            want = _strip_p(v[r['sym']]['term'])
+        elif r['sym'] == 'P':
+            want = [s_ for s_ in MS['scopes'] if s_['mark'] == 'P'][0]['name']
+        else:
+            bad.append('%s → 이름 없음' % r['sym'])
+            continue
+        n3 += 1
+        if lab != want:
+            bad.append('%s → 화면 %s ↔ 이름 %s' % (r['sym'], lab, want))
+    chk('S3', n3 > 0 and not bad,
+        '표 4 화면 라벨 = vars term (P 접두 행은 「검색대상기간의 」 를 뗀 것 · P 는 scopes 이름) 전행',
+        '%d행 · 어긋난 것 %s' % (n3, '; '.join(bad) or '0건'))
 
-    by_screen = dict((r['screen'], r) for r in st)
-    chk('S4', all(k in by_screen for k in ('투자실행액 (원)', '검색대상기간', '표시하지 않음'))
-        and by_screen['투자실행액 (원)']['internal'].startswith('투자 실행액')
-        and by_screen['검색대상기간']['internal'].startswith('조회기간')
-        and by_screen['표시하지 않음']['internal'].startswith('오늘'),
-        '표 4 화면 문면 행 — 투자실행액 (원) · 검색대상기간 · 표시하지 않음 (build_app.py:1814 · 1981)',
-        ', '.join('%s ← %s' % (k, by_screen.get(k, {}).get('internal')) for k in ('투자실행액 (원)', '검색대상기간', '표시하지 않음')))
-    bo = [r for r in st if r['screen'] == '보유 채권']
-    chk('S4b', bo and '회수된 것 포함' in bo[0]['tooltip'],
-        '표 4 「보유 채권」 행 툴팁이 회수분 포함을 적는다', (bo or [{}])[0].get('tooltip'))
+    chk('S4', all(k in by for k in ('Σ A_i', 'P', 'd'))
+        and by['Σ A_i']['screen'] == '투자 자산 · 투자실행액'
+        and by['P']['screen'] == '투자 수익 · 검색대상기간'
+        and by['d']['screen'] == '표시하지 않음' and by['d']['tooltip'] == ''
+        and st[-1]['sym'] == 'PMR PEC L 채권매입수수료'
+        and st[-1]['screen'] == '화면에 쓰지 않음' and st[-1]['tooltip'] == '툴팁 값으로만',
+        '표 4 문면 행 — Σ A_i → 투자 자산 · 투자실행액 · P → 투자 수익 · 검색대상기간 · d → 표시하지 않음 · 마지막 행 화면에 쓰지 않음/툴팁 값으로만',
+        ', '.join('%s ← %s' % (by.get(k, {}).get('screen'), k) for k in ('Σ A_i', 'P', 'd')))
+    chk('S4b', by.get('D', {}).get('tooltip') == '보유 채권 전체'
+        and by.get('LR', {}).get('tooltip') == '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본',
+        '표 4 D 행 툴팁 「보유 채권 전체」 · LR 행 툴팁 표본 구간',
+        '%s · %s' % (by.get('D', {}).get('tooltip'), by.get('LR', {}).get('tooltip')))
 
-    cond = lambda f: '선정산일이 d 전날 이전' in f and '정산예정일이 d 이후' in f and 'd 전날 마감까지 회수되지 않은' in f and '어제' not in f and '오늘' not in f
-    pyt = v['PY_t']['formula'] or ''
-    lines = pyt.split('\n')
-    chk('S5', v['d']['term'] == '오늘'
-        and '화면을 보는 날' in v['d']['plain'] and 'P 는 d 전날까지' in v['d']['plain']
-        and v['EC']['formula'] is None and v['EC']['plain'].startswith('어제 마감시점')
-        and cond(v['Σ A_i']['formula'] or '') and cond(v['Σ A_i + EC']['formula'] or '')
-        and '회수된 것 포함' in (v['D']['formula'] or '')
-        and '분모 Σ A_i 는 같은 표본' in (v['LR']['formula'] or '')
-        and v['PEC']['formula'] == 'P 안 각 날 마감시점 EC 를 더한 값'
-        and len(lines) == 2 and all('Σ( A_i × D_i ) + PEC' in x for x in lines)
-        and lines[0].startswith('PY_t = PM × 365') and lines[1].strip().startswith('= PY_a ×'),
-        'd 오늘 · EC 어제 마감(설명) · Σ A_i·투자자산 조건 문장 d 표기(어제·오늘 0) · D 회수 포함 · LR 분모 · PEC 문장 · PY_t 두 줄',
-        'd=%s · EC=%s · PEC=%s · PY_t %d줄' % (v['d']['term'], v['EC']['plain'][:12], v['PEC']['formula'], len(lines)))
+    dr = rl.get('첨자 d', {})
+    f = lambda k: (v[k].get('formula') or '') if k in v else ''
+    lines = lambda k: [x.strip() for x in f(k).split('\n')]
+    s5 = (dr.get('body') == '하나의 일 (d = 기준일, d−1 = 기준일의 전일, d−2 = 기준일의 전전일)'
+          and dr.get('example') == 'EC_d EC_{d−1} EC_{d−2} …'
+          and 'd' not in v and 'Y' not in v and 'EC' not in v
+          and f('EC_d') == 'd 일 마감시점 쿠콘 가상계좌의 현금 잔액'
+          and lines('Σ A_i') == ['Σ A_i', 'i 는 정산예정일이 d 보다 뒤인 채권']
+          and lines('Σ A_i + EC_d') == ['Σ A_i + EC_d', 'i 는 정산예정일이 기준일(d) 보다 뒤인 보유 채권']
+          and f('D') == 'i 는 보유 채권 전체'
+          and lines('LR') == ['LR = Σ L_i ÷ Σ A_i', 'i 는 선정산일이 오늘(d 의 다음 날) 기준 20일 전부터 11일 전까지인 채권']
+          and '분모 Σ A_i 는 같은 표본' in (v.get('LR', {}).get('plain') or '')
+          and tnorm(f('PEC')) == 'PEC = Σ EC_d d ∈ P'
+          and not any(w in f(k) for k in ('Σ A_i', 'Σ A_i + EC_d', 'D', 'EC_d') for w in ('어제', '오늘', '전날')))
+    chk('S5', s5,
+        'd 는 표 1 첨자 규칙(표 2 상수 행 없음·Y 도 접두 규칙) · EC_d 정의 문장 · Σ A_i·투자자산·D·LR 조건 문장(어제·전날 0) · LR 분모 설명 · PEC = Σ EC_d  d ∈ P',
+        '첨자 d=%s · EC_d=%s · D=%s · PEC=%s' % (dr.get('body'), f('EC_d'), f('D'), f('PEC')))
+    pl = lines('PY_t')
+    s5c = (len(pl) == 7
+           and pl[0] == 'PY_t = PY_a × 채권 비중 + 순현금 수익률 × 순현금 비중'
+           and pl[1].startswith('채권 비중 = Σ( A_i × D_i ) ÷ ( Σ( A_i × D_i ) + PEC )')
+           and pl[2] == '순현금 비중 = PEC ÷ ( Σ( A_i × D_i ) + PEC )'
+           and pl[3].startswith('순현금 수익률 = 0')
+           and pl[4].endswith('= PM × 365 ÷ Σ( A_i × D_i )')
+           and pl[6] == '= PM × 365 ÷ ( Σ( A_i × D_i ) + PEC )'
+           and '가중치' not in f('PY_t') and f('PY_t').count('비중') >= 4)
+    chk('S5c', s5c, '⑤ 산식 칸이 전개 전문 7줄 — PY_a × 채권 비중 … = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) · 「비중」 낱말만',
+        '%d줄 · 첫 줄 %s · 끝 줄 %s' % (len(pl), pl[0][:40] if pl else '', pl[-1] if pl else ''))
 
     chk('S6', v['Y_r']['term'] == '예상 연환산 수익률'
-        and v['PY_a']['term'] == '투자실행금액 대비 연환산 수익률'
-        and v['PY_t']['term'] == '투자 자산 대비 연환산 수익률'
-        and v['PY_t'].get('note') == '투자 자산 대비',
-        'term 띄어쓰기 — 예상 연환산 수익률 · 투자실행금액 대비 연환산 수익률 · 투자 자산 대비 연환산 수익률',
+        and v['PY_a']['term'] == '검색대상기간의 투자실행금액 대비 연환산 수익률'
+        and v['PY_t']['term'] == '검색대상기간의 투자 자산 대비 연환산 수익률'
+        and v['PY_t'].get('note') == '투자 자산 대비'
+        and all(v[k]['term'].startswith('검색대상기간의 ') for k in ('PA', 'PM', 'PB', 'PMR', 'PD', 'PEC', 'PY_a', 'PY_t'))
+        and v['Σ A_i']['term'] == '투자실행액' and v['A_i']['term'] == '투자실행액'
+        and v['Σ A_i + EC_d']['term'] == '투자자산' and v['EC_d']['term'] == '순현금',
+        'term — 예상 연환산 수익률 · 검색대상기간의 … 8행 · 투자실행액(Σ A_i·A_i) · 투자자산 · 순현금 (V1.3 용어 이름 그대로)',
         ' / '.join((v['Y_r']['term'], v['PY_a']['term'], v['PY_t']['term'], str(v['PY_t'].get('note')))))
 
     hay = []
     for r in MS['rules']:
-        hay.append(('rules.%d' % r['n'], r['head'] + ' ' + r['body']))
+        hay.append(('rules.%d' % r['n'], ' '.join((r['head'], r['body'], r.get('example') or ''))))
     for s_ in MS['scopes']:
         hay.append(('scopes.%s' % s_['mark'], s_['name'] + ' ' + s_['def']))
-    for x in MS['vars']:                                   # alias 는 대표 원문 표기라 뺀다
+    for x in MS['vars']:                                   # alias·prev 는 대표 원문·기존 표기라 뺀다
         hay.append(('vars.%s' % x['sym'], ' '.join(str(x.get(k) or '') for k in ('term', 'formula', 'plain', 'note'))))
     for r in st:
-        hay.append(('screen.%s' % r['internal'], ' '.join(r.values())))
+        hay.append(('screen.%s' % r['sym'], ' '.join(r.values())))
+    hay.append(('footnote', MS.get('footnote') or ''))
     hay.append(('calc.기준', MS['calc']['기준']))
     for a, b in MS['calc']['steps'] + MS['calc']['검산']:
         hay.append(('calc', a + ' ' + b))
     found = [(k, w) for k, t in hay for w in OLD_WORDS if w in t]
     chk('S7', hay and not found,
-        '옛 표기 0건 — %s (alias 제외)' % ' · '.join(OLD_WORDS),
+        '옛 표기 0건 — %s (alias·prev·표 3 changes 제외)' % ' · '.join(OLD_WORDS),
         '%d자리 검사 · 남은 것 %s' % (len(hay), '; '.join('%s「%s」' % x for x in found) or '0건'))
+    raw = MS_RAW.decode('utf-8')
+    chk('S8', '가중치' not in raw and raw.count('비중') >= 6,
+        '「가중치」 원고 파일 전체 0건 (alias·prev·changes 포함) · 「비중」 낱말만',
+        '가중치 %d건 · 비중 %d건' % (raw.count('가중치'), raw.count('비중')))
+
+
+# ══════════════════════════════════════════════════════════════════
+# T. 실물 대조 — 확정본 V1.3 html·docx 를 읽어 표 1~4 를 원고와 행마다 글자 단위로 견준다
+#    원고가 실물과 같은 말을 하는지 본다. 공백(줄바꿈·nbsp·연속 공백)만 하나로 접고
+#    나머지 글자는 전부 견준다. 아래첨자는 원고 표기(_i · _{d−1})로 되읽는다.
+#    표 1 = rules · 표 2 = vars(group·sym·prev·term·formula) · 표 3 = changes · 표 4 = screen_terms · 각주 = footnote
+# ══════════════════════════════════════════════════════════════════
+V13_DIR = os.path.join(HERE, 'session_0904', 'artifact')
+V13_HTML = os.path.join(V13_DIR, '투자자어드민 기호정리표_V1.3.html')
+V13_DOCX = os.path.join(V13_DIR, '투자자어드민 기호정리표_V1.3.docx')
+REVIEW_HTML = os.path.join(V13_DIR, 'ceo_review.html')
+T_HEADS = {1: ['분류', '의미', '예시'], 2: ['분류', '개선', '기존', '용어 이름', '산식'],
+           3: ['변경점', '기존', '개선'], 4: ['기호', '화면', '툴팁']}
+T_H2 = ['이름 짓는 규칙', '전체 기호', '기호 변경내역', '화면 표기와 툴팁']
+T_NAME = {1: '표 1 이름 짓는 규칙', 2: '표 2 전체 기호', 3: '표 3 기호 변경내역', 4: '표 4 화면 표기와 툴팁'}
+
+
+def sub_token(x):
+    """아래첨자 글자 → 원고 표기. 한 글자 i r a d t 는 _x, 그 밖은 _{…}"""
+    x = x.strip()
+    return '_' + x if (len(x) == 1 and x in 'iradt') else '_{' + x + '}'
+
+
+from html.parser import HTMLParser                        # noqa: E402
+
+
+class _V13Html(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.tables, self.tbl, self.row, self.cell, self.sub = [], None, None, None, None
+        self.notes, self.h1, self.h2, self.cur = [], [], [], None
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == 'table':
+            self.tbl = []
+        elif tag == 'tr':
+            self.row = []
+        elif tag in ('td', 'th'):
+            self.cell = []
+        elif tag == 'sub':
+            self.sub = []
+        elif tag == 'br' and self.cell is not None:
+            self.cell.append('\n')
+        elif tag == 'p' and 'note' in (a.get('class') or ''):
+            self.cur = ('note', [])
+        elif tag in ('h1', 'h2'):
+            self.cur = (tag, [])
+
+    def handle_startendtag(self, tag, attrs):
+        if tag == 'br' and self.cell is not None:
+            self.cell.append('\n')
+
+    def handle_data(self, d):
+        if self.sub is not None:
+            self.sub.append(d)
+        elif self.cell is not None:
+            self.cell.append(d)
+        elif self.cur is not None:
+            self.cur[1].append(d)
+
+    def handle_endtag(self, tag):
+        if tag == 'sub' and self.sub is not None:
+            self.cell.append(sub_token(''.join(self.sub)))
+            self.sub = None
+        elif tag in ('td', 'th') and self.cell is not None:
+            self.row.append(''.join(self.cell))
+            self.cell = None
+        elif tag == 'tr' and self.row is not None:
+            self.tbl.append(self.row)
+            self.row = None
+        elif tag == 'table' and self.tbl is not None:
+            self.tables.append(self.tbl)
+            self.tbl = None
+        elif tag in ('p', 'h1', 'h2') and self.cur is not None:
+            k, buf = self.cur
+            {'note': self.notes, 'h1': self.h1, 'h2': self.h2}[k].append(''.join(buf))
+            self.cur = None
+
+
+def v13_body(path):
+    """본문 — <div class="wrap"> 부터. 뒤에 붙는 </body></html> 는 머리·꼬리라 뗀다."""
+    src = io.open(path, encoding='utf-8').read()
+    body = src[src.index('<div class="wrap">'):]
+    return re.sub(r'</body>\s*</html>\s*$', '', body)
+
+
+def v13_html(path):
+    p = _V13Html()
+    p.feed(v13_body(path))
+    return {'tables': p.tables, 'notes': p.notes, 'h1': p.h1, 'h2': p.h2}
+
+
+def v13_docx(path):
+    from docx import Document
+    doc = Document(path)
+    tables = []
+    for t in doc.tables:
+        rows = []
+        for r in t.rows:
+            cells = []
+            for c in r.cells:
+                parts = []
+                for p in c.paragraphs:
+                    buf, sub = [], None
+                    for run in p.runs:
+                        if run.font.subscript:
+                            sub = (sub or '') + run.text
+                            continue
+                        if sub is not None:
+                            buf.append(sub_token(sub))
+                            sub = None
+                        buf.append(run.text)
+                    if sub is not None:
+                        buf.append(sub_token(sub))
+                    parts.append(''.join(buf))
+                cells.append('\n'.join(parts))
+            rows.append(cells)
+        tables.append(rows)
+    paras = [p.text for p in doc.paragraphs if p.text.strip()]
+    return {'tables': tables, 'paras': paras}
+
+
+def expected_tables():
+    t1 = [[r['head'], r['body'], r.get('example') or ''] for r in MS['rules']]
+    t2 = [[v.get('group') or '', v['sym'], v.get('prev') or '', v['term'], v.get('formula') or '']
+          for v in MS['vars']]
+    t3 = [[c['point'], c['before'], c['after']] for c in MS.get('changes') or []]
+    t4 = [[r['sym'], r['screen'], r['tooltip']] for r in MS.get('screen_terms') or []]
+    return {1: t1, 2: t2, 3: t3, 4: t4}
+
+
+def _row_diff(got, want):
+    if got is None:
+        return '실물에 행 없음'
+    if len(got) != len(want):
+        return '칸 수 %d ↔ 원고 %d' % (len(got), len(want))
+    for j, (a, b) in enumerate(zip(got, want)):
+        if tnorm(a) != tnorm(b):
+            return '%d번째 칸 실물 「%s」 ↔ 원고 「%s」' % (j + 1, tnorm(a), tnorm(b))
+    return ''
+
+
+def sec_T():
+    have = os.path.exists(V13_HTML) and os.path.exists(V13_DOCX)
+    chk('T0', have, '확정본 V1.3 html·docx 실물이 있다',
+        '%s · %s' % (os.path.basename(V13_HTML), os.path.basename(V13_DOCX)))
+    if not have:
+        return
+    html = v13_html(V13_HTML)
+    docx = v13_docx(V13_DOCX)
+    exp = expected_tables()
+    chk('T1', os.path.exists(REVIEW_HTML) and tnorm(v13_body(REVIEW_HTML)) == tnorm(v13_body(V13_HTML)),
+        'ceo_review.html 본문 = V1.3 html 본문 (build_symreview.py 가 읽는 원고가 확정본과 같다)',
+        'md5 %s ↔ %s' % (hashlib.md5(io.open(REVIEW_HTML, 'rb').read()).hexdigest()[:10] if os.path.exists(REVIEW_HTML) else '없음',
+                         hashlib.md5(io.open(V13_HTML, 'rb').read()).hexdigest()[:10]))
+    chk('T.h.h1', [tnorm(x) for x in html['h1']] == ['기호 정리표'], 'html 제목 「기호 정리표」', str(html['h1']))
+    chk('T.h.h2', [tnorm(x) for x in html['h2']] == T_H2, 'html 절 제목 4개 = 표 1~4 이름', str(html['h2']))
+    chk('T.d.h2', all(t in docx['paras'] for t in T_H2) and docx['paras'] and docx['paras'][0] == '기호 정리표',
+        'docx 절 제목 4개 = 표 1~4 이름 · 첫 문단 「기호 정리표」', str(docx['paras'][:6]))
+    fn = MS.get('footnote') or ''
+    chk('T.h.note', fn and [tnorm(x) for x in html['notes']] == [tnorm(fn)],
+        'html 각주 = 원고 footnote', '%s ↔ %s' % (html['notes'], fn))
+    chk('T.d.note', fn and tnorm(fn) in [tnorm(x) for x in docx['paras']],
+        'docx 각주 = 원고 footnote', fn)
+    for src, data in (('h', html['tables']), ('d', docx['tables'])):
+        chk('T.%s.tables' % src, len(data) == 4, '%s 표 4개' % ('html' if src == 'h' else 'docx'), '%d개' % len(data))
+        for n in (1, 2, 3, 4):
+            tbl = data[n - 1] if n - 1 < len(data) else []
+            head, rows = (tbl[0], tbl[1:]) if tbl else ([], [])
+            chk('T.%s.t%d.head' % (src, n), [tnorm(x) for x in head] == T_HEADS[n],
+                '%s 머리행 = %s' % (T_NAME[n], ' | '.join(T_HEADS[n])), str([tnorm(x) for x in head]))
+            chk('T.%s.t%d.rows' % (src, n), len(rows) > 0 and len(rows) == len(exp[n]),
+                '%s 행 수 = 원고 (대상 0건 아님)' % T_NAME[n], '실물 %d ↔ 원고 %d' % (len(rows), len(exp[n])))
+            for k, want in enumerate(exp[n], 1):
+                got = rows[k - 1] if k - 1 < len(rows) else None
+                d = _row_diff(got, want)
+                key = want[1] if n == 2 else want[0]
+                chk('T.%s.t%d.r%d' % (src, n, k), not d,
+                    '%s %d행 %s' % (T_NAME[n], k, tnorm(key)[:28]), d or ' | '.join(tnorm(x)[:36] for x in want))
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -1090,6 +1330,16 @@ def sec_J():
         '자기시험 — 무변조 사본에서 판정 건수 0 아님',
         '판정 %d건 · FAIL %d건 · 종료코드 %d' % (r0['n'], len(base_fail), rc0))
 
+    def _v(m, sym, kind=None):
+        return [v for v in m['vars'] if v['sym'] == sym and (kind is None or v['kind'] == kind)][0]
+
+    def _rule(m, head):
+        return [r for r in m['rules'] if r['head'] == head][0]
+
+    def _st(m, sym):
+        return [r for r in m['screen_terms'] if r['sym'] == sym][0]
+
+    # (이름, 변조, 잡혀야 하는 판정 — 문자열 하나 또는 전부 잡혀야 하는 튜플)
     cases = [
         ('calc.PA',   lambda m: m['calc']['steps'].__setitem__(
             1, [m['calc']['steps'][1][0], '179,970,918원']), 'B2'),
@@ -1097,22 +1347,42 @@ def sec_J():
             6, [m['calc']['steps'][6][0], '3.992466%   화면 3.99%']), 'B7'),
         ('검산.연환산', lambda m: m['calc']['검산'].__setitem__(
             0, [m['calc']['검산'][0][0], '7,185,276원']), 'D1'),
-        ('vars.A_i',   lambda m: [v for v in m['vars'] if v['sym'] == 'A_i'][0].__setitem__(
-            'formula', 'A_i = 순지급액_i × (1 + r)'), 'E1'),
-        ('vars.LR',   lambda m: [v for v in m['vars'] if v['sym'] == 'LR'][0].__setitem__(
-            'formula', 'LR = ( Σ L_i ) ÷ ( Σ A_i )'), 'G9'),
-        ('개념.Y삭제', lambda m: m['vars'].remove(
-            [v for v in m['vars'] if v['sym'] == 'Y'][0]), 'K1'),
-        ('개념.D산식설명', lambda m: [v for v in m['vars'] if v['sym'] == 'D' and v['kind'] == '개념'][0].__setitem__(
-            'formula', 'D = 투자실행금으로 가중평균한 금융일수'), 'K0'),
-        ('겹침.투자실행액', lambda m: [v for v in m['vars'] if v['sym'] == 'PA'][0].__setitem__(
+        ('vars.A_i',   lambda m: _v(m, 'A_i').__setitem__(
+            'formula', 'A_i = 순지급액_i × (1 + r)'), ('E1', 'T.h.t2.r9', 'T.d.t2.r9')),
+        ('vars.LR',   lambda m: _v(m, 'LR').__setitem__(
+            'formula', 'LR = ( Σ L_i ) ÷ ( Σ A_i )'), ('G9', 'T.h.t2.r18')),
+        ('rules.접두Y삭제', lambda m: m['rules'].remove(_rule(m, '접두 Y')), ('K1', 'T.h.t1.rows')),
+        ('개념.D산식설명', lambda m: _v(m, 'D', '개념').__setitem__(
+            'formula', 'D = 투자실행금으로 가중평균한 금융일수'), ('K0', 'T.d.t2.r2')),
+        ('겹침.투자실행액', lambda m: _v(m, 'PA').__setitem__(
             'plain', _plain('PA').replace('80,000,000', '80,000,001')), 'K7'),
-        ('screen_terms.Y_r', lambda m: [r for r in m['screen_terms'] if '(Y_r)' in r['internal']][0].__setitem__(
-            'screen', '예상 연환산수익률'), 'S1'),
-        ('vars.d기준일', lambda m: [v for v in m['vars'] if v['sym'] == 'd'][0].__setitem__(
-            'term', '기준일'), 'S5'),
-        ('vars.PEC첨자', lambda m: [v for v in m['vars'] if v['sym'] == 'PEC'][0].__setitem__(
-            'formula', 'PEC = Σ EC_d      d ∈ P'), 'S7'),
+        ('screen_terms.Y_r', lambda m: _st(m, 'Y_r').__setitem__(
+            'screen', '투자 자산 · 예상 연환산수익률'), ('S1', 'S7', 'T.h.t4.r6')),
+        ('rules.첨자d', lambda m: _rule(m, '첨자 d').__setitem__(
+            'body', _rule(m, '첨자 d')['body'].replace('전일', '전날')), ('S5', 'T.h.t1.r5', 'T.d.t1.r5')),
+        ('vars.PEC옛문장', lambda m: _v(m, 'PEC').__setitem__(
+            'formula', 'P 안 각 날 마감시점 EC 를 더한 값'), ('S5', 'T.h.t2.r25', 'T.d.t2.r25')),
+        ('vars.EC첨자없음', lambda m: _v(m, 'EC_d').__setitem__('sym', 'EC'), ('S5', 'T.h.t2.r15')),
+        ('vars.⑤한줄', lambda m: _v(m, 'PY_t').__setitem__(
+            'formula', _v(m, 'PY_t')['formula'].split('\n')[-1].strip()), ('S5c', 'T.d.t2.r27')),
+        ('vars.가중치', lambda m: _v(m, 'D', '집계').__setitem__(
+            'plain', _v(m, 'D', '집계')['plain'].replace('비중이 건수가', '가중치가 건수가')), ('S7', 'S8')),
+        ('vars.조회기간', lambda m: _v(m, 'PEC').__setitem__(
+            'plain', _v(m, 'PEC')['plain'].replace('검색대상기간', '조회기간', 1)), 'S7'),
+        ('vars.대상정산금채권', lambda m: _v(m, 'A_i').__setitem__(
+            'plain', _v(m, 'A_i')['plain'].replace('보유 채권', '대상정산금채권')), 'S7'),
+        ('vars.term띄어쓰기', lambda m: _v(m, 'PY_t').__setitem__(
+            'term', '검색대상기간의 투자자산 대비 연환산 수익률'), ('S6', 'S7', 'T.h.t2.r27')),
+        ('changes.⑤분모', lambda m: m['changes'][4].__setitem__('before', 'PA − PEC'), ('T.h.t3.r5', 'T.d.t3.r5')),
+        ('changes.행삭제', lambda m: m['changes'].pop(), ('T.h.t3.rows', 'T.d.t3.rows')),
+        ('screen_terms.LR툴팁', lambda m: _st(m, 'LR').__setitem__(
+            'tooltip', _st(m, 'LR')['tooltip'].replace('20일', '21일')), ('S4b', 'T.h.t4.r5', 'T.d.t4.r5')),
+        ('screen_terms.D툴팁옛말', lambda m: _st(m, 'D').__setitem__(
+            'tooltip', '보유 채권 전체 (회수된 것 포함)'), ('S4b', 'S7', 'T.d.t4.r4')),
+        ('footnote', lambda m: m.__setitem__('footnote', m['footnote'].replace('7일', '8일')), ('T.h.note', 'T.d.note')),
+        ('vars.순서', lambda m: m['vars'].insert(0, m['vars'].pop()), ('T.h.t2.r1', 'T.d.t2.r1')),
+        ('vars.기존열', lambda m: _v(m, 'PD').__setitem__('prev', 'PD'), ('T.h.t2.r24', 'T.d.t2.r24')),
+        ('vars.분류열', lambda m: _v(m, 'PA').__setitem__('group', '투자 자산'), ('T.h.t2.r20', 'T.d.t2.r20')),
     ]
     caught = 0
     for name, mut, expect in cases:
@@ -1122,10 +1392,11 @@ def sec_J():
         io.open(p, 'w', encoding='utf-8').write(json.dumps(m, ensure_ascii=False))
         rc, r = run_child(p)
         new = set(r['fails']) - base_fail
-        ok = rc == 1 and expect in new
+        want = (expect,) if isinstance(expect, str) else tuple(expect)
+        ok = rc == 1 and all(w in new for w in want)
         caught += 1 if ok else 0
-        chk('J.%s' % name, ok, '판별력 — %s 를 한 자리 틀리면 %s 가 FAIL 로 잡히는가' % (name, expect),
-            '종료코드 %d · 새로 난 FAIL %s' % (rc, sorted(new) or '없음'))
+        chk('J.%s' % name, ok, '판별력 — %s 를 한 자리 틀리면 %s 가 FAIL 로 잡히는가' % (name, ' · '.join(want)),
+            '종료코드 %d · 새로 난 FAIL %d건 %s' % (rc, len(new), sorted(new)[:12] or '없음'))
     chk('J2', caught == len(cases), '판별력 시험 전건 통과',
         '%d / %d' % (caught, len(cases)))
     md5_after = hashlib.md5(io.open(MANUSCRIPT, 'rb').read()).hexdigest()
@@ -1145,6 +1416,7 @@ def main():
     section('H', sec_H)
     section('K', sec_K)
     section('S', sec_S)
+    section('T', sec_T)
     if not NOSCREEN:
         section('I', sec_I)
     if not CHILD and not NOSCREEN:
@@ -1153,7 +1425,7 @@ def main():
     fails = [x for x in R if not x[1]]
     if '--json' not in sys.argv:
         print('원고 %s' % MANUSCRIPT)
-        print('원장 채권 %s건 · 일자 %d일 · 어제 마감 %s'
+        print('원장 채권 %s건 · 일자 %d일 · 기준일(d) 마감 %s'
               % (format(len(L.RECEIVABLES), ','), len(DAYROWS), L.ymd(ASOF)))
         print('')
         for cid, ok, title, detail in R:

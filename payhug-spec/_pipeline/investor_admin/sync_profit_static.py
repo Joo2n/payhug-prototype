@@ -168,24 +168,24 @@ TIP4 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-ancho
         '</span></span></div>')
 # ⑥ 열머리 — 통합본 build_app.py 의 tyTh() 와 같은 마크업이다.
 TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span>'
-         '<span class="tip-panel">(④ ÷ ③) × 365 ÷ ⑤'
-         '<span class="tip-row"><span>번호</span><span class="tip-green">'
-         '일별 표 열 ③투자실행금 ④투자 수익 ⑤가중평균 금융일수</span></span>'
+         '<span class="tip-panel">PY<sub>a</sub> · 연환산 수익률 · PMR × 365 ÷ PD'
+         '<span class="tip-row"><span>연환산</span><span class="tip-green">'
+         '일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
          '<span class="tip-row"><span>행</span><span class="tip-green">'
          '정산예정일이 그 날짜인 보유 채권</span></span>'
          '</span></span></th>')
 # ③ 열머리 — 통합본 build_app.py 의 thirdTh() 와 같은 마크업이다.
 THIRD_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span>'
-            '<span class="tip-panel">⑥ 의 ③'
-            '<span class="tip-row"><span>번호</span><span class="tip-green">'
-            '상단 현황의 기간 전체 숫자 · 칸 미지목</span></span>'
+            '<span class="tip-panel">PA · 투자실행금 · Σ A<sub>i</sub>'
+            '<span class="tip-row"><span>행</span><span class="tip-green">'
+            '정산예정일이 그 날짜인 보유 채권</span></span>'
             '</span></span></th>')
 TIP5 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span>'
         '<span class="tip-panel">PY<sub>t</sub> · 투자 자산 대비 연환산 수익률 · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
         '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
         '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산 수익률 · %(ty4)s%%</span></span>'
         '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">%(ad)s원</span></span>'
-        '<span class="tip-row"><span>PEC</span><span class="tip-green">기간 순현금 · %(pec)s원</span></span>'
+        '<span class="tip-row"><span>PEC</span><span class="tip-green">검색대상기간의 누적 순현금 · %(pec)s원</span></span>'
         '<span class="tip-row sum"><span>EC</span><span>순현금 · %(ec)s원 × %(ecd)d일</span></span>'
         '</span></span></div>')
 
