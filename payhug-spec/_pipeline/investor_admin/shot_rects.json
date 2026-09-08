@@ -7,34 +7,34 @@
   "quality": 70,
   "format": "webp",
   "chrome": "Google Chrome 152.0.7977.83",
-  "capturedAt": "2026-09-08T08:49:45.995Z",
+  "capturedAt": "2026-09-08T09:09:11.133Z",
   "files": {
    "invest-assets.html": {
     "shot": "assets/shots/invest-assets.webp",
     "fontLoaded": true,
     "imgSha256": "32db8f10efa69957d602d44b137c8acfa385b1151e58f0378eb27dbd12048e40",
     "imgBytes": 110840,
-    "imgMtime": 1788857381268,
+    "imgMtime": 1788858546312,
     "srcSha256": "d0d175f50522a181c0651b3c8d92ebf22660c332da4e61c87031b72ebf9a8b76",
     "srcBytes": 18722,
-    "srcMtime": 1788857324013
+    "srcMtime": 1788857480503
    },
    "invest-profit.html": {
     "shot": "assets/shots/invest-profit.webp",
     "fontLoaded": true,
     "imgSha256": "f7d05a9b2f29b09be6b4dccbcd58750ba123d6b149d7c7cd84cde0fae20f59cd",
     "imgBytes": 93944,
-    "imgMtime": 1788857382433,
+    "imgMtime": 1788858547496,
     "srcSha256": "ef31e05febb08311fcb587395eb640e90740566e5c95d47618b35cdcaec22ae3",
     "srcBytes": 16665,
-    "srcMtime": 1788857324387
+    "srcMtime": 1788857798660
    },
    "merchants.html": {
     "shot": "assets/shots/merchants.webp",
     "fontLoaded": true,
     "imgSha256": "ab4012afae2b13fab77919d22ba6c14a1ca376b5f1b5e8552a0d8a1512ded587",
     "imgBytes": 93050,
-    "imgMtime": 1788857383590,
+    "imgMtime": 1788858548681,
     "srcSha256": "83665c485b07273c3167aaa8af4aeb4cc6757155b4c0b9aba3704558b9c185c1",
     "srcBytes": 13062,
     "srcMtime": 1788115003379
@@ -44,7 +44,7 @@
     "fontLoaded": true,
     "imgSha256": "9f1ea1ee9122c06ccce0718838f35d46efa874ffdad064c47ee6ca5a0734b430",
     "imgBytes": 67140,
-    "imgMtime": 1788857384770,
+    "imgMtime": 1788858549846,
     "srcSha256": "afd3f0aa87b2fc03fb6dc5a302f86da3f959d4b2a6f3ecb026bfc5f39682b08f",
     "srcBytes": 15391,
     "srcMtime": 1788114997269
@@ -54,7 +54,7 @@
     "fontLoaded": true,
     "imgSha256": "ce2628e721966d93a55f4ad67eb4750475791798c825c5a465d38ca0c9e217e0",
     "imgBytes": 30842,
-    "imgMtime": 1788857385952,
+    "imgMtime": 1788858550991,
     "srcSha256": "61b93c614a67dcb782884da279ac53b3f685b3553f729b0e8994b9d2d63a6a4a",
     "srcBytes": 7680,
     "srcMtime": 1787916536739
