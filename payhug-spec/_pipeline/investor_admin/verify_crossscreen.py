@@ -127,8 +127,8 @@ chk('invest-profit--monthly 낱장(got) = 월별투자수익.xlsx(want) 6행',
 #   카드가 4주를 말하는데 링크·파일이 일주일이면 여기서 걸린다.
 CARD_NUM = re.compile(r'<div class="summary-label">(?:투자실행금|투자수익)</div>\s*'
                       r'<div class="summary-value">([\d,]+)<span class="unit">원</span>')
-CARD_TY = re.compile(r'(?:투자실행금액|투자자산) 대비.*?<div class="summary-value">([\d.]+)'
-                     r'<span class="unit">%</span>', re.S)
+CARD_TY = re.compile(r'<span class="tip-anchor">(?:투자실행금액|투자 자산) 대비</span>.*?'
+                     r'<div class="summary-value">([\d.]+)<span class="unit">%</span>', re.S)
 CARD_PERIOD = re.compile(r'<div class="summary-sub mono">([^<]+)</div>')
 
 def html_status(p):
@@ -344,11 +344,11 @@ import daily_ledger as _LG
 POP_W_N = f(len(_LG.RECEIVABLES))
 POP_S_N = f(_LG.facts()['sampleReceivables'])
 POP_TIP = re.compile(r'<span class="tip-anchor">(가중평균 금융일수|입금부족률)</span>'
-                     r'<span class="tip-panel">([^<]+)'
-                     r'<span class="tip-row"><span>채권 건수</span>'
-                     r'<span class="tip-green">([\d,]+)건</span>')
-POP_WANT = [('가중평균 금융일수', '보유 채권 전체', POP_W_N),
-            ('입금부족률', '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본', POP_S_N)]
+                     r'<span class="tip-panel">((?:[^<]|<sub>|</sub>)+)'
+                     r'<span class="tip-row"><span>i</span>'
+                     r'<span class="tip-green">([^<·]+) · ([\d,]+)건</span>')
+POP_WANT = [('가중평균 금융일수', 'D = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ Σ A<sub>i</sub>', '보유 채권 전체', POP_W_N),
+            ('입금부족률', 'LR = Σ L<sub>i</sub> ÷ Σ A<sub>i</sub>', '선정산일이 오늘 기준 20일 전 ~ 11일 전', POP_S_N)]
 # 기준일 d 는 확정이라 열머리 두 곳 어디에도 `미확정` 배지가 없다.
 PEND_TH = re.compile(r'<span class="tip-anchor">(가중평균 금융일수|입금부족률)</span>.*?'
                      r'</span></span>( <span class="badge sm badge-amber">미확정</span>)?</th>', re.S)
@@ -362,9 +362,9 @@ for _p in ('invest-assets.html', 'invest-assets--download.html',
 # 통합본은 popTh() 가 그리므로 마크업이 아니라 그 재료(POP_W · POP_S)를 대조한다.
 _app = rd('app.html')
 chk('app.html 열머리 모집단 재료',
-    re.findall(r"var (POP_[WS]) = \{of:'([^']+)',\s*n:'([\d,]+)건'(, pend:1)?\}", _app),
-    [('POP_W', '보유 채권 전체', POP_W_N, ''),
-     ('POP_S', '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본', POP_S_N, '')])
+    re.findall(r"var (POP_[WS]) = \{head:'([^']+)',\s*of:'([^']+)',\s*n:'([\d,]+)건'(, pend:1)?\}", _app),
+    [('POP_W', 'D = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ Σ A<sub>i</sub>', '보유 채권 전체', POP_W_N, ''),
+     ('POP_S', 'LR = Σ L<sub>i</sub> ÷ Σ A<sub>i</sub>', '선정산일이 오늘 기준 20일 전 ~ 11일 전', POP_S_N, '')])
 chk('app.html 두 표가 같은 popTh 를 쓴다', _app.count("popTh('가중평균 금융일수', POP_W)"), 2)
 chk('app.html 두 표가 같은 popTh 를 쓴다 (S)', _app.count("popTh('입금부족률', POP_S)"), 2)
 # 모집단이 다르다는 사실 자체 — 두 건수가 같으면 툴팁을 달 이유가 없다

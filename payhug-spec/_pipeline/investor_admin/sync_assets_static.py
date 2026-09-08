@@ -178,16 +178,16 @@ def status_table(s):
 #   W금융일수·S입금부족율·옆 칸 금액이 각자 다른 집합에서 나온다. 행을 금액으로 가중평균해도
 #   현황표의 두 칸과 맞아떨어지지 않는 자리라, 열머리가 자기 모집단을 스스로 말한다.
 #   마크업은 통합본 build_app.py 의 popTh() 와 같다.
-POP = (('가중평균 금융일수', '보유 채권 전체', POP_N_W),
-       ('입금부족률', '선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본', POP_N_S))
+POP = (('가중평균 금융일수', 'D = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ Σ A<sub>i</sub>', '보유 채권 전체', POP_N_W),
+       ('입금부족률', 'LR = Σ L<sub>i</sub> ÷ Σ A<sub>i</sub>', '선정산일이 오늘 기준 20일 전 ~ 11일 전', POP_N_S))
 
 
-def pop_th(label, of, n):
+def pop_th(label, head, of, n):
     return ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">%s</span>'
             '<span class="tip-panel">%s'
-            '<span class="tip-row"><span>채권 건수</span><span class="tip-green">%s건</span></span>'
+            '<span class="tip-row"><span>i</span><span class="tip-green">%s · %s건</span></span>'
             '</span></span></th>'
-            % (label, of, f(n)))
+            % (label, head, of, f(n)))
 
 
 def th_pat(label):
@@ -199,15 +199,15 @@ def th_pat(label):
 
 def pop_heads(s):
     """현황표·가맹점별 표의 두 열머리를 툴팁 붙은 것으로. 이미 붙어 있으면 통째로 갈아 끼운다."""
-    for label, of, n in POP:
-        s, k = th_pat(label).subn(lambda _m: pop_th(label, of, n), s)
+    for label, head, of, n in POP:
+        s, k = th_pat(label).subn(lambda _m: pop_th(label, head, of, n), s)
         assert k == 2, '열머리 `%s` %d건 — 현황표·가맹점별 표 2건이라야 한다' % (label, k)
     return s
 
 
 # ── 2-2) 예상 연환산 수익률 툴팁 ─────────────────────────────────
 YR_LABEL = '예상 연환산 수익률'
-YR_HEAD = 'Y<sub>r</sub> · 예상 연환산 수익률 · r × 365 ÷ D'
+YR_HEAD = 'Y<sub>r</sub> = r × 365 ÷ D'
 YR_ROW = ('<span class="tip-row"><span>연환산</span><span class="tip-green">'
           '일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>')
 YR_PLAIN = '<div class="summary-label">%s</div>' % YR_LABEL
@@ -216,33 +216,36 @@ YR_CARD_TIP = re.compile(
     r'.*?</span></span></div>' % re.escape(YR_LABEL), re.S)
 
 
-def yr_card_tip(w, ty_):
+def yr_rows(w):
+    return ('<span class="tip-row"><span>r</span><span class="tip-green">%s%%</span></span>'
+            '<span class="tip-row"><span>D</span><span class="tip-green">%s</span></span>%s'
+            % (RPCT, '집계 대상 없음' if w is None else '%s일' % w, YR_ROW))
+
+
+def yr_card_tip(w):
     return ('<span class="tooltip wide"><span class="tip-anchor">%s</span><span class="tip-panel">%s%s'
-            '<span class="tip-row"><span>r</span><span class="tip-green">계약된 할인율 · %s%%</span></span>'
-            '<span class="tip-row"><span>D</span><span class="tip-green">가중평균 금융일수 · %s</span></span>'
-            '<span class="tip-row"><span>연 환산</span><span class="tip-green">%s%%</span></span>'
             '</span></span>'
-            % (YR_LABEL, YR_HEAD, YR_ROW, RPCT, '집계 대상 없음' if w is None else '%s일' % w, ty_))
+            % (YR_LABEL, YR_HEAD, yr_rows(w)))
 
 
 def yr_card_strip(s):
     return YR_CARD_TIP.sub(YR_PLAIN, s)
 
 
-def yr_card(s, w, ty_):
+def yr_card(s, w):
     s, k = re.subn(re.escape(YR_PLAIN),
-                   lambda _m: '<div class="summary-label">%s</div>' % yr_card_tip(w, ty_), s)
+                   lambda _m: '<div class="summary-label">%s</div>' % yr_card_tip(w), s)
     assert k == 1, '요약 카드 `%s` %d건 — 1건이라야 한다' % (YR_LABEL, k)
     return s
 
 
-def yr_th():
+def yr_th(w):
     return ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">%s</span>'
-            '<span class="tip-panel">%s%s</span></span></th>' % (YR_LABEL, YR_HEAD, YR_ROW))
+            '<span class="tip-panel">%s%s</span></span></th>' % (YR_LABEL, YR_HEAD, yr_rows(w)))
 
 
-def yr_heads(s):
-    s, k = th_pat(YR_LABEL).subn(lambda _m: yr_th(), s)
+def yr_heads(s, w):
+    s, k = th_pat(YR_LABEL).subn(lambda _m: yr_th(w), s)
     assert k == 2, '열머리 `%s` %d건 — 현황표·가맹점별 표 2건이라야 한다' % (YR_LABEL, k)
     return s
 
@@ -438,9 +441,9 @@ def total_count(s):
 def build_assets(s):
     s = drop_formula(s)
     s = summary_cards(yr_card_strip(s))
-    s = yr_card(s, W_ROW, TY_ROW)
+    s = yr_card(s, W_ROW)
     s = pop_heads(s)
-    s = yr_heads(s)
+    s = yr_heads(s, W_ROW)
     s = status_table(s)
     s = place_page_tools(s)
     s = page_count(s)
@@ -470,8 +473,8 @@ def build_certificate(s):
 
 def build_assets_empty(s):
     s = drop_formula(s)
-    s = yr_card(yr_card_strip(s), None, '%.2f' % 0)
-    return yr_heads(pop_heads(s))
+    s = yr_card(yr_card_strip(s), None)
+    return yr_heads(pop_heads(s), None)
 
 
 def build_cert_confirm(s):

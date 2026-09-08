@@ -28,8 +28,6 @@
   .range-warn { margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--red-500); }
 </style>
   <style>#fig-tip{display:block}</style>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=block" rel="stylesheet">
-  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-active="invest-returns">
 <div class="page">
@@ -121,12 +119,12 @@
       <div class="filter-row">
         <div class="filter-field">
           <label>시작일</label>
-          <span class="input" style="display:inline-flex;align-items:center;box-sizing:border-box;width:148px;height:40px;white-space:nowrap;overflow:hidden;justify-content:space-between;gap:8px;" data-fig-input="date"><span>2026. 08. 21.</span><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="1.9" style="width:15px;height:15px;flex:none;margin-right:1px"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10.5h18M8 3v4M16 3v4" stroke-linecap="round"/></svg></span>
+          <input type="date" class="input" value="2026-08-21">
         </div>
         <div class="filter-tilde">~</div>
         <div class="filter-field">
           <label>종료일</label>
-          <span class="input" style="display:inline-flex;align-items:center;box-sizing:border-box;width:148px;height:40px;white-space:nowrap;overflow:hidden;justify-content:space-between;gap:8px;" data-fig-input="date"><span>2026. 08. 27.</span><svg viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="1.9" style="width:15px;height:15px;flex:none;margin-right:1px"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10.5h18M8 3v4M16 3v4" stroke-linecap="round"/></svg></span>
+          <input type="date" class="input" value="2026-08-27">
         </div>
         <button class="btn btn-primary">검색</button>
         <button class="btn btn-outline">초기화</button>
@@ -166,11 +164,11 @@
           <div class="summary-label">연환산 수익률</div>
           <div class="ty-split">
             <div>
-              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span><span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산 수익률 · PMR × 365 ÷ PD<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span><span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = 0.033992%</span></span><span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · 61,175원</span></span><span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · 179,970,919원</span></span><span class="tip-row"><span>PD</span><span class="tip-green">기간 가중평균 금융일수 · 3.11일</span></span></span></span></div>
+              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span><span class="tip-panel">PY<sub>a</sub> = PMR × 365 ÷ PD<span class="tip-row"><span>PMR</span><span class="tip-green">0.033992%</span></span><span class="tip-row"><span>PM</span><span class="tip-green">61,175원</span></span><span class="tip-row"><span>PA</span><span class="tip-green">179,970,919원</span></span><span class="tip-row"><span>PD</span><span class="tip-green">3.11일</span></span><span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span></span></span></div>
               <div class="summary-value">3.99<span class="unit">%</span></div>
             </div>
             <div>
-              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span><span class="tip-panel" id="fig-tip">PY<sub>t</sub> · 투자 자산 대비 연환산 수익률 · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span><span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산 수익률 · 3.99%</span></span><span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">559,275,516원</span></span><span class="tip-row"><span>PEC</span><span class="tip-green">검색대상기간의 누적 순현금 · 140,000,000원</span></span><span class="tip-row sum"><span>EC</span><span>순현금 · 20,000,000원 × 7일</span></span></span></span></div>
+              <div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span><span class="tip-panel" id="fig-tip">PY<sub>t</sub> = PY<sub>a</sub> × 채권 비중 + 순현금 수익률 × 순현금 비중<br>= PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">3.99%</span></span><span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">559,275,516원</span></span><span class="tip-row"><span>PEC</span><span class="tip-green">140,000,000원</span></span><span class="tip-row sum"><span>EC</span><span>20,000,000원 × 7일</span></span><span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span></span></span></div>
               <div class="summary-value">3.19<span class="unit">%</span></div>
             </div>
           </div>
@@ -195,10 +193,10 @@
             <tr>
               <th>정산예정일</th>
               <th class="num">상환액</th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span><span class="tip-panel">PA · 투자실행금 · Σ A<sub>i</sub><span class="tip-row"><span>행</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span></span></span></th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span><span class="tip-panel">PA = Σ A<sub>i</sub><span class="tip-row"><span>i</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span></span></span></th>
               <th class="num">투자 수익</th>
               <th class="num">가중평균 금융일수</th>
-              <th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span><span class="tip-panel">PY<sub>a</sub> · 연환산 수익률 · PMR × 365 ÷ PD<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span><span class="tip-row"><span>행</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span></span></span></th>
+              <th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span><span class="tip-panel">PY<sub>a</sub> = PMR × 365 ÷ PD<span class="tip-row"><span>i</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span><span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span></span></span></th>
             </tr>
           </thead>
           <tbody>

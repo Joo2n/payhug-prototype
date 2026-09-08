@@ -56,7 +56,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgba(127, 225, 65, 1)",
+   "bg": "rgb(127, 225, 65)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -101,7 +101,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -1434,14 +1434,14 @@
    },
    {
     "name": "기본 기간 PA (④ 툴팁)",
-    "want": "PA기간 투자실행금 · 179,970,919원",
-    "got": "PA기간 투자실행금 · 179,970,919원",
+    "want": "PA179,970,919원",
+    "got": "PA179,970,919원",
     "pass": true
    },
    {
     "name": "기본 기간 PEC (⑤ 툴팁)",
-    "want": "PEC기간 순현금 · 140,000,000원",
-    "got": "PEC기간 순현금 · 140,000,000원",
+    "want": "PEC140,000,000원",
+    "got": "PEC140,000,000원",
     "pass": true
    },
    {

@@ -1291,19 +1291,24 @@ function wavg(a, k, wk){ var n=0, d=0; for(var i=0;i<a.length;i++){ n += a[i][k]
    옆 칸 금액(미회수 Σ A<sub>i</sub>)까지 셋이 각자 다른 집합에서 나오므로, 행을 금액으로 가중평균해도
    현황표의 두 칸과 맞아떨어지지 않는다. 그 모집단을 열머리 툴팁이 그대로 적는다.
    건수는 채권 원장 실측이다(daily_ledger.py) — 화면에 손으로 적지 않는다. */
-var POP_W = {of:'보유 채권 전체', n:'@@POPW@@'};
-var POP_S = {of:'선정산일이 오늘 기준 20일 전 ~ 11일 전인 표본', n:'@@POPS@@'};
+var POP_W = {head:'D = Σ( A<sub>i</sub> × D<sub>i</sub> ) ÷ Σ A<sub>i</sub>', of:'보유 채권 전체', n:'@@POPW@@'};
+var POP_S = {head:'LR = Σ L<sub>i</sub> ÷ Σ A<sub>i</sub>', of:'선정산일이 오늘 기준 20일 전 ~ 11일 전', n:'@@POPS@@'};
 function popTh(label, p){
   return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">' + label + '</span>' +
-         '<span class="tip-panel">' + p.of +
-           '<span class="tip-row"><span>채권 건수</span><span class="tip-green">' + p.n + '</span></span>' +
+         '<span class="tip-panel">' + p.head +
+           '<span class="tip-row"><span>i</span><span class="tip-green">' + p.of + ' · ' + p.n + '</span></span>' +
          '</span></span></th>';
 }
-var YR_TIP_HEAD = 'Y<sub>r</sub> · 예상 연환산 수익률 · r × 365 ÷ D';
+var YR_TIP_HEAD = 'Y<sub>r</sub> = r × 365 ÷ D';
 var YR_TIP_ROW  = '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>';
-function yrTh(){
+function yrRows(w){
+  return '<span class="tip-row"><span>r</span><span class="tip-green">' + fx(RATE_PCT, 2) + '%</span></span>' +
+         '<span class="tip-row"><span>D</span><span class="tip-green">' + (w === null ? '집계 대상 없음' : fx(w, 2) + '일') + '</span></span>' +
+         YR_TIP_ROW;
+}
+function yrTh(w){
   return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">예상 연환산 수익률</span>' +
-         '<span class="tip-panel">' + YR_TIP_HEAD + YR_TIP_ROW + '</span></span></th>';
+         '<span class="tip-panel">' + YR_TIP_HEAD + yrRows(w) + '</span></span></th>';
 }
 /* ── ③ ⑤ ⑥ 단일 원천 ────────────────────────────────────────────
    산식은 생성기 daily_ledger.py 의 ty_third · ty_asset · ty_row 한 벌에서 온다
@@ -1316,16 +1321,16 @@ function ty6(profit, execu, w){ @@TY6JS@@ }
 /* ⑥ 열머리 — 투자자어드민 기호정리표 V1.3 표 4 */
 function tyTh(){
   return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span>' +
-         '<span class="tip-panel">PY<sub>a</sub> · 연환산 수익률 · PMR × 365 ÷ PD' +
+         '<span class="tip-panel">PY<sub>a</sub> = PMR × 365 ÷ PD' +
+           '<span class="tip-row"><span>i</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span>' +
            '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>' +
-           '<span class="tip-row"><span>행</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span>' +
          '</span></span></th>';
 }
 /* ③ 열머리 — 투자자어드민 기호정리표 V1.3 표 4 */
 function thirdTh(){
   return '<th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span>' +
-         '<span class="tip-panel">PA · 투자실행금 · Σ A<sub>i</sub>' +
-           '<span class="tip-row"><span>행</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span>' +
+         '<span class="tip-panel">PA = Σ A<sub>i</sub>' +
+           '<span class="tip-row"><span>i</span><span class="tip-green">정산예정일이 그 날짜인 보유 채권</span></span>' +
          '</span></span></th>';
 }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -1737,8 +1742,9 @@ RENDER['invest-assets'] = function(){
       '<div class="summary-sub">투자실행액 + 순현금</div></div>' +
     '<div class="summary-card"><div class="summary-label">' +
       '<span class="tooltip wide"><span class="tip-anchor">투자실행액</span>' +
-        '<span class="tip-panel">Σ A<sub>i</sub> · 투자 실행액 · A<sub>i</sub> = 순지급액<sub>i</sub> × (1 − r) 의 합' +
-          '<span class="tip-row"><span>r</span><span class="tip-green">계약된 할인율 · ' + fx(RATE_PCT, 2) + '%</span></span>' +
+        '<span class="tip-panel">Σ A<sub>i</sub>' +
+          '<span class="tip-row"><span>A<sub>i</sub></span><span class="tip-green">순지급액<sub>i</sub> × (1 − r)</span></span>' +
+          '<span class="tip-row"><span>r</span><span class="tip-green">' + fx(RATE_PCT, 2) + '%</span></span>' +
         '</span></span></div>' +
       '<div class="summary-value">' + fmt(exec) + '<span class="unit">원</span></div>' +
       '<div class="summary-sub">비중 ' + fx(rExec, 1) + '% · 보관 ㈜페이허그</div></div>' +
@@ -1747,16 +1753,13 @@ RENDER['invest-assets'] = function(){
       '<div class="summary-sub">비중 ' + fx(rCash, 1) + '% · 보관 ㈜쿠콘</div></div>' +
     '<div class="summary-card"><div class="summary-label">' +
       '<span class="tooltip wide"><span class="tip-anchor">예상 연환산 수익률</span>' +
-        '<span class="tip-panel">' + YR_TIP_HEAD + YR_TIP_ROW +
-          '<span class="tip-row"><span>r</span><span class="tip-green">계약된 할인율 · ' + fx(RATE_PCT, 2) + '%</span></span>' +
-          '<span class="tip-row"><span>D</span><span class="tip-green">가중평균 금융일수 · ' + (wv === null ? '집계 대상 없음' : fx(wv, 2) + '일') + '</span></span>' +
-          '<span class="tip-row"><span>연 환산</span><span class="tip-green">' + fx(tyv, 2) + '%</span></span>' +
+        '<span class="tip-panel">' + YR_TIP_HEAD + yrRows(wv) +
         '</span></span></div>' +
       '<div class="summary-value">' + fx(tyv, 2) + '<span class="unit">%</span></div>' +
       '<div class="summary-sub">' + (wv === null ? '가중평균 금융일수 집계 대상 없음' : '가중평균 금융일수 ' + fx(wv, 2) + '일 기준') + '</div></div>';
 
   var h = '<thead><tr><th>자산 구분</th><th class="num">금액 (원)</th>' + popTh('가중평균 금융일수', POP_W) +
-          popTh('입금부족률', POP_S) + yrTh() +
+          popTh('입금부족률', POP_S) + yrTh(wv) +
           '<th class="num">비중</th><th>보관</th></tr></thead><tbody>';
   if(!arows.length){ h += emptyRow(7, '조회 결과가 없습니다.'); }
   else {
@@ -1785,7 +1788,7 @@ RENDER['invest-assets'] = function(){
   var slice = view.slice((IA.page - 1) * iaSize, IA.page * iaSize);
   var mm = M('ia-merch', 'invest-assets'), mp = M('ia-merch-page', 'invest-assets');
   var IA_HEAD = '<th>가맹점</th><th class="num">투자실행액 (원)</th>' + popTh('가중평균 금융일수', POP_W) +
-                popTh('입금부족률', POP_S) + yrTh() +
+                popTh('입금부족률', POP_S) + yrTh(wv) +
                 '<th class="num">비중</th>';
   if(!mrows.length){
     mm.innerHTML = emptyTable(IA_HEAD, 6, '조회 결과가 없습니다.');
@@ -1960,21 +1963,21 @@ RENDER['invest-profit'] = function(){
       '<div class="summary-value">' + fmt(profit) + '<span class="unit">원</span></div></div>' +
     '<div class="stat"><div class="summary-label">연환산 수익률</div><div class="ty-split">' +
       '<div><div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>' +
-        '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산 수익률 · PMR × 365 ÷ PD' +
-          '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>' +
-          '<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = ' + fx(exec ? r6(profit / exec * 100) : 0, 6) + '%</span></span>' +
-          '<span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · ' + fmt(profit) + '원</span></span>' +
-          '<span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · ' + fmt(exec) + '원</span></span>' +
-          '<span class="tip-row"><span>PD</span><span class="tip-green">기간 가중평균 금융일수 · ' + fx(wAvg, 2) + '일</span></span>' +
+        '<span class="tip-panel">PY<sub>a</sub> = PMR × 365 ÷ PD' +
+          '<span class="tip-row"><span>PMR</span><span class="tip-green">' + fx(exec ? r6(profit / exec * 100) : 0, 6) + '%</span></span>' +
+          '<span class="tip-row"><span>PM</span><span class="tip-green">' + fmt(profit) + '원</span></span>' +
+          '<span class="tip-row"><span>PA</span><span class="tip-green">' + fmt(exec) + '원</span></span>' +
+          '<span class="tip-row"><span>PD</span><span class="tip-green">' + fx(wAvg, 2) + '일</span></span>' +
+          YR_TIP_ROW +
         '</span></span></div>' +
         '<div class="summary-value">' + fx(tyExec, 2) + '<span class="unit">%</span></div></div>' +
       '<div><div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span>' +
-        '<span class="tip-panel">PY<sub>t</sub> · 투자 자산 대비 연환산 수익률 · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )' +
-          '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>' +
-          '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산 수익률 · ' + fx(tyExec, 2) + '%</span></span>' +
+        '<span class="tip-panel">PY<sub>t</sub> = PY<sub>a</sub> × 채권 비중 + 순현금 수익률 × 순현금 비중<br>= PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )' +
+          '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">' + fx(tyExec, 2) + '%</span></span>' +
           '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">' + fmt(adOfRows(rows)) + '원</span></span>' +
-          '<span class="tip-row"><span>PEC</span><span class="tip-green">검색대상기간의 누적 순현금 · ' + fmt((cashRow() ? cashRow().amount : 0) * ecDays()) + '원</span></span>' +
-          '<span class="tip-row sum"><span>EC</span><span>순현금 · ' + fmt(cashRow() ? cashRow().amount : 0) + '원 × ' + ecDays() + '일</span></span>' +
+          '<span class="tip-row"><span>PEC</span><span class="tip-green">' + fmt((cashRow() ? cashRow().amount : 0) * ecDays()) + '원</span></span>' +
+          '<span class="tip-row sum"><span>EC</span><span>' + fmt(cashRow() ? cashRow().amount : 0) + '원 × ' + ecDays() + '일</span></span>' +
+          YR_TIP_ROW +
         '</span></span></div>' +
         '<div class="summary-value">' + fx(tyAsset, 2) + '<span class="unit">%</span></div></div>' +
     '</div></div>';
@@ -2257,21 +2260,21 @@ function simSyncRows(){
 function simTyTip(R){
   return '<div class="stat"><div class="summary-label">연환산 수익률</div><div class="ty-split">' +
     '<div><div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>' +
-      '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산 수익률 · PMR × 365 ÷ PD' +
-        '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>' +
-        '<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = ' + fx(R.PMR, 6) + '%</span></span>' +
-        '<span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · ' + fmt(R.PM) + '원</span></span>' +
-        '<span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · ' + fmt(R.PA) + '원</span></span>' +
-        '<span class="tip-row"><span>PD</span><span class="tip-green">기간 가중평균 금융일수 · ' + fx(R.PwD, 2) + '일</span></span>' +
+      '<span class="tip-panel">PY<sub>a</sub> = PMR × 365 ÷ PD' +
+        '<span class="tip-row"><span>PMR</span><span class="tip-green">' + fx(R.PMR, 6) + '%</span></span>' +
+        '<span class="tip-row"><span>PM</span><span class="tip-green">' + fmt(R.PM) + '원</span></span>' +
+        '<span class="tip-row"><span>PA</span><span class="tip-green">' + fmt(R.PA) + '원</span></span>' +
+        '<span class="tip-row"><span>PD</span><span class="tip-green">' + fx(R.PwD, 2) + '일</span></span>' +
+        YR_TIP_ROW +
       '</span></span></div>' +
       '<div class="summary-value' + (R.TY4 < 0 ? ' neg' : '') + '">' + fx(R.TY4, 2) + '<span class="unit">%</span></div></div>' +
     '<div><div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span>' +
-      '<span class="tip-panel">PY<sub>t</sub> · 투자 자산 대비 연환산 수익률 · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )' +
-        '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>' +
-        '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산 수익률 · ' + fx(R.TY4, 2) + '%</span></span>' +
+      '<span class="tip-panel">PY<sub>t</sub> = PY<sub>a</sub> × 채권 비중 + 순현금 수익률 × 순현금 비중<br>= PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )' +
+        '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">' + fx(R.TY4, 2) + '%</span></span>' +
         '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">' + fmt(R.AD) + '원</span></span>' +
-        '<span class="tip-row"><span>PEC</span><span class="tip-green">검색대상기간의 누적 순현금 · ' + fmt(R.PEC) + '원</span></span>' +
-        '<span class="tip-row sum"><span>EC</span><span>순현금 · ' + fmt(R.cash) + '원 × ' + R.ECD + '일</span></span>' +
+        '<span class="tip-row"><span>PEC</span><span class="tip-green">' + fmt(R.PEC) + '원</span></span>' +
+        '<span class="tip-row sum"><span>EC</span><span>' + fmt(R.cash) + '원 × ' + R.ECD + '일</span></span>' +
+        YR_TIP_ROW +
       '</span></span></div>' +
       '<div class="summary-value' + (R.TY5 < 0 ? ' neg' : '') + '">' + fx(R.TY5, 2) + '<span class="unit">%</span></div></div>' +
   '</div></div>';

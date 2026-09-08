@@ -158,35 +158,38 @@ CARD = re.compile(
 # Ty수익율 두 칸의 산식 툴팁 — 통합본 build_app.py pfRender 와 같은 마크업.
 # ty-label 안쪽을 통째로 갈아 끼우므로 여러 번 돌려도 겹쳐 붙지 않는다.
 TY_LABEL = re.compile(r'<div class="ty-label">.*?</div>', re.S)
+YR_ROW = ('<span class="tip-row"><span>연환산</span><span class="tip-green">'
+          '일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>')
 TIP4 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자실행금액 대비</span>'
-        '<span class="tip-panel">PY<sub>a</sub> · 투자실행금액 대비 연환산 수익률 · PMR × 365 ÷ PD'
-        '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
-        '<span class="tip-row"><span>PMR</span><span class="tip-green">기간 투자수익율 · PM ÷ PA = %(pmr)s%%</span></span>'
-        '<span class="tip-row"><span>PM</span><span class="tip-green">기간 투자수익 · %(pm)s원</span></span>'
-        '<span class="tip-row"><span>PA</span><span class="tip-green">기간 투자실행금 · %(pa)s원</span></span>'
-        '<span class="tip-row"><span>PD</span><span class="tip-green">기간 가중평균 금융일수 · %(pd)s일</span></span>'
+        '<span class="tip-panel">PY<sub>a</sub> = PMR × 365 ÷ PD'
+        '<span class="tip-row"><span>PMR</span><span class="tip-green">%(pmr)s%%</span></span>'
+        '<span class="tip-row"><span>PM</span><span class="tip-green">%(pm)s원</span></span>'
+        '<span class="tip-row"><span>PA</span><span class="tip-green">%(pa)s원</span></span>'
+        '<span class="tip-row"><span>PD</span><span class="tip-green">%(pd)s일</span></span>'
+        + YR_ROW +
         '</span></span></div>')
 # ⑥ 열머리 — 통합본 build_app.py 의 tyTh() 와 같은 마크업이다.
 TY_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">연환산 수익률</span>'
-         '<span class="tip-panel">PY<sub>a</sub> · 연환산 수익률 · PMR × 365 ÷ PD'
+         '<span class="tip-panel">PY<sub>a</sub> = PMR × 365 ÷ PD'
+         '<span class="tip-row"><span>i</span><span class="tip-green">'
+         '정산예정일이 그 날짜인 보유 채권</span></span>'
          '<span class="tip-row"><span>연환산</span><span class="tip-green">'
          '일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
-         '<span class="tip-row"><span>행</span><span class="tip-green">'
-         '정산예정일이 그 날짜인 보유 채권</span></span>'
          '</span></span></th>')
 # ③ 열머리 — 통합본 build_app.py 의 thirdTh() 와 같은 마크업이다.
 THIRD_TH = ('<th class="num"><span class="tooltip wide"><span class="tip-anchor">투자실행금</span>'
-            '<span class="tip-panel">PA · 투자실행금 · Σ A<sub>i</sub>'
-            '<span class="tip-row"><span>행</span><span class="tip-green">'
+            '<span class="tip-panel">PA = Σ A<sub>i</sub>'
+            '<span class="tip-row"><span>i</span><span class="tip-green">'
             '정산예정일이 그 날짜인 보유 채권</span></span>'
             '</span></span></th>')
 TIP5 = ('<div class="ty-label"><span class="tooltip wide"><span class="tip-anchor">투자 자산 대비</span>'
-        '<span class="tip-panel">PY<sub>t</sub> · 투자 자산 대비 연환산 수익률 · PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
-        '<span class="tip-row"><span>연환산</span><span class="tip-green">일부 기간의 수익률이 1년간 계속된다는 가정하에 예상되는 연간 수익률</span></span>'
-        '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">투자실행금액 대비 연환산 수익률 · %(ty4)s%%</span></span>'
+        '<span class="tip-panel">PY<sub>t</sub> = PY<sub>a</sub> × 채권 비중 + 순현금 수익률 × 순현금 비중'
+        '<br>= PM × 365 ÷ ( Σ( A<sub>i</sub> × D<sub>i</sub> ) + PEC )'
+        '<span class="tip-row"><span>PY<sub>a</sub></span><span class="tip-green">%(ty4)s%%</span></span>'
         '<span class="tip-row"><span>Σ( A<sub>i</sub> × D<sub>i</sub> )</span><span class="tip-green">%(ad)s원</span></span>'
-        '<span class="tip-row"><span>PEC</span><span class="tip-green">검색대상기간의 누적 순현금 · %(pec)s원</span></span>'
-        '<span class="tip-row sum"><span>EC</span><span>순현금 · %(ec)s원 × %(ecd)d일</span></span>'
+        '<span class="tip-row"><span>PEC</span><span class="tip-green">%(pec)s원</span></span>'
+        '<span class="tip-row sum"><span>EC</span><span>%(ec)s원 × %(ecd)d일</span></span>'
+        + YR_ROW +
         '</span></span></div>')
 
 # ── 수익 산정 기준 카드 — 화면에 싣지 않는다(build_app.py SHOW_FORMULA 와 같은 상태) ──
@@ -224,7 +227,7 @@ def put_third_th(s):
 
 
 def put_tips(s, psa, psm, ty4, pd, ad, ec_days):
-    pmr = RM.r6(D(psm) / D(psa) * D(100)) if psa else 0
+    pmr = RM.r6(D(psm) / D(psa) * D(100)) if psa else '%.6f' % 0
     tips = [TIP4 % dict(pmr=pmr, pm=f(psm), pa=f(psa), pd=pd),
             TIP5 % dict(ty4=ty4, ad=f(ad), pec=f(RM.CASH * ec_days), ec=f(RM.CASH), ecd=ec_days)]
     n = [0]
@@ -345,7 +348,7 @@ def one(name, pre, frm, to, gran):
         v = VIEW[gran]
         s = put_tips(s, v[4], v[5], v[6], v[3][3], v[8], ec_days(frm, to))
     else:
-        s = put_tips(s, 0, 0, 0, 0, 0, ec_days(frm, to))
+        s = put_tips(s, 0, 0, '%.2f' % 0, '%.2f' % 0, 0, ec_days(frm, to))
 
     # 표 제목·열머리·엑셀 링크 — 그 집계 단위 것으로
     title, col, xls, xls_status = GRAN[gran]

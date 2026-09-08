@@ -885,8 +885,8 @@ async function main(){
     var tip = Array.prototype.map.call(SECQ('invest-profit','.ty-split .tip-row'), function(e){ return e.textContent.trim(); });
     /* 툴팁 기호 옆에 정본 용어명(step6) · ⑤ = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) (step7 ⑤ 산식 교체).
        PA 행은 ④ 툴팁에 「기간 투자실행금」, ⑤ 툴팁은 Σ( Ai × Di ) 행. <sub> 는 textContent 에서 글자로 붙는다. */
-    add('기본 기간 PA (④ 툴팁)', 'PA기간 투자실행금 · ' + F.psa + '원', tip.filter(function(x){ return x.indexOf('PA')===0; })[0] || '없음');
-    add('기본 기간 PEC (⑤ 툴팁)', 'PEC기간 순현금 · ' + F.psc + '원', tip.filter(function(x){ return x.indexOf('PEC')===0; })[0] || '없음');
+    add('기본 기간 PA (④ 툴팁)', 'PA' + F.psa + '원', tip.filter(function(x){ return x.indexOf('PA')===0; })[0] || '없음');
+    add('기본 기간 PEC (⑤ 툴팁)', 'PEC' + F.psc + '원', tip.filter(function(x){ return x.indexOf('PEC')===0; })[0] || '없음');
     add('기본 기간 Σ( Ai × Di ) (⑤ 툴팁)', 'Σ( Ai × Di )' + F.ad + '원', tip.filter(function(x){ return x.indexOf('Σ( Ai × Di )')===0; })[0] || '없음');
     var ft = Array.prototype.map.call(SECQ('invest-profit','.tbl tfoot td'), function(td){ return td.textContent.replace('가중평균','').trim(); });
     add('일별 표 합계 W',  F.weekW,          ft[4] || '없음');
