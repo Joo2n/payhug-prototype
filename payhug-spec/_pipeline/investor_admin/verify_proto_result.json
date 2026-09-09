@@ -56,7 +56,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 1)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -116,7 +116,7 @@
    "visible": true,
    "state": "default",
    "hash": "#password",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgb(127, 225, 65)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -351,8 +351,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5727,
-   "srcBytes": 5727,
+   "bytes": 5658,
+   "srcBytes": 5658,
    "pass": true
   },
   {

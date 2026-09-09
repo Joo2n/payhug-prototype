@@ -35,12 +35,12 @@
 | 대표 수정 검토 아티팩트 | `session_0904/artifact/ceo_edit_review.html` · https://claude.ai/code/artifact/4e9ff1f7-3b60-48d1-9911-3cb06eaeac94 |
 | 원고 | `final_terms.json`(V1.3 표 1~4 글자 그대로) · 검사기 `verify_final_terms.py` **302건 전건 통과** (T 절 = V1.3 워드·HTML 실물 대조 135, S 절 = 옛 표기 0, J 절 = 판별력 26) · `build_symreview.py` 원고 경로 `session_0904/artifact/ceo_review.html` |
 | 원장 | `daily_ledger.py` (`ASOF` 어제 · `TY5_EXPR = 'ty4 * ad / tot'`) · `ledger_facts.json` |
-| 배포 | 전체본 https://payhug-investor-demo.vercel.app/ (`Joo2n/payhug-investor-admin` main `d7ce377`) · 시연본 https://payhug-investor-prototype.vercel.app/ (`Joo2n/payhug-investor-prototype` main `19c1440`) · 용어 해설 https://payhug-investor-glossary.vercel.app/ (`Joo2n/payhug-investor-glossary` main `3ddc511`). GitHub Actions 「배포 동기화 검사」는 **수동 실행 전용**(`workflow_dispatch`) — push 마다 돌면 로컬 동기화 전 8분 재시도 끝에 실패 메일이 나가서 뺐다. push 뒤 `sync_prototype.sh`·`sync_glossary.sh` 가 대상 레포·배포면을 스스로 확인한다 |
+| 배포 | 전체본 https://payhug-investor-demo.vercel.app/ (`Joo2n/payhug-investor-admin` main `d7ce377`) · 시연본 https://payhug-investor-prototype.vercel.app/ (`Joo2n/payhug-investor-prototype` main `7a369bd(투자자 공유 정리 판)`) · 용어 해설 https://payhug-investor-glossary.vercel.app/ (`Joo2n/payhug-investor-glossary` main `3ddc511`). GitHub Actions 「배포 동기화 검사」는 **수동 실행 전용**(`workflow_dispatch`) — push 마다 돌면 로컬 동기화 전 8분 재시도 끝에 실패 메일이 나가서 뺐다. push 뒤 `sync_prototype.sh`·`sync_glossary.sh` 가 대상 레포·배포면을 스스로 확인한다 |
 | 대표님 슬랙 초안 | `~/Downloads/payhug_용어정의서/대표님_슬랙_V1.3_20260908.txt` (대표님과는 이미 종결, 참고용) |
 | 세션 보고서 | `session_0904/reports/` (step5~step13 · xcheck_A/B · xcheck_0908_A/B · orders_mid/final/0907/0907b/0908 · audit_0907_decisions) · 조사 `session_0904/survey/` · 검증 `session_0904/verify/` · 캡처 `session_0904/qa/` (figma_nav 24 · figma_states 13 · figma_0907 22 · figma_0907b 5 · figma_0908b 10 · screen_ab_0908) |
 | 지라 PAYHUG-229 9/4 기록 (붙여넣기용) | `~/Downloads/payhug_용어정의서/PAYHUG-229_진행상황_20260904.html` · 사본 `session_0904/reports/` |
 
-## 남은 작업 (2026-09-08 마감 시점)
+## 남은 작업 (2026-09-09 시점)
 
 | # | 할 일 | 어디 | 상태 |
 |---|---|---|---|

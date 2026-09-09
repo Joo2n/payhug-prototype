@@ -63,15 +63,6 @@ def fmt(n): return '{:,}'.format(int(n))
 def fx(v, d): return ('%.' + str(d) + 'f') % v
 def pct(v, d): return fx(v, d) + '%'
 
-def ratios(vals, base):
-    out, tot, k = [], 0.0, 0
-    for i, v in enumerate(vals):
-        out.append(math.floor(v / base * 1000 + 0.5) / 10 if base else 0)
-        tot += out[i]
-        if v > vals[k]: k = i
-    if vals: out[k] = math.floor((out[k] + (100 - tot)) * 10 + 0.5) / 10
-    return out
-
 def bond(plat, amt, sd, dd, r, ded):
     return {'plat': plat, 'amt': amt, 'sd': sd, 'dd': dd, 'D': days(sd, dd),
             'A': flr(amt * (1 - r)), 'fee': flr(amt * r), 'ded': flr(max(0, ded) * amt),
@@ -90,7 +81,6 @@ def run():
     TY   = (R_RATE * 365 / W) if W else 0
     S    = (UNPAID - OVER) / (1 - r)
     TOT  = EXEC + CASH
-    SH   = ratios([EXEC, CASH], TOT)
     PSA  = sum(b['A'] for b in mat); PSM = sum(b['M'] for b in mat); PSB = sum(b['B'] for b in mat)
     AD   = sum(b['A'] * b['D'] for b in mat)          # Σ(Ai x Di) — PSD 의 분자 · ⑤ 의 AD
     PSD  = (AD / float(PSA)) if PSA else 0
@@ -113,7 +103,7 @@ def run():
         g['W'] = (g['wx'] / float(g['A'])) if g['A'] else 0
         g['TY'] = LG.ty_row(g['M'], float(g['A']), g['W'])   # ⑥ — ty_asset() 을 거친다
         drows.append(g)
-    return dict(bonds=bonds, EXEC=EXEC, W=W, TY=TY, S=S, TOT=TOT, SH=SH, PSA=PSA, PSM=PSM,
+    return dict(bonds=bonds, EXEC=EXEC, W=W, TY=TY, S=S, TOT=TOT, PSA=PSA, PSM=PSM,
                 PSB=PSB, AD=AD, PSD=PSD, PSMR=PSMR, TY4=TY4, TY5=TY5, ECD=ECD, PSC=PSC, rows=drows)
 
 # ── 마크업 ────────────────────────────────────────────────────────
@@ -201,13 +191,11 @@ def result_block(R):
           '        <div class="summary-value">%s<span class="unit">원</span></div>\n'
           '        <div class="summary-sub">투자실행액 + 순현금</div>\n      </div>\n' % fmt(R['TOT']))
     h += ('      <div class="summary-card">\n        <div class="summary-label">투자실행액</div>\n'
-          '        <div class="summary-value">%s<span class="unit">원</span></div>\n'
-          '        <div class="summary-sub">비중 %s%% · 보관 ㈜페이허그</div>\n      </div>\n'
-          % (fmt(R['EXEC']), fx(R['SH'][0], 1)))
+          '        <div class="summary-value">%s<span class="unit">원</span></div>\n      </div>\n'
+          % fmt(R['EXEC']))
     h += ('      <div class="summary-card">\n        <div class="summary-label">순현금</div>\n'
-          '        <div class="summary-value">%s<span class="unit">원</span></div>\n'
-          '        <div class="summary-sub">비중 %s%% · 보관 ㈜쿠콘</div>\n      </div>\n'
-          % (fmt(CASH), fx(R['SH'][1], 1)))
+          '        <div class="summary-value">%s<span class="unit">원</span></div>\n      </div>\n'
+          % fmt(CASH))
     h += ('      <div class="summary-card">\n        <div class="summary-label">예상 연환산 수익률</div>\n'
           '        <div class="summary-value">%s<span class="unit">%%</span></div>\n'
           '        <div class="summary-sub">가중평균 금융일수 %s일 기준</div>\n      </div>\n'
@@ -232,21 +220,19 @@ def result_block(R):
     h += ('    <div class="tbl-wrap mb-6">\n      <div class="tbl-head"><h2>현황</h2></div>\n'
           '      <div class="tbl-scroll">\n        <table class="tbl">\n          <thead>\n'
           '            <tr><th>자산 구분</th><th class="num">금액 (원)</th><th class="num">가중평균 금융일수</th>'
-          '<th class="num">입금부족률</th><th class="num">예상 연환산 수익률</th><th class="num">비중</th><th>보관</th></tr>\n'
+          '<th class="num">입금부족률</th><th class="num">예상 연환산 수익률</th></tr>\n'
           '          </thead>\n          <tbody>\n')
     h += ('            <tr><td><span class="name">투자실행액</span></td><td class="num"><span class="strong">%s</span></td>'
-          '<td class="num">%s일</td><td class="num">%s</td><td class="num">%s</td><td class="num">%s%%</td>'
-          '<td>㈜페이허그</td></tr>\n'
-          % (fmt(R['EXEC']), fx(R['W'], 2), pct(R['S'], 2), pct(R['TY'], 2), fx(R['SH'][0], 1)))
+          '<td class="num">%s일</td><td class="num">%s</td><td class="num">%s</td></tr>\n'
+          % (fmt(R['EXEC']), fx(R['W'], 2), pct(R['S'], 2), pct(R['TY'], 2)))
     h += ('            <tr><td><span class="name">순현금</span></td><td class="num"><span class="strong">%s</span></td>'
           '<td class="num"><span class="none">-</span></td><td class="num"><span class="none">-</span></td>'
-          '<td class="num"><span class="none">-</span></td><td class="num">%s%%</td><td>㈜쿠콘</td></tr>\n'
-          % (fmt(CASH), fx(R['SH'][1], 1)))
+          '<td class="num"><span class="none">-</span></td></tr>\n'
+          % fmt(CASH))
     h += ('            <tr class="total-row"><td>합계 (투자자산)</td><td class="num">%s</td>'
           '<td class="num"><span class="none">-</span></td><td class="num"><span class="none">-</span></td>'
-          '<td class="num"><span class="none">-</span></td><td class="num">%s%%</td>'
-          '<td><span class="none">-</span></td></tr>\n'
-          % (fmt(R['TOT']), fx(R['SH'][0] + R['SH'][1], 1)))
+          '<td class="num"><span class="none">-</span></td></tr>\n'
+          % fmt(R['TOT']))
     h += '          </tbody>\n        </table>\n      </div>\n    </div>\n\n'
 
     h += ('    <div class="card mb-6">\n      <div class="card-head"><h2 class="card-title">수익 현황</h2></div>\n'
@@ -359,9 +345,8 @@ def main():
         page('투자 시뮬레이션 · 실행 결과', '실행 결과', form + btn_off + '\n' + result_block(R)))
     print('사이드바 8메뉴 동기화:', len(moved), '건')
     print('invest-sim.html / invest-sim--result.html 기록')
-    print('W %s · Ty %s · 비중합 %s · 상환액=PSA+PSM %s'
-          % (fx(R['W'], 2), pct(R['TY'], 2), fx(R['SH'][0] + R['SH'][1], 1),
-             R['PSB'] == R['PSA'] + R['PSM']))
+    print('W %s · Ty %s · 상환액=PSA+PSM %s'
+          % (fx(R['W'], 2), pct(R['TY'], 2), R['PSB'] == R['PSA'] + R['PSM']))
 
 if __name__ == '__main__':
     main()

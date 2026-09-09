@@ -59,7 +59,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgb(127, 225, 65)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -74,7 +74,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-sim",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -89,7 +89,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -119,7 +119,7 @@
    "visible": true,
    "state": "default",
    "hash": "#contracts",
-   "bg": "rgba(127, 225, 65, 0.992)",
+   "bg": "rgba(127, 225, 65, 0.97)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -352,8 +352,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5727,
-   "srcBytes": 5727,
+   "bytes": 5603,
+   "srcBytes": 5603,
    "pass": true
   },
   {
@@ -365,8 +365,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
-   "bytes": 6109,
-   "srcBytes": 6109,
+   "bytes": 6108,
+   "srcBytes": 6108,
    "pass": true
   },
   {
@@ -378,8 +378,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5466,
-   "srcBytes": 5466,
+   "bytes": 5465,
+   "srcBytes": 5465,
    "pass": true
   },
   {
@@ -391,8 +391,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5873,
-   "srcBytes": 5873,
+   "bytes": 5872,
+   "srcBytes": 5872,
    "pass": true
   },
   {
@@ -404,8 +404,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-01_2026-08-27.xlsx",
-   "bytes": 5467,
-   "srcBytes": 5467,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -417,8 +417,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-01_2026-08-27.xlsx",
-   "bytes": 6745,
-   "srcBytes": 6745,
+   "bytes": 6744,
+   "srcBytes": 6744,
    "pass": true
   },
   {
@@ -430,8 +430,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5465,
-   "srcBytes": 5465,
+   "bytes": 5464,
+   "srcBytes": 5464,
    "pass": true
   },
   {
@@ -443,8 +443,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5776,
-   "srcBytes": 5776,
+   "bytes": 5775,
+   "srcBytes": 5775,
    "pass": true
   },
   {
@@ -456,8 +456,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-08_2026-08-27.xlsx",
-   "bytes": 5467,
-   "srcBytes": 5467,
+   "bytes": 5466,
+   "srcBytes": 5466,
    "pass": true
   },
   {
@@ -469,8 +469,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-06-08_2026-08-27.xlsx",
-   "bytes": 6174,
-   "srcBytes": 6174,
+   "bytes": 6173,
+   "srcBytes": 6173,
    "pass": true
   },
   {
@@ -482,8 +482,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5470,
-   "srcBytes": 5470,
+   "bytes": 5469,
+   "srcBytes": 5469,
    "pass": true
   },
   {
@@ -495,8 +495,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5719,
-   "srcBytes": 5719,
+   "bytes": 5718,
+   "srcBytes": 5718,
    "pass": true
   },
   {
@@ -508,8 +508,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5470,
-   "srcBytes": 5470,
+   "bytes": 5469,
+   "srcBytes": 5469,
    "pass": true
   },
   {
@@ -521,8 +521,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5857,
-   "srcBytes": 5857,
+   "bytes": 5856,
+   "srcBytes": 5856,
    "pass": true
   },
   {

@@ -6,9 +6,11 @@
 자리는 값이 아니라 구조로 잡는다.
 
     요약 카드   <div class="summary-label">라벨</div> 다음의 summary-value·summary-sub
-    현황표      <thead> 첫 칸이 `자산 구분` 인 표의 <tbody>
+                (투자실행액·순현금 카드에는 summary-sub 가 없다)
+    현황표      <thead> 첫 칸이 `자산 구분` 인 표 — 열머리 5 · <tbody> 3행 · 빈 행 colspan 5
     로스터 표   <thead> 첫 칸이 `가맹점` 인 표의 <tbody>
     엑셀 시트   `c-head` 행 다음 줄부터 </tbody> 까지
+                (투자자산 현황 시트는 제목 병합 5열 · 머리글 5 · 뒤 두 칸은 빈 셀)
     계약기록 표 <thead> 첫 칸이 체크박스인 표의 <tbody>
     페이지네이션 pg-size 의 selected 옵션(1쪽 행수) · page-btn active(현재 쪽)
     건수        `<b class="mono">N</b>건` · `다운로드 (N)` · `N건 선택`
@@ -110,19 +112,33 @@ def tr(ind, cells, cls=''):
 CARD = re.compile(
     r'(?P<a><div class="summary-label">(?P<label>[^<]+)</div>\s*<div class="summary-value">)'
     r'(?P<val>[^<]*)'
-    r'(?P<b><span class="unit">(?P<unit>[^<]*)</span></div>\s*<div class="summary-sub">)'
-    r'(?P<sub>[^<]*)'
-    r'(?P<c></div>)')
+    r'(?P<b><span class="unit">(?P<unit>[^<]*)</span></div>)'
+    r'(?P<c>\s*<div class="summary-sub">(?P<sub>[^<]*)</div>)?')
+SUB = re.compile(r'(<div class="summary-sub">)[^<]*(</div>)')
+KEEP = object()      # 보조줄이 값이 아니라 산식 라벨 — 그대로 둔다
+# 투자실행액·순현금 카드 아래 줄 — 투자자 화면에 두지 않는다(시연본 sync_prototype.py investor_share 와 같은 정리)
+SHARE_SUB = re.compile(r'\s*<div class="summary-sub">비중 [0-9.]+% · 보관 ㈜(?:페이허그|쿠콘)</div>')
+NO_SUB = ('투자실행액', '순현금')
 
 
 def card_spec():
-    """라벨 → (값, 단위, 보조줄). 보조줄이 None 이면 값이 아니라 산식 라벨이라 그대로 둔다."""
+    """라벨 → (값, 단위, 보조줄). KEEP 이면 산식 라벨이라 그대로, None 이면 보조줄이 없는 카드."""
     return {
-        '투자자산':   (f(TOTAL), '원', None),
-        '투자실행액': (f(EXEC),  '원', '비중 %s%% · 보관 ㈜페이허그' % EXEC_SHARE),
-        '순현금':     (f(CASH),  '원', '비중 %s%% · 보관 ㈜쿠콘' % CASH_SHARE),
+        '투자자산':   (f(TOTAL), '원', KEEP),
+        '투자실행액': (f(EXEC),  '원', None),
+        '순현금':     (f(CASH),  '원', None),
         '예상 연환산 수익률': (TY_ROW, '%', '가중평균 금융일수 %s일 기준' % W_ROW),
     }
+
+
+def share_cards(s):
+    """투자실행액·순현금 카드에는 보조줄이 없다."""
+    s = SHARE_SUB.sub('', s)
+    for lb in NO_SUB:
+        m = re.search(r'<div class="summary-label">%s</div>\s*<div class="summary-value">[^<]*'
+                      r'<span class="unit">[^<]*</span></div>(\s*<div class="summary-sub">)?' % lb, s)
+        assert m and not m.group(1), '카드 `%s` 보조줄이 남아 있다' % lb
+    return s
 
 
 def summary_cards(s):
@@ -136,15 +152,23 @@ def summary_cards(s):
         val, unit, sub = spec[lb]
         assert m.group('unit') == unit, '카드 `%s` 단위 %s ≠ %s' % (lb, m.group('unit'), unit)
         seen.append(lb)
-        return m.group('a') + val + m.group('b') + (m.group('sub') if sub is None else sub) + m.group('c')
+        blk = m.group('c') or ''
+        if sub is None:
+            assert not blk, '카드 `%s` 보조줄이 남아 있다' % lb
+        elif sub is not KEEP:
+            assert blk, '카드 `%s` 보조줄 없음' % lb
+            blk = SUB.sub(lambda mm: mm.group(1) + sub + mm.group(2), blk, count=1)
+        return m.group('a') + val + m.group('b') + blk
 
     s = CARD.sub(go, s)
     assert sorted(seen) == sorted(spec), '요약 카드 %s ≠ %s' % (sorted(seen), sorted(spec))
     return s
 
 
-# ── 2) 현황표 3행 ─────────────────────────────────────────────────
+# ── 2) 현황표 3행 — 열 5 (자산 구분 · 금액 (원) · 가중평균 금융일수 · 입금부족률 · 예상 연환산 수익률) ──
 NONE_CELL = '<td class="num"><span class="none">-</span></td>'
+STATUS_TH = re.compile(r'\s*<th class="num">비중</th>\s*<th>보관</th>')
+STATUS_COLS = 5
 
 
 def status_rows(ind):
@@ -153,26 +177,38 @@ def status_rows(ind):
                  '<td class="num"><span class="strong">%s</span></td>' % f(EXEC),
                  '<td class="num">%s일</td>' % W_ROW,
                  '<td class="num">%s%%</td>' % S_ROW,
-                 '<td class="num">%s%%</td>' % TY_ROW,
-                 '<td class="num">%s%%</td>' % EXEC_SHARE,
-                 '<td>㈜페이허그</td>']),
+                 '<td class="num">%s%%</td>' % TY_ROW]),
         tr(ind, ['<td><span class="name">순현금</span></td>',
                  '<td class="num"><span class="strong">%s</span></td>' % f(CASH),
-                 NONE_CELL, NONE_CELL, NONE_CELL,
-                 '<td class="num">%s%%</td>' % CASH_SHARE,
-                 '<td>㈜쿠콘</td>']),
+                 NONE_CELL, NONE_CELL, NONE_CELL]),
         tr(ind, ['<td>합계 (투자자산)</td>',
                  '<td class="num">%s</td>' % f(TOTAL),
-                 NONE_CELL, NONE_CELL, NONE_CELL,
-                 '<td class="num">%s%%</td>' % (EXEC_SHARE + CASH_SHARE),
-                 '<td><span class="none">-</span></td>'], cls=' class="total-row"'),
+                 NONE_CELL, NONE_CELL, NONE_CELL], cls=' class="total-row"'),
     ]
+
+
+def status_head(s):
+    """현황표 열머리 5 · 빈 행 colspan 5. 두 열(비중·보관)이 있으면 걷어 내고, 없으면 5인지만 본다."""
+    m = table_by_head(s, 'tbl', '자산 구분')
+    blk = STATUS_TH.sub('', m.group(0)).replace('colspan="7"', 'colspan="%d"' % STATUS_COLS)
+    head = blk[:blk.index('</thead>')]
+    n_th = len(re.findall(r'<th[ >]', head))
+    assert n_th == STATUS_COLS and '비중' not in head and '보관' not in head, \
+        '현황표 열머리 %d — %d이라야 한다' % (n_th, STATUS_COLS)
+    return s[:m.start()] + blk + s[m.end():]
 
 
 def status_table(s):
     m = table_by_head(s, 'tbl', '자산 구분')
     ind = re.search(r'\n([ \t]*)<tr', TBODY.search(m.group(0)).group(2)).group(1)
     return swap_tbody(s, (m.start(), m.end()), status_rows(ind))[0]
+
+
+def share_check(s):
+    """낱장 전체 — 보관 ㈜ · ㈜쿠콘 · 보관 열머리 0."""
+    for bad in ('보관 ㈜', '㈜쿠콘', '<th>보관</th>', '<td class="c-head">보관</td>'):
+        assert bad not in s, '투자자 공유 정리 뒤 잔존: ' + bad
+    return s
 
 # ── 2-1) 열머리 모집단 툴팁 ───────────────────────────────────────
 #   W금융일수·S입금부족율·옆 칸 금액이 각자 다른 집합에서 나온다. 행을 금액으로 가중평균해도
@@ -398,17 +434,33 @@ def blank_row(no, ind, ncols):
     return '%s<tr><th class="row-head">%d</th>%s</tr>' % (ind, no, '<td class="c-empty"></td>' * ncols)
 
 
+# 시트 격자는 A~G 7칸 그대로(통합본 renderXls 와 같다). 투자자산 현황은 5열이라 뒤 두 칸이 빈 셀이다.
+XLS_EMPTY2 = '<td class="c-empty"></td><td class="c-empty"></td>'
+XLS_TITLE = re.compile(r'(<td class="c-title" colspan=")7(">투자자산 현황 — [^<]*</td>)(</tr>)')
+XLS_HEAD2 = '<td class="c-head r">비중</td><td class="c-head">보관</td></tr>'
+
+
+def xls_status_head(s):
+    """제목 병합 5열 · 머리글 5 · 뒤 두 칸 빈 셀. 이미 그 꼴이면 그대로 둔다."""
+    s = XLS_TITLE.sub(lambda m: m.group(1) + str(STATUS_COLS) + m.group(2) + XLS_EMPTY2 + m.group(3), s, count=1)
+    s = s.replace(XLS_HEAD2, XLS_EMPTY2 + '</tr>', 1)
+    assert re.search(r'<td class="c-title" colspan="%d">투자자산 현황 — [^<]*</td>%s</tr>'
+                     % (STATUS_COLS, re.escape(XLS_EMPTY2)), s), '시트 제목 병합 %d열 아님' % STATUS_COLS
+    hd = re.search(r'<tr><th class="row-head">\d+</th><td class="c-head">자산 구분</td>.*?</tr>', s)
+    assert hd and hd.group(0).count('c-head') == STATUS_COLS and hd.group(0).endswith(XLS_EMPTY2 + '</tr>') \
+        and '비중' not in hd.group(0) and '보관' not in hd.group(0), '시트 머리글 %d 아님' % STATUS_COLS
+    return s
+
+
 def xls_status_make(no, ind, ncols):
     out = ['%s<tr><th class="row-head">%d</th><td>투자실행액</td><td class="c-num">%s</td>'
-           '<td class="c-num">%s</td><td class="c-num">%s%%</td><td class="c-num">%s%%</td>'
-           '<td class="c-num">%s%%</td><td>㈜페이허그</td></tr>'
-           % (ind, no, f(EXEC), W_ROW, S_ROW, TY_ROW, EXEC_SHARE),
+           '<td class="c-num">%s</td><td class="c-num">%s%%</td><td class="c-num">%s%%</td>%s</tr>'
+           % (ind, no, f(EXEC), W_ROW, S_ROW, TY_ROW, XLS_EMPTY2),
            '%s<tr><th class="row-head">%d</th><td>순현금</td><td class="c-num">%s</td>'
-           '<td></td><td></td><td></td><td class="c-num">%s%%</td><td>㈜쿠콘</td></tr>'
-           % (ind, no + 1, f(CASH), CASH_SHARE),
+           '<td></td><td></td><td></td>%s</tr>'
+           % (ind, no + 1, f(CASH), XLS_EMPTY2),
            '%s<tr class="r-total"><th class="row-head">%d</th><td>합계 (투자자산)</td>'
-           '<td class="c-num">%s</td><td></td><td></td><td></td><td class="c-num">%s%%</td>'
-           '<td></td></tr>' % (ind, no + 2, f(TOTAL), EXEC_SHARE + CASH_SHARE)]
+           '<td class="c-num">%s</td><td></td><td></td><td></td>%s</tr>' % (ind, no + 2, f(TOTAL), XLS_EMPTY2)]
     return out + [blank_row(no + 3 + i, ind, ncols) for i in range(SHEET_BLANKS)]
 
 
@@ -440,10 +492,12 @@ def total_count(s):
 # ── 낱장별 재생성 ─────────────────────────────────────────────────
 def build_assets(s):
     s = drop_formula(s)
+    s = share_cards(s)
     s = summary_cards(yr_card_strip(s))
     s = yr_card(s, W_ROW)
     s = pop_heads(s)
     s = yr_heads(s, W_ROW)
+    s = status_head(s)
     s = status_table(s)
     s = place_page_tools(s)
     s = page_count(s)
@@ -455,7 +509,7 @@ def build_assets(s):
     m = table_by_head(s, 'tbl', '가맹점')
     ind = re.search(r'\n([ \t]*)<tr', TBODY.search(m.group(0)).group(2)).group(1)
     s = swap_tbody(s, (m.start(), m.end()), roster_rows(ind, sl))[0]
-    return paginate(s, page, pages)
+    return share_check(paginate(s, page, pages))
 
 
 def build_certificate(s):
@@ -473,8 +527,10 @@ def build_certificate(s):
 
 def build_assets_empty(s):
     s = drop_formula(s)
+    s = share_cards(s)
+    s = status_head(s)
     s = yr_card(yr_card_strip(s), None)
-    return yr_heads(pop_heads(s), None)
+    return share_check(yr_heads(pop_heads(s), None))
 
 
 def build_cert_confirm(s):
@@ -585,7 +641,7 @@ PLAN = [
     ('invest-assets--cert-confirm.html', build_cert_confirm),
     ('invest-assets--empty.html',       build_assets_empty),
     ('certificate.html',                build_certificate),
-    ('xls-assets-status.html',          lambda s: sheet(s, xls_status_make)),
+    ('xls-assets-status.html',          lambda s: share_check(sheet(xls_status_head(s), xls_status_make))),
     ('xls-assets-merchant.html',        lambda s: sheet(s, xls_merchant_make)),
     ('merchants.html',                  build_merchants),
     ('merchants--filtered.html',        build_merchants_filtered),

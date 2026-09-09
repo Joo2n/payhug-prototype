@@ -1731,9 +1731,7 @@ RENDER['invest-assets'] = function(){
   var exec = 0, cash = 0, i;
   for(i = 0; i < arows.length; i++){ if(arows[i].name === '순현금') cash += arows[i].amount; else exec += arows[i].amount; }
   var total = exec + cash;
-  var aRatio = ratios(arows, total), mRatio = ratios(mrows, exec);
-  var rExec = 0, rCash = 0;
-  for(i = 0; i < arows.length; i++){ if(arows[i].name === '순현금') rCash += aRatio[i]; else rExec += aRatio[i]; }
+  var mRatio = ratios(mrows, exec);
   var tyv = arows.length ? arows[0].ty : 0, wv = arows.length ? arows[0].w : null;
 
   M('ia-summary', 'invest-assets').innerHTML =
@@ -1746,11 +1744,9 @@ RENDER['invest-assets'] = function(){
           '<span class="tip-row"><span>A<sub>i</sub></span><span class="tip-green">순지급액<sub>i</sub> × (1 − r)</span></span>' +
           '<span class="tip-row"><span>r</span><span class="tip-green">' + fx(RATE_PCT, 2) + '%</span></span>' +
         '</span></span></div>' +
-      '<div class="summary-value">' + fmt(exec) + '<span class="unit">원</span></div>' +
-      '<div class="summary-sub">비중 ' + fx(rExec, 1) + '% · 보관 ㈜페이허그</div></div>' +
+      '<div class="summary-value">' + fmt(exec) + '<span class="unit">원</span></div></div>' +
     '<div class="summary-card"><div class="summary-label">순현금</div>' +
-      '<div class="summary-value">' + fmt(cash) + '<span class="unit">원</span></div>' +
-      '<div class="summary-sub">비중 ' + fx(rCash, 1) + '% · 보관 ㈜쿠콘</div></div>' +
+      '<div class="summary-value">' + fmt(cash) + '<span class="unit">원</span></div></div>' +
     '<div class="summary-card"><div class="summary-label">' +
       '<span class="tooltip wide"><span class="tip-anchor">예상 연환산 수익률</span>' +
         '<span class="tip-panel">' + YR_TIP_HEAD + yrRows(wv) +
@@ -1759,9 +1755,8 @@ RENDER['invest-assets'] = function(){
       '<div class="summary-sub">' + (wv === null ? '가중평균 금융일수 집계 대상 없음' : '가중평균 금융일수 ' + fx(wv, 2) + '일 기준') + '</div></div>';
 
   var h = '<thead><tr><th>자산 구분</th><th class="num">금액 (원)</th>' + popTh('가중평균 금융일수', POP_W) +
-          popTh('입금부족률', POP_S) + yrTh(wv) +
-          '<th class="num">비중</th><th>보관</th></tr></thead><tbody>';
-  if(!arows.length){ h += emptyRow(7, '조회 결과가 없습니다.'); }
+          popTh('입금부족률', POP_S) + yrTh(wv) + '</tr></thead><tbody>';
+  if(!arows.length){ h += emptyRow(5, '조회 결과가 없습니다.'); }
   else {
     for(i = 0; i < arows.length; i++){
       var a = arows[i];
@@ -1769,12 +1764,11 @@ RENDER['invest-assets'] = function(){
            '<td class="num"><span class="strong">' + fmt(a.amount) + '</span></td>' +
            '<td class="num">' + (a.w === null ? '<span class="none">-</span>' : fx(a.w, 2) + '일') + '</td>' +
            '<td class="num">' + (a.s === null ? '<span class="none">-</span>' : pct(a.s, 2)) + '</td>' +
-           '<td class="num">' + (a.ty === null ? '<span class="none">-</span>' : pct(a.ty, 2)) + '</td>' +
-           '<td class="num">' + fx(aRatio[i], 1) + '%</td><td>' + a.keeper + '</td></tr>';
+           '<td class="num">' + (a.ty === null ? '<span class="none">-</span>' : pct(a.ty, 2)) + '</td></tr>';
     }
     h += '<tr class="total-row"><td>합계 (투자자산)</td><td class="num">' + fmt(total) + '</td>' +
          '<td class="num"><span class="none">-</span></td><td class="num"><span class="none">-</span></td>' +
-         '<td class="num"><span class="none">-</span></td><td class="num">100.0%</td><td><span class="none">-</span></td></tr>';
+         '<td class="num"><span class="none">-</span></td></tr>';
   }
   Q('[data-mount="ia-status"]', sec).innerHTML = h + '</tbody>';
 
@@ -2101,7 +2095,6 @@ function simRun(){
   var TY   = W ? SIM.r * 365 / W : 0;
   var S    = (SIM.unpaid - SIM.over) / (1 - r);
   var TOT  = EXEC + SIM.cash;
-  var SH   = ratios([{amount:EXEC}, {amount:SIM.cash}], TOT);
 
   /* ── 투자 수익 (정산예정일이 기간 안에 든 채권) ── */
   var PA   = sum(mat, 'A'), PM = sum(mat, 'M'), PB = sum(mat, 'B');
@@ -2129,7 +2122,7 @@ function simRun(){
   });
 
   SIM.result = {bonds:bonds, out:out, mat:mat, cash:SIM.cash, from:SIM.from, to:SIM.to,
-                EXEC:EXEC, W:W, TY:TY, S:S, TOT:TOT, SH:SH,
+                EXEC:EXEC, W:W, TY:TY, S:S, TOT:TOT,
                 PA:PA, PM:PM, PB:PB, AD:AD, PwD:PwD, PMR:PMR,
                 TY4:TY4, TY5:TY5, ECD:ECD, PEC:PEC, rows:rows};
 }
@@ -2288,11 +2281,9 @@ function simResultHtml(){
       '<div class="summary-value">' + fmt(R.TOT) + '<span class="unit">원</span></div>' +
       '<div class="summary-sub">투자실행액 + 순현금</div></div>' +
     '<div class="summary-card"><div class="summary-label">투자실행액</div>' +
-      '<div class="summary-value">' + fmt(R.EXEC) + '<span class="unit">원</span></div>' +
-      '<div class="summary-sub">비중 ' + fx(R.SH[0], 1) + '% · 보관 ㈜페이허그</div></div>' +
+      '<div class="summary-value">' + fmt(R.EXEC) + '<span class="unit">원</span></div></div>' +
     '<div class="summary-card"><div class="summary-label">순현금</div>' +
-      '<div class="summary-value">' + fmt(R.cash) + '<span class="unit">원</span></div>' +
-      '<div class="summary-sub">비중 ' + fx(R.SH[1], 1) + '% · 보관 ㈜쿠콘</div></div>' +
+      '<div class="summary-value">' + fmt(R.cash) + '<span class="unit">원</span></div></div>' +
     '<div class="summary-card"><div class="summary-label">예상 연환산 수익률</div>' +
       '<div class="summary-value">' + fx(R.TY, 2) + '<span class="unit">%</span></div>' +
       '<div class="summary-sub">가중평균 금융일수 ' + fx(R.W, 2) + '일 기준</div></div>' +
@@ -2320,18 +2311,16 @@ function simResultHtml(){
   /* ③ 현황 — 투자 자산 */
   h += '<div class="tbl-wrap mb-6"><div class="tbl-head"><h2>현황</h2></div>' +
     '<div class="tbl-scroll"><table class="tbl"><thead><tr><th>자산 구분</th><th class="num">금액 (원)</th>' +
-    '<th class="num">가중평균 금융일수</th><th class="num">입금부족률</th><th class="num">예상 연환산 수익률</th>' +
-    '<th class="num">비중</th><th>보관</th></tr></thead><tbody>' +
+    '<th class="num">가중평균 금융일수</th><th class="num">입금부족률</th><th class="num">예상 연환산 수익률</th></tr></thead><tbody>' +
     '<tr><td><span class="name">투자실행액</span></td><td class="num"><span class="strong">' + fmt(R.EXEC) + '</span></td>' +
       '<td class="num">' + fx(R.W, 2) + '일</td><td class="num">' + pct(R.S, 2) + '</td>' +
-      '<td class="num">' + pct(R.TY, 2) + '</td><td class="num">' + fx(R.SH[0], 1) + '%</td><td>㈜페이허그</td></tr>' +
+      '<td class="num">' + pct(R.TY, 2) + '</td></tr>' +
     '<tr><td><span class="name">순현금</span></td><td class="num"><span class="strong">' + fmt(R.cash) + '</span></td>' +
       '<td class="num"><span class="none">-</span></td><td class="num"><span class="none">-</span></td>' +
-      '<td class="num"><span class="none">-</span></td><td class="num">' + fx(R.SH[1], 1) + '%</td><td>㈜쿠콘</td></tr>' +
+      '<td class="num"><span class="none">-</span></td></tr>' +
     '<tr class="total-row"><td>합계 (투자자산)</td><td class="num">' + fmt(R.TOT) + '</td>' +
       '<td class="num"><span class="none">-</span></td><td class="num"><span class="none">-</span></td>' +
-      '<td class="num"><span class="none">-</span></td>' +
-      '<td class="num">' + fx(R.SH[0] + R.SH[1], 1) + '%</td><td><span class="none">-</span></td></tr>' +
+      '<td class="num"><span class="none">-</span></td></tr>' +
     '</tbody></table></div></div>';
 
   /* ④ 수익 현황 — 투자 수익 */
@@ -2821,21 +2810,20 @@ function sheetRow(n, cells, cls){
 }
 function sheetData(key){
   var i, rows = [], cols, exec = iaExecTotal(), total = assetTotal();
-  var sRatio = ratios(ASSET_ROWS, total), xRatio = ratios(MERCHANTS, exec);
+  var xRatio = ratios(MERCHANTS, exec);
   if(key === 'assets-status'){
     cols = [44, 190, 175, 130, 145, 130, 120, 0];
-    rows.push({n:1, c:[{v:'투자자산 현황 — ' + BASE_DATE + ' / ' + INVESTOR, c:'c-title', span:7}]});
+    rows.push({n:1, c:[{v:'투자자산 현황 — ' + BASE_DATE + ' / ' + INVESTOR, c:'c-title', span:5}, null, null]});
     rows.push({n:2, c:[null, null, null, null, null, null, null]});
     rows.push({n:3, c:[{v:'자산 구분', c:'c-head'}, {v:'금액 (원)', c:'c-head r'}, {v:'가중평균 금융일수', c:'c-head r'},
-                       {v:'입금부족률', c:'c-head r'}, {v:'예상 연환산 수익률', c:'c-head r'}, {v:'비중', c:'c-head r'}, {v:'보관', c:'c-head'}]});
+                       {v:'입금부족률', c:'c-head r'}, {v:'예상 연환산 수익률', c:'c-head r'}, null, null]});
     for(i = 0; i < ASSET_ROWS.length; i++){
       var a = ASSET_ROWS[i];
       rows.push({n:4 + i, c:[{v:a.name}, {v:fmt(a.amount), c:'c-num'},
         a.w === null ? {v:''} : {v:fx(a.w, 2), c:'c-num'}, a.s === null ? {v:''} : {v:pct(a.s, 2), c:'c-num'},
-        a.ty === null ? {v:''} : {v:pct(a.ty, 2), c:'c-num'},
-        {v:fx(sRatio[i], 1) + '%', c:'c-num'}, {v:a.keeper}]});
+        a.ty === null ? {v:''} : {v:pct(a.ty, 2), c:'c-num'}, null, null]});
     }
-    rows.push({n:6, cls:'r-total', c:[{v:'합계 (투자자산)'}, {v:fmt(total), c:'c-num'}, {v:''}, {v:''}, {v:''}, {v:'100.0%', c:'c-num'}, {v:''}]});
+    rows.push({n:6, cls:'r-total', c:[{v:'합계 (투자자산)'}, {v:fmt(total), c:'c-num'}, {v:''}, {v:''}, {v:''}, null, null]});
     rows.push({n:7, c:[null, null, null, null, null, null, null]});
     rows.push({n:8, c:[null, null, null, null, null, null, null]});
     rows.push({n:9, c:[null, null, null, null, null, null, null]});
@@ -3459,11 +3447,9 @@ _MER = ',\n'.join(
        x['amount'], x['w'], x['s'], x['ty'])
     for x in RM._M)
 _AST = ',\n'.join([
-    "  {name:'\ud22c\uc790\uc2e4\ud589\uc561', amount:%d, w:%s, s:%s, ty:%s, "
-    "keeper:'\u321c\ud398\uc774\ud5c8\uadf8'}"
+    "  {name:'\ud22c\uc790\uc2e4\ud589\uc561', amount:%d, w:%s, s:%s, ty:%s}"
     % (RM.EXEC, RM.r2(RM.W_W), RM.r2(RM.S_W), RM.TY_W),
-    "  {name:'\uc21c\ud604\uae08',     amount:%d,  w:null,  s:null, ty:null, "
-    "keeper:'\u321c\ucfe0\ucf58'}" % RM.CASH])
+    "  {name:'\uc21c\ud604\uae08',     amount:%d,  w:null,  s:null, ty:null}" % RM.CASH])
 _CON = ',\n'.join("  {mid:'%s', name:'%s', signed:'%s'}" % (x[4], x[0], x[9]) for x in RM.ROSTER)
 _SQ  = ',\n'.join("  {mid:'%s', name:'%s', created:'%s'}" % q for q in RM.sign_queue())
 _CTS = ', '.join("'%s':1" % m for m in RM.contract_default_sel())

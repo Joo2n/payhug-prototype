@@ -325,7 +325,8 @@ async function main(){
 
   const base = await evalJS(`
     var st = window.__S.statusRows(), ft = window.__S.dailyFoot();
-    return {status:st, foot:ft,
+    var sth = [].map.call(window.__S.tables()[1].querySelectorAll('thead th'), function(e){ return e.textContent.trim(); });
+    return {status:st, foot:ft, statusHead:sth,
       summary:{자산:window.__S.card('투자자산'), 실행:window.__S.card('투자실행액'),
                현금:window.__S.card('순현금'), ty:window.__S.card('예상 연환산 수익률')},
       bonds:window.__S.bondRows().map(function(b){ return b.cells; }),
@@ -335,19 +336,19 @@ async function main(){
       tyStat:window.__S.stat('연환산 수익률')};`);
   R.baseline = base;
   const st = base.status;
-  P('현황 · 투자실행액 행', st[0][0] === '투자실행액' && st[0][1] === B.exec
-    && st[0][2] === B.w && st[0][3] === B.s && st[0][4] === B.ty
-    && st[0][5] === B.share0 && st[0][6] === '㈜페이허그', st[0]);
-  P('현황 · 순현금 행', st[1][0] === '순현금' && st[1][1] === B.cash
-    && st[1][5] === B.share1 && st[1][6] === '㈜쿠콘', st[1]);
-  P('현황 · 합계 = 투자자산 · 비중 합 ' + B.shareSum,
-    st[2][1] === B.total && st[2][5] === B.shareSum, st[2]);
+  P('현황 · 열머리 5 (자산 구분 · 금액 (원) · 가중평균 금융일수 · 입금부족률 · 예상 연환산 수익률)',
+    base.statusHead.join('|') === '자산 구분|금액 (원)|가중평균 금융일수|입금부족률|예상 연환산 수익률', base.statusHead);
+  P('현황 · 투자실행액 행 (칸 5)', st[0][0] === '투자실행액' && st[0][1] === B.exec
+    && st[0][2] === B.w && st[0][3] === B.s && st[0][4] === B.ty && st[0].length === 5, st[0]);
+  P('현황 · 순현금 행 (칸 5)', st[1][0] === '순현금' && st[1][1] === B.cash && st[1].length === 5, st[1]);
+  P('현황 · 합계 = 투자자산 (칸 5)', st[2][1] === B.total && st[2].length === 5, st[2]);
   P('W ' + B.w + ' — 투자 자산 화면과 같은 자리', st[0][2] === B.w, st[0][2]);
   P('Ty ' + B.ty + ' — 투자 자산 화면과 같은 자리', st[0][4] === B.ty, st[0][4]);
-  P('요약 카드 4장', base.summary.자산.value === B.cardTotal
-    && base.summary.실행.value === B.cardExec && base.summary.현금.value === B.cardCash
+  P('요약 카드 4장 · 투자실행액·순현금 카드 아래 줄 없음', base.summary.자산.value === B.cardTotal
+    && base.summary.실행.value === B.cardExec && base.summary.실행.sub === ''
+    && base.summary.현금.value === B.cardCash && base.summary.현금.sub === ''
     && base.summary.ty.value === B.cardTy && base.summary.ty.sub === B.cardTySub,
-    Object.keys(base.summary).map(k => base.summary[k].value));
+    Object.keys(base.summary).map(k => base.summary[k].value + '/' + base.summary[k].sub));
 
   const foot = base.foot;
   P('검산 상환액 = 모델 PSB (일별 합계행)', n(foot[1]) === B.psb, foot);
@@ -392,11 +393,10 @@ async function main(){
 
   await reset();
   await apply('cash200m'); await run();
-  const c2 = await evalJS("var s=window.__S.statusRows(); return {cash:s[1][1], tot:s[2][1], sh:[s[0][5],s[1][5],s[2][5]], ty5:window.__S.stat('연환산 수익률')};");  /* 라벨 확정 2026-09-04 — 시뮬 수익 카드 `Ty수익율` → `연환산수익률` */
-  P('순현금 ' + B.cash + ' → ' + SF.cash200m.cash + ' : 순현금 · 투자자산 · 비중 · ⑤ 가 함께 움직인다',
+  const c2 = await evalJS("var s=window.__S.statusRows(); return {cash:s[1][1], tot:s[2][1], cols:[s[0].length,s[1].length,s[2].length], ty5:window.__S.stat('연환산 수익률')};");  /* 라벨 확정 2026-09-04 — 시뮬 수익 카드 `Ty수익율` → `연환산수익률` */
+  P('순현금 ' + B.cash + ' → ' + SF.cash200m.cash + ' : 순현금 · 투자자산 · ⑤ 가 함께 움직인다 (현황 표 칸 5)',
     c2.cash === SF.cash200m.cash && c2.tot === SF.cash200m.total
-    && c2.sh[2] === SF.cash200m.shareSum
-    && c2.sh[0] === SF.cash200m.share0 && c2.sh[0] !== B.share0, c2);
+    && c2.cols.join() === '5,5,5', c2);
 
   await reset();
   await apply('unpaid005'); await run();
@@ -726,9 +726,8 @@ async function main(){
       got.cash === w.cashField && got.asset === SF.scaleAsset && got.idle === String(p)
       && JSON.stringify(got.amts) === JSON.stringify(w.amts)
       && st2.status[0][1] === w.exec && st2.status[1][1] === w.cash
-      && st2.status[2][1] === w.total && st2.status[2][5] === w.shareSum
-      && st2.status[0][5] === w.share0 && st2.status[1][5] === w.share1,
-      {cash:got.cash, exec:st2.status[0][1], total:st2.status[2][1], 비중:st2.status[2][5]});
+      && st2.status[2][1] === w.total,
+      {cash:got.cash, exec:st2.status[0][1], total:st2.status[2][1]});
     /* 규칙 — 같은 값을 다시 넣어도 결과가 그대로다(멱등). 어느 칸을 마지막에 만졌든 값이 튀지 않는다. */
     const again = await evalJS(`
       window.__S.setScale('idle', '${p}');

@@ -249,16 +249,16 @@ async function main(){
       });
       if(st.length < 3) return {err:'ia-status 행 ' + st.length, raw:st, rows:m.length};
       var stExec = num(st[0][1]), stCash = num(st[1][1]), stTot = num(st[2][1]);
-      var stRat = Math.round((num(st[0][5]) + num(st[1][5])) * 10) / 10;
+      var stCols = st.map(function(r){ return r.length; }).join();
       return {rows:m.length, amountSum:amt, ratioSum:rat, tyBad:tyBad,
-              stExec:stExec, stCash:stCash, stTotal:stTot, stRatioSum:stRat,
+              stExec:stExec, stCash:stCash, stTotal:stTot, stCols:stCols,
               cardHasExec:card.indexOf(stExec.toLocaleString('en-US')) >= 0,
               cardHasTotal:card.indexOf(stTot.toLocaleString('en-US')) >= 0,
               first:m[0].name, last:m[m.length - 1].name};
     `);
-    push('투자자산 항등식 · 보기=' + key + '개',
+    push('투자자산 항등식 · 보기=' + key + '개 (현황 표 칸 5)',
       r.rows === FACTS.merchants.length && r.amountSum === FACTS.exec && r.ratioSum === 100 && r.tyBad.length === 0 &&
-      r.stExec === FACTS.exec && r.stTotal === r.stExec + r.stCash && r.stRatioSum === 100 &&
+      r.stExec === FACTS.exec && r.stTotal === r.stExec + r.stCash && r.stCols === '5,5,5' &&
       r.cardHasExec && r.cardHasTotal, r);
   }
 
@@ -278,11 +278,12 @@ async function main(){
           bad.push(x.name + ' 표기 ' + x.ratio + ' vs 정확 ' + exact.toFixed(4));
       });
       var st = rowsOf('[data-mount=ia-status]');
+      var sth = [].map.call(document.querySelectorAll('[data-mount=ia-status] thead th'), function(e){ return e.textContent.trim(); });
       return {sum:sum, bad:bad, base:base, rows:m.length,
               top:{name:m[0].name, ratio:m[0].ratio, exact:+(m[0].amount / base * 100).toFixed(4)},
-              statusSum:Math.round((num(st[0][5]) + num(st[1][5])) * 10) / 10};`);
-    push('비중 최대잉여법 — 합 100.0 · 각 행 잔차 < 0.1pp',
-      r.sum === 100 && r.bad.length === 0 && r.statusSum === 100, r);
+              statusHead:sth.length, statusHasShare:sth.some(function(t){ return /비중|보관/.test(t); })};`);
+    push('비중 최대잉여법 — 가맹점별 합 100.0 · 각 행 잔차 < 0.1pp · 현황 표에는 비중 열 없음(열 5)',
+      r.sum === 100 && r.bad.length === 0 && r.statusHead === 5 && !r.statusHasShare, r);
   }
 
   /* ── 2) 투자수익 — 기간·granularity 조작 후 항등식 ── */
@@ -431,16 +432,19 @@ async function main(){
       var rs = all.slice(3, 3 + NR).map(function(c){ return {n:c[0], name:c[1], amount:num(c[2]), ratio:num(c[6])}; });
       var tot = all[3 + NR];
       go('xls-assets-status', 'default');
-      var st = rowsOf(SH('xls-assets-status')).slice(3, 6).map(function(c){ return {name:c[1], amount:num(c[2]), ratio:num(c[6])}; });
+      var sa = rowsOf(SH('xls-assets-status'));
+      var sh = sa[2].slice(1, 6).join('|'), shTail = sa[2][6] + sa[2][7];
+      var st = sa.slice(3, 6).map(function(c){ return {name:c[1], amount:num(c[2]), tail:c[6] + c[7]}; });
       var amt = 0, rat = 0;
       rs.forEach(function(x){ amt += x.amount; rat = Math.round((rat + x.ratio) * 10) / 10; });
       return {rows:rs.length, amountSum:amt, ratioSum:rat, totalRow:{label:tot[1], amount:num(tot[2]), ratio:num(tot[6])},
-              status:st};`);
-    push('엑셀 미리보기 — 가맹점별·현황',
+              statusHead:sh, statusHeadTail:shTail, status:st};`);
+    push('엑셀 미리보기 — 가맹점별(비중 열) · 현황(5열 · 비중·보관 없음)',
       r.rows === FACTS.merchants.length && r.amountSum === FACTS.exec && r.ratioSum === 100 &&
       r.totalRow.amount === FACTS.exec && r.totalRow.ratio === 100 &&
+      r.statusHead === '자산 구분|금액 (원)|가중평균 금융일수|입금부족률|예상 연환산 수익률' && r.statusHeadTail === '' &&
       r.status[0].amount === FACTS.exec && r.status[2].amount === FACTS.total &&
-      Math.round((r.status[0].ratio + r.status[1].ratio) * 10) / 10 === 100, r);
+      r.status.every(function(x){ return x.tail === ''; }), r);
   }
 
   /* ── 8) 카드 5값 = 표 합계 — 기간 4종 x (일별 → 월별 → 다시 일별) ──

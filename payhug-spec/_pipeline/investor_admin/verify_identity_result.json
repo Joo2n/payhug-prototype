@@ -1,7 +1,7 @@
 {
  "cases": [
   {
-   "case": "투자자산 항등식 · 보기=10개",
+   "case": "투자자산 항등식 · 보기=10개 (현황 표 칸 5)",
    "pass": true,
    "detail": {
     "rows": 8,
@@ -11,7 +11,7 @@
     "stExec": 80000000,
     "stCash": 20000000,
     "stTotal": 100000000,
-    "stRatioSum": 100,
+    "stCols": "5,5,5",
     "cardHasExec": true,
     "cardHasTotal": true,
     "first": "김성호떡볶이 본점",
@@ -19,7 +19,7 @@
    }
   },
   {
-   "case": "투자자산 항등식 · 보기=20개",
+   "case": "투자자산 항등식 · 보기=20개 (현황 표 칸 5)",
    "pass": true,
    "detail": {
     "rows": 8,
@@ -29,7 +29,7 @@
     "stExec": 80000000,
     "stCash": 20000000,
     "stTotal": 100000000,
-    "stRatioSum": 100,
+    "stCols": "5,5,5",
     "cardHasExec": true,
     "cardHasTotal": true,
     "first": "김성호떡볶이 본점",
@@ -37,7 +37,7 @@
    }
   },
   {
-   "case": "투자자산 항등식 · 보기=50개",
+   "case": "투자자산 항등식 · 보기=50개 (현황 표 칸 5)",
    "pass": true,
    "detail": {
     "rows": 8,
@@ -47,7 +47,7 @@
     "stExec": 80000000,
     "stCash": 20000000,
     "stTotal": 100000000,
-    "stRatioSum": 100,
+    "stCols": "5,5,5",
     "cardHasExec": true,
     "cardHasTotal": true,
     "first": "김성호떡볶이 본점",
@@ -55,7 +55,7 @@
    }
   },
   {
-   "case": "투자자산 항등식 · 보기=10개",
+   "case": "투자자산 항등식 · 보기=10개 (현황 표 칸 5)",
    "pass": true,
    "detail": {
     "rows": 8,
@@ -65,7 +65,7 @@
     "stExec": 80000000,
     "stCash": 20000000,
     "stTotal": 100000000,
-    "stRatioSum": 100,
+    "stCols": "5,5,5",
     "cardHasExec": true,
     "cardHasTotal": true,
     "first": "김성호떡볶이 본점",
@@ -73,7 +73,7 @@
    }
   },
   {
-   "case": "비중 최대잉여법 — 합 100.0 · 각 행 잔차 < 0.1pp",
+   "case": "비중 최대잉여법 — 가맹점별 합 100.0 · 각 행 잔차 < 0.1pp · 현황 표에는 비중 열 없음(열 5)",
    "pass": true,
    "detail": {
     "sum": 100,
@@ -85,7 +85,8 @@
      "ratio": 24.2,
      "exact": 24.1684
     },
-    "statusSum": 100
+    "statusHead": 5,
+    "statusHasShare": false
    }
   },
   {
@@ -426,7 +427,7 @@
    }
   },
   {
-   "case": "엑셀 미리보기 — 가맹점별·현황",
+   "case": "엑셀 미리보기 — 가맹점별(비중 열) · 현황(5열 · 비중·보관 없음)",
    "pass": true,
    "detail": {
     "rows": 8,
@@ -437,21 +438,23 @@
      "amount": 80000000,
      "ratio": 100
     },
+    "statusHead": "자산 구분|금액 (원)|가중평균 금융일수|입금부족률|예상 연환산 수익률",
+    "statusHeadTail": "",
     "status": [
      {
       "name": "투자실행액",
       "amount": 80000000,
-      "ratio": 80
+      "tail": ""
      },
      {
       "name": "순현금",
       "amount": 20000000,
-      "ratio": 20
+      "tail": ""
      },
      {
       "name": "합계 (투자자산)",
       "amount": 100000000,
-      "ratio": 100
+      "tail": ""
      }
     ]
    }

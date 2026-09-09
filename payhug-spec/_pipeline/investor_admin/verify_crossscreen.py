@@ -61,13 +61,19 @@ chk('가맹점별투자자산.xlsx 합계',
 
 wb = openpyxl.load_workbook(os.path.join(ROOT, 'assets/xlsx/투자자산현황_2026-08-27_2026-08-27.xlsx'))
 ws = wb['투자자산 현황']
+chk('투자자산현황.xlsx 머리글 5열 (비중·보관 없음)',
+    [ws.cell(row=3, column=c).value for c in range(1, 8)],
+    ['자산 구분', '금액 (원)', '가중평균 금융일수', '입금부족률', '예상 연환산 수익률', None, None])
 chk('투자자산현황.xlsx 투자실행액 행',
     (ws['B4'].value, '%.2f' % ws['C4'].value, '%.2f' % (ws['D4'].value * 100),
-     '%.2f' % (ws['E4'].value * 100), '%.1f' % (ws['F4'].value * 100)),
-    (EXEC, str(r2(W_W)), str(r2(S_W)), str(r2(TY_W)), str(EXEC_SHARE)))
+     '%.2f' % (ws['E4'].value * 100), ws['F4'].value, ws['G4'].value),
+    (EXEC, str(r2(W_W)), str(r2(S_W)), str(r2(TY_W)), None, None))
 chk('투자자산현황.xlsx 순현금·합계',
-    (ws['B5'].value, '%.1f' % (ws['F5'].value * 100), ws['B6'].value),
-    (CASH, str(CASH_SHARE), TOTAL))
+    (ws['B5'].value, ws['F5'].value, ws['G5'].value, ws['B6'].value, ws['F6'].value, ws['G6'].value),
+    (CASH, None, None, TOTAL, None, None))
+chk('투자자산현황.xlsx ㈜ 문자열 0',
+    sorted(set(str(c.value) for row in ws.iter_rows() for c in row
+               if c.value is not None and '㈜' in str(c.value) and c.row > 1)), [])
 
 import build_xlsx as BX
 _P = {p[0]: p for p in BX.PRESETS}          # week · w4 · m6 — 화면 기본 프리셋과 같은 묶음

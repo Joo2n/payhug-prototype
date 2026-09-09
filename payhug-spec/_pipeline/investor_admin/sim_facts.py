@@ -119,11 +119,8 @@ def snap(R, cash):
         'w':         fx(R['W'], 2) + '일',
         's':         pct(R['S'], 2),
         'ty':        pct(R['TY'], 2),
-        'share0':    fx(R['SH'][0], 1) + '%',
         'cash':      f(cash),
-        'share1':    fx(R['SH'][1], 1) + '%',
         'total':     f(R['TOT']),
-        'shareSum':  fx(R['SH'][0] + R['SH'][1], 1) + '%',
         # ── 요약 카드 4장 ──
         'cardTotal': f(R['TOT']) + '원',
         'cardExec':  f(R['EXEC']) + '원',
@@ -324,8 +321,8 @@ if __name__ == '__main__':
     F = facts()
     b = F['base']
     print('씨앗 %d행 · %s' % (F['seedRows'], F['seedTotalText']))
-    print('기본값 실행 — 투자실행액 %s · W %s · S %s · Ty %s · 비중 %s / %s (합 %s)'
-          % (b['exec'], b['w'], b['s'], b['ty'], b['share0'], b['share1'], b['shareSum']))
+    print('기본값 실행 — 투자실행액 %s · W %s · S %s · Ty %s'
+          % (b['exec'], b['w'], b['s'], b['ty']))
     print('           투자자산 %s · PSA %s · PSM %s · PSB %s · PSD %s · ④ %s · ⑤ %s'
           % (b['total'], b['psa'], b['psm'], b['psbText'], b['psd'], b['ty4'], b['ty5']))
     print('           채권 구분 %s' % ' '.join(b['bondKinds']))

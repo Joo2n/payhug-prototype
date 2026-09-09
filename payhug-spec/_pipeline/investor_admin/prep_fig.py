@@ -290,23 +290,27 @@ def share():
             raise SystemExit('스테이징에 없음: %s (sync·freeze 먼저)' % n)
         s = open(q, encoding='utf-8').read()
         if '보관 ㈜' not in s:
-            raise SystemExit('%s: 이미 정리됐거나 원본 구조가 다르다 (보관 ㈜ 0건)' % n)
+            # 원본 정리 판 — 낱장에 이미 없다. 현황 표 열머리 5 만 확인한다.
+            if share_check_one(s):
+                raise SystemExit('%s: 보관 ㈜ 는 없는데 현황 표 열머리가 5 가 아니거나 ㈜쿠콘 잔존' % n)
+            print('  정리 %-30s 원본에 이미 없음(열머리 5)' % n)
+            continue
         new, n_sub, n_th, n_row, n_empty = _share_one(s)
         open(q, 'w', encoding='utf-8').write(new)
         print('  정리 %-30s 카드 줄 %d · 열머리 %d · 행 %d · 빈 행 %d' % (n, n_sub, n_th, n_row, n_empty))
     print('투자자 공유 정리 %d낱장' % len(SHARE_FILES))
 
 
+def share_check_one(s):
+    """보관·㈜쿠콘 잔존 또는 현황 표 열머리 ≠ 5 이면 True."""
+    a = s.find('<th>자산 구분</th>')
+    head = s[s.rfind('<tr', 0, a):s.index('</tr>', a)] if a >= 0 else ''
+    return '보관' in s or '㈜쿠콘' in s or head.count('<th') != 5
+
+
 def share_check():
     """verify 용 — 투자 자산 낱장에 보관·㈜쿠콘 0 · 현황 표 열머리 5."""
-    bad = []
-    for n in SHARE_FILES:
-        s = open(os.path.join(FIG, n + '.html'), encoding='utf-8').read()
-        a = s.find('<th>자산 구분</th>')
-        head = s[s.rfind('<tr', 0, a):s.index('</tr>', a)] if a >= 0 else ''
-        if '보관' in s or '㈜쿠콘' in s or head.count('<th') != 5:
-            bad.append(n)
-    return bad
+    return [n for n in SHARE_FILES if share_check_one(open(os.path.join(FIG, n + '.html'), encoding='utf-8').read())]
 
 
 # ---------------------------------------------------------------- measure

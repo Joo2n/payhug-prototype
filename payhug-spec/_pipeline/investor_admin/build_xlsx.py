@@ -28,7 +28,7 @@ from decimal import Decimal as D, ROUND_HALF_UP
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from roster16_model import (ROSTER, SHARES, EXEC, CASH, TOTAL, W_W, S_W, TY_W,
-                            EXEC_SHARE, CASH_SHARE, DAILY, DSUM, MSUM, ty_asset,
+                            DAILY, DSUM, MSUM, ty_asset,
                             r1, r2, r6, ty, f)
 import daily_ledger
 
@@ -256,17 +256,14 @@ def put_bucket_sheet(title, headline, colhead, rows, filename, w0=21.5):
 def build_assets_status():
     wb = openpyxl.Workbook()
     ws = new_sheet(wb, '투자자산 현황', '투자자산 현황 — %s / %s' % (ASOF_DATE, INVESTOR),
-                   7, [18.5, 16.5, 12.5, 14.5, 11.5, 11.5, 13.5], 'A4')
-    put_notice(ws, 7)
-    put_header(ws, ['자산 구분', '금액 (원)', '가중평균 금융일수', '입금부족률', '예상 연환산 수익률', '비중', '보관'])
+                   5, [18.5, 16.5, 12.5, 14.5, 11.5], 'A4')
+    put_notice(ws, 5)
+    put_header(ws, ['자산 구분', '금액 (원)', '가중평균 금융일수', '입금부족률', '예상 연환산 수익률'])
     put_row(ws, 4, [('투자실행액', None, None), (EXEC, FMT_AMT, None),
                     (float(r2(W_W)), FMT_DAY, None), (pct(r2(S_W)), FMT_PCT2, None),
-                    (pct(r2(TY_W)), FMT_PCT2, None), (pct(EXEC_SHARE), FMT_PCT1, None),
-                    ('㈜페이허그', None, None)])
-    put_row(ws, 5, [('순현금', None, None), (CASH, FMT_AMT, None), None, None, None,
-                    (pct(CASH_SHARE), FMT_PCT1, None), ('㈜쿠콘', None, None)])
-    put_row(ws, 6, [('합계 (투자자산)', None, None), (TOTAL, FMT_AMT, None), None, None, None,
-                    (1, FMT_PCT1, None), None], total=True)
+                    (pct(r2(TY_W)), FMT_PCT2, None)])
+    put_row(ws, 5, [('순현금', None, None), (CASH, FMT_AMT, None), None, None, None])
+    put_row(ws, 6, [('합계 (투자자산)', None, None), (TOTAL, FMT_AMT, None), None, None, None], total=True)
     put_note(ws, 8, '※ 합계(투자자산) = 투자실행액 + 순현금. '
                     '가중평균 금융일수·입금부족률·예상 연환산 수익률은 투자실행액에만 산정.')
     return save(wb, assets_status_file())
