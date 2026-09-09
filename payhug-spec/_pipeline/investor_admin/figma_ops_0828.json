@@ -121,7 +121,7 @@
   {
    "file": "invest-assets",
    "frame_name": "01 투자 자산",
-   "old_node_id": "3800:2",
+   "old_node_id": "3860:2",
    "x": 0,
    "y": 0,
    "old_h": 1085,
@@ -131,7 +131,7 @@
   {
    "file": "invest-assets--cert-confirm",
    "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
-   "old_node_id": "3793:2",
+   "old_node_id": "3862:2",
    "x": 3200,
    "y": 5226,
    "old_h": 1085,
@@ -141,7 +141,7 @@
   {
    "file": "invest-assets--download",
    "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
-   "old_node_id": "3792:2",
+   "old_node_id": "3861:2",
    "x": 1600,
    "y": 5226,
    "old_h": 1085,
@@ -151,7 +151,7 @@
   {
    "file": "invest-assets--empty",
    "frame_name": "01-d 투자 자산 — 데이터 없음",
-   "old_node_id": "3794:2",
+   "old_node_id": "3866:2",
    "x": 4800,
    "y": 5226,
    "old_h": 827,
@@ -161,7 +161,7 @@
   {
    "file": "invest-assets--nav-collapsed",
    "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
-   "old_node_id": "3795:2",
+   "old_node_id": "3865:2",
    "x": 0,
    "y": 5226,
    "old_h": 1085,
@@ -171,7 +171,7 @@
   {
    "file": "invest-assets--tip-exec",
    "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
-   "old_node_id": "3799:2",
+   "old_node_id": "3868:2",
    "x": 3200,
    "y": 26130,
    "old_h": 1071,
@@ -181,7 +181,7 @@
   {
    "file": "invest-assets--tip-shortfall",
    "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
-   "old_node_id": "3796:2",
+   "old_node_id": "3864:2",
    "x": 1600,
    "y": 26130,
    "old_h": 1085,
@@ -191,7 +191,7 @@
   {
    "file": "invest-assets--tip-wavg",
    "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
-   "old_node_id": "3797:2",
+   "old_node_id": "3863:2",
    "x": 0,
    "y": 26130,
    "old_h": 1085,
@@ -201,7 +201,7 @@
   {
    "file": "invest-assets--tip-yield",
    "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
-   "old_node_id": "3798:2",
+   "old_node_id": "3867:2",
    "x": 4800,
    "y": 26130,
    "old_h": 1071,
@@ -850,6 +850,69 @@
    "old_node_id": "3770:2",
    "done": true,
    "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제"
+  },
+  {
+   "file": "invest-assets.html",
+   "frame_name": "01 투자 자산",
+   "old_node_id": "3800:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--download.html",
+   "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
+   "old_node_id": "3792:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--cert-confirm.html",
+   "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
+   "old_node_id": "3793:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--empty.html",
+   "frame_name": "01-d 투자 자산 — 데이터 없음",
+   "old_node_id": "3794:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--nav-collapsed.html",
+   "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
+   "old_node_id": "3795:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-wavg.html",
+   "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
+   "old_node_id": "3797:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-shortfall.html",
+   "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
+   "old_node_id": "3796:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-exec.html",
+   "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
+   "old_node_id": "3799:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-yield.html",
+   "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
+   "old_node_id": "3798:2",
+   "done": true,
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
   }
  ],
  "new": [],

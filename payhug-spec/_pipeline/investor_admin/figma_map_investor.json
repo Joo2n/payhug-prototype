@@ -3,9 +3,9 @@
  "page_node_id": "3066:328",
  "page_name": "[투자자 어드민] 제안서 첨부용",
  "source_repo": "/Users/semi/cursor/payhug-investor-admin",
- "source_commit": "7493d89",
- "source_commit_short": "7493d89",
- "prev_source_commit": "d7ce377",
+ "source_commit": "2db5f01",
+ "source_commit_short": "2db5f01",
+ "prev_source_commit": "7493d89",
  "staging_copy": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/_fig",
  "staging_css_patch": "prep_fig.py patch_css() 자동 적용 — ① --font-mono 를 Figma 내장 'Roboto Mono' 로 교체(원본 스택은 Chrome 에서 Menlo 로 해석되는데 Figma 에 Menlo 가 없어 hasMissingFont 가 되고 숫자 셀이 말줄임된다) ② sheet.css text-overflow:ellipsis 2곳 제거. 스테이징 사본 전용, 원본 레포 무변경",
  "frame_count": 37,
@@ -82,7 +82,7 @@
   }
  },
  "verification": {
-  "checked_at": "2026-09-09 (투자 자산 9 교체 후)",
+  "checked_at": "2026-09-09 (입금부족액 0 판 18 교체 후)",
   "frames_on_page": 37,
   "width_1440": 37,
   "clips_content_true": 37,
@@ -96,7 +96,7 @@
    "로그인",
    "PayHug Admin"
   ],
-  "texts_replaced_18": 1876,
+  "texts_replaced_18": 1792,
   "texts_untouched_19": 835,
   "texts": 2711,
   "has_missing_font": 0,
@@ -162,6 +162,16 @@
    "W금융일수",
    "조회기간",
    "투자 시뮬레이션"
+  ],
+  "forbidden_texts_0909b": [
+   "0.07%",
+   "61,175",
+   "3.99%",
+   "3.19%",
+   "9,871",
+   "보관 ㈜",
+   "㈜쿠콘",
+   "통합 프로토타입"
   ]
  },
  "not_imported": [
@@ -186,14 +196,15 @@
   {
    "file": "invest-assets.html",
    "frame_name": "01 투자 자산",
-   "node_id": "3860:2",
+   "node_id": "3877:2",
    "x": 0,
    "y": 0,
    "w": 1440,
    "h": 1085,
-   "capture_id": "fb30e2fd-e3d7-4339-a631-7e72bb41fce4",
-   "replaced_node_id": "3800:2",
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "capture_id": "e890c5a6-776b-49d8-a64c-b50e3b132978",
+   "replaced_node_id": "3860:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "certificate.html",
@@ -209,13 +220,14 @@
   {
    "file": "invest-profit.html",
    "frame_name": "03 투자 수익",
-   "node_id": "3802:2",
+   "node_id": "3886:2",
    "x": 3200,
    "y": 0,
    "w": 1440,
    "h": 1037,
-   "capture_id": "41722ac1-a053-461d-aa4f-2c4683b6d824",
-   "replaced_node_id": "3760:2"
+   "capture_id": "e5b1ef07-d90e-457e-ac66-7306b1dc64f8",
+   "replaced_node_id": "3802:2",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "merchants.html",
@@ -264,71 +276,77 @@
   {
    "file": "invest-assets--download.html",
    "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
-   "node_id": "3861:2",
+   "node_id": "3876:2",
    "x": 1600,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "8750d6ab-be79-4243-b947-225e2f8cee4a",
-   "replaced_node_id": "3792:2",
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "capture_id": "b2d96c72-b87a-4093-9f39-54e1e3532543",
+   "replaced_node_id": "3861:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-assets--cert-confirm.html",
    "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
-   "node_id": "3862:2",
+   "node_id": "3875:2",
    "x": 3200,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "9355f40c-a616-4436-b3d4-49f1ca58535b",
-   "replaced_node_id": "3793:2",
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "capture_id": "2701c791-e82d-49a6-b459-b825cf88dabe",
+   "replaced_node_id": "3862:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-assets--empty.html",
    "frame_name": "01-d 투자 자산 — 데이터 없음",
-   "node_id": "3866:2",
+   "node_id": "3879:2",
    "x": 4800,
    "y": 5226,
    "w": 1440,
    "h": 827,
-   "capture_id": "1bae2db4-a5a8-413d-b4ca-2351146aa8a4",
-   "replaced_node_id": "3794:2",
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "capture_id": "cb5d1037-f4f4-447f-8fda-351c71a05ce6",
+   "replaced_node_id": "3866:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--monthly.html",
    "frame_name": "03-a 투자 수익 — 월별",
-   "node_id": "3804:2",
+   "node_id": "3885:2",
    "x": 0,
    "y": 7839,
    "w": 1440,
    "h": 992,
-   "capture_id": "18b97a44-032d-46e8-b954-75916dda734f",
-   "replaced_node_id": "3761:2"
+   "capture_id": "ce3c739e-e1a0-479e-9b37-dd233fda2090",
+   "replaced_node_id": "3804:2",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--empty.html",
    "frame_name": "03-b 투자 수익 — 결과 없음",
-   "node_id": "3801:2",
+   "node_id": "3884:2",
    "x": 1600,
    "y": 7839,
    "w": 1440,
    "h": 814,
-   "capture_id": "cd11397e-45a3-454a-bc2b-a92d2d40fe22",
-   "replaced_node_id": "3762:2"
+   "capture_id": "a5a3f7ad-07d4-4a53-9bc6-24c448da8ed7",
+   "replaced_node_id": "3801:2",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--weekly.html",
    "frame_name": "03-c 투자 수익 — 주별",
-   "node_id": "3807:2",
+   "node_id": "3889:2",
    "x": 3200,
    "y": 7839,
    "w": 1440,
    "h": 902,
-   "capture_id": "5887806b-1a45-48d9-84cc-62631195755b",
-   "replaced_node_id": "3766:2"
+   "capture_id": "48892f33-e4fd-4337-b653-a1b70a0e0dbd",
+   "replaced_node_id": "3807:2",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "merchants--filtered.html",
@@ -454,27 +472,29 @@
   {
    "file": "invest-assets--nav-collapsed.html",
    "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
-   "node_id": "3865:2",
+   "node_id": "3878:2",
    "x": 0,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "6b88ee71-d000-45eb-97a2-90c936737891",
-   "replaced_node_id": "3795:2",
+   "capture_id": "c67f36c1-2a34-47cb-b96b-e409a894a1d4",
+   "replaced_node_id": "3865:2",
    "state_source": "낱장 패치 — 가맹점·관리 그룹 class collapsed + CSS 2줄",
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--range-error.html",
    "frame_name": "03-e 투자 수익 — 기간 역전 오류",
-   "node_id": "3806:2",
+   "node_id": "3888:2",
    "x": 4800,
    "y": 7839,
    "w": 1440,
    "h": 838,
-   "capture_id": "e97de547-89ca-4a0a-ab4f-36dd0f449e57",
-   "replaced_node_id": "3765:2",
-   "state_source": "통합본 동결 — PF.from=2026-08-27 · PF.to=2026-08-20 · refresh"
+   "capture_id": "5dbfbf41-dc02-4b20-83cc-783da1f410b9",
+   "replaced_node_id": "3806:2",
+   "state_source": "통합본 동결 — PF.from=2026-08-27 · PF.to=2026-08-20 · refresh",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "acquisition--selected.html",
@@ -515,16 +535,16 @@
   {
    "file": "invest-assets--tip-wavg.html",
    "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
-   "node_id": "3863:2",
+   "node_id": "3880:2",
    "x": 0,
    "y": 26130,
    "w": 1440,
    "h": 1085,
-   "capture_id": "edd71260-d507-4d8b-b52f-b2c0f6412dc1",
-   "replaced_node_id": "3797:2",
+   "capture_id": "2b3a7d3c-6b46-4db3-9f6c-93e84cc65d2e",
+   "replaced_node_id": "3863:2",
    "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3863:91",
+    "node_id": "3880:91",
     "x": 720,
     "y": 329,
     "w": 256,
@@ -532,21 +552,22 @@
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    },
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-assets--tip-shortfall.html",
    "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
-   "node_id": "3864:2",
+   "node_id": "3883:2",
    "x": 1600,
    "y": 26130,
    "w": 1440,
    "h": 1085,
-   "capture_id": "47531fda-75da-4de7-b564-5297d186f32b",
-   "replaced_node_id": "3796:2",
+   "capture_id": "1e2d378b-82ff-4502-ad7c-df7f145f6724",
+   "replaced_node_id": "3864:2",
    "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3864:96",
+    "node_id": "3883:96",
     "x": 889,
     "y": 329,
     "w": 256,
@@ -554,21 +575,22 @@
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    },
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-assets--tip-exec.html",
    "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
-   "node_id": "3868:2",
+   "node_id": "3882:2",
    "x": 3200,
    "y": 26130,
    "w": 1440,
    "h": 1071,
-   "capture_id": "229ba3cd-f6b4-4b76-973a-5494421e5924",
-   "replaced_node_id": "3799:2",
+   "capture_id": "09b9422b-81a1-4353-bdf0-9a096f6db583",
+   "replaced_node_id": "3868:2",
    "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3868:33",
+    "node_id": "3882:33",
     "x": 380,
     "y": 131,
     "w": 256,
@@ -576,21 +598,22 @@
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    },
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-assets--tip-yield.html",
    "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
-   "node_id": "3867:2",
+   "node_id": "3881:2",
    "x": 4800,
    "y": 26130,
    "w": 1440,
    "h": 1071,
-   "capture_id": "3ba07526-2e8d-4851-b664-abff3df47c82",
-   "replaced_node_id": "3798:2",
+   "capture_id": "168b0730-bedf-4acd-9ce4-9b5746f08db9",
+   "replaced_node_id": "3867:2",
    "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3867:57",
+    "node_id": "3881:57",
     "x": 996,
     "y": 131,
     "w": 256,
@@ -598,91 +621,96 @@
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
    },
-   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)",
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--tip-py-exec.html",
    "frame_name": "03-f 투자 수익 — 툴팁 ④ 투자실행금액 대비",
-   "node_id": "3805:2",
+   "node_id": "3887:2",
    "x": 0,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "e748fbe6-f51b-47b8-86d7-65aabcd7e6f0",
-   "replaced_node_id": "3771:2",
+   "capture_id": "f244022e-ced8-41ca-8e66-276e93e2da3c",
+   "replaced_node_id": "3805:2",
    "state_source": "낱장 패치 — 수익 현황 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3805:124",
+    "node_id": "3887:124",
     "x": 863,
     "y": 426,
     "w": 256,
     "h": 160,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--tip-py-asset.html",
    "frame_name": "03-g 투자 수익 — 툴팁 ⑤ 투자자산 대비",
-   "node_id": "3808:2",
+   "node_id": "3890:2",
    "x": 1600,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "88600755-0aea-4c50-8f16-e4fa8a0ffa52",
-   "replaced_node_id": "3769:2",
+   "capture_id": "e32a5031-9b68-4dbb-85af-7649ede01a19",
+   "replaced_node_id": "3808:2",
    "state_source": "낱장 패치 — 수익 현황 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3808:137",
+    "node_id": "3890:137",
     "x": 971,
     "y": 426,
     "w": 256,
     "h": 214,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--tip-exec.html",
    "frame_name": "03-h 투자 수익 — 툴팁 ③ 투자실행금 열머리",
-   "node_id": "3809:2",
+   "node_id": "3891:2",
    "x": 3200,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "ac95b80f-bf44-4ace-a4c7-8856729ea192",
-   "replaced_node_id": "3767:2",
+   "capture_id": "45791a3b-66bb-4d7d-a6ff-19a75fe781d8",
+   "replaced_node_id": "3809:2",
    "state_source": "낱장 패치 — 일별 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3809:173",
-    "x": 616,
+    "node_id": "3891:173",
+    "x": 609,
     "y": 602,
     "w": 256,
     "h": 61,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   },
   {
    "file": "invest-profit--tip-yield.html",
    "frame_name": "03-i 투자 수익 — 툴팁 ⑥ 연환산수익률 열머리",
-   "node_id": "3810:2",
+   "node_id": "3892:2",
    "x": 4800,
    "y": 28743,
    "w": 1440,
    "h": 1037,
-   "capture_id": "f7afca2b-3656-472c-af91-852f7e3ec19f",
-   "replaced_node_id": "3770:2",
+   "capture_id": "89a145b0-ae72-4eaa-882a-cda3f8cf21cd",
+   "replaced_node_id": "3810:2",
    "state_source": "낱장 패치 — 일별 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3810:184",
+    "node_id": "3892:184",
     "x": 1135,
     "y": 602,
     "w": 256,
     "h": 98,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "zero_shortfall_0909b": "입금부족액 0 판(2db5f01) — 투자 수익 = 채권매입수수료 · 입금부족률 0.00% · ④ 12.93% · ⑤ 10.34%"
   }
  ],
  "retired": [
@@ -1334,6 +1362,132 @@
    "deleted_node_id": "3798:2",
    "replaced_by": "3867:2",
    "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets.html",
+   "frame_name": "01 투자 자산",
+   "deleted_node_id": "3860:2",
+   "replaced_by": "3877:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit.html",
+   "frame_name": "03 투자 수익",
+   "deleted_node_id": "3802:2",
+   "replaced_by": "3886:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--download.html",
+   "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
+   "deleted_node_id": "3861:2",
+   "replaced_by": "3876:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--cert-confirm.html",
+   "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
+   "deleted_node_id": "3862:2",
+   "replaced_by": "3875:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--empty.html",
+   "frame_name": "01-d 투자 자산 — 데이터 없음",
+   "deleted_node_id": "3866:2",
+   "replaced_by": "3879:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--monthly.html",
+   "frame_name": "03-a 투자 수익 — 월별",
+   "deleted_node_id": "3804:2",
+   "replaced_by": "3885:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--empty.html",
+   "frame_name": "03-b 투자 수익 — 결과 없음",
+   "deleted_node_id": "3801:2",
+   "replaced_by": "3884:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--weekly.html",
+   "frame_name": "03-c 투자 수익 — 주별",
+   "deleted_node_id": "3807:2",
+   "replaced_by": "3889:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--nav-collapsed.html",
+   "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
+   "deleted_node_id": "3865:2",
+   "replaced_by": "3878:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--range-error.html",
+   "frame_name": "03-e 투자 수익 — 기간 역전 오류",
+   "deleted_node_id": "3806:2",
+   "replaced_by": "3888:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-wavg.html",
+   "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
+   "deleted_node_id": "3863:2",
+   "replaced_by": "3880:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-shortfall.html",
+   "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
+   "deleted_node_id": "3864:2",
+   "replaced_by": "3883:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-exec.html",
+   "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
+   "deleted_node_id": "3868:2",
+   "replaced_by": "3882:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-yield.html",
+   "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
+   "deleted_node_id": "3867:2",
+   "replaced_by": "3881:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--tip-py-exec.html",
+   "frame_name": "03-f 투자 수익 — 툴팁 ④ 투자실행금액 대비",
+   "deleted_node_id": "3805:2",
+   "replaced_by": "3887:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--tip-py-asset.html",
+   "frame_name": "03-g 투자 수익 — 툴팁 ⑤ 투자자산 대비",
+   "deleted_node_id": "3808:2",
+   "replaced_by": "3890:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--tip-exec.html",
+   "frame_name": "03-h 투자 수익 — 툴팁 ③ 투자실행금 열머리",
+   "deleted_node_id": "3809:2",
+   "replaced_by": "3891:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
+  },
+  {
+   "file": "invest-profit--tip-yield.html",
+   "frame_name": "03-i 투자 수익 — 툴팁 ⑥ 연환산수익률 열머리",
+   "deleted_node_id": "3810:2",
+   "replaced_by": "3892:2",
+   "reason": "입금부족액 0 판(0909b, 2db5f01)으로 교체"
   }
  ],
  "lost_nodes": [
@@ -1360,8 +1514,8 @@
   "3189:16726"
  ],
  "source_commit_note": "payhug-investor-admin main d7ce377 (2026-09-08). 투자 자산 9·투자 수익 9 = 18프레임은 d7ce377 내용(툴팁 「기호 = 산식」 규칙 — 첫 줄 Y_r = r × 365 ÷ D · D = Σ( A_i × D_i ) ÷ Σ A_i · LR = Σ L_i ÷ Σ A_i · PY_a = PMR × 365 ÷ PD · PY_t = PY_a × 채권 비중 + 순현금 수익률 × 순현금 비중 + = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) · PA = Σ A_i, 둘째 줄부터 「기호 | 값」, 조건 「i | …」, 「연환산」 행 맨 아래). 나머지 19프레임은 e019d5a 캡처본 그대로 — 그 뒤 커밋에서 해당 HTML 변경 없음",
- "head_at_completion": "7493d89 (통합본·낱장·엑셀 정리 판)",
- "source_commit_state": "7493d89 = 통합본에 투자자 공유 정리 적용 판. 투자 자산 9 프레임은 d7ce377+share 로 임포트했으나 7493d89 낱장과 보이는 텍스트가 같아 재임포트 없음. 옛 source_commit_note·staging_copy_note 의 d7ce377 문장은 임포트 당시 기록.",
+ "head_at_completion": "2db5f01",
+ "source_commit_state": "2db5f01 = 원장 입금부족액 0 판(투자 수익 = 채권매입수수료 · 입금부족률 0.00% · 시뮬 기본 0/0). 투자 자산 9·투자 수익 9 는 이 판으로 재임포트. 나머지 19 는 화면 내용 같음.",
  "state_frames": {
   "count": 13,
   "method": "원본 레포에 낱장이 없는 상태는 스테이징에서 만든다 — prep_fig.py freeze (freeze_app.js · 헤드리스 크롬 + CDP 로 app.html 을 열어 go()·상태 변수·ACT[] 로 상태를 만든 뒤 DOM 을 낱장으로 저장, value/checked/selected 속성 동기화 · 스크립트·숨은 section·모달·주석 제거) + 낱장 패치(툴팁 패널 1개 id=fig-tip display:block · 메뉴 그룹 class collapsed)",
@@ -1544,5 +1698,29 @@
   "date": "2026-09-09",
   "note": "투자 자산 9 — 시연본 투자자 공유 정리 판으로 교체. 삭제 전 직계 46 → 37"
  },
- "source_commit_note_0909": "투자 자산 9 프레임(01·01-b~01-i)은 d7ce377 낱장·동결본에 prep_fig.py share(투자자 공유 정리)를 건 판으로 임포트했고, 원본 7493d89(통합본에 같은 정리 적용)의 낱장과 보이는 텍스트가 같음(사이드바 시뮬레이션 메뉴 제외, 스테이징 patch_nav 가 뺌). 재임포트 없음. 나머지 28 프레임은 직전 라운드 그대로(화면 내용 같음)."
+ "source_commit_note_0909": "투자 자산 9 프레임(01·01-b~01-i)은 d7ce377 낱장·동결본에 prep_fig.py share(투자자 공유 정리)를 건 판으로 임포트했고, 원본 7493d89(통합본에 같은 정리 적용)의 낱장과 보이는 텍스트가 같음(사이드바 시뮬레이션 메뉴 제외, 스테이징 patch_nav 가 뺌). 재임포트 없음. 나머지 28 프레임은 직전 라운드 그대로(화면 내용 같음).",
+ "deleted_0909b": {
+  "replaced_old_18": [
+   "3860:2",
+   "3802:2",
+   "3861:2",
+   "3862:2",
+   "3866:2",
+   "3804:2",
+   "3801:2",
+   "3807:2",
+   "3865:2",
+   "3806:2",
+   "3863:2",
+   "3864:2",
+   "3868:2",
+   "3867:2",
+   "3805:2",
+   "3808:2",
+   "3809:2",
+   "3810:2"
+  ],
+  "date": "2026-09-09",
+  "note": "투자 자산 9 + 투자 수익 9 — 입금부족액 0 판. 삭제 전 직계 55 → 37. 캡처 3건(01·01-b·01-f)은 상태 폴링이 processing 에 고정됐으나 노드는 도착해 내용으로 판별해 승계"
+ }
 }
