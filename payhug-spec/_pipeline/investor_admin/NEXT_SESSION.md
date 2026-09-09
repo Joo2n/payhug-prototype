@@ -67,7 +67,7 @@
 | Q | 전체본 배포의 용어 해설 `glossary.html`(「보관 ㈜」 5곳)·`terms-edit.html`(1곳)·`assets/shots/invest-assets.webp` 캡처는 정리 전 화면. 첫 화면 doc-card 로 닿음. F·G(문서 페이지 8종) 와 함께 원고 정리 → 재촬영 | `glossary_manuscript.md:1092·1096·1129·1434·1501` · `capture_shots.js` | F·G 와 함께 |
 | R | **기호정리표 V1.3 원고 예시값 갱신(V1.4)** — 본문 plain 의 PMR 0.033992% · 3.992511% · 3.99% · ⑤ 3.19% · PM 61,175 등이 입금부족액 0 판과 다름. `verify_final_terms.py` 원고 대조 14 FAIL. 대표님과 종결된 정의는 그대로이고 예시 숫자만 | `session_0904/artifact/ceo_review.html` · `final_terms.json` · `build_symreview.py` | 사용자 결정 |
 | S | 일별 표에 「채권매입수수료」「입금부족액」 열(또는 툴팁)과 입금 대사 전 날짜 「집계 중」 표시 — 9/9 사용자 질문(입금부족액이 날짜별로 갱신되는가)에 대한 답. 대표 스토리보드 밖 열이라 대표님 확인 필요 | `build_app.py` 일별 표 · `daily_ledger.py` | 사용자 결정 |
-| T | `CLAUDE.md`(프로젝트 루트) 「S입금부족율 0.07%」 문장은 옛 값 — 사용자 확인 후 갱신 | `/Users/semi/cursor/payhug/CLAUDE.md` | 확인 필요 |
+| T | (해당 없음) 「CLAUDE.md 의 S입금부족율 0.07% 문장」은 빌더 보고의 오류 — 두 CLAUDE.md 에 그런 문장 없음(지시 추적 0909c 확인) | | — |
 
 ## 재개 명령
 
