@@ -437,6 +437,36 @@ async function main(){
     go('invest-assets','default'); return bad;
   `);
   check('가로 오버플로 0', of.length === 0, of.join(' | '));
+
+  /* 7) 투자자 공유 정리 — 시연본에만 있는 정리. sync_prototype.py investor_share 와 같은 목록:
+        탭 제목 · 투자 자산 카드 아래 비중·보관 줄 · 현황 표 비중·보관 두 열 · 「투자자산 현황」 엑셀 같은 두 열 */
+  const share = await ev(`
+    go('invest-assets','default');
+    var sec=document.querySelector('section.screen[data-screen="invest-assets"]');
+    var subs=[].map.call(sec.querySelectorAll('.summary-card .summary-sub'), function(e){ return e.textContent.trim(); });
+    var ths=[].map.call(sec.querySelectorAll('[data-mount="ia-status"] thead th'), function(e){ return e.textContent.trim(); });
+    var rows=[].map.call(sec.querySelectorAll('[data-mount="ia-status"] tbody tr'), function(tr){ return tr.querySelectorAll('td').length; });
+    go('invest-assets','empty');
+    var eths=sec.querySelectorAll('[data-mount="ia-status"] thead th').length;
+    var etd=sec.querySelector('[data-mount="ia-status"] tbody td.empty');
+    var texts=[];
+    SCREEN_ORDER.forEach(function(sc){ go(sc,'default'); if(/보관 ㈜|통합 프로토타입/.test(document.body.innerText)) texts.push(sc); });
+    go('invest-assets','default');
+    return {title:document.title, subs:subs, ths:ths, rows:rows, eths:eths, ecolspan: etd ? etd.getAttribute('colspan') : null, texts:texts};
+  `);
+  check('탭 제목 = PayHug 투자자 어드민', share.title === 'PayHug 투자자 어드민', share.title);
+  check('투자 자산 카드 아래 비중·보관 줄 0', share.subs.length > 0 && !share.subs.some(t => /보관|비중/.test(t)), share.subs.join(' | '));
+  check('투자 자산 현황 표 열 5 (비중·보관 없음)', share.ths.length === 5 && !share.ths.some(t => /비중|보관/.test(t)), share.ths.join(' | '));
+  check('현황 표 행 셀 수 5 (3행)', share.rows.length === 3 && share.rows.every(n => n === 5), share.rows.join(','));
+  check('빈 상태 현황 표 열 5 · colspan 5', share.eths === 5 && share.ecolspan === '5', share.eths + ' / colspan ' + share.ecolspan);
+  check('전 화면 텍스트에 보관 ㈜ · 통합 프로토타입 0', share.texts.length === 0, share.texts.join(' | '));
+  const asMeta = meta.find(m => m.key === 'assets-status');
+  try {
+    /* openpyxl 산출물은 sharedStrings.xml 이 없을 수 있어 멤버 전체를 풀어 문자열을 본다 */
+    const xs = require('child_process').execSync('unzip -p ' + JSON.stringify(path.join(REPO, 'assets/xlsx', asMeta.file)), {encoding:'utf8', maxBuffer: 64 * 1024 * 1024});
+    const hit = (xs.match(/비중|보관|㈜쿠콘|㈜페이허그/g) || []);
+    check('투자자산 현황 엑셀에 비중·보관·㈜ 0', hit.length === 0, hit.join(','));
+  } catch(e){ check('투자자산 현황 엑셀 열기', false, String(e.message).slice(0, 120)); }
   const sc = await ev('return window.__selfcheck();');
   check('비중 합 100.0%', sc.ratioSum === 100, String(sc.ratioSum));
   check('투자실행금 화면 간 일치', sc.execMatch === true, String(sc.assetExecRow));

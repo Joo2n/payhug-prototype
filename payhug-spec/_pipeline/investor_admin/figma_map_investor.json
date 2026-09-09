@@ -5,7 +5,7 @@
  "source_repo": "/Users/semi/cursor/payhug-investor-admin",
  "source_commit": "d7ce377",
  "source_commit_short": "d7ce377",
- "prev_source_commit": "0b6ab0d",
+ "prev_source_commit": "d7ce377",
  "staging_copy": "/Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin/_fig",
  "staging_css_patch": "prep_fig.py patch_css() 자동 적용 — ① --font-mono 를 Figma 내장 'Roboto Mono' 로 교체(원본 스택은 Chrome 에서 Menlo 로 해석되는데 Figma 에 Menlo 가 없어 hasMissingFont 가 되고 숫자 셀이 말줄임된다) ② sheet.css text-overflow:ellipsis 2곳 제거. 스테이징 사본 전용, 원본 레포 무변경",
  "frame_count": 37,
@@ -82,7 +82,7 @@
   }
  },
  "verification": {
-  "checked_at": "2026-09-08 (d7ce377 판 18 교체 후)",
+  "checked_at": "2026-09-09 (투자 자산 9 교체 후)",
   "frames_on_page": 37,
   "width_1440": 37,
   "clips_content_true": 37,
@@ -149,7 +149,20 @@
   "tooltip_frames": "8 — 패널(폭 256) 각 1개. 임포트 직후 뒤 요소에 가려져 프레임 최상위 마지막 자식으로 옮기고 layoutPositioning ABSOLUTE 로 원 좌표 복원 (frames[].tooltip_panel). 패널 높이 01-f 61 · 01-g 78 · 01-h 86 · 01-i 119 · 03-f 160 · 03-g 214 · 03-h 61 · 03-i 98",
   "screenshots": "after 10(01·03·01-f·01-g·01-h·01-i·03-f·03-g·03-h·03-i 신 노드) — scratchpad/shots0908b",
   "metadata_crosscheck": "get_metadata 덤프 들여쓰기 2칸 파싱 직계 37 · use_figma 37 과 id·이름·좌표·크기 전건 일치",
-  "layer_name_note": "01-i·03-g·03-i 레이어 이름의 「연환산수익률」「투자자산 대비」는 맵 frame_name 승계값(텍스트 아님)"
+  "layer_name_note": "01-i·03-g·03-i 레이어 이름의 「연환산수익률」「투자자산 대비」는 맵 frame_name 승계값(텍스트 아님)",
+  "texts_replaced_9": 961,
+  "forbidden_texts_0909": [
+   "보관",
+   "㈜쿠콘",
+   "통합 프로토타입",
+   "회수된 것 포함",
+   "미확정",
+   "대표 확인",
+   "기준일",
+   "W금융일수",
+   "조회기간",
+   "투자 시뮬레이션"
+  ]
  },
  "not_imported": [
   "app.html",
@@ -173,13 +186,14 @@
   {
    "file": "invest-assets.html",
    "frame_name": "01 투자 자산",
-   "node_id": "3800:2",
+   "node_id": "3860:2",
    "x": 0,
    "y": 0,
    "w": 1440,
    "h": 1085,
-   "capture_id": "980efb28-9c12-4777-8d85-4a5d23bbd497",
-   "replaced_node_id": "3750:2"
+   "capture_id": "fb30e2fd-e3d7-4339-a631-7e72bb41fce4",
+   "replaced_node_id": "3800:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "certificate.html",
@@ -250,35 +264,38 @@
   {
    "file": "invest-assets--download.html",
    "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
-   "node_id": "3792:2",
+   "node_id": "3861:2",
    "x": 1600,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "3afcf9f8-f17c-4330-b0cd-68317415b512",
-   "replaced_node_id": "3748:2"
+   "capture_id": "8750d6ab-be79-4243-b947-225e2f8cee4a",
+   "replaced_node_id": "3792:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-assets--cert-confirm.html",
    "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
-   "node_id": "3793:2",
+   "node_id": "3862:2",
    "x": 3200,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "2ea3b32a-4df4-46b0-9a01-c92f5f8d1447",
-   "replaced_node_id": "3749:2"
+   "capture_id": "9355f40c-a616-4436-b3d4-49f1ca58535b",
+   "replaced_node_id": "3793:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-assets--empty.html",
    "frame_name": "01-d 투자 자산 — 데이터 없음",
-   "node_id": "3794:2",
+   "node_id": "3866:2",
    "x": 4800,
    "y": 5226,
    "w": 1440,
    "h": 827,
-   "capture_id": "06bec39c-9deb-4472-9164-58faf2fe5e0f",
-   "replaced_node_id": "3753:2"
+   "capture_id": "1bae2db4-a5a8-413d-b4ca-2351146aa8a4",
+   "replaced_node_id": "3794:2",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-profit--monthly.html",
@@ -437,14 +454,15 @@
   {
    "file": "invest-assets--nav-collapsed.html",
    "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
-   "node_id": "3795:2",
+   "node_id": "3865:2",
    "x": 0,
    "y": 5226,
    "w": 1440,
    "h": 1085,
-   "capture_id": "ef632b2f-b0ff-4ff6-b576-bc7232de25b2",
-   "replaced_node_id": "3752:2",
-   "state_source": "낱장 패치 — 가맹점·관리 그룹 class collapsed + CSS 2줄"
+   "capture_id": "6b88ee71-d000-45eb-97a2-90c936737891",
+   "replaced_node_id": "3795:2",
+   "state_source": "낱장 패치 — 가맹점·관리 그룹 class collapsed + CSS 2줄",
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-profit--range-error.html",
@@ -497,86 +515,90 @@
   {
    "file": "invest-assets--tip-wavg.html",
    "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
-   "node_id": "3797:2",
+   "node_id": "3863:2",
    "x": 0,
    "y": 26130,
    "w": 1440,
    "h": 1085,
-   "capture_id": "01f61132-b793-46e2-a2ea-273767bc121e",
-   "replaced_node_id": "3754:2",
+   "capture_id": "edd71260-d507-4d8b-b52f-b2c0f6412dc1",
+   "replaced_node_id": "3797:2",
    "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3797:99",
-    "x": 551,
+    "node_id": "3863:91",
+    "x": 720,
     "y": 329,
     "w": 256,
     "h": 61,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-assets--tip-shortfall.html",
    "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
-   "node_id": "3796:2",
+   "node_id": "3864:2",
    "x": 1600,
    "y": 26130,
    "w": 1440,
    "h": 1085,
-   "capture_id": "688e967d-f492-421d-8381-bf47014857e2",
-   "replaced_node_id": "3757:2",
+   "capture_id": "47531fda-75da-4de7-b564-5297d186f32b",
+   "replaced_node_id": "3796:2",
    "state_source": "낱장 패치 — 현황 표 열머리 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3796:104",
-    "x": 681,
+    "node_id": "3864:96",
+    "x": 889,
     "y": 329,
     "w": 256,
     "h": 78,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-assets--tip-exec.html",
    "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
-   "node_id": "3799:2",
+   "node_id": "3868:2",
    "x": 3200,
    "y": 26130,
    "w": 1440,
    "h": 1071,
-   "capture_id": "1cb860df-539d-4291-9c15-89bd42303a64",
-   "replaced_node_id": "3756:2",
+   "capture_id": "229ba3cd-f6b4-4b76-973a-5494421e5924",
+   "replaced_node_id": "3799:2",
    "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3799:33",
+    "node_id": "3868:33",
     "x": 380,
     "y": 131,
     "w": 256,
     "h": 86,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-assets--tip-yield.html",
    "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
-   "node_id": "3798:2",
+   "node_id": "3867:2",
    "x": 4800,
    "y": 26130,
    "w": 1440,
    "h": 1071,
-   "capture_id": "40f8af04-878e-46ed-ab08-d171497fcffb",
-   "replaced_node_id": "3758:2",
+   "capture_id": "3ba07526-2e8d-4851-b664-abff3df47c82",
+   "replaced_node_id": "3798:2",
    "state_source": "통합본 동결(기본 상태) + 요약카드 패널 id=fig-tip display:block",
    "tooltip_panel": {
-    "node_id": "3798:65",
+    "node_id": "3867:57",
     "x": 996,
     "y": 131,
     "w": 256,
     "h": 119,
     "layoutPositioning": "ABSOLUTE",
     "note": "프레임 최상위 마지막 자식으로 이동·좌표 복원"
-   }
+   },
+   "share_0909": "투자자 공유 정리 판 — 카드 아래 비중·보관 줄 0 · 현황 표 비중·보관 열 0 (prep_fig.py share = 시연본 7a369bd 와 같은 모습)"
   },
   {
    "file": "invest-profit--tip-py-exec.html",
@@ -1249,6 +1271,69 @@
    "status": "삭제 완료",
    "reason": "d7ce377 판으로 교체 — 구 노드(0b6ab0d 판) 삭제",
    "deleted_at": "2026-09-08 0908b 라운드"
+  },
+  {
+   "file": "invest-assets.html",
+   "frame_name": "01 투자 자산",
+   "deleted_node_id": "3800:2",
+   "replaced_by": "3860:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--download.html",
+   "frame_name": "01-b 투자 자산 — 엑셀 다운로드 완료",
+   "deleted_node_id": "3792:2",
+   "replaced_by": "3861:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--cert-confirm.html",
+   "frame_name": "01-c 투자 자산 — 증명서 발급 확인",
+   "deleted_node_id": "3793:2",
+   "replaced_by": "3862:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--empty.html",
+   "frame_name": "01-d 투자 자산 — 데이터 없음",
+   "deleted_node_id": "3794:2",
+   "replaced_by": "3866:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--nav-collapsed.html",
+   "frame_name": "01-e 투자 자산 — 메뉴 그룹 접힘",
+   "deleted_node_id": "3795:2",
+   "replaced_by": "3865:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-wavg.html",
+   "frame_name": "01-f 투자 자산 — 툴팁 가중평균 금융일수 열머리",
+   "deleted_node_id": "3797:2",
+   "replaced_by": "3863:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-shortfall.html",
+   "frame_name": "01-g 투자 자산 — 툴팁 입금부족률 열머리",
+   "deleted_node_id": "3796:2",
+   "replaced_by": "3864:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-exec.html",
+   "frame_name": "01-h 투자 자산 — 툴팁 투자실행액 카드",
+   "deleted_node_id": "3799:2",
+   "replaced_by": "3868:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
+  },
+  {
+   "file": "invest-assets--tip-yield.html",
+   "frame_name": "01-i 투자 자산 — 툴팁 예상 연환산수익률 카드",
+   "deleted_node_id": "3798:2",
+   "replaced_by": "3867:2",
+   "reason": "투자자 공유 정리 판(0909)으로 교체"
   }
  ],
  "lost_nodes": [
@@ -1275,7 +1360,7 @@
   "3189:16726"
  ],
  "source_commit_note": "payhug-investor-admin main d7ce377 (2026-09-08). 투자 자산 9·투자 수익 9 = 18프레임은 d7ce377 내용(툴팁 「기호 = 산식」 규칙 — 첫 줄 Y_r = r × 365 ÷ D · D = Σ( A_i × D_i ) ÷ Σ A_i · LR = Σ L_i ÷ Σ A_i · PY_a = PMR × 365 ÷ PD · PY_t = PY_a × 채권 비중 + 순현금 수익률 × 순현금 비중 + = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) · PA = Σ A_i, 둘째 줄부터 「기호 | 값」, 조건 「i | …」, 「연환산」 행 맨 아래). 나머지 19프레임은 e019d5a 캡처본 그대로 — 그 뒤 커밋에서 해당 HTML 변경 없음",
- "head_at_completion": "d7ce377 (원본 워킹트리 깨끗 — html/css/js 변경 0건)",
+ "head_at_completion": "d7ce377 (원본 레포 html/css/js 무변경 · scripts/sync_prototype.py 만 변경)",
  "source_commit_state": "캡처 시점 HEAD d7ce377 · 워킹트리 변경 0. 원본 레포는 읽기만 했다(커밋·수정 0)",
  "state_frames": {
   "count": 13,
@@ -1443,5 +1528,21 @@
    "3770:2"
   ],
   "note": "d7ce377 판 교체로 삭제한 0b6ab0d 판 18 노드 (retired 에 replaced_by 와 함께 기록)"
- }
+ },
+ "deleted_0909": {
+  "replaced_old_9": [
+   "3800:2",
+   "3792:2",
+   "3793:2",
+   "3794:2",
+   "3795:2",
+   "3797:2",
+   "3796:2",
+   "3799:2",
+   "3798:2"
+  ],
+  "date": "2026-09-09",
+  "note": "투자 자산 9 — 시연본 투자자 공유 정리 판으로 교체. 삭제 전 직계 46 → 37"
+ },
+ "source_commit_note_0909": "투자 자산 9 프레임(01·01-b~01-i)은 원본 d7ce377 낱장·동결본에 prep_fig.py share(투자자 공유 정리: 카드 아래 비중·보관 줄 · 현황 표 비중·보관 열 제거)를 건 판. 시연본 payhug-investor-prototype 7a369bd(sync_prototype.py investor_share)와 같은 모습. 통합본 app.html 과 원본 레포 낱장은 그대로(보관·비중 있음). 나머지 28 프레임은 직전 라운드 그대로."
 }

@@ -4,12 +4,14 @@
   sync     레포 → _fig 동기화 + CSS 패치(모노 폰트 교체 · 시트 말줄임 제거)
   freeze   상태 프레임 낱장 생성 — 통합본 app.html 을 헤드리스로 열어 상태를 만든 뒤 DOM 저장
            (freeze_app.js · CDP) + 낱장 사본 패치(툴팁 패널 열림 · 메뉴 그룹 접힘). sync 뒤 measure 앞
+  share    투자자 공유 정리 — 시연본(sync_prototype.py investor_share)과 같은 정리를 투자 자산 낱장에 건다
+           (카드 아래 비중·보관 줄 · 현황 표 비중·보관 두 열). freeze 뒤 measure 앞. 통합본 원본은 그대로
   measure  _fig 렌더 → value 필드 기하 측정 → fig_meas.json
   apply    capture.js 주입 + 폰트 링크 주입 + value 보유 input → 텍스트 노드 치환
   verify   스테이징 사본이 캡처 준비 상태인지 확인
   fontgate --font-mono 가 Roboto Mono 로 해석되는지 실측 (캡처 배치 직전 필수)
   heights  프레임 높이 산출 → fig_heights.json (캡처 직전 필수)
-  all      sync → freeze → measure → apply
+  all      sync → freeze → share → measure → apply
 
 원본 레포는 읽기만 한다. 쓰기는 _fig/ 안에서만 일어난다.
 
@@ -240,6 +242,73 @@ def freeze():
     print('상태 프레임 낱장 %d개 생성' % len(DERIVED))
 
 
+# ---------------------------------------------------------------- share
+# 투자자 공유 정리 — 시연본(payhug-investor-admin/scripts/sync_prototype.py investor_share)과 같은 정리.
+# Figma 는 투자자에게 공유하는 시연본 모습이어야 하므로 스테이징 낱장에서 같은 자리를 걷어 낸다. 통합본 원본 낱장은 읽기만.
+# 대상은 투자 자산 계열 전부(기본·상태·툴팁·접힘). 탭 제목은 프레임에 실리지 않아 여기 없다.
+SHARE_FILES = [n for n in IMPORT if n.startswith('invest-assets')]
+SHARE_SUB = re.compile(r'\s*<div class="summary-sub">비중 [0-9.]+% · 보관 ㈜(?:페이허그|쿠콘)</div>')
+SHARE_TH = re.compile(r'\s*<th class="num">비중</th>\s*<th>보관</th>')
+SHARE_TD = re.compile(r'<td\b[^>]*>.*?</td>', re.S)
+SHARE_TR = re.compile(r'<tr\b[^>]*>.*?</tr>', re.S)
+
+
+def _share_one(s):
+    s, n_sub = SHARE_SUB.subn('', s)
+    a = s.find('<th>자산 구분</th>')
+    if a < 0:
+        raise SystemExit('현황 표 머리(자산 구분)를 찾지 못했다')
+    b = s.index('</table>', a)
+    seg, n_th = SHARE_TH.subn('', s[a:b])
+    cnt = {'row': 0, 'empty': 0}
+
+    def fix_row(m):
+        row = m.group(0)
+        tds = list(SHARE_TD.finditer(row))
+        if not tds:
+            return row
+        if len(tds) == 1 and 'colspan="7"' in tds[0].group(0):
+            cnt['empty'] += 1
+            return row.replace('colspan="7"', 'colspan="5"', 1)
+        if len(tds) != 7:
+            raise SystemExit('현황 표 행 셀 수 %d (기대 7)' % len(tds))
+        cnt['row'] += 1
+        return row[:tds[4].end()] + row[tds[6].end():]
+    seg = SHARE_TR.sub(fix_row, seg)
+    s = s[:a] + seg + s[b:]
+    if n_sub != 2 or n_th != 1 or (cnt['row'], cnt['empty']) not in ((3, 0), (0, 1)):
+        raise SystemExit('공유 정리 건수 이상 — 카드 줄 %d · 열머리 %d · 행 %d · 빈 행 %d' % (n_sub, n_th, cnt['row'], cnt['empty']))
+    if '보관' in s or '㈜쿠콘' in s:
+        raise SystemExit('공유 정리 뒤에도 보관·㈜쿠콘 잔존')
+    return s, n_sub, n_th, cnt['row'], cnt['empty']
+
+
+def share():
+    for n in SHARE_FILES:
+        q = os.path.join(FIG, n + '.html')
+        if not os.path.exists(q):
+            raise SystemExit('스테이징에 없음: %s (sync·freeze 먼저)' % n)
+        s = open(q, encoding='utf-8').read()
+        if '보관 ㈜' not in s:
+            raise SystemExit('%s: 이미 정리됐거나 원본 구조가 다르다 (보관 ㈜ 0건)' % n)
+        new, n_sub, n_th, n_row, n_empty = _share_one(s)
+        open(q, 'w', encoding='utf-8').write(new)
+        print('  정리 %-30s 카드 줄 %d · 열머리 %d · 행 %d · 빈 행 %d' % (n, n_sub, n_th, n_row, n_empty))
+    print('투자자 공유 정리 %d낱장' % len(SHARE_FILES))
+
+
+def share_check():
+    """verify 용 — 투자 자산 낱장에 보관·㈜쿠콘 0 · 현황 표 열머리 5."""
+    bad = []
+    for n in SHARE_FILES:
+        s = open(os.path.join(FIG, n + '.html'), encoding='utf-8').read()
+        a = s.find('<th>자산 구분</th>')
+        head = s[s.rfind('<tr', 0, a):s.index('</tr>', a)] if a >= 0 else ''
+        if '보관' in s or '㈜쿠콘' in s or head.count('<th') != 5:
+            bad.append(n)
+    return bad
+
+
 # ---------------------------------------------------------------- measure
 PROBE = """<!doctype html><meta charset="utf-8"><body style="margin:0">
 <script>
@@ -416,6 +485,9 @@ def verify():
             bad.append(n)
     print('동결본 스크립트·숨은 화면 잔존 %d건 %s' % (len(bad), bad or ''))
     ok &= not bad
+    bad = share_check()
+    print('투자자 공유 정리 미적용(보관·㈜쿠콘 잔존 또는 현황 표 열 ≠ 5) %d건 %s' % (len(bad), bad or ''))
+    ok &= not bad
     print('판정: %s' % ('통과' if ok else '미통과'))
     return ok
 
@@ -544,6 +616,8 @@ if __name__ == '__main__':
         sync()
     elif cmd == 'freeze':
         freeze()
+    elif cmd == 'share':
+        share()
     elif cmd == 'measure':
         measure()
     elif cmd == 'apply':
@@ -555,6 +629,6 @@ if __name__ == '__main__':
     elif cmd == 'heights':
         heights()
     elif cmd == 'all':
-        sync(); freeze(); measure(); apply(); print(); verify()
+        sync(); freeze(); share(); measure(); apply(); print(); verify()
     else:
         raise SystemExit(__doc__)

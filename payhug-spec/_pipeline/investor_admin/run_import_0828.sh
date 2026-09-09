@@ -30,6 +30,9 @@ preflight)
   echo "── 3b. 상태 프레임 낱장 생성 (통합본 동결 · 툴팁 열림 · 메뉴 그룹 접힘)"
   python3 prep_fig.py freeze || exit 1
   echo
+  echo "── 3c. 투자자 공유 정리 (시연본과 같은 정리 — 투자 자산 낱장 9 · 카드 아래 비중·보관 줄 · 현황 표 두 열)"
+  python3 prep_fig.py share || exit 1
+  echo
   echo "── 4. value 필드 기하 측정 + 치환"
   python3 prep_fig.py measure || exit 1
   python3 prep_fig.py apply || exit 1
