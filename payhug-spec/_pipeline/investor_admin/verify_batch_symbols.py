@@ -701,7 +701,11 @@ def sec2(L, drv):
         f_repay, f_exec, f_profit, f_w, f_ty = (num(foot[1]), num(foot[2]), num(foot[3]),
                                                 num(foot[4]), num(foot[5]))
         rows = parse_profit_rows(blk['tbl'])
-        want_ty = float(r2(D(str(f_profit)) / D(str(f_exec)) * 100 * D(365) / D(str(f_w))))
+        # PSMR 은 여섯 자리에서 끊고 PSD 는 원장의 여섯 자리 값(weekWRaw)을 쓴다 — 표기 두 자리 W 로
+        # 되짚으면 한 눈금 밀린다(dm_0901 규칙 1). 화면 합계 W 두 자리가 그 여섯 자리 값의 표기인지 함께 본다.
+        assert float(r2(D(facts['weekWRaw']))) == f_w, (facts['weekWRaw'], f_w)
+        psmr6 = (D(str(f_profit)) / D(str(f_exec)) * 100).quantize(D('0.000001'), rounding=ROUND_HALF_UP)
+        want_ty = float(r2(psmr6 * D(365) / D(facts['weekWRaw'])))
         chk('2', '[%s] 합계 행 ty = PSMR x 365 / PSD' % key,
             abs(want_ty - f_ty) <= 0.005, '화면 %.2f · 되짚기 %.2f' % (f_ty, want_ty))
         chk('2', '[%s] 합계 행 <-> facts 주간값' % key,

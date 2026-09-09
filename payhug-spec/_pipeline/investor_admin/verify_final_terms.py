@@ -423,8 +423,8 @@ def sec_F():
         Bscr = day_BAM(d)
         wraw, w6, wdisp = day_wD_raw(d), day_wD_6(d), day_wD_disp(d)
         MR = D(M) / D(A) * 100
-        ymr6 = q(MR * DAYS / w6, 6)
-        ymr_disp = MR * DAYS / wdisp
+        ymr6 = q(q(MR, 6) * DAYS / w6, 6)
+        ymr_disp = q(MR, 6) * DAYS / wdisp
         chk('F.%s.A' % k, A == tb[2], 'A(d−1) = Σ A_i (i ∈ d−1)',
             '%s ↔ 화면원천 %s' % (format(A, ','), format(tb[2], ',')))
         chk('F.%s.M' % k, M == tb[3], 'M(d−1) = Σ M_i',
@@ -449,7 +449,7 @@ def sec_F():
     bad, flip = [], []
     for d in sorted(DAYROWS):
         A, M = day_A(d), day_M(d)
-        MR = D(M) / D(A) * 100
+        MR = q(D(M) / D(A) * 100, 6)
         got = q(q(MR * DAYS / day_wD_6(d), 6), 2)
         if str(got) != FACTS['tyByDate'][L.ymd(d)][1]:
             bad.append(L.ymd(d))

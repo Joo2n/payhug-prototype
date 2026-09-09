@@ -137,10 +137,10 @@ MAU_MIX = ((CARD_SHARE,) +
 #     ③ 방향 — 미지급(줘야 하는데 못 준 것)이 과지급(더 나간 것)보다 크다.
 #        과지급은 취소분 회수 지연에서만 생겨 미지급의 1/3 안쪽이다.
 #   6대 개념 구분 — 여기서 쓰는 미지급금·과지급금은 서로 다른 계정이며 합치지 않는다.
-UNPAID = {'card': D('0.00025'), 'bm': D('0.00140'), 'cpe': D('0.00210'), 'yo': D('0.00300')}
-OVERPAID = {'card': D('0.00010'), 'bm': D('0.00045'), 'cpe': D('0.00055'), 'yo': D('0.00075')}
+UNPAID = {'card': D('0'), 'bm': D('0'), 'cpe': D('0'), 'yo': D('0')}
+OVERPAID = {'card': D('0'), 'bm': D('0'), 'cpe': D('0'), 'yo': D('0')}
 for _k in ORDER:
-    assert 0 <= OVERPAID[_k] < UNPAID[_k], _k
+    assert 0 <= OVERPAID[_k] <= UNPAID[_k], _k
 
 
 def duration(mix):

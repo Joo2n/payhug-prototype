@@ -2049,10 +2049,10 @@ function simSeedRows(){
     {plat:'yo',   amt:2400000,  sd:'2026-08-21', dd:'2026-08-27'}
   ];
 }
-/* 미지급률·과지급률 기본값은 S입금부족율이 투자 자산 화면의 0.07% 와 같아지는 자리에 둔다 —
-   S = (미지급률 - 과지급률) / (1 - 할인율) = 0.07 / 0.9989 = 0.07%. 두 화면이 같은 값을 띄운다.
+/* 미지급률·과지급률 기본값은 S입금부족율이 투자 자산 화면과 같아지는 자리에 둔다 —
+   원장의 입금부족액이 0 이라 투자 자산 화면의 입금부족률이 0.00% 이고, 기본값도 0 / 0 이다. 두 화면이 같은 값을 띄운다.
    순현금은 투자 자산 화면과 같은 20,000,000 이다. */
-var SIM_DEFAULT = {r:0.11, cash:20000000, unpaid:0.08, over:0.01,
+var SIM_DEFAULT = {r:0.11, cash:20000000, unpaid:0, over:0,
                    from:'@@WKFROM@@', to:'@@ASOF@@'};
 function simSeed(){
   var o = {rows:simSeedRows(), result:null, running:false, redraw:true}, k;
