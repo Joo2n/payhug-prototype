@@ -60,15 +60,18 @@
 | M | 「d」 관련 옛 명세 `session_0904/V11_SPEC.md`·`verify/xv_d_*.md`·`xv_v11_*.md` 는 V1.1 이력이라 V1.3 과 다름 — 읽을 때 주의 | | 참고 |
 | N | 통합본 투자자 공유 정리 — 적용 완료(`7493d89`). 남은 것: 용어 해설 원고 `glossary_manuscript.md:1092·1096·1129·1434·1501` 의 「보관 ㈜쿠콘」·`anchor: th:보관`(캡처 재촬영 전 정리 필요, F 와 함께) · 문서 페이지·`assets/shots` 캡처는 정리 전 화면 | `glossary_manuscript.md` · `capture_shots.js` | F·G 와 함께 |
 | O | 사용자가 후보로 본 나머지 — 투자자명 「㈜테스트인베스트」(사이드바·증명서·엑셀 제목, 바꿀 이름 필요) · 전체본 첫 화면 「화면 설계(안)」 문구 · 시뮬레이션 표 열머리 내부 용어(순지급액·채권매입수수료·미지급 차감) | `app.html:1155·527·581·598` · `:944` · `:2737` | 사용자 결정 |
+| P | `gate_prototype.js` 배포 URL 게이트가 페이지 로드 전에 `go()` 를 부르면 `go is not defined` 로 중단(9/9 1회, 재실행 통과). `ev` 앞에 `SCREEN_ORDER`·`go` 정의 대기(폴링)를 넣을 것 | `gate_prototype.js:215` | 낮음 |
+| Q | 전체본 배포의 용어 해설 `glossary.html`(「보관 ㈜」 5곳)·`terms-edit.html`(1곳)·`assets/shots/invest-assets.webp` 캡처는 정리 전 화면. 첫 화면 doc-card 로 닿음. F·G(문서 페이지 8종) 와 함께 원고 정리 → 재촬영 | `glossary_manuscript.md:1092·1096·1129·1434·1501` · `capture_shots.js` | F·G 와 함께 |
 
 ## 재개 명령
 
 ```bash
 cd /Users/semi/cursor/payhug/payhug-spec/_pipeline/investor_admin
 python3 daily_ledger.py            # 원장 → ledger_facts.json
+python3 build_xlsx.py              # 엑셀 — build_app 보다 먼저(등록부가 파일 크기·생성일시를 읽음)
 python3 build_app.py               # 통합본 app.html
 python3 sync_assets_static.py && python3 sync_profit_static.py && python3 build_sim_static.py
-python3 build_xlsx.py && python3 build_audit_xlsx.py && python3 build_docs.py
+python3 build_audit_xlsx.py && python3 build_docs.py
 python3 prep_fig.py sync && python3 prep_fig.py freeze   # Figma 용 사본 (화면 24 + 상태 13)
 python3 verify_final_terms.py      # 원고 검사기 151건
 node capture_shots.js && python3 build_glossary.py && python3 verify_shotmarks.py && node verify_shots.js   # 화면이 바뀌면 용어 해설 캡처 재촬영
@@ -79,6 +82,8 @@ bash sync_glossary.sh              # 용어 해설 push (Joo2n/payhug-investor-g
 
 기호 정리표 워드·HTML: `python3 build_symreview.py` (원고 경로는 10번 참고).
 Figma 재임포트: `bash run_import_0828.sh preflight` → `serve` → `generate_figma_design` 청크 3 → 검수 → 구 노드 삭제 (`session_0904/reports/step10_figma_report.md`).
+
+**순서 주의**: `build_xlsx.py` 를 `build_app.py` 보다 먼저 돌린다. `build_app.py` 가 엑셀 파일의 크기·생성일시를 읽어 `app.html` 등록부에 박는다.
 
 ## 손대지 않는 것
 

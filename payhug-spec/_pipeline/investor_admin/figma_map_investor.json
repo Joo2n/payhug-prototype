@@ -1361,7 +1361,7 @@
  ],
  "source_commit_note": "payhug-investor-admin main d7ce377 (2026-09-08). 투자 자산 9·투자 수익 9 = 18프레임은 d7ce377 내용(툴팁 「기호 = 산식」 규칙 — 첫 줄 Y_r = r × 365 ÷ D · D = Σ( A_i × D_i ) ÷ Σ A_i · LR = Σ L_i ÷ Σ A_i · PY_a = PMR × 365 ÷ PD · PY_t = PY_a × 채권 비중 + 순현금 수익률 × 순현금 비중 + = PM × 365 ÷ ( Σ( A_i × D_i ) + PEC ) · PA = Σ A_i, 둘째 줄부터 「기호 | 값」, 조건 「i | …」, 「연환산」 행 맨 아래). 나머지 19프레임은 e019d5a 캡처본 그대로 — 그 뒤 커밋에서 해당 HTML 변경 없음",
  "head_at_completion": "7493d89 (통합본·낱장·엑셀 정리 판)",
- "source_commit_state": "캡처 시점 HEAD d7ce377 · 워킹트리 변경 0. 원본 레포는 읽기만 했다(커밋·수정 0)",
+ "source_commit_state": "7493d89 = 통합본에 투자자 공유 정리 적용 판. 투자 자산 9 프레임은 d7ce377+share 로 임포트했으나 7493d89 낱장과 보이는 텍스트가 같아 재임포트 없음. 옛 source_commit_note·staging_copy_note 의 d7ce377 문장은 임포트 당시 기록.",
  "state_frames": {
   "count": 13,
   "method": "원본 레포에 낱장이 없는 상태는 스테이징에서 만든다 — prep_fig.py freeze (freeze_app.js · 헤드리스 크롬 + CDP 로 app.html 을 열어 go()·상태 변수·ACT[] 로 상태를 만든 뒤 DOM 을 낱장으로 저장, value/checked/selected 속성 동기화 · 스크립트·숨은 section·모달·주석 제거) + 낱장 패치(툴팁 패널 1개 id=fig-tip display:block · 메뉴 그룹 class collapsed)",
