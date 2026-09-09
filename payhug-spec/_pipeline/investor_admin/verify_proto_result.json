@@ -56,7 +56,7 @@
    "visible": true,
    "state": "default",
    "hash": "#invest-profit",
-   "bg": "rgb(127, 225, 65)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -71,7 +71,7 @@
    "visible": true,
    "state": "default",
    "hash": "#merchants",
-   "bg": "rgba(127, 225, 65, 0.97)",
+   "bg": "rgba(127, 225, 65, 0.992)",
    "groupLabel": "rgb(127, 225, 65)",
    "pageShown": true,
    "green": true,
@@ -351,8 +351,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "투자자산현황_2026-08-27_2026-08-27.xlsx",
-   "bytes": 5603,
-   "srcBytes": 5603,
+   "bytes": 5600,
+   "srcBytes": 5600,
    "pass": true
   },
   {
@@ -364,8 +364,8 @@
    "viewAfter": "invest-assets",
    "noPreviewScreen": true,
    "file": "가맹점별투자자산_2026-08-27_2026-08-27.xlsx",
-   "bytes": 6108,
-   "srcBytes": 6108,
+   "bytes": 6093,
+   "srcBytes": 6093,
    "pass": true
   },
   {
@@ -377,8 +377,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5465,
-   "srcBytes": 5465,
+   "bytes": 5468,
+   "srcBytes": 5468,
    "pass": true
   },
   {
@@ -390,8 +390,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-21_2026-08-27.xlsx",
-   "bytes": 5872,
-   "srcBytes": 5872,
+   "bytes": 5867,
+   "srcBytes": 5867,
    "pass": true
   },
   {
@@ -403,8 +403,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-01_2026-08-27.xlsx",
-   "bytes": 5466,
-   "srcBytes": 5466,
+   "bytes": 5467,
+   "srcBytes": 5467,
    "pass": true
   },
   {
@@ -416,8 +416,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "일별투자수익_2026-08-01_2026-08-27.xlsx",
-   "bytes": 6744,
-   "srcBytes": 6744,
+   "bytes": 6737,
+   "srcBytes": 6737,
    "pass": true
   },
   {
@@ -429,8 +429,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5464,
-   "srcBytes": 5464,
+   "bytes": 5465,
+   "srcBytes": 5465,
    "pass": true
   },
   {
@@ -442,8 +442,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-08-03_2026-08-27.xlsx",
-   "bytes": 5775,
-   "srcBytes": 5775,
+   "bytes": 5774,
+   "srcBytes": 5774,
    "pass": true
   },
   {
@@ -455,8 +455,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-06-08_2026-08-27.xlsx",
-   "bytes": 5466,
-   "srcBytes": 5466,
+   "bytes": 5467,
+   "srcBytes": 5467,
    "pass": true
   },
   {
@@ -468,8 +468,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "주별투자수익_2026-06-08_2026-08-27.xlsx",
-   "bytes": 6173,
-   "srcBytes": 6173,
+   "bytes": 6179,
+   "srcBytes": 6179,
    "pass": true
   },
   {
@@ -494,8 +494,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-06-01_2026-08-27.xlsx",
-   "bytes": 5718,
-   "srcBytes": 5718,
+   "bytes": 5717,
+   "srcBytes": 5717,
    "pass": true
   },
   {
@@ -507,8 +507,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "투자수익현황_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5469,
-   "srcBytes": 5469,
+   "bytes": 5471,
+   "srcBytes": 5471,
    "pass": true
   },
   {
@@ -520,8 +520,8 @@
    "viewAfter": "invest-profit",
    "noPreviewScreen": true,
    "file": "월별투자수익_2026-03-01_2026-08-27.xlsx",
-   "bytes": 5856,
-   "srcBytes": 5856,
+   "bytes": 5848,
+   "srcBytes": 5848,
    "pass": true
   },
   {
@@ -603,29 +603,29 @@
    "weekRows": 7,
    "weekFoot": [
     "합계",
-    "180,032,111",
+    "180,169,120",
     "179,970,919",
-    "61,175",
+    "198,184",
     "3.11가중평균",
-    "3.99%가중평균"
+    "12.93%가중평균"
    ],
    "monthPresetRows": 27,
    "monthPresetFoot": [
     "합계",
-    "702,981,504",
+    "703,486,091",
     "702,712,201",
-    "269,234",
+    "773,821",
     "3.03가중평균",
-    "4.62%가중평균"
+    "13.27%가중평균"
    ],
    "monthlyRows": 6,
    "monthlyFoot": [
     "합계",
-    "4,702,291,078",
+    "4,705,679,821",
     "4,700,503,303",
-    "1,787,417",
+    "5,176,160",
     "3.03가중평균",
-    "4.57%가중평균"
+    "13.25%가중평균"
    ],
    "monthlyLabel": "6개월",
    "keepRows": [
@@ -633,8 +633,8 @@
     3
    ],
    "keepFoot": [
-    "875,417",
-    "875,417"
+    "2,529,024",
+    "2,529,024"
    ],
    "pass": true
   },
@@ -728,8 +728,8 @@
   "assetTotal": 100000000,
   "ratioSum": 100,
   "ledgerDays": 180,
-  "ledgerProfitSum": 1787417,
-  "monthRollupSum": 1787417,
+  "ledgerProfitSum": 5176160,
+  "monthRollupSum": 5176160,
   "rollupMatchesLedger": true,
   "contracts": 8,
   "signQueue": 3,
@@ -1423,14 +1423,14 @@
    {
     "name": "기본 기간 ④ 투자실행금액 대비",
     "want": "12.93%",
-    "got": "3.99%",
-    "pass": false
+    "got": "12.93%",
+    "pass": true
    },
    {
     "name": "기본 기간 ⑤ 투자 자산 대비",
     "want": "10.34%",
-    "got": "3.19%",
-    "pass": false
+    "got": "10.34%",
+    "pass": true
    },
    {
     "name": "기본 기간 PA (④ 툴팁)",
@@ -1459,26 +1459,26 @@
    {
     "name": "일별 표 합계 Ty",
     "want": "12.93%",
-    "got": "3.99%",
-    "pass": false
+    "got": "12.93%",
+    "pass": true
    },
    {
     "name": "일별 표 날짜↔W↔Ty 7행",
     "want": "전건 원장 일치",
-    "got": "2026-08-21 W3.06/4.54% (원장 W3.06/13.15%) / 2026-08-22 W3.10/4.24% (원장 W3.10/12.97%) / 2026-08-23 W3.12/4.01% (원장 W3.12/12.90%) / 2026-08-24 W3.12/3.81% (원장 W3.12/12.87%) / 2026-08-25 W3.13/3.74% (원장 W3.13/12.86%) / 2026-08-26 W3.12/3.73% (원장 W3.12/12.86%) / 2026-08-27 W3.11/3.88% (원장 W3.11/12.94%)",
-    "pass": false
+    "got": "어긋남 0",
+    "pass": true
    },
    {
     "name": "월별 ④ 투자실행금액 대비",
     "want": "13.25%",
-    "got": "4.57%",
-    "pass": false
+    "got": "13.25%",
+    "pass": true
    },
    {
     "name": "월별 ⑤ 투자 자산 대비",
     "want": "10.58%",
-    "got": "3.65%",
-    "pass": false
+    "got": "10.58%",
+    "pass": true
    },
    {
     "name": "월별 표 합계 W",
@@ -1489,14 +1489,14 @@
    {
     "name": "월별 표 합계 Ty",
     "want": "13.25%",
-    "got": "4.57%",
-    "pass": false
+    "got": "13.25%",
+    "pass": true
    },
    {
     "name": "월별 표 6행 W·Ty",
     "want": "2026-03|3.05|13.20% , 2026-04|3.01|13.37% , 2026-05|3.05|13.16% , 2026-06|3.06|13.14% , 2026-07|3.01|13.35% , 2026-08|3.03|13.27%",
-    "got": "2026-03|3.05|4.49% , 2026-04|3.01|4.83% , 2026-05|3.05|4.38% , 2026-06|3.06|4.38% , 2026-07|3.01|4.76% , 2026-08|3.03|4.62%",
-    "pass": false
+    "got": "2026-03|3.05|13.20% , 2026-04|3.01|13.37% , 2026-05|3.05|13.16% , 2026-06|3.06|13.14% , 2026-07|3.01|13.35% , 2026-08|3.03|13.27%",
+    "pass": true
    },
    {
     "name": "(6) 시연본에 xls-*·invest-sim 화면 없음",
@@ -1512,15 +1512,15 @@
    }
   ],
   "ratioSum": 100,
-  "fail": 8
+  "fail": 0
  },
  "docs": [
   {
    "label": "증명서 PDF",
    "name": "투자자산증명서_20260827.pdf",
    "saved": "투자자산증명서_20260827.pdf",
-   "bytes": 245291,
-   "srcBytes": 245291,
+   "bytes": 245257,
+   "srcBytes": 245257,
    "pass": true
   }
  ],
