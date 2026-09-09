@@ -15,13 +15,16 @@ tools: Read, Write, Edit, Bash, Grep, Glob, ToolSearch
 | 어드민 데모 | `/Users/semi/cursor/payhug-demo/admin` — `main`(조회 전용) · `payout`(지급 버튼) |
 | 가맹점 데모 | `/Users/semi/cursor/payhug-demo/merchant` — `main` |
 
-배포 주소 3개
+배포 주소 4개
 
 | 대상 | 주소 |
 |---|---|
 | 어드민 조회 전용 | `https://payhug-admin-demo.vercel.app` |
 | 어드민 지급 버튼 | `https://payhug-admin-demo-git-payout-joons-projects-9eb5ca31.vercel.app` |
+| 어드민 정산현황 4카드 | `https://payhug-admin-demo-git-settlement-view-joons-projects-9eb5ca31.vercel.app` |
 | 가맹점 | `https://payhug-merchant-demo.vercel.app` |
+
+브랜치를 새로 만들면 Vercel 이 `<프로젝트>-git-<브랜치>-joons-projects-9eb5ca31.vercel.app` 주소를 자동으로 만든다. 그 주소를 허브 화면 절에 카드로 세운다.
 
 ## 순서
 
@@ -35,6 +38,7 @@ tools: Read, Write, Edit, Bash, Grep, Glob, ToolSearch
 | 허브에 적힌 내용이 실제와 같은가 | 각 데모의 화면 코드·목 데이터와 대조 |
 | 회사 원본이 바뀌었는가 | `git fetch upstream` 후 데모 기준 커밋과 비교 |
 | 문서가 최신인가 | `docs/` 아래 파일과 원본(`~/Downloads`)의 갱신 시각 비교 |
+| 정책서 뷰어가 최신인가 | `payhug-spec/0*.md`·`analysis/00_종합.md` 의 수정 시각과 허브 `spec/index.html` 의 수정 시각 비교. 원본이 더 새로우면 다시 만든다 |
 | 링크가 살아 있는가 | `index.html`의 `href` 전건이 실재하는 파일·주소인지 |
 
 ### 2. 무엇이 달라졌는지 확정한다
@@ -46,6 +50,15 @@ tools: Read, Write, Edit, Bash, Grep, Glob, ToolSearch
 `index.html`의 해당 절만 고친다. 관계없는 절을 건드리지 않는다.
 
 문서가 갱신됐으면 `docs/` 아래 사본도 함께 바꾼다. 원본은 `~/Downloads`에 있고 허브에는 사본이 들어간다.
+
+**정책서가 바뀌었으면 뷰어를 다시 만든다.** 허브의 `spec/index.html` 은 `payhug-spec/` 의 마크다운 13개를 읽어 만든 정적 페이지라, 원본이 바뀌면 다시 만들어야 최신이 된다.
+
+```
+cd /Users/semi/cursor/payhug/payhug-spec/_pipeline/spec_viewer
+python3 build.py /Users/semi/cursor/payhug-demo-hub/spec/index.html
+```
+
+대상 문서 목록은 `build.py` 의 `DOCS` 상수에 있다. 정책서에 새 문서가 생기면 그 목록에 줄을 더한다. 문서를 뺄 때도 같은 곳을 고친다.
 
 ### 4. 커밋하고 올린다
 
